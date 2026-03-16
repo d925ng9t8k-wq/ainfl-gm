@@ -1,0 +1,1064 @@
+{
+  "otc": {
+    "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://overthecap.com/roster/cincinnati-bengals\", waiting until \"networkidle\"\u001b[22m\n"
+  },
+  "espn": [
+    [
+      "",
+      "Joe Burrow9",
+      "QB",
+      "29",
+      "6' 4\"",
+      "215 lbs",
+      "6",
+      "LSU"
+    ],
+    [
+      "",
+      "Sean Clifford4",
+      "QB",
+      "27",
+      "6' 2\"",
+      "212 lbs",
+      "2",
+      "Penn State"
+    ],
+    [
+      "",
+      "Joe Flacco16",
+      "QB",
+      "41",
+      "6' 6\"",
+      "245 lbs",
+      "18",
+      "Delaware"
+    ],
+    [
+      "",
+      "Josh Johnson",
+      "QB",
+      "39",
+      "6' 3\"",
+      "214 lbs",
+      "11",
+      "San Diego"
+    ],
+    [
+      "",
+      "Gary Brightwell32",
+      "RB",
+      "28",
+      "6' 1\"",
+      "218 lbs",
+      "4",
+      "Arizona"
+    ],
+    [
+      "",
+      "Tahj Brooks25",
+      "RB",
+      "23",
+      "5' 9\"",
+      "220 lbs",
+      "R",
+      "Texas Tech"
+    ],
+    [
+      "",
+      "Chase Brown30",
+      "RB",
+      "25",
+      "5' 10\"",
+      "210 lbs",
+      "3",
+      "Illinois"
+    ],
+    [
+      "",
+      "Kendall Milton36",
+      "RB",
+      "24",
+      "6' 1\"",
+      "230 lbs",
+      "1",
+      "Georgia"
+    ],
+    [
+      "",
+      "Samaje Perine34",
+      "RB",
+      "30",
+      "5' 11\"",
+      "240 lbs",
+      "9",
+      "Oklahoma"
+    ],
+    [
+      "",
+      "Ja'Marr Chase1",
+      "WR",
+      "26",
+      "6' 0\"",
+      "205 lbs",
+      "5",
+      "LSU"
+    ],
+    [
+      "",
+      "Tee Higgins5",
+      "WR",
+      "27",
+      "6' 4\"",
+      "220 lbs",
+      "6",
+      "Clemson"
+    ],
+    [
+      "",
+      "Andrei Iosivas80",
+      "WR",
+      "26",
+      "6' 3\"",
+      "210 lbs",
+      "3",
+      "Princeton"
+    ],
+    [
+      "",
+      "Xavier Johnson",
+      "WR",
+      "26",
+      "6' 1\"",
+      "204 lbs",
+      "1",
+      "Ohio State"
+    ],
+    [
+      "",
+      "Charlie Jones15",
+      "WR",
+      "27",
+      "6' 0\"",
+      "190 lbs",
+      "3",
+      "Purdue"
+    ],
+    [
+      "",
+      "Dohnte Meyers",
+      "WR",
+      "--",
+      "5' 11\"",
+      "186 lbs",
+      "R",
+      "Delta State"
+    ],
+    [
+      "",
+      "Jordan Moore",
+      "WR",
+      "23",
+      "6' 0\"",
+      "191 lbs",
+      "R",
+      "Duke"
+    ],
+    [
+      "",
+      "Kendric Pryor19",
+      "WR",
+      "28",
+      "5' 11\"",
+      "189 lbs",
+      "2",
+      "Wisconsin"
+    ],
+    [
+      "",
+      "Mitchell Tinsley82",
+      "WR",
+      "26",
+      "6' 1\"",
+      "205 lbs",
+      "2",
+      "Penn State"
+    ],
+    [
+      "",
+      "Ke'Shawn Williams12",
+      "WR",
+      "24",
+      "5' 9\"",
+      "189 lbs",
+      "R",
+      "Indiana"
+    ],
+    [
+      "",
+      "Mike Gesicki88",
+      "TE",
+      "30",
+      "6' 6\"",
+      "245 lbs",
+      "8",
+      "Penn State"
+    ],
+    [
+      "",
+      "Cam Grandy85",
+      "TE",
+      "26",
+      "6' 5\"",
+      "253 lbs",
+      "2",
+      "Illinois State"
+    ],
+    [
+      "",
+      "Tanner Hudson87",
+      "TE",
+      "31",
+      "6' 5\"",
+      "241 lbs",
+      "6",
+      "Southern Arkansas"
+    ],
+    [
+      "",
+      "Drew Sample89",
+      "TE",
+      "29",
+      "6' 5\"",
+      "260 lbs",
+      "7",
+      "Washington"
+    ],
+    [
+      "",
+      "Jacob Bayer69",
+      "C",
+      "23",
+      "6' 3\"",
+      "310 lbs",
+      "R",
+      "Arkansas State"
+    ],
+    [
+      "",
+      "Ted Karras64",
+      "C",
+      "33",
+      "6' 4\"",
+      "310 lbs",
+      "10",
+      "Illinois"
+    ],
+    [
+      "",
+      "Dylan Fairchild63",
+      "G",
+      "22",
+      "6' 5\"",
+      "318 lbs",
+      "R",
+      "Georgia"
+    ],
+    [
+      "",
+      "Cody Ford61",
+      "G",
+      "29",
+      "6' 3\"",
+      "345 lbs",
+      "7",
+      "Oklahoma"
+    ],
+    [
+      "",
+      "Lucas Patrick62",
+      "G",
+      "32",
+      "6' 3\"",
+      "313 lbs",
+      "9",
+      "Duke"
+    ],
+    [
+      "",
+      "Dalton Risner66",
+      "G",
+      "30",
+      "6' 5\"",
+      "312 lbs",
+      "7",
+      "Kansas State"
+    ],
+    [
+      "",
+      "Jalen Rivers74",
+      "G",
+      "23",
+      "6' 5\"",
+      "319 lbs",
+      "R",
+      "Miami"
+    ],
+    [
+      "",
+      "Orlando Brown Jr.75",
+      "OT",
+      "29",
+      "6' 8\"",
+      "350 lbs",
+      "8",
+      "Oklahoma"
+    ],
+    [
+      "",
+      "Andrew Coker79",
+      "OT",
+      "24",
+      "6' 7\"",
+      "315 lbs",
+      "1",
+      "TCU"
+    ],
+    [
+      "",
+      "Javon Foster73",
+      "OT",
+      "25",
+      "6' 5\"",
+      "313 lbs",
+      "2",
+      "Missouri"
+    ],
+    [
+      "",
+      "Amarius Mims71",
+      "OT",
+      "23",
+      "6' 8\"",
+      "350 lbs",
+      "2",
+      "Georgia"
+    ],
+    [
+      "",
+      "Isaiah Foskey51",
+      "DE",
+      "25",
+      "6' 5\"",
+      "280 lbs",
+      "3",
+      "Notre Dame"
+    ],
+    [
+      "",
+      "Cedric Johnson52",
+      "DE",
+      "23",
+      "6' 3\"",
+      "264 lbs",
+      "2",
+      "Ole Miss"
+    ],
+    [
+      "",
+      "Myles Murphy99",
+      "DE",
+      "24",
+      "6' 5\"",
+      "275 lbs",
+      "3",
+      "Clemson"
+    ],
+    [
+      "",
+      "Cam Sample96",
+      "DE",
+      "26",
+      "6' 3\"",
+      "272 lbs",
+      "5",
+      "Tulane"
+    ],
+    [
+      "",
+      "Shemar Stewart97",
+      "DE",
+      "22",
+      "6' 5\"",
+      "267 lbs",
+      "R",
+      "Texas A&M"
+    ],
+    [
+      "",
+      "Jonathan Allen93",
+      "DT",
+      "31",
+      "6' 3\"",
+      "300 lbs",
+      "10",
+      "Alabama"
+    ],
+    [
+      "",
+      "Howard Cross III95",
+      "DT",
+      "24",
+      "6' 1\"",
+      "285 lbs",
+      "R",
+      "Notre Dame"
+    ],
+    [
+      "",
+      "B.J. Hill92",
+      "DT",
+      "30",
+      "6' 3\"",
+      "311 lbs",
+      "8",
+      "NC State"
+    ],
+    [
+      "",
+      "McKinnley Jackson93",
+      "DT",
+      "24",
+      "6' 2\"",
+      "330 lbs",
+      "2",
+      "Texas A&M"
+    ],
+    [
+      "",
+      "Jordan Jefferson94",
+      "DT",
+      "24",
+      "6' 4\"",
+      "317 lbs",
+      "2",
+      "LSU"
+    ],
+    [
+      "",
+      "T.J. Slaton Jr.98",
+      "DT",
+      "28",
+      "6' 5\"",
+      "340 lbs",
+      "5",
+      "Florida"
+    ],
+    [
+      "",
+      "Liam Anderson45",
+      "LB",
+      "25",
+      "6' 3\"",
+      "226 lbs",
+      "1",
+      "Holy Cross"
+    ],
+    [
+      "",
+      "Oren Burks42",
+      "LB",
+      "30",
+      "6' 3\"",
+      "233 lbs",
+      "8",
+      "Vanderbilt"
+    ],
+    [
+      "",
+      "Barrett Carter49",
+      "LB",
+      "23",
+      "6' 0\"",
+      "231 lbs",
+      "R",
+      "Clemson"
+    ],
+    [
+      "",
+      "Joe Giles-Harris53",
+      "LB",
+      "28",
+      "6' 2\"",
+      "234 lbs",
+      "2",
+      "Duke"
+    ],
+    [
+      "",
+      "Shaka Heyward50",
+      "LB",
+      "25",
+      "6' 3\"",
+      "238 lbs",
+      "2",
+      "Duke"
+    ],
+    [
+      "",
+      "Demetrius Knight Jr.44",
+      "LB",
+      "25",
+      "6' 2\"",
+      "240 lbs",
+      "R",
+      "South Carolina"
+    ],
+    [
+      "",
+      "Boye Mafe",
+      "LB",
+      "27",
+      "6' 4\"",
+      "261 lbs",
+      "4",
+      "Minnesota"
+    ],
+    [
+      "",
+      "Antwaun Powell-Ryland Jr.",
+      "LB",
+      "24",
+      "6' 2\"",
+      "258 lbs",
+      "R",
+      "Virginia Tech"
+    ],
+    [
+      "",
+      "Jalen Davis35",
+      "CB",
+      "30",
+      "5' 10\"",
+      "186 lbs",
+      "5",
+      "Utah State"
+    ],
+    [
+      "",
+      "Dax Hill23",
+      "CB",
+      "25",
+      "6' 0\"",
+      "195 lbs",
+      "4",
+      "Michigan"
+    ],
+    [
+      "",
+      "DJ Ivey38",
+      "CB",
+      "26",
+      "6' 1\"",
+      "192 lbs",
+      "3",
+      "Miami"
+    ],
+    [
+      "",
+      "Jalen Kimber",
+      "CB",
+      "25",
+      "6' 0\"",
+      "190 lbs",
+      "R",
+      "Penn State"
+    ],
+    [
+      "",
+      "Bralyn Lux21",
+      "CB",
+      "25",
+      "5' 10\"",
+      "180 lbs",
+      "R",
+      "Texas Tech"
+    ],
+    [
+      "",
+      "Josh Newton28",
+      "CB",
+      "25",
+      "5' 11\"",
+      "190 lbs",
+      "2",
+      "TCU"
+    ],
+    [
+      "",
+      "DJ Turner II20",
+      "CB",
+      "25",
+      "5' 11\"",
+      "185 lbs",
+      "3",
+      "Michigan"
+    ],
+    [
+      "",
+      "Tycen Anderson26",
+      "S",
+      "26",
+      "6' 2\"",
+      "205 lbs",
+      "4",
+      "Toledo"
+    ],
+    [
+      "",
+      "Daijahn Anthony33",
+      "S",
+      "25",
+      "6' 0\"",
+      "200 lbs",
+      "2",
+      "Ole Miss"
+    ],
+    [
+      "",
+      "Jordan Battle27",
+      "S",
+      "25",
+      "6' 1\"",
+      "215 lbs",
+      "3",
+      "Alabama"
+    ],
+    [
+      "",
+      "Bryan Cook",
+      "S",
+      "26",
+      "6' 1\"",
+      "206 lbs",
+      "4",
+      "Cincinnati"
+    ],
+    [
+      "",
+      "PJ Jules37",
+      "S",
+      "24",
+      "6' 0\"",
+      "203 lbs",
+      "1",
+      "Southern Illinois"
+    ],
+    [
+      "",
+      "Geno Stone22",
+      "S",
+      "26",
+      "5' 11\"",
+      "210 lbs",
+      "6",
+      "Iowa"
+    ],
+    [
+      "",
+      "Russ Yeast",
+      "S",
+      "26",
+      "5' 10\"",
+      "195 lbs",
+      "3",
+      "Kansas State"
+    ],
+    [
+      "",
+      "Evan McPherson2",
+      "PK",
+      "26",
+      "5' 11\"",
+      "185 lbs",
+      "5",
+      "Florida"
+    ],
+    [
+      "",
+      "Ryan Rehkow8",
+      "P",
+      "27",
+      "6' 4\"",
+      "235 lbs",
+      "2",
+      "BYU"
+    ],
+    [
+      "",
+      "William Wagner46",
+      "LS",
+      "25",
+      "6' 2\"",
+      "240 lbs",
+      "R",
+      "Michigan"
+    ],
+    [
+      "",
+      "Erick All Jr.83",
+      "TE",
+      "25",
+      "6' 5\"",
+      "255 lbs",
+      "2",
+      "Iowa"
+    ],
+    [
+      "",
+      "Matt Lee65",
+      "C",
+      "24",
+      "6' 4\"",
+      "310 lbs",
+      "2",
+      "Miami"
+    ],
+    [
+      "",
+      "Kris Jenkins Jr.90",
+      "DT",
+      "24",
+      "6' 3\"",
+      "310 lbs",
+      "2",
+      "Michigan"
+    ],
+    [
+      "",
+      "Brian Asamoah II53",
+      "LB",
+      "25",
+      "6' 1\"",
+      "230 lbs",
+      "4",
+      "Oklahoma"
+    ],
+    [
+      "",
+      "Cam Taylor-Britt29",
+      "CB",
+      "26",
+      "5' 11\"",
+      "200 lbs",
+      "4",
+      "Nebraska"
+    ]
+  ],
+  "wikiDraft": [
+    [
+      "",
+      "1",
+      "17",
+      "Cincinnati Bengals",
+      "Shemar Stewart",
+      "DE",
+      "Texas A&M",
+      "SEC",
+      ""
+    ],
+    [
+      "",
+      "2",
+      "49",
+      "Cincinnati Bengals",
+      "Demetrius Knight",
+      "LB",
+      "South Carolina",
+      "SEC",
+      ""
+    ],
+    [
+      "",
+      "3",
+      "81",
+      "Cincinnati Bengals",
+      "Dylan Fairchild",
+      "G",
+      "Georgia",
+      "SEC",
+      ""
+    ],
+    [
+      "",
+      "4",
+      "119",
+      "Cincinnati Bengals",
+      "Barrett Carter",
+      "LB",
+      "Clemson",
+      "ACC",
+      ""
+    ],
+    [
+      "",
+      "5",
+      "153",
+      "Cincinnati Bengals",
+      "Jalen Rivers",
+      "G",
+      "Miami (FL)",
+      "ACC",
+      ""
+    ],
+    [
+      "",
+      "6",
+      "193",
+      "Cincinnati Bengals",
+      "Tahj Brooks",
+      "RB",
+      "Texas Tech",
+      "Big 12",
+      ""
+    ],
+    [
+      "",
+      "7",
+      "233",
+      "Chicago Bears",
+      "Kyle Monangai",
+      "RB",
+      "Rutgers",
+      "Big Ten",
+      "from Cincinnati[R7 – 10]"
+    ],
+    [
+      "",
+      "7*",
+      "250",
+      "Green Bay Packers",
+      "John Williams",
+      "G",
+      "Cincinnati",
+      "Big 12",
+      ""
+    ],
+    [
+      "Cincinnati Bengals",
+      "William Wagner",
+      "LS",
+      "Michigan",
+      "Big Ten",
+      ""
+    ]
+  ],
+  "pfr": {
+    "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://www.pro-football-reference.com/teams/cin/2025_roster.htm\", waiting until \"networkidle\"\u001b[22m\n"
+  },
+  "spotrac": {
+    "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://www.spotrac.com/nfl/cincinnati-bengals/cap/\", waiting until \"networkidle\"\u001b[22m\n"
+  },
+  "faSignings": {
+    "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://www.spotrac.com/nfl/free-agents/signed/2025/\", waiting until \"networkidle\"\u001b[22m\n"
+  },
+  "otcFA": [
+    [
+      "Team",
+      "FA Signings",
+      "FA Avg. Age",
+      "Roster Avg. Age"
+    ],
+    [
+      "Colts",
+      "4",
+      "27.00",
+      "25.77"
+    ],
+    [
+      "Saints",
+      "3",
+      "27.33",
+      "26.85"
+    ],
+    [
+      "Broncos",
+      "3",
+      "27.33",
+      "26.12"
+    ],
+    [
+      "Panthers",
+      "9",
+      "27.44",
+      "25.82"
+    ],
+    [
+      "Raiders",
+      "9",
+      "27.56",
+      "26.44"
+    ],
+    [
+      "Seahawks",
+      "3",
+      "27.67",
+      "26.30"
+    ],
+    [
+      "Patriots",
+      "13",
+      "27.69",
+      "27.20"
+    ],
+    [
+      "Browns",
+      "5",
+      "27.80",
+      "26.08"
+    ],
+    [
+      "Dolphins",
+      "11",
+      "27.82",
+      "26.11"
+    ],
+    [
+      "Vikings",
+      "6",
+      "27.83",
+      "26.03"
+    ],
+    [
+      "Jaguars",
+      "11",
+      "27.91",
+      "25.83"
+    ],
+    [
+      "Bengals",
+      "7",
+      "28.00",
+      "26.22"
+    ],
+    [
+      "Jets",
+      "11",
+      "28.00",
+      "25.99"
+    ],
+    [
+      "Lions",
+      "10",
+      "28.10",
+      "26.24"
+    ],
+    [
+      "Bills",
+      "6",
+      "28.17",
+      "26.86"
+    ],
+    [
+      "Steelers",
+      "4",
+      "28.25",
+      "26.25"
+    ],
+    [
+      "Texans",
+      "27",
+      "28.30",
+      "27.07"
+    ],
+    [
+      "Giants",
+      "14",
+      "29.07",
+      "26.54"
+    ],
+    [
+      "Titans",
+      "9",
+      "29.33",
+      "26.59"
+    ],
+    [
+      "Falcons",
+      "6",
+      "29.50",
+      "26.62"
+    ],
+    [
+      "Redskin",
+      "8",
+      "29.50",
+      "26.33"
+    ],
+    [
+      "Cowboys",
+      "8",
+      "29.50",
+      "26.21"
+    ],
+    [
+      "Bears",
+      "7",
+      "29.57",
+      "26.94"
+    ],
+    [
+      "49ers",
+      "7",
+      "29.71",
+      "27.10"
+    ],
+    [
+      "Chiefs",
+      "5",
+      "30.00",
+      "26.38"
+    ],
+    [
+      "Ravens",
+      "2",
+      "30.00",
+      "26.29"
+    ],
+    [
+      "Eagles",
+      "4",
+      "30.75",
+      "26.22"
+    ],
+    [
+      "Chargers",
+      "7",
+      "30.86",
+      "26.23"
+    ],
+    [
+      "Cardinals",
+      "5",
+      "32.60",
+      "26.96"
+    ],
+    [
+      "Rams",
+      "1",
+      "35.00",
+      "25.97"
+    ],
+    [
+      "Buccaneers",
+      "0",
+      "–",
+      "26.90"
+    ],
+    [
+      "Packers",
+      "0",
+      "–",
+      "26.03"
+    ]
+  ]
+}

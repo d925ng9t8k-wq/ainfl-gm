@@ -1,0 +1,27 @@
+{
+  "scrapeDate": "2026-03-16",
+  "sources": {
+    "bengalsRoster": {
+      "source": "Over The Cap (overthecap.com/salary-cap/cincinnati-bengals)",
+      "success": true,
+      "playersFound": 67,
+      "year": 2026,
+      "note": "Full roster with 2026 cap hits scraped via WebFetch"
+    },
+    "capSpace": {
+      "source": "Over The Cap (overthecap.com/salary-cap-space)",
+      "success": true,
+      "teamsFound": 32,
+      "year": 2026,
+      "note": "All 32 teams with 2026 projected cap space"
+    },
+    "draftBoard": {
+      "source": "Tankathon (tankathon.com/nfl/big_board)",
+      "success": true,
+      "prospectsFound": 183,
+      "year": 2026,
+      "note": "2026 NFL Draft Big Board - 183 real prospects scraped"
+    }
+  },
+  "summary": "All 3 data sources scraped successfully. Playwright headless browser failed to render OTC JS-heavy tables but WebFetch extracted full data. Draft board from Tankathon NFL big board (not NBA). Files updated: bengalsRoster.js, teams.js, draftProspects.js"
+}
