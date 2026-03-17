@@ -39,6 +39,7 @@ const initialState = {
   cutPlayers: [],
   draftedPlayers: [],
   allDraftPicks: [],
+  futurePicks: [],
   allTeams: teams,
   draftStarted: false,
   draftComplete: false,
@@ -149,6 +150,41 @@ function gameReducer(state, action) {
           id: Date.now(),
           type: 'restructure',
           description: `Restructured ${player.name}: saved $${savings.toFixed(1)}M this year`,
+          timestamp: new Date().toISOString(),
+        }],
+      };
+    }
+
+    case 'EXTEND_PLAYER': {
+      const { playerId, additionalYears, newAAV, signingBonus, guaranteedPct } = action.payload;
+      const player = state.roster.find(p => p.id === playerId);
+      if (!player) return state;
+      const totalYears = player.yearsRemaining + additionalYears;
+      const totalValue = parseFloat((newAAV * totalYears).toFixed(1));
+      const guaranteed = parseFloat((totalValue * guaranteedPct / 100).toFixed(1));
+      const proratedBonus = totalYears > 0 ? parseFloat((signingBonus / totalYears).toFixed(2)) : 0;
+      const baseSalaryY1 = Math.max(1.1, newAAV - proratedBonus);
+      const year1CapHit = parseFloat((baseSalaryY1 + proratedBonus).toFixed(1));
+      const deadMoney = parseFloat(Math.max(signingBonus, 0).toFixed(1));
+      const updatedPlayer = {
+        ...player,
+        contractYears: totalYears,
+        contractTotal: totalValue,
+        yearsRemaining: totalYears,
+        capHit: year1CapHit,
+        baseSalary: parseFloat(baseSalaryY1.toFixed(1)),
+        deadMoney,
+        signingBonus: parseFloat(signingBonus.toFixed(1)),
+        guaranteed,
+      };
+      const newRoster = state.roster.map(p => p.id === playerId ? updatedPlayer : p);
+      return {
+        ...state,
+        roster: newRoster,
+        tradeHistory: [...state.tradeHistory, {
+          id: Date.now(),
+          type: 'extension',
+          description: `Extended ${player.name}: ${totalYears}yr/$${totalValue.toFixed(1)}M ($${newAAV.toFixed(1)}M/yr, $${guaranteed.toFixed(1)}M guaranteed)`,
           timestamp: new Date().toISOString(),
         }],
       };
@@ -401,6 +437,10 @@ export function GameProvider({ children }) {
     dispatch({ type: 'RESTRUCTURE_CONTRACT', payload: { playerId } });
   };
 
+  const extendPlayer = (playerId, additionalYears, newAAV, signingBonus, guaranteedPct) => {
+    dispatch({ type: 'EXTEND_PLAYER', payload: { playerId, additionalYears, newAAV, signingBonus, guaranteedPct } });
+  };
+
   const tradePlayer = (myPlayers, myPicks, theirPlayers, theirPicks, targetTeam) => {
     dispatch({ type: 'TRADE_PLAYER', payload: { myPlayers, myPicks, theirPlayers, theirPicks, targetTeam } });
   };
@@ -432,6 +472,7 @@ export function GameProvider({ children }) {
       signPlayer,
       cutPlayer,
       restructureContract,
+      extendPlayer,
       tradePlayer,
       draftPlayer,
       cpuDraftPlayer,

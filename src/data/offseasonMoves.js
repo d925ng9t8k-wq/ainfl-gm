@@ -523,6 +523,15 @@ export function computeBaselineGrade(teamAbbr) {
     score += Math.min(8, (avgRating - 65) * 0.5);
     score += Math.min(5, valueEfficiency * 0.8);
     if (avgAAV > 22) score -= 3;
+
+    // Splash signing bonus: +5 per signing with rating 85+
+    const splashSignings = signings.filter(s => (s.rating || 0) >= 85).length;
+    score += splashSignings * 5;
+
+    // Cap efficiency bonus: signings with AAV below typical market rate
+    // If avg value efficiency > 10 (high rating per dollar), bonus
+    if (valueEfficiency > 10) score += 4;
+    else if (valueEfficiency > 7) score += 2;
   }
 
   score += Math.min(8, trades.length * 3);
@@ -531,6 +540,18 @@ export function computeBaselineGrade(teamAbbr) {
   if (departures.length > 0) {
     score -= Math.min(8, departures.length * 2);
     if (signings.length >= departures.length) score += 3;
+
+    // Bigger penalty for losing stars (rating 85+)
+    // We don't have ratings on departures directly, but we can check if any departure
+    // matches a signing with 85+ rating (they were notable players)
+    // Approximate: penalize -5 per departure that has a notable contract mentioned
+    const starDepartures = departures.filter(d => {
+      const contract = d.contract || d.note || '';
+      // If the contract value is high, they were likely a star
+      const match = contract.match(/\$(\d+)/);
+      return match && parseInt(match[1]) >= 30;
+    }).length;
+    score -= starDepartures * 5;
   }
 
   score = Math.max(40, Math.min(95, Math.round(score)));

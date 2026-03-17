@@ -82,7 +82,7 @@ function computeGrades(signingHistory, tradeHistory, draftedPlayers, cutPlayers,
     const avgGrade = draftedPlayers.reduce((s, p) => s + (p.grade || 60), 0) / draftedPlayers.length;
     const avgPick = draftedPlayers.reduce((s, p) => s + (p.pickNumber || 100), 0) / draftedPlayers.length;
     // Same formula as DraftPage.draftGradeLetter:
-    const bonus = avgGrade - (100 - avgPick * 0.4);
+    const bonus = avgGrade - (100 - avgPick * 0.5);
     if (bonus >= 20) { draftLetter = 'A+'; draftScore = 97; }
     else if (bonus >= 15) { draftLetter = 'A'; draftScore = 92; }
     else if (bonus >= 10) { draftLetter = 'A-'; draftScore = 87; }
@@ -94,6 +94,22 @@ function computeGrades(signingHistory, tradeHistory, draftedPlayers, cutPlayers,
     else if (bonus >= -20) { draftLetter = 'C-'; draftScore = 57; }
     else if (bonus >= -25) { draftLetter = 'D'; draftScore = 47; }
     else { draftLetter = 'F'; draftScore = 40; }
+
+    // Wider grade spread: apply avgValue * 2.0 multiplier
+    const avgValue = avgGrade / 100;
+    draftScore = Math.round(draftScore * (1 + (avgValue * 2.0 - 1) * 0.15));
+
+    // Per-pick reach/steal penalties/bonuses
+    let pickAdjust = 0;
+    draftedPlayers.forEach(p => {
+      const pickNum = p.pickNumber || 0;
+      const expectedGrade = Math.max(35, 95 - pickNum * 0.32);
+      const diff = (p.grade || 60) - expectedGrade;
+      if (diff < -15) pickAdjust -= 5;  // reach penalty
+      if (diff > 15) pickAdjust += 3;   // steal bonus
+    });
+    draftScore = Math.max(30, Math.min(99, draftScore + pickAdjust));
+    draftLetter = gradeFromScore(draftScore);
   }
 
   // ─── CAP MANAGEMENT BONUS/PENALTY ───
@@ -143,6 +159,8 @@ function computeGrades(signingHistory, tradeHistory, draftedPlayers, cutPlayers,
     trades: { grade: gradeFromScore(Math.round(tradeScore)), score: Math.round(tradeScore) },
     draft: { grade: draftedPlayers.length > 0 ? draftLetter : gradeFromScore(Math.round(draftScore)), score: Math.round(draftScore) },
     overall: { grade: gradeFromScore(overallScore), score: overallScore },
+    preseason: { grade: gradeFromScore(baselineScore), score: baselineScore },
+    yourMoves: { grade: gradeFromScore(userSimScore), score: userSimScore },
     baseline: baselineScore,
     userSim: userSimScore,
     userWeight: Math.round(userWeight * 100),
@@ -253,9 +271,9 @@ export default function SummaryPage() {
       </div>
 
       {shareLink && (
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 12 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 12 }}>
           <div style={{ color: '#4ade80', marginBottom: 4 }}>Share link copied to clipboard!</div>
-          <div style={{ color: '#6a9a78', wordBreak: 'break-all' }}>{shareLink}</div>
+          <div style={{ color: '#94A3B8', wordBreak: 'break-all' }}>{shareLink}</div>
         </div>
       )}
 
@@ -266,30 +284,32 @@ export default function SummaryPage() {
             { label: 'Free Agency', key: 'fa', detail: `${signingHistory.length} signings` },
             { label: 'Trades & Cuts', key: 'trades', detail: `${tradeHistory.filter(t=>t.type==='trade').length} trades, ${cutPlayers.length} cuts` },
             { label: 'Draft', key: 'draft', detail: `${draftedPlayers.length} picks` },
-            { label: 'Overall', key: 'overall', detail: `Baseline: ${baseline.grade} → Your sim: ${grades.userWeight}% weight` },
+            { label: 'Pre-Season', key: 'preseason', detail: `Real offseason moves` },
+            { label: 'Your Moves', key: 'yourMoves', detail: `Simulation actions` },
+            { label: 'Overall', key: 'overall', detail: `Pre-season ${grades.preseason.grade} + Sim ${grades.userWeight}%` },
           ].map(({ label, key, detail }) => {
             const { grade, score } = grades[key];
             const color = gradeColor(grade);
             return (
               <div key={key} style={{
-                background: '#0d2a16',
-                border: `1px solid ${key === 'overall' ? accentColor : 'rgba(40,200,40,0.25)'}`,
+                background: '#0f172a',
+                border: `1px solid ${key === 'overall' ? accentColor : 'rgba(0,240,255,0.12)'}`,
                 borderRadius: 12, padding: 16, textAlign: 'center',
               }}>
-                <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 4 }}>{label}</div>
+                <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>{label}</div>
                 <div style={{ color, fontSize: 36, fontWeight: 900, lineHeight: 1 }}>{grade}</div>
-                <div style={{ color: '#4a7a58', fontSize: 11, marginTop: 4 }}>{detail}</div>
+                <div style={{ color: '#64748b', fontSize: 11, marginTop: 4 }}>{detail}</div>
               </div>
             );
           })}
         </div>
 
         {/* Baseline Offseason Report */}
-        <div style={{ background: '#0d2a16', border: `1px solid ${accentColor}33`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
+        <div style={{ background: '#0f172a', border: `1px solid ${accentColor}33`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <h3 style={{ margin: 0, color: '#fff', fontSize: 15 }}>Pre-Simulation Offseason Report</h3>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ color: '#6a9a78', fontSize: 12 }}>Baseline Grade:</span>
+              <span style={{ color: '#94A3B8', fontSize: 12 }}>Baseline Grade:</span>
               <span style={{
                 background: gradeColor(baseline.grade) + '22',
                 color: gradeColor(baseline.grade),
@@ -300,21 +320,21 @@ export default function SummaryPage() {
           </div>
 
           {baseline.summary && (
-            <p style={{ color: '#88b898', fontSize: 13, margin: '0 0 12px', lineHeight: 1.5 }}>{baseline.summary}</p>
+            <p style={{ color: '#CBD5E1', fontSize: 13, margin: '0 0 12px', lineHeight: 1.5 }}>{baseline.summary}</p>
           )}
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             {/* Signings */}
             {(teamPreMoves.signings || []).length > 0 && (
-              <div style={{ background: '#081f0e', borderRadius: 8, padding: 10 }}>
+              <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10 }}>
                 <div style={{ color: '#4ade80', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Signings</div>
                 {teamPreMoves.signings.map((s, i) => (
-                  <div key={i} style={{ color: '#c4d8cc', fontSize: 12, marginBottom: 3 }}>
+                  <div key={i} style={{ color: '#CBD5E1', fontSize: 12, marginBottom: 3 }}>
                     <span style={{ color: '#fff', fontWeight: 600 }}>{s.player}</span>
-                    <span style={{ color: '#6a9a78' }}> ({s.position}) — </span>
+                    <span style={{ color: '#94A3B8' }}> ({s.position}) — </span>
                     <span style={{ color: '#4ade80' }}>{s.years}yr/${s.total || (s.aav * s.years)}M</span>
-                    <span style={{ color: '#4a7a58' }}> (${s.aav}M/yr{s.guaranteed ? `, $${s.guaranteed}M gtd` : ''})</span>
-                    <span style={{ color: 'rgba(40,200,40,0.32)' }}> from {s.previousTeam}</span>
+                    <span style={{ color: '#64748b' }}> (${s.aav}M/yr{s.guaranteed ? `, $${s.guaranteed}M gtd` : ''})</span>
+                    <span style={{ color: 'rgba(0,240,255,0.18)' }}> from {s.previousTeam}</span>
                   </div>
                 ))}
               </div>
@@ -322,12 +342,12 @@ export default function SummaryPage() {
 
             {/* Extensions */}
             {(teamPreMoves.extensions || []).length > 0 && (
-              <div style={{ background: '#081f0e', borderRadius: 8, padding: 10 }}>
+              <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10 }}>
                 <div style={{ color: '#60a5fa', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Extensions</div>
                 {teamPreMoves.extensions.map((e, i) => (
-                  <div key={i} style={{ color: '#c4d8cc', fontSize: 12, marginBottom: 3 }}>
+                  <div key={i} style={{ color: '#CBD5E1', fontSize: 12, marginBottom: 3 }}>
                     <span style={{ color: '#fff', fontWeight: 600 }}>{e.player}</span>
-                    <span style={{ color: '#6a9a78' }}> ({e.position}) — {e.details}</span>
+                    <span style={{ color: '#94A3B8' }}> ({e.position}) — {e.details}</span>
                   </div>
                 ))}
               </div>
@@ -335,15 +355,15 @@ export default function SummaryPage() {
 
             {/* Departures */}
             {(teamPreMoves.departures || []).length > 0 && (
-              <div style={{ background: '#081f0e', borderRadius: 8, padding: 10 }}>
+              <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10 }}>
                 <div style={{ color: '#ef4444', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Departures</div>
                 {teamPreMoves.departures.map((d, i) => (
-                  <div key={i} style={{ color: '#c4d8cc', fontSize: 12, marginBottom: 3 }}>
+                  <div key={i} style={{ color: '#CBD5E1', fontSize: 12, marginBottom: 3 }}>
                     <span style={{ color: '#fff', fontWeight: 600 }}>{d.player}</span>
-                    <span style={{ color: '#6a9a78' }}> ({d.position}) → </span>
+                    <span style={{ color: '#94A3B8' }}> ({d.position}) → </span>
                     <span style={{ color: '#ef4444' }}>{d.destination}</span>
-                    {d.contract && <span style={{ color: '#4a7a58' }}> ({d.contract})</span>}
-                    {d.note && <span style={{ color: '#4a7a58' }}> — {d.note}</span>}
+                    {d.contract && <span style={{ color: '#64748b' }}> ({d.contract})</span>}
+                    {d.note && <span style={{ color: '#64748b' }}> — {d.note}</span>}
                   </div>
                 ))}
               </div>
@@ -351,12 +371,12 @@ export default function SummaryPage() {
 
             {/* Trades */}
             {(teamPreMoves.trades || []).length > 0 && (
-              <div style={{ background: '#081f0e', borderRadius: 8, padding: 10 }}>
+              <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10 }}>
                 <div style={{ color: '#fbbf24', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Trades</div>
                 {teamPreMoves.trades.map((t, i) => (
-                  <div key={i} style={{ color: '#c4d8cc', fontSize: 12, marginBottom: 3 }}>
+                  <div key={i} style={{ color: '#CBD5E1', fontSize: 12, marginBottom: 3 }}>
                     <span style={{ color: '#fff', fontWeight: 600 }}>{t.acquired}</span>
-                    <span style={{ color: '#6a9a78' }}> ({t.position}) from {t.from}</span>
+                    <span style={{ color: '#94A3B8' }}> ({t.position}) from {t.from}</span>
                   </div>
                 ))}
               </div>
@@ -364,20 +384,20 @@ export default function SummaryPage() {
           </div>
 
           {!teamPreMoves.signings && !teamPreMoves.departures && !teamPreMoves.trades && (
-            <p style={{ color: '#4a7a58', fontSize: 13 }}>No confirmed offseason moves tracked for this team yet.</p>
+            <p style={{ color: '#64748b', fontSize: 13 }}>No confirmed offseason moves tracked for this team yet.</p>
           )}
 
-          <div style={{ borderTop: '1px solid rgba(40,200,40,0.25)', marginTop: 12, paddingTop: 8, color: '#6a9a78', fontSize: 11 }}>
+          <div style={{ borderTop: '1px solid rgba(0,240,255,0.12)', marginTop: 12, paddingTop: 8, color: '#94A3B8', fontSize: 11 }}>
             Your simulation results below show how your moves compare to this starting point.
           </div>
         </div>
 
         {/* Grading Breakdown */}
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>Your Simulation Grade Breakdown</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, fontSize: 12 }}>
             <div>
-              <div style={{ color: '#6a9a78', marginBottom: 6, fontWeight: 600 }}>Positive Factors</div>
+              <div style={{ color: '#94A3B8', marginBottom: 6, fontWeight: 600 }}>Positive Factors</div>
               {signingHistory.length > 0 && (
                 <div style={{ color: '#4ade80', marginBottom: 3 }}>
                   + FA activity ({signingHistory.length} signing{signingHistory.length > 1 ? 's' : ''})
@@ -398,7 +418,7 @@ export default function SummaryPage() {
               )}
             </div>
             <div>
-              <div style={{ color: '#6a9a78', marginBottom: 6, fontWeight: 600 }}>Areas to Improve</div>
+              <div style={{ color: '#94A3B8', marginBottom: 6, fontWeight: 600 }}>Areas to Improve</div>
               {signingHistory.length === 0 && (
                 <div style={{ color: '#fb923c', marginBottom: 3 }}>- No FA signings made</div>
               )}
@@ -428,14 +448,14 @@ export default function SummaryPage() {
             { label: 'Players Cut', value: cutPlayers.length, color: '#ef4444' },
             { label: 'Restructured', value: tradeHistory.filter(t => t.type === 'restructure').length, color: '#fbbf24' },
             { label: 'Roster Size', value: roster.length, color: '#fff' },
-            { label: 'Cap Used', value: `$${capUsed.toFixed(1)}M`, color: '#c4d8cc' },
+            { label: 'Cap Used', value: `$${capUsed.toFixed(1)}M`, color: '#CBD5E1' },
             { label: 'Cap Space', value: `$${capSpace.toFixed(1)}M`, color: capSpace >= 0 ? '#4ade80' : '#ef4444' },
           ].map(({ label, value, color }) => (
             <div key={label} style={{
-              background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10,
+              background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10,
               padding: '10px 12px', textAlign: 'center',
             }}>
-              <div style={{ color: '#6a9a78', fontSize: 10 }}>{label}</div>
+              <div style={{ color: '#94A3B8', fontSize: 10 }}>{label}</div>
               <div style={{ color, fontSize: 18, fontWeight: 700 }}>{value}</div>
             </div>
           ))}
@@ -443,13 +463,13 @@ export default function SummaryPage() {
 
         {/* Draft Class Recap */}
         {draftedPlayers.length > 0 && (
-          <div style={{ background: '#0d2a16', border: `1px solid ${accentColor}33`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
+          <div style={{ background: '#0f172a', border: `1px solid ${accentColor}33`, borderRadius: 12, padding: 16, marginBottom: 16 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
               <h3 style={{ margin: 0, color: '#fff', fontSize: 15 }}>
                 {draftComplete ? 'Mock Draft Results' : 'Draft Picks So Far'}
               </h3>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ color: '#6a9a78', fontSize: 12 }}>Draft Grade:</span>
+                <span style={{ color: '#94A3B8', fontSize: 12 }}>Draft Grade:</span>
                 <span style={{
                   background: gradeColor(grades.draft.grade) + '22',
                   color: gradeColor(grades.draft.grade),
@@ -458,19 +478,19 @@ export default function SummaryPage() {
                 }}>{grades.draft.grade}</span>
               </div>
             </div>
-            <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 10 }}>
+            <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 10 }}>
               {draftedPlayers.length} pick{draftedPlayers.length > 1 ? 's' : ''} made · Avg prospect grade: {Math.round(draftedPlayers.reduce((s,p) => s + (p.grade||60), 0) / draftedPlayers.length)}
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8 }}>
               {draftedPlayers.map(p => {
                 const pickNum = p.pickNumber || 0;
-                const expectedGrade = Math.max(35, 95 - pickNum * 0.28);
+                const expectedGrade = Math.max(35, 95 - pickNum * 0.32);
                 const valueVsExpected = (p.grade || 60) - expectedGrade;
                 const isSteal = valueVsExpected > 10;
                 const isReach = valueVsExpected < -10;
                 return (
                   <div key={p.id} style={{
-                    background: '#081f0e', borderRadius: 8, padding: 10,
+                    background: '#0a0f1e', borderRadius: 8, padding: 10,
                     border: isSteal ? '1px solid #4ade8044' : isReach ? '1px solid #ef444444' : '1px solid #1a2420',
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
@@ -481,10 +501,10 @@ export default function SummaryPage() {
                         color: p.grade >= 80 ? '#4ade80' : p.grade >= 65 ? '#facc15' : '#fb923c',
                       }}>{p.grade}</span>
                     </div>
-                    <div style={{ color: '#6a9a78', fontSize: 11 }}>
+                    <div style={{ color: '#94A3B8', fontSize: 11 }}>
                       {p.position} · {p.school} · Pick #{pickNum}
                     </div>
-                    <div style={{ color: isSteal ? '#4ade80' : isReach ? '#ef4444' : '#6a9a78', fontSize: 10, marginTop: 2 }}>
+                    <div style={{ color: isSteal ? '#4ade80' : isReach ? '#ef4444' : '#94A3B8', fontSize: 10, marginTop: 2 }}>
                       {isSteal ? 'STEAL' : isReach ? 'REACH' : 'Fair value'} ({valueVsExpected > 0 ? '+' : ''}{Math.round(valueVsExpected)} vs expected)
                     </div>
                   </div>
@@ -495,7 +515,7 @@ export default function SummaryPage() {
         )}
 
         {/* Cap Breakdown by Position */}
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>Cap Allocation by Position</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {Object.entries(posGroupCap)
@@ -504,12 +524,12 @@ export default function SummaryPage() {
                 const pct = capUsed > 0 ? (total / capUsed * 100) : 0;
                 return (
                   <div key={group} style={{
-                    background: '#081f0e', borderRadius: 8, padding: '8px 12px',
+                    background: '#0a0f1e', borderRadius: 8, padding: '8px 12px',
                     minWidth: 80, textAlign: 'center',
                   }}>
                     <div style={{ color: accentColor, fontSize: 12, fontWeight: 700 }}>{group}</div>
                     <div style={{ color: '#fff', fontSize: 14, fontWeight: 700 }}>${total.toFixed(1)}M</div>
-                    <div style={{ color: '#4a7a58', fontSize: 10 }}>{pct.toFixed(1)}%</div>
+                    <div style={{ color: '#64748b', fontSize: 10 }}>{pct.toFixed(1)}%</div>
                   </div>
                 );
               })}
@@ -517,10 +537,10 @@ export default function SummaryPage() {
         </div>
 
         {/* Timeline */}
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
           <h3 style={{ margin: '0 0 14px', color: '#fff', fontSize: 16 }}>Offseason Timeline</h3>
           {allMoves.length === 0 ? (
-            <p style={{ color: '#4a7a58', fontSize: 13 }}>No moves made yet. Start by signing free agents, making trades, or running the draft.</p>
+            <p style={{ color: '#64748b', fontSize: 13 }}>No moves made yet. Start by signing free agents, making trades, or running the draft.</p>
           ) : (
             <div>
               {allMoves.map((move, i) => (
@@ -528,14 +548,14 @@ export default function SummaryPage() {
                   display: 'flex', gap: 12, padding: '8px 0', borderBottom: '1px solid #1a2420',
                 }}>
                   <div style={{
-                    width: 32, height: 32, background: '#1a3a22', borderRadius: '50%',
+                    width: 32, height: 32, background: '#1e293b', borderRadius: '50%',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 14, flexShrink: 0,
                   }}>
                     <TypeIcon type={move.type} />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ color: '#c4d8cc', fontSize: 13 }}>
+                    <div style={{ color: '#CBD5E1', fontSize: 13 }}>
                       {move.type === 'signing' && (
                         <>Signed <strong style={{ color: '#fff' }}>{move.player}</strong> ({move.position}) — ${move.aav?.toFixed(1)}M/yr for {move.years}yr</>
                       )}
@@ -543,7 +563,7 @@ export default function SummaryPage() {
                         <span>{move.description}</span>
                       )}
                     </div>
-                    <div style={{ color: '#4a7a58', fontSize: 11, marginTop: 2 }}>
+                    <div style={{ color: '#64748b', fontSize: 11, marginTop: 2 }}>
                       {new Date(move.timestamp).toLocaleDateString()}
                     </div>
                   </div>
@@ -554,7 +574,7 @@ export default function SummaryPage() {
         </div>
 
         {/* Final Roster */}
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 12, padding: 16 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 16 }}>
           <h3 style={{ margin: '0 0 14px', color: '#fff', fontSize: 16 }}>
             Final Roster — {roster.length} Players
           </h3>
@@ -562,30 +582,30 @@ export default function SummaryPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
               <thead>
                 <tr style={{ borderBottom: `2px solid ${accentColor}` }}>
-                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#6a9a78', fontWeight: 600, whiteSpace: 'nowrap' }}>Player</th>
-                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#6a9a78', fontWeight: 600, whiteSpace: 'nowrap' }}>Pos</th>
-                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#6a9a78', fontWeight: 600, whiteSpace: 'nowrap' }}>Age</th>
-                  <th style={{ padding: '5px 8px', textAlign: 'right', color: '#6a9a78', fontWeight: 600, whiteSpace: 'nowrap' }}>Cap Hit</th>
-                  <th style={{ padding: '5px 8px', textAlign: 'right', color: '#6a9a78', fontWeight: 600, whiteSpace: 'nowrap' }}>Dead $</th>
-                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#6a9a78', fontWeight: 600, whiteSpace: 'nowrap' }}>Yrs</th>
+                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#94A3B8', fontWeight: 600, whiteSpace: 'nowrap' }}>Player</th>
+                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#94A3B8', fontWeight: 600, whiteSpace: 'nowrap' }}>Pos</th>
+                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#94A3B8', fontWeight: 600, whiteSpace: 'nowrap' }}>Age</th>
+                  <th style={{ padding: '5px 8px', textAlign: 'right', color: '#94A3B8', fontWeight: 600, whiteSpace: 'nowrap' }}>Cap Hit</th>
+                  <th style={{ padding: '5px 8px', textAlign: 'right', color: '#94A3B8', fontWeight: 600, whiteSpace: 'nowrap' }}>Dead $</th>
+                  <th style={{ padding: '5px 8px', textAlign: 'left', color: '#94A3B8', fontWeight: 600, whiteSpace: 'nowrap' }}>Yrs</th>
                 </tr>
               </thead>
               <tbody>
                 {[...roster]
                   .sort((a, b) => b.capHit - a.capHit)
                   .map((p, i) => (
-                    <tr key={p.id} style={{ borderBottom: '1px solid #1a1a1a', background: i % 2 === 0 ? '#081f0e' : 'transparent' }}>
+                    <tr key={p.id} style={{ borderBottom: '1px solid #1a1a1a', background: i % 2 === 0 ? '#0a0f1e' : 'transparent' }}>
                       <td style={{ padding: '5px 8px', color: '#fff' }}>
                         {p.isFranchise && <span style={{ color: accentColor, fontSize: 9, marginRight: 4 }}>FR</span>}
                         {p.name}
                       </td>
                       <td style={{ padding: '5px 8px', color: accentColor, fontWeight: 700 }}>{p.position}</td>
-                      <td style={{ padding: '5px 8px', color: '#6a9a78' }}>{p.age}</td>
-                      <td style={{ padding: '5px 8px', color: '#c4d8cc', fontWeight: 600, textAlign: 'right' }}>${(p.capHit || 0).toFixed(1)}M</td>
-                      <td style={{ padding: '5px 8px', color: (p.deadMoney || 0) > (p.capHit || 0) ? '#ef4444' : '#4a7a58', textAlign: 'right' }}>
+                      <td style={{ padding: '5px 8px', color: '#94A3B8' }}>{p.age}</td>
+                      <td style={{ padding: '5px 8px', color: '#CBD5E1', fontWeight: 600, textAlign: 'right' }}>${(p.capHit || 0).toFixed(1)}M</td>
+                      <td style={{ padding: '5px 8px', color: (p.deadMoney || 0) > (p.capHit || 0) ? '#ef4444' : '#64748b', textAlign: 'right' }}>
                         ${(p.deadMoney || 0).toFixed(1)}M
                       </td>
-                      <td style={{ padding: '5px 8px', color: p.yearsRemaining === 0 ? '#facc15' : '#6a9a78' }}>
+                      <td style={{ padding: '5px 8px', color: p.yearsRemaining === 0 ? '#facc15' : '#94A3B8' }}>
                         {p.yearsRemaining === 0 ? 'FA' : `${p.yearsRemaining}yr`}
                       </td>
                     </tr>

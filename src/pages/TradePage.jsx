@@ -68,7 +68,7 @@ function ValueIndicator({ myValue, theirValue }) {
       fontSize: 14,
     }}>
       {label}
-      <div style={{ fontSize: 11, fontWeight: 400, marginTop: 2, color: '#88b898' }}>
+      <div style={{ fontSize: 11, fontWeight: 400, marginTop: 2, color: '#CBD5E1' }}>
         You give: {myValue} pts | You get: {theirValue} pts
       </div>
     </div>
@@ -103,6 +103,8 @@ export default function TradePage() {
   const [theirOfferPlayers, setTheirOfferPlayers] = useState([]);
   const [theirOfferPicks, setTheirOfferPicks] = useState([]);
   const [feedback, setFeedback] = useState('');
+  const [myFuturePicks, setMyFuturePicks] = useState([]);
+  const [theirFuturePicks, setTheirFuturePicks] = useState([]);
 
   const otherTeams = allTeams.filter(t => t.abbreviation !== currentTeamAbbr);
   const targetTeam = allTeams.find(t => t.id === Number(selectedTeam));
@@ -123,14 +125,16 @@ export default function TradePage() {
   const myValue = useMemo(() => {
     const pv = myOfferPlayers.reduce((s, p) => s + getPlayerValue(p), 0);
     const pickv = myOfferPicks.reduce((s, pk) => s + getPickValue(pk.round, pk.pick), 0);
-    return pv + pickv;
-  }, [myOfferPlayers, myOfferPicks]);
+    const fpv = myFuturePicks.reduce((s, fp) => s + fp.value, 0);
+    return pv + pickv + fpv;
+  }, [myOfferPlayers, myOfferPicks, myFuturePicks]);
 
   const theirValue = useMemo(() => {
     const pv = theirOfferPlayers.reduce((s, p) => s + getPlayerValue(p), 0);
     const pickv = theirOfferPicks.reduce((s, pk) => s + getPickValue(pk.round, pk.pick), 0);
-    return pv + pickv;
-  }, [theirOfferPlayers, theirOfferPicks]);
+    const fpv = theirFuturePicks.reduce((s, fp) => s + fp.value, 0);
+    return pv + pickv + fpv;
+  }, [theirOfferPlayers, theirOfferPicks, theirFuturePicks]);
 
   function toggleMyPlayer(player) {
     setMyOfferPlayers(prev =>
@@ -158,10 +162,36 @@ export default function TradePage() {
     );
   }
 
+  // Future pick value: estimate based on mid-round 2026 value with discount
+  function getFuturePickValue(round, year) {
+    // Use approximate mid-round 2026 pick value
+    const base2026 = [0, 1000, 270, 135, 78, 45, 23, 11][round] || 10;
+    const discount = year === 2027 ? 0.85 : 0.70;
+    return Math.round(base2026 * discount);
+  }
+
+  function toggleMyFuturePick(round, year) {
+    const key = `${year}-R${round}`;
+    setMyFuturePicks(prev => {
+      const exists = prev.find(fp => fp.round === round && fp.year === year);
+      if (exists) return prev.filter(fp => !(fp.round === round && fp.year === year));
+      return [...prev, { round, year, value: getFuturePickValue(round, year), key }];
+    });
+  }
+
+  function toggleTheirFuturePick(round, year) {
+    const key = `${year}-R${round}`;
+    setTheirFuturePicks(prev => {
+      const exists = prev.find(fp => fp.round === round && fp.year === year);
+      if (exists) return prev.filter(fp => !(fp.round === round && fp.year === year));
+      return [...prev, { round, year, value: getFuturePickValue(round, year), key }];
+    });
+  }
+
   function handleTrade() {
     if (!targetTeam) { setFeedback('Please select a team first.'); return; }
-    if (myOfferPlayers.length === 0 && myOfferPicks.length === 0) { setFeedback('Add something to offer.'); return; }
-    if (theirOfferPlayers.length === 0 && theirOfferPicks.length === 0) { setFeedback('Request something in return.'); return; }
+    if (myOfferPlayers.length === 0 && myOfferPicks.length === 0 && myFuturePicks.length === 0) { setFeedback('Add something to offer.'); return; }
+    if (theirOfferPlayers.length === 0 && theirOfferPicks.length === 0 && theirFuturePicks.length === 0) { setFeedback('Request something in return.'); return; }
 
     const ratio = myValue > 0 ? theirValue / myValue : 0;
     if (ratio < 0.6) {
@@ -173,8 +203,10 @@ export default function TradePage() {
     setFeedback(`Trade complete with ${targetTeam.name}!`);
     setMyOfferPlayers([]);
     setMyOfferPicks([]);
+    setMyFuturePicks([]);
     setTheirOfferPlayers([]);
     setTheirOfferPicks([]);
+    setTheirFuturePicks([]);
     setSelectedTeam('');
     setTimeout(() => setFeedback(''), 4000);
   }
@@ -196,11 +228,11 @@ export default function TradePage() {
 
       {/* Team Selector */}
       <div style={{ marginBottom: 16 }}>
-        <label style={{ display: 'block', color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>Select Trade Partner</label>
+        <label style={{ display: 'block', color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Select Trade Partner</label>
         <select
           value={selectedTeam}
-          onChange={e => { setSelectedTeam(e.target.value); setTheirOfferPlayers([]); setTheirOfferPicks([]); }}
-          style={{ background: '#1a3a22', color: '#fff', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 8, padding: '8px 12px', fontSize: 14, width: '100%', maxWidth: 300 }}
+          onChange={e => { setSelectedTeam(e.target.value); setTheirOfferPlayers([]); setTheirOfferPicks([]); setTheirFuturePicks([]); }}
+          style={{ background: '#1e293b', color: '#fff', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 8, padding: '8px 12px', fontSize: 14, width: '100%', maxWidth: 300 }}
         >
           <option value="">-- Select Team --</option>
           {otherTeams.map(t => (
@@ -208,7 +240,7 @@ export default function TradePage() {
           ))}
         </select>
         {targetCapSummary && (
-          <div style={{ color: '#6a9a78', fontSize: 12, marginTop: 4 }}>
+          <div style={{ color: '#94A3B8', fontSize: 12, marginTop: 4 }}>
             Cap space: ${targetCapSummary.capSpace.toFixed(1)}M | Cap used: ${targetCapSummary.capUsed.toFixed(1)}M
           </div>
         )}
@@ -217,12 +249,12 @@ export default function TradePage() {
       {/* Trade Builder */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 16 }}>
         {/* My Offers */}
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 14 }}>
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>My Offers ({currentTeamLabel})</h3>
           <div style={{ marginBottom: 8 }}>
-            <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>Players</div>
+            <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Players</div>
             <div style={{ maxHeight: 250, overflowY: 'auto' }}>
-              {roster.map(p => {
+              {[...roster].sort((a, b) => b.capHit - a.capHit).map(p => {
                 const selected = !!myOfferPlayers.find(x => x.id === p.id);
                 return (
                   <div
@@ -236,15 +268,15 @@ export default function TradePage() {
                       marginBottom: 2, fontSize: 12,
                     }}
                   >
-                    <span style={{ color: '#c4d8cc' }}>{p.name} <span style={{ color: '#6a9a78' }}>({p.position})</span></span>
-                    <span style={{ color: '#4d6356' }}>${p.capHit.toFixed(1)}M | ~{getPlayerValue(p)}pts</span>
+                    <span style={{ color: '#CBD5E1' }}>{p.name} <span style={{ color: '#94A3B8' }}>({p.position})</span></span>
+                    <span style={{ color: '#475569' }}>${p.capHit.toFixed(1)}M | ~{getPlayerValue(p)}pts</span>
                   </div>
                 );
               })}
             </div>
           </div>
           <div>
-            <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>Draft Picks</div>
+            <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Draft Picks</div>
             {myPicks.map((pk, i) => {
               const key = `${pk.round}-${pk.pick}`;
               const selected = !!myOfferPicks.find(x => `${x.round}-${x.pick}` === key);
@@ -260,27 +292,55 @@ export default function TradePage() {
                     marginBottom: 2, fontSize: 12,
                   }}
                 >
-                  <span style={{ color: '#c4d8cc' }}>2026 Round {pk.round} (#{pk.overall})</span>
-                  <span style={{ color: '#6a9a78' }}>~{Math.round(getPickValue(pk.round, pk.pick))}pts</span>
+                  <span style={{ color: '#CBD5E1' }}>2026 Round {pk.round} (#{pk.overall})</span>
+                  <span style={{ color: '#94A3B8' }}>~{Math.round(getPickValue(pk.round, pk.pick))}pts</span>
                 </div>
               );
             })}
           </div>
+          <div style={{ marginTop: 8 }}>
+            <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Future Picks</div>
+            {[2027, 2028].map(year => (
+              <div key={year} style={{ marginBottom: 4 }}>
+                <div style={{ color: '#475569', fontSize: 10, marginBottom: 2 }}>{year}</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {[1,2,3,4,5,6,7].map(round => {
+                    const selected = !!myFuturePicks.find(fp => fp.round === round && fp.year === year);
+                    return (
+                      <button
+                        key={`${year}-${round}`}
+                        onClick={() => toggleMyFuturePick(round, year)}
+                        style={{
+                          padding: '4px 8px', borderRadius: 4, fontSize: 11, cursor: 'pointer',
+                          background: selected ? 'rgba(251,79,20,0.2)' : '#1e293b',
+                          border: selected ? '1px solid var(--bengals-orange)' : '1px solid transparent',
+                          color: selected ? 'var(--bengals-orange)' : '#94A3B8',
+                          fontWeight: selected ? 700 : 400,
+                        }}
+                      >
+                        {year} R{round}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Their Offers */}
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 14 }}>
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>
             Requesting from {targetTeam ? `${targetTeam.city} ${targetTeam.name}` : '(select team)'}
           </h3>
           {!targetTeam ? (
-            <p style={{ color: '#4a7a58', fontSize: 13 }}>Select a trade partner first.</p>
+            <p style={{ color: '#64748b', fontSize: 13 }}>Select a trade partner first.</p>
           ) : (
             <>
               <div style={{ marginBottom: 8 }}>
-                <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>Their Players</div>
+                <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Their Players</div>
                 <div style={{ maxHeight: 250, overflowY: 'auto' }}>
-                  {targetTeamPlayers.map(p => {
+                  {[...targetTeamPlayers].sort((a, b) => b.capHit - a.capHit).map(p => {
                     const selected = !!theirOfferPlayers.find(x => x.id === p.id);
                     return (
                       <div
@@ -294,15 +354,15 @@ export default function TradePage() {
                           marginBottom: 2, fontSize: 12,
                         }}
                       >
-                        <span style={{ color: '#c4d8cc' }}>{p.name} <span style={{ color: '#6a9a78' }}>({p.position})</span></span>
-                        <span style={{ color: '#4d6356' }}>${p.capHit.toFixed(1)}M | ~{getPlayerValue(p)}pts</span>
+                        <span style={{ color: '#CBD5E1' }}>{p.name} <span style={{ color: '#94A3B8' }}>({p.position})</span></span>
+                        <span style={{ color: '#475569' }}>${p.capHit.toFixed(1)}M | ~{getPlayerValue(p)}pts</span>
                       </div>
                     );
                   })}
                 </div>
               </div>
               <div>
-                <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>Their Picks</div>
+                <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Their Picks</div>
                 {targetTeam.picks.map((pk, i) => {
                   const key = `${pk.round}-${pk.pick}`;
                   const selected = !!theirOfferPicks.find(x => `${x.round}-${x.pick}` === key);
@@ -318,11 +378,39 @@ export default function TradePage() {
                         marginBottom: 2, fontSize: 12,
                       }}
                     >
-                      <span style={{ color: '#c4d8cc' }}>2026 Round {pk.round} (#{pk.overall})</span>
-                      <span style={{ color: '#6a9a78' }}>~{Math.round(getPickValue(pk.round, pk.pick))}pts</span>
+                      <span style={{ color: '#CBD5E1' }}>2026 Round {pk.round} (#{pk.overall})</span>
+                      <span style={{ color: '#94A3B8' }}>~{Math.round(getPickValue(pk.round, pk.pick))}pts</span>
                     </div>
                   );
                 })}
+              </div>
+              <div style={{ marginTop: 8 }}>
+                <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Future Picks</div>
+                {[2027, 2028].map(year => (
+                  <div key={year} style={{ marginBottom: 4 }}>
+                    <div style={{ color: '#475569', fontSize: 10, marginBottom: 2 }}>{year}</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                      {[1,2,3,4,5,6,7].map(round => {
+                        const selected = !!theirFuturePicks.find(fp => fp.round === round && fp.year === year);
+                        return (
+                          <button
+                            key={`${year}-${round}`}
+                            onClick={() => toggleTheirFuturePick(round, year)}
+                            style={{
+                              padding: '4px 8px', borderRadius: 4, fontSize: 11, cursor: 'pointer',
+                              background: selected ? 'rgba(59,130,246,0.2)' : '#1e293b',
+                              border: selected ? '1px solid #3b82f6' : '1px solid transparent',
+                              color: selected ? '#3b82f6' : '#94A3B8',
+                              fontWeight: selected ? 700 : 400,
+                            }}
+                          >
+                            {year} R{round}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             </>
           )}
@@ -330,19 +418,21 @@ export default function TradePage() {
       </div>
 
       {/* Trade Summary */}
-      {(myOfferPlayers.length > 0 || myOfferPicks.length > 0 || theirOfferPlayers.length > 0 || theirOfferPicks.length > 0) && (
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 10, padding: 16, marginBottom: 16 }}>
+      {(myOfferPlayers.length > 0 || myOfferPicks.length > 0 || myFuturePicks.length > 0 || theirOfferPlayers.length > 0 || theirOfferPicks.length > 0 || theirFuturePicks.length > 0) && (
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 10, padding: 16, marginBottom: 16 }}>
           <h4 style={{ margin: '0 0 12px', color: '#fff' }}>Trade Summary</h4>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 12 }}>
             <div>
-              <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>{currentTeamLabel} send:</div>
-              {myOfferPlayers.map(p => <div key={p.id} style={{ color: '#c4d8cc', fontSize: 13 }}>- {p.name} ({p.position}) ${p.capHit.toFixed(1)}M</div>)}
-              {myOfferPicks.map((pk, i) => <div key={i} style={{ color: '#c4d8cc', fontSize: 13 }}>- 2026 R{pk.round} #{pk.overall}</div>)}
+              <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>{currentTeamLabel} send:</div>
+              {myOfferPlayers.map(p => <div key={p.id} style={{ color: '#CBD5E1', fontSize: 13 }}>- {p.name} ({p.position}) ${p.capHit.toFixed(1)}M</div>)}
+              {myOfferPicks.map((pk, i) => <div key={i} style={{ color: '#CBD5E1', fontSize: 13 }}>- 2026 R{pk.round} #{pk.overall}</div>)}
+              {myFuturePicks.map((fp, i) => <div key={`mfp-${i}`} style={{ color: '#CBD5E1', fontSize: 13 }}>- {fp.year} R{fp.round} (~{fp.value}pts)</div>)}
             </div>
             <div>
-              <div style={{ color: '#6a9a78', fontSize: 12, marginBottom: 6 }}>{currentTeamLabel} receive:</div>
-              {theirOfferPlayers.map(p => <div key={p.id} style={{ color: '#c4d8cc', fontSize: 13 }}>- {p.name} ({p.position}) ${p.capHit.toFixed(1)}M</div>)}
-              {theirOfferPicks.map((pk, i) => <div key={i} style={{ color: '#c4d8cc', fontSize: 13 }}>- 2026 R{pk.round} #{pk.overall}</div>)}
+              <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>{currentTeamLabel} receive:</div>
+              {theirOfferPlayers.map(p => <div key={p.id} style={{ color: '#CBD5E1', fontSize: 13 }}>- {p.name} ({p.position}) ${p.capHit.toFixed(1)}M</div>)}
+              {theirOfferPicks.map((pk, i) => <div key={i} style={{ color: '#CBD5E1', fontSize: 13 }}>- 2026 R{pk.round} #{pk.overall}</div>)}
+              {theirFuturePicks.map((fp, i) => <div key={`tfp-${i}`} style={{ color: '#CBD5E1', fontSize: 13 }}>- {fp.year} R{fp.round} (~{fp.value}pts)</div>)}
             </div>
           </div>
           <ValueIndicator myValue={myValue} theirValue={theirValue} />
@@ -354,43 +444,43 @@ export default function TradePage() {
             const newCapSpace = currentCapSpace + impact.netCapImpact;
             return (
               <div style={{
-                background: '#081f0e', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 8,
+                background: '#0a0f1e', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 8,
                 padding: 12, marginTop: 12,
               }}>
                 <div style={{ color: '#fff', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>Cap Impact</div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 8, fontSize: 12 }}>
                   <div>
-                    <div style={{ color: '#6a9a78', marginBottom: 4 }}>Sending players:</div>
+                    <div style={{ color: '#94A3B8', marginBottom: 4 }}>Sending players:</div>
                     {myOfferPlayers.length > 0 ? myOfferPlayers.map(p => (
-                      <div key={p.id} style={{ color: '#c4d8cc', marginBottom: 2 }}>
+                      <div key={p.id} style={{ color: '#CBD5E1', marginBottom: 2 }}>
                         {p.name}: <span style={{ color: '#4ade80' }}>+${(p.capHit || 0).toFixed(1)}M cap relief</span>
                         {(p.deadMoney != null && p.deadMoney > 0) && (
                           <span style={{ color: '#ff4444' }}> (${p.deadMoney.toFixed(1)}M dead cap)</span>
                         )}
                       </div>
-                    )) : <div style={{ color: '#4a7a58' }}>No players</div>}
+                    )) : <div style={{ color: '#64748b' }}>No players</div>}
                   </div>
                   <div>
-                    <div style={{ color: '#6a9a78', marginBottom: 4 }}>Receiving players:</div>
+                    <div style={{ color: '#94A3B8', marginBottom: 4 }}>Receiving players:</div>
                     {theirOfferPlayers.length > 0 ? theirOfferPlayers.map(p => (
-                      <div key={p.id} style={{ color: '#c4d8cc', marginBottom: 2 }}>
+                      <div key={p.id} style={{ color: '#CBD5E1', marginBottom: 2 }}>
                         {p.name}: <span style={{ color: '#ff4444' }}>-${(p.capHit || 0).toFixed(1)}M cap absorbed</span>
                       </div>
-                    )) : <div style={{ color: '#4a7a58' }}>No players</div>}
+                    )) : <div style={{ color: '#64748b' }}>No players</div>}
                   </div>
                 </div>
                 <div style={{
-                  borderTop: '1px solid rgba(40,200,40,0.25)', marginTop: 8, paddingTop: 8,
+                  borderTop: '1px solid rgba(0,240,255,0.12)', marginTop: 8, paddingTop: 8,
                   display: 'flex', justifyContent: 'space-between', fontSize: 13,
                 }}>
                   <div>
-                    <span style={{ color: '#6a9a78' }}>Net cap impact: </span>
+                    <span style={{ color: '#94A3B8' }}>Net cap impact: </span>
                     <span style={{ color: impact.netCapImpact >= 0 ? '#4ade80' : '#ff4444', fontWeight: 700 }}>
                       {impact.netCapImpact >= 0 ? '+' : ''}${impact.netCapImpact.toFixed(1)}M
                     </span>
                   </div>
                   <div>
-                    <span style={{ color: '#6a9a78' }}>Cap after trade: </span>
+                    <span style={{ color: '#94A3B8' }}>Cap after trade: </span>
                     <span style={{ color: newCapSpace >= 0 ? '#4ade80' : '#ff4444', fontWeight: 700 }}>
                       ${newCapSpace.toFixed(1)}M
                     </span>
@@ -425,12 +515,12 @@ export default function TradePage() {
 
       {/* Trade History */}
       {trades.length > 0 && (
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 14 }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 14 }}>
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>Trade History</h3>
           {trades.map(t => (
             <div key={t.id} style={{ borderBottom: '1px solid #1a2420', paddingBottom: 8, marginBottom: 8, fontSize: 13 }}>
-              <div style={{ color: '#c4d8cc' }}>{t.description}</div>
-              <div style={{ color: '#4a7a58', fontSize: 11, marginTop: 2 }}>{new Date(t.timestamp).toLocaleDateString()}</div>
+              <div style={{ color: '#CBD5E1' }}>{t.description}</div>
+              <div style={{ color: '#64748b', fontSize: 11, marginTop: 2 }}>{new Date(t.timestamp).toLocaleDateString()}</div>
             </div>
           ))}
         </div>

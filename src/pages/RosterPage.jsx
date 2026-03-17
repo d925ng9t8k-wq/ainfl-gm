@@ -18,12 +18,20 @@ function posGroup(pos) {
 }
 
 export default function RosterPage() {
-  const { roster, cutPlayer, restructureContract, capUsed, totalCap } = useGame();
+  const { roster, cutPlayer, restructureContract, extendPlayer, capUsed, totalCap } = useGame();
   const [filterPos, setFilterPos] = useState('All');
   const [sortKey, setSortKey] = useState('capHit');
   const [sortDir, setSortDir] = useState('desc');
   const [confirmCut, setConfirmCut] = useState(null);
   const [confirmRestructure, setConfirmRestructure] = useState(null);
+  const [extendingPlayer, setExtendingPlayer] = useState(null);
+
+  function isExtensionEligible(player) {
+    if (player.yearsRemaining < 1) return false;
+    // Block rookie deals in years 1-3 (contractYears <= 4 AND yearsRemaining >= 2)
+    if (player.contractYears <= 4 && player.yearsRemaining >= 2) return false;
+    return true;
+  }
 
   const filtered = roster.filter(p => {
     if (filterPos === 'All') return true;
@@ -49,7 +57,7 @@ export default function RosterPage() {
   }
 
   function SortIndicator({ col }) {
-    if (sortKey !== col) return <span style={{ color: '#4a7a58' }}> ⇅</span>;
+    if (sortKey !== col) return <span style={{ color: '#64748b' }}> ⇅</span>;
     return <span style={{ color: 'var(--bengals-orange)' }}>{sortDir === 'asc' ? ' ↑' : ' ↓'}</span>;
   }
 
@@ -58,7 +66,7 @@ export default function RosterPage() {
       {/* Header */}
       <div style={{ marginBottom: 16 }}>
         <h1 style={{ margin: 0, fontSize: 22, color: 'var(--bengals-orange)' }}>Roster Management</h1>
-        <p style={{ margin: '4px 0 0', color: '#6a9a78', fontSize: 14 }}>
+        <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: 14 }}>
           {roster.length} players · ${capUsed.toFixed(1)}M / ${totalCap}M cap used
         </p>
       </div>
@@ -74,8 +82,8 @@ export default function RosterPage() {
               borderRadius: 20,
               border: 'none',
               cursor: 'pointer',
-              background: filterPos === pos ? 'var(--bengals-orange)' : '#1a3a22',
-              color: filterPos === pos ? '#000' : '#c4d8cc',
+              background: filterPos === pos ? 'var(--bengals-orange)' : '#1e293b',
+              color: filterPos === pos ? '#000' : '#CBD5E1',
               fontSize: 12,
               fontWeight: filterPos === pos ? 700 : 400,
               transition: 'all 0.15s',
@@ -87,10 +95,10 @@ export default function RosterPage() {
       </div>
 
       {/* Table */}
-      <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid rgba(40,200,40,0.25)', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid rgba(0,240,255,0.12)', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
         <table style={{ width: '100%', minWidth: 520, borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
-            <tr style={{ background: '#0d2a16', borderBottom: '2px solid var(--bengals-orange)' }}>
+            <tr style={{ background: '#0f172a', borderBottom: '2px solid var(--bengals-orange)' }}>
               {[
                 { key: 'name', label: 'Player' },
                 { key: 'position', label: 'Pos' },
@@ -105,7 +113,7 @@ export default function RosterPage() {
                     padding: '10px 12px',
                     textAlign: 'left',
                     cursor: 'pointer',
-                    color: '#c4d8cc',
+                    color: '#CBD5E1',
                     fontWeight: 600,
                     whiteSpace: 'nowrap',
                     userSelect: 'none',
@@ -114,7 +122,7 @@ export default function RosterPage() {
                   {col.label}<SortIndicator col={col.key} />
                 </th>
               ))}
-              <th style={{ padding: '10px 12px', color: '#c4d8cc', fontWeight: 600, whiteSpace: 'nowrap' }}>Actions</th>
+              <th style={{ padding: '10px 12px', color: '#CBD5E1', fontWeight: 600, whiteSpace: 'nowrap' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -122,7 +130,7 @@ export default function RosterPage() {
               <tr
                 key={player.id}
                 style={{
-                  background: player.isFranchise ? 'rgba(251,79,20,0.1)' : idx % 2 === 0 ? '#081f0e' : '#141414',
+                  background: player.isFranchise ? 'rgba(251,79,20,0.1)' : idx % 2 === 0 ? '#0a0f1e' : '#141414',
                   borderBottom: '1px solid #1a2420',
                 }}
               >
@@ -151,15 +159,31 @@ export default function RosterPage() {
                     fontWeight: 700,
                   }}>{player.position}</span>
                 </td>
-                <td style={{ padding: '9px 12px', color: '#c4d8cc' }}>{player.age}</td>
+                <td style={{ padding: '9px 12px', color: '#CBD5E1' }}>{player.age}</td>
                 <td style={{ padding: '9px 12px', color: '#fff', fontWeight: 600 }}>
                   ${player.capHit.toFixed(1)}M
                 </td>
-                <td style={{ padding: '9px 12px', color: player.yearsRemaining === 0 ? '#facc15' : '#c4d8cc' }}>
+                <td style={{ padding: '9px 12px', color: player.yearsRemaining === 0 ? '#facc15' : '#CBD5E1' }}>
                   {player.yearsRemaining === 0 ? 'FA' : `${player.yearsRemaining}yr`}
                 </td>
                 <td style={{ padding: '9px 12px' }}>
                   <div style={{ display: 'flex', gap: 6 }}>
+                    {isExtensionEligible(player) && (
+                      <button
+                        onClick={() => setExtendingPlayer(player)}
+                        style={{
+                          background: '#166534',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: 4,
+                          padding: '6px 10px',
+                          cursor: 'pointer',
+                          fontSize: 11,
+                          fontWeight: 600,
+                          minHeight: 32,
+                        }}
+                      >Extend</button>
+                    )}
                     <button
                       onClick={() => setConfirmRestructure(player)}
                       style={{
@@ -197,17 +221,17 @@ export default function RosterPage() {
       </div>
 
       {sorted.length === 0 && (
-        <div style={{ textAlign: 'center', padding: 40, color: '#4a7a58' }}>No players at this position</div>
+        <div style={{ textAlign: 'center', padding: 40, color: '#64748b' }}>No players at this position</div>
       )}
 
       {/* Cut Confirmation Modal */}
       {confirmCut && (
         <Modal onClose={() => setConfirmCut(null)}>
           <h3 style={{ color: '#ff4444', margin: '0 0 12px' }}>Cut Player</h3>
-          <p style={{ color: '#c4d8cc' }}>
+          <p style={{ color: '#CBD5E1' }}>
             Are you sure you want to cut <strong style={{ color: '#fff' }}>{confirmCut.name}</strong>?
           </p>
-          <p style={{ color: '#6a9a78', fontSize: 13 }}>
+          <p style={{ color: '#94A3B8', fontSize: 13 }}>
             Dead cap: ${(confirmCut.deadMoney != null ? confirmCut.deadMoney : confirmCut.capHit * 0.3).toFixed(1)}M<br />
             Cap savings: <span style={{ color: (confirmCut.capSavings != null ? confirmCut.capSavings : confirmCut.capHit * 0.7) > 0 ? '#4ade80' : '#ff4444' }}>
               ${(confirmCut.capSavings != null ? confirmCut.capSavings : confirmCut.capHit * 0.7).toFixed(1)}M
@@ -223,7 +247,7 @@ export default function RosterPage() {
             >Confirm Cut</button>
             <button
               onClick={() => setConfirmCut(null)}
-              style={{ background: 'rgba(40,200,40,0.25)', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 20px', cursor: 'pointer', flex: 1 }}
+              style={{ background: 'rgba(0,240,255,0.12)', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 20px', cursor: 'pointer', flex: 1 }}
             >Cancel</button>
           </div>
         </Modal>
@@ -233,7 +257,7 @@ export default function RosterPage() {
       {confirmRestructure && (
         <Modal onClose={() => setConfirmRestructure(null)}>
           <h3 style={{ color: '#1e40af', margin: '0 0 12px' }}>Restructure Contract</h3>
-          <p style={{ color: '#c4d8cc' }}>
+          <p style={{ color: '#CBD5E1' }}>
             Restructure <strong style={{ color: '#fff' }}>{confirmRestructure.name}</strong>'s contract?
           </p>
           {(() => {
@@ -245,7 +269,7 @@ export default function RosterPage() {
             const newCapHit = confirmRestructure.capHit - savings;
             const canRestructure = convertible > 0 && confirmRestructure.yearsRemaining > 0;
             return (
-              <div style={{ color: '#6a9a78', fontSize: 13 }}>
+              <div style={{ color: '#94A3B8', fontSize: 13 }}>
                 {canRestructure ? (
                   <>
                     <p>Current cap hit: <strong style={{ color: '#fff' }}>${confirmRestructure.capHit.toFixed(1)}M</strong></p>
@@ -282,12 +306,179 @@ export default function RosterPage() {
             >Confirm</button>
             <button
               onClick={() => setConfirmRestructure(null)}
-              style={{ background: 'rgba(40,200,40,0.25)', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 20px', cursor: 'pointer', flex: 1 }}
+              style={{ background: 'rgba(0,240,255,0.12)', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 20px', cursor: 'pointer', flex: 1 }}
             >Cancel</button>
           </div>
         </Modal>
       )}
+      {/* Extension Modal */}
+      {extendingPlayer && (
+        <ExtensionModal
+          player={extendingPlayer}
+          onExtend={(additionalYears, newAAV, signingBonus, guaranteedPct) => {
+            extendPlayer(extendingPlayer.id, additionalYears, newAAV, signingBonus, guaranteedPct);
+            setExtendingPlayer(null);
+          }}
+          onClose={() => setExtendingPlayer(null)}
+        />
+      )}
     </div>
+  );
+}
+
+function ExtensionModal({ player, onExtend, onClose }) {
+  const [additionalYears, setAdditionalYears] = useState(2);
+  const [newAAV, setNewAAV] = useState(parseFloat((player.capHit * 1.1).toFixed(1)));
+  const [signingBonus, setSigningBonus] = useState(parseFloat((player.capHit * 1.1 * (player.yearsRemaining + 2) * 0.3).toFixed(1)));
+  const [guaranteedPct, setGuaranteedPct] = useState(50);
+
+  const totalYears = player.yearsRemaining + additionalYears;
+  const totalValue = parseFloat((newAAV * totalYears).toFixed(1));
+  const guaranteed = parseFloat((totalValue * guaranteedPct / 100).toFixed(1));
+  const maxSigningBonus = Math.min(totalValue * 0.6, totalValue);
+  const actualSigningBonus = Math.min(signingBonus, maxSigningBonus);
+  const proratedBonus = totalYears > 0 ? parseFloat((actualSigningBonus / totalYears).toFixed(2)) : 0;
+  const baseSalaryY1 = Math.max(1.1, newAAV - proratedBonus);
+  const year1CapHit = parseFloat((baseSalaryY1 + proratedBonus).toFixed(1));
+
+  // Player acceptance: must meet minimum AAV based on current capHit * 0.9
+  const minimumAAV = parseFloat((player.capHit * 0.9).toFixed(1));
+  const willAccept = newAAV >= minimumAAV && guaranteedPct >= 30;
+  const isGreatDeal = newAAV >= player.capHit * 1.15 && guaranteedPct >= 55;
+
+  let acceptLabel = '';
+  let acceptColor = '#4ade80';
+  if (isGreatDeal) { acceptLabel = 'Player loves this extension!'; acceptColor = '#4ade80'; }
+  else if (willAccept) { acceptLabel = 'Player willing to extend'; acceptColor = '#facc15'; }
+  else if (newAAV < minimumAAV) { acceptLabel = `Below minimum — needs at least $${minimumAAV.toFixed(1)}M AAV`; acceptColor = '#ff4444'; }
+  else { acceptLabel = 'Needs more guaranteed money (30%+ of total)'; acceptColor = '#ff4444'; }
+
+  const capDiff = year1CapHit - player.capHit;
+
+  const handleYearsChange = (v) => { setAdditionalYears(v); setSigningBonus(parseFloat((newAAV * (player.yearsRemaining + v) * 0.3).toFixed(1))); };
+  const handleAavChange = (v) => { setNewAAV(v); setSigningBonus(parseFloat((v * totalYears * 0.3).toFixed(1))); };
+
+  const row = (label, value, color = '#CBD5E1') => (
+    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 4 }}>
+      <span style={{ color: '#94A3B8' }}>{label}</span>
+      <span style={{ color, fontWeight: 700 }}>{value}</span>
+    </div>
+  );
+
+  return (
+    <Modal onClose={onClose}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+        <div>
+          <h3 style={{ margin: '0 0 2px', color: '#4ade80', fontSize: 18 }}>Extend Contract</h3>
+          <p style={{ margin: 0, color: '#94A3B8', fontSize: 13 }}>{player.name} · {player.position} · {player.yearsRemaining}yr remaining</p>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ color: '#facc15', fontSize: 12, fontWeight: 700 }}>Current: ${player.capHit.toFixed(1)}M/yr</div>
+        </div>
+      </div>
+
+      {/* Additional Years */}
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ display: 'flex', justifyContent: 'space-between', color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>
+          <span>Additional Years</span>
+          <strong style={{ color: '#fff' }}>{additionalYears} year{additionalYears > 1 ? 's' : ''} ({totalYears} total)</strong>
+        </label>
+        <input type="range" min={1} max={4} value={additionalYears} onChange={e => handleYearsChange(Number(e.target.value))}
+          style={{ width: '100%', accentColor: 'var(--bengals-orange)' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'rgba(0,240,255,0.18)' }}>
+          <span>1yr</span><span>2yr</span><span>3yr</span><span>4yr</span>
+        </div>
+      </div>
+
+      {/* New AAV */}
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ display: 'flex', justifyContent: 'space-between', color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>
+          <span>New AAV</span>
+          <strong style={{ color: '#fff' }}>${newAAV.toFixed(1)}M</strong>
+        </label>
+        <input type="range" min={Math.max(0.5, player.capHit * 0.5)} max={player.capHit * 2.5} step={0.1}
+          value={newAAV} onChange={e => handleAavChange(Number(e.target.value))}
+          style={{ width: '100%', accentColor: 'var(--bengals-orange)' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'rgba(0,240,255,0.18)' }}>
+          <span>${(player.capHit * 0.5).toFixed(0)}M</span><span>${(player.capHit * 2.5).toFixed(0)}M</span>
+        </div>
+      </div>
+
+      {/* Signing Bonus */}
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ display: 'flex', justifyContent: 'space-between', color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>
+          <span>Signing Bonus</span>
+          <strong style={{ color: '#fff' }}>${actualSigningBonus.toFixed(1)}M</strong>
+        </label>
+        <input type="range" min={0} max={maxSigningBonus} step={0.5} value={signingBonus}
+          onChange={e => setSigningBonus(Number(e.target.value))}
+          style={{ width: '100%', accentColor: 'var(--bengals-orange)' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'rgba(0,240,255,0.18)' }}>
+          <span>$0</span><span>${maxSigningBonus.toFixed(0)}M</span>
+        </div>
+      </div>
+
+      {/* Guaranteed % */}
+      <div style={{ marginBottom: 16 }}>
+        <label style={{ display: 'flex', justifyContent: 'space-between', color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>
+          <span>Guaranteed Money</span>
+          <strong style={{ color: '#fff' }}>${guaranteed.toFixed(1)}M ({guaranteedPct}%)</strong>
+        </label>
+        <input type="range" min={0} max={100} step={5} value={guaranteedPct}
+          onChange={e => setGuaranteedPct(Number(e.target.value))}
+          style={{ width: '100%', accentColor: 'var(--bengals-orange)' }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'rgba(0,240,255,0.18)' }}>
+          <span>0%</span><span>50%</span><span>100%</span>
+        </div>
+      </div>
+
+      {/* Contract Breakdown */}
+      <div style={{ background: '#0a0f1e', borderRadius: 10, padding: 14, marginBottom: 12 }}>
+        <div style={{ color: '#CBD5E1', fontSize: 11, fontWeight: 700, marginBottom: 8, letterSpacing: '0.04em' }}>NEW CONTRACT</div>
+        {row('Total value', `$${totalValue.toFixed(1)}M / ${totalYears}yr`)}
+        {row('New AAV', `$${newAAV.toFixed(1)}M`)}
+        {row('Signing bonus', `$${actualSigningBonus.toFixed(1)}M (prorated $${proratedBonus.toFixed(1)}M/yr)`)}
+        {row('Guaranteed', `$${guaranteed.toFixed(1)}M (${guaranteedPct}%)`)}
+        <div style={{ borderTop: '1px solid rgba(0,240,255,0.12)', margin: '8px 0', paddingTop: 8 }} />
+        <div style={{ color: '#CBD5E1', fontSize: 11, fontWeight: 700, marginBottom: 8, letterSpacing: '0.04em' }}>CAP IMPACT</div>
+        {row('New Year 1 cap hit', `$${year1CapHit.toFixed(1)}M`, year1CapHit <= player.capHit ? '#4ade80' : '#facc15')}
+        {row('Cap impact vs current', `${capDiff >= 0 ? '+' : ''}$${capDiff.toFixed(1)}M`, capDiff <= 0 ? '#4ade80' : '#ff4444')}
+      </div>
+
+      {/* Player Acceptance Indicator */}
+      <div style={{
+        background: willAccept ? 'rgba(74,222,128,0.1)' : 'rgba(255,68,68,0.1)',
+        border: `1px solid ${acceptColor}`,
+        borderRadius: 8, padding: 10, marginBottom: 12, textAlign: 'center',
+      }}>
+        <div style={{ color: acceptColor, fontSize: 13, fontWeight: 700 }}>{acceptLabel}</div>
+        {!willAccept && (
+          <div style={{ color: '#94A3B8', fontSize: 11, marginTop: 4 }}>
+            Adjust terms to meet player expectations
+          </div>
+        )}
+      </div>
+
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button
+          onClick={() => onExtend(additionalYears, newAAV, actualSigningBonus, guaranteedPct)}
+          disabled={!willAccept}
+          style={{
+            background: willAccept ? '#166534' : 'rgba(0,240,255,0.12)',
+            color: willAccept ? '#fff' : '#475569',
+            border: 'none', borderRadius: 8, padding: '12px 0',
+            cursor: willAccept ? 'pointer' : 'not-allowed',
+            fontWeight: 800, flex: 1, fontSize: 14,
+            opacity: willAccept ? 1 : 0.5,
+          }}
+        >
+          {willAccept ? 'Extend Player' : 'Player Declines'}
+        </button>
+        <button onClick={onClose}
+          style={{ background: 'rgba(0,240,255,0.12)', color: '#fff', border: 'none', borderRadius: 8, padding: '12px 0', cursor: 'pointer', flex: 0.6, fontSize: 13 }}
+        >Cancel</button>
+      </div>
+    </Modal>
   );
 }
 
@@ -295,15 +486,15 @@ function Modal({ children, onClose }) {
   return (
     <div
       style={{
-        position: 'fixed', inset: 0, background: 'rgba(5,10,8,0.85)',
+        position: 'fixed', inset: 0, background: 'rgba(0,8,20,0.90)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         zIndex: 1000, padding: 16,
       }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div style={{
-        background: '#0d2a16',
-        border: '1px solid rgba(40,200,40,0.25)',
+        background: '#0f172a',
+        border: '1px solid rgba(0,240,255,0.12)',
         borderRadius: 12,
         padding: 24,
         maxWidth: 400,

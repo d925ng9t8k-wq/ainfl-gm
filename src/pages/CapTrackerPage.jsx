@@ -76,14 +76,14 @@ export default function CapTrackerPage() {
       <h1 style={{ margin: '0 0 16px', fontSize: 22, color: 'var(--bengals-orange)' }}>Cap Tracker</h1>
 
       {/* Main cap bar */}
-      <div style={{ background: '#0d2a16', borderRadius: 12, padding: 20, marginBottom: 16, border: isOverCap ? '1px solid #ff4444' : '1px solid rgba(40,200,40,0.25)' }}>
+      <div style={{ background: '#0f172a', borderRadius: 12, padding: 20, marginBottom: 16, border: isOverCap ? '1px solid #ff4444' : '1px solid rgba(0,240,255,0.12)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-          <span style={{ color: '#6a9a78', fontSize: 13 }}>2026 Salary Cap</span>
+          <span style={{ color: '#94A3B8', fontSize: 13 }}>2026 Salary Cap</span>
           <span style={{ color: isOverCap ? '#ff4444' : '#4ade80', fontWeight: 700 }}>
             {isOverCap ? `OVER by $${(capUsed - totalCap).toFixed(1)}M` : `$${capAvailable.toFixed(1)}M remaining`}
           </span>
         </div>
-        <div style={{ height: 24, background: 'rgba(40,200,40,0.25)', borderRadius: 12, overflow: 'hidden', marginBottom: 8 }}>
+        <div style={{ height: 24, background: 'rgba(0,240,255,0.12)', borderRadius: 12, overflow: 'hidden', marginBottom: 8 }}>
           <div style={{
             height: '100%',
             width: `${capPct}%`,
@@ -93,8 +93,8 @@ export default function CapTrackerPage() {
           }} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-          <span style={{ color: '#c4d8cc' }}>Used: <strong style={{ color: '#fff' }}>${capUsed.toFixed(1)}M</strong></span>
-          <span style={{ color: '#6a9a78' }}>Total: ${totalCap}M</span>
+          <span style={{ color: '#CBD5E1' }}>Used: <strong style={{ color: '#fff' }}>${capUsed.toFixed(1)}M</strong></span>
+          <span style={{ color: '#94A3B8' }}>Total: ${totalCap}M</span>
         </div>
 
         {isOverCap && (
@@ -114,20 +114,20 @@ export default function CapTrackerPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
         {/* Position Breakdown */}
-        <div style={{ background: '#0d2a16', borderRadius: 12, padding: 20, border: '1px solid rgba(40,200,40,0.25)' }}>
+        <div style={{ background: '#0f172a', borderRadius: 12, padding: 20, border: '1px solid rgba(0,240,255,0.12)' }}>
           <h3 style={{ margin: '0 0 16px', color: '#fff', fontSize: 16 }}>By Position Group</h3>
           {Object.entries(byGroup)
             .sort(([, a], [, b]) => b.total - a.total)
             .map(([group, data]) => {
               const pct = (data.total / capUsed) * 100;
-              const color = GROUP_COLORS[group] || '#6a9a78';
+              const color = GROUP_COLORS[group] || '#94A3B8';
               return (
                 <div key={group} style={{ marginBottom: 10 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, fontSize: 13 }}>
                     <span style={{ color }}>{group}</span>
-                    <span style={{ color: '#c4d8cc' }}>${data.total.toFixed(1)}M ({pct.toFixed(0)}%)</span>
+                    <span style={{ color: '#CBD5E1' }}>${data.total.toFixed(1)}M ({pct.toFixed(0)}%)</span>
                   </div>
-                  <div style={{ height: 8, background: 'rgba(40,200,40,0.25)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ height: 8, background: 'rgba(0,240,255,0.12)', borderRadius: 4, overflow: 'hidden' }}>
                     <div style={{
                       height: '100%',
                       width: `${pct}%`,
@@ -142,7 +142,7 @@ export default function CapTrackerPage() {
         </div>
 
         {/* Top 10 Cap Hits */}
-        <div style={{ background: '#0d2a16', borderRadius: 12, padding: 20, border: '1px solid rgba(40,200,40,0.25)' }}>
+        <div style={{ background: '#0f172a', borderRadius: 12, padding: 20, border: '1px solid rgba(0,240,255,0.12)' }}>
           <h3 style={{ margin: '0 0 16px', color: '#fff', fontSize: 16 }}>Top 10 Cap Hits</h3>
           {top10.map((p, i) => (
             <div key={p.id} style={{
@@ -154,10 +154,10 @@ export default function CapTrackerPage() {
               fontSize: 13,
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ color: '#4a7a58', width: 20 }}>#{i + 1}</span>
+                <span style={{ color: '#64748b', width: 20 }}>#{i + 1}</span>
                 <div>
                   <div style={{ color: '#fff' }}>{p.name}</div>
-                  <div style={{ color: '#6a9a78', fontSize: 11 }}>{p.position}</div>
+                  <div style={{ color: '#94A3B8', fontSize: 11 }}>{p.position}</div>
                 </div>
               </div>
               <span style={{ color: 'var(--bengals-orange)', fontWeight: 700 }}>${p.capHit.toFixed(1)}M</span>
@@ -166,7 +166,7 @@ export default function CapTrackerPage() {
         </div>
 
         {/* Dead Cap */}
-        <div style={{ background: '#0d2a16', borderRadius: 12, padding: 20, border: '1px solid rgba(40,200,40,0.25)' }}>
+        <div style={{ background: '#0f172a', borderRadius: 12, padding: 20, border: '1px solid rgba(0,240,255,0.12)' }}>
           <h3 style={{ margin: '0 0 16px', color: '#fff', fontSize: 16 }}>
             Dead Cap
             <span style={{ marginLeft: 8, color: '#ff4444', fontSize: 14 }}>${deadCapTotal.toFixed(1)}M</span>
@@ -181,14 +181,14 @@ export default function CapTrackerPage() {
               fontSize: 13,
             }}>
               <div>
-                <div style={{ color: '#c4d8cc' }}>{d.name}</div>
-                <div style={{ color: '#6a9a78', fontSize: 11 }}>{d.reason}</div>
+                <div style={{ color: '#CBD5E1' }}>{d.name}</div>
+                <div style={{ color: '#94A3B8', fontSize: 11 }}>{d.reason}</div>
               </div>
               <span style={{ color: '#ff4444' }}>${d.amount.toFixed(1)}M</span>
             </div>
           ))}
           {cutPlayers.length === 0 && deadCapCharges.length === 0 ? (
-            <p style={{ color: '#4a7a58', fontSize: 13 }}>No dead cap — no players have been cut.</p>
+            <p style={{ color: '#64748b', fontSize: 13 }}>No dead cap — no players have been cut.</p>
           ) : (
             cutPlayers.map(p => (
               <div key={p.id + '_dead'} style={{
@@ -199,8 +199,8 @@ export default function CapTrackerPage() {
                 fontSize: 13,
               }}>
                 <div>
-                  <div style={{ color: '#c4d8cc' }}>{p.name}</div>
-                  <div style={{ color: '#6a9a78', fontSize: 11 }}>{p.position}</div>
+                  <div style={{ color: '#CBD5E1' }}>{p.name}</div>
+                  <div style={{ color: '#94A3B8', fontSize: 11 }}>{p.position}</div>
                 </div>
                 <span style={{ color: '#ff4444' }}>${(p.deadCap || 0).toFixed(1)}M</span>
               </div>
@@ -209,7 +209,7 @@ export default function CapTrackerPage() {
         </div>
 
         {/* Suggestions */}
-        <div style={{ background: '#0d2a16', borderRadius: 12, padding: 20, border: '1px solid rgba(40,200,40,0.25)' }}>
+        <div style={{ background: '#0f172a', borderRadius: 12, padding: 20, border: '1px solid rgba(0,240,255,0.12)' }}>
           <h3 style={{ margin: '0 0 16px', color: '#fff', fontSize: 16 }}>💡 Cap Suggestions</h3>
           {suggestions.map(s => (
             <div key={s.player} style={{
@@ -217,7 +217,7 @@ export default function CapTrackerPage() {
               borderBottom: '1px solid #1a2420',
               fontSize: 13,
             }}>
-              <div style={{ color: '#c4d8cc' }}>
+              <div style={{ color: '#CBD5E1' }}>
                 Cut <strong style={{ color: '#fff' }}>{s.player}</strong> ({s.position})
               </div>
               <div style={{ color: '#4ade80', marginTop: 2 }}>
@@ -226,7 +226,7 @@ export default function CapTrackerPage() {
             </div>
           ))}
           {suggestions.length === 0 && (
-            <p style={{ color: '#4a7a58', fontSize: 13 }}>Your roster looks efficient!</p>
+            <p style={{ color: '#64748b', fontSize: 13 }}>Your roster looks efficient!</p>
           )}
         </div>
       </div>

@@ -5,14 +5,15 @@
   --bengals-orange: #FB4F14;
   --bengals-black: #000000;
   --bengals-white: #FFFFFF;
-  --bg-primary: #080c0a;
-  --bg-secondary: rgba(14, 28, 20, 0.92);
-  --text-primary: #ffffff;
-  --text-secondary: #888888;
-  --border-color: rgba(34, 139, 34, 0.18);
-  --oracle-gold: #d4a843;
-  --jungle-green: rgba(34, 180, 34, 0.4);
-  --canopy-deep: rgba(10, 32, 16, 0.95);
+  --bg-primary: #000814;
+  --bg-secondary: rgba(30, 41, 59, 0.85);
+  --text-primary: #E2E8F0;
+  --text-secondary: #94A3B8;
+  --border-color: rgba(0, 240, 255, 0.15);
+  --accent-cyan: #00F0FF;
+  --accent-purple: #C300FF;
+  --success: #39FF14;
+  --error: #FF2D55;
 
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-size: 14px;
@@ -31,12 +32,12 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(180deg, #050a06 0%, #0a1810 30%, #071208 60%, #050a06 100%);
+  background: linear-gradient(180deg, #000814 0%, #001428 50%, #000814 100%);
   color: var(--text-primary);
   min-height: 100vh;
 }
 
-/* ===== Immersive Jungle Canopy Background with Palm Fronds ===== */
+/* ===== Animated Circuit Grid Background ===== */
 body::before {
   content: '';
   position: fixed;
@@ -45,58 +46,16 @@ body::before {
   width: 100%;
   height: 100%;
   background-image:
-    /* Palm frond silhouettes in corners */
-    url('/palm-left.svg'),
-    url('/palm-right.svg'),
-    /* Tiger stripe pattern overlay */
-    url('/tiger-pattern.svg'),
-    /* Moonlight filtering through canopy - BRIGHTER */
-    radial-gradient(ellipse 350px 250px at 25% 15%, rgba(212, 168, 67, 0.07), transparent),
-    radial-gradient(ellipse 300px 400px at 75% 25%, rgba(34, 180, 34, 0.08), transparent),
-    radial-gradient(ellipse 450px 300px at 50% 60%, rgba(212, 168, 67, 0.04), transparent),
-    /* Foliage shadow clusters - MORE VISIBLE */
-    radial-gradient(ellipse 150px 100px at 15% 40%, rgba(34, 180, 34, 0.10), transparent),
-    radial-gradient(ellipse 100px 150px at 85% 50%, rgba(34, 180, 34, 0.09), transparent),
-    radial-gradient(ellipse 120px 80px at 40% 80%, rgba(34, 180, 34, 0.08), transparent),
-    radial-gradient(ellipse 110px 130px at 65% 35%, rgba(34, 180, 34, 0.07), transparent),
-    radial-gradient(ellipse 90px 110px at 10% 75%, rgba(34, 180, 34, 0.08), transparent),
-    radial-gradient(ellipse 130px 90px at 90% 85%, rgba(34, 180, 34, 0.07), transparent),
-    /* Scattered light spots through leaves */
-    radial-gradient(circle 5px at 20% 25%, rgba(212, 168, 67, 0.12), transparent 10px),
-    radial-gradient(circle 3px at 60% 15%, rgba(212, 168, 67, 0.10), transparent 8px),
-    radial-gradient(circle 6px at 80% 70%, rgba(212, 168, 67, 0.08), transparent 14px),
-    radial-gradient(circle 16px at 35% 55%, rgba(212, 168, 67, 0.11), transparent 8px),
-    /* Noise-like organic texture */
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 35px,
-      rgba(34, 180, 34, 0.04) 35px,
-      rgba(34, 180, 34, 0.04) 36px
-    ),
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 50px,
-      rgba(34, 180, 34, 0.03) 50px,
-      rgba(34, 180, 34, 0.03) 51px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 80px,
-      rgba(34, 180, 34, 0.025) 80px,
-      rgba(34, 180, 34, 0.025) 81px
-    );
-  background-position: top left, top right, 0 0;
-  background-repeat: no-repeat, no-repeat, repeat;
-  background-size: 220px 320px, 220px 320px, 100px 100px;
+    linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
   opacity: 1;
   pointer-events: none;
   z-index: 0;
+  animation: gridPulse 8s ease-in-out infinite;
 }
 
-/* ===== Glowing Tiger Eyes - BOLD ===== */
+/* Subtle ambient glow spots */
 body::after {
   content: '';
   position: fixed;
@@ -107,25 +66,14 @@ body::after {
   pointer-events: none;
   z-index: 0;
   background:
-    /* Upper pair - bigger, brighter */
-    radial-gradient(circle 16px at 82% 42%, rgba(212, 168, 67, 0.7), transparent 8px),
-    radial-gradient(circle 16px at 84.5% 42%, rgba(212, 168, 67, 0.7), transparent 8px),
-    /* Lower pair */
-    radial-gradient(circle 14px at 15% 72%, rgba(212, 168, 67, 0.25), transparent 7px),
-    radial-gradient(circle 14px at 17.5% 72%, rgba(212, 168, 67, 0.25), transparent 7px);
-  animation: tigerEyesPulse 5s ease-in-out infinite;
+    radial-gradient(ellipse 400px 300px at 20% 20%, rgba(0, 240, 255, 0.03), transparent),
+    radial-gradient(ellipse 350px 400px at 80% 30%, rgba(195, 0, 255, 0.02), transparent),
+    radial-gradient(ellipse 500px 300px at 50% 70%, rgba(0, 240, 255, 0.02), transparent);
 }
 
-@keyframes tigerEyesPulse {
-  0%, 80%, 100% { opacity: 0; }
-  85%, 95% { opacity: 0.4; }
-  90% { opacity: 0.15; }
-}
-
-/* ===== Vine glow animation ===== */
-@keyframes vineGlow {
-  0%, 100% { opacity: 0.8; filter: brightness(1); }
-  50% { opacity: 0.9; filter: brightness(1.3); }
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
 #root {
@@ -171,7 +119,7 @@ input[type="range"] {
   appearance: none;
   height: 16px;
   border-radius: 2px;
-  background: rgba(34, 180, 34, 0.20);
+  background: rgba(0, 240, 255, 0.10);
   outline: none;
 }
 
@@ -179,20 +127,20 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  background: var(--bengals-orange);
+  background: var(--accent-cyan);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 8px rgba(251, 79, 20, 0.4);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: var(--bengals-orange);
+  background: var(--accent-cyan);
   border-radius: 50%;
   cursor: pointer;
   border: none;
-  box-shadow: 0 0 8px rgba(251, 79, 20, 0.4);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 select {
@@ -212,158 +160,55 @@ a, button, select, input {
 }
 
 ::-webkit-scrollbar-track {
-  background: #080c0a;
+  background: #000814;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(34, 180, 34, 0.30);
+  background: rgba(0, 240, 255, 0.25);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(34, 180, 34, 0.45);
-}
-
-/* ===== Tiger Stripe Pattern Utility - BOLD ===== */
-.tiger-stripes {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 8px,
-    rgba(251, 79, 20, 0.12) 8px,
-    rgba(251, 79, 20, 0.12) 9px,
-    transparent 9px,
-    transparent 10px,
-    rgba(0,0,0,0.25) 10px,
-    rgba(0,0,0,0.25) 12px
-  );
-}
-
-/* ===== Vine/Branch Decorative Border - BOLD ===== */
-.vine-border-top {
-  position: relative;
-}
-
-.vine-border-top::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: url('/vine-border.svg') repeat-x;
-  background-size: auto 12px;
-  opacity: 0.7;
-  z-index: 1;
-}
-
-/* ===== Leaf/Foliage Corner Accents - BOLDER ===== */
-.leaf-corner {
-  position: relative;
-  overflow: hidden;
-}
-
-.leaf-corner::before,
-.leaf-corner::after {
-  content: '';
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  pointer-events: none;
-  opacity: 0.7;
-  z-index: 1;
-}
-
-.leaf-corner::before {
-  top: -2px;
-  left: -2px;
-  background: radial-gradient(ellipse at top left, rgba(34, 180, 34, 0.9), transparent 70%);
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-
-.leaf-corner::after {
-  bottom: -2px;
-  right: -2px;
-  background: radial-gradient(ellipse at bottom right, rgba(212, 168, 67, 0.7), transparent 70%);
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  background: rgba(0, 240, 255, 0.40);
 }
 
 /* ===== Premium card styles ===== */
 .card {
-  background: rgba(15, 32, 24, 0.90);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(34, 180, 34, 0.18);
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 240, 255, 0.12);
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
   transition: box-shadow 0.25s ease, transform 0.25s ease;
   position: relative;
 }
 
-/* Organic top border on cards - THICKER & MORE VISIBLE */
+/* Subtle neon top accent on cards */
 .card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 8px;
   right: 8px;
-  height: 16px;
+  height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(34, 180, 34, 0.45) 15%,
-    rgba(212, 168, 67, 0.55) 30%,
-    rgba(34, 180, 34, 0.40) 50%,
-    rgba(212, 168, 67, 0.50) 70%,
-    rgba(34, 180, 34, 0.45) 85%,
+    rgba(0, 240, 255, 0.3) 20%,
+    rgba(195, 0, 255, 0.2) 50%,
+    rgba(0, 240, 255, 0.3) 80%,
     transparent 100%
   );
-  border-radius: 12px 12px 2px 2px;
+  border-radius: 12px 12px 0 0;
   z-index: 1;
-  opacity: 0.8;
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
 }
 
 .card-glow {
-  box-shadow: 0 0 30px rgba(251, 79, 20, 0.28);
-}
-
-.card-jungle {
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 0 30px rgba(34, 139, 34, 0.06);
-}
-
-/* ===== Jungle Card with leaf corners ===== */
-.jungle-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.jungle-card::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 120px;
-  height: 120px;
-  background: url('/jungle-leaf.svg') no-repeat;
-  background-size: contain;
-  opacity: 0.08;
-  transform: rotate(-30deg);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.jungle-card::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  width: 50px;
-  height: 50px;
-  background: url('/jungle-leaf.svg') no-repeat;
-  background-size: contain;
-  opacity: 0.22;
-  transform: rotate(150deg);
-  pointer-events: none;
-  z-index: 1;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
 }
 
 /* Subtle hover effects */
@@ -373,12 +218,12 @@ a, button, select, input {
 
 .hover-lift:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 240, 255, 0.08);
 }
 
 /* Premium button style */
 .btn-primary {
-  background: linear-gradient(135deg, var(--bengals-orange) 0%, #e04510 100%);
+  background: linear-gradient(135deg, #00D4FF 0%, #00A0CC 100%);
   border: none;
   border-radius: 8px;
   color: #000;
@@ -388,37 +233,37 @@ a, button, select, input {
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 12px rgba(251, 79, 20, 0.3);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(251, 79, 20, 0.4);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
 }
 
 .btn-primary:active {
   transform: translateY(0);
-  box-shadow: 0 1px 8px rgba(251, 79, 20, 0.2);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
 }
 
 /* Glass panel utility */
 .glass-panel {
-  background: rgba(12, 28, 18, 0.7);
+  background: rgba(30, 41, 59, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(34, 180, 34, 0.14);
+  border: 1px solid rgba(0, 240, 255, 0.10);
   border-radius: 12px;
 }
 
 /* Accent glow utility */
 .accent-glow {
-  box-shadow: 0 0 20px rgba(251, 79, 20, 0.1);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
 }
 
-/* Section divider — organic vine style */
+/* Section divider */
 .divider {
   border: none;
-  border-top: 1px solid rgba(34, 180, 34, 0.18);
+  border-top: 1px solid rgba(0, 240, 255, 0.10);
   margin: 16px 0;
   position: relative;
 }
@@ -432,9 +277,9 @@ a, button, select, input {
   height: 1px;
   background: linear-gradient(90deg,
     transparent,
-    rgba(212, 168, 67, 0.2) 30%,
-    rgba(34, 180, 34, 0.15) 50%,
-    rgba(212, 168, 67, 0.2) 70%,
+    rgba(0, 240, 255, 0.15) 30%,
+    rgba(195, 0, 255, 0.10) 50%,
+    rgba(0, 240, 255, 0.15) 70%,
     transparent
   );
 }
@@ -444,7 +289,7 @@ a, button, select, input {
   filter: drop-shadow(0 0 6px currentColor);
 }
 
-/* Active nav leaf glow - BIGGER */
+/* Active nav cyan glow */
 .nav-active {
   position: relative;
 }
@@ -455,34 +300,11 @@ a, button, select, input {
   bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 120px;
-  height: 40px;
-  background: radial-gradient(ellipse, rgba(34, 180, 34, 0.6), transparent);
+  width: 80px;
+  height: 30px;
+  background: radial-gradient(ellipse, rgba(0, 240, 255, 0.4), transparent);
   border-radius: 50%;
-  filter: blur(3px);
-}
-
-/* ===== Floating side vine decorations ===== */
-.vine-side-left,
-.vine-side-right {
-  position: fixed;
-  top: 60px;
-  width: 40px;
-  height: calc(100vh - 120px);
-  pointer-events: none;
-  z-index: 50;
-  background: url('/vine-side.svg') repeat-y;
-  background-size: 20px auto;
-  opacity: 0.25;
-}
-
-.vine-side-left {
-  left: 0;
-}
-
-.vine-side-right {
-  right: 0;
-  transform: scaleX(-1);
+  filter: blur(4px);
 }
 
 /* ===== Media Queries (preserved) ===== */
@@ -494,12 +316,6 @@ a, button, select, input {
   /* Stack trade columns */
   .trade-grid {
     grid-template-columns: 1fr !important;
-  }
-
-  /* Hide side vines on mobile */
-  .vine-side-left,
-  .vine-side-right {
-    display: none;
   }
 }
 

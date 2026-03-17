@@ -84,7 +84,7 @@ function gradeColor(grade) {
 
 function draftGradeLetter(avgGrade, avgPickPosition, totalPicks) {
   if (totalPicks === 0) return 'N/A';
-  const bonus = avgGrade - (100 - avgPickPosition * 0.4);
+  const bonus = avgGrade - (100 - avgPickPosition * 0.5);
   if (bonus >= 20) return 'A+';
   if (bonus >= 15) return 'A';
   if (bonus >= 10) return 'A-';
@@ -190,6 +190,7 @@ export default function DraftPage() {
   const draftBoardRef = useRef(null);
   const currentPickRef = useRef(null);
   const simTimeoutRef = useRef(null);
+  const cpuDraftedPositions = useRef({}); // teamAbbr -> { posGroup: count }
 
   // Build full pick order, filtered by selected rounds
   const allPicks = useMemo(() => buildPickOrder(allTeams), [allTeams]);
@@ -256,30 +257,76 @@ export default function DraftPage() {
     return ['All', ...Array.from(set).sort()];
   }, [draftBoard]);
 
-  // CPU pick logic: BPA with 30% variance window for significant draft unpredictability
-  const cpuSelectProspect = useCallback((board, teamAbbr) => {
+  // Helper: map a position string to a position group for CPU needs tracking
+  const getPosGroup = useCallback((pos) => {
+    if (!pos) return 'Other';
+    const p = pos.toUpperCase();
+    if (p === 'QB') return 'QB';
+    if (['RB', 'FB'].includes(p)) return 'RB';
+    if (['WR', 'TE'].includes(p)) return 'WR/TE';
+    if (['OT', 'IOL', 'G', 'C', 'LT', 'RT', 'LG', 'RG', 'OG', 'OL'].includes(p)) return 'OL';
+    if (['DE', 'DT', 'NT', 'EDGE', 'DL'].includes(p)) return 'DL';
+    if (['LB', 'MLB', 'OLB', 'ILB'].includes(p)) return 'LB';
+    if (['CB', 'S', 'FS', 'SS'].includes(p)) return 'DB';
+    return 'Other';
+  }, []);
+
+  // CPU pick logic: BPA with tiered variance and team-needs weighting
+  const cpuSelectProspect = useCallback((board, teamAbbr, pickOverall) => {
     const sorted = [...board].sort((a, b) => a.rank - b.rank);
     if (sorted.length === 0) return null;
 
     const bpa = sorted[0];
-    // 30% variance: pick #5 could take anyone ranked 1-7, pick #30 could take 21-39, pick #100 could take 70-130
-    const varianceRange = Math.max(5, Math.floor(bpa.rank * 0.30));
-    const candidates = sorted.filter(p => p.rank <= bpa.rank + varianceRange);
 
-    // Weight by proximity to BPA rank — flatter curve for more randomness
-    const weighted = candidates.map(p => ({
-      prospect: p,
-      weight: 1 / (1 + Math.abs(p.rank - bpa.rank) * 0.12), // very flat curve = high randomness
-    }));
+    // Pick #1 overall: if BPA is rank 1 (Fernando Mendoza), ALWAYS pick them
+    if (pickOverall === 1 && bpa.rank === 1) return bpa;
+
+    // Tiered variance window
+    let varianceRange;
+    if (pickOverall <= 20) {
+      varianceRange = 6; // Picks 2-20: window of 6
+    } else {
+      varianceRange = 20; // Picks 21+: window of 20
+    }
+
+    const minRank = Math.max(1, bpa.rank);
+    const maxRank = bpa.rank + varianceRange;
+    const candidates = sorted.filter(p => p.rank >= minRank && p.rank <= maxRank);
+
+    // Get this team's drafted position counts
+    const teamDrafted = cpuDraftedPositions.current[teamAbbr] || {};
+
+    // Weight by proximity to BPA rank, with team-needs penalty
+    const weighted = candidates.map(p => {
+      let weight = 1 / (1 + Math.abs(p.rank - bpa.rank) * 0.12);
+
+      // Reduce weight by 50% if the position group already has 2+ picks by this team
+      const posGroup = getPosGroup(p.position);
+      if ((teamDrafted[posGroup] || 0) >= 2) {
+        weight *= 0.5;
+      }
+
+      return { prospect: p, weight };
+    });
 
     const totalWeight = weighted.reduce((s, w) => s + w.weight, 0);
     let rand = Math.random() * totalWeight;
     for (const w of weighted) {
       rand -= w.weight;
-      if (rand <= 0) return w.prospect;
+      if (rand <= 0) {
+        // Update cpuDraftedPositions ref
+        if (!cpuDraftedPositions.current[teamAbbr]) cpuDraftedPositions.current[teamAbbr] = {};
+        const pg = getPosGroup(w.prospect.position);
+        cpuDraftedPositions.current[teamAbbr][pg] = (cpuDraftedPositions.current[teamAbbr][pg] || 0) + 1;
+        return w.prospect;
+      }
     }
+    // Fallback: update ref for BPA
+    if (!cpuDraftedPositions.current[teamAbbr]) cpuDraftedPositions.current[teamAbbr] = {};
+    const pg = getPosGroup(bpa.position);
+    cpuDraftedPositions.current[teamAbbr][pg] = (cpuDraftedPositions.current[teamAbbr][pg] || 0) + 1;
     return bpa;
-  }, []);
+  }, [getPosGroup]);
 
   // Simulate CPU picks until it's user's turn or draft is over
   const simulateCPUPicks = useCallback(() => {
@@ -304,7 +351,7 @@ export default function DraftPage() {
     }
 
     simTimeoutRef.current = setTimeout(() => {
-      const prospect = cpuSelectProspect(draftBoard, pick.teamAbbr);
+      const prospect = cpuSelectProspect(draftBoard, pick.teamAbbr, pick.overall);
       if (prospect) {
         cpuDraftPlayer(prospect, pick.overall, pick.teamAbbr);
         setCurrentPickIdx(prev => prev + 1);
@@ -370,6 +417,7 @@ export default function DraftPage() {
     setShowCustomTradeModal(false);
     setTradeOffer(null);
     setViewMode('round');
+    cpuDraftedPositions.current = {};
     resetDraft();
   }
 
@@ -493,7 +541,7 @@ export default function DraftPage() {
     // 2. User gets theirMainPick + compensationPicks
 
     // We'll simulate the partner picking at the user's position
-    const prospect = cpuSelectProspect(draftBoard, offer.teamAbbr);
+    const prospect = cpuSelectProspect(draftBoard, offer.teamAbbr, currentPick.overall);
     if (prospect) {
       cpuDraftPlayer(prospect, currentPick.overall, offer.teamAbbr);
     }
@@ -538,14 +586,14 @@ export default function DraftPage() {
   function renderSpeedSelector() {
     return (
       <div style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-        <span style={{ color: '#6a9a78', fontSize: 11, marginRight: 4 }}>Speed:</span>
+        <span style={{ color: '#94A3B8', fontSize: 11, marginRight: 4 }}>Speed:</span>
         {SPEED_OPTIONS.map((opt, idx) => (
           <button
             key={opt.label}
             onClick={() => setDraftSpeed(idx)}
             style={{
-              background: draftSpeed === idx ? accentColor : '#1a3a22',
-              color: draftSpeed === idx ? '#000' : '#6a9a78',
+              background: draftSpeed === idx ? accentColor : '#1e293b',
+              color: draftSpeed === idx ? '#000' : '#94A3B8',
               border: 'none',
               borderRadius: 4,
               padding: '3px 8px',
@@ -573,8 +621,8 @@ export default function DraftPage() {
               key={r}
               onClick={() => setActiveRound(r)}
               style={{
-                background: isActive ? accentColor : '#1a3a22',
-                color: isActive ? '#000' : '#6a9a78',
+                background: isActive ? accentColor : '#1e293b',
+                color: isActive ? '#000' : '#94A3B8',
                 border: 'none',
                 borderRadius: 4,
                 padding: '4px 10px',
@@ -598,8 +646,8 @@ export default function DraftPage() {
         <button
           onClick={() => setViewMode('round')}
           style={{
-            background: viewMode === 'round' ? 'rgba(40,200,40,0.32)' : '#1a3a22',
-            color: viewMode === 'round' ? '#fff' : '#6a9a78',
+            background: viewMode === 'round' ? 'rgba(0,240,255,0.18)' : '#1e293b',
+            color: viewMode === 'round' ? '#fff' : '#94A3B8',
             border: 'none', borderRadius: 4, padding: '4px 10px',
             cursor: 'pointer', fontWeight: 600, fontSize: 11,
           }}
@@ -609,8 +657,8 @@ export default function DraftPage() {
         <button
           onClick={() => setViewMode('fullBoard')}
           style={{
-            background: viewMode === 'fullBoard' ? 'rgba(40,200,40,0.32)' : '#1a3a22',
-            color: viewMode === 'fullBoard' ? '#fff' : '#6a9a78',
+            background: viewMode === 'fullBoard' ? 'rgba(0,240,255,0.18)' : '#1e293b',
+            color: viewMode === 'fullBoard' ? '#fff' : '#94A3B8',
             border: 'none', borderRadius: 4, padding: '4px 10px',
             cursor: 'pointer', fontWeight: 600, fontSize: 11,
           }}
@@ -630,12 +678,12 @@ export default function DraftPage() {
           const roundPicks = fullPickOrder.filter(p => getRoundForOverall(p.overall) === r);
           return (
             <div key={r} style={{ marginBottom: 16 }}>
-              <h4 style={{ color: accentColor, fontSize: 13, margin: '0 0 6px', padding: '4px 8px', background: '#081f0e', borderRadius: 4 }}>
+              <h4 style={{ color: accentColor, fontSize: 13, margin: '0 0 6px', padding: '4px 8px', background: '#0a0f1e', borderRadius: 4 }}>
                 Round {r}
               </h4>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
-                  <tr style={{ color: '#4d6356', borderBottom: '1px solid rgba(40,200,40,0.25)' }}>
+                  <tr style={{ color: '#475569', borderBottom: '1px solid rgba(0,240,255,0.12)' }}>
                     <th style={{ textAlign: 'left', padding: '4px 6px', width: 40 }}>#</th>
                     <th style={{ textAlign: 'left', padding: '4px 6px', width: 100 }}>Team</th>
                     <th style={{ textAlign: 'left', padding: '4px 6px' }}>Player</th>
@@ -653,19 +701,19 @@ export default function DraftPage() {
                         background: isUserTeam ? accentBgLight(accentColor) : 'transparent',
                         borderBottom: '1px solid #111916',
                       }}>
-                        <td style={{ padding: '4px 6px', color: isUserTeam ? accentColor : '#4d6356', fontWeight: 700 }}>
+                        <td style={{ padding: '4px 6px', color: isUserTeam ? accentColor : '#475569', fontWeight: 700 }}>
                           {pick.overall}
                         </td>
-                        <td style={{ padding: '4px 6px', color: isUserTeam ? accentColor : '#88b898', fontWeight: isUserTeam ? 700 : 400 }}>
+                        <td style={{ padding: '4px 6px', color: isUserTeam ? accentColor : '#CBD5E1', fontWeight: isUserTeam ? 700 : 400 }}>
                           {pick.teamAbbr}
                         </td>
-                        <td style={{ padding: '4px 6px', color: drafted ? '#fff' : 'rgba(40,200,40,0.32)', fontWeight: drafted ? 600 : 400 }}>
+                        <td style={{ padding: '4px 6px', color: drafted ? '#fff' : 'rgba(0,240,255,0.18)', fontWeight: drafted ? 600 : 400 }}>
                           {drafted ? drafted.prospect.name : '--'}
                         </td>
-                        <td style={{ padding: '4px 6px', color: drafted ? accentColor : 'rgba(40,200,40,0.32)' }}>
+                        <td style={{ padding: '4px 6px', color: drafted ? accentColor : 'rgba(0,240,255,0.18)' }}>
                           {drafted ? drafted.prospect.position : '--'}
                         </td>
-                        <td style={{ padding: '4px 6px', color: drafted ? '#6a9a78' : 'rgba(40,200,40,0.32)' }}>
+                        <td style={{ padding: '4px 6px', color: drafted ? '#94A3B8' : 'rgba(0,240,255,0.18)' }}>
                           {drafted ? drafted.prospect.school : '--'}
                         </td>
                         <td style={{ padding: '4px 6px', textAlign: 'right' }}>
@@ -693,14 +741,14 @@ export default function DraftPage() {
     return (
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(5,10,8,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', textAlign: 'center' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', textAlign: 'center' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Reset Draft Simulation?</h3>
-          <p style={{ color: '#6a9a78', fontSize: 14, margin: '0 0 20px' }}>This will clear all draft picks and start over. Roster, free agency, and trade state will not be affected.</p>
+          <p style={{ color: '#94A3B8', fontSize: 14, margin: '0 0 20px' }}>This will clear all draft picks and start over. Roster, free agency, and trade state will not be affected.</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
             <button onClick={handleReset} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer', fontWeight: 700 }}>Reset</button>
-            <button onClick={() => setShowResetConfirm(false)} style={{ background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => setShowResetConfirm(false)} style={{ background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer' }}>Cancel</button>
           </div>
         </div>
       </div>
@@ -715,19 +763,19 @@ export default function DraftPage() {
     return (
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(5,10,8,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 12, padding: 24, maxWidth: 560, width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 560, width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Trade Up to Pick #{currentPick?.overall}</h3>
           {offer?.hasEnoughAssets ? (
             <div>
-              <div style={{ color: '#6a9a78', fontSize: 13, marginBottom: 12 }}>
+              <div style={{ color: '#94A3B8', fontSize: 13, marginBottom: 12 }}>
                 Trade with <span style={{ color: '#fff', fontWeight: 700 }}>{offer.targetTeamName}</span>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-                <div style={{ background: '#081f0e', borderRadius: 8, padding: 12 }}>
-                  <div style={{ color: '#6a9a78', fontSize: 11, marginBottom: 6 }}>YOU SEND</div>
+                <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 12 }}>
+                  <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 6 }}>YOU SEND</div>
                   {offer.offeredPicks.map(pk => (
                     <div key={pk.overall} style={{ color: '#ef4444', fontSize: 13, marginBottom: 2 }}>
                       R{pk.round} Pick #{pk.overall} ({Math.round(tradeValue(pk.overall))} pts)
@@ -738,24 +786,24 @@ export default function DraftPage() {
                       {p.name} ({p.position}, ${(p.capHit||0).toFixed(1)}M) — {Math.round(playerTradeValue(p))} pts
                     </div>
                   ))}
-                  <div style={{ color: '#6a9a78', fontSize: 11, marginTop: 6, borderTop: '1px solid rgba(40,200,40,0.25)', paddingTop: 4 }}>
+                  <div style={{ color: '#94A3B8', fontSize: 11, marginTop: 6, borderTop: '1px solid rgba(0,240,255,0.12)', paddingTop: 4 }}>
                     Total: {offer.offeredValue} pts
                   </div>
                 </div>
-                <div style={{ background: '#081f0e', borderRadius: 8, padding: 12 }}>
-                  <div style={{ color: '#6a9a78', fontSize: 11, marginBottom: 6 }}>YOU RECEIVE</div>
+                <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 12 }}>
+                  <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 6 }}>YOU RECEIVE</div>
                   <div style={{ color: '#4ade80', fontSize: 13, marginBottom: 2 }}>
                     R{getRoundForOverall(offer.targetPick.overall)} Pick #{offer.targetPick.overall} ({offer.targetValue} pts)
                   </div>
-                  <div style={{ color: '#6a9a78', fontSize: 11, marginTop: 6, borderTop: '1px solid rgba(40,200,40,0.25)', paddingTop: 4 }}>
+                  <div style={{ color: '#94A3B8', fontSize: 11, marginTop: 6, borderTop: '1px solid rgba(0,240,255,0.12)', paddingTop: 4 }}>
                     Total: {offer.targetValue} pts
                   </div>
                 </div>
               </div>
 
               {/* Player selector - add your roster players to sweeten the deal */}
-              <div style={{ background: '#081f0e', borderRadius: 8, padding: 10, marginBottom: 12 }}>
-                <div style={{ color: '#88b898', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Include players in trade (optional):</div>
+              <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10, marginBottom: 12 }}>
+                <div style={{ color: '#CBD5E1', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Include players in trade (optional):</div>
                 <div style={{ maxHeight: 300, overflowY: 'auto' }}>
                   {roster.sort((a,b) => b.capHit - a.capHit).map(p => {
                     const selected = tradeUpPlayersOffered.find(tp => tp.id === p.id);
@@ -770,10 +818,10 @@ export default function DraftPage() {
                           border: selected ? '1px solid #ef4444' : '1px solid transparent',
                         }}
                       >
-                        <span style={{ color: selected ? '#ef4444' : '#c4d8cc', fontSize: 12 }}>
-                          {p.name} <span style={{ color: '#4d6356' }}>({p.position})</span>
+                        <span style={{ color: selected ? '#ef4444' : '#CBD5E1', fontSize: 12 }}>
+                          {p.name} <span style={{ color: '#475569' }}>({p.position})</span>
                         </span>
-                        <span style={{ color: '#6a9a78', fontSize: 11 }}>
+                        <span style={{ color: '#94A3B8', fontSize: 11 }}>
                           ${(p.capHit||0).toFixed(1)}M — {Math.round(playerTradeValue(p))} pts
                         </span>
                       </div>
@@ -808,7 +856,7 @@ export default function DraftPage() {
                 )}
                 <button
                   onClick={() => { setShowTradeUpModal(false); setTradeOffer(null); setTradeUpPlayersOffered([]); }}
-                  style={{ background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer' }}
+                  style={{ background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer' }}
                 >
                   Cancel
                 </button>
@@ -816,10 +864,10 @@ export default function DraftPage() {
             </div>
           ) : (
             <div>
-              <p style={{ color: '#6a9a78', fontSize: 14 }}>You do not have enough future picks or players to trade up to this position.</p>
+              <p style={{ color: '#94A3B8', fontSize: 14 }}>You do not have enough future picks or players to trade up to this position.</p>
               <button
                 onClick={() => { setShowTradeUpModal(false); setTradeUpPlayersOffered([]); }}
-                style={{ background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer', marginTop: 12 }}
+                style={{ background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer', marginTop: 12 }}
               >
                 Close
               </button>
@@ -837,16 +885,16 @@ export default function DraftPage() {
     return (
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(5,10,8,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 12, padding: 24, maxWidth: 580, width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 580, width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Trade Down from Pick #{currentPick?.overall}</h3>
-          <div style={{ color: '#6a9a78', fontSize: 13, marginBottom: 12 }}>
+          <div style={{ color: '#94A3B8', fontSize: 13, marginBottom: 12 }}>
             Your pick value: {Math.round(tradeValue(currentPick?.overall || 1))} pts
           </div>
 
           {offers.length === 0 ? (
-            <p style={{ color: '#6a9a78', fontSize: 14 }}>No trade-down offers available right now.</p>
+            <p style={{ color: '#94A3B8', fontSize: 14 }}>No trade-down offers available right now.</p>
           ) : (
             offers.map((offer, idx) => {
               const selectedPlayers = tradeDownPlayersWanted.filter(p => p._fromTeam === offer.teamAbbr);
@@ -854,11 +902,11 @@ export default function DraftPage() {
               const totalValue = offer.theirTotalValue + playerValue;
               return (
                 <div key={idx} style={{
-                  background: '#081f0e', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 8, padding: 12, marginBottom: 10,
+                  background: '#0a0f1e', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 8, padding: 12, marginBottom: 10,
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                     <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>{offer.teamName}</span>
-                    <span style={{ color: '#6a9a78', fontSize: 11 }}>
+                    <span style={{ color: '#94A3B8', fontSize: 11 }}>
                       Total value: {totalValue} pts
                     </span>
                   </div>
@@ -879,7 +927,7 @@ export default function DraftPage() {
                   {/* Request players from this team */}
                   {offer.availablePlayers.length > 0 && (
                     <details style={{ marginTop: 6, marginBottom: 6 }}>
-                      <summary style={{ color: '#6a9a78', fontSize: 11, cursor: 'pointer' }}>
+                      <summary style={{ color: '#94A3B8', fontSize: 11, cursor: 'pointer' }}>
                         Request players from {offer.teamName} ({offer.availablePlayers.length} available)
                       </summary>
                       <div style={{ maxHeight: 120, overflowY: 'auto', marginTop: 4 }}>
@@ -904,10 +952,10 @@ export default function DraftPage() {
                                 border: isSelected ? '1px solid #fbbf24' : '1px solid transparent',
                               }}
                             >
-                              <span style={{ color: isSelected ? '#fbbf24' : '#c4d8cc', fontSize: 11 }}>
-                                {p.name} <span style={{ color: '#4a7a58' }}>({p.position || 'UNK'})</span>
+                              <span style={{ color: isSelected ? '#fbbf24' : '#CBD5E1', fontSize: 11 }}>
+                                {p.name} <span style={{ color: '#64748b' }}>({p.position || 'UNK'})</span>
                               </span>
-                              <span style={{ color: '#4d6356', fontSize: 10 }}>${(p.capHit||0).toFixed(1)}M</span>
+                              <span style={{ color: '#475569', fontSize: 10 }}>${(p.capHit||0).toFixed(1)}M</span>
                             </div>
                           );
                         })}
@@ -931,7 +979,7 @@ export default function DraftPage() {
 
           <button
             onClick={() => { setShowTradeDownModal(false); setTradeDownPlayersWanted([]); }}
-            style={{ background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer', marginTop: 8, width: '100%' }}
+            style={{ background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer', marginTop: 8, width: '100%' }}
           >
             Cancel
           </button>
@@ -1012,17 +1060,17 @@ export default function DraftPage() {
     return (
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(5,10,8,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
         <div style={{
-          background: '#0d2a16', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 12, padding: 20,
+          background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 20,
           maxWidth: 780, width: '95%', maxHeight: '90vh', overflowY: 'auto',
         }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px', fontSize: 18 }}>Custom Trade Builder</h3>
 
           {/* Team Selector */}
           <div style={{ marginBottom: 14 }}>
-            <label style={{ color: '#6a9a78', fontSize: 12, marginRight: 8 }}>Trade Partner:</label>
+            <label style={{ color: '#94A3B8', fontSize: 12, marginRight: 8 }}>Trade Partner:</label>
             <select
               value={customTradePartner}
               onChange={e => {
@@ -1031,7 +1079,7 @@ export default function DraftPage() {
                 setCustomTradeRecvPlayers([]);
               }}
               style={{
-                background: '#1a3a22', color: '#c4d8cc', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 6,
+                background: '#1e293b', color: '#CBD5E1', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 6,
                 padding: '4px 10px', fontSize: 13, minWidth: 180,
               }}
             >
@@ -1049,13 +1097,13 @@ export default function DraftPage() {
             gap: 12, marginBottom: 14,
           }}>
             {/* LEFT: Your Assets */}
-            <div style={{ background: '#081f0e', borderRadius: 8, padding: 10 }}>
+            <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10 }}>
               <div style={{ color: accentColor, fontWeight: 700, fontSize: 13, marginBottom: 8 }}>Your Assets</div>
 
-              <div style={{ color: '#6a9a78', fontSize: 11, marginBottom: 4 }}>Draft Picks</div>
+              <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 4 }}>Draft Picks</div>
               <div style={{ maxHeight: 120, overflowY: 'auto', marginBottom: 8 }}>
                 {userPicks.length === 0 ? (
-                  <div style={{ color: 'rgba(40,200,40,0.32)', fontSize: 11 }}>No available picks</div>
+                  <div style={{ color: 'rgba(0,240,255,0.18)', fontSize: 11 }}>No available picks</div>
                 ) : userPicks.map(pk => {
                   const selected = customTradeSentPicks.find(sp => sp.overall === pk.overall);
                   return (
@@ -1071,16 +1119,16 @@ export default function DraftPage() {
                         border: selected ? '1px solid #ef4444' : '1px solid transparent',
                       }}
                     >
-                      <span style={{ color: selected ? '#ef4444' : '#c4d8cc', fontSize: 12 }}>
+                      <span style={{ color: selected ? '#ef4444' : '#CBD5E1', fontSize: 12 }}>
                         R{pk.round} #{pk.overall}
                       </span>
-                      <span style={{ color: '#4d6356', fontSize: 11 }}>{Math.round(tradeValue(pk.overall))} pts</span>
+                      <span style={{ color: '#475569', fontSize: 11 }}>{Math.round(tradeValue(pk.overall))} pts</span>
                     </div>
                   );
                 })}
               </div>
 
-              <div style={{ color: '#6a9a78', fontSize: 11, marginBottom: 4 }}>Roster Players</div>
+              <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 4 }}>Roster Players</div>
               <div style={{ maxHeight: 300, overflowY: 'auto' }}>
                 {roster.sort((a, b) => b.capHit - a.capHit).map(p => {
                   const selected = customTradeSentPlayers.find(sp => sp.id === p.id);
@@ -1097,10 +1145,10 @@ export default function DraftPage() {
                         border: selected ? '1px solid #ef4444' : '1px solid transparent',
                       }}
                     >
-                      <span style={{ color: selected ? '#ef4444' : '#c4d8cc', fontSize: 11 }}>
-                        {p.name} <span style={{ color: '#4a7a58' }}>({p.position})</span>
+                      <span style={{ color: selected ? '#ef4444' : '#CBD5E1', fontSize: 11 }}>
+                        {p.name} <span style={{ color: '#64748b' }}>({p.position})</span>
                       </span>
-                      <span style={{ color: '#4d6356', fontSize: 10 }}>
+                      <span style={{ color: '#475569', fontSize: 10 }}>
                         ${(p.capHit || 0).toFixed(1)}M / {Math.round(playerTradeValue(p))} pts
                       </span>
                     </div>
@@ -1110,21 +1158,21 @@ export default function DraftPage() {
             </div>
 
             {/* RIGHT: Their Assets */}
-            <div style={{ background: '#081f0e', borderRadius: 8, padding: 10 }}>
+            <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10 }}>
               <div style={{ color: '#60a5fa', fontWeight: 700, fontSize: 13, marginBottom: 8 }}>
                 {customTradePartner ? `${customTradePartner} Assets` : 'Their Assets'}
               </div>
 
               {!customTradePartner ? (
-                <div style={{ color: 'rgba(40,200,40,0.32)', fontSize: 12, padding: '20px 0', textAlign: 'center' }}>
+                <div style={{ color: 'rgba(0,240,255,0.18)', fontSize: 12, padding: '20px 0', textAlign: 'center' }}>
                   Select a trade partner above
                 </div>
               ) : (
                 <>
-                  <div style={{ color: '#6a9a78', fontSize: 11, marginBottom: 4 }}>Draft Picks</div>
+                  <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 4 }}>Draft Picks</div>
                   <div style={{ maxHeight: 120, overflowY: 'auto', marginBottom: 8 }}>
                     {partnerPicks.length === 0 ? (
-                      <div style={{ color: 'rgba(40,200,40,0.32)', fontSize: 11 }}>No available picks</div>
+                      <div style={{ color: 'rgba(0,240,255,0.18)', fontSize: 11 }}>No available picks</div>
                     ) : partnerPicks.map(pk => {
                       const selected = customTradeRecvPicks.find(rp => rp.overall === pk.overall);
                       return (
@@ -1140,19 +1188,19 @@ export default function DraftPage() {
                             border: selected ? '1px solid #4ade80' : '1px solid transparent',
                           }}
                         >
-                          <span style={{ color: selected ? '#4ade80' : '#c4d8cc', fontSize: 12 }}>
+                          <span style={{ color: selected ? '#4ade80' : '#CBD5E1', fontSize: 12 }}>
                             R{pk.round} #{pk.overall}
                           </span>
-                          <span style={{ color: '#4d6356', fontSize: 11 }}>{Math.round(tradeValue(pk.overall))} pts</span>
+                          <span style={{ color: '#475569', fontSize: 11 }}>{Math.round(tradeValue(pk.overall))} pts</span>
                         </div>
                       );
                     })}
                   </div>
 
-                  <div style={{ color: '#6a9a78', fontSize: 11, marginBottom: 4 }}>Roster Players</div>
+                  <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 4 }}>Roster Players</div>
                   <div style={{ maxHeight: 300, overflowY: 'auto' }}>
                     {partnerPlayers.length === 0 ? (
-                      <div style={{ color: 'rgba(40,200,40,0.32)', fontSize: 11 }}>No player data</div>
+                      <div style={{ color: 'rgba(0,240,255,0.18)', fontSize: 11 }}>No player data</div>
                     ) : partnerPlayers.sort((a, b) => b.capHit - a.capHit).map(p => {
                       const selected = customTradeRecvPlayers.find(rp => rp.id === p.id);
                       return (
@@ -1168,10 +1216,10 @@ export default function DraftPage() {
                             border: selected ? '1px solid #4ade80' : '1px solid transparent',
                           }}
                         >
-                          <span style={{ color: selected ? '#4ade80' : '#c4d8cc', fontSize: 11 }}>
-                            {p.name} <span style={{ color: '#4a7a58' }}>({p.position || 'UNK'})</span>
+                          <span style={{ color: selected ? '#4ade80' : '#CBD5E1', fontSize: 11 }}>
+                            {p.name} <span style={{ color: '#64748b' }}>({p.position || 'UNK'})</span>
                           </span>
-                          <span style={{ color: '#4d6356', fontSize: 10 }}>
+                          <span style={{ color: '#475569', fontSize: 10 }}>
                             ${(p.capHit || 0).toFixed(1)}M / {Math.round(playerTradeValue(p))} pts
                           </span>
                         </div>
@@ -1184,7 +1232,7 @@ export default function DraftPage() {
           </div>
 
           {/* Trade Value Bar */}
-          <div style={{ background: '#081f0e', borderRadius: 8, padding: 12, marginBottom: 12 }}>
+          <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 12, marginBottom: 12 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
               <span style={{ color: '#ef4444', fontSize: 12, fontWeight: 700 }}>You Send: {vals.sentTotal} pts</span>
               <span style={{ color: '#4ade80', fontSize: 12, fontWeight: 700 }}>You Receive: {vals.recvTotal} pts</span>
@@ -1206,7 +1254,7 @@ export default function DraftPage() {
 
           {/* Cap Impact */}
           {(customTradeSentPlayers.length > 0 || customTradeRecvPlayers.length > 0) && (
-            <div style={{ background: '#081f0e', borderRadius: 8, padding: 10, marginBottom: 12 }}>
+            <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 10, marginBottom: 12 }}>
               <div style={{ color: '#fff', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Cap Impact</div>
               {(() => {
                 const sentCapRelief = customTradeSentPlayers.reduce((s, p) => s + (p.capHit || 0) - (p.deadMoney != null ? p.deadMoney : 0), 0);
@@ -1216,18 +1264,18 @@ export default function DraftPage() {
                 return (
                   <div style={{ fontSize: 11 }}>
                     {customTradeSentPlayers.map(p => (
-                      <div key={p.id} style={{ color: '#c4d8cc', marginBottom: 1 }}>
+                      <div key={p.id} style={{ color: '#CBD5E1', marginBottom: 1 }}>
                         Send {p.name}: <span style={{ color: '#4ade80' }}>+${(p.capHit||0).toFixed(1)}M</span>
                         {(p.deadMoney != null && p.deadMoney > 0) && <span style={{ color: '#ff4444' }}> ({p.deadMoney.toFixed(1)}M dead)</span>}
                       </div>
                     ))}
                     {customTradeRecvPlayers.map(p => (
-                      <div key={p.id} style={{ color: '#c4d8cc', marginBottom: 1 }}>
+                      <div key={p.id} style={{ color: '#CBD5E1', marginBottom: 1 }}>
                         Receive {p.name}: <span style={{ color: '#ff4444' }}>-${(p.capHit||0).toFixed(1)}M</span>
                       </div>
                     ))}
-                    <div style={{ borderTop: '1px solid rgba(40,200,40,0.25)', marginTop: 4, paddingTop: 4, display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#6a9a78' }}>Net cap impact:</span>
+                    <div style={{ borderTop: '1px solid rgba(0,240,255,0.12)', marginTop: 4, paddingTop: 4, display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#94A3B8' }}>Net cap impact:</span>
                       <span style={{ color: net >= 0 ? '#4ade80' : '#ff4444', fontWeight: 700 }}>
                         {net >= 0 ? '+' : ''}${net.toFixed(1)}M
                       </span>
@@ -1242,7 +1290,7 @@ export default function DraftPage() {
           {/* Force Trade Toggle */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14,
-            padding: '8px 12px', background: '#081f0e', borderRadius: 8,
+            padding: '8px 12px', background: '#0a0f1e', borderRadius: 8,
           }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
               <input
@@ -1251,7 +1299,7 @@ export default function DraftPage() {
                 onChange={e => setCustomTradeForce(e.target.checked)}
                 style={{ accentColor: accentColor }}
               />
-              <span style={{ color: '#c4d8cc', fontSize: 12 }}>Force Trade (override value check)</span>
+              <span style={{ color: '#CBD5E1', fontSize: 12 }}>Force Trade (override value check)</span>
             </label>
             {customTradeForce && !vals.cpuAccepts && (
               <span style={{ color: '#fbbf24', fontSize: 11 }}>CPU team would not normally accept this trade</span>
@@ -1264,8 +1312,8 @@ export default function DraftPage() {
               onClick={executeCustomTrade}
               disabled={!canExecute}
               style={{
-                background: canExecute ? accentColor : 'rgba(40,200,40,0.25)',
-                color: canExecute ? '#000' : '#4d6356',
+                background: canExecute ? accentColor : 'rgba(0,240,255,0.12)',
+                color: canExecute ? '#000' : '#475569',
                 border: 'none', borderRadius: 8, padding: '10px 24px',
                 cursor: canExecute ? 'pointer' : 'not-allowed',
                 fontWeight: 700, fontSize: 14,
@@ -1276,7 +1324,7 @@ export default function DraftPage() {
             <button
               onClick={() => setShowCustomTradeModal(false)}
               style={{
-                background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8,
+                background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8,
                 padding: '10px 24px', cursor: 'pointer', fontWeight: 600,
               }}
             >
@@ -1294,25 +1342,25 @@ export default function DraftPage() {
     return (
       <div style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(5,10,8,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0d2a16', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 12, padding: 24, maxWidth: 480, width: '90%' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 480, width: '90%' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Add Draft Class to Roster</h3>
-          <p style={{ color: '#6a9a78', fontSize: 13, marginBottom: 16 }}>
+          <p style={{ color: '#94A3B8', fontSize: 13, marginBottom: 16 }}>
             This will add {draftedPlayers.length} drafted players to your roster with estimated rookie contracts.
           </p>
 
-          <div style={{ background: '#081f0e', borderRadius: 8, padding: 12, marginBottom: 16 }}>
+          <div style={{ background: '#0a0f1e', borderRadius: 8, padding: 12, marginBottom: 16 }}>
             {draftedPlayers.map(p => {
               const cap = estimateRookieCapHit(p.pickNumber);
               return (
                 <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: 12, borderBottom: '1px solid #1a2420' }}>
-                  <span style={{ color: '#c4d8cc' }}>{p.name} <span style={{ color: '#4d6356' }}>({p.position})</span></span>
+                  <span style={{ color: '#CBD5E1' }}>{p.name} <span style={{ color: '#475569' }}>({p.position})</span></span>
                   <span style={{ color: accentColor, fontWeight: 700 }}>${cap.toFixed(1)}M</span>
                 </div>
               );
             })}
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0 0', fontSize: 13, fontWeight: 700, borderTop: '1px solid rgba(40,200,40,0.32)', marginTop: 4 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0 0', fontSize: 13, fontWeight: 700, borderTop: '1px solid rgba(0,240,255,0.18)', marginTop: 4 }}>
               <span style={{ color: '#fff' }}>Total Cap Impact</span>
               <span style={{ color: accentColor }}>${draftClassCapImpact.toFixed(1)}M</span>
             </div>
@@ -1327,7 +1375,7 @@ export default function DraftPage() {
             </button>
             <button
               onClick={() => setShowAddDraftClassConfirm(false)}
-              style={{ background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer' }}
+              style={{ background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer' }}
             >
               Cancel
             </button>
@@ -1344,33 +1392,33 @@ export default function DraftPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <div>
             <h1 style={{ margin: 0, fontSize: 22, color: accentColor }}>2026 NFL Draft Simulator</h1>
-            <p style={{ margin: '4px 0 0', color: '#6a9a78', fontSize: 14 }}>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: 14 }}>
               {totalPicks} picks across {draftRounds} round{draftRounds > 1 ? 's' : ''} -- You have {myPicks.filter(pk => getRoundForOverall(pk.overall) <= draftRounds).length} picks
             </p>
           </div>
         </div>
         <div style={{
-          background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 12, padding: 32,
+          background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 32,
           textAlign: 'center', maxWidth: 500, margin: '60px auto',
         }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>NFL Draft</div>
           <h2 style={{ color: '#fff', margin: '0 0 8px', fontSize: 20 }}>2026 NFL Draft Simulator</h2>
-          <p style={{ color: '#6a9a78', fontSize: 14, margin: '0 0 20px' }}>
+          <p style={{ color: '#94A3B8', fontSize: 14, margin: '0 0 20px' }}>
             Simulate the draft pick-by-pick. Draft for your team, watch CPU teams make their selections.
           </p>
 
           {/* Round Selector */}
           <div style={{ marginBottom: 16 }}>
-            <div style={{ color: '#88b898', fontSize: 12, marginBottom: 8 }}>Number of Rounds:</div>
+            <div style={{ color: '#CBD5E1', fontSize: 12, marginBottom: 8 }}>Number of Rounds:</div>
             <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
               {[1, 2, 3, 4, 5, 6, 7].map(r => (
                 <button
                   key={r}
                   onClick={() => setDraftRounds(r)}
                   style={{
-                    background: draftRounds === r ? accentColor : '#1a3a22',
-                    color: draftRounds === r ? '#000' : '#6a9a78',
-                    border: draftRounds === r ? 'none' : '1px solid rgba(40,200,40,0.25)',
+                    background: draftRounds === r ? accentColor : '#1e293b',
+                    color: draftRounds === r ? '#000' : '#94A3B8',
+                    border: draftRounds === r ? 'none' : '1px solid rgba(0,240,255,0.12)',
                     borderRadius: 6,
                     padding: '8px 14px',
                     cursor: 'pointer',
@@ -1383,7 +1431,7 @@ export default function DraftPage() {
                 </button>
               ))}
             </div>
-            <div style={{ color: '#4a7a58', fontSize: 11, marginTop: 4 }}>
+            <div style={{ color: '#64748b', fontSize: 11, marginTop: 4 }}>
               {totalPicks} picks in {draftRounds} round{draftRounds > 1 ? 's' : ''}
             </div>
           </div>
@@ -1394,7 +1442,7 @@ export default function DraftPage() {
           </div>
 
           <div style={{ marginBottom: 20 }}>
-            <div style={{ color: '#88b898', fontSize: 13, marginBottom: 8 }}>
+            <div style={{ color: '#CBD5E1', fontSize: 13, marginBottom: 8 }}>
               Your picks ({myPicks.filter(pk => getRoundForOverall(pk.overall) <= draftRounds).length} in {draftRounds} round{draftRounds > 1 ? 's' : ''}):
             </div>
             <div style={{ display: 'flex', gap: 6, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -1402,10 +1450,10 @@ export default function DraftPage() {
                 const inRange = getRoundForOverall(pk.overall) <= draftRounds;
                 return (
                   <span key={pk.overall} style={{
-                    background: inRange ? accentBgBorder(accentColor) : '#0d2a16',
-                    border: `1px solid ${inRange ? accentColor : 'rgba(40,200,40,0.25)'}`,
+                    background: inRange ? accentBgBorder(accentColor) : '#0f172a',
+                    border: `1px solid ${inRange ? accentColor : 'rgba(0,240,255,0.12)'}`,
                     borderRadius: 6, padding: '4px 10px', fontSize: 12,
-                    color: inRange ? accentColor : '#4a7a58',
+                    color: inRange ? accentColor : '#64748b',
                     fontWeight: 700,
                     opacity: inRange ? 1 : 0.4,
                   }}>
@@ -1448,7 +1496,7 @@ export default function DraftPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 8 }}>
           <div>
             <h1 style={{ margin: 0, fontSize: 22, color: accentColor }}>Draft Complete</h1>
-            <p style={{ margin: '4px 0 0', color: '#6a9a78', fontSize: 14 }}>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: 14 }}>
               All {totalPicks} picks are in. Here is your draft class.
             </p>
           </div>
@@ -1472,7 +1520,7 @@ export default function DraftPage() {
             <button
               onClick={() => setShowResetConfirm(true)}
               style={{
-                background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 8,
+                background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 8,
                 padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: 13,
               }}
             >
@@ -1486,16 +1534,16 @@ export default function DraftPage() {
 
         {/* Overall Grade */}
         <div style={{
-          background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 12, padding: 24,
+          background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 24,
           textAlign: 'center', marginBottom: 20,
         }}>
-          <div style={{ color: '#6a9a78', fontSize: 13, marginBottom: 4 }}>Overall Draft Grade</div>
+          <div style={{ color: '#94A3B8', fontSize: 13, marginBottom: 4 }}>Overall Draft Grade</div>
           <div style={{
             fontSize: 48, fontWeight: 900, color: gradeLetterColor(draftRecap.letter),
           }}>
             {draftRecap.letter}
           </div>
-          <div style={{ color: '#4d6356', fontSize: 13 }}>Avg prospect grade: {draftRecap.avgGrade}</div>
+          <div style={{ color: '#475569', fontSize: 13 }}>Avg prospect grade: {draftRecap.avgGrade}</div>
         </div>
 
         {/* Draft Class Cards */}
@@ -1507,12 +1555,12 @@ export default function DraftPage() {
               const cap = estimateRookieCapHit(p.pickNumber);
               return (
                 <div key={p.id} style={{
-                  background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 16,
+                  background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 16,
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                     <div>
                       <div style={{ color: '#fff', fontWeight: 700, fontSize: 16 }}>{p.name}</div>
-                      <div style={{ color: '#6a9a78', fontSize: 13 }}>{p.position} -- {p.school}</div>
+                      <div style={{ color: '#94A3B8', fontSize: 13 }}>{p.position} -- {p.school}</div>
                     </div>
                     <span style={{
                       background: gradeColor(p.grade) + '22', color: gradeColor(p.grade),
@@ -1522,7 +1570,7 @@ export default function DraftPage() {
                       {p.grade}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#4a7a58', fontSize: 12 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: 12 }}>
                     <span>Round {pickRound} -- Pick #{p.pickNumber}</span>
                     <span style={{ color: accentColor }}>~${cap.toFixed(1)}M/yr</span>
                   </div>
@@ -1534,7 +1582,7 @@ export default function DraftPage() {
 
         {/* Full Draft Board */}
         <div style={{
-          background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 12,
+          background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 12,
         }}>
           <h3 style={{ color: '#fff', fontSize: 15, margin: '0 0 10px' }}>Full Draft Board</h3>
           {renderFullBoard()}
@@ -1556,7 +1604,7 @@ export default function DraftPage() {
       }}>
         <div>
           <h1 style={{ margin: 0, fontSize: 20, color: accentColor }}>2026 NFL Draft Simulator</h1>
-          <p style={{ margin: '2px 0 0', color: '#6a9a78', fontSize: 13 }}>
+          <p style={{ margin: '2px 0 0', color: '#94A3B8', fontSize: 13 }}>
             Pick {Math.min(currentPickIdx + 1, totalPicks)} of {totalPicks}
           </p>
         </div>
@@ -1604,7 +1652,7 @@ export default function DraftPage() {
           <button
             onClick={() => setShowResetConfirm(true)}
             style={{
-              background: 'rgba(40,200,40,0.25)', color: '#c4d8cc', border: 'none', borderRadius: 6,
+              background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 6,
               padding: '4px 12px', cursor: 'pointer', fontWeight: 600, fontSize: 12,
             }}
           >
@@ -1630,7 +1678,7 @@ export default function DraftPage() {
         <div
           ref={draftBoardRef}
           style={{
-            background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 10,
+            background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 10,
             overflowY: 'auto', maxHeight: 'calc(100vh - 160px)',
           }}
         >
@@ -1663,7 +1711,7 @@ export default function DraftPage() {
                       background: isCurrent
                         ? accentBg(accentColor)
                         : drafted
-                          ? (drafted.teamAbbr === currentTeamAbbr ? accentBgLight(accentColor) : '#081f0e')
+                          ? (drafted.teamAbbr === currentTeamAbbr ? accentBgLight(accentColor) : '#0a0f1e')
                           : '#0a0e0c',
                       border: isCurrent
                         ? `1px solid ${accentColor}`
@@ -1674,7 +1722,7 @@ export default function DraftPage() {
                   >
                     {/* Pick Number */}
                     <div style={{
-                      minWidth: 32, textAlign: 'center', color: isCurrent ? accentColor : '#4a7a58',
+                      minWidth: 32, textAlign: 'center', color: isCurrent ? accentColor : '#64748b',
                       fontWeight: 700, fontSize: 12,
                     }}>
                       #{pick.overall}
@@ -1683,10 +1731,10 @@ export default function DraftPage() {
                     {/* Team Color Dot + Name */}
                     <div style={{
                       width: 8, height: 8, borderRadius: '50%',
-                      background: pick.teamColor || '#4a7a58', flexShrink: 0,
+                      background: pick.teamColor || '#64748b', flexShrink: 0,
                     }} />
                     <div style={{
-                      minWidth: 80, color: isUserTeam ? accentColor : '#88b898',
+                      minWidth: 80, color: isUserTeam ? accentColor : '#CBD5E1',
                       fontWeight: isUserTeam ? 700 : 400, fontSize: 12,
                     }}>
                       {pick.teamName}
@@ -1699,12 +1747,12 @@ export default function DraftPage() {
                           {drafted.prospect.name}
                         </span>
                         <span style={{
-                          background: '#1a3a22', color: accentColor, borderRadius: 3,
+                          background: '#1e293b', color: accentColor, borderRadius: 3,
                           padding: '1px 5px', fontSize: 10, fontWeight: 700,
                         }}>
                           {drafted.prospect.position}
                         </span>
-                        <span style={{ color: '#4a7a58', fontSize: 11 }}>
+                        <span style={{ color: '#64748b', fontSize: 11 }}>
                           {drafted.prospect.school}
                         </span>
                       </div>
@@ -1713,7 +1761,7 @@ export default function DraftPage() {
                         {isUserPick ? 'ON THE CLOCK' : isPaused ? 'PAUSED' : 'Selecting...'}
                       </div>
                     ) : (
-                      <div style={{ flex: 1, color: 'rgba(40,200,40,0.25)', fontSize: 12 }}>--</div>
+                      <div style={{ flex: 1, color: 'rgba(0,240,255,0.12)', fontSize: 12 }}>--</div>
                     )}
                   </div>
                 );
@@ -1724,20 +1772,20 @@ export default function DraftPage() {
 
         {/* RIGHT: Context Panel */}
         <div style={{
-          background: '#0d2a16', border: '1px solid rgba(40,200,40,0.25)', borderRadius: 10, padding: 12,
+          background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 12,
           overflowY: 'auto', maxHeight: 'calc(100vh - 160px)',
         }}>
           {/* CPU Simulating (not paused) */}
           {isSimulating && !isUserPick && !isPaused && (
             <div style={{ textAlign: 'center', padding: '40px 20px' }}>
               <div style={{
-                width: 40, height: 40, border: '3px solid rgba(40,200,40,0.25)', borderTop: `3px solid ${accentColor}`,
+                width: 40, height: 40, border: '3px solid rgba(0,240,255,0.12)', borderTop: `3px solid ${accentColor}`,
                 borderRadius: '50%', margin: '0 auto 16px',
                 animation: 'spin 0.8s linear infinite',
               }} />
               <div style={{ color: '#fff', fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Simulating...</div>
               {currentPick && (
-                <div style={{ color: '#6a9a78', fontSize: 13 }}>
+                <div style={{ color: '#94A3B8', fontSize: 13 }}>
                   {currentPick.teamName} are on the clock (#{currentPick.overall})
                 </div>
               )}
@@ -1752,7 +1800,7 @@ export default function DraftPage() {
                 borderRadius: 8, padding: 16, marginBottom: 16,
               }}>
                 <div style={{ color: '#fbbf24', fontWeight: 800, fontSize: 18, marginBottom: 4 }}>DRAFT PAUSED</div>
-                <div style={{ color: '#6a9a78', fontSize: 13 }}>
+                <div style={{ color: '#94A3B8', fontSize: 13 }}>
                   {currentPick && `${currentPick.teamName} are on the clock (Pick #${currentPick.overall})`}
                 </div>
               </div>
@@ -1797,12 +1845,12 @@ export default function DraftPage() {
               {/* Position Filter + Trade Down */}
               <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                  <span style={{ color: '#6a9a78', fontSize: 12 }}>Filter:</span>
+                  <span style={{ color: '#94A3B8', fontSize: 12 }}>Filter:</span>
                   <select
                     value={filterPos}
                     onChange={e => setFilterPos(e.target.value)}
                     style={{
-                      background: '#1a3a22', color: '#c4d8cc', border: '1px solid rgba(40,200,40,0.32)', borderRadius: 6,
+                      background: '#1e293b', color: '#CBD5E1', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 6,
                       padding: '3px 8px', fontSize: 12,
                     }}
                   >
@@ -1846,12 +1894,12 @@ export default function DraftPage() {
                     onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                      <span style={{ color: '#4a7a58', fontSize: 11, minWidth: 24, textAlign: 'right' }}>#{p.rank}</span>
+                      <span style={{ color: '#64748b', fontSize: 11, minWidth: 24, textAlign: 'right' }}>#{p.rank}</span>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ color: '#fff', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {p.name}
                         </div>
-                        <div style={{ color: '#4d6356', fontSize: 11 }}>
+                        <div style={{ color: '#475569', fontSize: 11 }}>
                           {p.position} -- {p.school}
                         </div>
                       </div>
@@ -1876,7 +1924,7 @@ export default function DraftPage() {
                   </div>
                 ))}
                 {availableProspects.length > 100 && (
-                  <p style={{ color: '#4a7a58', fontSize: 11, textAlign: 'center', marginTop: 8 }}>
+                  <p style={{ color: '#64748b', fontSize: 11, textAlign: 'center', marginTop: 8 }}>
                     {availableProspects.length} prospects available. Use filter to narrow.
                   </p>
                 )}
@@ -1887,7 +1935,7 @@ export default function DraftPage() {
           {/* Waiting state (not simulating, not user pick, not complete) */}
           {!isSimulating && !isUserPick && !draftComplete && draftStarted && !isPaused && (
             <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-              <div style={{ color: '#6a9a78', fontSize: 14 }}>Waiting for simulation to resume...</div>
+              <div style={{ color: '#94A3B8', fontSize: 14 }}>Waiting for simulation to resume...</div>
               <button
                 onClick={() => simulateCPUPicks()}
                 style={{
@@ -1903,7 +1951,7 @@ export default function DraftPage() {
           {/* Your Picks Summary (always show when picks have been made) */}
           {draftedPlayers.length > 0 && !draftComplete && (
             <div style={{
-              borderTop: '1px solid rgba(40,200,40,0.25)', marginTop: 12, paddingTop: 12,
+              borderTop: '1px solid rgba(0,240,255,0.12)', marginTop: 12, paddingTop: 12,
             }}>
               <h4 style={{ margin: '0 0 8px', color: '#fff', fontSize: 13 }}>Your Picks ({draftedPlayers.length})</h4>
               {draftedPlayers.map(p => (
@@ -1911,7 +1959,7 @@ export default function DraftPage() {
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   padding: '4px 0', fontSize: 12,
                 }}>
-                  <span style={{ color: '#c4d8cc' }}>{p.name} <span style={{ color: '#4a7a58' }}>({p.position})</span></span>
+                  <span style={{ color: '#CBD5E1' }}>{p.name} <span style={{ color: '#64748b' }}>({p.position})</span></span>
                   <span style={{ color: gradeColor(p.grade), fontWeight: 700, fontSize: 11 }}>{p.grade}</span>
                 </div>
               ))}

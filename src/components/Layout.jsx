@@ -27,15 +27,11 @@ export default function Layout({ children }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
 
-      {/* Floating side vine decorations */}
-      <div className="vine-side-left" />
-      <div className="vine-side-right" />
-
       {/* Top Nav */}
       <header style={{
-        background: 'linear-gradient(135deg, #080c0a 0%, #111916 50%, #0a2010 100%)',
-        borderBottom: `3px solid ${accentColor}`,
-        boxShadow: `0 2px 20px rgba(0,0,0,0.5), 0 3px 0 -1px rgba(212,168,67,0.15), 0 1px 0 ${accentColor}33`,
+        background: 'linear-gradient(135deg, #000814 0%, #0A1628 50%, #000814 100%)',
+        borderBottom: '1px solid rgba(0,240,255,0.3)',
+        boxShadow: '0 1px 20px rgba(0,240,255,0.15), 0 2px 20px rgba(0,0,0,0.5)',
         padding: '0 16px',
         position: 'sticky',
         top: 0,
@@ -44,56 +40,6 @@ export default function Layout({ children }) {
         WebkitBackdropFilter: 'blur(12px)',
         overflow: 'hidden',
       }}>
-        {/* Tiger stripe overlay on header - MORE VISIBLE */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 12px,
-            rgba(251,79,20,0.35) 12px,
-            rgba(251,79,20,0.35) 13px,
-            transparent 13px,
-            transparent 14px,
-            rgba(0,0,0,0.55) 14px,
-            rgba(0,0,0,0.55) 16px
-          )`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
-
-        {/* Palm frond silhouette - left side of header */}
-        <div style={{
-          position: 'absolute',
-          top: -10,
-          left: -20,
-          width: 800,
-          height: 320,
-          backgroundImage: 'url(/palm-left.svg)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.7,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
-        {/* Palm frond silhouette - right side of header */}
-        <div style={{
-          position: 'absolute',
-          top: -10,
-          right: -20,
-          width: 800,
-          height: 320,
-          backgroundImage: 'url(/palm-right.svg)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.7,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
 
         <div style={{
           maxWidth: 1200,
@@ -113,23 +59,6 @@ export default function Layout({ children }) {
               marginRight: 4,
               position: 'relative',
             }}>
-              {/* Tiger stripe accent behind brand text */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: -4,
-                right: -4,
-                bottom: 0,
-                background: `repeating-linear-gradient(
-                  -55deg,
-                  transparent,
-                  transparent 6px,
-                  rgba(212,168,67,0.08) 6px,
-                  rgba(212,168,67,0.08) 8px
-                )`,
-                borderRadius: 4,
-                pointerEvents: 'none',
-              }} />
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 0, lineHeight: 1.1, position: 'relative' }}>
                 <span style={{
                   fontWeight: 900,
@@ -137,12 +66,12 @@ export default function Layout({ children }) {
                   fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
                   letterSpacing: '0.04em',
                   textTransform: 'uppercase',
-                  background: 'linear-gradient(135deg, #ffe090 0%, #f0c860 25%, #d4a843 50%, #f0c860 75%, #ffe090 100%)',
+                  background: 'linear-gradient(135deg, #00F0FF 0%, #80F8FF 40%, #E2E8F0 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                   textShadow: 'none',
-                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(212,168,67,0.5))',
+                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(0,240,255,0.5))',
                 }}>AINFL</span>
                 <span style={{
                   fontWeight: 900,
@@ -155,16 +84,15 @@ export default function Layout({ children }) {
                   textShadow: `0 1px 2px rgba(0,0,0,0.5), 0 0 18px ${accentColor}66`,
                 }}>GM</span>
               </div>
-              <div style={{ color: 'rgba(212,168,67,0.5)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 1, position: 'relative', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</div>
+              <div style={{ color: 'rgba(0,240,255,0.4)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 1, position: 'relative', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</div>
             </div>
-            {/* Vine accent divider between branding and team selector - THICKER */}
+            {/* Thin neon divider between branding and team selector */}
             <div style={{
-              width: 16,
+              width: 1,
               height: 36,
               marginRight: 2,
-              background: 'linear-gradient(180deg, transparent 0%, rgba(34,180,34,0.5) 15%, rgba(212,168,67,0.6) 35%, rgba(34,180,34,0.5) 55%, rgba(212,168,67,0.6) 75%, rgba(34,180,34,0.5) 85%, transparent 100%)',
-              borderRadius: 2,
-              boxShadow: '0 0 6px rgba(34,180,34,0.3)',
+              background: 'linear-gradient(180deg, transparent 0%, rgba(0,240,255,0.3) 20%, rgba(0,240,255,0.15) 80%, transparent 100%)',
+              borderRadius: 1,
             }} />
             <div style={{
               width: 36,
@@ -178,7 +106,7 @@ export default function Layout({ children }) {
               fontSize: 14,
               fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
               color: '#000',
-              boxShadow: `0 0 14px ${accentColor}33, 0 0 0 1.5px rgba(212,168,67,0.25)`,
+              boxShadow: `0 0 14px ${accentColor}33, 0 0 0 1px rgba(0,240,255,0.2)`,
             }}>{currentTeamObj.abbreviation.slice(0, 2)}</div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -186,9 +114,9 @@ export default function Layout({ children }) {
                   value={currentTeamAbbr}
                   onChange={e => selectTeam(e.target.value)}
                   style={{
-                    background: 'rgba(17,25,22,0.6)',
+                    background: 'rgba(30,41,59,0.6)',
                     color: accentColor,
-                    border: `1px solid ${accentColor}33`,
+                    border: '1px solid rgba(0,240,255,0.15)',
                     borderRadius: 6,
                     padding: '2px 6px',
                     fontWeight: 800,
@@ -204,42 +132,42 @@ export default function Layout({ children }) {
                   ))}
                 </select>
               </div>
-              <div style={{ color: '#666', fontSize: 11, fontFamily: "'Oswald', 'Inter', system-ui, sans-serif", letterSpacing: '0.06em', textTransform: 'uppercase' }}>2026 Offseason Simulator</div>
+              <div style={{ color: '#94A3B8', fontSize: 11, fontFamily: "'Oswald', 'Inter', system-ui, sans-serif", letterSpacing: '0.06em', textTransform: 'uppercase' }}>2026 Offseason Simulator</div>
             </div>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ color: isOverCap ? '#ff4444' : '#4ade80', fontSize: 13, fontWeight: 700, textShadow: isOverCap ? '0 0 8px rgba(255,68,68,0.3)' : '0 0 8px rgba(74,222,128,0.2)' }}>
+            <div style={{ color: isOverCap ? '#FF2D55' : '#39FF14', fontSize: 13, fontWeight: 700, textShadow: isOverCap ? '0 0 8px rgba(255,45,85,0.3)' : '0 0 8px rgba(57,255,20,0.2)' }}>
               {isOverCap ? '\u26A0\uFE0F OVER CAP' : `$${capAvailable.toFixed(1)}M available`}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{
                 width: 120,
                 height: 7,
-                background: 'rgba(34,139,34,0.08)',
+                background: 'rgba(0,240,255,0.06)',
                 borderRadius: 4,
                 overflow: 'hidden',
-                boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.4), inset 0 0 4px rgba(212,168,67,0.04)',
+                boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.4)',
               }}>
                 <div style={{
                   width: `${capPct}%`,
                   height: '100%',
                   background: isOverCap
-                    ? 'linear-gradient(90deg, #ff4444, #ff6666)'
+                    ? 'linear-gradient(90deg, #FF2D55, #ff5577)'
                     : capPct > 85
                       ? 'linear-gradient(90deg, #facc15, #fbbf24)'
-                      : `linear-gradient(90deg, ${accentColor}, ${accentColor}cc)`,
+                      : 'linear-gradient(90deg, #00D4FF, #00A0CC)',
                   borderRadius: 4,
                   transition: 'width 0.3s ease',
-                  boxShadow: isOverCap ? '0 0 8px rgba(255,68,68,0.4)' : `0 0 8px ${accentColor}33`,
+                  boxShadow: isOverCap ? '0 0 8px rgba(255,45,85,0.4)' : '0 0 8px rgba(0,240,255,0.3)',
                 }} />
               </div>
-              <span style={{ color: '#666', fontSize: 11 }}>{capPct.toFixed(0)}%</span>
+              <span style={{ color: '#94A3B8', fontSize: 11 }}>{capPct.toFixed(0)}%</span>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content with left vine strip */}
+      {/* Main Content */}
       <main style={{
         flex: 1,
         padding: '16px',
@@ -249,42 +177,16 @@ export default function Layout({ children }) {
         width: '100%',
         boxSizing: 'border-box',
         position: 'relative',
+        borderLeft: '1px solid rgba(0,240,255,0.08)',
       }}>
-        {/* Left vine decorative strip - MUCH BOLDER */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 4,
-          width: 20,
-          height: '100%',
-          background: 'linear-gradient(180deg, transparent 0%, #22aa22 3%, #d4a843 10%, #22aa22 20%, #d4a843 30%, #22aa22 40%, #d4a843 50%, #22aa22 60%, #d4a843 70%, #22aa22 80%, #d4a843 90%, #22aa22 97%, transparent 100%)',
-          borderRadius: 3,
-          pointerEvents: 'none',
-          opacity: 0.35,
-          animation: 'vineGlow 4s ease-in-out infinite',
-          boxShadow: '0 0 8px rgba(34,180,34,0.3), 0 0 3px rgba(212,168,67,0.2)',
-        }} />
-        {/* Vine leaf notches on the strip */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: 16,
-          height: '100%',
-          pointerEvents: 'none',
-          backgroundImage: 'url(/vine-side.svg)',
-          backgroundSize: '16px auto',
-          backgroundRepeat: 'repeat-y',
-          opacity: 0.06,
-        }} />
         {children}
       </main>
 
       {/* Bottom Tab Nav */}
       <nav style={{
-        background: 'linear-gradient(135deg, #080c0a 0%, #0a2010 100%)',
-        borderTop: `1px solid ${accentColor}44`,
-        boxShadow: `0 -2px 20px rgba(0,0,0,0.5), 0 -1px 0 rgba(212,168,67,0.1), 0 -1px 0 ${accentColor}22`,
+        background: 'linear-gradient(135deg, #000814 0%, #0A1628 100%)',
+        borderTop: '1px solid rgba(0,240,255,0.3)',
+        boxShadow: '0 -1px 20px rgba(0,240,255,0.15), 0 -2px 20px rgba(0,0,0,0.5)',
         position: 'sticky',
         bottom: 0,
         zIndex: 100,
@@ -292,58 +194,6 @@ export default function Layout({ children }) {
         WebkitBackdropFilter: 'blur(12px)',
         overflow: 'hidden',
       }}>
-        {/* Tiger stripe accent at top of nav - TALLER, MORE VISIBLE */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 16,
-          backgroundImage: `repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 6px,
-            rgba(251,79,20,0.35) 6px,
-            rgba(251,79,20,0.35) 7px,
-            transparent 7px,
-            transparent 8px,
-            rgba(212,168,67,0.25) 8px,
-            rgba(212,168,67,0.25) 10px
-          )`,
-          pointerEvents: 'none',
-          zIndex: 1,
-        }} />
-
-        {/* Palm frond accent - left edge of nav */}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: -10,
-          width: 50,
-          height: 40,
-          backgroundImage: 'url(/palm-left.svg)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.06,
-          pointerEvents: 'none',
-          zIndex: 0,
-          transform: 'rotate(180deg)',
-        }} />
-        {/* Palm frond accent - right edge of nav */}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          right: -10,
-          width: 50,
-          height: 40,
-          backgroundImage: 'url(/palm-right.svg)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.06,
-          pointerEvents: 'none',
-          zIndex: 0,
-          transform: 'rotate(180deg)',
-        }} />
 
         <div style={{
           display: 'flex',
@@ -363,7 +213,7 @@ export default function Layout({ children }) {
                 alignItems: 'center',
                 padding: '8px 4px',
                 textDecoration: 'none',
-                color: isActive ? accentColor : '#666',
+                color: isActive ? accentColor : '#94A3B8',
                 fontSize: 10,
                 fontWeight: isActive ? 700 : 400,
                 fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
