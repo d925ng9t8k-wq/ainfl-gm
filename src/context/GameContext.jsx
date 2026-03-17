@@ -6,7 +6,7 @@ import { teams } from '../data/teams';
 import { allRosters } from '../data/allRosters';
 
 const TOTAL_CAP = 301.2; // 2026 NFL salary cap: $301.2M (official, per NFL.com)
-const DATA_VERSION = '2026-03-17-v1';
+const DATA_VERSION = '2026-03-17-v2';
 
 function getTeamRoster(teamAbbr) {
   if (teamAbbr === 'CIN') return bengalsRoster;
@@ -229,21 +229,8 @@ function gameReducer(state, action) {
 
     case 'DRAFT_PLAYER': {
       const { prospect, pickNumber } = action.payload;
-      const draftedPlayer = {
-        id: prospect.id,
-        name: prospect.name,
-        position: prospect.position,
-        age: prospect.age,
-        capHit: 1.5,
-        contractYears: 4,
-        contractTotal: 6.0,
-        yearsRemaining: 3,
-        isFranchise: false,
-        draftGrade: prospect.grade,
-        round: prospect.round,
-      };
       const newBoard = state.draftBoard.filter(p => p.id !== prospect.id);
-      const newRoster = [...state.roster, draftedPlayer];
+      // Do NOT add to roster here — roster addition happens via ADD_DRAFT_CLASS after draft completes
       const draftEntry = {
         id: Date.now(),
         type: 'draft',
@@ -255,7 +242,6 @@ function gameReducer(state, action) {
       const newAllDraftPicks = [...state.allDraftPicks, { pickNumber, teamAbbr: state.currentTeamAbbr, prospect }];
       return {
         ...state,
-        roster: newRoster,
         draftBoard: newBoard,
         draftedPlayers: [...state.draftedPlayers, { ...prospect, pickNumber }],
         myPicks: newMyPicks,
@@ -302,16 +288,12 @@ function gameReducer(state, action) {
     }
 
     case 'RESET_DRAFT': {
-      // Remove any drafted rookies that were added to roster via ADD_DRAFT_CLASS
-      const prevDraftedIds = new Set(state.draftedPlayers.map(p => p.id));
-      const rosterWithoutDraftees = state.draftClassAdded
-        ? state.roster.filter(p => !prevDraftedIds.has(p.id))
-        : state.roster;
-      // Also remove any players added via DRAFT_PLAYER (which adds to roster immediately)
-      const draftPlayerIds = new Set(state.allDraftPicks
-        .filter(dp => dp.teamAbbr === state.currentTeamAbbr)
-        .map(dp => dp.prospect.id));
-      const cleanRoster = rosterWithoutDraftees.filter(p => !draftPlayerIds.has(p.id));
+      // If draft class was added to roster, remove those players
+      let cleanRoster = state.roster;
+      if (state.draftClassAdded && state.draftedPlayers.length > 0) {
+        const draftedIds = new Set(state.draftedPlayers.map(p => p.id));
+        cleanRoster = state.roster.filter(p => !draftedIds.has(p.id));
+      }
       return {
         ...state,
         roster: cleanRoster,
