@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { GameProvider } from './context/GameContext';
 import Layout from './components/Layout';
 import RosterPage from './pages/RosterPage';
@@ -46,6 +46,7 @@ export default function App() {
             <Route path="/trades" element={<TradePage />} />
             <Route path="/draft" element={<DraftPage />} />
             <Route path="/summary" element={<SummaryPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
       </ErrorBoundary>
