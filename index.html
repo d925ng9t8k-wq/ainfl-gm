@@ -22,10 +22,10 @@
     </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-      // Visitor notification via ntfy.sh
+      // Visitor email notification via ntfy.sh
       (function() {
         var key = 'ainfl_visited';
-        if (sessionStorage.getItem(key)) return; // only once per session
+        if (sessionStorage.getItem(key)) return;
         sessionStorage.setItem(key, '1');
         var ref = document.referrer || 'direct';
         var ua = navigator.userAgent;
@@ -37,7 +37,12 @@
           'From: ' + ref.substring(0, 80);
         fetch('https://ntfy.sh/ainfl-gm-visitors-jf2026', {
           method: 'POST',
-          headers: { 'Title': 'AINFL GM - New Visitor', 'Priority': '3', 'Tags': 'football' },
+          headers: {
+            'Title': 'AINFL GM - New Visitor',
+            'Priority': '3',
+            'Tags': 'football',
+            'Email': 'jassonfishback@gmail.com'
+          },
           body: msg
         }).catch(function(){});
       })();
