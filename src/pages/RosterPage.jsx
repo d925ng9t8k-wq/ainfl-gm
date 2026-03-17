@@ -27,9 +27,12 @@ export default function RosterPage() {
   const [extendingPlayer, setExtendingPlayer] = useState(null);
 
   function isExtensionEligible(player) {
+    // Can't extend a player with no years left (they're a free agent)
     if (player.yearsRemaining < 1) return false;
-    // Block rookie deals in years 1-3 (contractYears <= 4 AND yearsRemaining >= 2)
-    if (player.contractYears <= 4 && player.yearsRemaining >= 2) return false;
+    // Block only true rookie-deal players in their first 3 seasons
+    // Rookie deals are 4yr contracts — only block if they have 3+ years remaining
+    // (meaning they're in year 1 or 2 of a 4-year rookie deal)
+    if (player.contractYears === 4 && player.yearsRemaining >= 3 && player.capHit < 5.0) return false;
     return true;
   }
 
