@@ -301,20 +301,31 @@ function gameReducer(state, action) {
       };
     }
 
-    case 'RESET_DRAFT':
+    case 'RESET_DRAFT': {
+      // Remove any drafted rookies that were added to roster via ADD_DRAFT_CLASS
+      const prevDraftedIds = new Set(state.draftedPlayers.map(p => p.id));
+      const rosterWithoutDraftees = state.draftClassAdded
+        ? state.roster.filter(p => !prevDraftedIds.has(p.id))
+        : state.roster;
+      // Also remove any players added via DRAFT_PLAYER (which adds to roster immediately)
+      const draftPlayerIds = new Set(state.allDraftPicks
+        .filter(dp => dp.teamAbbr === state.currentTeamAbbr)
+        .map(dp => dp.prospect.id));
+      const cleanRoster = rosterWithoutDraftees.filter(p => !draftPlayerIds.has(p.id));
       return {
         ...state,
+        roster: cleanRoster,
         draftBoard: draftProspects,
         draftedPlayers: [],
         allDraftPicks: [],
         myPicks: getTeamPicks(state.currentTeamAbbr),
-        // Remove all draft entries from tradeHistory so timeline doesn't show old mock draft picks
         tradeHistory: state.tradeHistory.filter(t => t.type !== 'draft'),
         draftStarted: false,
         draftComplete: false,
         draftClassAdded: false,
         currentDraftPick: 0,
       };
+    }
 
     case 'START_DRAFT':
       return { ...state, draftStarted: true };
