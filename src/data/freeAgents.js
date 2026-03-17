@@ -83,17 +83,39 @@ export const freeAgents = [
   { id: 190, name: 'Marshon Lattimore', position: 'CB', age: 30, askingPrice: 8.5, yearsRequested: 2, previousTeam: 'Commanders', rating: 82 },
   { id: 191, name: "L'Jarius Sneed", position: 'CB', age: 29, askingPrice: 19.1, yearsRequested: 2, previousTeam: 'Titans', rating: 82 },
   { id: 192, name: 'Trevon Diggs', position: 'CB', age: 28, askingPrice: 7.5, yearsRequested: 2, previousTeam: 'Packers', rating: 80 },
+  { id: 310, name: "Adoree' Jackson", position: 'CB', age: 29, askingPrice: 4.0, yearsRequested: 1, previousTeam: 'Giants', rating: 70 },
+  { id: 311, name: 'Eli Apple', position: 'CB', age: 30, askingPrice: 1.5, yearsRequested: 1, previousTeam: 'free agent', rating: 60 },
+  { id: 312, name: 'Desmond King', position: 'CB', age: 31, askingPrice: 2.0, yearsRequested: 1, previousTeam: 'Texans', rating: 66 },
+  { id: 313, name: 'Chandon Sullivan', position: 'CB', age: 28, askingPrice: 1.5, yearsRequested: 1, previousTeam: 'Vikings', rating: 62 },
+  { id: 314, name: 'Duke Shelley', position: 'CB', age: 29, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'Bears', rating: 56 },
+  { id: 315, name: 'Bless Austin', position: 'CB', age: 28, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'Jets', rating: 55 },
+  { id: 316, name: 'Isaiah Rodgers', position: 'CB', age: 27, askingPrice: 2.5, yearsRequested: 2, previousTeam: 'Eagles', rating: 64 },
 
   // SAFETIES
   { id: 200, name: 'Kyle Dugger', position: 'S', age: 30, askingPrice: 5.9, yearsRequested: 2, previousTeam: 'Steelers', rating: 80 },
   { id: 201, name: 'Harrison Smith', position: 'S', age: 37, askingPrice: 10.8, yearsRequested: 1, previousTeam: 'Vikings', rating: 78 },
   { id: 202, name: 'Jimmie Ward', position: 'S', age: 35, askingPrice: 1.4, yearsRequested: 1, previousTeam: 'Texans', rating: 70 },
   { id: 203, name: 'Donovan Wilson', position: 'S', age: 29, askingPrice: 6.9, yearsRequested: 2, previousTeam: 'Cowboys', rating: 74 },
+  { id: 317, name: 'Tashaun Gipson', position: 'S', age: 34, askingPrice: 1.5, yearsRequested: 1, previousTeam: '49ers', rating: 64 },
+  { id: 318, name: 'Terrell Edmunds', position: 'S', age: 29, askingPrice: 2.0, yearsRequested: 1, previousTeam: 'Eagles', rating: 66 },
+  { id: 319, name: 'Adrian Phillips', position: 'S', age: 32, askingPrice: 1.5, yearsRequested: 1, previousTeam: 'Cowboys', rating: 62 },
+  { id: 320, name: 'Vonn Bell', position: 'S', age: 31, askingPrice: 2.0, yearsRequested: 1, previousTeam: 'Bengals', rating: 66 },
+  { id: 321, name: 'Rodney McLeod', position: 'S', age: 36, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'free agent', rating: 58 },
 
   // RUNNING BACKS
   { id: 210, name: 'Joe Mixon', position: 'RB', age: 30, askingPrice: 3.2, yearsRequested: 1, previousTeam: 'Texans', rating: 76 },
   { id: 211, name: 'Najee Harris', position: 'RB', age: 28, askingPrice: 2.9, yearsRequested: 1, previousTeam: 'Chargers', rating: 74 },
+  { id: 300, name: 'Raheem Mostert', position: 'RB', age: 33, askingPrice: 1.5, yearsRequested: 1, previousTeam: 'Dolphins', rating: 66 },
+  { id: 301, name: 'Gus Edwards', position: 'RB', age: 31, askingPrice: 2.0, yearsRequested: 1, previousTeam: 'Chargers', rating: 68 },
+  { id: 302, name: "D'Onta Foreman", position: 'RB', age: 30, askingPrice: 1.2, yearsRequested: 1, previousTeam: 'Browns', rating: 62 },
+  { id: 303, name: 'Latavius Murray', position: 'RB', age: 36, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'Bills', rating: 58 },
+  { id: 304, name: 'Dare Ogunbowale', position: 'RB', age: 30, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'Texans', rating: 56 },
 
   // SPECIAL TEAMS
   { id: 220, name: 'Daniel Carlson', position: 'K', age: 31, askingPrice: 1.2, yearsRequested: 2, previousTeam: 'Raiders', rating: 78 },
+  { id: 305, name: 'Brett Maher', position: 'K', age: 35, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'free agent', rating: 64 },
+  { id: 306, name: 'Aldrick Rosas', position: 'K', age: 30, askingPrice: 0.8, yearsRequested: 1, previousTeam: 'free agent', rating: 58 },
+  { id: 307, name: 'Eddy Pineiro', position: 'K', age: 30, askingPrice: 1.2, yearsRequested: 1, previousTeam: 'Panthers', rating: 66 },
+  { id: 308, name: 'Sam Martin', position: 'P', age: 36, askingPrice: 1.5, yearsRequested: 1, previousTeam: 'Bills', rating: 66 },
+  { id: 309, name: 'Pressley Harvin', position: 'P', age: 26, askingPrice: 1.0, yearsRequested: 1, previousTeam: 'Steelers', rating: 60 },
 ];

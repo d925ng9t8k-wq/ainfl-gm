@@ -56,13 +56,14 @@ export default function CapTrackerPage() {
 
   const suggestions = useMemo(() => {
     return [...roster]
-      .filter(p => !p.isFranchise && p.capHit > 3)
-      .sort((a, b) => b.capHit - a.capHit)
+      .filter(p => !p.isFranchise && p.capSavings > 0)
+      .sort((a, b) => b.capSavings - a.capSavings)
       .slice(0, 5)
       .map(p => ({
         player: p.name,
         position: p.position,
-        savings: (p.capHit * 0.7).toFixed(1),
+        savings: p.capSavings.toFixed(1),
+        deadMoney: (p.deadMoney || 0).toFixed(1),
         capHit: p.capHit,
       }));
   }, [roster]);
@@ -220,8 +221,9 @@ export default function CapTrackerPage() {
               <div style={{ color: '#CBD5E1' }}>
                 Cut <strong style={{ color: '#fff' }}>{s.player}</strong> ({s.position})
               </div>
-              <div style={{ color: '#4ade80', marginTop: 2 }}>
-                → Save ~${s.savings}M
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+                <span style={{ color: '#4ade80' }}>Save ${s.savings}M</span>
+                <span style={{ color: '#ff4444' }}>Dead cap: ${s.deadMoney}M</span>
               </div>
             </div>
           ))}

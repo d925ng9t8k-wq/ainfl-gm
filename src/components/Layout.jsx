@@ -84,7 +84,13 @@ export default function Layout({ children }) {
                   textShadow: `0 1px 2px rgba(0,0,0,0.5), 0 0 18px ${accentColor}66`,
                 }}>GM</span>
               </div>
-              <div style={{ color: 'rgba(0,240,255,0.4)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 1, position: 'relative', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 1 }}>
+                <span style={{ color: 'rgba(0,240,255,0.4)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', position: 'relative', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#39FF14', boxShadow: '0 0 8px rgba(57,255,20,0.5)', animation: 'neonPulse 2s ease-in-out infinite' }} />
+                  <span style={{ color: 'rgba(57,255,20,0.6)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase' }}>ONLINE</span>
+                </div>
+              </div>
             </div>
             {/* Thin neon divider between branding and team selector */}
             <div style={{

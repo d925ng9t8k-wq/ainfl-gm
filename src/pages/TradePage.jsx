@@ -29,9 +29,36 @@ function getPickValue(round, pick) {
 }
 
 function getPlayerValue(player) {
-  // Rough trade value: higher for younger players with bigger cap hits
-  const ageMultiplier = Math.max(0.3, 1 - (player.age - 22) * 0.04);
-  return Math.round(player.capHit * 20 * ageMultiplier);
+  const cap = player.capHit || 1;
+  const age = player.age || 27;
+
+  // Base value scales with cap hit but with diminishing returns at high salaries
+  // $1M player ~ 30 pts, $10M ~ 200 pts, $25M ~ 400 pts, $50M ~ 600 pts
+  const baseValue = 80 * Math.sqrt(cap);
+
+  // Age curve: peak value at 25-27, declining after
+  let ageMult = 1.0;
+  if (age <= 24) ageMult = 0.9; // young but unproven
+  else if (age <= 27) ageMult = 1.1; // prime
+  else if (age <= 29) ageMult = 1.0;
+  else if (age <= 31) ageMult = 0.8;
+  else if (age <= 33) ageMult = 0.55;
+  else ageMult = 0.3; // 34+
+
+  // Premium positions get a boost
+  const pos = (player.position || '').toUpperCase();
+  let posMult = 1.0;
+  if (pos === 'QB') posMult = 1.5;
+  else if (['DE', 'EDGE', 'DT'].includes(pos)) posMult = 1.15;
+  else if (['OT', 'LT', 'RT'].includes(pos)) posMult = 1.1;
+  else if (pos === 'CB') posMult = 1.1;
+  else if (['WR', 'TE'].includes(pos)) posMult = 1.05;
+  else if (['RB', 'K', 'P', 'LS'].includes(pos)) posMult = 0.75;
+
+  // Years remaining boost (more team control = more valuable)
+  const yrsBoost = 1 + (player.yearsRemaining || 0) * 0.08;
+
+  return Math.max(Math.round(baseValue * ageMult * posMult * yrsBoost), 5);
 }
 
 function getTeamPlayers(teamAbbr) {
@@ -105,6 +132,7 @@ export default function TradePage() {
   const [feedback, setFeedback] = useState('');
   const [myFuturePicks, setMyFuturePicks] = useState([]);
   const [theirFuturePicks, setTheirFuturePicks] = useState([]);
+  const [forceTrade, setForceTrade] = useState(false);
 
   const otherTeams = allTeams.filter(t => t.abbreviation !== currentTeamAbbr);
   const targetTeam = allTeams.find(t => t.id === Number(selectedTeam));
@@ -193,6 +221,16 @@ export default function TradePage() {
     if (myOfferPlayers.length === 0 && myOfferPicks.length === 0 && myFuturePicks.length === 0) { setFeedback('Add something to offer.'); return; }
     if (theirOfferPlayers.length === 0 && theirOfferPicks.length === 0 && theirFuturePicks.length === 0) { setFeedback('Request something in return.'); return; }
 
+    // Cap violation check
+    const impact = computeCapImpact(myOfferPlayers, theirOfferPlayers);
+    const currentCapSpace = totalCap - capUsed;
+    const newCapSpace = currentCapSpace + impact.netCapImpact;
+    if (newCapSpace < 0 && !forceTrade) {
+      const violationAmount = Math.abs(newCapSpace).toFixed(1);
+      setFeedback(`This trade would violate the salary cap by $${violationAmount}M. Enable "Force Trade" to override.`);
+      return;
+    }
+
     const ratio = myValue > 0 ? theirValue / myValue : 0;
     if (ratio < 0.6) {
       setFeedback('Trade rejected -- too one-sided (you would be giving up too much value).');
@@ -208,6 +246,7 @@ export default function TradePage() {
     setTheirOfferPicks([]);
     setTheirFuturePicks([]);
     setSelectedTeam('');
+    setForceTrade(false);
     setTimeout(() => setFeedback(''), 4000);
   }
 
@@ -219,10 +258,10 @@ export default function TradePage() {
 
       {feedback && (
         <div style={{
-          background: feedback.startsWith('Trade rejected') ? 'rgba(255,68,68,0.15)' : 'rgba(74,222,128,0.15)',
-          border: `1px solid ${feedback.startsWith('Trade rejected') ? '#ff4444' : '#4ade80'}`,
+          background: (feedback.startsWith('Trade rejected') || feedback.startsWith('This trade would violate')) ? 'rgba(255,68,68,0.15)' : 'rgba(74,222,128,0.15)',
+          border: `1px solid ${(feedback.startsWith('Trade rejected') || feedback.startsWith('This trade would violate')) ? '#ff4444' : '#4ade80'}`,
           borderRadius: 8, padding: 10, marginBottom: 12,
-          color: feedback.startsWith('Trade rejected') ? '#ff4444' : '#4ade80', fontSize: 13,
+          color: (feedback.startsWith('Trade rejected') || feedback.startsWith('This trade would violate')) ? '#ff4444' : '#4ade80', fontSize: 13,
         }}>{feedback}</div>
       )}
 
@@ -491,9 +530,36 @@ export default function TradePage() {
                     Warning: ${impact.deadCapHit.toFixed(1)}M dead cap accelerates from traded players
                   </div>
                 )}
+                {newCapSpace < 0 && (
+                  <div style={{
+                    background: 'rgba(255,68,68,0.15)',
+                    border: '1px solid #ff4444',
+                    borderRadius: 6,
+                    padding: '8px 10px',
+                    marginTop: 8,
+                    color: '#ff4444',
+                    fontSize: 12,
+                    fontWeight: 700,
+                  }}>
+                    CAP VIOLATION: This trade would put you ${Math.abs(newCapSpace).toFixed(1)}M over the salary cap
+                  </div>
+                )}
               </div>
             );
           })()}
+
+          <label style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            marginTop: 12, cursor: 'pointer', fontSize: 13, color: '#94A3B8',
+          }}>
+            <input
+              type="checkbox"
+              checked={forceTrade}
+              onChange={e => setForceTrade(e.target.checked)}
+              style={{ accentColor: 'var(--bengals-orange)' }}
+            />
+            Force Trade (override salary cap check)
+          </label>
 
           <button
             onClick={handleTrade}
