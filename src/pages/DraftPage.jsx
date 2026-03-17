@@ -699,7 +699,7 @@ export default function DraftPage() {
                     return (
                       <tr key={pick.overall} style={{
                         background: isUserTeam ? accentBgLight(accentColor) : 'transparent',
-                        borderBottom: '1px solid #111916',
+                        borderBottom: '1px solid #0f172a',
                       }}>
                         <td style={{ padding: '4px 6px', color: isUserTeam ? accentColor : '#475569', fontWeight: 700 }}>
                           {pick.overall}

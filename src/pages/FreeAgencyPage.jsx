@@ -85,7 +85,7 @@ function SigningModal({ player, onSign, onClose, capAvailable }) {
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div style={{ background: 'linear-gradient(135deg, #131920, #111916)', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 14, padding: 24, maxWidth: 460, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0a1225, #0f172a)', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 14, padding: 24, maxWidth: 460, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
             <h3 style={{ margin: '0 0 2px', color: '#fff', fontSize: 18 }}>{player.name}</h3>

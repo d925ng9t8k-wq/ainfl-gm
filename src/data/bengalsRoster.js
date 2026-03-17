@@ -5,7 +5,7 @@ export const bengalsRoster = [
   // QUARTERBACKS
   { id: 1,  name: 'Joe Burrow',             position: 'QB', age: 29, capHit: 48.0,  contractYears: 5, contractTotal: 275.0, isFranchise: false, yearsRemaining: 3, deadMoney: 91.7, capSavings: -43.7, baseSalary: 25.3 },
   { id: 2,  name: 'Sean Clifford',           position: 'QB', age: 27, capHit: 1.0,   contractYears: 2, contractTotal: 2.2,   isFranchise: false, yearsRemaining: 1, deadMoney: 0, capSavings: 1.0, baseSalary: 1.0 },
-  { id: 74, name: 'Josh Johnson',            position: 'QB', age: 40, capHit: 0.0,   contractYears: 1, contractTotal: 0.0,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 0, baseSalary: 0 },
+  { id: 74, name: 'Josh Johnson',            position: 'QB', age: 40, capHit: 1.1,   contractYears: 1, contractTotal: 1.1,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 1.1, baseSalary: 1.1 },
 
   // RUNNING BACKS
   { id: 4,  name: 'Chase Brown',             position: 'RB', age: 25, capHit: 3.7,   contractYears: 4, contractTotal: 5.2,   isFranchise: false, yearsRemaining: 2, deadMoney: 0.1, capSavings: 3.7, baseSalary: 3.7 },
@@ -61,7 +61,7 @@ export const bengalsRoster = [
   { id: 43, name: 'Tedarrell Slaton',        position: 'DT', age: 28, capHit: 8.9,   contractYears: 2, contractTotal: 17.8,  isFranchise: false, yearsRemaining: 1, deadMoney: 2.5, capSavings: 6.4, baseSalary: 5.7 },
   { id: 44, name: 'Jordan Jefferson',        position: 'DT', age: 24, capHit: 1.1,   contractYears: 2, contractTotal: 2.0,   isFranchise: false, yearsRemaining: 1, deadMoney: 0, capSavings: 1.1, baseSalary: 1.1 },
   { id: 45, name: 'Howard Cross III',        position: 'DT', age: 24, capHit: 1.0,   contractYears: 2, contractTotal: 1.8,   isFranchise: false, yearsRemaining: 1, deadMoney: 0, capSavings: 1.0, baseSalary: 1.0 },
-  { id: 73, name: 'Jonathan Allen',          position: 'DT', age: 31, capHit: 0.0,   contractYears: 1, contractTotal: 0.0,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 0, baseSalary: 0 },
+  { id: 73, name: 'Jonathan Allen',          position: 'DT', age: 31, capHit: 13.0,  contractYears: 2, contractTotal: 26.0,  isFranchise: false, yearsRemaining: 1, deadMoney: 10.0, capSavings: 3.0, baseSalary: 8.0 },
 
   // LINEBACKERS
   { id: 46, name: 'Demetrius Knight Jr.',    position: 'LB', age: 25, capHit: 2.0,   contractYears: 4, contractTotal: 7.2,   isFranchise: false, yearsRemaining: 3, deadMoney: 5.5, capSavings: -3.4, baseSalary: 1.2 },
