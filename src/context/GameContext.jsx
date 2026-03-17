@@ -48,7 +48,12 @@ const initialState = {
 };
 
 function computeCapUsed(roster) {
-  return roster.reduce((sum, p) => sum + p.capHit, 0);
+  // NFL uses Top 51 contracts for offseason cap calculation
+  if (roster.length <= 51) {
+    return roster.reduce((sum, p) => sum + p.capHit, 0);
+  }
+  const sorted = [...roster].sort((a, b) => b.capHit - a.capHit);
+  return sorted.slice(0, 51).reduce((sum, p) => sum + p.capHit, 0);
 }
 
 function gameReducer(state, action) {
