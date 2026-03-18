@@ -103,8 +103,8 @@ export const deadCapCharges = [
 
 // 2026 Bengals cap summary (source: Over The Cap, March 2026)
 export const capSummary = {
-  totalCap: 301200000,       // 2026 NFL base salary cap
-  capUsed: 274429338,        // Top 51 active roster cap hits (per OTC)
-  deadCap:  11248222,        // Hendrickson + Wilson + Burton
-  capSpace: 31302153,        // per OTC
+  totalCap: 316980000,       // 2026 NFL base salary cap
+  capUsed: 283562115,        // Top 51 active roster cap hits (per OTC)
+  deadCap: 11248222,        // Hendrickson + Wilson + Burton
+  capSpace: 22169376,        // per OTC
 };
