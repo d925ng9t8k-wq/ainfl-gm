@@ -1,0 +1,48 @@
+name: Weekly Data Refresh
+
+on:
+  schedule:
+    # Every Monday at 6am ET (10am UTC) during NFL offseason
+    - cron: '0 10 * * 1'
+  workflow_dispatch: # Manual trigger anytime
+
+jobs:
+  refresh-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --legacy-peer-deps
+
+      - name: Install Playwright
+        run: npx playwright install chromium
+
+      - name: Scrape OTC cap space for all teams
+        run: node scripts/scrape-cap-refresh.mjs
+
+      - name: Scrape OTC Bengals detailed roster
+        run: node scripts/scrape-bengals-refresh.mjs || true
+
+      - name: Build to verify no errors
+        run: npm run build
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "AiNFL GM Bot"
+          git config user.email "bot@ainflgm.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No data changes detected"
+          else
+            # Bump the build version
+            DATE=$(date +%Y%m%d)
+            sed -i "s/var BUILD = '[^']*'/var BUILD = '${DATE}auto'/" index.html
+            git add index.html
+            git commit -m "Auto-refresh: Updated cap data from OTC $(date +%Y-%m-%d)"
+            git push
+          fi
