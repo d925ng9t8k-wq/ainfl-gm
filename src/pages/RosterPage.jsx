@@ -27,12 +27,14 @@ export default function RosterPage() {
   const [extendingPlayer, setExtendingPlayer] = useState(null);
 
   function isExtensionEligible(player) {
-    // Can't extend a player with no years left (they're a free agent)
-    if (player.yearsRemaining < 1) return false;
-    // Block ONLY true rookie-deal players in their first 3 NFL seasons
-    // A rookie deal is specifically: contractYears === 4, age <= 24
-    // Age 25+ players are either on extensions, 5th year options, or FA deals — all extendable
-    if (player.contractYears === 4 && player.age <= 24) return false;
+    // Player must be on the roster (has a cap hit)
+    if (player.capHit <= 0) return false;
+    // Block ONLY true rookie-deal players in their first 2 NFL seasons
+    // NFL rule: players can be extended after completing their 3rd season
+    // Rookies age 23 or younger on 4-year deals are in years 1-2, not eligible yet
+    if (player.contractYears === 4 && player.age <= 23) return false;
+    // Everyone else is eligible — including players in their final year
+    // (extending a player before they hit free agency is very common in the NFL)
     return true;
   }
 
