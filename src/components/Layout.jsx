@@ -11,6 +11,7 @@ const navItems = [
   { path: '/trades', label: 'Trades', iconType: 'trades' },
   { path: '/draft', label: 'Draft', iconType: 'draft' },
   { path: '/summary', label: 'Summary', iconType: 'summary' },
+  { path: '/season', label: 'Season', iconType: 'season' },
 ];
 
 function NavIcon({ type }) {
@@ -28,6 +29,8 @@ function NavIcon({ type }) {
       return (<svg {...props}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>);
     case 'summary':
       return (<svg {...props}><path d="M4 20h16"/><path d="M4 20V10l4-4 4 6 4-8 4 6v10"/></svg>);
+    case 'season':
+      return (<svg {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V10"/><path d="M14 22V10"/><path d="M5 9h14l-1 7H6L5 9z"/></svg>);
     default:
       return null;
   }

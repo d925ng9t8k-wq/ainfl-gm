@@ -8,6 +8,7 @@ import FreeAgencyPage from './pages/FreeAgencyPage';
 import TradePage from './pages/TradePage';
 import DraftPage from './pages/DraftPage';
 import SummaryPage from './pages/SummaryPage';
+import SeasonSimPage from './pages/SeasonSimPage';
 
 // Team slug to abbreviation mapping
 const TEAM_SLUGS = {
@@ -86,6 +87,7 @@ export default function App() {
             <Route path="/trades" element={<TradePage />} />
             <Route path="/draft" element={<DraftPage />} />
             <Route path="/summary" element={<SummaryPage />} />
+            <Route path="/season" element={<SeasonSimPage />} />
             <Route path="/team/:teamSlug" element={<TeamRedirect />} />
             <Route path="/:teamSlug" element={<TeamRedirect />} />
             <Route path="*" element={<Navigate to="/" replace />} />
