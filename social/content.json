@@ -1,0 +1,184 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "text": "Can you build a better offseason than your team's GM? \ud83c\udfc8\ud83e\udd16\n\nAiNFL GM lets you manage any NFL team's salary cap, sign free agents, make trades, and run a full mock draft.\n\nFree. No signup.\n\nainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-19T10:00:00"
+    },
+    {
+      "id": 2,
+      "text": "Think you could run an NFL front office? Prove it.\n\nAiNFL GM gives you real salary cap numbers, real free agents, and a full 7-round mock draft.\n\nNo downloads. No accounts. Just football.\n\nainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-19T18:00:00"
+    },
+    {
+      "id": 3,
+      "text": "Every NFL team. Real cap numbers. Real free agents. Real draft picks.\n\nAiNFL GM is the most complete offseason simulator on the web \u2014 and it's completely free.\n\nainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-20T10:00:00"
+    },
+    {
+      "id": 4,
+      "text": "Your friends argue about what their team should do this offseason.\n\nYou can actually show them.\n\nainflgm.com \ud83c\udfc8",
+      "posted": false,
+      "scheduled": "2026-03-20T18:00:00"
+    },
+    {
+      "id": 5,
+      "text": "NFL free agency is wild. But what if YOU were the GM?\n\nSign players. Cut dead weight. Trade up in the draft. All with real 2026 cap data.\n\nTry it free: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-21T10:00:00"
+    },
+    {
+      "id": 6,
+      "text": "AFC North GMs, let's see what you've got.\n\n\ud83d\udfe0 Bengals: $31.3M cap, pick #10\n\ud83d\udfe4 Browns: $21.1M cap, picks #6 AND #24\n\ud83d\udfe1 Steelers: $22M cap, pick #21\n\ud83d\udfe3 Ravens: $28.5M cap, pick #14\n\nRun your team: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-21T18:00:00"
+    },
+    {
+      "id": 7,
+      "text": "NFC East is loaded with cap space this offseason.\n\n\ud83d\udfe2 Eagles: $40.1M\n\ud83d\udd35 Giants: $25.8M, pick #5\n\ud83d\udd35 Cowboys: $18.8M, picks #12 AND #20\n\ud83d\udfe4 Commanders: $61.7M, pick #7\n\nBuild your roster: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-22T10:00:00"
+    },
+    {
+      "id": 8,
+      "text": "AFC South teams have some big decisions to make.\n\n\ud83d\udd35 Texans: $31.3M, pick #28\n\ud83d\udd35 Colts: $42.1M (no 1st rounder)\n\u26ab Jaguars: $7.2M (cap crunch!)\n\ud83d\udd35 Titans: $57.5M, pick #4\n\nYou make the calls: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-22T18:00:00"
+    },
+    {
+      "id": 9,
+      "text": "NFC North might be the toughest division to manage.\n\n\ud83d\udd35 Lions: $30.5M, pick #17\n\ud83d\udfe2 Packers: $28.6M (no 1st rounder)\n\ud83d\udfe3 Vikings: $5.9M, pick #18\n\ud83d\udfe0 Bears: $1.2M, pick #25\n\nCan you make it work? ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-23T10:00:00"
+    },
+    {
+      "id": 10,
+      "text": "AFC West offseason breakdown:\n\n\u26ab Raiders: $24.7M, pick #1 overall\n\ud83d\udfe1 Chargers: $62.1M, pick #22\n\ud83d\udfe0 Broncos: $22M, pick #30\n\ud83d\udd34 Chiefs: $10.9M, picks #9 AND #29\n\nWho has the best offseason? You decide: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-23T18:00:00"
+    },
+    {
+      "id": 11,
+      "text": "NFC South is wide open.\n\n\ud83d\udd34 Buccaneers: $40.7M, pick #15\n\u26ab Saints: $17.3M, pick #8\n\ud83d\udd35 Panthers: $14.1M, pick #19\n\ud83d\udd34 Falcons: $22.1M (no 1st rounder)\n\nRebuild or reload? ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-24T10:00:00"
+    },
+    {
+      "id": 12,
+      "text": "NFC West has some fascinating cap situations.\n\n\ud83d\udd34 49ers: $39.2M, pick #27\n\ud83d\udd35 Rams: $19.6M, pick #13\n\ud83d\udfe2 Seahawks: $44.1M, pick #32\n\ud83d\udd34 Cardinals: $54.1M, pick #3\n\nRun any team's offseason: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-24T18:00:00"
+    },
+    {
+      "id": 13,
+      "text": "AFC East arms race:\n\n\ud83d\udfe2 Jets: $43.8M, picks #2 AND #16\n\ud83d\udd34 Patriots: $42.2M, pick #31\n\ud83d\udd35 Bills: -$6.4M (over the cap!)\n\ud83d\udfe2 Dolphins: $8.7M, pick #11\n\nCan you fix the Bills' cap? ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-25T10:00:00"
+    },
+    {
+      "id": 14,
+      "text": "\ud83c\udfc8 Mock Draft Mode\n\nRun a full 7-round NFL mock draft with AI-powered picks. Trade up, trade down, or let the board fall to you.\n\nEvery pick. Every round. Every team.\n\nainflgm.com/draft",
+      "posted": false,
+      "scheduled": "2026-03-25T18:00:00"
+    },
+    {
+      "id": 15,
+      "text": "\ud83d\udcb0 Salary Cap Tracker\n\nSee every team's real 2026 cap space. Cut players. Restructure contracts. Clear room for free agency.\n\nAll the cap math, done for you.\n\nainflgm.com/cap",
+      "posted": false,
+      "scheduled": "2026-03-26T10:00:00"
+    },
+    {
+      "id": 16,
+      "text": "\ud83d\udcdd Free Agency Simulator\n\nBrowse the full 2026 free agent class. Sign players to your team with realistic contracts.\n\nWatch your cap space update in real time.\n\nainflgm.com/fa",
+      "posted": false,
+      "scheduled": "2026-03-26T18:00:00"
+    },
+    {
+      "id": 17,
+      "text": "\ud83d\udd04 Trade Engine\n\nWant to move up in the draft? Need to dump a bad contract?\n\nAiNFL GM's trade system lets you swap picks and players between any two teams.\n\nainflgm.com/trades",
+      "posted": false,
+      "scheduled": "2026-03-27T10:00:00"
+    },
+    {
+      "id": 18,
+      "text": "\ud83e\udd16 AI Suggestions\n\nNot sure who to draft or sign? Our AI analyzes your team's roster needs and recommends the best moves.\n\nLike having a virtual front office.\n\nainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-27T18:00:00"
+    },
+    {
+      "id": 19,
+      "text": "The Raiders have the #1 overall pick. Who should they take?\n\n\ud83d\udc47 Reply with your pick",
+      "posted": false,
+      "scheduled": "2026-03-28T10:00:00"
+    },
+    {
+      "id": 20,
+      "text": "The Jets have TWO first-round picks (#2 and #16) plus $43.8M in cap space.\n\nIs this the best offseason setup in the NFL? Or will they Jets it up?\n\nRun their offseason yourself: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-28T18:00:00"
+    },
+    {
+      "id": 21,
+      "text": "The Chargers have $62.1M in cap space \u2014 most in the NFL.\n\nWho should they sign? Build your LA roster at ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-29T10:00:00"
+    },
+    {
+      "id": 22,
+      "text": "Titans fans: You have pick #4 and $57.5M in cap space.\n\nDo you draft a QB or build around what you have?\n\nTest both strategies: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-29T18:00:00"
+    },
+    {
+      "id": 23,
+      "text": "Cowboys have picks #12 AND #20 in the first round.\n\nWhat's the move? Two starters? Trade up? Trade back for a haul?\n\nRun every scenario: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-30T10:00:00"
+    },
+    {
+      "id": 24,
+      "text": "Which team has the hardest cap situation to fix in 2026?\n\nA) Bills (-$6.4M)\nB) Bears ($1.2M)\nC) Vikings ($5.9M)\nD) Jaguars ($7.2M)\n\nTry to fix them all at ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-30T18:00:00"
+    },
+    {
+      "id": 25,
+      "text": "Hot take: The team that wins this offseason won't be a team that spends big in free agency \u2014 it'll be the team that nails the draft.\n\nRun your own draft and prove it: ainflgm.com/draft",
+      "posted": false,
+      "scheduled": "2026-03-31T10:00:00"
+    },
+    {
+      "id": 26,
+      "text": "The Browns have two first-round picks (#6 and #24) and $21.1M in cap space.\n\nIs this finally the year Cleveland puts it together? You be the GM: ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-03-31T18:00:00"
+    },
+    {
+      "id": 27,
+      "text": "Unpopular opinion: Having too much cap space is actually a problem.\n\nTeams like Washington ($61.7M) and Tennessee ($57.5M) are under pressure to spend wisely or waste it.\n\nHow would you spend it? ainflgm.com",
+      "posted": false,
+      "scheduled": "2026-04-01T10:00:00"
+    },
+    {
+      "id": 28,
+      "text": "Every year, some GM makes a trade that changes the entire draft.\n\nIn AiNFL GM, that GM is you.\n\nTrade picks, trade players, reshape the board.\n\nainflgm.com/trades",
+      "posted": false,
+      "scheduled": "2026-04-01T18:00:00"
+    },
+    {
+      "id": 29,
+      "text": "The salary cap is just a number... until you're $6.4M over it like the Bills.\n\nWho do you cut? Who do you restructure? Can you save the roster AND stay competitive?\n\nainflgm.com \ud83d\udcb8",
+      "posted": false,
+      "scheduled": "2026-04-02T10:00:00"
+    },
+    {
+      "id": 30,
+      "text": "Draft night is the most exciting night in football.\n\nBut what if you could run draft night for ANY team, right now?\n\nAll 7 rounds. AI opponents. Real prospects.\n\nainflgm.com/draft \ud83c\udfc8",
+      "posted": false,
+      "scheduled": "2026-04-02T18:00:00"
+    }
+  ]
+}

@@ -178,7 +178,7 @@ export default function SummaryPage() {
   const {
     signingHistory, tradeHistory, draftedPlayers, cutPlayers,
     roster, capUsed, totalCap, resetGame, selectedTeamColors, currentTeamAbbr,
-    draftComplete,
+    draftComplete, allTeams,
   } = useGame();
   const summaryRef = useRef(null);
   const [exporting, setExporting] = useState(false);
@@ -235,6 +235,27 @@ export default function SummaryPage() {
     }
   }
 
+  function handleShareX() {
+    const grade = grades.overall.grade;
+    const team = currentTeamAbbr;
+    const currentTeamObj = allTeams?.find(t => t.abbreviation === team);
+    const signings = signingHistory.length;
+    const drafted = draftedPlayers.length;
+    const trades = tradeHistory.filter(t => t.type === 'trade').length;
+
+    const text = encodeURIComponent(
+      `I just ran the ${currentTeamObj?.name || team} offseason on AiNFL GM \u{1F916}\u{1F3C8}\n\n` +
+      `\u{1F4CA} Overall Grade: ${grade}\n` +
+      `\u270D\uFE0F ${signings} FA signing${signings !== 1 ? 's' : ''}\n` +
+      `\u{1F504} ${trades} trade${trades !== 1 ? 's' : ''}\n` +
+      `\u{1F3AF} ${drafted} draft pick${drafted !== 1 ? 's' : ''}\n\n` +
+      `Can you beat my grade?\n` +
+      `ainflgm.com/${team.toLowerCase()}`
+    );
+
+    window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
+  }
+
   // Position group cap breakdown
   const posGroupCap = {};
   roster.forEach(p => {
@@ -264,6 +285,9 @@ export default function SummaryPage() {
           <button onClick={handleShare}
             style={{ background: '#166534', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', cursor: 'pointer', fontWeight: 600, fontSize: 13 }}
           >Share</button>
+          <button onClick={handleShareX}
+            style={{ background: '#000', color: '#fff', border: '1px solid #333', borderRadius: 8, padding: '8px 16px', cursor: 'pointer', fontWeight: 600, fontSize: 13 }}
+          >Share on X</button>
           <button onClick={handleReset}
             style={{ background: '#7f1d1d', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', cursor: 'pointer', fontWeight: 600, fontSize: 13 }}
           >Reset All</button>

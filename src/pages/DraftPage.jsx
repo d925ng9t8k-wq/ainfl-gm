@@ -1490,6 +1490,24 @@ export default function DraftPage() {
   }
 
   // -- DRAFT COMPLETE STATE --
+  function handleShareDraftX() {
+    const currentTeamObj = allTeams?.find(t => t.abbreviation === currentTeamAbbr);
+    const drafted = draftedPlayers.length;
+    const grade = draftRecap?.letter || '?';
+    const avgGrade = draftRecap?.avgGrade || 0;
+
+    const text = encodeURIComponent(
+      `I just completed the ${currentTeamObj?.name || currentTeamAbbr} mock draft on AiNFL GM \u{1F916}\u{1F3C8}\n\n` +
+      `\u{1F3AF} ${drafted} pick${drafted !== 1 ? 's' : ''} made\n` +
+      `\u{1F4CA} Draft Grade: ${grade}\n` +
+      `\u2B50 Avg Prospect Grade: ${avgGrade}\n\n` +
+      `Think you can draft better?\n` +
+      `ainflgm.com/${currentTeamAbbr.toLowerCase()}`
+    );
+
+    window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
+  }
+
   if (draftComplete && draftRecap) {
     return (
       <div>
@@ -1517,6 +1535,15 @@ export default function DraftPage() {
                 Draft class added to roster
               </span>
             )}
+            <button
+              onClick={handleShareDraftX}
+              style={{
+                background: '#000', color: '#fff', border: '1px solid #333', borderRadius: 8,
+                padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+              }}
+            >
+              Share on X
+            </button>
             <button
               onClick={() => setShowResetConfirm(true)}
               style={{
