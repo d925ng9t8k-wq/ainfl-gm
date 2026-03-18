@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
+import AiSuggest from './AiSuggest';
 
 const navItems = [
   { path: '/', label: 'Roster', iconType: 'roster' },
@@ -525,6 +526,7 @@ export default function Layout({ children }) {
         </div>
       </nav>
 
+      <AiSuggest />
       <FeedbackWidget />
     </div>
   );
