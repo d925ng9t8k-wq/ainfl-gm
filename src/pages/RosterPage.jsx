@@ -107,7 +107,7 @@ export default function RosterPage() {
                 { key: 'position', label: 'Pos' },
                 { key: 'age', label: 'Age' },
                 { key: 'capHit', label: 'Cap Hit' },
-                { key: 'yearsRemaining', label: 'Yrs Left' },
+                { key: 'yearsRemaining', label: 'Contract' },
               ].map(col => (
                 <th
                   key={col.key}
@@ -166,8 +166,8 @@ export default function RosterPage() {
                 <td style={{ padding: '9px 12px', color: '#fff', fontWeight: 600 }}>
                   ${player.capHit.toFixed(1)}M
                 </td>
-                <td style={{ padding: '9px 12px', color: player.yearsRemaining === 0 ? '#facc15' : '#CBD5E1' }}>
-                  {player.yearsRemaining === 0 ? 'FA' : `${player.yearsRemaining}yr`}
+                <td style={{ padding: '9px 12px', color: player.capHit === 0 ? '#facc15' : '#CBD5E1' }}>
+                  {player.capHit === 0 ? 'FA' : `${player.yearsRemaining + 1}yr`}
                 </td>
                 <td style={{ padding: '9px 12px' }}>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -373,7 +373,7 @@ function ExtensionModal({ player, onExtend, onClose }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
         <div>
           <h3 style={{ margin: '0 0 2px', color: '#4ade80', fontSize: 18 }}>Extend Contract</h3>
-          <p style={{ margin: 0, color: '#94A3B8', fontSize: 13 }}>{player.name} · {player.position} · {player.yearsRemaining}yr remaining</p>
+          <p style={{ margin: 0, color: '#94A3B8', fontSize: 13 }}>{player.name} · {player.position} · {player.yearsRemaining + 1}yr remaining</p>
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ color: '#facc15', fontSize: 12, fontWeight: 700 }}>Current: ${player.capHit.toFixed(1)}M/yr</div>

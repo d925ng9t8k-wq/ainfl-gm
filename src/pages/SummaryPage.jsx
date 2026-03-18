@@ -605,8 +605,8 @@ export default function SummaryPage() {
                       <td style={{ padding: '5px 8px', color: (p.deadMoney || 0) > (p.capHit || 0) ? '#ef4444' : '#64748b', textAlign: 'right' }}>
                         ${(p.deadMoney || 0).toFixed(1)}M
                       </td>
-                      <td style={{ padding: '5px 8px', color: p.yearsRemaining === 0 ? '#facc15' : '#94A3B8' }}>
-                        {p.yearsRemaining === 0 ? 'FA' : `${p.yearsRemaining}yr`}
+                      <td style={{ padding: '5px 8px', color: (p.capHit || 0) === 0 ? '#facc15' : '#94A3B8' }}>
+                        {(p.capHit || 0) === 0 ? 'FA' : `${p.yearsRemaining + 1}yr`}
                       </td>
                     </tr>
                   ))}
