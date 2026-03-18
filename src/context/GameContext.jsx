@@ -6,7 +6,7 @@ import { teams } from '../data/teams';
 import { allRosters } from '../data/allRosters';
 
 const TOTAL_CAP = 301.2; // 2026 NFL salary cap: $301.2M (official, per NFL.com)
-const DATA_VERSION = '2026-03-18-v7';
+const DATA_VERSION = '2026-03-18-v8';
 
 function getTeamRoster(teamAbbr) {
   if (teamAbbr === 'CIN') return bengalsRoster;
