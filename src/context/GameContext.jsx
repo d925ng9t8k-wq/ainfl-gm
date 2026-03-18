@@ -467,8 +467,11 @@ export function GameProvider({ children }) {
   // Use OTC's verified cap space as the starting point for each team
   // Then adjust for any moves the user makes during simulation
   const teamData = allRosters[state.currentTeamAbbr];
-  const otcCapSpace = (state.currentTeamAbbr === 'CIN') ? null : teamData?.capSummary?.capSpace;
-  const teamCapTotal = (state.currentTeamAbbr === 'CIN') ? TOTAL_CAP : (teamData?.capSummary?.totalCap || TOTAL_CAP);
+  // Use OTC verified cap data for ALL teams including Bengals
+  const bengalsCapSpace = 22.17; // OTC verified: $22,169,376
+  const bengalsCapTotal = 316.98; // OTC verified: $316,980,000
+  const otcCapSpace = (state.currentTeamAbbr === 'CIN') ? bengalsCapSpace : teamData?.capSummary?.capSpace;
+  const teamCapTotal = (state.currentTeamAbbr === 'CIN') ? bengalsCapTotal : (teamData?.capSummary?.totalCap || TOTAL_CAP);
 
   // Track user's cap impact: sum of all signings, cuts, trades since selecting this team
   const userAddedCap = state.signingHistory.reduce((sum, s) => sum + (s.year1CapHit || s.aav || 0), 0);
