@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #000814;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid #00e5ff;
+    box-shadow: inset 0 0 80px rgba(0,229,255,0.08);
+  }
+  .accent-top, .accent-bottom {
+    position: absolute;
+    left: 40px; right: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+  }
+  .accent-top { top: 30px; }
+  .accent-bottom { bottom: 30px; }
+  .title {
+    font-size: 96px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #00e5ff 0%, #00bcd4 50%, #00e5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 60px rgba(0,229,255,0.3);
+    margin-bottom: 16px;
+  }
+  .subtitle {
+    font-size: 28px;
+    font-weight: 600;
+    color: #b0bec5;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .features {
+    font-size: 22px;
+    color: #78909c;
+    letter-spacing: 2px;
+  }
+  .features span {
+    color: #00e5ff;
+    margin: 0 8px;
+  }
+  .url {
+    position: absolute;
+    bottom: 50px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #00e5ff;
+    letter-spacing: 3px;
+  }
+</style>
+</head>
+<body>
+  <div class="accent-top"></div>
+  <div class="title">AINFL GM</div>
+  <div class="subtitle">AI-Powered NFL Offseason Simulator</div>
+  <div class="features">
+    Manage Any Team <span>•</span> Sign Free Agents <span>•</span> Make Trades <span>•</span> Mock Draft
+  </div>
+  <div class="url">ainflgm.com</div>
+  <div class="accent-bottom"></div>
+</body>
+</html>
