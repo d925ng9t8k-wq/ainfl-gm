@@ -14,9 +14,9 @@ export const allRosters = {
         "deadMoney": 13.88,
         "capSavings": 5.34,
         "baseSalary": 19.22,
-        "contractYears": 4,
-        "contractTotal": 76.88,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 38.44,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -28,8 +28,8 @@ export const allRosters = {
         "deadMoney": 31.8,
         "capSavings": -15.42,
         "baseSalary": 16.39,
-        "contractYears": 4,
-        "contractTotal": 65.56,
+        "contractYears": 3,
+        "contractTotal": 49.17,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -56,8 +56,8 @@ export const allRosters = {
         "deadMoney": 4.75,
         "capSavings": 4.67,
         "baseSalary": 9.41,
-        "contractYears": 3,
-        "contractTotal": 28.23,
+        "contractYears": 2,
+        "contractTotal": 18.82,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -70,8 +70,8 @@ export const allRosters = {
         "deadMoney": 1.75,
         "capSavings": 7.44,
         "baseSalary": 9.19,
-        "contractYears": 3,
-        "contractTotal": 27.57,
+        "contractYears": 2,
+        "contractTotal": 18.38,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -98,9 +98,9 @@ export const allRosters = {
         "deadMoney": 31.29,
         "capSavings": -22.59,
         "baseSalary": 8.7,
-        "contractYears": 3,
-        "contractTotal": 26.1,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 34.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -112,8 +112,8 @@ export const allRosters = {
         "deadMoney": 1.33,
         "capSavings": 5.63,
         "baseSalary": 6.96,
-        "contractYears": 3,
-        "contractTotal": 20.88,
+        "contractYears": 2,
+        "contractTotal": 13.92,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -128,7 +128,7 @@ export const allRosters = {
         "baseSalary": 6.85,
         "contractYears": 3,
         "contractTotal": 20.55,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -140,8 +140,8 @@ export const allRosters = {
         "deadMoney": 1.7,
         "capSavings": 4.35,
         "baseSalary": 6.05,
-        "contractYears": 3,
-        "contractTotal": 18.15,
+        "contractYears": 2,
+        "contractTotal": 12.1,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -154,9 +154,9 @@ export const allRosters = {
         "deadMoney": 14.42,
         "capSavings": 13.88,
         "baseSalary": 5.14,
-        "contractYears": 3,
-        "contractTotal": 15.42,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5.14,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -238,9 +238,9 @@ export const allRosters = {
         "deadMoney": 6,
         "capSavings": -1.61,
         "baseSalary": 4.39,
-        "contractYears": 2,
-        "contractTotal": 8.78,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 13.17,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -252,8 +252,8 @@ export const allRosters = {
         "deadMoney": 8,
         "capSavings": -3.65,
         "baseSalary": 4.35,
-        "contractYears": 4,
-        "contractTotal": 17.4,
+        "contractYears": 2,
+        "contractTotal": 8.7,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -322,9 +322,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.67,
         "baseSalary": 3.67,
-        "contractYears": 4,
-        "contractTotal": 14.68,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.67,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -336,9 +336,9 @@ export const allRosters = {
         "deadMoney": 3.08,
         "capSavings": -0.23,
         "baseSalary": 2.86,
-        "contractYears": 2,
-        "contractTotal": 5.72,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.58,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -462,8 +462,8 @@ export const allRosters = {
         "deadMoney": 0.58,
         "capSavings": 1.05,
         "baseSalary": 1.63,
-        "contractYears": 4,
-        "contractTotal": 6.52,
+        "contractYears": 2,
+        "contractTotal": 3.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -532,8 +532,8 @@ export const allRosters = {
         "deadMoney": 0.42,
         "capSavings": 0.86,
         "baseSalary": 1.29,
-        "contractYears": 4,
-        "contractTotal": 5.16,
+        "contractYears": 2,
+        "contractTotal": 2.58,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -588,9 +588,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -602,8 +602,8 @@ export const allRosters = {
         "deadMoney": 0.06,
         "capSavings": 1.15,
         "baseSalary": 1.21,
-        "contractYears": 4,
-        "contractTotal": 4.84,
+        "contractYears": 2,
+        "contractTotal": 2.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -630,8 +630,8 @@ export const allRosters = {
         "deadMoney": 0.16,
         "capSavings": 1,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
+        "contractYears": 2,
+        "contractTotal": 2.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -644,9 +644,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -658,9 +658,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -672,9 +672,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -700,8 +700,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1.08,
         "baseSalary": 1.09,
-        "contractYears": 4,
-        "contractTotal": 4.36,
+        "contractYears": 2,
+        "contractTotal": 2.18,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -714,9 +714,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -742,9 +742,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -756,9 +756,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -868,9 +868,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -882,9 +882,9 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 0.87,
         "baseSalary": 0.9,
-        "contractYears": 1,
-        "contractTotal": 0.9,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.8,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -1032,8 +1032,8 @@ export const allRosters = {
         "deadMoney": 27.75,
         "capSavings": -1.5,
         "baseSalary": 26.25,
-        "contractYears": 4,
-        "contractTotal": 105,
+        "contractYears": 3,
+        "contractTotal": 78.75,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -1046,9 +1046,9 @@ export const allRosters = {
         "deadMoney": 18.25,
         "capSavings": 6.52,
         "baseSalary": 24.77,
-        "contractYears": 4,
-        "contractTotal": 99.08,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 49.54,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -1076,7 +1076,7 @@ export const allRosters = {
         "baseSalary": 16.77,
         "contractYears": 4,
         "contractTotal": 67.08,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1088,9 +1088,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 15.05,
         "baseSalary": 15.05,
-        "contractYears": 4,
-        "contractTotal": 60.2,
-        "yearsRemaining": 2,
+        "contractYears": 1,
+        "contractTotal": 15.05,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1104,7 +1104,7 @@ export const allRosters = {
         "baseSalary": 14.99,
         "contractYears": 3,
         "contractTotal": 44.97,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -1116,9 +1116,9 @@ export const allRosters = {
         "deadMoney": 48.5,
         "capSavings": -35,
         "baseSalary": 13.5,
-        "contractYears": 3,
-        "contractTotal": 40.5,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 54,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1130,8 +1130,8 @@ export const allRosters = {
         "deadMoney": 3,
         "capSavings": 5.92,
         "baseSalary": 8.92,
-        "contractYears": 3,
-        "contractTotal": 26.76,
+        "contractYears": 2,
+        "contractTotal": 17.84,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1158,9 +1158,9 @@ export const allRosters = {
         "deadMoney": 13.52,
         "capSavings": -7.28,
         "baseSalary": 6.24,
-        "contractYears": 3,
-        "contractTotal": 18.72,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 24.96,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1172,8 +1172,8 @@ export const allRosters = {
         "deadMoney": 3.4,
         "capSavings": 2.83,
         "baseSalary": 6.23,
-        "contractYears": 3,
-        "contractTotal": 18.69,
+        "contractYears": 2,
+        "contractTotal": 12.46,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1186,8 +1186,8 @@ export const allRosters = {
         "deadMoney": 1,
         "capSavings": 4.75,
         "baseSalary": 5.75,
-        "contractYears": 3,
-        "contractTotal": 17.25,
+        "contractYears": 2,
+        "contractTotal": 11.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1202,7 +1202,7 @@ export const allRosters = {
         "baseSalary": 5.47,
         "contractYears": 3,
         "contractTotal": 16.41,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -1214,9 +1214,9 @@ export const allRosters = {
         "deadMoney": 10,
         "capSavings": -5,
         "baseSalary": 5,
-        "contractYears": 3,
-        "contractTotal": 15,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 20,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1284,9 +1284,9 @@ export const allRosters = {
         "deadMoney": 4,
         "capSavings": -0.74,
         "baseSalary": 3.26,
-        "contractYears": 2,
-        "contractTotal": 6.52,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.26,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1312,9 +1312,9 @@ export const allRosters = {
         "deadMoney": 2.74,
         "capSavings": 0.48,
         "baseSalary": 3.22,
-        "contractYears": 2,
-        "contractTotal": 6.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1354,8 +1354,8 @@ export const allRosters = {
         "deadMoney": 1.99,
         "capSavings": 0.68,
         "baseSalary": 2.66,
-        "contractYears": 4,
-        "contractTotal": 10.64,
+        "contractYears": 2,
+        "contractTotal": 5.32,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1368,9 +1368,9 @@ export const allRosters = {
         "deadMoney": 5,
         "capSavings": -2.78,
         "baseSalary": 2.22,
-        "contractYears": 2,
-        "contractTotal": 4.44,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 8.88,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1396,9 +1396,9 @@ export const allRosters = {
         "deadMoney": 16.82,
         "capSavings": 16.82,
         "baseSalary": 2.1,
-        "contractYears": 2,
-        "contractTotal": 4.2,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 10.5,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -1424,8 +1424,8 @@ export const allRosters = {
         "deadMoney": 0.57,
         "capSavings": 1.05,
         "baseSalary": 1.62,
-        "contractYears": 4,
-        "contractTotal": 6.48,
+        "contractYears": 2,
+        "contractTotal": 3.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1508,9 +1508,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1522,9 +1522,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1536,9 +1536,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1550,9 +1550,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1564,8 +1564,8 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 1.15,
         "baseSalary": 1.17,
-        "contractYears": 4,
-        "contractTotal": 4.68,
+        "contractYears": 2,
+        "contractTotal": 2.34,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1578,8 +1578,8 @@ export const allRosters = {
         "deadMoney": 0.18,
         "capSavings": 0.99,
         "baseSalary": 1.16,
-        "contractYears": 4,
-        "contractTotal": 4.64,
+        "contractYears": 2,
+        "contractTotal": 2.32,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1592,9 +1592,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1606,9 +1606,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1620,9 +1620,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1634,8 +1634,8 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 1.03,
         "baseSalary": 1.12,
-        "contractYears": 4,
-        "contractTotal": 4.48,
+        "contractYears": 2,
+        "contractTotal": 2.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -1648,9 +1648,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1662,9 +1662,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1676,9 +1676,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1732,9 +1732,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1746,9 +1746,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1760,9 +1760,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -1912,7 +1912,7 @@ export const allRosters = {
         "baseSalary": 34.54,
         "contractYears": 4,
         "contractTotal": 138.16,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1924,9 +1924,9 @@ export const allRosters = {
         "deadMoney": 25.44,
         "capSavings": 7.28,
         "baseSalary": 32.72,
-        "contractYears": 4,
-        "contractTotal": 130.88,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 65.44,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -1938,8 +1938,8 @@ export const allRosters = {
         "deadMoney": 51.93,
         "capSavings": -20.95,
         "baseSalary": 30.98,
-        "contractYears": 4,
-        "contractTotal": 123.92,
+        "contractYears": 3,
+        "contractTotal": 92.94,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -1952,9 +1952,9 @@ export const allRosters = {
         "deadMoney": 18.95,
         "capSavings": 7.33,
         "baseSalary": 26.28,
-        "contractYears": 4,
-        "contractTotal": 105.12,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 52.56,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -1966,9 +1966,9 @@ export const allRosters = {
         "deadMoney": 60,
         "capSavings": -45,
         "baseSalary": 15,
-        "contractYears": 3,
-        "contractTotal": 45,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 60,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1980,9 +1980,9 @@ export const allRosters = {
         "deadMoney": 41.54,
         "capSavings": -30.86,
         "baseSalary": 10.68,
-        "contractYears": 3,
-        "contractTotal": 32.04,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 42.72,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -1994,9 +1994,9 @@ export const allRosters = {
         "deadMoney": 38.2,
         "capSavings": -28.34,
         "baseSalary": 9.86,
-        "contractYears": 3,
-        "contractTotal": 29.58,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 39.44,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2008,9 +2008,9 @@ export const allRosters = {
         "deadMoney": 18.07,
         "capSavings": -11.09,
         "baseSalary": 6.98,
-        "contractYears": 3,
-        "contractTotal": 20.94,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 27.92,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2022,9 +2022,9 @@ export const allRosters = {
         "deadMoney": 14.25,
         "capSavings": -8.07,
         "baseSalary": 6.18,
-        "contractYears": 3,
-        "contractTotal": 18.54,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 24.72,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2036,8 +2036,8 @@ export const allRosters = {
         "deadMoney": 1.85,
         "capSavings": 4.01,
         "baseSalary": 5.86,
-        "contractYears": 3,
-        "contractTotal": 17.58,
+        "contractYears": 2,
+        "contractTotal": 11.72,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -2050,9 +2050,9 @@ export const allRosters = {
         "deadMoney": 20.4,
         "capSavings": -14.81,
         "baseSalary": 5.59,
-        "contractYears": 3,
-        "contractTotal": 16.77,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 22.36,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2064,9 +2064,9 @@ export const allRosters = {
         "deadMoney": 14.26,
         "capSavings": -8.7,
         "baseSalary": 5.56,
-        "contractYears": 3,
-        "contractTotal": 16.68,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 22.24,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2080,7 +2080,7 @@ export const allRosters = {
         "baseSalary": 5,
         "contractYears": 3,
         "contractTotal": 15,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2092,9 +2092,9 @@ export const allRosters = {
         "deadMoney": 17.5,
         "capSavings": -12.5,
         "baseSalary": 5,
-        "contractYears": 3,
-        "contractTotal": 15,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 20,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2106,9 +2106,9 @@ export const allRosters = {
         "deadMoney": 4.47,
         "capSavings": 4.47,
         "baseSalary": 4.47,
-        "contractYears": 4,
-        "contractTotal": 17.88,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 13.41,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2204,9 +2204,9 @@ export const allRosters = {
         "deadMoney": 5,
         "capSavings": -1.85,
         "baseSalary": 3.15,
-        "contractYears": 2,
-        "contractTotal": 6.3,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.45,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2232,9 +2232,9 @@ export const allRosters = {
         "deadMoney": 3.5,
         "capSavings": -1.35,
         "baseSalary": 2.15,
-        "contractYears": 2,
-        "contractTotal": 4.3,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 6.45,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2302,9 +2302,9 @@ export const allRosters = {
         "deadMoney": 2.17,
         "capSavings": -0.72,
         "baseSalary": 1.46,
-        "contractYears": 2,
-        "contractTotal": 2.92,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 4.38,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2372,8 +2372,8 @@ export const allRosters = {
         "deadMoney": 0.14,
         "capSavings": 1,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
+        "contractYears": 2,
+        "contractTotal": 2.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -2400,9 +2400,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -2512,9 +2512,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -2568,9 +2568,9 @@ export const allRosters = {
         "deadMoney": 0.13,
         "capSavings": 0.8,
         "baseSalary": 0.93,
-        "contractYears": 1,
-        "contractTotal": 0.93,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.86,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -2692,7 +2692,7 @@ export const allRosters = {
         "baseSalary": 44.23,
         "contractYears": 4,
         "contractTotal": 176.92,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2704,8 +2704,8 @@ export const allRosters = {
         "deadMoney": 26.75,
         "capSavings": -1.91,
         "baseSalary": 24.84,
-        "contractYears": 4,
-        "contractTotal": 99.36,
+        "contractYears": 3,
+        "contractTotal": 74.52,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -2718,9 +2718,9 @@ export const allRosters = {
         "deadMoney": 23.49,
         "capSavings": 1.01,
         "baseSalary": 24.5,
-        "contractYears": 4,
-        "contractTotal": 98,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 49,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -2732,9 +2732,9 @@ export const allRosters = {
         "deadMoney": 34.41,
         "capSavings": -20.75,
         "baseSalary": 13.66,
-        "contractYears": 3,
-        "contractTotal": 40.98,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 54.64,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2746,9 +2746,9 @@ export const allRosters = {
         "deadMoney": 43.12,
         "capSavings": -31.33,
         "baseSalary": 11.79,
-        "contractYears": 3,
-        "contractTotal": 35.37,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 47.16,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2760,8 +2760,8 @@ export const allRosters = {
         "deadMoney": 11.24,
         "capSavings": 0.51,
         "baseSalary": 11.75,
-        "contractYears": 3,
-        "contractTotal": 35.25,
+        "contractYears": 2,
+        "contractTotal": 23.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -2774,9 +2774,9 @@ export const allRosters = {
         "deadMoney": 30.88,
         "capSavings": -21.91,
         "baseSalary": 8.97,
-        "contractYears": 3,
-        "contractTotal": 26.91,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 35.88,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2788,9 +2788,9 @@ export const allRosters = {
         "deadMoney": 17.4,
         "capSavings": -8.85,
         "baseSalary": 8.55,
-        "contractYears": 3,
-        "contractTotal": 25.65,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 34.2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2802,9 +2802,9 @@ export const allRosters = {
         "deadMoney": 23.05,
         "capSavings": -15.65,
         "baseSalary": 7.4,
-        "contractYears": 3,
-        "contractTotal": 22.2,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 29.6,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2818,7 +2818,7 @@ export const allRosters = {
         "baseSalary": 7.08,
         "contractYears": 3,
         "contractTotal": 21.24,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2830,9 +2830,9 @@ export const allRosters = {
         "deadMoney": 26.61,
         "capSavings": -19.82,
         "baseSalary": 6.79,
-        "contractYears": 3,
-        "contractTotal": 20.37,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 27.16,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2846,7 +2846,7 @@ export const allRosters = {
         "baseSalary": 6.5,
         "contractYears": 3,
         "contractTotal": 19.5,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2858,9 +2858,9 @@ export const allRosters = {
         "deadMoney": 16.61,
         "capSavings": -10.73,
         "baseSalary": 5.88,
-        "contractYears": 3,
-        "contractTotal": 17.64,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 23.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2872,9 +2872,9 @@ export const allRosters = {
         "deadMoney": 13.71,
         "capSavings": -8.36,
         "baseSalary": 5.35,
-        "contractYears": 3,
-        "contractTotal": 16.05,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 21.4,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -2886,9 +2886,9 @@ export const allRosters = {
         "deadMoney": 26.2,
         "capSavings": -20.95,
         "baseSalary": 5.25,
-        "contractYears": 3,
-        "contractTotal": 15.75,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 26.25,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -2914,9 +2914,9 @@ export const allRosters = {
         "deadMoney": 4.27,
         "capSavings": 4.27,
         "baseSalary": 4.27,
-        "contractYears": 2,
-        "contractTotal": 8.54,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 12.81,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -2942,9 +2942,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.52,
         "baseSalary": 3.52,
-        "contractYears": 2,
-        "contractTotal": 7.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -2984,9 +2984,9 @@ export const allRosters = {
         "deadMoney": 7.88,
         "capSavings": -4.64,
         "baseSalary": 3.23,
-        "contractYears": 2,
-        "contractTotal": 6.46,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 12.92,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -3054,9 +3054,9 @@ export const allRosters = {
         "deadMoney": 2.53,
         "capSavings": -0.61,
         "baseSalary": 1.92,
-        "contractYears": 2,
-        "contractTotal": 3.84,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 5.76,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -3068,9 +3068,9 @@ export const allRosters = {
         "deadMoney": 1.8,
         "capSavings": 0.1,
         "baseSalary": 1.9,
-        "contractYears": 2,
-        "contractTotal": 3.8,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.9,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -3110,8 +3110,8 @@ export const allRosters = {
         "deadMoney": 0.45,
         "capSavings": 1.08,
         "baseSalary": 1.53,
-        "contractYears": 4,
-        "contractTotal": 6.12,
+        "contractYears": 2,
+        "contractTotal": 3.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3208,8 +3208,8 @@ export const allRosters = {
         "deadMoney": 0.13,
         "capSavings": 1.01,
         "baseSalary": 1.14,
-        "contractYears": 4,
-        "contractTotal": 4.56,
+        "contractYears": 2,
+        "contractTotal": 2.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3236,9 +3236,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.1,
         "baseSalary": 1.1,
-        "contractYears": 2,
-        "contractTotal": 2.2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -3264,8 +3264,8 @@ export const allRosters = {
         "deadMoney": 0.24,
         "capSavings": 0.84,
         "baseSalary": 1.09,
-        "contractYears": 4,
-        "contractTotal": 4.36,
+        "contractYears": 2,
+        "contractTotal": 2.18,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3278,8 +3278,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
+        "contractYears": 2,
+        "contractTotal": 2.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3292,9 +3292,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -3348,9 +3348,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -3362,9 +3362,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -3376,8 +3376,8 @@ export const allRosters = {
         "deadMoney": 0.15,
         "capSavings": 0.9,
         "baseSalary": 1.06,
-        "contractYears": 4,
-        "contractTotal": 4.24,
+        "contractYears": 2,
+        "contractTotal": 2.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3446,9 +3446,9 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 0.88,
         "baseSalary": 0.89,
-        "contractYears": 1,
-        "contractTotal": 0.89,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.78,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -3596,8 +3596,8 @@ export const allRosters = {
         "deadMoney": 25.9,
         "capSavings": -1.6,
         "baseSalary": 24.3,
-        "contractYears": 4,
-        "contractTotal": 97.2,
+        "contractYears": 3,
+        "contractTotal": 72.9,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -3610,8 +3610,8 @@ export const allRosters = {
         "deadMoney": 39.36,
         "capSavings": -15.32,
         "baseSalary": 24.04,
-        "contractYears": 4,
-        "contractTotal": 96.16,
+        "contractYears": 3,
+        "contractTotal": 72.12,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -3624,8 +3624,8 @@ export const allRosters = {
         "deadMoney": 27.3,
         "capSavings": -6.03,
         "baseSalary": 21.27,
-        "contractYears": 4,
-        "contractTotal": 85.08,
+        "contractYears": 3,
+        "contractTotal": 63.81,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -3638,8 +3638,8 @@ export const allRosters = {
         "deadMoney": 34.01,
         "capSavings": -12.9,
         "baseSalary": 21.1,
-        "contractYears": 4,
-        "contractTotal": 84.4,
+        "contractYears": 3,
+        "contractTotal": 63.3,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -3652,8 +3652,8 @@ export const allRosters = {
         "deadMoney": 23.72,
         "capSavings": -5.07,
         "baseSalary": 18.64,
-        "contractYears": 4,
-        "contractTotal": 74.56,
+        "contractYears": 3,
+        "contractTotal": 55.92,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -3666,8 +3666,8 @@ export const allRosters = {
         "deadMoney": 17.56,
         "capSavings": 17.56,
         "baseSalary": 17.56,
-        "contractYears": 4,
-        "contractTotal": 70.24,
+        "contractYears": 3,
+        "contractTotal": 52.68,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -3680,9 +3680,9 @@ export const allRosters = {
         "deadMoney": 7.5,
         "capSavings": 9.22,
         "baseSalary": 16.72,
-        "contractYears": 4,
-        "contractTotal": 66.88,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 33.44,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -3708,9 +3708,9 @@ export const allRosters = {
         "deadMoney": 33.15,
         "capSavings": -22.2,
         "baseSalary": 10.95,
-        "contractYears": 3,
-        "contractTotal": 32.85,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 43.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -3722,8 +3722,8 @@ export const allRosters = {
         "deadMoney": 5.37,
         "capSavings": 4.75,
         "baseSalary": 10.12,
-        "contractYears": 3,
-        "contractTotal": 30.36,
+        "contractYears": 2,
+        "contractTotal": 20.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3736,9 +3736,9 @@ export const allRosters = {
         "deadMoney": 60,
         "capSavings": -50.01,
         "baseSalary": 9.99,
-        "contractYears": 3,
-        "contractTotal": 29.97,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 39.96,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -3750,8 +3750,8 @@ export const allRosters = {
         "deadMoney": 3.67,
         "capSavings": 4.37,
         "baseSalary": 8.03,
-        "contractYears": 3,
-        "contractTotal": 24.09,
+        "contractYears": 2,
+        "contractTotal": 16.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3764,8 +3764,8 @@ export const allRosters = {
         "deadMoney": 2,
         "capSavings": 6,
         "baseSalary": 8,
-        "contractYears": 3,
-        "contractTotal": 24,
+        "contractYears": 2,
+        "contractTotal": 16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3778,8 +3778,8 @@ export const allRosters = {
         "deadMoney": 2,
         "capSavings": 5.8,
         "baseSalary": 7.8,
-        "contractYears": 3,
-        "contractTotal": 23.4,
+        "contractYears": 2,
+        "contractTotal": 15.6,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3794,7 +3794,7 @@ export const allRosters = {
         "baseSalary": 7.48,
         "contractYears": 3,
         "contractTotal": 22.44,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -3820,8 +3820,8 @@ export const allRosters = {
         "deadMoney": 5.7,
         "capSavings": 0.15,
         "baseSalary": 5.85,
-        "contractYears": 3,
-        "contractTotal": 17.55,
+        "contractYears": 2,
+        "contractTotal": 11.7,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -3834,9 +3834,9 @@ export const allRosters = {
         "deadMoney": 4,
         "capSavings": 4,
         "baseSalary": 4,
-        "contractYears": 2,
-        "contractTotal": 8,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 4,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -3850,7 +3850,7 @@ export const allRosters = {
         "baseSalary": 3.37,
         "contractYears": 4,
         "contractTotal": 13.48,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -3932,8 +3932,8 @@ export const allRosters = {
         "deadMoney": 1,
         "capSavings": 0.9,
         "baseSalary": 1.9,
-        "contractYears": 4,
-        "contractTotal": 7.6,
+        "contractYears": 2,
+        "contractTotal": 3.8,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4002,9 +4002,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.26,
         "baseSalary": 1.26,
-        "contractYears": 2,
-        "contractTotal": 2.52,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.26,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4030,9 +4030,9 @@ export const allRosters = {
         "deadMoney": 1.26,
         "capSavings": 1.26,
         "baseSalary": 1.26,
-        "contractYears": 2,
-        "contractTotal": 2.52,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 3.78,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4100,9 +4100,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4142,9 +4142,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4156,9 +4156,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4170,9 +4170,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4212,9 +4212,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4226,9 +4226,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4240,9 +4240,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4268,8 +4268,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1,
         "baseSalary": 1.01,
-        "contractYears": 4,
-        "contractTotal": 4.04,
+        "contractYears": 2,
+        "contractTotal": 2.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4282,8 +4282,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1,
         "baseSalary": 1.01,
-        "contractYears": 4,
-        "contractTotal": 4.04,
+        "contractYears": 2,
+        "contractTotal": 2.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4296,8 +4296,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1,
         "baseSalary": 1.01,
-        "contractYears": 4,
-        "contractTotal": 4.04,
+        "contractYears": 2,
+        "contractTotal": 2.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4310,9 +4310,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4324,9 +4324,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4338,9 +4338,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4506,9 +4506,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 3,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4534,9 +4534,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       }
     ],
@@ -4558,9 +4558,9 @@ export const allRosters = {
         "deadMoney": 18.17,
         "capSavings": 6.91,
         "baseSalary": 25.09,
-        "contractYears": 4,
-        "contractTotal": 100.36,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 50.18,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -4572,9 +4572,9 @@ export const allRosters = {
         "deadMoney": 18,
         "capSavings": 6.5,
         "baseSalary": 24.5,
-        "contractYears": 4,
-        "contractTotal": 98,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 49,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -4586,8 +4586,8 @@ export const allRosters = {
         "deadMoney": 26,
         "capSavings": -4.5,
         "baseSalary": 21.5,
-        "contractYears": 4,
-        "contractTotal": 86,
+        "contractYears": 3,
+        "contractTotal": 64.5,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -4600,8 +4600,8 @@ export const allRosters = {
         "deadMoney": 22,
         "capSavings": -1.5,
         "baseSalary": 20.5,
-        "contractYears": 4,
-        "contractTotal": 82,
+        "contractYears": 3,
+        "contractTotal": 61.5,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -4614,9 +4614,9 @@ export const allRosters = {
         "deadMoney": 14,
         "capSavings": 5.5,
         "baseSalary": 19.5,
-        "contractYears": 4,
-        "contractTotal": 78,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 39,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -4628,8 +4628,8 @@ export const allRosters = {
         "deadMoney": 21,
         "capSavings": -2.08,
         "baseSalary": 18.93,
-        "contractYears": 4,
-        "contractTotal": 75.72,
+        "contractYears": 3,
+        "contractTotal": 56.79,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -4644,7 +4644,7 @@ export const allRosters = {
         "baseSalary": 12.91,
         "contractYears": 3,
         "contractTotal": 38.73,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4656,8 +4656,8 @@ export const allRosters = {
         "deadMoney": 3.2,
         "capSavings": 8.4,
         "baseSalary": 11.6,
-        "contractYears": 3,
-        "contractTotal": 34.8,
+        "contractYears": 2,
+        "contractTotal": 23.2,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4672,7 +4672,7 @@ export const allRosters = {
         "baseSalary": 10.83,
         "contractYears": 3,
         "contractTotal": 32.49,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4698,8 +4698,8 @@ export const allRosters = {
         "deadMoney": 1.33,
         "capSavings": 7.47,
         "baseSalary": 8.8,
-        "contractYears": 3,
-        "contractTotal": 26.4,
+        "contractYears": 2,
+        "contractTotal": 17.6,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4756,7 +4756,7 @@ export const allRosters = {
         "baseSalary": 5.96,
         "contractYears": 3,
         "contractTotal": 17.88,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4768,9 +4768,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 5.7,
         "baseSalary": 5.7,
-        "contractYears": 3,
-        "contractTotal": 17.1,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5.7,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4784,7 +4784,7 @@ export const allRosters = {
         "baseSalary": 5.67,
         "contractYears": 3,
         "contractTotal": 17.01,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4796,8 +4796,8 @@ export const allRosters = {
         "deadMoney": 1,
         "capSavings": 3.75,
         "baseSalary": 4.75,
-        "contractYears": 4,
-        "contractTotal": 19,
+        "contractYears": 2,
+        "contractTotal": 9.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4810,9 +4810,9 @@ export const allRosters = {
         "deadMoney": 3,
         "capSavings": 1.34,
         "baseSalary": 4.34,
-        "contractYears": 2,
-        "contractTotal": 8.68,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 13.02,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4824,8 +4824,8 @@ export const allRosters = {
         "deadMoney": 0.42,
         "capSavings": 3.67,
         "baseSalary": 4.1,
-        "contractYears": 4,
-        "contractTotal": 16.4,
+        "contractYears": 2,
+        "contractTotal": 8.2,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4866,9 +4866,9 @@ export const allRosters = {
         "deadMoney": 3,
         "capSavings": 0.47,
         "baseSalary": 3.47,
-        "contractYears": 2,
-        "contractTotal": 6.94,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.47,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -4922,9 +4922,9 @@ export const allRosters = {
         "deadMoney": 2.75,
         "capSavings": -0.5,
         "baseSalary": 2.25,
-        "contractYears": 2,
-        "contractTotal": 4.5,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 6.75,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -4950,8 +4950,8 @@ export const allRosters = {
         "deadMoney": 0.47,
         "capSavings": 1.67,
         "baseSalary": 2.14,
-        "contractYears": 4,
-        "contractTotal": 8.56,
+        "contractYears": 2,
+        "contractTotal": 4.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -4964,9 +4964,9 @@ export const allRosters = {
         "deadMoney": 2.45,
         "capSavings": -0.31,
         "baseSalary": 2.14,
-        "contractYears": 2,
-        "contractTotal": 4.28,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 6.42,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -5020,9 +5020,9 @@ export const allRosters = {
         "deadMoney": 1.69,
         "capSavings": -0.28,
         "baseSalary": 1.4,
-        "contractYears": 2,
-        "contractTotal": 2.8,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 4.2,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -5034,8 +5034,8 @@ export const allRosters = {
         "deadMoney": 0.19,
         "capSavings": 1.15,
         "baseSalary": 1.34,
-        "contractYears": 4,
-        "contractTotal": 5.36,
+        "contractYears": 2,
+        "contractTotal": 2.68,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -5132,9 +5132,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5146,9 +5146,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5160,9 +5160,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5174,9 +5174,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5188,9 +5188,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5202,9 +5202,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5216,9 +5216,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5230,9 +5230,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5286,9 +5286,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5300,9 +5300,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5314,9 +5314,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5342,9 +5342,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5356,9 +5356,9 @@ export const allRosters = {
         "deadMoney": 0.24,
         "capSavings": 0.72,
         "baseSalary": 0.97,
-        "contractYears": 1,
-        "contractTotal": 0.97,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.94,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -5454,9 +5454,9 @@ export const allRosters = {
         "deadMoney": 0.58,
         "capSavings": -0.58,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 5,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -5494,7 +5494,7 @@ export const allRosters = {
         "baseSalary": 44.96,
         "contractYears": 4,
         "contractTotal": 179.84,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -5506,8 +5506,8 @@ export const allRosters = {
         "deadMoney": 32.16,
         "capSavings": -1.26,
         "baseSalary": 30.89,
-        "contractYears": 4,
-        "contractTotal": 123.56,
+        "contractYears": 3,
+        "contractTotal": 92.67,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -5520,9 +5520,9 @@ export const allRosters = {
         "deadMoney": 103.09,
         "capSavings": -79.42,
         "baseSalary": 23.67,
-        "contractYears": 4,
-        "contractTotal": 94.68,
-        "yearsRemaining": 2,
+        "contractYears": 5,
+        "contractTotal": 118.35,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -5534,9 +5534,9 @@ export const allRosters = {
         "deadMoney": 28.33,
         "capSavings": -17.95,
         "baseSalary": 10.37,
-        "contractYears": 3,
-        "contractTotal": 31.11,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 41.48,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -5564,7 +5564,7 @@ export const allRosters = {
         "baseSalary": 8.03,
         "contractYears": 3,
         "contractTotal": 24.09,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -5576,9 +5576,9 @@ export const allRosters = {
         "deadMoney": 34.5,
         "capSavings": -28.52,
         "baseSalary": 5.98,
-        "contractYears": 3,
-        "contractTotal": 17.94,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 29.9,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -5590,9 +5590,9 @@ export const allRosters = {
         "deadMoney": 17.8,
         "capSavings": -12.36,
         "baseSalary": 5.44,
-        "contractYears": 3,
-        "contractTotal": 16.32,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 21.76,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -5606,7 +5606,7 @@ export const allRosters = {
         "baseSalary": 5.33,
         "contractYears": 3,
         "contractTotal": 15.99,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -5620,7 +5620,7 @@ export const allRosters = {
         "baseSalary": 5.15,
         "contractYears": 3,
         "contractTotal": 15.45,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -5634,7 +5634,7 @@ export const allRosters = {
         "baseSalary": 4.92,
         "contractYears": 4,
         "contractTotal": 19.68,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -5648,7 +5648,7 @@ export const allRosters = {
         "baseSalary": 3.97,
         "contractYears": 4,
         "contractTotal": 15.88,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -5660,8 +5660,8 @@ export const allRosters = {
         "deadMoney": 0.27,
         "capSavings": 3.67,
         "baseSalary": 3.94,
-        "contractYears": 4,
-        "contractTotal": 15.76,
+        "contractYears": 2,
+        "contractTotal": 7.88,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -5730,9 +5730,9 @@ export const allRosters = {
         "deadMoney": 5.16,
         "capSavings": -2.43,
         "baseSalary": 2.73,
-        "contractYears": 2,
-        "contractTotal": 5.46,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2.73,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5842,8 +5842,8 @@ export const allRosters = {
         "deadMoney": 0.88,
         "capSavings": 0.54,
         "baseSalary": 1.42,
-        "contractYears": 4,
-        "contractTotal": 5.68,
+        "contractYears": 2,
+        "contractTotal": 2.84,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -5856,9 +5856,9 @@ export const allRosters = {
         "deadMoney": 8.29,
         "capSavings": 1.3,
         "baseSalary": 1.3,
-        "contractYears": 2,
-        "contractTotal": 2.6,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 6.5,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -5884,9 +5884,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5912,9 +5912,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.16,
         "baseSalary": 1.16,
-        "contractYears": 2,
-        "contractTotal": 2.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.16,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5954,9 +5954,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5968,9 +5968,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5982,9 +5982,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -5996,9 +5996,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6010,9 +6010,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6024,9 +6024,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6052,9 +6052,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6122,9 +6122,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6206,9 +6206,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6220,9 +6220,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6332,9 +6332,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -6372,7 +6372,7 @@ export const allRosters = {
         "baseSalary": 43.51,
         "contractYears": 4,
         "contractTotal": 174.04,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -6384,9 +6384,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 27.3,
         "baseSalary": 27.3,
-        "contractYears": 4,
-        "contractTotal": 109.2,
-        "yearsRemaining": 2,
+        "contractYears": 1,
+        "contractTotal": 27.3,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6398,9 +6398,9 @@ export const allRosters = {
         "deadMoney": 5,
         "capSavings": 16.63,
         "baseSalary": 21.63,
-        "contractYears": 4,
-        "contractTotal": 86.52,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 43.26,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -6414,7 +6414,7 @@ export const allRosters = {
         "baseSalary": 19.82,
         "contractYears": 4,
         "contractTotal": 79.28,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -6426,8 +6426,8 @@ export const allRosters = {
         "deadMoney": 30.6,
         "capSavings": -13.49,
         "baseSalary": 17.11,
-        "contractYears": 4,
-        "contractTotal": 68.44,
+        "contractYears": 3,
+        "contractTotal": 51.33,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -6440,8 +6440,8 @@ export const allRosters = {
         "deadMoney": 11,
         "capSavings": 1.7,
         "baseSalary": 12.7,
-        "contractYears": 3,
-        "contractTotal": 38.1,
+        "contractYears": 2,
+        "contractTotal": 25.4,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -6456,7 +6456,7 @@ export const allRosters = {
         "baseSalary": 10.4,
         "contractYears": 3,
         "contractTotal": 31.2,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -6482,9 +6482,9 @@ export const allRosters = {
         "deadMoney": 19.88,
         "capSavings": -11.15,
         "baseSalary": 8.73,
-        "contractYears": 3,
-        "contractTotal": 26.19,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 34.92,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -6496,8 +6496,8 @@ export const allRosters = {
         "deadMoney": 5.5,
         "capSavings": 1.06,
         "baseSalary": 6.56,
-        "contractYears": 3,
-        "contractTotal": 19.68,
+        "contractYears": 2,
+        "contractTotal": 13.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -6510,8 +6510,8 @@ export const allRosters = {
         "deadMoney": 22,
         "capSavings": -16.08,
         "baseSalary": 5.92,
-        "contractYears": 3,
-        "contractTotal": 17.76,
+        "contractYears": 2,
+        "contractTotal": 11.84,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -6524,9 +6524,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 5.77,
         "baseSalary": 5.77,
-        "contractYears": 3,
-        "contractTotal": 17.31,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5.77,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6538,9 +6538,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 5.77,
         "baseSalary": 5.77,
-        "contractYears": 3,
-        "contractTotal": 17.31,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5.77,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6552,9 +6552,9 @@ export const allRosters = {
         "deadMoney": 15,
         "capSavings": -9.56,
         "baseSalary": 5.44,
-        "contractYears": 3,
-        "contractTotal": 16.32,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 21.76,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -6608,9 +6608,9 @@ export const allRosters = {
         "deadMoney": 16,
         "capSavings": -12.11,
         "baseSalary": 3.89,
-        "contractYears": 4,
-        "contractTotal": 15.56,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.67,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -6636,9 +6636,9 @@ export const allRosters = {
         "deadMoney": 3.5,
         "capSavings": -0.5,
         "baseSalary": 3,
-        "contractYears": 2,
-        "contractTotal": 6,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -6650,9 +6650,9 @@ export const allRosters = {
         "deadMoney": 3.17,
         "capSavings": -0.33,
         "baseSalary": 2.83,
-        "contractYears": 2,
-        "contractTotal": 5.66,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.49,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -6678,9 +6678,9 @@ export const allRosters = {
         "deadMoney": 2.5,
         "capSavings": 2.5,
         "baseSalary": 2.5,
-        "contractYears": 4,
-        "contractTotal": 10,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2.5,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6734,8 +6734,8 @@ export const allRosters = {
         "deadMoney": 0.23,
         "capSavings": 1.49,
         "baseSalary": 1.72,
-        "contractYears": 4,
-        "contractTotal": 6.88,
+        "contractYears": 2,
+        "contractTotal": 3.44,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -6776,8 +6776,8 @@ export const allRosters = {
         "deadMoney": 0.48,
         "capSavings": 1.07,
         "baseSalary": 1.55,
-        "contractYears": 4,
-        "contractTotal": 6.2,
+        "contractYears": 2,
+        "contractTotal": 3.1,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -6818,9 +6818,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6832,9 +6832,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6916,9 +6916,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6944,9 +6944,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6958,9 +6958,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6972,9 +6972,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -6986,9 +6986,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7014,9 +7014,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7028,9 +7028,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7154,9 +7154,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7304,9 +7304,9 @@ export const allRosters = {
         "deadMoney": 15.33,
         "capSavings": 8.45,
         "baseSalary": 23.78,
-        "contractYears": 4,
-        "contractTotal": 95.12,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 47.56,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -7318,9 +7318,9 @@ export const allRosters = {
         "deadMoney": 9.78,
         "capSavings": 8.38,
         "baseSalary": 18.16,
-        "contractYears": 4,
-        "contractTotal": 72.64,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 36.32,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -7334,7 +7334,7 @@ export const allRosters = {
         "baseSalary": 16.83,
         "contractYears": 4,
         "contractTotal": 67.32,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7348,7 +7348,7 @@ export const allRosters = {
         "baseSalary": 16.48,
         "contractYears": 4,
         "contractTotal": 65.92,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7362,7 +7362,7 @@ export const allRosters = {
         "baseSalary": 14.57,
         "contractYears": 3,
         "contractTotal": 43.71,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -7374,8 +7374,8 @@ export const allRosters = {
         "deadMoney": 10.33,
         "capSavings": 3.8,
         "baseSalary": 14.14,
-        "contractYears": 3,
-        "contractTotal": 42.42,
+        "contractYears": 2,
+        "contractTotal": 28.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7388,9 +7388,9 @@ export const allRosters = {
         "deadMoney": 39.42,
         "capSavings": -25.45,
         "baseSalary": 13.98,
-        "contractYears": 3,
-        "contractTotal": 41.94,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 55.92,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7404,7 +7404,7 @@ export const allRosters = {
         "baseSalary": 13.5,
         "contractYears": 3,
         "contractTotal": 40.5,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -7416,8 +7416,8 @@ export const allRosters = {
         "deadMoney": 1.83,
         "capSavings": 7.41,
         "baseSalary": 9.24,
-        "contractYears": 3,
-        "contractTotal": 27.72,
+        "contractYears": 2,
+        "contractTotal": 18.48,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7430,9 +7430,9 @@ export const allRosters = {
         "deadMoney": 31.98,
         "capSavings": -22.77,
         "baseSalary": 9.21,
-        "contractYears": 3,
-        "contractTotal": 27.63,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 36.84,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7444,9 +7444,9 @@ export const allRosters = {
         "deadMoney": 25.44,
         "capSavings": -16.98,
         "baseSalary": 8.45,
-        "contractYears": 3,
-        "contractTotal": 25.35,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 33.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7458,9 +7458,9 @@ export const allRosters = {
         "deadMoney": 32.85,
         "capSavings": -24.42,
         "baseSalary": 8.42,
-        "contractYears": 3,
-        "contractTotal": 25.26,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 33.68,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7472,8 +7472,8 @@ export const allRosters = {
         "deadMoney": 6.99,
         "capSavings": 1.83,
         "baseSalary": 8.19,
-        "contractYears": 3,
-        "contractTotal": 24.57,
+        "contractYears": 2,
+        "contractTotal": 16.38,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7486,8 +7486,8 @@ export const allRosters = {
         "deadMoney": 3.5,
         "capSavings": 4.5,
         "baseSalary": 8,
-        "contractYears": 3,
-        "contractTotal": 24,
+        "contractYears": 2,
+        "contractTotal": 16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7514,8 +7514,8 @@ export const allRosters = {
         "deadMoney": 8,
         "capSavings": -2,
         "baseSalary": 6,
-        "contractYears": 3,
-        "contractTotal": 18,
+        "contractYears": 2,
+        "contractTotal": 12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7528,8 +7528,8 @@ export const allRosters = {
         "deadMoney": 11,
         "capSavings": -5.03,
         "baseSalary": 5.97,
-        "contractYears": 3,
-        "contractTotal": 17.91,
+        "contractYears": 2,
+        "contractTotal": 11.94,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7542,9 +7542,9 @@ export const allRosters = {
         "deadMoney": 18.8,
         "capSavings": -13.02,
         "baseSalary": 5.78,
-        "contractYears": 3,
-        "contractTotal": 17.34,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 23.12,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7556,9 +7556,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 5.77,
         "baseSalary": 5.77,
-        "contractYears": 3,
-        "contractTotal": 17.31,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5.77,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7570,9 +7570,9 @@ export const allRosters = {
         "deadMoney": 11,
         "capSavings": -5.92,
         "baseSalary": 5.08,
-        "contractYears": 3,
-        "contractTotal": 15.24,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 20.32,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7626,9 +7626,9 @@ export const allRosters = {
         "deadMoney": 12.6,
         "capSavings": -9.03,
         "baseSalary": 3.57,
-        "contractYears": 2,
-        "contractTotal": 7.14,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 14.28,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7640,9 +7640,9 @@ export const allRosters = {
         "deadMoney": 9.5,
         "capSavings": -6.17,
         "baseSalary": 3.33,
-        "contractYears": 2,
-        "contractTotal": 6.66,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.99,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -7654,9 +7654,9 @@ export const allRosters = {
         "deadMoney": 10,
         "capSavings": -6.71,
         "baseSalary": 3.29,
-        "contractYears": 2,
-        "contractTotal": 6.58,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.87,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -7668,9 +7668,9 @@ export const allRosters = {
         "deadMoney": 5.58,
         "capSavings": -2.33,
         "baseSalary": 3.25,
-        "contractYears": 2,
-        "contractTotal": 6.5,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.75,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -7682,9 +7682,9 @@ export const allRosters = {
         "deadMoney": 11.75,
         "capSavings": -8.65,
         "baseSalary": 3.1,
-        "contractYears": 2,
-        "contractTotal": 6.2,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 12.4,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7696,9 +7696,9 @@ export const allRosters = {
         "deadMoney": 6.25,
         "capSavings": -3.75,
         "baseSalary": 2.5,
-        "contractYears": 2,
-        "contractTotal": 5,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 10,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7710,9 +7710,9 @@ export const allRosters = {
         "deadMoney": 1,
         "capSavings": 1,
         "baseSalary": 2,
-        "contractYears": 2,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7740,7 +7740,7 @@ export const allRosters = {
         "baseSalary": 1.67,
         "contractYears": 4,
         "contractTotal": 6.68,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -7850,9 +7850,9 @@ export const allRosters = {
         "deadMoney": 0.09,
         "capSavings": 1.13,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7920,9 +7920,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7934,9 +7934,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -7962,8 +7962,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
+        "contractYears": 2,
+        "contractTotal": 2.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -7990,9 +7990,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8004,9 +8004,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8018,9 +8018,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8032,9 +8032,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8046,9 +8046,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8060,9 +8060,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8074,9 +8074,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8088,9 +8088,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8116,8 +8116,8 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 1,
         "baseSalary": 1.03,
-        "contractYears": 4,
-        "contractTotal": 4.12,
+        "contractYears": 2,
+        "contractTotal": 2.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -8158,9 +8158,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8322,8 +8322,8 @@ export const allRosters = {
         "deadMoney": 58.8,
         "capSavings": -21.2,
         "baseSalary": 37.6,
-        "contractYears": 4,
-        "contractTotal": 150.4,
+        "contractYears": 3,
+        "contractTotal": 112.8,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -8336,8 +8336,8 @@ export const allRosters = {
         "deadMoney": 44.2,
         "capSavings": -11.09,
         "baseSalary": 33.11,
-        "contractYears": 4,
-        "contractTotal": 132.44,
+        "contractYears": 3,
+        "contractTotal": 99.33,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -8350,8 +8350,8 @@ export const allRosters = {
         "deadMoney": 37.71,
         "capSavings": -8.75,
         "baseSalary": 28.97,
-        "contractYears": 4,
-        "contractTotal": 115.88,
+        "contractYears": 3,
+        "contractTotal": 86.91,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -8364,8 +8364,8 @@ export const allRosters = {
         "deadMoney": 48.9,
         "capSavings": -20.9,
         "baseSalary": 28,
-        "contractYears": 4,
-        "contractTotal": 112,
+        "contractYears": 3,
+        "contractTotal": 84,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -8378,8 +8378,8 @@ export const allRosters = {
         "deadMoney": 27.19,
         "capSavings": -9.32,
         "baseSalary": 17.87,
-        "contractYears": 4,
-        "contractTotal": 71.48,
+        "contractYears": 3,
+        "contractTotal": 53.61,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -8392,9 +8392,9 @@ export const allRosters = {
         "deadMoney": 51.62,
         "capSavings": -41.48,
         "baseSalary": 10.15,
-        "contractYears": 3,
-        "contractTotal": 30.45,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 50.75,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -8408,7 +8408,7 @@ export const allRosters = {
         "baseSalary": 9.76,
         "contractYears": 3,
         "contractTotal": 29.28,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -8434,8 +8434,8 @@ export const allRosters = {
         "deadMoney": 1.38,
         "capSavings": 5.36,
         "baseSalary": 6.74,
-        "contractYears": 3,
-        "contractTotal": 20.22,
+        "contractYears": 2,
+        "contractTotal": 13.48,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -8476,9 +8476,9 @@ export const allRosters = {
         "deadMoney": 19.51,
         "capSavings": -14.04,
         "baseSalary": 5.47,
-        "contractYears": 3,
-        "contractTotal": 16.41,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 21.88,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -8490,9 +8490,9 @@ export const allRosters = {
         "deadMoney": 4.9,
         "capSavings": 0.1,
         "baseSalary": 5,
-        "contractYears": 3,
-        "contractTotal": 15,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8518,9 +8518,9 @@ export const allRosters = {
         "deadMoney": 4.68,
         "capSavings": 4.68,
         "baseSalary": 4.68,
-        "contractYears": 4,
-        "contractTotal": 18.72,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 14.04,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -8574,9 +8574,9 @@ export const allRosters = {
         "deadMoney": 2.64,
         "capSavings": 0.56,
         "baseSalary": 3.2,
-        "contractYears": 2,
-        "contractTotal": 6.4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.2,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8588,9 +8588,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.81,
         "baseSalary": 1.81,
-        "contractYears": 2,
-        "contractTotal": 3.62,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.81,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8644,9 +8644,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.58,
         "baseSalary": 1.58,
-        "contractYears": 2,
-        "contractTotal": 3.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.58,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8672,8 +8672,8 @@ export const allRosters = {
         "deadMoney": 0.36,
         "capSavings": 0.89,
         "baseSalary": 1.26,
-        "contractYears": 4,
-        "contractTotal": 5.04,
+        "contractYears": 2,
+        "contractTotal": 2.52,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -8700,9 +8700,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8728,9 +8728,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8756,8 +8756,8 @@ export const allRosters = {
         "deadMoney": 0.07,
         "capSavings": 1.04,
         "baseSalary": 1.11,
-        "contractYears": 4,
-        "contractTotal": 4.44,
+        "contractYears": 2,
+        "contractTotal": 2.22,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -8798,8 +8798,8 @@ export const allRosters = {
         "deadMoney": 0.33,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
+        "contractYears": 2,
+        "contractTotal": 2.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -8812,9 +8812,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8826,9 +8826,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8840,9 +8840,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8854,9 +8854,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8868,9 +8868,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8882,8 +8882,8 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 0.94,
         "baseSalary": 1.04,
-        "contractYears": 4,
-        "contractTotal": 4.16,
+        "contractYears": 2,
+        "contractTotal": 2.08,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -8910,9 +8910,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8924,9 +8924,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8938,9 +8938,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -8952,9 +8952,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9092,9 +9092,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 3,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -9120,9 +9120,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       }
     ],
@@ -9146,7 +9146,7 @@ export const allRosters = {
         "baseSalary": 36.12,
         "contractYears": 4,
         "contractTotal": 144.48,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -9158,9 +9158,9 @@ export const allRosters = {
         "deadMoney": 110.03,
         "capSavings": -90.83,
         "baseSalary": 19.2,
-        "contractYears": 4,
-        "contractTotal": 76.8,
-        "yearsRemaining": 2,
+        "contractYears": 5,
+        "contractTotal": 96,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -9172,8 +9172,8 @@ export const allRosters = {
         "deadMoney": 6.25,
         "capSavings": 8.29,
         "baseSalary": 14.54,
-        "contractYears": 3,
-        "contractTotal": 43.62,
+        "contractYears": 2,
+        "contractTotal": 29.08,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9188,7 +9188,7 @@ export const allRosters = {
         "baseSalary": 12.94,
         "contractYears": 3,
         "contractTotal": 38.82,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -9200,9 +9200,9 @@ export const allRosters = {
         "deadMoney": 36.24,
         "capSavings": -24.23,
         "baseSalary": 12,
-        "contractYears": 3,
-        "contractTotal": 36,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 48,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -9214,9 +9214,9 @@ export const allRosters = {
         "deadMoney": 24.16,
         "capSavings": -12.28,
         "baseSalary": 11.88,
-        "contractYears": 3,
-        "contractTotal": 35.64,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 47.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -9228,9 +9228,9 @@ export const allRosters = {
         "deadMoney": 23.05,
         "capSavings": -13.35,
         "baseSalary": 9.7,
-        "contractYears": 3,
-        "contractTotal": 29.1,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 38.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -9242,8 +9242,8 @@ export const allRosters = {
         "deadMoney": 1.22,
         "capSavings": 36.24,
         "baseSalary": 8.84,
-        "contractYears": 3,
-        "contractTotal": 26.52,
+        "contractYears": 2,
+        "contractTotal": 17.68,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9256,8 +9256,8 @@ export const allRosters = {
         "deadMoney": 2.17,
         "capSavings": 5,
         "baseSalary": 7.17,
-        "contractYears": 3,
-        "contractTotal": 21.51,
+        "contractYears": 2,
+        "contractTotal": 14.34,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9272,7 +9272,7 @@ export const allRosters = {
         "baseSalary": 7.13,
         "contractYears": 3,
         "contractTotal": 21.39,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -9286,7 +9286,7 @@ export const allRosters = {
         "baseSalary": 6.67,
         "contractYears": 3,
         "contractTotal": 20.01,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -9298,8 +9298,8 @@ export const allRosters = {
         "deadMoney": 4.85,
         "capSavings": 1.46,
         "baseSalary": 6.31,
-        "contractYears": 3,
-        "contractTotal": 18.93,
+        "contractYears": 2,
+        "contractTotal": 12.62,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9326,8 +9326,8 @@ export const allRosters = {
         "deadMoney": 3.33,
         "capSavings": 1.95,
         "baseSalary": 5.28,
-        "contractYears": 3,
-        "contractTotal": 15.84,
+        "contractYears": 2,
+        "contractTotal": 10.56,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9368,8 +9368,8 @@ export const allRosters = {
         "deadMoney": 0.26,
         "capSavings": 3.67,
         "baseSalary": 3.93,
-        "contractYears": 4,
-        "contractTotal": 15.72,
+        "contractYears": 2,
+        "contractTotal": 7.86,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9410,8 +9410,8 @@ export const allRosters = {
         "deadMoney": 0.05,
         "capSavings": 3.67,
         "baseSalary": 3.73,
-        "contractYears": 4,
-        "contractTotal": 14.92,
+        "contractYears": 2,
+        "contractTotal": 7.46,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9466,8 +9466,8 @@ export const allRosters = {
         "deadMoney": 0.79,
         "capSavings": 1.91,
         "baseSalary": 2.7,
-        "contractYears": 4,
-        "contractTotal": 10.8,
+        "contractYears": 2,
+        "contractTotal": 5.4,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9508,8 +9508,8 @@ export const allRosters = {
         "deadMoney": 0.56,
         "capSavings": 1.73,
         "baseSalary": 2.28,
-        "contractYears": 4,
-        "contractTotal": 9.12,
+        "contractYears": 2,
+        "contractTotal": 4.56,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9580,7 +9580,7 @@ export const allRosters = {
         "baseSalary": 1.82,
         "contractYears": 4,
         "contractTotal": 7.28,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -9592,8 +9592,8 @@ export const allRosters = {
         "deadMoney": 0.48,
         "capSavings": 1.07,
         "baseSalary": 1.55,
-        "contractYears": 4,
-        "contractTotal": 6.2,
+        "contractYears": 2,
+        "contractTotal": 3.1,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9704,9 +9704,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9732,9 +9732,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9746,9 +9746,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9760,8 +9760,8 @@ export const allRosters = {
         "deadMoney": 0.13,
         "capSavings": 1.01,
         "baseSalary": 1.14,
-        "contractYears": 4,
-        "contractTotal": 4.56,
+        "contractYears": 2,
+        "contractTotal": 2.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9788,8 +9788,8 @@ export const allRosters = {
         "deadMoney": 0.09,
         "capSavings": 1.03,
         "baseSalary": 1.12,
-        "contractYears": 4,
-        "contractTotal": 4.48,
+        "contractYears": 2,
+        "contractTotal": 2.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -9802,9 +9802,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9816,9 +9816,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9830,9 +9830,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9844,9 +9844,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9858,9 +9858,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9900,9 +9900,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9928,9 +9928,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9956,9 +9956,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9970,9 +9970,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -9984,9 +9984,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10208,9 +10208,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -10246,8 +10246,8 @@ export const allRosters = {
         "deadMoney": 28.36,
         "capSavings": -0.85,
         "baseSalary": 27.52,
-        "contractYears": 4,
-        "contractTotal": 110.08,
+        "contractYears": 3,
+        "contractTotal": 82.56,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -10260,9 +10260,9 @@ export const allRosters = {
         "deadMoney": 90.8,
         "capSavings": -74.66,
         "baseSalary": 16.14,
-        "contractYears": 4,
-        "contractTotal": 64.56,
-        "yearsRemaining": 2,
+        "contractYears": 5,
+        "contractTotal": 80.7,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -10274,9 +10274,9 @@ export const allRosters = {
         "deadMoney": 12.86,
         "capSavings": 2.37,
         "baseSalary": 15.24,
-        "contractYears": 4,
-        "contractTotal": 60.96,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 30.48,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -10330,9 +10330,9 @@ export const allRosters = {
         "deadMoney": 27.9,
         "capSavings": -18.35,
         "baseSalary": 9.55,
-        "contractYears": 3,
-        "contractTotal": 28.65,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 38.2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -10344,8 +10344,8 @@ export const allRosters = {
         "deadMoney": 7.68,
         "capSavings": 0.45,
         "baseSalary": 8.13,
-        "contractYears": 3,
-        "contractTotal": 24.39,
+        "contractYears": 2,
+        "contractTotal": 16.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10358,8 +10358,8 @@ export const allRosters = {
         "deadMoney": 4.61,
         "capSavings": 2.4,
         "baseSalary": 7.01,
-        "contractYears": 3,
-        "contractTotal": 21.03,
+        "contractYears": 2,
+        "contractTotal": 14.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10372,9 +10372,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 6,
         "baseSalary": 6,
-        "contractYears": 3,
-        "contractTotal": 18,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 6,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10386,9 +10386,9 @@ export const allRosters = {
         "deadMoney": 16.5,
         "capSavings": -10.82,
         "baseSalary": 5.68,
-        "contractYears": 3,
-        "contractTotal": 17.04,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 22.72,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -10414,8 +10414,8 @@ export const allRosters = {
         "deadMoney": 9,
         "capSavings": -4.38,
         "baseSalary": 4.63,
-        "contractYears": 4,
-        "contractTotal": 18.52,
+        "contractYears": 2,
+        "contractTotal": 9.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10428,9 +10428,9 @@ export const allRosters = {
         "deadMoney": 20,
         "capSavings": -15.38,
         "baseSalary": 4.62,
-        "contractYears": 2,
-        "contractTotal": 9.24,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 23.1,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -10442,9 +10442,9 @@ export const allRosters = {
         "deadMoney": 7.5,
         "capSavings": -3.51,
         "baseSalary": 3.99,
-        "contractYears": 2,
-        "contractTotal": 7.98,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.97,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -10470,8 +10470,8 @@ export const allRosters = {
         "deadMoney": 0.06,
         "capSavings": 3.67,
         "baseSalary": 3.74,
-        "contractYears": 4,
-        "contractTotal": 14.96,
+        "contractYears": 2,
+        "contractTotal": 7.48,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10498,8 +10498,8 @@ export const allRosters = {
         "deadMoney": 0.04,
         "capSavings": 3.67,
         "baseSalary": 3.71,
-        "contractYears": 4,
-        "contractTotal": 14.84,
+        "contractYears": 2,
+        "contractTotal": 7.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10694,8 +10694,8 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 1.26,
         "baseSalary": 1.37,
-        "contractYears": 4,
-        "contractTotal": 5.48,
+        "contractYears": 2,
+        "contractTotal": 2.74,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10708,8 +10708,8 @@ export const allRosters = {
         "deadMoney": 0.2,
         "capSavings": 1.15,
         "baseSalary": 1.35,
-        "contractYears": 4,
-        "contractTotal": 5.4,
+        "contractYears": 2,
+        "contractTotal": 2.7,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10722,8 +10722,8 @@ export const allRosters = {
         "deadMoney": 0.37,
         "capSavings": 0.89,
         "baseSalary": 1.26,
-        "contractYears": 4,
-        "contractTotal": 5.04,
+        "contractYears": 2,
+        "contractTotal": 2.52,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10736,8 +10736,8 @@ export const allRosters = {
         "deadMoney": 0.75,
         "capSavings": 0.5,
         "baseSalary": 1.26,
-        "contractYears": 4,
-        "contractTotal": 5.04,
+        "contractYears": 2,
+        "contractTotal": 2.52,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10750,9 +10750,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10764,9 +10764,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10778,9 +10778,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10806,8 +10806,8 @@ export const allRosters = {
         "deadMoney": 0.02,
         "capSavings": 1.09,
         "baseSalary": 1.1,
-        "contractYears": 4,
-        "contractTotal": 4.4,
+        "contractYears": 2,
+        "contractTotal": 2.2,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10848,9 +10848,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10862,9 +10862,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10890,8 +10890,8 @@ export const allRosters = {
         "deadMoney": 0.17,
         "capSavings": 0.89,
         "baseSalary": 1.06,
-        "contractYears": 4,
-        "contractTotal": 4.24,
+        "contractYears": 2,
+        "contractTotal": 2.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10904,8 +10904,8 @@ export const allRosters = {
         "deadMoney": 0.02,
         "capSavings": 1.01,
         "baseSalary": 1.03,
-        "contractYears": 4,
-        "contractTotal": 4.12,
+        "contractYears": 2,
+        "contractTotal": 2.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -10918,9 +10918,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.01,
         "baseSalary": 1.01,
-        "contractYears": 4,
-        "contractTotal": 4.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.01,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10932,9 +10932,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.01,
         "baseSalary": 1.01,
-        "contractYears": 2,
-        "contractTotal": 2.02,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.01,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10974,9 +10974,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -10988,9 +10988,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11142,9 +11142,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 3,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -11156,9 +11156,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 3,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 2,
         "isFranchise": false
       }
     ],
@@ -11180,9 +11180,9 @@ export const allRosters = {
         "deadMoney": 20.8,
         "capSavings": 5.8,
         "baseSalary": 26.6,
-        "contractYears": 4,
-        "contractTotal": 106.4,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 53.2,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -11194,9 +11194,9 @@ export const allRosters = {
         "deadMoney": 6.2,
         "capSavings": 18,
         "baseSalary": 24.2,
-        "contractYears": 4,
-        "contractTotal": 96.8,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 48.4,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -11208,9 +11208,9 @@ export const allRosters = {
         "deadMoney": 18.33,
         "capSavings": 1.89,
         "baseSalary": 20.23,
-        "contractYears": 4,
-        "contractTotal": 80.92,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 40.46,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -11222,9 +11222,9 @@ export const allRosters = {
         "deadMoney": 2.56,
         "capSavings": 13,
         "baseSalary": 15.56,
-        "contractYears": 4,
-        "contractTotal": 62.24,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 31.12,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -11236,8 +11236,8 @@ export const allRosters = {
         "deadMoney": 19.5,
         "capSavings": -4.49,
         "baseSalary": 15.01,
-        "contractYears": 4,
-        "contractTotal": 60.04,
+        "contractYears": 3,
+        "contractTotal": 45.03,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -11250,8 +11250,8 @@ export const allRosters = {
         "deadMoney": 50,
         "capSavings": -35.32,
         "baseSalary": 14.68,
-        "contractYears": 3,
-        "contractTotal": 44.04,
+        "contractYears": 2,
+        "contractTotal": 29.36,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -11264,8 +11264,8 @@ export const allRosters = {
         "deadMoney": 2,
         "capSavings": 12.25,
         "baseSalary": 14.25,
-        "contractYears": 3,
-        "contractTotal": 42.75,
+        "contractYears": 2,
+        "contractTotal": 28.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -11278,8 +11278,8 @@ export const allRosters = {
         "deadMoney": 6.05,
         "capSavings": 7.06,
         "baseSalary": 13.11,
-        "contractYears": 3,
-        "contractTotal": 39.33,
+        "contractYears": 2,
+        "contractTotal": 26.22,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -11306,9 +11306,9 @@ export const allRosters = {
         "deadMoney": 25.5,
         "capSavings": -16,
         "baseSalary": 9.5,
-        "contractYears": 3,
-        "contractTotal": 28.5,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 38,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -11320,9 +11320,9 @@ export const allRosters = {
         "deadMoney": 40.83,
         "capSavings": -31.57,
         "baseSalary": 9.26,
-        "contractYears": 3,
-        "contractTotal": 27.78,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 46.3,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -11334,9 +11334,9 @@ export const allRosters = {
         "deadMoney": 60,
         "capSavings": -50.8,
         "baseSalary": 9.2,
-        "contractYears": 3,
-        "contractTotal": 27.6,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 36.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -11364,7 +11364,7 @@ export const allRosters = {
         "baseSalary": 4.65,
         "contractYears": 4,
         "contractTotal": 18.6,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -11418,9 +11418,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.67,
         "baseSalary": 3.67,
-        "contractYears": 2,
-        "contractTotal": 7.34,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.67,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11446,9 +11446,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 2.55,
         "baseSalary": 2.55,
-        "contractYears": 2,
-        "contractTotal": 5.1,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2.55,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11488,8 +11488,8 @@ export const allRosters = {
         "deadMoney": 0.53,
         "capSavings": 1.06,
         "baseSalary": 1.59,
-        "contractYears": 4,
-        "contractTotal": 6.36,
+        "contractYears": 2,
+        "contractTotal": 3.18,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -11544,8 +11544,8 @@ export const allRosters = {
         "deadMoney": 0.2,
         "capSavings": 1.15,
         "baseSalary": 1.34,
-        "contractYears": 4,
-        "contractTotal": 5.36,
+        "contractYears": 2,
+        "contractTotal": 2.68,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -11614,9 +11614,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.2,
         "baseSalary": 1.2,
-        "contractYears": 2,
-        "contractTotal": 2.4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.2,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11656,9 +11656,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11670,9 +11670,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11698,8 +11698,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1.08,
         "baseSalary": 1.09,
-        "contractYears": 4,
-        "contractTotal": 4.36,
+        "contractYears": 2,
+        "contractTotal": 2.18,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -11712,9 +11712,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11726,9 +11726,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11740,9 +11740,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11796,9 +11796,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11810,9 +11810,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -11838,9 +11838,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12076,9 +12076,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -12128,9 +12128,9 @@ export const allRosters = {
         "deadMoney": 116.5,
         "capSavings": -92.5,
         "baseSalary": 24,
-        "contractYears": 4,
-        "contractTotal": 96,
-        "yearsRemaining": 2,
+        "contractYears": 5,
+        "contractTotal": 120,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -12144,7 +12144,7 @@ export const allRosters = {
         "baseSalary": 23.4,
         "contractYears": 4,
         "contractTotal": 93.6,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -12156,9 +12156,9 @@ export const allRosters = {
         "deadMoney": 17.1,
         "capSavings": 2.29,
         "baseSalary": 19.39,
-        "contractYears": 4,
-        "contractTotal": 77.56,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 38.78,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -12170,9 +12170,9 @@ export const allRosters = {
         "deadMoney": 14.27,
         "capSavings": 2.84,
         "baseSalary": 17.11,
-        "contractYears": 4,
-        "contractTotal": 68.44,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 34.22,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -12184,8 +12184,8 @@ export const allRosters = {
         "deadMoney": 15.2,
         "capSavings": 15.2,
         "baseSalary": 15.2,
-        "contractYears": 4,
-        "contractTotal": 60.8,
+        "contractYears": 3,
+        "contractTotal": 45.6,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -12200,7 +12200,7 @@ export const allRosters = {
         "baseSalary": 14.5,
         "contractYears": 3,
         "contractTotal": 43.5,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -12212,8 +12212,8 @@ export const allRosters = {
         "deadMoney": 10.56,
         "capSavings": 1.89,
         "baseSalary": 12.45,
-        "contractYears": 3,
-        "contractTotal": 37.35,
+        "contractYears": 2,
+        "contractTotal": 24.9,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -12226,8 +12226,8 @@ export const allRosters = {
         "deadMoney": 7.4,
         "capSavings": 4.02,
         "baseSalary": 11.42,
-        "contractYears": 3,
-        "contractTotal": 34.26,
+        "contractYears": 2,
+        "contractTotal": 22.84,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -12256,7 +12256,7 @@ export const allRosters = {
         "baseSalary": 7.39,
         "contractYears": 3,
         "contractTotal": 22.17,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -12268,9 +12268,9 @@ export const allRosters = {
         "deadMoney": 15.67,
         "capSavings": -9.04,
         "baseSalary": 6.63,
-        "contractYears": 3,
-        "contractTotal": 19.89,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 26.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -12282,9 +12282,9 @@ export const allRosters = {
         "deadMoney": 28.41,
         "capSavings": -22.19,
         "baseSalary": 6.21,
-        "contractYears": 3,
-        "contractTotal": 18.63,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 31.05,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -12296,9 +12296,9 @@ export const allRosters = {
         "deadMoney": 23.8,
         "capSavings": -18.61,
         "baseSalary": 5.19,
-        "contractYears": 3,
-        "contractTotal": 15.57,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 25.95,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -12310,9 +12310,9 @@ export const allRosters = {
         "deadMoney": 9.92,
         "capSavings": -5.39,
         "baseSalary": 4.53,
-        "contractYears": 2,
-        "contractTotal": 9.06,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 18.12,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -12324,9 +12324,9 @@ export const allRosters = {
         "deadMoney": 8.83,
         "capSavings": -4.6,
         "baseSalary": 4.23,
-        "contractYears": 2,
-        "contractTotal": 8.46,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 16.92,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -12366,9 +12366,9 @@ export const allRosters = {
         "deadMoney": 20.65,
         "capSavings": -16.72,
         "baseSalary": 3.93,
-        "contractYears": 2,
-        "contractTotal": 7.86,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.79,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -12436,9 +12436,9 @@ export const allRosters = {
         "deadMoney": 7.3,
         "capSavings": -4.61,
         "baseSalary": 2.69,
-        "contractYears": 2,
-        "contractTotal": 5.38,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 10.76,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -12492,9 +12492,9 @@ export const allRosters = {
         "deadMoney": 1.7,
         "capSavings": 0.26,
         "baseSalary": 1.96,
-        "contractYears": 2,
-        "contractTotal": 3.92,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.96,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12506,8 +12506,8 @@ export const allRosters = {
         "deadMoney": 0.36,
         "capSavings": 1.58,
         "baseSalary": 1.95,
-        "contractYears": 4,
-        "contractTotal": 7.8,
+        "contractYears": 2,
+        "contractTotal": 3.9,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -12604,8 +12604,8 @@ export const allRosters = {
         "deadMoney": 0.79,
         "capSavings": 0.48,
         "baseSalary": 1.27,
-        "contractYears": 4,
-        "contractTotal": 5.08,
+        "contractYears": 2,
+        "contractTotal": 2.54,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -12618,9 +12618,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.24,
         "baseSalary": 1.24,
-        "contractYears": 2,
-        "contractTotal": 2.48,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.24,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12632,8 +12632,8 @@ export const allRosters = {
         "deadMoney": 0.09,
         "capSavings": 1.15,
         "baseSalary": 1.24,
-        "contractYears": 4,
-        "contractTotal": 4.96,
+        "contractYears": 2,
+        "contractTotal": 2.48,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -12646,9 +12646,9 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 1.13,
         "baseSalary": 1.23,
-        "contractYears": 2,
-        "contractTotal": 2.46,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.23,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12660,8 +12660,8 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 1.15,
         "baseSalary": 1.17,
-        "contractYears": 4,
-        "contractTotal": 4.68,
+        "contractYears": 2,
+        "contractTotal": 2.34,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -12688,9 +12688,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12702,9 +12702,9 @@ export const allRosters = {
         "deadMoney": 0.2,
         "capSavings": 0.93,
         "baseSalary": 1.13,
-        "contractYears": 2,
-        "contractTotal": 2.26,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.13,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12730,9 +12730,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12828,9 +12828,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12842,9 +12842,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12856,9 +12856,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -12884,9 +12884,9 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 0.89,
         "baseSalary": 0.92,
-        "contractYears": 1,
-        "contractTotal": 0.92,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.84,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -13048,8 +13048,8 @@ export const allRosters = {
         "deadMoney": 64.25,
         "capSavings": -19.4,
         "baseSalary": 44.85,
-        "contractYears": 4,
-        "contractTotal": 179.4,
+        "contractYears": 3,
+        "contractTotal": 134.55,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -13064,7 +13064,7 @@ export const allRosters = {
         "baseSalary": 34.65,
         "contractYears": 4,
         "contractTotal": 138.6,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -13076,8 +13076,8 @@ export const allRosters = {
         "deadMoney": 33.24,
         "capSavings": -8.74,
         "baseSalary": 24.5,
-        "contractYears": 4,
-        "contractTotal": 98,
+        "contractYears": 3,
+        "contractTotal": 73.5,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -13090,8 +13090,8 @@ export const allRosters = {
         "deadMoney": 23.5,
         "capSavings": -4.25,
         "baseSalary": 19.25,
-        "contractYears": 4,
-        "contractTotal": 77,
+        "contractYears": 3,
+        "contractTotal": 57.75,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -13104,9 +13104,9 @@ export const allRosters = {
         "deadMoney": 10.75,
         "capSavings": 7.94,
         "baseSalary": 18.68,
-        "contractYears": 4,
-        "contractTotal": 74.72,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 37.36,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -13118,8 +13118,8 @@ export const allRosters = {
         "deadMoney": 25.05,
         "capSavings": -6.95,
         "baseSalary": 18.1,
-        "contractYears": 4,
-        "contractTotal": 72.4,
+        "contractYears": 3,
+        "contractTotal": 54.3,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -13146,8 +13146,8 @@ export const allRosters = {
         "deadMoney": 8,
         "capSavings": 5,
         "baseSalary": 13,
-        "contractYears": 3,
-        "contractTotal": 39,
+        "contractYears": 2,
+        "contractTotal": 26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13162,7 +13162,7 @@ export const allRosters = {
         "baseSalary": 7.31,
         "contractYears": 3,
         "contractTotal": 21.93,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -13174,8 +13174,8 @@ export const allRosters = {
         "deadMoney": 3,
         "capSavings": 3.97,
         "baseSalary": 6.97,
-        "contractYears": 3,
-        "contractTotal": 20.91,
+        "contractYears": 2,
+        "contractTotal": 13.94,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13188,8 +13188,8 @@ export const allRosters = {
         "deadMoney": 28.7,
         "capSavings": -23.02,
         "baseSalary": 5.68,
-        "contractYears": 3,
-        "contractTotal": 17.04,
+        "contractYears": 2,
+        "contractTotal": 11.36,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13202,8 +13202,8 @@ export const allRosters = {
         "deadMoney": 4.5,
         "capSavings": 0.51,
         "baseSalary": 5,
-        "contractYears": 3,
-        "contractTotal": 15,
+        "contractYears": 2,
+        "contractTotal": 10,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13216,9 +13216,9 @@ export const allRosters = {
         "deadMoney": 10.66,
         "capSavings": -5.76,
         "baseSalary": 4.9,
-        "contractYears": 2,
-        "contractTotal": 9.8,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 19.6,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -13230,8 +13230,8 @@ export const allRosters = {
         "deadMoney": 0.19,
         "capSavings": 3.67,
         "baseSalary": 3.86,
-        "contractYears": 4,
-        "contractTotal": 15.44,
+        "contractYears": 2,
+        "contractTotal": 7.72,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13300,9 +13300,9 @@ export const allRosters = {
         "deadMoney": 13.57,
         "capSavings": -10.3,
         "baseSalary": 3.27,
-        "contractYears": 2,
-        "contractTotal": 6.54,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 16.35,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -13314,9 +13314,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3,
         "baseSalary": 3,
-        "contractYears": 2,
-        "contractTotal": 6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13328,8 +13328,8 @@ export const allRosters = {
         "deadMoney": 0.43,
         "capSavings": 1.64,
         "baseSalary": 2.07,
-        "contractYears": 4,
-        "contractTotal": 8.28,
+        "contractYears": 2,
+        "contractTotal": 4.14,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13356,8 +13356,8 @@ export const allRosters = {
         "deadMoney": 0.23,
         "capSavings": 1.48,
         "baseSalary": 1.71,
-        "contractYears": 4,
-        "contractTotal": 6.84,
+        "contractYears": 2,
+        "contractTotal": 3.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13370,9 +13370,9 @@ export const allRosters = {
         "deadMoney": 1.7,
         "capSavings": 1.7,
         "baseSalary": 1.7,
-        "contractYears": 2,
-        "contractTotal": 3.4,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 5.1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -13426,8 +13426,8 @@ export const allRosters = {
         "deadMoney": 0.34,
         "capSavings": 0.9,
         "baseSalary": 1.25,
-        "contractYears": 4,
-        "contractTotal": 5,
+        "contractYears": 2,
+        "contractTotal": 2.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13482,8 +13482,8 @@ export const allRosters = {
         "deadMoney": 0.16,
         "capSavings": 1,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
+        "contractYears": 2,
+        "contractTotal": 2.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13496,9 +13496,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13538,9 +13538,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13552,9 +13552,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13566,9 +13566,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13580,9 +13580,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13594,9 +13594,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13608,9 +13608,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13622,9 +13622,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13636,9 +13636,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13664,8 +13664,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1,
         "baseSalary": 1.02,
-        "contractYears": 4,
-        "contractTotal": 4.08,
+        "contractYears": 2,
+        "contractTotal": 2.04,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13692,9 +13692,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13720,9 +13720,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -13790,9 +13790,9 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 0.88,
         "baseSalary": 0.89,
-        "contractYears": 1,
-        "contractTotal": 0.89,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.78,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -13926,9 +13926,9 @@ export const allRosters = {
         "deadMoney": 35.1,
         "capSavings": 0.69,
         "baseSalary": 35.79,
-        "contractYears": 4,
-        "contractTotal": 143.16,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 71.58,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -13940,9 +13940,9 @@ export const allRosters = {
         "deadMoney": 21.5,
         "capSavings": 1.04,
         "baseSalary": 22.54,
-        "contractYears": 4,
-        "contractTotal": 90.16,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 45.08,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -13954,8 +13954,8 @@ export const allRosters = {
         "deadMoney": 53,
         "capSavings": -36.33,
         "baseSalary": 16.67,
-        "contractYears": 4,
-        "contractTotal": 66.68,
+        "contractYears": 3,
+        "contractTotal": 50.01,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -13968,8 +13968,8 @@ export const allRosters = {
         "deadMoney": 10.5,
         "capSavings": 0.51,
         "baseSalary": 11.01,
-        "contractYears": 3,
-        "contractTotal": 33.03,
+        "contractYears": 2,
+        "contractTotal": 22.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -13984,7 +13984,7 @@ export const allRosters = {
         "baseSalary": 9.67,
         "contractYears": 3,
         "contractTotal": 29.01,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -13996,8 +13996,8 @@ export const allRosters = {
         "deadMoney": 6.25,
         "capSavings": 3.31,
         "baseSalary": 9.56,
-        "contractYears": 3,
-        "contractTotal": 28.68,
+        "contractYears": 2,
+        "contractTotal": 19.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14010,8 +14010,8 @@ export const allRosters = {
         "deadMoney": 25.74,
         "capSavings": -16.32,
         "baseSalary": 9.42,
-        "contractYears": 3,
-        "contractTotal": 28.26,
+        "contractYears": 2,
+        "contractTotal": 18.84,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14024,9 +14024,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 8.67,
         "baseSalary": 8.67,
-        "contractYears": 3,
-        "contractTotal": 26.01,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 8.67,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14052,9 +14052,9 @@ export const allRosters = {
         "deadMoney": 18,
         "capSavings": -9.99,
         "baseSalary": 8.01,
-        "contractYears": 3,
-        "contractTotal": 24.03,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 32.04,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -14066,8 +14066,8 @@ export const allRosters = {
         "deadMoney": 20,
         "capSavings": -12.03,
         "baseSalary": 7.97,
-        "contractYears": 3,
-        "contractTotal": 23.91,
+        "contractYears": 2,
+        "contractTotal": 15.94,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14082,7 +14082,7 @@ export const allRosters = {
         "baseSalary": 7.96,
         "contractYears": 3,
         "contractTotal": 23.88,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -14094,9 +14094,9 @@ export const allRosters = {
         "deadMoney": 20,
         "capSavings": -13.32,
         "baseSalary": 6.68,
-        "contractYears": 3,
-        "contractTotal": 20.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 6.68,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14108,8 +14108,8 @@ export const allRosters = {
         "deadMoney": 4.42,
         "capSavings": 2.16,
         "baseSalary": 6.57,
-        "contractYears": 3,
-        "contractTotal": 19.71,
+        "contractYears": 2,
+        "contractTotal": 13.14,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14124,7 +14124,7 @@ export const allRosters = {
         "baseSalary": 5,
         "contractYears": 3,
         "contractTotal": 15,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -14164,8 +14164,8 @@ export const allRosters = {
         "deadMoney": 0.21,
         "capSavings": 3.67,
         "baseSalary": 3.89,
-        "contractYears": 4,
-        "contractTotal": 15.56,
+        "contractYears": 2,
+        "contractTotal": 7.78,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14192,9 +14192,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.67,
         "baseSalary": 3.67,
-        "contractYears": 2,
-        "contractTotal": 7.34,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.67,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14206,9 +14206,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.52,
         "baseSalary": 3.52,
-        "contractYears": 2,
-        "contractTotal": 7.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14290,8 +14290,8 @@ export const allRosters = {
         "deadMoney": 1.15,
         "capSavings": 0.38,
         "baseSalary": 1.53,
-        "contractYears": 4,
-        "contractTotal": 6.12,
+        "contractYears": 2,
+        "contractTotal": 3.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14332,8 +14332,8 @@ export const allRosters = {
         "deadMoney": 0.4,
         "capSavings": 0.87,
         "baseSalary": 1.28,
-        "contractYears": 4,
-        "contractTotal": 5.12,
+        "contractYears": 2,
+        "contractTotal": 2.56,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14374,8 +14374,8 @@ export const allRosters = {
         "deadMoney": 0.17,
         "capSavings": 0.99,
         "baseSalary": 1.16,
-        "contractYears": 4,
-        "contractTotal": 4.64,
+        "contractYears": 2,
+        "contractTotal": 2.32,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14388,9 +14388,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14402,9 +14402,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14416,9 +14416,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14430,9 +14430,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14458,9 +14458,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14472,9 +14472,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14486,9 +14486,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14500,9 +14500,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14514,9 +14514,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14528,9 +14528,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14542,9 +14542,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14556,9 +14556,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14570,9 +14570,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14584,9 +14584,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14598,9 +14598,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14682,9 +14682,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14696,9 +14696,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -14820,7 +14820,7 @@ export const allRosters = {
         "baseSalary": 46.35,
         "contractYears": 4,
         "contractTotal": 185.4,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -14832,9 +14832,9 @@ export const allRosters = {
         "deadMoney": 7.11,
         "capSavings": 17.5,
         "baseSalary": 24.61,
-        "contractYears": 4,
-        "contractTotal": 98.44,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 49.22,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -14846,8 +14846,8 @@ export const allRosters = {
         "deadMoney": 41.2,
         "capSavings": -17.4,
         "baseSalary": 23.8,
-        "contractYears": 4,
-        "contractTotal": 95.2,
+        "contractYears": 3,
+        "contractTotal": 71.4,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -14860,8 +14860,8 @@ export const allRosters = {
         "deadMoney": 18,
         "capSavings": 18,
         "baseSalary": 18,
-        "contractYears": 4,
-        "contractTotal": 72,
+        "contractYears": 3,
+        "contractTotal": 54,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -14888,8 +14888,8 @@ export const allRosters = {
         "deadMoney": 2.5,
         "capSavings": 6,
         "baseSalary": 8.5,
-        "contractYears": 3,
-        "contractTotal": 25.5,
+        "contractYears": 2,
+        "contractTotal": 17,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -14904,7 +14904,7 @@ export const allRosters = {
         "baseSalary": 7.92,
         "contractYears": 3,
         "contractTotal": 23.76,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -14930,9 +14930,9 @@ export const allRosters = {
         "deadMoney": 15,
         "capSavings": -8.98,
         "baseSalary": 6.02,
-        "contractYears": 3,
-        "contractTotal": 18.06,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 24.08,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -14944,8 +14944,8 @@ export const allRosters = {
         "deadMoney": 4.43,
         "capSavings": 1.3,
         "baseSalary": 5.73,
-        "contractYears": 3,
-        "contractTotal": 17.19,
+        "contractYears": 2,
+        "contractTotal": 11.46,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15070,9 +15070,9 @@ export const allRosters = {
         "deadMoney": 4.58,
         "capSavings": -0.89,
         "baseSalary": 3.69,
-        "contractYears": 2,
-        "contractTotal": 7.38,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.07,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -15112,9 +15112,9 @@ export const allRosters = {
         "deadMoney": 3.56,
         "capSavings": -0.28,
         "baseSalary": 3.28,
-        "contractYears": 2,
-        "contractTotal": 6.56,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.84,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -15168,8 +15168,8 @@ export const allRosters = {
         "deadMoney": 0.92,
         "capSavings": 0.51,
         "baseSalary": 1.43,
-        "contractYears": 4,
-        "contractTotal": 5.72,
+        "contractYears": 2,
+        "contractTotal": 2.86,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15196,8 +15196,8 @@ export const allRosters = {
         "deadMoney": 0.18,
         "capSavings": 1.15,
         "baseSalary": 1.32,
-        "contractYears": 4,
-        "contractTotal": 5.28,
+        "contractYears": 2,
+        "contractTotal": 2.64,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15238,8 +15238,8 @@ export const allRosters = {
         "deadMoney": 0.04,
         "capSavings": 1.15,
         "baseSalary": 1.19,
-        "contractYears": 4,
-        "contractTotal": 4.76,
+        "contractYears": 2,
+        "contractTotal": 2.38,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15266,8 +15266,8 @@ export const allRosters = {
         "deadMoney": 0.18,
         "capSavings": 0.98,
         "baseSalary": 1.17,
-        "contractYears": 4,
-        "contractTotal": 4.68,
+        "contractYears": 2,
+        "contractTotal": 2.34,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15280,9 +15280,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -15322,9 +15322,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -15336,9 +15336,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -15420,9 +15420,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -15434,9 +15434,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -15462,9 +15462,9 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 0.88,
         "baseSalary": 0.89,
-        "contractYears": 1,
-        "contractTotal": 0.89,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.78,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -15658,9 +15658,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 4,
+        "contractYears": 1,
         "contractTotal": 0,
-        "yearsRemaining": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       }
     ],
@@ -15682,9 +15682,9 @@ export const allRosters = {
         "deadMoney": 41.87,
         "capSavings": 6.4,
         "baseSalary": 48.27,
-        "contractYears": 4,
-        "contractTotal": 193.08,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 96.54,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -15696,9 +15696,9 @@ export const allRosters = {
         "deadMoney": 14,
         "capSavings": 14,
         "baseSalary": 28,
-        "contractYears": 4,
-        "contractTotal": 112,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 56,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -15710,9 +15710,9 @@ export const allRosters = {
         "deadMoney": 23,
         "capSavings": 2.29,
         "baseSalary": 25.29,
-        "contractYears": 4,
-        "contractTotal": 101.16,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 50.58,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -15724,9 +15724,9 @@ export const allRosters = {
         "deadMoney": 1.42,
         "capSavings": 16,
         "baseSalary": 17.42,
-        "contractYears": 4,
-        "contractTotal": 69.68,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 34.84,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -15738,9 +15738,9 @@ export const allRosters = {
         "deadMoney": 13.63,
         "capSavings": 13.63,
         "baseSalary": 13.63,
-        "contractYears": 3,
-        "contractTotal": 40.89,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 54.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -15752,8 +15752,8 @@ export const allRosters = {
         "deadMoney": 12.76,
         "capSavings": 0.18,
         "baseSalary": 12.93,
-        "contractYears": 3,
-        "contractTotal": 38.79,
+        "contractYears": 2,
+        "contractTotal": 25.86,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15766,8 +15766,8 @@ export const allRosters = {
         "deadMoney": 8.25,
         "capSavings": 3.44,
         "baseSalary": 11.69,
-        "contractYears": 3,
-        "contractTotal": 35.07,
+        "contractYears": 2,
+        "contractTotal": 23.38,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15780,8 +15780,8 @@ export const allRosters = {
         "deadMoney": 11.27,
         "capSavings": 0.17,
         "baseSalary": 11.43,
-        "contractYears": 3,
-        "contractTotal": 34.29,
+        "contractYears": 2,
+        "contractTotal": 22.86,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15794,8 +15794,8 @@ export const allRosters = {
         "deadMoney": 5.5,
         "capSavings": 4,
         "baseSalary": 9.5,
-        "contractYears": 3,
-        "contractTotal": 28.5,
+        "contractYears": 2,
+        "contractTotal": 19,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15808,8 +15808,8 @@ export const allRosters = {
         "deadMoney": 2.08,
         "capSavings": 7,
         "baseSalary": 9.08,
-        "contractYears": 3,
-        "contractTotal": 27.24,
+        "contractYears": 2,
+        "contractTotal": 18.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15822,9 +15822,9 @@ export const allRosters = {
         "deadMoney": 20.25,
         "capSavings": -12.83,
         "baseSalary": 7.42,
-        "contractYears": 3,
-        "contractTotal": 22.26,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 29.68,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -15838,7 +15838,7 @@ export const allRosters = {
         "baseSalary": 7.23,
         "contractYears": 3,
         "contractTotal": 21.69,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -15850,8 +15850,8 @@ export const allRosters = {
         "deadMoney": 26.5,
         "capSavings": -19.55,
         "baseSalary": 6.95,
-        "contractYears": 3,
-        "contractTotal": 20.85,
+        "contractYears": 2,
+        "contractTotal": 13.9,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15864,8 +15864,8 @@ export const allRosters = {
         "deadMoney": 0.26,
         "capSavings": 5.77,
         "baseSalary": 6.03,
-        "contractYears": 3,
-        "contractTotal": 18.09,
+        "contractYears": 2,
+        "contractTotal": 12.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -15894,7 +15894,7 @@ export const allRosters = {
         "baseSalary": 5.06,
         "contractYears": 3,
         "contractTotal": 15.18,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -15936,7 +15936,7 @@ export const allRosters = {
         "baseSalary": 4.13,
         "contractYears": 4,
         "contractTotal": 16.52,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -15962,9 +15962,9 @@ export const allRosters = {
         "deadMoney": 2.85,
         "capSavings": 2.85,
         "baseSalary": 2.85,
-        "contractYears": 4,
-        "contractTotal": 11.4,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.55,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -15976,9 +15976,9 @@ export const allRosters = {
         "deadMoney": 3.79,
         "capSavings": -1.23,
         "baseSalary": 2.57,
-        "contractYears": 2,
-        "contractTotal": 5.14,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 7.71,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -16004,9 +16004,9 @@ export const allRosters = {
         "deadMoney": 3.45,
         "capSavings": -1.8,
         "baseSalary": 1.65,
-        "contractYears": 2,
-        "contractTotal": 3.3,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 6.6,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -16018,8 +16018,8 @@ export const allRosters = {
         "deadMoney": 0.51,
         "capSavings": 1.07,
         "baseSalary": 1.57,
-        "contractYears": 4,
-        "contractTotal": 6.28,
+        "contractYears": 2,
+        "contractTotal": 3.14,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16116,8 +16116,8 @@ export const allRosters = {
         "deadMoney": 0.06,
         "capSavings": 1.15,
         "baseSalary": 1.21,
-        "contractYears": 4,
-        "contractTotal": 4.84,
+        "contractYears": 2,
+        "contractTotal": 2.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16144,8 +16144,8 @@ export const allRosters = {
         "deadMoney": 0.09,
         "capSavings": 1.03,
         "baseSalary": 1.12,
-        "contractYears": 4,
-        "contractTotal": 4.48,
+        "contractYears": 2,
+        "contractTotal": 2.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16186,8 +16186,8 @@ export const allRosters = {
         "deadMoney": 0.07,
         "capSavings": 1.04,
         "baseSalary": 1.11,
-        "contractYears": 4,
-        "contractTotal": 4.44,
+        "contractYears": 2,
+        "contractTotal": 2.22,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16200,8 +16200,8 @@ export const allRosters = {
         "deadMoney": 0.02,
         "capSavings": 1.08,
         "baseSalary": 1.1,
-        "contractYears": 4,
-        "contractTotal": 4.4,
+        "contractYears": 2,
+        "contractTotal": 2.2,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16214,8 +16214,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
+        "contractYears": 2,
+        "contractTotal": 2.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16228,9 +16228,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16256,9 +16256,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16270,9 +16270,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16284,9 +16284,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16340,9 +16340,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16368,9 +16368,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16396,9 +16396,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16546,8 +16546,8 @@ export const allRosters = {
         "deadMoney": 1.22,
         "capSavings": 39.86,
         "baseSalary": 20.23,
-        "contractYears": 4,
-        "contractTotal": 80.92,
+        "contractYears": 3,
+        "contractTotal": 60.69,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -16560,9 +16560,9 @@ export const allRosters = {
         "deadMoney": 39.86,
         "capSavings": -28.23,
         "baseSalary": 11.63,
-        "contractYears": 3,
-        "contractTotal": 34.89,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 46.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -16574,9 +16574,9 @@ export const allRosters = {
         "deadMoney": 35.75,
         "capSavings": -24.48,
         "baseSalary": 11.28,
-        "contractYears": 3,
-        "contractTotal": 33.84,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 45.12,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -16588,9 +16588,9 @@ export const allRosters = {
         "deadMoney": 19.45,
         "capSavings": 11.13,
         "baseSalary": 11.13,
-        "contractYears": 3,
-        "contractTotal": 33.39,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 11.13,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16602,8 +16602,8 @@ export const allRosters = {
         "deadMoney": 8.27,
         "capSavings": 2.59,
         "baseSalary": 10.86,
-        "contractYears": 3,
-        "contractTotal": 32.58,
+        "contractYears": 2,
+        "contractTotal": 21.72,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16616,8 +16616,8 @@ export const allRosters = {
         "deadMoney": 7.59,
         "capSavings": 1.56,
         "baseSalary": 9.15,
-        "contractYears": 3,
-        "contractTotal": 27.45,
+        "contractYears": 2,
+        "contractTotal": 18.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -16630,9 +16630,9 @@ export const allRosters = {
         "deadMoney": 19.24,
         "capSavings": -12.34,
         "baseSalary": 6.9,
-        "contractYears": 3,
-        "contractTotal": 20.7,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 27.6,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -16658,9 +16658,9 @@ export const allRosters = {
         "deadMoney": 45.04,
         "capSavings": -39.36,
         "baseSalary": 5.67,
-        "contractYears": 3,
-        "contractTotal": 17.01,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5.67,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16742,9 +16742,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.87,
         "baseSalary": 1.87,
-        "contractYears": 2,
-        "contractTotal": 3.74,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.87,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16756,9 +16756,9 @@ export const allRosters = {
         "deadMoney": 2.91,
         "capSavings": -1.21,
         "baseSalary": 1.7,
-        "contractYears": 4,
-        "contractTotal": 6.8,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 5.1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -16784,9 +16784,9 @@ export const allRosters = {
         "deadMoney": 1.26,
         "capSavings": 1.26,
         "baseSalary": 1.26,
-        "contractYears": 2,
-        "contractTotal": 2.52,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 3.78,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -16798,9 +16798,9 @@ export const allRosters = {
         "deadMoney": 1.26,
         "capSavings": 1.26,
         "baseSalary": 1.26,
-        "contractYears": 2,
-        "contractTotal": 2.52,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 3.78,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -16826,9 +16826,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.26,
         "baseSalary": 1.26,
-        "contractYears": 2,
-        "contractTotal": 2.52,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.26,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16896,9 +16896,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16910,9 +16910,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16924,9 +16924,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -16938,8 +16938,8 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 1.03,
         "baseSalary": 1.12,
-        "contractYears": 4,
-        "contractTotal": 4.48,
+        "contractYears": 2,
+        "contractTotal": 2.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17008,8 +17008,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
+        "contractYears": 2,
+        "contractTotal": 2.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17022,9 +17022,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17036,9 +17036,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17050,9 +17050,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17064,9 +17064,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17134,9 +17134,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17148,9 +17148,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17232,9 +17232,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17246,9 +17246,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17260,9 +17260,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17522,9 +17522,9 @@ export const allRosters = {
         "deadMoney": 3.7,
         "capSavings": 19.41,
         "baseSalary": 23.12,
-        "contractYears": 4,
-        "contractTotal": 92.48,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 46.24,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -17536,9 +17536,9 @@ export const allRosters = {
         "deadMoney": 9.9,
         "capSavings": 12.25,
         "baseSalary": 22.15,
-        "contractYears": 4,
-        "contractTotal": 88.6,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 44.3,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -17552,7 +17552,7 @@ export const allRosters = {
         "baseSalary": 21.22,
         "contractYears": 4,
         "contractTotal": 84.88,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -17564,9 +17564,9 @@ export const allRosters = {
         "deadMoney": 17.2,
         "capSavings": 2.05,
         "baseSalary": 19.25,
-        "contractYears": 4,
-        "contractTotal": 77,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 38.5,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -17578,8 +17578,8 @@ export const allRosters = {
         "deadMoney": 28.61,
         "capSavings": -11.39,
         "baseSalary": 17.22,
-        "contractYears": 4,
-        "contractTotal": 68.88,
+        "contractYears": 3,
+        "contractTotal": 51.66,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -17592,8 +17592,8 @@ export const allRosters = {
         "deadMoney": 22.62,
         "capSavings": -7.01,
         "baseSalary": 15.61,
-        "contractYears": 4,
-        "contractTotal": 62.44,
+        "contractYears": 3,
+        "contractTotal": 46.83,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -17606,8 +17606,8 @@ export const allRosters = {
         "deadMoney": 6.8,
         "capSavings": 7.75,
         "baseSalary": 14.55,
-        "contractYears": 3,
-        "contractTotal": 43.65,
+        "contractYears": 2,
+        "contractTotal": 29.1,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17620,9 +17620,9 @@ export const allRosters = {
         "deadMoney": 44.04,
         "capSavings": -30.51,
         "baseSalary": 13.53,
-        "contractYears": 3,
-        "contractTotal": 40.59,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 54.12,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -17636,7 +17636,7 @@ export const allRosters = {
         "baseSalary": 9.93,
         "contractYears": 3,
         "contractTotal": 29.79,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17648,8 +17648,8 @@ export const allRosters = {
         "deadMoney": 4.65,
         "capSavings": 4.53,
         "baseSalary": 9.18,
-        "contractYears": 3,
-        "contractTotal": 27.54,
+        "contractYears": 2,
+        "contractTotal": 18.36,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17662,8 +17662,8 @@ export const allRosters = {
         "deadMoney": 4.41,
         "capSavings": 4.5,
         "baseSalary": 8.91,
-        "contractYears": 3,
-        "contractTotal": 26.73,
+        "contractYears": 2,
+        "contractTotal": 17.82,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17676,9 +17676,9 @@ export const allRosters = {
         "deadMoney": 29.76,
         "capSavings": -21.44,
         "baseSalary": 8.32,
-        "contractYears": 3,
-        "contractTotal": 24.96,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 33.28,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -17706,7 +17706,7 @@ export const allRosters = {
         "baseSalary": 5.96,
         "contractYears": 3,
         "contractTotal": 17.88,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17718,8 +17718,8 @@ export const allRosters = {
         "deadMoney": 5.2,
         "capSavings": 0.59,
         "baseSalary": 5.79,
-        "contractYears": 3,
-        "contractTotal": 17.37,
+        "contractYears": 2,
+        "contractTotal": 11.58,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17774,9 +17774,9 @@ export const allRosters = {
         "deadMoney": 12.5,
         "capSavings": -8.42,
         "baseSalary": 4.08,
-        "contractYears": 2,
-        "contractTotal": 8.16,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 12.24,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17802,9 +17802,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.52,
         "baseSalary": 3.52,
-        "contractYears": 4,
-        "contractTotal": 14.08,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17816,9 +17816,9 @@ export const allRosters = {
         "deadMoney": 3.72,
         "capSavings": -0.73,
         "baseSalary": 2.99,
-        "contractYears": 2,
-        "contractTotal": 5.98,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.97,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17830,9 +17830,9 @@ export const allRosters = {
         "deadMoney": 3.28,
         "capSavings": -0.81,
         "baseSalary": 2.47,
-        "contractYears": 2,
-        "contractTotal": 4.94,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 7.41,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17844,9 +17844,9 @@ export const allRosters = {
         "deadMoney": 1.95,
         "capSavings": -0.03,
         "baseSalary": 1.93,
-        "contractYears": 2,
-        "contractTotal": 3.86,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 5.79,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17858,9 +17858,9 @@ export const allRosters = {
         "deadMoney": 1.73,
         "capSavings": -0.24,
         "baseSalary": 1.49,
-        "contractYears": 2,
-        "contractTotal": 2.98,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 4.47,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17886,8 +17886,8 @@ export const allRosters = {
         "deadMoney": 0.16,
         "capSavings": 1.15,
         "baseSalary": 1.31,
-        "contractYears": 4,
-        "contractTotal": 5.24,
+        "contractYears": 2,
+        "contractTotal": 2.62,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17900,9 +17900,9 @@ export const allRosters = {
         "deadMoney": 1.39,
         "capSavings": 12.5,
         "baseSalary": 1.3,
-        "contractYears": 2,
-        "contractTotal": 2.6,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 3.9,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -17914,9 +17914,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.3,
         "baseSalary": 1.3,
-        "contractYears": 2,
-        "contractTotal": 2.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.3,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17928,9 +17928,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -17942,8 +17942,8 @@ export const allRosters = {
         "deadMoney": 0.11,
         "capSavings": 1.02,
         "baseSalary": 1.13,
-        "contractYears": 4,
-        "contractTotal": 4.52,
+        "contractYears": 2,
+        "contractTotal": 2.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17970,8 +17970,8 @@ export const allRosters = {
         "deadMoney": 0.09,
         "capSavings": 1.03,
         "baseSalary": 1.12,
-        "contractYears": 4,
-        "contractTotal": 4.48,
+        "contractYears": 2,
+        "contractTotal": 2.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -17998,8 +17998,8 @@ export const allRosters = {
         "deadMoney": 0.05,
         "capSavings": 1.05,
         "baseSalary": 1.1,
-        "contractYears": 4,
-        "contractTotal": 4.4,
+        "contractYears": 2,
+        "contractTotal": 2.2,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18012,9 +18012,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18040,9 +18040,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18054,9 +18054,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18068,9 +18068,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18152,9 +18152,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18194,9 +18194,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18358,8 +18358,8 @@ export const allRosters = {
         "deadMoney": 39,
         "capSavings": -10.6,
         "baseSalary": 28.4,
-        "contractYears": 4,
-        "contractTotal": 113.6,
+        "contractYears": 3,
+        "contractTotal": 85.2,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -18372,9 +18372,9 @@ export const allRosters = {
         "deadMoney": 7.5,
         "capSavings": 17.5,
         "baseSalary": 25,
-        "contractYears": 4,
-        "contractTotal": 100,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 50,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -18386,8 +18386,8 @@ export const allRosters = {
         "deadMoney": 24,
         "capSavings": -2,
         "baseSalary": 22,
-        "contractYears": 4,
-        "contractTotal": 88,
+        "contractYears": 3,
+        "contractTotal": 66,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -18400,9 +18400,9 @@ export const allRosters = {
         "deadMoney": 12.8,
         "capSavings": 4.3,
         "baseSalary": 17.1,
-        "contractYears": 4,
-        "contractTotal": 68.4,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 34.2,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -18414,8 +18414,8 @@ export const allRosters = {
         "deadMoney": 19,
         "capSavings": -2.65,
         "baseSalary": 16.35,
-        "contractYears": 4,
-        "contractTotal": 65.4,
+        "contractYears": 3,
+        "contractTotal": 49.05,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -18430,7 +18430,7 @@ export const allRosters = {
         "baseSalary": 12.32,
         "contractYears": 3,
         "contractTotal": 36.96,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -18442,8 +18442,8 @@ export const allRosters = {
         "deadMoney": 2.5,
         "capSavings": 9.25,
         "baseSalary": 11.75,
-        "contractYears": 3,
-        "contractTotal": 35.25,
+        "contractYears": 2,
+        "contractTotal": 23.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18456,8 +18456,8 @@ export const allRosters = {
         "deadMoney": 7.3,
         "capSavings": 3.1,
         "baseSalary": 10.4,
-        "contractYears": 3,
-        "contractTotal": 31.2,
+        "contractYears": 2,
+        "contractTotal": 20.8,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18498,9 +18498,9 @@ export const allRosters = {
         "deadMoney": 35,
         "capSavings": -26.4,
         "baseSalary": 8.6,
-        "contractYears": 3,
-        "contractTotal": 25.8,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 34.4,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -18512,8 +18512,8 @@ export const allRosters = {
         "deadMoney": 3.5,
         "capSavings": 5.06,
         "baseSalary": 8.56,
-        "contractYears": 3,
-        "contractTotal": 25.68,
+        "contractYears": 2,
+        "contractTotal": 17.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18528,7 +18528,7 @@ export const allRosters = {
         "baseSalary": 7.42,
         "contractYears": 3,
         "contractTotal": 22.26,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -18542,7 +18542,7 @@ export const allRosters = {
         "baseSalary": 7.05,
         "contractYears": 3,
         "contractTotal": 21.15,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -18554,9 +18554,9 @@ export const allRosters = {
         "deadMoney": 14.94,
         "capSavings": -8.24,
         "baseSalary": 6.7,
-        "contractYears": 3,
-        "contractTotal": 20.1,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 26.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -18568,8 +18568,8 @@ export const allRosters = {
         "deadMoney": 1.15,
         "capSavings": 4,
         "baseSalary": 5.15,
-        "contractYears": 3,
-        "contractTotal": 15.45,
+        "contractYears": 2,
+        "contractTotal": 10.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18638,8 +18638,8 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 3.67,
         "baseSalary": 3.71,
-        "contractYears": 4,
-        "contractTotal": 14.84,
+        "contractYears": 2,
+        "contractTotal": 7.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18654,7 +18654,7 @@ export const allRosters = {
         "baseSalary": 3.57,
         "contractYears": 4,
         "contractTotal": 14.28,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -18680,9 +18680,9 @@ export const allRosters = {
         "deadMoney": 6,
         "capSavings": -3.2,
         "baseSalary": 2.8,
-        "contractYears": 2,
-        "contractTotal": 5.6,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 11.2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -18736,8 +18736,8 @@ export const allRosters = {
         "deadMoney": 0.61,
         "capSavings": 1.04,
         "baseSalary": 1.65,
-        "contractYears": 4,
-        "contractTotal": 6.6,
+        "contractYears": 2,
+        "contractTotal": 3.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18750,9 +18750,9 @@ export const allRosters = {
         "deadMoney": 1.8,
         "capSavings": -0.25,
         "baseSalary": 1.55,
-        "contractYears": 2,
-        "contractTotal": 3.1,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 4.65,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -18792,8 +18792,8 @@ export const allRosters = {
         "deadMoney": 0.8,
         "capSavings": 0.47,
         "baseSalary": 1.27,
-        "contractYears": 4,
-        "contractTotal": 5.08,
+        "contractYears": 2,
+        "contractTotal": 2.54,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18806,9 +18806,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.24,
         "baseSalary": 1.24,
-        "contractYears": 2,
-        "contractTotal": 2.48,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.24,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18862,9 +18862,9 @@ export const allRosters = {
         "deadMoney": 1.15,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 3.45,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -18876,9 +18876,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18890,9 +18890,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18904,8 +18904,8 @@ export const allRosters = {
         "deadMoney": 0.11,
         "capSavings": 1.02,
         "baseSalary": 1.13,
-        "contractYears": 4,
-        "contractTotal": 4.52,
+        "contractYears": 2,
+        "contractTotal": 2.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -18932,9 +18932,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18946,9 +18946,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18960,9 +18960,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18974,9 +18974,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -18988,9 +18988,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19016,9 +19016,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19030,9 +19030,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19142,9 +19142,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19156,9 +19156,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19334,8 +19334,8 @@ export const allRosters = {
         "deadMoney": 15.49,
         "capSavings": 15.49,
         "baseSalary": 15.49,
-        "contractYears": 4,
-        "contractTotal": 61.96,
+        "contractYears": 3,
+        "contractTotal": 46.47,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -19350,7 +19350,7 @@ export const allRosters = {
         "baseSalary": 14.2,
         "contractYears": 3,
         "contractTotal": 42.6,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -19362,9 +19362,9 @@ export const allRosters = {
         "deadMoney": 24.4,
         "capSavings": -13.95,
         "baseSalary": 10.45,
-        "contractYears": 3,
-        "contractTotal": 31.35,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 41.8,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19376,9 +19376,9 @@ export const allRosters = {
         "deadMoney": 27.33,
         "capSavings": -17.01,
         "baseSalary": 10.32,
-        "contractYears": 3,
-        "contractTotal": 30.96,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 41.28,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19390,9 +19390,9 @@ export const allRosters = {
         "deadMoney": 35.25,
         "capSavings": -25.64,
         "baseSalary": 9.61,
-        "contractYears": 3,
-        "contractTotal": 28.83,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 38.44,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19404,9 +19404,9 @@ export const allRosters = {
         "deadMoney": 26.5,
         "capSavings": -17.02,
         "baseSalary": 9.47,
-        "contractYears": 3,
-        "contractTotal": 28.41,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 37.88,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19420,7 +19420,7 @@ export const allRosters = {
         "baseSalary": 7.97,
         "contractYears": 3,
         "contractTotal": 23.91,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -19432,9 +19432,9 @@ export const allRosters = {
         "deadMoney": 22.51,
         "capSavings": -14.89,
         "baseSalary": 7.61,
-        "contractYears": 3,
-        "contractTotal": 22.83,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 30.44,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19446,8 +19446,8 @@ export const allRosters = {
         "deadMoney": 5.56,
         "capSavings": 1.58,
         "baseSalary": 7.14,
-        "contractYears": 3,
-        "contractTotal": 21.42,
+        "contractYears": 2,
+        "contractTotal": 14.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19460,8 +19460,8 @@ export const allRosters = {
         "deadMoney": 6.72,
         "capSavings": 0.4,
         "baseSalary": 7.12,
-        "contractYears": 3,
-        "contractTotal": 21.36,
+        "contractYears": 2,
+        "contractTotal": 14.24,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19488,9 +19488,9 @@ export const allRosters = {
         "deadMoney": 40,
         "capSavings": -33.7,
         "baseSalary": 6.3,
-        "contractYears": 3,
-        "contractTotal": 18.9,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 25.2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19504,7 +19504,7 @@ export const allRosters = {
         "baseSalary": 5.3,
         "contractYears": 3,
         "contractTotal": 15.9,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -19516,9 +19516,9 @@ export const allRosters = {
         "deadMoney": 18.45,
         "capSavings": -13.26,
         "baseSalary": 5.19,
-        "contractYears": 3,
-        "contractTotal": 15.57,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 20.76,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19558,8 +19558,8 @@ export const allRosters = {
         "deadMoney": 0.08,
         "capSavings": 3.67,
         "baseSalary": 3.76,
-        "contractYears": 4,
-        "contractTotal": 15.04,
+        "contractYears": 2,
+        "contractTotal": 7.52,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19614,9 +19614,9 @@ export const allRosters = {
         "deadMoney": 8.84,
         "capSavings": -6.38,
         "baseSalary": 2.46,
-        "contractYears": 2,
-        "contractTotal": 4.92,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 9.84,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -19656,8 +19656,8 @@ export const allRosters = {
         "deadMoney": 7,
         "capSavings": -5.13,
         "baseSalary": 1.88,
-        "contractYears": 4,
-        "contractTotal": 7.52,
+        "contractYears": 2,
+        "contractTotal": 3.76,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19754,8 +19754,8 @@ export const allRosters = {
         "deadMoney": 0.21,
         "capSavings": 1.15,
         "baseSalary": 1.36,
-        "contractYears": 4,
-        "contractTotal": 5.44,
+        "contractYears": 2,
+        "contractTotal": 2.72,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19796,8 +19796,8 @@ export const allRosters = {
         "deadMoney": 0.17,
         "capSavings": 0.99,
         "baseSalary": 1.16,
-        "contractYears": 4,
-        "contractTotal": 4.64,
+        "contractYears": 2,
+        "contractTotal": 2.32,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19810,9 +19810,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19824,9 +19824,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19852,8 +19852,8 @@ export const allRosters = {
         "deadMoney": 0.13,
         "capSavings": 1.01,
         "baseSalary": 1.14,
-        "contractYears": 4,
-        "contractTotal": 4.56,
+        "contractYears": 2,
+        "contractTotal": 2.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -19894,9 +19894,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19908,9 +19908,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19922,9 +19922,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19936,9 +19936,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19950,9 +19950,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -19978,9 +19978,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20020,9 +20020,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20090,9 +20090,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20104,9 +20104,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20118,9 +20118,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20132,9 +20132,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20146,9 +20146,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20160,9 +20160,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20296,9 +20296,9 @@ export const allRosters = {
         "deadMoney": 13.92,
         "capSavings": 13.04,
         "baseSalary": 26.96,
-        "contractYears": 4,
-        "contractTotal": 107.84,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 53.92,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -20310,8 +20310,8 @@ export const allRosters = {
         "deadMoney": 26.13,
         "capSavings": -1.93,
         "baseSalary": 24.2,
-        "contractYears": 4,
-        "contractTotal": 96.8,
+        "contractYears": 3,
+        "contractTotal": 72.6,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -20324,8 +20324,8 @@ export const allRosters = {
         "deadMoney": 36.09,
         "capSavings": -12.05,
         "baseSalary": 24.05,
-        "contractYears": 4,
-        "contractTotal": 96.2,
+        "contractYears": 3,
+        "contractTotal": 72.15,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -20340,7 +20340,7 @@ export const allRosters = {
         "baseSalary": 21.38,
         "contractYears": 4,
         "contractTotal": 85.52,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -20352,8 +20352,8 @@ export const allRosters = {
         "deadMoney": 20.19,
         "capSavings": -1.68,
         "baseSalary": 18.51,
-        "contractYears": 4,
-        "contractTotal": 74.04,
+        "contractYears": 3,
+        "contractTotal": 55.53,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -20366,9 +20366,9 @@ export const allRosters = {
         "deadMoney": 15.75,
         "capSavings": 0.16,
         "baseSalary": 15.91,
-        "contractYears": 4,
-        "contractTotal": 63.64,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 31.82,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -20382,7 +20382,7 @@ export const allRosters = {
         "baseSalary": 14.75,
         "contractYears": 3,
         "contractTotal": 44.25,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -20394,8 +20394,8 @@ export const allRosters = {
         "deadMoney": 2.5,
         "capSavings": 9.25,
         "baseSalary": 11.75,
-        "contractYears": 3,
-        "contractTotal": 35.25,
+        "contractYears": 2,
+        "contractTotal": 23.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20438,7 +20438,7 @@ export const allRosters = {
         "baseSalary": 6.92,
         "contractYears": 3,
         "contractTotal": 20.76,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -20452,7 +20452,7 @@ export const allRosters = {
         "baseSalary": 5.92,
         "contractYears": 3,
         "contractTotal": 17.76,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -20464,8 +20464,8 @@ export const allRosters = {
         "deadMoney": 1.25,
         "capSavings": 4.5,
         "baseSalary": 5.75,
-        "contractYears": 3,
-        "contractTotal": 17.25,
+        "contractYears": 2,
+        "contractTotal": 11.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20478,8 +20478,8 @@ export const allRosters = {
         "deadMoney": 2.4,
         "capSavings": 3.35,
         "baseSalary": 5.75,
-        "contractYears": 3,
-        "contractTotal": 17.25,
+        "contractYears": 2,
+        "contractTotal": 11.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20492,8 +20492,8 @@ export const allRosters = {
         "deadMoney": 2.3,
         "capSavings": 2.7,
         "baseSalary": 5,
-        "contractYears": 3,
-        "contractTotal": 15,
+        "contractYears": 2,
+        "contractTotal": 10,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20520,9 +20520,9 @@ export const allRosters = {
         "deadMoney": 4.32,
         "capSavings": 4.32,
         "baseSalary": 4.32,
-        "contractYears": 4,
-        "contractTotal": 17.28,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 12.96,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -20632,8 +20632,8 @@ export const allRosters = {
         "deadMoney": 1.17,
         "capSavings": 0.37,
         "baseSalary": 1.54,
-        "contractYears": 4,
-        "contractTotal": 6.16,
+        "contractYears": 2,
+        "contractTotal": 3.08,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20646,8 +20646,8 @@ export const allRosters = {
         "deadMoney": 0.42,
         "capSavings": 0.87,
         "baseSalary": 1.28,
-        "contractYears": 4,
-        "contractTotal": 5.12,
+        "contractYears": 2,
+        "contractTotal": 2.56,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20716,9 +20716,9 @@ export const allRosters = {
         "deadMoney": 0.3,
         "capSavings": 0.9,
         "baseSalary": 1.2,
-        "contractYears": 2,
-        "contractTotal": 2.4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.2,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20744,9 +20744,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20758,9 +20758,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20772,9 +20772,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20786,9 +20786,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20800,8 +20800,8 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 1.02,
         "baseSalary": 1.13,
-        "contractYears": 4,
-        "contractTotal": 4.52,
+        "contractYears": 2,
+        "contractTotal": 2.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -20828,9 +20828,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.1,
         "baseSalary": 1.1,
-        "contractYears": 2,
-        "contractTotal": 2.2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20856,9 +20856,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20870,9 +20870,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20884,9 +20884,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20898,9 +20898,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20926,9 +20926,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20940,9 +20940,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20954,9 +20954,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20968,9 +20968,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20982,9 +20982,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -20996,9 +20996,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21080,9 +21080,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21108,9 +21108,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21122,9 +21122,9 @@ export const allRosters = {
         "deadMoney": 0.02,
         "capSavings": 0.88,
         "baseSalary": 0.9,
-        "contractYears": 1,
-        "contractTotal": 0.9,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.8,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -21248,9 +21248,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 3,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21262,9 +21262,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -21344,7 +21344,7 @@ export const allRosters = {
         "baseSalary": 13.97,
         "contractYears": 3,
         "contractTotal": 41.91,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21356,9 +21356,9 @@ export const allRosters = {
         "deadMoney": 25,
         "capSavings": -13.5,
         "baseSalary": 11.5,
-        "contractYears": 3,
-        "contractTotal": 34.5,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 46,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -21370,9 +21370,9 @@ export const allRosters = {
         "deadMoney": 34.32,
         "capSavings": -24.25,
         "baseSalary": 10.07,
-        "contractYears": 3,
-        "contractTotal": 30.21,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 40.28,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -21384,9 +21384,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 7.5,
         "baseSalary": 7.5,
-        "contractYears": 3,
-        "contractTotal": 22.5,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 7.5,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21398,9 +21398,9 @@ export const allRosters = {
         "deadMoney": 22.49,
         "capSavings": -15.04,
         "baseSalary": 7.46,
-        "contractYears": 3,
-        "contractTotal": 22.38,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 29.84,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -21414,7 +21414,7 @@ export const allRosters = {
         "baseSalary": 7.41,
         "contractYears": 3,
         "contractTotal": 22.23,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21456,7 +21456,7 @@ export const allRosters = {
         "baseSalary": 5.19,
         "contractYears": 3,
         "contractTotal": 15.57,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21468,9 +21468,9 @@ export const allRosters = {
         "deadMoney": 15,
         "capSavings": -10,
         "baseSalary": 5,
-        "contractYears": 3,
-        "contractTotal": 15,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 5,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21484,7 +21484,7 @@ export const allRosters = {
         "baseSalary": 5,
         "contractYears": 3,
         "contractTotal": 15,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21510,8 +21510,8 @@ export const allRosters = {
         "deadMoney": 3.99,
         "capSavings": 0.51,
         "baseSalary": 4.5,
-        "contractYears": 4,
-        "contractTotal": 18,
+        "contractYears": 2,
+        "contractTotal": 9,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -21524,9 +21524,9 @@ export const allRosters = {
         "deadMoney": 9.65,
         "capSavings": -5.15,
         "baseSalary": 4.5,
-        "contractYears": 2,
-        "contractTotal": 9,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 18,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -21538,9 +21538,9 @@ export const allRosters = {
         "deadMoney": 4.34,
         "capSavings": -0.04,
         "baseSalary": 4.3,
-        "contractYears": 2,
-        "contractTotal": 8.6,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 12.9,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21552,9 +21552,9 @@ export const allRosters = {
         "deadMoney": 3.74,
         "capSavings": -0.24,
         "baseSalary": 3.5,
-        "contractYears": 4,
-        "contractTotal": 14,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 10.5,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21566,9 +21566,9 @@ export const allRosters = {
         "deadMoney": 3.5,
         "capSavings": 3.5,
         "baseSalary": 3.5,
-        "contractYears": 2,
-        "contractTotal": 7,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 10.5,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21580,9 +21580,9 @@ export const allRosters = {
         "deadMoney": 3.3,
         "capSavings": 3.3,
         "baseSalary": 3.3,
-        "contractYears": 2,
-        "contractTotal": 6.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.3,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21692,9 +21692,9 @@ export const allRosters = {
         "deadMoney": 1.26,
         "capSavings": 1.26,
         "baseSalary": 1.26,
-        "contractYears": 2,
-        "contractTotal": 2.52,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 3.78,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -21706,9 +21706,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.24,
         "baseSalary": 1.24,
-        "contractYears": 2,
-        "contractTotal": 2.48,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.24,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21734,9 +21734,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21762,9 +21762,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21776,9 +21776,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21790,9 +21790,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21874,9 +21874,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21888,9 +21888,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21902,9 +21902,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21916,9 +21916,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21930,9 +21930,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21944,9 +21944,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21958,9 +21958,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -21986,9 +21986,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22014,9 +22014,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22028,9 +22028,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22056,9 +22056,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22084,9 +22084,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22154,9 +22154,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22320,7 +22320,7 @@ export const allRosters = {
         "baseSalary": 31.97,
         "contractYears": 4,
         "contractTotal": 127.88,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22334,7 +22334,7 @@ export const allRosters = {
         "baseSalary": 23.39,
         "contractYears": 4,
         "contractTotal": 93.56,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22346,8 +22346,8 @@ export const allRosters = {
         "deadMoney": 40.19,
         "capSavings": -19.89,
         "baseSalary": 20.3,
-        "contractYears": 4,
-        "contractTotal": 81.2,
+        "contractYears": 3,
+        "contractTotal": 60.9,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -22362,7 +22362,7 @@ export const allRosters = {
         "baseSalary": 15.86,
         "contractYears": 4,
         "contractTotal": 63.44,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22374,9 +22374,9 @@ export const allRosters = {
         "deadMoney": 35.35,
         "capSavings": -24.62,
         "baseSalary": 10.73,
-        "contractYears": 3,
-        "contractTotal": 32.19,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 42.92,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22388,9 +22388,9 @@ export const allRosters = {
         "deadMoney": 27.51,
         "capSavings": -17.24,
         "baseSalary": 10.28,
-        "contractYears": 3,
-        "contractTotal": 30.84,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 41.12,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22402,9 +22402,9 @@ export const allRosters = {
         "deadMoney": 38.84,
         "capSavings": -28.96,
         "baseSalary": 9.88,
-        "contractYears": 3,
-        "contractTotal": 29.64,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 39.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22416,9 +22416,9 @@ export const allRosters = {
         "deadMoney": 20.49,
         "capSavings": -11.64,
         "baseSalary": 8.85,
-        "contractYears": 3,
-        "contractTotal": 26.55,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 35.4,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22430,9 +22430,9 @@ export const allRosters = {
         "deadMoney": 29.61,
         "capSavings": -22.08,
         "baseSalary": 7.54,
-        "contractYears": 3,
-        "contractTotal": 22.62,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 30.16,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22458,9 +22458,9 @@ export const allRosters = {
         "deadMoney": 20.4,
         "capSavings": -14.88,
         "baseSalary": 5.52,
-        "contractYears": 3,
-        "contractTotal": 16.56,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 22.08,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22474,7 +22474,7 @@ export const allRosters = {
         "baseSalary": 5.07,
         "contractYears": 3,
         "contractTotal": 15.21,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -22486,9 +22486,9 @@ export const allRosters = {
         "deadMoney": 10.92,
         "capSavings": -6.03,
         "baseSalary": 4.89,
-        "contractYears": 2,
-        "contractTotal": 9.78,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 19.56,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -22514,8 +22514,8 @@ export const allRosters = {
         "deadMoney": 0.3,
         "capSavings": 3.67,
         "baseSalary": 3.97,
-        "contractYears": 4,
-        "contractTotal": 15.88,
+        "contractYears": 2,
+        "contractTotal": 7.94,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -22528,9 +22528,9 @@ export const allRosters = {
         "deadMoney": 3.82,
         "capSavings": 3.82,
         "baseSalary": 3.82,
-        "contractYears": 4,
-        "contractTotal": 15.28,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.46,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -22556,9 +22556,9 @@ export const allRosters = {
         "deadMoney": 10.74,
         "capSavings": -7.33,
         "baseSalary": 3.41,
-        "contractYears": 2,
-        "contractTotal": 6.82,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.41,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22598,8 +22598,8 @@ export const allRosters = {
         "deadMoney": 0.3,
         "capSavings": 1.53,
         "baseSalary": 1.83,
-        "contractYears": 4,
-        "contractTotal": 7.32,
+        "contractYears": 2,
+        "contractTotal": 3.66,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -22626,8 +22626,8 @@ export const allRosters = {
         "deadMoney": 0.46,
         "capSavings": 1.08,
         "baseSalary": 1.54,
-        "contractYears": 4,
-        "contractTotal": 6.16,
+        "contractYears": 2,
+        "contractTotal": 3.08,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -22640,9 +22640,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.52,
         "baseSalary": 1.52,
-        "contractYears": 4,
-        "contractTotal": 6.08,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22668,9 +22668,9 @@ export const allRosters = {
         "deadMoney": 1.98,
         "capSavings": -0.56,
         "baseSalary": 1.42,
-        "contractYears": 2,
-        "contractTotal": 2.84,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 4.26,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -22696,9 +22696,9 @@ export const allRosters = {
         "deadMoney": 1.34,
         "capSavings": 1.34,
         "baseSalary": 1.34,
-        "contractYears": 2,
-        "contractTotal": 2.68,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 4.02,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -22738,9 +22738,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.22,
         "baseSalary": 1.22,
-        "contractYears": 2,
-        "contractTotal": 2.44,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.22,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22752,8 +22752,8 @@ export const allRosters = {
         "deadMoney": 0.05,
         "capSavings": 1.15,
         "baseSalary": 1.19,
-        "contractYears": 4,
-        "contractTotal": 4.76,
+        "contractYears": 2,
+        "contractTotal": 2.38,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -22808,9 +22808,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22822,9 +22822,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22892,9 +22892,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -22976,9 +22976,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23018,9 +23018,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23032,9 +23032,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23060,9 +23060,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23170,7 +23170,7 @@ export const allRosters = {
         "baseSalary": 42,
         "contractYears": 4,
         "contractTotal": 168,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -23182,9 +23182,9 @@ export const allRosters = {
         "deadMoney": 24,
         "capSavings": 7,
         "baseSalary": 31,
-        "contractYears": 4,
-        "contractTotal": 124,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 62,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -23196,9 +23196,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 24,
         "baseSalary": 24,
-        "contractYears": 4,
-        "contractTotal": 96,
-        "yearsRemaining": 2,
+        "contractYears": 1,
+        "contractTotal": 24,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23210,9 +23210,9 @@ export const allRosters = {
         "deadMoney": 11.2,
         "capSavings": 8.9,
         "baseSalary": 20.1,
-        "contractYears": 4,
-        "contractTotal": 80.4,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 40.2,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -23224,9 +23224,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 19.5,
         "baseSalary": 19.5,
-        "contractYears": 4,
-        "contractTotal": 78,
-        "yearsRemaining": 2,
+        "contractYears": 1,
+        "contractTotal": 19.5,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23238,9 +23238,9 @@ export const allRosters = {
         "deadMoney": 3.86,
         "capSavings": 13.33,
         "baseSalary": 17.19,
-        "contractYears": 4,
-        "contractTotal": 68.76,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 34.38,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -23254,7 +23254,7 @@ export const allRosters = {
         "baseSalary": 13.68,
         "contractYears": 3,
         "contractTotal": 41.04,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -23266,8 +23266,8 @@ export const allRosters = {
         "deadMoney": 6.3,
         "capSavings": 4.9,
         "baseSalary": 11.2,
-        "contractYears": 3,
-        "contractTotal": 33.6,
+        "contractYears": 2,
+        "contractTotal": 22.4,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23280,8 +23280,8 @@ export const allRosters = {
         "deadMoney": 3.97,
         "capSavings": 3.07,
         "baseSalary": 7.03,
-        "contractYears": 3,
-        "contractTotal": 21.09,
+        "contractYears": 2,
+        "contractTotal": 14.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23294,8 +23294,8 @@ export const allRosters = {
         "deadMoney": 2.04,
         "capSavings": 4.75,
         "baseSalary": 6.79,
-        "contractYears": 3,
-        "contractTotal": 20.37,
+        "contractYears": 2,
+        "contractTotal": 13.58,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23308,8 +23308,8 @@ export const allRosters = {
         "deadMoney": 4,
         "capSavings": 2.08,
         "baseSalary": 6.08,
-        "contractYears": 3,
-        "contractTotal": 18.24,
+        "contractYears": 2,
+        "contractTotal": 12.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23324,7 +23324,7 @@ export const allRosters = {
         "baseSalary": 5.5,
         "contractYears": 3,
         "contractTotal": 16.5,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -23350,8 +23350,8 @@ export const allRosters = {
         "deadMoney": 2.44,
         "capSavings": 2.48,
         "baseSalary": 4.92,
-        "contractYears": 4,
-        "contractTotal": 19.68,
+        "contractYears": 2,
+        "contractTotal": 9.84,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23394,7 +23394,7 @@ export const allRosters = {
         "baseSalary": 4.11,
         "contractYears": 4,
         "contractTotal": 16.44,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -23420,9 +23420,9 @@ export const allRosters = {
         "deadMoney": 2.79,
         "capSavings": 1.22,
         "baseSalary": 4,
-        "contractYears": 2,
-        "contractTotal": 8,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 4,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23560,8 +23560,8 @@ export const allRosters = {
         "deadMoney": 0.45,
         "capSavings": 1.08,
         "baseSalary": 1.53,
-        "contractYears": 4,
-        "contractTotal": 6.12,
+        "contractYears": 2,
+        "contractTotal": 3.06,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23602,8 +23602,8 @@ export const allRosters = {
         "deadMoney": 0.38,
         "capSavings": 0.88,
         "baseSalary": 1.27,
-        "contractYears": 4,
-        "contractTotal": 5.08,
+        "contractYears": 2,
+        "contractTotal": 2.54,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23658,8 +23658,8 @@ export const allRosters = {
         "deadMoney": 0.02,
         "capSavings": 1.15,
         "baseSalary": 1.17,
-        "contractYears": 4,
-        "contractTotal": 4.68,
+        "contractYears": 2,
+        "contractTotal": 2.34,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23672,8 +23672,8 @@ export const allRosters = {
         "deadMoney": 0.02,
         "capSavings": 1.15,
         "baseSalary": 1.16,
-        "contractYears": 4,
-        "contractTotal": 4.64,
+        "contractYears": 2,
+        "contractTotal": 2.32,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23686,8 +23686,8 @@ export const allRosters = {
         "deadMoney": 0.11,
         "capSavings": 1.02,
         "baseSalary": 1.13,
-        "contractYears": 4,
-        "contractTotal": 4.52,
+        "contractYears": 2,
+        "contractTotal": 2.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -23700,9 +23700,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.1,
         "baseSalary": 1.1,
-        "contractYears": 2,
-        "contractTotal": 2.2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23728,9 +23728,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23742,9 +23742,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23756,9 +23756,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23770,9 +23770,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23784,9 +23784,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23840,9 +23840,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23854,9 +23854,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -23868,9 +23868,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24106,9 +24106,9 @@ export const allRosters = {
         "deadMoney": 5,
         "capSavings": -5,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       }
     ],
@@ -24130,9 +24130,9 @@ export const allRosters = {
         "deadMoney": 34.15,
         "capSavings": 4.69,
         "baseSalary": 38.84,
-        "contractYears": 4,
-        "contractTotal": 155.36,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 77.68,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -24146,7 +24146,7 @@ export const allRosters = {
         "baseSalary": 24.4,
         "contractYears": 4,
         "contractTotal": 97.6,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -24160,7 +24160,7 @@ export const allRosters = {
         "baseSalary": 22.99,
         "contractYears": 4,
         "contractTotal": 91.96,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -24172,8 +24172,8 @@ export const allRosters = {
         "deadMoney": 31.06,
         "capSavings": -13.19,
         "baseSalary": 17.87,
-        "contractYears": 4,
-        "contractTotal": 71.48,
+        "contractYears": 3,
+        "contractTotal": 53.61,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -24186,8 +24186,8 @@ export const allRosters = {
         "deadMoney": 16.75,
         "capSavings": 16.75,
         "baseSalary": 16.75,
-        "contractYears": 4,
-        "contractTotal": 67,
+        "contractYears": 3,
+        "contractTotal": 50.25,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -24202,7 +24202,7 @@ export const allRosters = {
         "baseSalary": 16.07,
         "contractYears": 4,
         "contractTotal": 64.28,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -24214,9 +24214,9 @@ export const allRosters = {
         "deadMoney": 29.59,
         "capSavings": -14.95,
         "baseSalary": 14.64,
-        "contractYears": 3,
-        "contractTotal": 43.92,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 58.56,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -24230,7 +24230,7 @@ export const allRosters = {
         "baseSalary": 10.86,
         "contractYears": 3,
         "contractTotal": 32.58,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -24244,7 +24244,7 @@ export const allRosters = {
         "baseSalary": 8.87,
         "contractYears": 3,
         "contractTotal": 26.61,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -24256,9 +24256,9 @@ export const allRosters = {
         "deadMoney": 18.3,
         "capSavings": -12.47,
         "baseSalary": 5.82,
-        "contractYears": 3,
-        "contractTotal": 17.46,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 23.28,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -24284,8 +24284,8 @@ export const allRosters = {
         "deadMoney": 2.44,
         "capSavings": 2.97,
         "baseSalary": 5.41,
-        "contractYears": 3,
-        "contractTotal": 16.23,
+        "contractYears": 2,
+        "contractTotal": 10.82,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24298,9 +24298,9 @@ export const allRosters = {
         "deadMoney": 14.3,
         "capSavings": -10.05,
         "baseSalary": 4.25,
-        "contractYears": 2,
-        "contractTotal": 8.5,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 12.75,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -24326,8 +24326,8 @@ export const allRosters = {
         "deadMoney": 0.03,
         "capSavings": 3.67,
         "baseSalary": 3.71,
-        "contractYears": 4,
-        "contractTotal": 14.84,
+        "contractYears": 2,
+        "contractTotal": 7.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24340,9 +24340,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.52,
         "baseSalary": 3.52,
-        "contractYears": 2,
-        "contractTotal": 7.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24354,9 +24354,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.52,
         "baseSalary": 3.52,
-        "contractYears": 2,
-        "contractTotal": 7.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24370,7 +24370,7 @@ export const allRosters = {
         "baseSalary": 3.42,
         "contractYears": 4,
         "contractTotal": 13.68,
-        "yearsRemaining": 1,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -24382,9 +24382,9 @@ export const allRosters = {
         "deadMoney": 3.46,
         "capSavings": -0.16,
         "baseSalary": 3.29,
-        "contractYears": 2,
-        "contractTotal": 6.58,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.87,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -24410,9 +24410,9 @@ export const allRosters = {
         "deadMoney": 4.73,
         "capSavings": -1.84,
         "baseSalary": 2.9,
-        "contractYears": 2,
-        "contractTotal": 5.8,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.7,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -24424,9 +24424,9 @@ export const allRosters = {
         "deadMoney": 3.86,
         "capSavings": -1.14,
         "baseSalary": 2.72,
-        "contractYears": 2,
-        "contractTotal": 5.44,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.16,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -24466,9 +24466,9 @@ export const allRosters = {
         "deadMoney": 7.98,
         "capSavings": -6.02,
         "baseSalary": 1.95,
-        "contractYears": 2,
-        "contractTotal": 3.9,
-        "yearsRemaining": 1,
+        "contractYears": 5,
+        "contractTotal": 9.75,
+        "yearsRemaining": 4,
         "isFranchise": false
       },
       {
@@ -24480,9 +24480,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.81,
         "baseSalary": 1.81,
-        "contractYears": 2,
-        "contractTotal": 3.62,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.81,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24508,8 +24508,8 @@ export const allRosters = {
         "deadMoney": 0.73,
         "capSavings": 1.01,
         "baseSalary": 1.74,
-        "contractYears": 4,
-        "contractTotal": 6.96,
+        "contractYears": 2,
+        "contractTotal": 3.48,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24606,8 +24606,8 @@ export const allRosters = {
         "deadMoney": 0.35,
         "capSavings": 0.9,
         "baseSalary": 1.25,
-        "contractYears": 4,
-        "contractTotal": 5,
+        "contractYears": 2,
+        "contractTotal": 2.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24620,8 +24620,8 @@ export const allRosters = {
         "deadMoney": 0.08,
         "capSavings": 1.15,
         "baseSalary": 1.22,
-        "contractYears": 4,
-        "contractTotal": 4.88,
+        "contractYears": 2,
+        "contractTotal": 2.44,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24634,8 +24634,8 @@ export const allRosters = {
         "deadMoney": 0.26,
         "capSavings": 0.94,
         "baseSalary": 1.21,
-        "contractYears": 4,
-        "contractTotal": 4.84,
+        "contractYears": 2,
+        "contractTotal": 2.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24662,9 +24662,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24676,9 +24676,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24690,9 +24690,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24704,9 +24704,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24718,9 +24718,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24760,8 +24760,8 @@ export const allRosters = {
         "deadMoney": 0.04,
         "capSavings": 1.05,
         "baseSalary": 1.1,
-        "contractYears": 4,
-        "contractTotal": 4.4,
+        "contractYears": 2,
+        "contractTotal": 2.2,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -24774,9 +24774,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24788,9 +24788,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24802,9 +24802,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24816,9 +24816,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24830,9 +24830,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24844,9 +24844,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24858,9 +24858,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24872,9 +24872,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24900,9 +24900,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24914,9 +24914,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24956,9 +24956,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24970,9 +24970,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -24984,9 +24984,9 @@ export const allRosters = {
         "deadMoney": 0.1,
         "capSavings": 0.82,
         "baseSalary": 0.92,
-        "contractYears": 1,
-        "contractTotal": 0.92,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.84,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -24998,9 +24998,9 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 0.88,
         "baseSalary": 0.89,
-        "contractYears": 1,
-        "contractTotal": 0.89,
-        "yearsRemaining": 0,
+        "contractYears": 2,
+        "contractTotal": 1.78,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -25082,9 +25082,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       }
     ],
@@ -25106,8 +25106,8 @@ export const allRosters = {
         "deadMoney": 43.1,
         "capSavings": -5.2,
         "baseSalary": 37.9,
-        "contractYears": 4,
-        "contractTotal": 151.6,
+        "contractYears": 3,
+        "contractTotal": 113.7,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -25120,9 +25120,9 @@ export const allRosters = {
         "deadMoney": 22.36,
         "capSavings": 7.28,
         "baseSalary": 29.64,
-        "contractYears": 4,
-        "contractTotal": 118.56,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 59.28,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -25134,9 +25134,9 @@ export const allRosters = {
         "deadMoney": 8.51,
         "capSavings": 11.48,
         "baseSalary": 19.99,
-        "contractYears": 4,
-        "contractTotal": 79.96,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 39.98,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -25148,9 +25148,9 @@ export const allRosters = {
         "deadMoney": 17,
         "capSavings": 0.47,
         "baseSalary": 17.47,
-        "contractYears": 4,
-        "contractTotal": 69.88,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 34.94,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -25162,8 +25162,8 @@ export const allRosters = {
         "deadMoney": 8.47,
         "capSavings": 4.4,
         "baseSalary": 12.88,
-        "contractYears": 3,
-        "contractTotal": 38.64,
+        "contractYears": 2,
+        "contractTotal": 25.76,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25176,8 +25176,8 @@ export const allRosters = {
         "deadMoney": 9.27,
         "capSavings": 2.52,
         "baseSalary": 11.78,
-        "contractYears": 3,
-        "contractTotal": 35.34,
+        "contractYears": 2,
+        "contractTotal": 23.56,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25190,8 +25190,8 @@ export const allRosters = {
         "deadMoney": 9.67,
         "capSavings": 1.82,
         "baseSalary": 11.48,
-        "contractYears": 3,
-        "contractTotal": 34.44,
+        "contractYears": 2,
+        "contractTotal": 22.96,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25204,9 +25204,9 @@ export const allRosters = {
         "deadMoney": 43.06,
         "capSavings": -32.18,
         "baseSalary": 10.88,
-        "contractYears": 3,
-        "contractTotal": 32.64,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 43.52,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -25220,7 +25220,7 @@ export const allRosters = {
         "baseSalary": 10.42,
         "contractYears": 3,
         "contractTotal": 31.26,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -25234,7 +25234,7 @@ export const allRosters = {
         "baseSalary": 10.14,
         "contractYears": 3,
         "contractTotal": 30.42,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -25246,8 +25246,8 @@ export const allRosters = {
         "deadMoney": 5,
         "capSavings": 2.38,
         "baseSalary": 7.38,
-        "contractYears": 3,
-        "contractTotal": 22.14,
+        "contractYears": 2,
+        "contractTotal": 14.76,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25260,8 +25260,8 @@ export const allRosters = {
         "deadMoney": 1.88,
         "capSavings": 5.35,
         "baseSalary": 7.23,
-        "contractYears": 3,
-        "contractTotal": 21.69,
+        "contractYears": 2,
+        "contractTotal": 14.46,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25276,7 +25276,7 @@ export const allRosters = {
         "baseSalary": 7,
         "contractYears": 3,
         "contractTotal": 21,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -25288,9 +25288,9 @@ export const allRosters = {
         "deadMoney": 9.5,
         "capSavings": -4.7,
         "baseSalary": 4.8,
-        "contractYears": 2,
-        "contractTotal": 9.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 4.8,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25358,9 +25358,9 @@ export const allRosters = {
         "deadMoney": 6.7,
         "capSavings": -2.9,
         "baseSalary": 3.8,
-        "contractYears": 2,
-        "contractTotal": 7.6,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.4,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -25386,9 +25386,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.52,
         "baseSalary": 3.52,
-        "contractYears": 2,
-        "contractTotal": 7.04,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.52,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25414,9 +25414,9 @@ export const allRosters = {
         "deadMoney": 0.5,
         "capSavings": 2.25,
         "baseSalary": 2.75,
-        "contractYears": 2,
-        "contractTotal": 5.5,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2.75,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25442,9 +25442,9 @@ export const allRosters = {
         "deadMoney": 0.25,
         "capSavings": 1.99,
         "baseSalary": 2.24,
-        "contractYears": 2,
-        "contractTotal": 4.48,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2.24,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25456,8 +25456,8 @@ export const allRosters = {
         "deadMoney": 0.5,
         "capSavings": 1.69,
         "baseSalary": 2.19,
-        "contractYears": 4,
-        "contractTotal": 8.76,
+        "contractYears": 2,
+        "contractTotal": 4.38,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25484,8 +25484,8 @@ export const allRosters = {
         "deadMoney": 0.52,
         "capSavings": 1.06,
         "baseSalary": 1.58,
-        "contractYears": 4,
-        "contractTotal": 6.32,
+        "contractYears": 2,
+        "contractTotal": 3.16,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25526,8 +25526,8 @@ export const allRosters = {
         "deadMoney": 0.39,
         "capSavings": 0.88,
         "baseSalary": 1.27,
-        "contractYears": 4,
-        "contractTotal": 5.08,
+        "contractYears": 2,
+        "contractTotal": 2.54,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25582,8 +25582,8 @@ export const allRosters = {
         "deadMoney": 0.19,
         "capSavings": 0.98,
         "baseSalary": 1.17,
-        "contractYears": 4,
-        "contractTotal": 4.68,
+        "contractYears": 2,
+        "contractTotal": 2.34,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -25610,9 +25610,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25624,9 +25624,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25680,9 +25680,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25708,9 +25708,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25722,9 +25722,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25736,9 +25736,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25820,9 +25820,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -25834,9 +25834,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26068,8 +26068,8 @@ export const allRosters = {
         "deadMoney": 42.13,
         "capSavings": -2.15,
         "baseSalary": 39.98,
-        "contractYears": 4,
-        "contractTotal": 159.92,
+        "contractYears": 3,
+        "contractTotal": 119.94,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -26082,8 +26082,8 @@ export const allRosters = {
         "deadMoney": 61.59,
         "capSavings": -25.26,
         "baseSalary": 36.33,
-        "contractYears": 4,
-        "contractTotal": 145.32,
+        "contractYears": 3,
+        "contractTotal": 108.99,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -26096,8 +26096,8 @@ export const allRosters = {
         "deadMoney": 49.91,
         "capSavings": -16.23,
         "baseSalary": 33.68,
-        "contractYears": 4,
-        "contractTotal": 134.72,
+        "contractYears": 3,
+        "contractTotal": 101.04,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -26110,8 +26110,8 @@ export const allRosters = {
         "deadMoney": 27.86,
         "capSavings": -0.4,
         "baseSalary": 27.47,
-        "contractYears": 4,
-        "contractTotal": 109.88,
+        "contractYears": 3,
+        "contractTotal": 82.41,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -26124,9 +26124,9 @@ export const allRosters = {
         "deadMoney": 6.48,
         "capSavings": 15.72,
         "baseSalary": 22.19,
-        "contractYears": 4,
-        "contractTotal": 88.76,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 44.38,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -26140,7 +26140,7 @@ export const allRosters = {
         "baseSalary": 8.77,
         "contractYears": 3,
         "contractTotal": 26.31,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -26152,9 +26152,9 @@ export const allRosters = {
         "deadMoney": 24.93,
         "capSavings": -17.46,
         "baseSalary": 7.47,
-        "contractYears": 3,
-        "contractTotal": 22.41,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 29.88,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -26166,9 +26166,9 @@ export const allRosters = {
         "deadMoney": 17.31,
         "capSavings": -11.41,
         "baseSalary": 5.9,
-        "contractYears": 3,
-        "contractTotal": 17.7,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 23.6,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -26180,8 +26180,8 @@ export const allRosters = {
         "deadMoney": 3.46,
         "capSavings": 1.9,
         "baseSalary": 5.37,
-        "contractYears": 3,
-        "contractTotal": 16.11,
+        "contractYears": 2,
+        "contractTotal": 10.74,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -26194,9 +26194,9 @@ export const allRosters = {
         "deadMoney": 4.61,
         "capSavings": 4.61,
         "baseSalary": 4.61,
-        "contractYears": 4,
-        "contractTotal": 18.44,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 13.83,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -26222,9 +26222,9 @@ export const allRosters = {
         "deadMoney": 20,
         "capSavings": -15.86,
         "baseSalary": 4.14,
-        "contractYears": 2,
-        "contractTotal": 8.28,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 12.42,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -26278,9 +26278,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3.8,
         "baseSalary": 3.8,
-        "contractYears": 2,
-        "contractTotal": 7.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3.8,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26320,9 +26320,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 3,
         "baseSalary": 3,
-        "contractYears": 2,
-        "contractTotal": 6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 3,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26362,8 +26362,8 @@ export const allRosters = {
         "deadMoney": 0.48,
         "capSavings": 1.07,
         "baseSalary": 1.55,
-        "contractYears": 4,
-        "contractTotal": 6.2,
+        "contractYears": 2,
+        "contractTotal": 3.1,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -26418,8 +26418,8 @@ export const allRosters = {
         "deadMoney": 0.06,
         "capSavings": 1.15,
         "baseSalary": 1.21,
-        "contractYears": 4,
-        "contractTotal": 4.84,
+        "contractYears": 2,
+        "contractTotal": 2.42,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -26446,9 +26446,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26460,8 +26460,8 @@ export const allRosters = {
         "deadMoney": 0.72,
         "capSavings": 0.4,
         "baseSalary": 1.13,
-        "contractYears": 4,
-        "contractTotal": 4.52,
+        "contractYears": 2,
+        "contractTotal": 2.26,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -26474,8 +26474,8 @@ export const allRosters = {
         "deadMoney": 0.07,
         "capSavings": 1.04,
         "baseSalary": 1.11,
-        "contractYears": 4,
-        "contractTotal": 4.44,
+        "contractYears": 2,
+        "contractTotal": 2.22,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -26530,9 +26530,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26544,9 +26544,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26558,9 +26558,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26614,9 +26614,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26628,9 +26628,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26642,9 +26642,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26684,9 +26684,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26698,9 +26698,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -26838,9 +26838,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -26852,9 +26852,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -26932,9 +26932,9 @@ export const allRosters = {
         "deadMoney": 13.02,
         "capSavings": 13.43,
         "baseSalary": 26.45,
-        "contractYears": 4,
-        "contractTotal": 105.8,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 52.9,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -26946,8 +26946,8 @@ export const allRosters = {
         "deadMoney": 31.64,
         "capSavings": -5.29,
         "baseSalary": 26.35,
-        "contractYears": 4,
-        "contractTotal": 105.4,
+        "contractYears": 3,
+        "contractTotal": 79.05,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -26960,9 +26960,9 @@ export const allRosters = {
         "deadMoney": 16.49,
         "capSavings": 9.19,
         "baseSalary": 25.68,
-        "contractYears": 4,
-        "contractTotal": 102.72,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 51.36,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -26974,8 +26974,8 @@ export const allRosters = {
         "deadMoney": 42,
         "capSavings": -27.04,
         "baseSalary": 14.96,
-        "contractYears": 3,
-        "contractTotal": 44.88,
+        "contractYears": 2,
+        "contractTotal": 29.92,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -26988,8 +26988,8 @@ export const allRosters = {
         "deadMoney": 42,
         "capSavings": -28,
         "baseSalary": 14,
-        "contractYears": 3,
-        "contractTotal": 42,
+        "contractYears": 2,
+        "contractTotal": 28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -27004,7 +27004,7 @@ export const allRosters = {
         "baseSalary": 13.41,
         "contractYears": 3,
         "contractTotal": 40.23,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -27018,7 +27018,7 @@ export const allRosters = {
         "baseSalary": 11.96,
         "contractYears": 3,
         "contractTotal": 35.88,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -27030,9 +27030,9 @@ export const allRosters = {
         "deadMoney": 38,
         "capSavings": -26.73,
         "baseSalary": 11.27,
-        "contractYears": 3,
-        "contractTotal": 33.81,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 45.08,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -27058,9 +27058,9 @@ export const allRosters = {
         "deadMoney": 32,
         "capSavings": -21.26,
         "baseSalary": 10.74,
-        "contractYears": 4,
-        "contractTotal": 32.22,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 10.74,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27072,8 +27072,8 @@ export const allRosters = {
         "deadMoney": 2,
         "capSavings": 7.25,
         "baseSalary": 9.25,
-        "contractYears": 3,
-        "contractTotal": 27.75,
+        "contractYears": 2,
+        "contractTotal": 18.5,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -27088,7 +27088,7 @@ export const allRosters = {
         "baseSalary": 8.23,
         "contractYears": 3,
         "contractTotal": 24.69,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -27128,8 +27128,8 @@ export const allRosters = {
         "deadMoney": 14.01,
         "capSavings": -8.87,
         "baseSalary": 5.14,
-        "contractYears": 3,
-        "contractTotal": 15.42,
+        "contractYears": 2,
+        "contractTotal": 10.28,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -27142,9 +27142,9 @@ export const allRosters = {
         "deadMoney": 6.83,
         "capSavings": -2.58,
         "baseSalary": 4.25,
-        "contractYears": 2,
-        "contractTotal": 8.5,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 4.25,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27170,9 +27170,9 @@ export const allRosters = {
         "deadMoney": 3.24,
         "capSavings": -0.18,
         "baseSalary": 3.07,
-        "contractYears": 2,
-        "contractTotal": 6.14,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.21,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -27212,9 +27212,9 @@ export const allRosters = {
         "deadMoney": 3.24,
         "capSavings": -0.4,
         "baseSalary": 2.85,
-        "contractYears": 2,
-        "contractTotal": 5.7,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 8.55,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -27226,9 +27226,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 2.47,
         "baseSalary": 2.47,
-        "contractYears": 2,
-        "contractTotal": 4.94,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 2.47,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27366,9 +27366,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27380,9 +27380,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27394,9 +27394,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27450,9 +27450,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27464,9 +27464,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27478,9 +27478,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27492,9 +27492,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27520,8 +27520,8 @@ export const allRosters = {
         "deadMoney": 0.19,
         "capSavings": 0.88,
         "baseSalary": 1.07,
-        "contractYears": 4,
-        "contractTotal": 4.28,
+        "contractYears": 2,
+        "contractTotal": 2.14,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -27548,9 +27548,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27562,9 +27562,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27576,9 +27576,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27660,9 +27660,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27674,9 +27674,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27688,9 +27688,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 4,
-        "contractTotal": 4,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27702,9 +27702,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -27908,9 +27908,9 @@ export const allRosters = {
         "deadMoney": 11.2,
         "capSavings": 16.75,
         "baseSalary": 27.95,
-        "contractYears": 4,
-        "contractTotal": 111.8,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 55.9,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -27922,9 +27922,9 @@ export const allRosters = {
         "deadMoney": 14.4,
         "capSavings": 10.51,
         "baseSalary": 24.91,
-        "contractYears": 4,
-        "contractTotal": 99.64,
-        "yearsRemaining": 2,
+        "contractYears": 2,
+        "contractTotal": 49.82,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -27936,8 +27936,8 @@ export const allRosters = {
         "deadMoney": 27.5,
         "capSavings": -7.24,
         "baseSalary": 20.26,
-        "contractYears": 4,
-        "contractTotal": 81.04,
+        "contractYears": 3,
+        "contractTotal": 60.78,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -27952,7 +27952,7 @@ export const allRosters = {
         "baseSalary": 18,
         "contractYears": 4,
         "contractTotal": 72,
-        "yearsRemaining": 2,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -27964,8 +27964,8 @@ export const allRosters = {
         "deadMoney": 25.4,
         "capSavings": -9.2,
         "baseSalary": 16.2,
-        "contractYears": 4,
-        "contractTotal": 64.8,
+        "contractYears": 3,
+        "contractTotal": 48.6,
         "yearsRemaining": 2,
         "isFranchise": false
       },
@@ -27978,8 +27978,8 @@ export const allRosters = {
         "deadMoney": 9,
         "capSavings": 3.06,
         "baseSalary": 12.06,
-        "contractYears": 3,
-        "contractTotal": 36.18,
+        "contractYears": 2,
+        "contractTotal": 24.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -27992,8 +27992,8 @@ export const allRosters = {
         "deadMoney": 6.9,
         "capSavings": 4.39,
         "baseSalary": 11.3,
-        "contractYears": 3,
-        "contractTotal": 33.9,
+        "contractYears": 2,
+        "contractTotal": 22.6,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28006,8 +28006,8 @@ export const allRosters = {
         "deadMoney": 10.3,
         "capSavings": 0.67,
         "baseSalary": 10.97,
-        "contractYears": 3,
-        "contractTotal": 32.91,
+        "contractYears": 2,
+        "contractTotal": 21.94,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28020,9 +28020,9 @@ export const allRosters = {
         "deadMoney": 22.3,
         "capSavings": -12.01,
         "baseSalary": 10.29,
-        "contractYears": 3,
-        "contractTotal": 30.87,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 41.16,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -28034,9 +28034,9 @@ export const allRosters = {
         "deadMoney": 6.39,
         "capSavings": 0.55,
         "baseSalary": 6.94,
-        "contractYears": 3,
-        "contractTotal": 20.82,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 6.94,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28050,7 +28050,7 @@ export const allRosters = {
         "baseSalary": 5.79,
         "contractYears": 3,
         "contractTotal": 17.37,
-        "yearsRemaining": 1,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -28062,8 +28062,8 @@ export const allRosters = {
         "deadMoney": 7.35,
         "capSavings": -2.34,
         "baseSalary": 5.01,
-        "contractYears": 3,
-        "contractTotal": 15.03,
+        "contractYears": 2,
+        "contractTotal": 10.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28090,8 +28090,8 @@ export const allRosters = {
         "deadMoney": 12.4,
         "capSavings": -8.07,
         "baseSalary": 4.33,
-        "contractYears": 4,
-        "contractTotal": 17.32,
+        "contractYears": 2,
+        "contractTotal": 8.66,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28104,8 +28104,8 @@ export const allRosters = {
         "deadMoney": 0.64,
         "capSavings": 3.67,
         "baseSalary": 4.31,
-        "contractYears": 4,
-        "contractTotal": 17.24,
+        "contractYears": 2,
+        "contractTotal": 8.62,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28132,9 +28132,9 @@ export const allRosters = {
         "deadMoney": 5.53,
         "capSavings": -1.69,
         "baseSalary": 3.84,
-        "contractYears": 2,
-        "contractTotal": 7.68,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 11.52,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -28174,9 +28174,9 @@ export const allRosters = {
         "deadMoney": 3.7,
         "capSavings": -0.5,
         "baseSalary": 3.2,
-        "contractYears": 2,
-        "contractTotal": 6.4,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 9.6,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -28188,8 +28188,8 @@ export const allRosters = {
         "deadMoney": 0.68,
         "capSavings": 2.13,
         "baseSalary": 2.8,
-        "contractYears": 4,
-        "contractTotal": 11.2,
+        "contractYears": 2,
+        "contractTotal": 5.6,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28230,9 +28230,9 @@ export const allRosters = {
         "deadMoney": 2.11,
         "capSavings": -0.01,
         "baseSalary": 2.1,
-        "contractYears": 4,
-        "contractTotal": 8.4,
-        "yearsRemaining": 1,
+        "contractYears": 3,
+        "contractTotal": 6.3,
+        "yearsRemaining": 2,
         "isFranchise": false
       },
       {
@@ -28244,8 +28244,8 @@ export const allRosters = {
         "deadMoney": 0.4,
         "capSavings": 1.59,
         "baseSalary": 1.99,
-        "contractYears": 4,
-        "contractTotal": 7.96,
+        "contractYears": 2,
+        "contractTotal": 3.98,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28286,8 +28286,8 @@ export const allRosters = {
         "deadMoney": 0.61,
         "capSavings": 1.04,
         "baseSalary": 1.65,
-        "contractYears": 4,
-        "contractTotal": 6.6,
+        "contractYears": 2,
+        "contractTotal": 3.3,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28328,9 +28328,9 @@ export const allRosters = {
         "deadMoney": 3.01,
         "capSavings": -1.53,
         "baseSalary": 1.49,
-        "contractYears": 2,
-        "contractTotal": 2.98,
-        "yearsRemaining": 1,
+        "contractYears": 4,
+        "contractTotal": 5.96,
+        "yearsRemaining": 3,
         "isFranchise": false
       },
       {
@@ -28412,9 +28412,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 4,
-        "contractTotal": 4.6,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28426,9 +28426,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28440,9 +28440,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.15,
         "baseSalary": 1.15,
-        "contractYears": 2,
-        "contractTotal": 2.3,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.15,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28454,8 +28454,8 @@ export const allRosters = {
         "deadMoney": 0.06,
         "capSavings": 1.04,
         "baseSalary": 1.11,
-        "contractYears": 4,
-        "contractTotal": 4.44,
+        "contractYears": 2,
+        "contractTotal": 2.22,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28482,9 +28482,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28496,9 +28496,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28510,9 +28510,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28524,9 +28524,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28538,9 +28538,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 4,
-        "contractTotal": 4.32,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28552,9 +28552,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1.08,
         "baseSalary": 1.08,
-        "contractYears": 2,
-        "contractTotal": 2.16,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1.08,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28566,8 +28566,8 @@ export const allRosters = {
         "deadMoney": 0.16,
         "capSavings": 0.9,
         "baseSalary": 1.06,
-        "contractYears": 4,
-        "contractTotal": 4.24,
+        "contractYears": 2,
+        "contractTotal": 2.12,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28594,8 +28594,8 @@ export const allRosters = {
         "deadMoney": 0.01,
         "capSavings": 1,
         "baseSalary": 1.01,
-        "contractYears": 4,
-        "contractTotal": 4.04,
+        "contractYears": 2,
+        "contractTotal": 2.02,
         "yearsRemaining": 1,
         "isFranchise": false
       },
@@ -28608,9 +28608,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 1,
         "baseSalary": 1,
-        "contractYears": 2,
-        "contractTotal": 2,
-        "yearsRemaining": 1,
+        "contractYears": 1,
+        "contractTotal": 1,
+        "yearsRemaining": 0,
         "isFranchise": false
       },
       {
@@ -28748,9 +28748,9 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 1,
+        "contractYears": 2,
         "contractTotal": 0,
-        "yearsRemaining": 0,
+        "yearsRemaining": 1,
         "isFranchise": false
       },
       {
@@ -28762,7 +28762,7 @@ export const allRosters = {
         "deadMoney": 0,
         "capSavings": 0,
         "baseSalary": 0,
-        "contractYears": 4,
+        "contractYears": 2,
         "contractTotal": 0,
         "yearsRemaining": 1,
         "isFranchise": false
