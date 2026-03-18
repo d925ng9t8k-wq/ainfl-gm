@@ -3,13 +3,33 @@ import { NavLink } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 
 const navItems = [
-  { path: '/', label: 'Roster', icon: '\u{1F465}' },
-  { path: '/cap', label: 'Cap', icon: '\u{1F4B0}' },
-  { path: '/fa', label: 'Free Agency', icon: '\u{270D}\u{FE0F}' },
-  { path: '/trades', label: 'Trades', icon: '\u{1F504}' },
-  { path: '/draft', label: 'Draft', icon: '\u{1F3AF}' },
-  { path: '/summary', label: 'Summary', icon: '\u{1F4CA}' },
+  { path: '/', label: 'Roster', iconType: 'roster' },
+  { path: '/cap', label: 'Cap', iconType: 'cap' },
+  { path: '/fa', label: 'Free Agency', iconType: 'fa' },
+  { path: '/trades', label: 'Trades', iconType: 'trades' },
+  { path: '/draft', label: 'Draft', iconType: 'draft' },
+  { path: '/summary', label: 'Summary', iconType: 'summary' },
 ];
+
+function NavIcon({ type }) {
+  const props = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 };
+  switch (type) {
+    case 'roster':
+      return (<svg {...props}><path d="M12 2C7 2 3 6 3 11c0 3 1.5 5.5 4 7l1 3h8l1-3c2.5-1.5 4-4 4-7 0-5-4-9-9-9z"/><path d="M9 21h6M8 11h8"/></svg>);
+    case 'cap':
+      return (<svg {...props}><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 7v10M9 9.5c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2s-.9 2-2 2h-2c-1.1 0-2 .9-2 2s.9 2 2 2h2c1.1 0 2-.9 2-2"/></svg>);
+    case 'fa':
+      return (<svg {...props}><path d="M17 3l4 4-10 10H7v-4L17 3z"/><path d="M3 21h18"/></svg>);
+    case 'trades':
+      return (<svg {...props}><path d="M7 16l-4-4 4-4"/><path d="M3 12h14"/><path d="M17 8l4 4-4 4"/><path d="M21 12H7"/></svg>);
+    case 'draft':
+      return (<svg {...props}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>);
+    case 'summary':
+      return (<svg {...props}><path d="M4 20h16"/><path d="M4 20V10l4-4 4 6 4-8 4 6v10"/></svg>);
+    default:
+      return null;
+  }
+}
 
 function FeedbackWidget() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -326,19 +346,16 @@ export default function Layout({ children }) {
               borderRadius: 1,
             }} />
             <div style={{
-              width: 36,
-              height: 36,
-              background: `linear-gradient(135deg, ${accentColor} 0%, ${accentColor}cc 100%)`,
-              borderRadius: 6,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 900,
-              fontSize: 14,
-              fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
-              color: '#000',
-              boxShadow: `0 0 14px ${accentColor}33, 0 0 0 1px rgba(0,240,255,0.2)`,
-            }}>{currentTeamObj.abbreviation.slice(0, 2)}</div>
+              width: 38,
+              height: 38,
+              borderRadius: '50%',
+              backgroundImage: 'url(/robot-small.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              border: '2px solid rgba(0,240,255,0.5)',
+              boxShadow: '0 0 12px rgba(0,240,255,0.3)',
+              flexShrink: 0,
+            }} />
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <select
@@ -501,7 +518,7 @@ export default function Layout({ children }) {
                 fontSize: 22,
                 lineHeight: 1.2,
                 transition: 'filter 0.2s ease',
-              }}>{item.icon}</span>
+              }}><NavIcon type={item.iconType} /></span>
               {item.label}
             </NavLink>
           ))}
