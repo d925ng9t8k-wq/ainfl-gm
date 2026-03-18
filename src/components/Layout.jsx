@@ -250,6 +250,22 @@ export default function Layout({ children }) {
         WebkitBackdropFilter: 'blur(12px)',
         overflow: 'hidden',
       }}>
+        {/* Robot accent - right side of header */}
+        <div className="robot-accent" style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: 120,
+          backgroundImage: 'url(/robot-small.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+          opacity: 0.12,
+          maskImage: 'linear-gradient(to left, black 20%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to left, black 20%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }} />
 
         <div style={{
           maxWidth: 1200,
@@ -394,7 +410,26 @@ export default function Layout({ children }) {
         position: 'relative',
         borderLeft: '1px solid rgba(0,240,255,0.08)',
       }}>
-        {children}
+        {/* Robot watermark - AI command center feel */}
+        <div className="robot-watermark" style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 500,
+          height: 700,
+          backgroundImage: 'url(/robot-hero.jpg)',
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          opacity: 0.035,
+          pointerEvents: 'none',
+          filter: 'brightness(1.5) contrast(0.8)',
+          zIndex: 0,
+        }} />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          {children}
+        </div>
       </main>
 
       {/* Bottom Tab Nav */}
@@ -409,12 +444,31 @@ export default function Layout({ children }) {
         WebkitBackdropFilter: 'blur(12px)',
         overflow: 'hidden',
       }}>
+        {/* Robot accent - left side of bottom nav (mirrored) */}
+        <div className="robot-accent" style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 120,
+          backgroundImage: 'url(/robot-small.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+          opacity: 0.08,
+          maskImage: 'linear-gradient(to right, black 20%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, black 20%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+          transform: 'scaleX(-1)',
+        }} />
 
         <div style={{
           display: 'flex',
           justifyContent: 'space-around',
           maxWidth: 1200,
           margin: '0 auto',
+          position: 'relative',
+          zIndex: 1,
         }}>
           {navItems.map(item => (
             <NavLink

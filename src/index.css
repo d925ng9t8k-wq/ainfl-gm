@@ -84,6 +84,27 @@ body::after {
   z-index: 1;
 }
 
+/* ===== Animated Scan Line Sweep ===== */
+#root::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.15), transparent);
+  animation: scanSweep 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes scanSweep {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100vh; opacity: 0; }
+}
+
 /* ===== Premium Typography for Headers ===== */
 h1, h2, h3, h4 {
   margin: 0;
@@ -177,9 +198,9 @@ a, button, select, input {
   background: rgba(30, 41, 59, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.18);
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.08), inset 0 1px 0 rgba(0, 240, 255, 0.05);
   transition: box-shadow 0.25s ease, transform 0.25s ease;
   position: relative;
 }
@@ -213,9 +234,9 @@ a, button, select, input {
 
 /* Card lift on hover */
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(0,240,255,0.1);
-  border-color: rgba(0,240,255,0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), 0 8px 30px rgba(0, 0, 0, 0.4);
+  border-color: rgba(0, 240, 255, 0.30);
 }
 
 /* Subtle hover effects */
@@ -253,6 +274,15 @@ a, button, select, input {
 .btn-primary:active {
   transform: translateY(0);
   box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+/* Danger button style (Cut/Release actions) */
+.btn-danger {
+  background: linear-gradient(135deg, #FF2D55, #CC1144);
+  box-shadow: 0 0 15px rgba(255, 45, 85, 0.3);
+}
+.btn-danger:hover {
+  box-shadow: 0 0 25px rgba(255, 45, 85, 0.5), 0 0 50px rgba(255, 45, 85, 0.2);
 }
 
 /* Glass panel utility */
@@ -361,8 +391,8 @@ a, button, select, input {
 
 /* ===== Neon Glow Pulse on Buttons ===== */
 @keyframes neonPulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(0,240,255,0.3); }
-  50% { box-shadow: 0 0 25px rgba(0,240,255,0.5), 0 0 40px rgba(0,240,255,0.2); }
+  0%, 100% { box-shadow: 0 0 15px rgba(0,240,255,0.3), 0 0 30px rgba(0,240,255,0.1); }
+  50% { box-shadow: 0 0 30px rgba(0,240,255,0.6), 0 0 60px rgba(0,240,255,0.3), 0 0 90px rgba(0,240,255,0.1); }
 }
 
 /* ===== AI Processing Animation ===== */
@@ -397,6 +427,16 @@ main {
   .trade-grid {
     grid-template-columns: 1fr !important;
   }
+
+  /* Hide robot watermark on small screens */
+  .robot-watermark {
+    display: none !important;
+  }
+
+  /* Subtler scan line on mobile */
+  #root::before {
+    opacity: 0.5;
+  }
 }
 
 @media (max-width: 480px) {
@@ -422,5 +462,10 @@ main {
   nav a {
     min-width: 44px !important;
     padding: 6px 2px !important;
+  }
+
+  /* Hide robot accents in header/nav on very small screens */
+  .robot-accent {
+    display: none !important;
   }
 }
