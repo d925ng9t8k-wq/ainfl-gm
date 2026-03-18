@@ -6,7 +6,7 @@ import { teams } from '../data/teams';
 import { allRosters } from '../data/allRosters';
 
 const TOTAL_CAP = 301.2; // 2026 NFL salary cap: $301.2M (official, per NFL.com)
-const DATA_VERSION = '2026-03-18-v16';
+const DATA_VERSION = '2026-03-18-v17';
 
 function getTeamRoster(teamAbbr) {
   if (teamAbbr === 'CIN') return bengalsRoster;
@@ -420,21 +420,27 @@ export function GameProvider({ children }) {
     }
   }, [state]);
 
-  // Use OTC's verified cap numbers as baseline, then adjust for user moves
+  // Use OTC's verified cap space as the starting point for each team
+  // Then adjust for any moves the user makes during simulation
   const teamData = allRosters[state.currentTeamAbbr];
+  const otcCapSpace = (state.currentTeamAbbr === 'CIN') ? null : teamData?.capSummary?.capSpace;
   const teamCapTotal = (state.currentTeamAbbr === 'CIN') ? TOTAL_CAP : (teamData?.capSummary?.totalCap || TOTAL_CAP);
-  const otcCapUsed = (state.currentTeamAbbr === 'CIN') ? null : teamData?.capSummary?.capUsed;
 
-  // Calculate cap impact of user moves (signings, cuts, trades, draft class)
-  const originalRoster = getTeamRoster(state.currentTeamAbbr);
-  const originalCapUsed = computeCapUsed(originalRoster);
-  const currentCapUsed = computeCapUsed(state.roster);
-  const userCapDelta = currentCapUsed - originalCapUsed; // positive = user added cap, negative = user freed cap
+  // Track user's cap impact: sum of all signings, cuts, trades since selecting this team
+  const userAddedCap = state.signingHistory.reduce((sum, s) => sum + (s.year1CapHit || s.aav || 0), 0);
+  const userFreedCap = state.cutPlayers.reduce((sum, p) => sum + Math.max((p.capHit || 0) - (p.deadCap || 0), 0), 0);
+  const userCapDelta = userAddedCap - userFreedCap;
 
-  // If we have OTC data, use it as baseline + user adjustments
-  // Otherwise (CIN or no data), compute from roster
-  const capUsed = otcCapUsed ? (otcCapUsed + userCapDelta) : currentCapUsed;
-  const capAvailable = teamCapTotal - capUsed;
+  let capUsed, capAvailable;
+  if (otcCapSpace != null) {
+    // Non-CIN teams: use OTC's verified cap space, adjusted for user moves
+    capAvailable = otcCapSpace - userCapDelta;
+    capUsed = teamCapTotal - capAvailable;
+  } else {
+    // CIN: compute from roster directly (we have detailed Bengals data)
+    capUsed = computeCapUsed(state.roster);
+    capAvailable = teamCapTotal - capUsed;
+  }
 
   const signPlayer = (player, years, aav, details) => {
     dispatch({ type: 'SIGN_PLAYER', payload: { player, years, aav, details } });
