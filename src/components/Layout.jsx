@@ -256,11 +256,11 @@ export default function Layout({ children }) {
           right: 0,
           top: 0,
           bottom: 0,
-          width: 120,
+          width: 200,
           backgroundImage: 'url(/robot-small.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
-          opacity: 0.35,
+          opacity: 0.6,
           maskImage: 'linear-gradient(to left, black 20%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to left, black 20%, transparent 100%)',
           pointerEvents: 'none',
@@ -372,7 +372,7 @@ export default function Layout({ children }) {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{
-                width: 120,
+                width: 200,
                 height: 7,
                 background: 'rgba(0,240,255,0.06)',
                 borderRadius: 4,
@@ -410,22 +410,23 @@ export default function Layout({ children }) {
         position: 'relative',
         borderLeft: '1px solid rgba(0,240,255,0.08)',
       }}>
-        {/* Robot watermark - AI command center feel */}
+        {/* Robot sentinel - visible on the left side, overlapping content edge */}
         <div className="robot-watermark" style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 700,
-          height: 900,
+          position: 'fixed',
+          top: 60,
+          left: 0,
+          width: 350,
+          height: 'calc(100vh - 120px)',
           backgroundImage: 'url(/robot-hero.jpg)',
-          backgroundSize: 'contain',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 20%',
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          opacity: 0.12,
+          opacity: 0.35,
           pointerEvents: 'none',
-          filter: 'brightness(1.5) contrast(0.8)',
-          zIndex: 0,
+          filter: 'brightness(1.6) contrast(1.3) saturate(0.3) hue-rotate(200deg)',
+          zIndex: 1,
+          maskImage: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 85%)',
+          WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 85%)',
         }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           {children}
@@ -450,11 +451,11 @@ export default function Layout({ children }) {
           left: 0,
           top: 0,
           bottom: 0,
-          width: 120,
+          width: 200,
           backgroundImage: 'url(/robot-small.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
-          opacity: 0.25,
+          opacity: 0.5,
           maskImage: 'linear-gradient(to right, black 20%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to right, black 20%, transparent 100%)',
           pointerEvents: 'none',
