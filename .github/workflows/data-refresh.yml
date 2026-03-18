@@ -2,8 +2,10 @@ name: Weekly Data Refresh
 
 on:
   schedule:
-    # Every Monday at 6am ET (10am UTC) during NFL offseason
-    - cron: '0 10 * * 1'
+    # Daily at 6am ET (10am UTC)
+    - cron: '0 10 * * *'
+    # Also at 6pm ET (22 UTC) to catch afternoon transactions
+    - cron: '0 22 * * *'
   workflow_dispatch: # Manual trigger anytime
 
 jobs:
