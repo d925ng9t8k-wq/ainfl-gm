@@ -437,6 +437,15 @@ main {
   #root::before {
     opacity: 0.5;
   }
+
+  /* Compact header on tablets/mobile */
+  .scenario-manager-wrapper {
+    display: none !important;
+  }
+
+  .cap-progress-bar {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -469,10 +478,13 @@ main {
     display: none !important;
   }
 
-  /* Responsive ad slots - mobile banner size */
-  .ad-slot-leaderboard > div,
-  .ad-slot-footer > div {
-    max-width: 320px !important;
-    height: 50px !important;
+  /* Hide scenario manager on very small screens */
+  .scenario-manager-wrapper {
+    display: none !important;
+  }
+
+  /* Compact cap bar on mobile */
+  .cap-bar-section .cap-progress-bar {
+    display: none !important;
   }
 }

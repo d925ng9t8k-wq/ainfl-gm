@@ -85,7 +85,7 @@ function SigningModal({ player, onSign, onClose, capAvailable }) {
       style={{ position: 'fixed', inset: 0, background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 16 }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div style={{ background: 'linear-gradient(135deg, #0a1225, #0f172a)', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 14, padding: 24, maxWidth: 460, width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0a1225, #0f172a)', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 14, padding: 24, maxWidth: 'min(460px, 95vw)', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
           <div>
             <h3 style={{ margin: '0 0 2px', color: '#fff', fontSize: 18 }}>{player.name}</h3>
@@ -299,7 +299,7 @@ export default function FreeAgencyPage() {
               key={pos}
               onClick={() => setFilterPos(pos)}
               style={{
-                padding: '6px 12px',
+                padding: '8px 14px',
                 borderRadius: 20,
                 border: 'none',
                 cursor: 'pointer',
@@ -307,7 +307,7 @@ export default function FreeAgencyPage() {
                 color: filterPos === pos ? '#000' : '#CBD5E1',
                 fontSize: 12,
                 fontWeight: filterPos === pos ? 700 : 400,
-                minHeight: 32,
+                minHeight: 36,
               }}
             >{pos}</button>
           ))}
@@ -315,7 +315,7 @@ export default function FreeAgencyPage() {
         <select
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
-          style={{ background: '#1e293b', color: '#CBD5E1', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 6, padding: '4px 8px', fontSize: 12 }}
+          style={{ background: '#1e293b', color: '#CBD5E1', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 6, padding: '6px 10px', fontSize: 12, minHeight: 36 }}
         >
           <option value="price">Sort: Contract ↑</option>
           <option value="priceDesc">Sort: Contract ↓</option>

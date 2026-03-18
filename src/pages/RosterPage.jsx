@@ -104,7 +104,7 @@ export default function RosterPage() {
 
       {/* Table */}
       <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid rgba(0,240,255,0.12)', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
-        <table style={{ width: '100%', minWidth: 520, borderCollapse: 'collapse', fontSize: 13 }}>
+        <table style={{ width: '100%', minWidth: 480, borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr style={{ background: '#0f172a', borderBottom: '2px solid var(--bengals-orange)' }}>
               {[
@@ -188,7 +188,7 @@ export default function RosterPage() {
                           cursor: 'pointer',
                           fontSize: 11,
                           fontWeight: 600,
-                          minHeight: 32,
+                          minHeight: 36,
                         }}
                       >Extend</button>
                     )}
@@ -203,7 +203,7 @@ export default function RosterPage() {
                         cursor: 'pointer',
                         fontSize: 11,
                         fontWeight: 600,
-                        minHeight: 32,
+                        minHeight: 36,
                       }}
                     >Restructure</button>
                     <button
@@ -217,7 +217,7 @@ export default function RosterPage() {
                         cursor: 'pointer',
                         fontSize: 11,
                         fontWeight: 600,
-                        minHeight: 32,
+                        minHeight: 36,
                       }}
                     >Cut</button>
                   </div>
@@ -505,7 +505,7 @@ function Modal({ children, onClose }) {
         border: '1px solid rgba(0,240,255,0.12)',
         borderRadius: 12,
         padding: 24,
-        maxWidth: 400,
+        maxWidth: 'min(400px, 95vw)',
         width: '100%',
       }}>
         {children}

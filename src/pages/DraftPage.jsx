@@ -596,7 +596,7 @@ export default function DraftPage() {
               color: draftSpeed === idx ? '#000' : '#94A3B8',
               border: 'none',
               borderRadius: 4,
-              padding: '3px 8px',
+              padding: '8px 12px',
               cursor: 'pointer',
               fontWeight: draftSpeed === idx ? 800 : 600,
               fontSize: 11,
@@ -625,7 +625,7 @@ export default function DraftPage() {
                 color: isActive ? '#000' : '#94A3B8',
                 border: 'none',
                 borderRadius: 4,
-                padding: '4px 10px',
+                padding: '8px 12px',
                 cursor: 'pointer',
                 fontWeight: isActive ? 800 : 600,
                 fontSize: 12,
@@ -648,7 +648,7 @@ export default function DraftPage() {
           style={{
             background: viewMode === 'round' ? 'rgba(0,240,255,0.18)' : '#1e293b',
             color: viewMode === 'round' ? '#fff' : '#94A3B8',
-            border: 'none', borderRadius: 4, padding: '4px 10px',
+            border: 'none', borderRadius: 4, padding: '8px 12px',
             cursor: 'pointer', fontWeight: 600, fontSize: 11,
           }}
         >
@@ -659,7 +659,7 @@ export default function DraftPage() {
           style={{
             background: viewMode === 'fullBoard' ? 'rgba(0,240,255,0.18)' : '#1e293b',
             color: viewMode === 'fullBoard' ? '#fff' : '#94A3B8',
-            border: 'none', borderRadius: 4, padding: '4px 10px',
+            border: 'none', borderRadius: 4, padding: '8px 12px',
             cursor: 'pointer', fontWeight: 600, fontSize: 11,
           }}
         >
@@ -684,12 +684,12 @@ export default function DraftPage() {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
                   <tr style={{ color: '#475569', borderBottom: '1px solid rgba(0,240,255,0.12)' }}>
-                    <th style={{ textAlign: 'left', padding: '4px 6px', width: 40 }}>#</th>
-                    <th style={{ textAlign: 'left', padding: '4px 6px', width: 100 }}>Team</th>
+                    <th style={{ textAlign: 'left', padding: '4px 6px', minWidth: 30, width: '6%' }}>#</th>
+                    <th style={{ textAlign: 'left', padding: '4px 6px', minWidth: 50, width: '15%' }}>Team</th>
                     <th style={{ textAlign: 'left', padding: '4px 6px' }}>Player</th>
-                    <th style={{ textAlign: 'left', padding: '4px 6px', width: 40 }}>Pos</th>
-                    <th style={{ textAlign: 'left', padding: '4px 6px', width: 100 }}>School</th>
-                    <th style={{ textAlign: 'right', padding: '4px 6px', width: 45 }}>Grade</th>
+                    <th style={{ textAlign: 'left', padding: '4px 6px', minWidth: 30, width: '6%' }}>Pos</th>
+                    <th style={{ textAlign: 'left', padding: '4px 6px', minWidth: 50, width: '15%' }}>School</th>
+                    <th style={{ textAlign: 'right', padding: '4px 6px', minWidth: 35, width: '7%' }}>Grade</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -743,7 +743,7 @@ export default function DraftPage() {
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
         background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', textAlign: 'center' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 'min(400px, 95vw)', width: '90%', textAlign: 'center' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Reset Draft Simulation?</h3>
           <p style={{ color: '#94A3B8', fontSize: 14, margin: '0 0 20px' }}>This will clear all draft picks and start over. Roster, free agency, and trade state will not be affected.</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
@@ -765,7 +765,7 @@ export default function DraftPage() {
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
         background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 560, width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 'min(560px, 95vw)', width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Trade Up to Pick #{currentPick?.overall}</h3>
           {offer?.hasEnoughAssets ? (
             <div>
@@ -887,7 +887,7 @@ export default function DraftPage() {
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
         background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 580, width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 'min(580px, 95vw)', width: '90%', maxHeight: '85vh', overflowY: 'auto' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Trade Down from Pick #{currentPick?.overall}</h3>
           <div style={{ color: '#94A3B8', fontSize: 13, marginBottom: 12 }}>
             Your pick value: {Math.round(tradeValue(currentPick?.overall || 1))} pts
@@ -1064,7 +1064,7 @@ export default function DraftPage() {
       }}>
         <div style={{
           background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 20,
-          maxWidth: 780, width: '95%', maxHeight: '90vh', overflowY: 'auto',
+          maxWidth: 'min(780px, 95vw)', width: '95%', maxHeight: '90vh', overflowY: 'auto',
         }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px', fontSize: 18 }}>Custom Trade Builder</h3>
 
@@ -1080,7 +1080,7 @@ export default function DraftPage() {
               }}
               style={{
                 background: '#1e293b', color: '#CBD5E1', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 6,
-                padding: '4px 10px', fontSize: 13, minWidth: 180,
+                padding: '8px 12px', fontSize: 13, minWidth: 180,
               }}
             >
               <option value="">Select a team...</option>
@@ -1344,7 +1344,7 @@ export default function DraftPage() {
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
         background: 'rgba(0,8,20,0.90)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
       }}>
-        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 480, width: '90%' }}>
+        <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 12, padding: 24, maxWidth: 'min(480px, 95vw)', width: '90%' }}>
           <h3 style={{ color: '#fff', margin: '0 0 12px' }}>Add Draft Class to Roster</h3>
           <p style={{ color: '#94A3B8', fontSize: 13, marginBottom: 16 }}>
             This will add {draftedPlayers.length} drafted players to your roster with estimated rookie contracts.
@@ -1399,7 +1399,7 @@ export default function DraftPage() {
         </div>
         <div style={{
           background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 32,
-          textAlign: 'center', maxWidth: 500, margin: '60px auto',
+          textAlign: 'center', maxWidth: 'min(500px, 95vw)', margin: '60px auto',
         }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>NFL Draft</div>
           <h2 style={{ color: '#fff', margin: '0 0 8px', fontSize: 20 }}>2026 NFL Draft Simulator</h2>
@@ -1680,7 +1680,7 @@ export default function DraftPage() {
             onClick={() => setShowResetConfirm(true)}
             style={{
               background: 'rgba(0,240,255,0.12)', color: '#CBD5E1', border: 'none', borderRadius: 6,
-              padding: '4px 12px', cursor: 'pointer', fontWeight: 600, fontSize: 12,
+              padding: '8px 12px', cursor: 'pointer', fontWeight: 600, fontSize: 12,
             }}
           >
             Reset
@@ -1878,7 +1878,7 @@ export default function DraftPage() {
                     onChange={e => setFilterPos(e.target.value)}
                     style={{
                       background: '#1e293b', color: '#CBD5E1', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 6,
-                      padding: '3px 8px', fontSize: 12,
+                      padding: '8px 12px', fontSize: 12,
                     }}
                   >
                     {positions.map(p => <option key={p} value={p}>{p}</option>)}
@@ -1889,7 +1889,7 @@ export default function DraftPage() {
                     onClick={openCustomTradeModal}
                     style={{
                       background: '#fbbf24', color: '#000', border: 'none', borderRadius: 6,
-                      padding: '4px 10px', cursor: 'pointer', fontWeight: 700, fontSize: 11,
+                      padding: '8px 12px', cursor: 'pointer', fontWeight: 700, fontSize: 11,
                     }}
                   >
                     Propose Trade
@@ -1898,7 +1898,7 @@ export default function DraftPage() {
                     onClick={() => setShowTradeDownModal(true)}
                     style={{
                       background: '#60a5fa', color: '#000', border: 'none', borderRadius: 6,
-                      padding: '4px 10px', cursor: 'pointer', fontWeight: 700, fontSize: 11,
+                      padding: '8px 12px', cursor: 'pointer', fontWeight: 700, fontSize: 11,
                     }}
                   >
                     Trade Down
@@ -1942,7 +1942,7 @@ export default function DraftPage() {
                         onClick={(e) => { e.stopPropagation(); handleDraft(p); }}
                         style={{
                           background: accentColor, color: '#000', border: 'none', borderRadius: 5,
-                          padding: '4px 10px', cursor: 'pointer', fontSize: 11, fontWeight: 700,
+                          padding: '8px 12px', cursor: 'pointer', fontSize: 11, fontWeight: 700,
                         }}
                       >
                         Draft

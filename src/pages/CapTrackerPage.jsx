@@ -116,7 +116,7 @@ export default function CapTrackerPage() {
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 16 }}>
         {/* Position Breakdown */}
         <div style={{ background: '#0f172a', borderRadius: 12, padding: 20, border: '1px solid rgba(0,240,255,0.12)' }}>
           <h3 style={{ margin: '0 0 16px', color: '#fff', fontSize: 16 }}>By Position Group</h3>

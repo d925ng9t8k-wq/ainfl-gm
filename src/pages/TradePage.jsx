@@ -286,7 +286,7 @@ export default function TradePage() {
       </div>
 
       {/* Trade Builder */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 12, marginBottom: 16 }}>
         {/* My Offers */}
         <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 14 }}>
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>My Offers ({currentTeamLabel})</h3>
@@ -460,7 +460,7 @@ export default function TradePage() {
       {(myOfferPlayers.length > 0 || myOfferPicks.length > 0 || myFuturePicks.length > 0 || theirOfferPlayers.length > 0 || theirOfferPicks.length > 0 || theirFuturePicks.length > 0) && (
         <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 10, padding: 16, marginBottom: 16 }}>
           <h4 style={{ margin: '0 0 12px', color: '#fff' }}>Trade Summary</h4>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12, marginBottom: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 12, marginBottom: 12 }}>
             <div>
               <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>{currentTeamLabel} send:</div>
               {myOfferPlayers.map(p => <div key={p.id} style={{ color: '#CBD5E1', fontSize: 13 }}>- {p.name} ({p.position}) ${p.capHit.toFixed(1)}M</div>)}
@@ -487,7 +487,7 @@ export default function TradePage() {
                 padding: 12, marginTop: 12,
               }}>
                 <div style={{ color: '#fff', fontSize: 13, fontWeight: 700, marginBottom: 8 }}>Cap Impact</div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 8, fontSize: 12 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 8, fontSize: 12 }}>
                   <div>
                     <div style={{ color: '#94A3B8', marginBottom: 4 }}>Sending players:</div>
                     {myOfferPlayers.length > 0 ? myOfferPlayers.map(p => (

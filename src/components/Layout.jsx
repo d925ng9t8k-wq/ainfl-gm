@@ -12,7 +12,6 @@ const navItems = [
   { path: '/draft', label: 'Draft', iconType: 'draft' },
   { path: '/summary', label: 'Summary', iconType: 'summary' },
   { path: '/season', label: 'Season', iconType: 'season' },
-  { path: '__bmc__', label: 'Support', iconType: 'support' },
 ];
 
 function NavIcon({ type }) {
@@ -276,7 +275,6 @@ export default function Layout({ children }) {
         zIndex: 100,
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        overflow: 'hidden',
       }}>
         {/* Robot accent - right side of header */}
         <div className="robot-accent" style={{
@@ -285,6 +283,7 @@ export default function Layout({ children }) {
           top: 0,
           bottom: 0,
           width: 200,
+          overflow: 'hidden',
           backgroundImage: 'url(/robot-small.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
@@ -390,15 +389,15 @@ export default function Layout({ children }) {
               </div>
               <div style={{ color: '#94A3B8', fontSize: 11, fontFamily: "'Oswald', 'Inter', system-ui, sans-serif", letterSpacing: '0.06em', textTransform: 'uppercase' }}>2026 Offseason Simulator</div>
             </div>
-            <ScenarioManager />
+            <div className="scenario-manager-wrapper"><ScenarioManager /></div>
           </div>
-          <div style={{ textAlign: 'right' }}>
+          <div className="cap-bar-section" style={{ textAlign: 'right' }}>
             <div style={{ color: isOverCap ? '#FF2D55' : '#39FF14', fontSize: 13, fontWeight: 700, textShadow: isOverCap ? '0 0 8px rgba(255,45,85,0.3)' : '0 0 8px rgba(57,255,20,0.2)' }}>
               {isOverCap ? '\u26A0\uFE0F OVER CAP' : `$${capAvailable.toFixed(1)}M available`}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div className="cap-progress-bar" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{
-                width: 200,
+                width: 'clamp(80px, 25vw, 200px)',
                 height: 7,
                 background: 'rgba(0,240,255,0.06)',
                 borderRadius: 4,
@@ -424,33 +423,18 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      {/* Ad Slot: Leaderboard below nav */}
-      <div className="ad-slot-leaderboard" style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: '8px 16px',
-        display: 'flex',
-        justifyContent: 'center',
+      {/* Ad Slot: Leaderboard below nav — hidden until AdSense is configured */}
+      {/* <div className="ad-slot-leaderboard" style={{
+        maxWidth: 1200, margin: '0 auto', padding: '8px 16px', display: 'flex', justifyContent: 'center',
       }}>
         <div style={{
-          width: '100%',
-          maxWidth: 728,
-          height: 90,
-          background: 'rgba(15,23,42,0.85)',
-          border: '1px solid rgba(0,240,255,0.1)',
-          borderRadius: 6,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#475569',
-          fontSize: 11,
-          fontFamily: "'Inter', system-ui, sans-serif",
-          letterSpacing: '0.05em',
+          width: '100%', maxWidth: 728, height: 90, background: 'rgba(15,23,42,0.85)',
+          border: '1px solid rgba(0,240,255,0.1)', borderRadius: 6, display: 'flex',
+          alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 11,
         }}>
-          {/* Replace this div with AdSense ad unit (728x90 leaderboard / 320x50 mobile) */}
           <span>Ad</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <main style={{
@@ -486,33 +470,18 @@ export default function Layout({ children }) {
           {children}
         </div>
 
-        {/* Ad Slot: Footer ad */}
-        <div className="ad-slot-footer" style={{
-          marginTop: 24,
-          display: 'flex',
-          justifyContent: 'center',
-          position: 'relative',
-          zIndex: 1,
+        {/* Ad Slot: Footer ad — hidden until AdSense is configured */}
+        {/* <div className="ad-slot-footer" style={{
+          marginTop: 24, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
         }}>
           <div style={{
-            width: '100%',
-            maxWidth: 728,
-            height: 90,
-            background: 'rgba(15,23,42,0.85)',
-            border: '1px solid rgba(0,240,255,0.1)',
-            borderRadius: 6,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#475569',
-            fontSize: 11,
-            fontFamily: "'Inter', system-ui, sans-serif",
-            letterSpacing: '0.05em',
+            width: '100%', maxWidth: 728, height: 90, background: 'rgba(15,23,42,0.85)',
+            border: '1px solid rgba(0,240,255,0.1)', borderRadius: 6, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 11,
           }}>
-            {/* Replace this div with AdSense ad unit (728x90 leaderboard / 320x50 mobile) */}
             <span>Ad</span>
           </div>
-        </div>
+        </div> */}
       </main>
 
       {/* Bottom Tab Nav */}
@@ -553,39 +522,7 @@ export default function Layout({ children }) {
           position: 'relative',
           zIndex: 1,
         }}>
-          {navItems.map(item => {
-            if (item.path === '__bmc__') {
-              return (
-                <a
-                  key={item.path}
-                  href="https://buymeacoffee.com/ainflgm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    padding: '8px 4px',
-                    textDecoration: 'none',
-                    color: '#FB4F14',
-                    fontSize: 10,
-                    fontWeight: 400,
-                    fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
-                    minWidth: 52,
-                    borderTop: '2px solid transparent',
-                    marginTop: -2,
-                    transition: 'color 0.2s ease',
-                    position: 'relative',
-                  }}
-                >
-                  <span style={{ fontSize: 22, lineHeight: 1.2 }}><NavIcon type={item.iconType} /></span>
-                  {item.label}
-                </a>
-              );
-            }
-            return (
+          {navItems.map(item => (
             <NavLink
               key={item.path}
               to={item.path}
@@ -618,8 +555,7 @@ export default function Layout({ children }) {
               }}><NavIcon type={item.iconType} /></span>
               {item.label}
             </NavLink>
-            );
-          })}
+          ))}
         </div>
       </nav>
 

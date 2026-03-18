@@ -80,10 +80,11 @@ export default function ScenarioManager() {
       {/* Dropdown panel */}
       {isOpen && (
         <div style={{
-          position: 'absolute',
-          top: 'calc(100% + 6px)',
-          left: 0,
-          width: 280,
+          position: 'fixed',
+          top: 64,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 300,
           maxWidth: 'calc(100vw - 24px)',
           background: 'rgba(10, 22, 40, 0.97)',
           border: '1px solid rgba(0,240,255,0.25)',

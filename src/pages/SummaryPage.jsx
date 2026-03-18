@@ -694,7 +694,7 @@ export default function SummaryPage() {
         }} onClick={(e) => { if (e.target === e.currentTarget) setShowSubmitModal(false); }}>
           <div style={{
             background: '#0a0f1e', border: '1px solid rgba(0,240,255,0.2)',
-            borderRadius: 16, padding: 32, width: '100%', maxWidth: 420,
+            borderRadius: 16, padding: 'clamp(16px, 4vw, 32px)', width: '100%', maxWidth: 'min(420px, 95vw)',
           }}>
             <h3 style={{ margin: '0 0 8px', color: '#fff', fontSize: 18, fontWeight: 800 }}>
               Submit to Leaderboard

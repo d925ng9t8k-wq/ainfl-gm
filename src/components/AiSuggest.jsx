@@ -525,7 +525,7 @@ export default function AiSuggest() {
         onClick={() => setIsOpen(true)}
         style={{
           position: 'fixed',
-          bottom: 70,
+          bottom: 120,
           left: 12,
           zIndex: 999,
           background: 'linear-gradient(135deg, #00F0FF, #00A0CC)',
