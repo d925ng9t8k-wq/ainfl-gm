@@ -29,12 +29,15 @@ export default function RosterPage() {
   function isExtensionEligible(player) {
     // Player must be on the roster (has a cap hit)
     if (player.capHit <= 0) return false;
-    // Block ONLY true rookie-deal players in their first 2 NFL seasons
-    // NFL rule: players can be extended after completing their 3rd season
-    // Rookies age 23 or younger on 4-year deals are in years 1-2, not eligible yet
-    if (player.contractYears === 4 && player.age <= 23) return false;
+    // Block rookie-deal players who haven't completed their 3rd NFL season
+    // NFL rule: extensions allowed after 3rd season
+    // Age 22 or younger = drafted 2025, in year 1 — NOT eligible
+    // Age 23 = drafted 2024, in year 2 — NOT eligible
+    // Age 24 = drafted 2023, in year 3 — eligible after season (allow)
+    // Age 25+ = year 4+ — eligible
+    // Use capHit < $15M to distinguish rookies from veterans who happen to be young
+    if (player.age <= 23 && player.capHit < 15) return false;
     // Everyone else is eligible — including players in their final year
-    // (extending a player before they hit free agency is very common in the NFL)
     return true;
   }
 
