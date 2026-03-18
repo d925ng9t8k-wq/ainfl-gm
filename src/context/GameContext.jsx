@@ -420,14 +420,20 @@ export function GameProvider({ children }) {
     }
   }, [state]);
 
-  const capUsed = computeCapUsed(state.roster);
-  // Use team-specific cap total (includes carryover adjustments) if available
-  const teamCapTotal = (() => {
-    if (state.currentTeamAbbr === 'CIN') return TOTAL_CAP;
-    const teamData = allRosters[state.currentTeamAbbr];
-    if (teamData?.capSummary?.totalCap) return teamData.capSummary.totalCap;
-    return TOTAL_CAP;
-  })();
+  // Use OTC's verified cap numbers as baseline, then adjust for user moves
+  const teamData = allRosters[state.currentTeamAbbr];
+  const teamCapTotal = (state.currentTeamAbbr === 'CIN') ? TOTAL_CAP : (teamData?.capSummary?.totalCap || TOTAL_CAP);
+  const otcCapUsed = (state.currentTeamAbbr === 'CIN') ? null : teamData?.capSummary?.capUsed;
+
+  // Calculate cap impact of user moves (signings, cuts, trades, draft class)
+  const originalRoster = getTeamRoster(state.currentTeamAbbr);
+  const originalCapUsed = computeCapUsed(originalRoster);
+  const currentCapUsed = computeCapUsed(state.roster);
+  const userCapDelta = currentCapUsed - originalCapUsed; // positive = user added cap, negative = user freed cap
+
+  // If we have OTC data, use it as baseline + user adjustments
+  // Otherwise (CIN or no data), compute from roster
+  const capUsed = otcCapUsed ? (otcCapUsed + userCapDelta) : currentCapUsed;
   const capAvailable = teamCapTotal - capUsed;
 
   const signPlayer = (player, years, aav, details) => {

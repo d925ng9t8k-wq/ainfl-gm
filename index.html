@@ -46,7 +46,7 @@
         caches.keys().then(k => k.forEach(name => caches.delete(name)));
       }
       // Force reload if on old version
-      var CURRENT_BUILD = '20260318v17';
+      var CURRENT_BUILD = '20260318v18';
       if (localStorage.getItem('_build') !== CURRENT_BUILD) {
         localStorage.clear();
         localStorage.setItem('_build', CURRENT_BUILD);
