@@ -468,4 +468,11 @@ main {
   .robot-accent {
     display: none !important;
   }
+
+  /* Responsive ad slots - mobile banner size */
+  .ad-slot-leaderboard > div,
+  .ad-slot-footer > div {
+    max-width: 320px !important;
+    height: 50px !important;
+  }
 }

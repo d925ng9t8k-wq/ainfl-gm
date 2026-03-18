@@ -12,6 +12,7 @@ const navItems = [
   { path: '/draft', label: 'Draft', iconType: 'draft' },
   { path: '/summary', label: 'Summary', iconType: 'summary' },
   { path: '/season', label: 'Season', iconType: 'season' },
+  { path: '__bmc__', label: 'Support', iconType: 'support' },
 ];
 
 function NavIcon({ type }) {
@@ -31,6 +32,8 @@ function NavIcon({ type }) {
       return (<svg {...props}><path d="M4 20h16"/><path d="M4 20V10l4-4 4 6 4-8 4 6v10"/></svg>);
     case 'season':
       return (<svg {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V10"/><path d="M14 22V10"/><path d="M5 9h14l-1 7H6L5 9z"/></svg>);
+    case 'support':
+      return (<svg {...props}><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor" stroke="none"/></svg>);
     default:
       return null;
   }
@@ -421,6 +424,34 @@ export default function Layout({ children }) {
         </div>
       </header>
 
+      {/* Ad Slot: Leaderboard below nav */}
+      <div className="ad-slot-leaderboard" style={{
+        maxWidth: 1200,
+        margin: '0 auto',
+        padding: '8px 16px',
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
+        <div style={{
+          width: '100%',
+          maxWidth: 728,
+          height: 90,
+          background: 'rgba(15,23,42,0.85)',
+          border: '1px solid rgba(0,240,255,0.1)',
+          borderRadius: 6,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#475569',
+          fontSize: 11,
+          fontFamily: "'Inter', system-ui, sans-serif",
+          letterSpacing: '0.05em',
+        }}>
+          {/* Replace this div with AdSense ad unit (728x90 leaderboard / 320x50 mobile) */}
+          <span>Ad</span>
+        </div>
+      </div>
+
       {/* Main Content */}
       <main style={{
         flex: 1,
@@ -453,6 +484,34 @@ export default function Layout({ children }) {
         }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           {children}
+        </div>
+
+        {/* Ad Slot: Footer ad */}
+        <div className="ad-slot-footer" style={{
+          marginTop: 24,
+          display: 'flex',
+          justifyContent: 'center',
+          position: 'relative',
+          zIndex: 1,
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: 728,
+            height: 90,
+            background: 'rgba(15,23,42,0.85)',
+            border: '1px solid rgba(0,240,255,0.1)',
+            borderRadius: 6,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#475569',
+            fontSize: 11,
+            fontFamily: "'Inter', system-ui, sans-serif",
+            letterSpacing: '0.05em',
+          }}>
+            {/* Replace this div with AdSense ad unit (728x90 leaderboard / 320x50 mobile) */}
+            <span>Ad</span>
+          </div>
         </div>
       </main>
 
@@ -494,7 +553,39 @@ export default function Layout({ children }) {
           position: 'relative',
           zIndex: 1,
         }}>
-          {navItems.map(item => (
+          {navItems.map(item => {
+            if (item.path === '__bmc__') {
+              return (
+                <a
+                  key={item.path}
+                  href="https://buymeacoffee.com/ainflgm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '8px 4px',
+                    textDecoration: 'none',
+                    color: '#FB4F14',
+                    fontSize: 10,
+                    fontWeight: 400,
+                    fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    minWidth: 52,
+                    borderTop: '2px solid transparent',
+                    marginTop: -2,
+                    transition: 'color 0.2s ease',
+                    position: 'relative',
+                  }}
+                >
+                  <span style={{ fontSize: 22, lineHeight: 1.2 }}><NavIcon type={item.iconType} /></span>
+                  {item.label}
+                </a>
+              );
+            }
+            return (
             <NavLink
               key={item.path}
               to={item.path}
@@ -527,7 +618,8 @@ export default function Layout({ children }) {
               }}><NavIcon type={item.iconType} /></span>
               {item.label}
             </NavLink>
-          ))}
+            );
+          })}
         </div>
       </nav>
 

@@ -21,13 +21,16 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install twitter-api-v2
+        run: npm install twitter-api-v2
+
       - name: Post next tweet to X
         env:
           X_API_KEY: ${{ secrets.X_API_KEY }}
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
-        run: node social/post.js
+        run: node scripts/post-to-x.mjs
 
       - name: Commit updated content.json
         run: |
