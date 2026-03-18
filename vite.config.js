@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['bengals-icon.svg'],
       manifest: {
-        name: 'AINFL GM',
-        short_name: 'AINFLGM',
+        name: 'AiNFL GM',
+        short_name: 'AiNFLGM',
         description: 'NFL offseason simulator for the Cincinnati Bengals',
         theme_color: '#FB4F14',
         background_color: '#000000',

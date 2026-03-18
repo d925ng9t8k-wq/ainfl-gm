@@ -33,7 +33,7 @@ function FeedbackWidget() {
     ].join('\n');
     fetch('https://ntfy.sh/ainfl-gm-visitors-jf2026', {
       method: 'POST',
-      headers: { 'Title': `AINFL GM Feedback: ${feedbackType}`, 'Priority': '4', 'Tags': 'memo', 'Email': 'emailfishback@gmail.com' },
+      headers: { 'Title': `AiNFL GM Feedback: ${feedbackType}`, 'Priority': '4', 'Tags': 'memo', 'Email': 'emailfishback@gmail.com' },
       body: body,
     }).then(() => {
       setSubmitted(true);
@@ -109,7 +109,7 @@ function FeedbackWidget() {
         <div style={{ padding: 24, textAlign: 'center' }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>🙏</div>
           <div style={{ color: '#39FF14', fontWeight: 700, fontSize: 14 }}>Thank you!</div>
-          <div style={{ color: '#94A3B8', fontSize: 12, marginTop: 4 }}>Your feedback helps shape AINFL GM</div>
+          <div style={{ color: '#94A3B8', fontSize: 12, marginTop: 4 }}>Your feedback helps shape AiNFL GM</div>
         </div>
       ) : (
         <form onSubmit={handleSubmit} style={{ padding: 14 }}>
@@ -275,14 +275,13 @@ export default function Layout({ children }) {
                   fontSize: 20,
                   fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
                   letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
                   background: 'linear-gradient(135deg, #00F0FF 0%, #80F8FF 40%, #E2E8F0 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                   textShadow: 'none',
                   filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(0,240,255,0.5))',
-                }}>AINFL</span>
+                }}>AiNFL</span>
                 <span style={{
                   fontWeight: 900,
                   fontSize: 20,

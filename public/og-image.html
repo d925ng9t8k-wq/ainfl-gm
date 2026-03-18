@@ -4,148 +4,239 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    width: 1200px;
-    height: 630px;
-    background: radial-gradient(ellipse at 30% 50%, #001a3a 0%, #000814 60%, #000510 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 1200px; height: 630px;
+    background: radial-gradient(ellipse at 35% 50%, #001838 0%, #000a1e 40%, #000510 100%);
+    display: flex; align-items: center; justify-content: center;
     font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
-    overflow: hidden;
-    position: relative;
+    overflow: hidden; position: relative;
   }
   body::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background:
-      linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
-    background-size: 30px 30px;
+      linear-gradient(rgba(0,200,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.035) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
   body::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background:
-      radial-gradient(300px 300px at 25% 40%, rgba(0,240,255,0.08), transparent),
-      radial-gradient(250px 250px at 75% 60%, rgba(195,0,255,0.06), transparent);
+      radial-gradient(400px 350px at 30% 45%, rgba(0,180,255,0.10), transparent),
+      radial-gradient(300px 300px at 70% 55%, rgba(130,0,255,0.07), transparent),
+      radial-gradient(200px at 50% 80%, rgba(0,240,255,0.05), transparent);
   }
   .container {
     position: relative; z-index: 2;
-    display: flex; align-items: center; gap: 60px; padding: 0 80px; width: 100%;
+    display: flex; align-items: center; gap: 50px; padding: 0 60px; width: 100%;
   }
-  .robot { flex-shrink: 0; width: 280px; height: 320px; position: relative; }
-  .helmet {
-    position: absolute; top: 20px; left: 20px; width: 240px; height: 220px;
-    background: linear-gradient(135deg, #1a2a4a 0%, #0a1428 40%, #1a2a4a 100%);
-    border-radius: 120px 120px 80px 80px;
-    border: 3px solid rgba(0,240,255,0.4);
-    box-shadow: 0 0 30px rgba(0,240,255,0.2), inset 0 -20px 40px rgba(0,0,0,0.5), 0 10px 40px rgba(0,0,0,0.5);
+
+  /* === HELMET - 3D realistic style === */
+  .helmet-wrapper { flex-shrink: 0; width: 320px; height: 380px; position: relative; perspective: 800px; }
+
+  .helmet-outer {
+    position: absolute; top: 10px; left: 25px; width: 270px; height: 260px;
+    background: linear-gradient(160deg, #2a3a5a 0%, #0f1a30 30%, #1a2a48 50%, #0a1525 70%, #2a3a5a 100%);
+    border-radius: 135px 135px 90px 90px;
+    border: 2px solid rgba(0,200,255,0.35);
+    box-shadow:
+      0 0 40px rgba(0,180,255,0.15),
+      0 0 80px rgba(0,180,255,0.08),
+      inset 0 20px 40px rgba(60,100,160,0.15),
+      inset 0 -30px 50px rgba(0,0,0,0.6),
+      8px 12px 30px rgba(0,0,0,0.6);
+    overflow: hidden;
+    transform: rotateY(-5deg);
+  }
+
+  /* Helmet shine/reflection */
+  .helmet-outer::before {
+    content: ''; position: absolute;
+    top: 15px; left: 25px; width: 120px; height: 80px;
+    background: radial-gradient(ellipse, rgba(100,160,255,0.15), transparent);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+  }
+
+  /* Center stripe */
+  .stripe {
+    position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+    width: 24px; height: 270px;
+    background: linear-gradient(180deg, #00E0FF 0%, #0090CC 40%, #00B0FF 60%, #0080AA 100%);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,220,255,0.6), 0 0 40px rgba(0,220,255,0.3);
+  }
+  /* Side stripes */
+  .stripe-side {
+    position: absolute; top: 5px; width: 8px; height: 250px;
+    background: linear-gradient(180deg, rgba(0,220,255,0.4), rgba(0,150,200,0.2));
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0,220,255,0.3);
+  }
+  .stripe-left { left: 65px; }
+  .stripe-right { right: 65px; }
+
+  /* Visor / Eye area */
+  .visor {
+    position: absolute; top: 95px; left: 35px; width: 200px; height: 55px;
+    background: linear-gradient(180deg, #000510 0%, #001030 50%, #000818 100%);
+    border-radius: 8px 8px 20px 20px;
+    border: 2px solid rgba(0,200,255,0.3);
+    box-shadow: inset 0 0 20px rgba(0,180,255,0.15), 0 0 15px rgba(0,0,0,0.5);
     overflow: hidden;
   }
-  .helmet::before {
-    content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
-    width: 28px; height: 230px;
-    background: linear-gradient(180deg, #00F0FF, #00A0CC);
-    border-radius: 14px; opacity: 0.8; box-shadow: 0 0 15px rgba(0,240,255,0.5);
-  }
-  .facemask { position: absolute; top: 140px; left: 40px; width: 200px; height: 80px; }
-  .facemask-bar {
-    position: absolute; height: 4px;
-    background: linear-gradient(90deg, rgba(0,240,255,0.6), rgba(0,240,255,0.9), rgba(0,240,255,0.6));
-    border-radius: 2px; box-shadow: 0 0 8px rgba(0,240,255,0.4);
-  }
-  .facemask-bar:nth-child(1) { top: 10px; left: 10px; width: 180px; }
-  .facemask-bar:nth-child(2) { top: 25px; left: 20px; width: 160px; }
-  .facemask-bar:nth-child(3) { top: 40px; left: 30px; width: 140px; }
-  .facemask-bar:nth-child(4) { top: 55px; left: 40px; width: 120px; }
+  /* AI Eyes inside visor */
   .eye {
-    position: absolute; width: 36px; height: 20px; border-radius: 50%;
-    background: radial-gradient(circle, #00F0FF, #0080FF);
-    box-shadow: 0 0 20px rgba(0,240,255,0.8), 0 0 40px rgba(0,240,255,0.4), inset 0 0 10px rgba(255,255,255,0.3);
+    position: absolute; width: 44px; height: 22px;
+    background: radial-gradient(ellipse, #00F0FF 20%, #0060FF 60%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 25px rgba(0,240,255,0.9), 0 0 50px rgba(0,200,255,0.5);
+    top: 15px;
   }
-  .eye-left { top: 100px; left: 65px; }
-  .eye-right { top: 100px; right: 65px; }
-  .circuit-line { position: absolute; background: rgba(0,240,255,0.3); box-shadow: 0 0 6px rgba(0,240,255,0.3); }
-  .cl1 { top: 50px; left: 50px; width: 40px; height: 2px; }
-  .cl2 { top: 50px; left: 88px; width: 2px; height: 30px; }
-  .cl3 { top: 60px; right: 50px; width: 50px; height: 2px; }
-  .cl4 { top: 60px; right: 50px; width: 2px; height: 25px; }
-  .cl5 { top: 70px; left: 60px; width: 25px; height: 2px; transform: rotate(45deg); }
-  .neural { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; }
-  .neural-dot { width: 6px; height: 6px; background: #00F0FF; border-radius: 50%; box-shadow: 0 0 8px rgba(0,240,255,0.6); opacity: 0.7; }
-  .neural-dot:nth-child(2) { opacity: 0.9; width: 8px; height: 8px; }
-  .neural-dot:nth-child(4) { opacity: 0.5; }
-  .neural-dot:nth-child(6) { background: #C300FF; box-shadow: 0 0 8px rgba(195,0,255,0.6); }
+  .eye-left { left: 30px; }
+  .eye-right { right: 30px; }
+  /* AI pupil scan line */
+  .eye::after {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 12px; height: 12px;
+    background: radial-gradient(circle, #fff 20%, #80FFFF 50%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* Facemask */
+  .facemask {
+    position: absolute; top: 165px; left: 45px; width: 180px; height: 90px;
+  }
+  .bar {
+    position: absolute; height: 5px;
+    background: linear-gradient(90deg, rgba(0,200,255,0.3), rgba(0,220,255,0.7), rgba(0,200,255,0.3));
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0,200,255,0.3);
+  }
+  .bar:nth-child(1) { top: 0; left: 0; width: 180px; }
+  .bar:nth-child(2) { top: 16px; left: 10px; width: 160px; }
+  .bar:nth-child(3) { top: 32px; left: 18px; width: 144px; }
+  .bar:nth-child(4) { top: 48px; left: 25px; width: 130px; }
+  .bar:nth-child(5) { top: 64px; left: 35px; width: 110px; }
+  /* Vertical bars */
+  .bar-v {
+    position: absolute; width: 4px;
+    background: linear-gradient(180deg, rgba(0,200,255,0.5), rgba(0,200,255,0.2));
+    border-radius: 2px; box-shadow: 0 0 6px rgba(0,200,255,0.2);
+  }
+  .bar-v:nth-child(6) { left: 0; top: 0; height: 70px; }
+  .bar-v:nth-child(7) { right: 0; top: 0; height: 70px; }
+
+  /* Circuit traces on helmet */
+  .trace { position: absolute; background: rgba(0,220,255,0.25); box-shadow: 0 0 4px rgba(0,220,255,0.2); }
+  .t1 { top: 40px; left: 35px; width: 30px; height: 2px; }
+  .t2 { top: 40px; left: 63px; width: 2px; height: 20px; }
+  .t3 { top: 58px; left: 63px; width: 20px; height: 2px; }
+  .t4 { top: 45px; right: 35px; width: 35px; height: 2px; }
+  .t5 { top: 45px; right: 35px; width: 2px; height: 25px; }
+  .t6 { top: 68px; right: 37px; width: 25px; height: 2px; }
+  /* Node dots on circuit */
+  .node { position: absolute; width: 6px; height: 6px; background: #00F0FF; border-radius: 50%; box-shadow: 0 0 8px rgba(0,240,255,0.6); }
+  .n1 { top: 37px; left: 33px; }
+  .n2 { top: 56px; left: 81px; }
+  .n3 { top: 43px; right: 33px; }
+  .n4 { top: 66px; right: 60px; }
+
+  /* Neural data stream below */
+  .neural { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; align-items: center; }
+  .ndot { width: 5px; height: 5px; background: #00D4FF; border-radius: 50%; box-shadow: 0 0 6px rgba(0,220,255,0.5); }
+  .ndot:nth-child(odd) { width: 7px; height: 7px; }
+  .ndot:nth-child(3) { background: #C300FF; box-shadow: 0 0 6px rgba(195,0,255,0.5); }
+  .ndot:nth-child(7) { background: #C300FF; box-shadow: 0 0 6px rgba(195,0,255,0.5); }
+  .nline { width: 20px; height: 2px; background: linear-gradient(90deg, #00D4FF, transparent); border-radius: 1px; }
+
+  /* === TEXT SIDE === */
   .text-side { flex: 1; }
   .title {
-    font-size: 72px; font-weight: 900; letter-spacing: 0.04em; line-height: 0.9;
-    background: linear-gradient(135deg, #00F0FF 0%, #80F8FF 40%, #E2E8F0 100%);
+    font-size: 80px; font-weight: 900; letter-spacing: 0.02em; line-height: 0.85;
+    margin-bottom: 10px;
+  }
+  .title-ai {
+    background: linear-gradient(135deg, #00F0FF, #80F8FF, #E2E8F0);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(0,240,255,0.4));
-    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 25px rgba(0,240,255,0.5));
   }
-  .gm {
-    background: linear-gradient(135deg, #C300FF 0%, #E060FF 100%);
+  .title-i {
+    font-style: italic;
+    background: linear-gradient(135deg, #00F0FF, #40E0FF);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 15px rgba(195,0,255,0.4));
   }
-  .subtitle { font-size: 18px; color: #94A3B8; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; margin-bottom: 24px; }
-  .features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
-  .feature {
-    background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25);
-    color: #CBD5E1; padding: 6px 14px; border-radius: 20px; font-size: 13px;
-    font-weight: 700; letter-spacing: 0.05em; font-family: Arial, sans-serif;
+  .title-gm {
+    background: linear-gradient(135deg, #C300FF, #E060FF);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(195,0,255,0.5));
   }
-  .url { font-size: 28px; font-weight: 900; color: #00F0FF; letter-spacing: 0.02em; text-shadow: 0 0 20px rgba(0,240,255,0.5); }
+  .subtitle {
+    font-size: 17px; color: #7A8BA8; letter-spacing: 0.18em;
+    text-transform: uppercase; font-weight: 700; margin-bottom: 28px;
+  }
+  .features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .feat {
+    background: rgba(0,200,255,0.06); border: 1px solid rgba(0,200,255,0.20);
+    color: #B0C4DE; padding: 7px 16px; border-radius: 20px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.04em; font-family: Arial, sans-serif;
+  }
+  .url {
+    font-size: 30px; font-weight: 900; letter-spacing: 0.01em;
+    background: linear-gradient(90deg, #00F0FF, #80F8FF);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(0,240,255,0.4));
+  }
+
+  /* Border frame */
   .frame {
-    position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px;
-    border: 1px solid rgba(0,240,255,0.15); border-radius: 8px; pointer-events: none;
+    position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 1px solid rgba(0,200,255,0.10); border-radius: 6px; pointer-events: none; z-index: 3;
   }
-  .frame::before { content: ''; position: absolute; top: -1px; left: 30px; width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #00F0FF, transparent); }
-  .frame::after { content: ''; position: absolute; bottom: -1px; right: 30px; width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #C300FF, transparent); }
+  .frame::before { content: ''; position: absolute; top: -1px; left: 40px; width: 120px; height: 2px; background: linear-gradient(90deg, transparent, #00D4FF, transparent); }
+  .frame::after { content: ''; position: absolute; bottom: -1px; right: 40px; width: 120px; height: 2px; background: linear-gradient(90deg, transparent, #C300FF, transparent); }
 </style>
 </head>
 <body>
   <div class="frame"></div>
   <div class="container">
-    <div class="robot">
-      <div class="helmet">
-        <div class="circuit-line cl1"></div>
-        <div class="circuit-line cl2"></div>
-        <div class="circuit-line cl3"></div>
-        <div class="circuit-line cl4"></div>
-        <div class="circuit-line cl5"></div>
-        <div class="eye eye-left"></div>
-        <div class="eye eye-right"></div>
+    <div class="helmet-wrapper">
+      <div class="helmet-outer">
+        <div class="stripe"></div>
+        <div class="stripe-side stripe-left"></div>
+        <div class="stripe-side stripe-right"></div>
+        <div class="trace t1"></div><div class="trace t2"></div><div class="trace t3"></div>
+        <div class="trace t4"></div><div class="trace t5"></div><div class="trace t6"></div>
+        <div class="node n1"></div><div class="node n2"></div><div class="node n3"></div><div class="node n4"></div>
+        <div class="visor">
+          <div class="eye eye-left"></div>
+          <div class="eye eye-right"></div>
+        </div>
         <div class="facemask">
-          <div class="facemask-bar"></div>
-          <div class="facemask-bar"></div>
-          <div class="facemask-bar"></div>
-          <div class="facemask-bar"></div>
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+          <div class="bar-v"></div><div class="bar-v"></div>
         </div>
       </div>
       <div class="neural">
-        <div class="neural-dot"></div>
-        <div class="neural-dot"></div>
-        <div class="neural-dot"></div>
-        <div class="neural-dot"></div>
-        <div class="neural-dot"></div>
-        <div class="neural-dot"></div>
-        <div class="neural-dot"></div>
+        <div class="ndot"></div><div class="nline"></div>
+        <div class="ndot"></div><div class="nline"></div>
+        <div class="ndot"></div><div class="nline"></div>
+        <div class="ndot"></div><div class="nline"></div>
+        <div class="ndot"></div><div class="nline"></div>
+        <div class="ndot"></div><div class="nline"></div>
+        <div class="ndot"></div>
       </div>
     </div>
     <div class="text-side">
-      <div class="title">AINFL <span class="gm">GM</span></div>
+      <div class="title">
+        <span class="title-ai">A<span class="title-i">i</span>NFL </span><span class="title-gm">GM</span>
+      </div>
       <div class="subtitle">AI-Powered NFL Offseason Simulator</div>
       <div class="features">
-        <span class="feature">🏈 32 NFL Teams</span>
-        <span class="feature">💰 Real Cap Data</span>
-        <span class="feature">✍️ Free Agency</span>
-        <span class="feature">🔄 Trades</span>
-        <span class="feature">🎯 Mock Draft</span>
-        <span class="feature">🤖 AI Analysis</span>
+        <span class="feat">🏈 All 32 Teams</span>
+        <span class="feat">💰 Real Salary Cap</span>
+        <span class="feat">✍️ Free Agency</span>
+        <span class="feat">🔄 Player Trades</span>
+        <span class="feat">🎯 Mock Draft</span>
       </div>
       <div class="url">ainflgm.com</div>
     </div>
