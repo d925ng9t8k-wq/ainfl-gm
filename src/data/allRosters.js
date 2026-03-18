@@ -147,20 +147,6 @@ export const allRosters = {
         "isFranchise": false
       },
       {
-        "id": 11,
-        "name": "Kyler Murray",
-        "position": "QB",
-        "age": 29,
-        "capHit": 5.14,
-        "deadMoney": 14.42,
-        "capSavings": 13.88,
-        "baseSalary": 5.14,
-        "contractYears": 1,
-        "contractTotal": 5.14,
-        "yearsRemaining": 0,
-        "isFranchise": false
-      },
-      {
         "id": 12,
         "name": "James Conner",
         "position": "RB",
@@ -16539,20 +16525,6 @@ export const allRosters = {
   "MIA": {
     "players": [
       {
-        "id": 1,
-        "name": "Bradley Chubb",
-        "position": "LB",
-        "age": 30,
-        "capHit": 20.23,
-        "deadMoney": 1.22,
-        "capSavings": 39.86,
-        "baseSalary": 20.23,
-        "contractYears": 3,
-        "contractTotal": 60.69,
-        "yearsRemaining": 0,
-        "isFranchise": false
-      },
-      {
         "id": 2,
         "name": "Jaylen Waddle",
         "position": "WR",
@@ -16578,20 +16550,6 @@ export const allRosters = {
         "contractYears": 4,
         "contractTotal": 45.12,
         "yearsRemaining": 3,
-        "isFranchise": false
-      },
-      {
-        "id": 4,
-        "name": "Tua Tagovailoa",
-        "position": "QB",
-        "age": 28,
-        "capHit": 11.13,
-        "deadMoney": 19.45,
-        "capSavings": 11.13,
-        "baseSalary": 11.13,
-        "contractYears": 1,
-        "contractTotal": 11.13,
-        "yearsRemaining": 0,
         "isFranchise": false
       },
       {

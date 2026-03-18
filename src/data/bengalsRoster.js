@@ -53,7 +53,7 @@ export const bengalsRoster = [
   { id: 34, name: 'Shemar Stewart',          position: 'DE', age: 22, capHit: 4.3,   contractYears: 4, contractTotal: 11.2,  isFranchise: false, yearsRemaining: 2, deadMoney: 15.5, capSavings: -11.2, baseSalary: 1.0 },
   { id: 35, name: 'Isaiah Foskey',           position: 'DE', age: 25, capHit: 1.1,   contractYears: 2, contractTotal: 3.6,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 1.1, baseSalary: 1.1 },
   { id: 36, name: 'Cedric Johnson',          position: 'DE', age: 23, capHit: 1.1,   contractYears: 3, contractTotal: 2.7,   isFranchise: false, yearsRemaining: 1, deadMoney: 0.1, capSavings: 1.0, baseSalary: 1.1 },
-  { id: 37, name: 'Antwaun Powell-Ryland Jr.', position: 'DE', age: 24, capHit: 0.9, contractYears: 2, contractTotal: 1.8,   isFranchise: false, yearsRemaining: 1, deadMoney: 0, capSavings: 0.9, baseSalary: 0.9 },
+  { id: 37, name: 'Antwaun Powell-Ryland Jr.', position: 'DE', age: 24, capHit: 0.9, contractYears: 2, contractTotal: 1.8,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 0.9, baseSalary: 0.9 },
 
   // DEFENSIVE TACKLES
   { id: 40, name: 'B.J. Hill',               position: 'DT', age: 30, capHit: 12.1,  contractYears: 2, contractTotal: 16.0,  isFranchise: false, yearsRemaining: 1, deadMoney: 7.3, capSavings: 4.8, baseSalary: 6.0 },
@@ -73,8 +73,8 @@ export const bengalsRoster = [
   { id: 51, name: 'Joe Giles-Harris',        position: 'LB', age: 28, capHit: 1.2,   contractYears: 1, contractTotal: 1.2,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 1.2, baseSalary: 12.1 },
 
   // CORNERBACKS
-  { id: 52, name: 'Dax Hill',                position: 'CB', age: 25, capHit: 12.7,  contractYears: 3, contractTotal: 6.0,   isFranchise: false, yearsRemaining: 2, deadMoney: 12.7, capSavings: 0, baseSalary: 12.7 },
-  { id: 53, name: 'DJ Turner II',            position: 'CB', age: 25, capHit: 4.0,   contractYears: 3, contractTotal: 3.6,   isFranchise: false, yearsRemaining: 2, deadMoney: 0.4, capSavings: 3.7, baseSalary: 3.7 },
+  { id: 52, name: 'Dax Hill',                position: 'CB', age: 25, capHit: 12.7,  contractYears: 3, contractTotal: 6.0,   isFranchise: false, yearsRemaining: 0, deadMoney: 12.7, capSavings: 0, baseSalary: 12.7 },
+  { id: 53, name: 'DJ Turner II',            position: 'CB', age: 25, capHit: 4.0,   contractYears: 3, contractTotal: 3.6,   isFranchise: false, yearsRemaining: 0, deadMoney: 0.4, capSavings: 3.7, baseSalary: 3.7 },
   { id: 54, name: 'Josh Newton',             position: 'CB', age: 25, capHit: 1.2,   contractYears: 3, contractTotal: 3.0,   isFranchise: false, yearsRemaining: 1, deadMoney: 0.2, capSavings: 1.0, baseSalary: 1.1 },
   { id: 55, name: 'Jalen Davis',             position: 'CB', age: 30, capHit: 1.4,   contractYears: 1, contractTotal: 1.4,   isFranchise: false, yearsRemaining: 0, deadMoney: 0.1, capSavings: 1.3, baseSalary: 1.3 },
   { id: 56, name: 'D.J. Ivey',               position: 'CB', age: 26, capHit: 1.2,   contractYears: 2, contractTotal: 1.8,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 1.2, baseSalary: 1.1 },
@@ -85,7 +85,7 @@ export const bengalsRoster = [
   { id: 59, name: 'Bryan Cook',              position: 'S',  age: 26, capHit: 10.7,  contractYears: 3, contractTotal: 40.25, isFranchise: false, yearsRemaining: 2, deadMoney: 11.0, capSavings: -0.3, baseSalary: 3.4 },
   { id: 60, name: 'Jordan Battle',           position: 'S',  age: 25, capHit: 3.9,   contractYears: 3, contractTotal: 3.6,   isFranchise: false, yearsRemaining: 0, deadMoney: 0.2, capSavings: 3.7, baseSalary: 3.7 },
   { id: 63, name: 'Daijahn Anthony',         position: 'S',  age: 25, capHit: 1.1,   contractYears: 2, contractTotal: 1.6,   isFranchise: false, yearsRemaining: 1, deadMoney: 0.1, capSavings: 1.0, baseSalary: 1.1 },
-  { id: 64, name: 'PJ Jules',                position: 'S',  age: 24, capHit: 1.0,   contractYears: 2, contractTotal: 1.6,   isFranchise: false, yearsRemaining: 1, deadMoney: 0, capSavings: 1.0, baseSalary: 1.0 },
+  { id: 64, name: 'PJ Jules',                position: 'S',  age: 24, capHit: 1.0,   contractYears: 2, contractTotal: 1.6,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 1.0, baseSalary: 1.0 },
   { id: 65, name: 'Russ Yeast',              position: 'S',  age: 26, capHit: 1.1,   contractYears: 1, contractTotal: 1.1,   isFranchise: false, yearsRemaining: 0, deadMoney: 0, capSavings: 1.1, baseSalary: 1.1 },
 
   // SPECIAL TEAMS
