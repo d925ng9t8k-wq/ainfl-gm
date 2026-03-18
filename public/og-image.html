@@ -1,76 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     width: 1200px;
     height: 630px;
-    background: #000814;
+    background: radial-gradient(ellipse at 30% 50%, #001a3a 0%, #000814 60%, #000510 100%);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
     overflow: hidden;
     position: relative;
-    border: 3px solid #00e5ff;
-    box-shadow: inset 0 0 80px rgba(0,229,255,0.08);
   }
-  .accent-top, .accent-bottom {
+  body::before {
+    content: '';
     position: absolute;
-    left: 40px; right: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
   }
-  .accent-top { top: 30px; }
-  .accent-bottom { bottom: 30px; }
+  body::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(300px 300px at 25% 40%, rgba(0,240,255,0.08), transparent),
+      radial-gradient(250px 250px at 75% 60%, rgba(195,0,255,0.06), transparent);
+  }
+  .container {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; gap: 60px; padding: 0 80px; width: 100%;
+  }
+  .robot { flex-shrink: 0; width: 280px; height: 320px; position: relative; }
+  .helmet {
+    position: absolute; top: 20px; left: 20px; width: 240px; height: 220px;
+    background: linear-gradient(135deg, #1a2a4a 0%, #0a1428 40%, #1a2a4a 100%);
+    border-radius: 120px 120px 80px 80px;
+    border: 3px solid rgba(0,240,255,0.4);
+    box-shadow: 0 0 30px rgba(0,240,255,0.2), inset 0 -20px 40px rgba(0,0,0,0.5), 0 10px 40px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+  .helmet::before {
+    content: ''; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+    width: 28px; height: 230px;
+    background: linear-gradient(180deg, #00F0FF, #00A0CC);
+    border-radius: 14px; opacity: 0.8; box-shadow: 0 0 15px rgba(0,240,255,0.5);
+  }
+  .facemask { position: absolute; top: 140px; left: 40px; width: 200px; height: 80px; }
+  .facemask-bar {
+    position: absolute; height: 4px;
+    background: linear-gradient(90deg, rgba(0,240,255,0.6), rgba(0,240,255,0.9), rgba(0,240,255,0.6));
+    border-radius: 2px; box-shadow: 0 0 8px rgba(0,240,255,0.4);
+  }
+  .facemask-bar:nth-child(1) { top: 10px; left: 10px; width: 180px; }
+  .facemask-bar:nth-child(2) { top: 25px; left: 20px; width: 160px; }
+  .facemask-bar:nth-child(3) { top: 40px; left: 30px; width: 140px; }
+  .facemask-bar:nth-child(4) { top: 55px; left: 40px; width: 120px; }
+  .eye {
+    position: absolute; width: 36px; height: 20px; border-radius: 50%;
+    background: radial-gradient(circle, #00F0FF, #0080FF);
+    box-shadow: 0 0 20px rgba(0,240,255,0.8), 0 0 40px rgba(0,240,255,0.4), inset 0 0 10px rgba(255,255,255,0.3);
+  }
+  .eye-left { top: 100px; left: 65px; }
+  .eye-right { top: 100px; right: 65px; }
+  .circuit-line { position: absolute; background: rgba(0,240,255,0.3); box-shadow: 0 0 6px rgba(0,240,255,0.3); }
+  .cl1 { top: 50px; left: 50px; width: 40px; height: 2px; }
+  .cl2 { top: 50px; left: 88px; width: 2px; height: 30px; }
+  .cl3 { top: 60px; right: 50px; width: 50px; height: 2px; }
+  .cl4 { top: 60px; right: 50px; width: 2px; height: 25px; }
+  .cl5 { top: 70px; left: 60px; width: 25px; height: 2px; transform: rotate(45deg); }
+  .neural { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; }
+  .neural-dot { width: 6px; height: 6px; background: #00F0FF; border-radius: 50%; box-shadow: 0 0 8px rgba(0,240,255,0.6); opacity: 0.7; }
+  .neural-dot:nth-child(2) { opacity: 0.9; width: 8px; height: 8px; }
+  .neural-dot:nth-child(4) { opacity: 0.5; }
+  .neural-dot:nth-child(6) { background: #C300FF; box-shadow: 0 0 8px rgba(195,0,255,0.6); }
+  .text-side { flex: 1; }
   .title {
-    font-size: 96px;
-    font-weight: 900;
-    letter-spacing: 4px;
-    background: linear-gradient(135deg, #00e5ff 0%, #00bcd4 50%, #00e5ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 60px rgba(0,229,255,0.3);
-    margin-bottom: 16px;
+    font-size: 72px; font-weight: 900; letter-spacing: 0.04em; line-height: 0.9;
+    background: linear-gradient(135deg, #00F0FF 0%, #80F8FF 40%, #E2E8F0 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(0,240,255,0.4));
+    margin-bottom: 8px;
   }
-  .subtitle {
-    font-size: 28px;
-    font-weight: 600;
-    color: #b0bec5;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    margin-bottom: 40px;
+  .gm {
+    background: linear-gradient(135deg, #C300FF 0%, #E060FF 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(195,0,255,0.4));
   }
-  .features {
-    font-size: 22px;
-    color: #78909c;
-    letter-spacing: 2px;
+  .subtitle { font-size: 18px; color: #94A3B8; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; margin-bottom: 24px; }
+  .features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 30px; }
+  .feature {
+    background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.25);
+    color: #CBD5E1; padding: 6px 14px; border-radius: 20px; font-size: 13px;
+    font-weight: 700; letter-spacing: 0.05em; font-family: Arial, sans-serif;
   }
-  .features span {
-    color: #00e5ff;
-    margin: 0 8px;
+  .url { font-size: 28px; font-weight: 900; color: #00F0FF; letter-spacing: 0.02em; text-shadow: 0 0 20px rgba(0,240,255,0.5); }
+  .frame {
+    position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 1px solid rgba(0,240,255,0.15); border-radius: 8px; pointer-events: none;
   }
-  .url {
-    position: absolute;
-    bottom: 50px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #00e5ff;
-    letter-spacing: 3px;
-  }
+  .frame::before { content: ''; position: absolute; top: -1px; left: 30px; width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #00F0FF, transparent); }
+  .frame::after { content: ''; position: absolute; bottom: -1px; right: 30px; width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #C300FF, transparent); }
 </style>
 </head>
 <body>
-  <div class="accent-top"></div>
-  <div class="title">AINFL GM</div>
-  <div class="subtitle">AI-Powered NFL Offseason Simulator</div>
-  <div class="features">
-    Manage Any Team <span>•</span> Sign Free Agents <span>•</span> Make Trades <span>•</span> Mock Draft
+  <div class="frame"></div>
+  <div class="container">
+    <div class="robot">
+      <div class="helmet">
+        <div class="circuit-line cl1"></div>
+        <div class="circuit-line cl2"></div>
+        <div class="circuit-line cl3"></div>
+        <div class="circuit-line cl4"></div>
+        <div class="circuit-line cl5"></div>
+        <div class="eye eye-left"></div>
+        <div class="eye eye-right"></div>
+        <div class="facemask">
+          <div class="facemask-bar"></div>
+          <div class="facemask-bar"></div>
+          <div class="facemask-bar"></div>
+          <div class="facemask-bar"></div>
+        </div>
+      </div>
+      <div class="neural">
+        <div class="neural-dot"></div>
+        <div class="neural-dot"></div>
+        <div class="neural-dot"></div>
+        <div class="neural-dot"></div>
+        <div class="neural-dot"></div>
+        <div class="neural-dot"></div>
+        <div class="neural-dot"></div>
+      </div>
+    </div>
+    <div class="text-side">
+      <div class="title">AINFL <span class="gm">GM</span></div>
+      <div class="subtitle">AI-Powered NFL Offseason Simulator</div>
+      <div class="features">
+        <span class="feature">🏈 32 NFL Teams</span>
+        <span class="feature">💰 Real Cap Data</span>
+        <span class="feature">✍️ Free Agency</span>
+        <span class="feature">🔄 Trades</span>
+        <span class="feature">🎯 Mock Draft</span>
+        <span class="feature">🤖 AI Analysis</span>
+      </div>
+      <div class="url">ainflgm.com</div>
+    </div>
   </div>
-  <div class="url">ainflgm.com</div>
-  <div class="accent-bottom"></div>
 </body>
 </html>
