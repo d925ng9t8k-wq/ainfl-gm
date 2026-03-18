@@ -6,7 +6,7 @@ import { teams } from '../data/teams';
 import { allRosters } from '../data/allRosters';
 
 const TOTAL_CAP = 301.2; // 2026 NFL salary cap: $301.2M (official, per NFL.com)
-const DATA_VERSION = '2026-03-18-v15';
+const DATA_VERSION = '2026-03-18-v16';
 
 function getTeamRoster(teamAbbr) {
   if (teamAbbr === 'CIN') return bengalsRoster;
@@ -421,7 +421,14 @@ export function GameProvider({ children }) {
   }, [state]);
 
   const capUsed = computeCapUsed(state.roster);
-  const capAvailable = TOTAL_CAP - capUsed;
+  // Use team-specific cap total (includes carryover adjustments) if available
+  const teamCapTotal = (() => {
+    if (state.currentTeamAbbr === 'CIN') return TOTAL_CAP;
+    const teamData = allRosters[state.currentTeamAbbr];
+    if (teamData?.capSummary?.totalCap) return teamData.capSummary.totalCap;
+    return TOTAL_CAP;
+  })();
+  const capAvailable = teamCapTotal - capUsed;
 
   const signPlayer = (player, years, aav, details) => {
     dispatch({ type: 'SIGN_PLAYER', payload: { player, years, aav, details } });
@@ -466,7 +473,7 @@ export function GameProvider({ children }) {
       ...state,
       capUsed,
       capAvailable,
-      totalCap: TOTAL_CAP,
+      totalCap: teamCapTotal,
       signPlayer,
       cutPlayer,
       restructureContract,
