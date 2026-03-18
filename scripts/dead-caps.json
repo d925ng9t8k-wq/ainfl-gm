@@ -1,0 +1,1018 @@
+{
+  "ARI": [
+    {
+      "name": "Jonah Williams",
+      "amount": 7000000
+    },
+    {
+      "name": "Dalvin Tomlinson",
+      "amount": 6800000
+    },
+    {
+      "name": "Justin Jones",
+      "amount": 3250000
+    },
+    {
+      "name": "Jalen Thompson",
+      "amount": 2034000
+    },
+    {
+      "name": "Bilal Nichols",
+      "amount": 2000000
+    },
+    {
+      "name": "Akeem Davis-Gaither",
+      "amount": 1500000
+    },
+    {
+      "name": "Evan Brown",
+      "amount": 1500000
+    },
+    {
+      "name": "DeeJay Dallas",
+      "amount": 333334
+    },
+    {
+      "name": "Xavier Thomas",
+      "amount": 186446
+    }
+  ],
+  "ATL": [
+    {
+      "name": "Darnell Mooney",
+      "amount": 11000000
+    },
+    {
+      "name": "David Onyemata",
+      "amount": 2425000
+    },
+    {
+      "name": "Younghoe Koo",
+      "amount": 1250000
+    },
+    {
+      "name": "Morgan Fox",
+      "amount": 750000
+    },
+    {
+      "name": "KhaDarel Hodge",
+      "amount": 625000
+    }
+  ],
+  "BAL": [
+    {
+      "name": "Marcus Williams",
+      "amount": 6027918
+    },
+    {
+      "name": "Justin Tucker",
+      "amount": 4645000
+    },
+    {
+      "name": "DeAndre Hopkins",
+      "amount": 2996000
+    },
+    {
+      "name": "Cooper Rush",
+      "amount": 2196000
+    },
+    {
+      "name": "Michael Pierce",
+      "amount": 1334000
+    },
+    {
+      "name": "Tylan Wallace",
+      "amount": 744000
+    }
+  ],
+  "BUF": [
+    {
+      "name": "Matt Milano",
+      "amount": 11071000
+    },
+    {
+      "name": "Taron Johnson",
+      "amount": 9503334
+    },
+    {
+      "name": "Joey Bosa",
+      "amount": 7200000
+    },
+    {
+      "name": "Connor McGovern",
+      "amount": 4805000
+    },
+    {
+      "name": "DaQuan Jones",
+      "amount": 3724000
+    },
+    {
+      "name": "Curtis Samuel",
+      "amount": 3450000
+    },
+    {
+      "name": "A.J. Epenesa",
+      "amount": 2861000
+    },
+    {
+      "name": "Larry Ogunjobi",
+      "amount": 2355882
+    },
+    {
+      "name": "Taylor Rapp",
+      "amount": 666668
+    },
+    {
+      "name": "Edefuan Ulofoshio",
+      "amount": 157012
+    }
+  ],
+  "CAR": [
+    {
+      "name": "Austin Corbett",
+      "amount": 4441750
+    },
+    {
+      "name": "Adam Thielen",
+      "amount": 3334000
+    },
+    {
+      "name": "Shy Tuttle",
+      "amount": 3225000
+    },
+    {
+      "name": "Josey Jewell",
+      "amount": 2333334
+    },
+    {
+      "name": "A'Shawn Robinson",
+      "amount": 2055000
+    },
+    {
+      "name": "D.J. Wonnum",
+      "amount": 600000
+    },
+    {
+      "name": "D.J. Johnson",
+      "amount": 250543
+    }
+  ],
+  "CHI": [
+    {
+      "name": "D.J. Moore",
+      "amount": 12000000
+    },
+    {
+      "name": "Drew Dalman",
+      "amount": 4000000
+    },
+    {
+      "name": "Tremaine Edmunds",
+      "amount": 2437500
+    },
+    {
+      "name": "Joe Tryon-Shoyinka",
+      "amount": 540000
+    },
+    {
+      "name": "Amen Ogbongbemiga",
+      "amount": 375000
+    },
+    {
+      "name": "Zacch Pickens",
+      "amount": 297961
+    },
+    {
+      "name": "Tyler Scott",
+      "amount": 165862
+    }
+  ],
+  "CIN": [
+    {
+      "name": "Trey Hendrickson",
+      "amount": 6500000
+    },
+    {
+      "name": "Logan Wilson",
+      "amount": 4000000
+    },
+    {
+      "name": "Jermaine Burton",
+      "amount": 526690
+    }
+  ],
+  "CLE": [
+    {
+      "name": "Joel Bitonio",
+      "amount": 23504000
+    },
+    {
+      "name": "Dalvin Tomlinson",
+      "amount": 12109000
+    },
+    {
+      "name": "Jack Conklin",
+      "amount": 9319327
+    },
+    {
+      "name": "Juan Thornhill",
+      "amount": 5668000
+    },
+    {
+      "name": "Ogbonnia Okoronkwo",
+      "amount": 4750000
+    },
+    {
+      "name": "Ethan Pocic",
+      "amount": 4368000
+    },
+    {
+      "name": "Joe Tryon-Shoyinka",
+      "amount": 2780000
+    },
+    {
+      "name": "Dustin Hopkins",
+      "amount": 2776500
+    },
+    {
+      "name": "Shelby Harris",
+      "amount": 2043000
+    },
+    {
+      "name": "Jordan Hicks",
+      "amount": 1974000
+    },
+    {
+      "name": "Cornelius Lucas",
+      "amount": 1600000
+    },
+    {
+      "name": "Devin Bush",
+      "amount": 1440000
+    },
+    {
+      "name": "Joe Flacco",
+      "amount": 1396000
+    },
+    {
+      "name": "Jamari Thrash",
+      "amount": 162704
+    }
+  ],
+  "DAL": [
+    {
+      "name": "Osa Odighizuwa",
+      "amount": 16000000
+    },
+    {
+      "name": "Zack Martin",
+      "amount": 15268822
+    },
+    {
+      "name": "Trevon Diggs",
+      "amount": 5882356
+    },
+    {
+      "name": "Mazi Smith",
+      "amount": 1663581
+    },
+    {
+      "name": "Donovan Wilson",
+      "amount": 1650000
+    },
+    {
+      "name": "Solomon Thomas",
+      "amount": 750000
+    }
+  ],
+  "DEN": [
+    {
+      "name": "Trent Sherfield",
+      "amount": 850000
+    },
+    {
+      "name": "Audric Estime",
+      "amount": 169562
+    }
+  ],
+  "DET": [
+    {
+      "name": "Taylor Decker",
+      "amount": 9444000
+    },
+    {
+      "name": "David Montgomery",
+      "amount": 4862501
+    },
+    {
+      "name": "D.J. Reader",
+      "amount": 3729000
+    },
+    {
+      "name": "Frank Ragnow",
+      "amount": 3600000
+    },
+    {
+      "name": "Graham Glasgow",
+      "amount": 2875000
+    },
+    {
+      "name": "Alex Anzalone",
+      "amount": 1200000
+    },
+    {
+      "name": "Hendon Hooker",
+      "amount": 289823
+    },
+    {
+      "name": "Brodric Martin",
+      "amount": 214378
+    },
+    {
+      "name": "Ahmed Hassanein",
+      "amount": 172419
+    }
+  ],
+  "GB": [
+    {
+      "name": "Rashan Gary",
+      "amount": 17042273
+    },
+    {
+      "name": "Kenny Clark",
+      "amount": 17007000
+    },
+    {
+      "name": "Elgton Jenkins",
+      "amount": 4800000
+    },
+    {
+      "name": "Colby Wooden",
+      "amount": 191982
+    }
+  ],
+  "HOU": [
+    {
+      "name": "Tytus Howard",
+      "amount": 23689000
+    },
+    {
+      "name": "Christian Kirk",
+      "amount": 11396000
+    },
+    {
+      "name": "Shaquille Mason",
+      "amount": 7324000
+    },
+    {
+      "name": "Cam Robinson",
+      "amount": 7000000
+    },
+    {
+      "name": "Chauncey Gardner-Johnson, Jr.",
+      "amount": 5664000
+    },
+    {
+      "name": "Denico Autry",
+      "amount": 5000000
+    },
+    {
+      "name": "Joe Mixon",
+      "amount": 2000000
+    },
+    {
+      "name": "Sheldon Rankins",
+      "amount": 2000000
+    },
+    {
+      "name": "Mario Edwards Jr.",
+      "amount": 1000000
+    },
+    {
+      "name": "Nick Niemann",
+      "amount": 750000
+    },
+    {
+      "name": "Juice Scruggs",
+      "amount": 358929
+    }
+  ],
+  "IND": [
+    {
+      "name": "Michael Pittman, Jr.",
+      "amount": 5000000
+    },
+    {
+      "name": "Zaire Franklin",
+      "amount": 2500000
+    },
+    {
+      "name": "Adonai Mitchell",
+      "amount": 1095850
+    },
+    {
+      "name": "Julius Brents",
+      "amount": 740352
+    },
+    {
+      "name": "Tim Smith",
+      "amount": 175770
+    }
+  ],
+  "JAX": [
+    {
+      "name": "Tyson Campbell",
+      "amount": 19520000
+    },
+    {
+      "name": "Gabriel Davis",
+      "amount": 14600000
+    },
+    {
+      "name": "Greg Newsome II",
+      "amount": 7052934
+    },
+    {
+      "name": "Darnell Savage Jr.",
+      "amount": 6200000
+    },
+    {
+      "name": "Dyami Brown",
+      "amount": 1924000
+    },
+    {
+      "name": "Khalen Saunders",
+      "amount": 1863530
+    },
+    {
+      "name": "Johnny Mundt",
+      "amount": 500000
+    },
+    {
+      "name": "Javon Foster",
+      "amount": 398532
+    },
+    {
+      "name": "Jordan Jefferson",
+      "amount": 391538
+    },
+    {
+      "name": "Tank Bigsby",
+      "amount": 230530
+    },
+    {
+      "name": "Tyler Lacy",
+      "amount": 171780
+    },
+    {
+      "name": "Deantre Prince",
+      "amount": 166114
+    },
+    {
+      "name": "Keilan Robinson",
+      "amount": 140978
+    }
+  ],
+  "KC": [
+    {
+      "name": "Jawaan Taylor",
+      "amount": 7391668
+    },
+    {
+      "name": "Mike Danna",
+      "amount": 2166668
+    }
+  ],
+  "LV": [
+    {
+      "name": "Christian Wilkins",
+      "amount": 29775000
+    },
+    {
+      "name": "Geno Smith",
+      "amount": 16200000
+    },
+    {
+      "name": "Jakobi Meyers",
+      "amount": 4318000
+    },
+    {
+      "name": "Alex Cappa",
+      "amount": 1000000
+    },
+    {
+      "name": "Jakorian Bennett",
+      "amount": 205897
+    },
+    {
+      "name": "Cam Miller",
+      "amount": 130710
+    },
+    {
+      "name": "Tommy Mellott",
+      "amount": 130710
+    }
+  ],
+  "LAC": [
+    {
+      "name": "Mekhi Becton",
+      "amount": 2500000
+    },
+    {
+      "name": "Will Dissly",
+      "amount": 1500000
+    },
+    {
+      "name": "Bradley Bozeman",
+      "amount": 1060000
+    },
+    {
+      "name": "Branson Taylor",
+      "amount": 168903
+    },
+    {
+      "name": "Kimani Vidal",
+      "amount": 103718
+    }
+  ],
+  "LAR": [
+    {
+      "name": "Rob Havenstein",
+      "amount": 6968629
+    },
+    {
+      "name": "Tyler Higbee",
+      "amount": 2101289
+    },
+    {
+      "name": "Darious Williams",
+      "amount": 1166668
+    },
+    {
+      "name": "Chris Paul Jr.",
+      "amount": 240162
+    },
+    {
+      "name": "Brennan Jackson",
+      "amount": 164684
+    }
+  ],
+  "MIA": [
+    {
+      "name": "Tyreek Hill",
+      "amount": 28248750
+    },
+    {
+      "name": "Jaylen Waddle",
+      "amount": 26311328
+    },
+    {
+      "name": "Jalen Ramsey",
+      "amount": 20868000
+    },
+    {
+      "name": "Minkah Fitzpatrick",
+      "amount": 12996000
+    },
+    {
+      "name": "Terron Armstead",
+      "amount": 10732750
+    },
+    {
+      "name": "James Daniels",
+      "amount": 4800000
+    },
+    {
+      "name": "Zach Wilson",
+      "amount": 3800000
+    },
+    {
+      "name": "Alec Ingold",
+      "amount": 1995000
+    },
+    {
+      "name": "Jonnu Smith",
+      "amount": 1650000
+    },
+    {
+      "name": "Nick Westbrook-Ikhine",
+      "amount": 1600000
+    },
+    {
+      "name": "Matt Judon",
+      "amount": 1360000
+    },
+    {
+      "name": "Jason Sanders",
+      "amount": 663000
+    },
+    {
+      "name": "Cam Smith",
+      "amount": 527897
+    },
+    {
+      "name": "Mohamed Kamara",
+      "amount": 160436
+    }
+  ],
+  "MIN": [
+    {
+      "name": "Javon Hargrave",
+      "amount": 10497500
+    },
+    {
+      "name": "Harrison Phillips",
+      "amount": 3526389
+    },
+    {
+      "name": "Ryan Kelly",
+      "amount": 3367500
+    },
+    {
+      "name": "Garrett Bradbury",
+      "amount": 1628000
+    },
+    {
+      "name": "Mekhi Blackmon",
+      "amount": 214378
+    },
+    {
+      "name": "Kobe King",
+      "amount": 164301
+    }
+  ],
+  "NE": [
+    {
+      "name": "Kyle Dugger",
+      "amount": 12177778
+    },
+    {
+      "name": "Stefon Diggs",
+      "amount": 9700000
+    },
+    {
+      "name": "Jahlani Tavai",
+      "amount": 3487500
+    },
+    {
+      "name": "Jabrill Peppers",
+      "amount": 3000000
+    },
+    {
+      "name": "Ja'Lynn Polk",
+      "amount": 1935362
+    },
+    {
+      "name": "Kendrick Bourne",
+      "amount": 1400000
+    },
+    {
+      "name": "Garrett Bradbury",
+      "amount": 1200000
+    },
+    {
+      "name": "Anfernee Jennings",
+      "amount": 1000000
+    },
+    {
+      "name": "Antonio Gibson",
+      "amount": 1000000
+    },
+    {
+      "name": "Keion White",
+      "amount": 666394
+    },
+    {
+      "name": "Layden Robinson",
+      "amount": 426036
+    },
+    {
+      "name": "Javon Baker",
+      "amount": 408298
+    },
+    {
+      "name": "Bradyn Swinson",
+      "amount": 330597
+    },
+    {
+      "name": "Sidy Sow",
+      "amount": 191029
+    }
+  ],
+  "NO": [
+    {
+      "name": "Derek Carr",
+      "amount": 36674000
+    },
+    {
+      "name": "Cameron Jordan",
+      "amount": 18760000
+    },
+    {
+      "name": "Demario Davis",
+      "amount": 14290000
+    },
+    {
+      "name": "Taysom Hill",
+      "amount": 13723000
+    },
+    {
+      "name": "Ryan Ramczyk",
+      "amount": 11983324
+    },
+    {
+      "name": "Tyrann Mathieu",
+      "amount": 7234000
+    },
+    {
+      "name": "Khalen Saunders",
+      "amount": 3503530
+    },
+    {
+      "name": "Brandin Cooks",
+      "amount": 3200000
+    },
+    {
+      "name": "Foster Moreau",
+      "amount": 1400000
+    },
+    {
+      "name": "J.T. Gray",
+      "amount": 960000
+    },
+    {
+      "name": "Isaiah Foskey",
+      "amount": 838131
+    },
+    {
+      "name": "Cedrick Wilson Jr.",
+      "amount": 500000
+    },
+    {
+      "name": "Rashid Shaheed",
+      "amount": 500000
+    },
+    {
+      "name": "Jake Haener",
+      "amount": 161518
+    }
+  ],
+  "NYG": [
+    {
+      "name": "Bobby Okereke",
+      "amount": 5463334
+    },
+    {
+      "name": "James Hudson",
+      "amount": 2305000
+    },
+    {
+      "name": "Jamie Gillan",
+      "amount": 2133334
+    },
+    {
+      "name": "Chris Board",
+      "amount": 1250000
+    }
+  ],
+  "NYJ": [
+    {
+      "name": "Aaron Rodgers",
+      "amount": 35000000
+    },
+    {
+      "name": "Justin Fields",
+      "amount": 20000000
+    },
+    {
+      "name": "Ahmad Gardner",
+      "amount": 11000000
+    },
+    {
+      "name": "Quinnen Williams",
+      "amount": 9800000
+    },
+    {
+      "name": "C.J. Mosley",
+      "amount": 7650000
+    },
+    {
+      "name": "Michael Carter II",
+      "amount": 6800000
+    },
+    {
+      "name": "Quincy Williams",
+      "amount": 4875000
+    },
+    {
+      "name": "Allen Lazard",
+      "amount": 4368000
+    },
+    {
+      "name": "John Simpson",
+      "amount": 4350000
+    },
+    {
+      "name": "Andre Cisco",
+      "amount": 4000000
+    },
+    {
+      "name": "Tyrod Taylor",
+      "amount": 2400000
+    },
+    {
+      "name": "Malachi Corley",
+      "amount": 618530
+    },
+    {
+      "name": "Carter Warren",
+      "amount": 186080
+    }
+  ],
+  "PHI": [
+    {
+      "name": "Bryce Huff",
+      "amount": 16614599
+    },
+    {
+      "name": "Darius Slay",
+      "amount": 13264966
+    },
+    {
+      "name": "James Bradberry",
+      "amount": 7748824
+    },
+    {
+      "name": "Brandon Graham",
+      "amount": 4444235
+    },
+    {
+      "name": "Azeez Ojulari",
+      "amount": 1828000
+    },
+    {
+      "name": "Za'Darius Smith",
+      "amount": 1800000
+    },
+    {
+      "name": "Braden Mann",
+      "amount": 1484000
+    },
+    {
+      "name": "Jahan Dotson",
+      "amount": 1325639
+    },
+    {
+      "name": "Reed Blankenship",
+      "amount": 1110000
+    },
+    {
+      "name": "Joshua Uche",
+      "amount": 600000
+    },
+    {
+      "name": "Kylen Granson",
+      "amount": 400000
+    },
+    {
+      "name": "Adoree' Jackson",
+      "amount": 400000
+    },
+    {
+      "name": "Kendall Lamm",
+      "amount": 200000
+    },
+    {
+      "name": "Kyle McCord",
+      "amount": 195924
+    },
+    {
+      "name": "Ainias Smith",
+      "amount": 167148
+    },
+    {
+      "name": "Antwaun Powell-Ryland",
+      "amount": 130710
+    },
+    {
+      "name": "Trevor Keegan",
+      "amount": 127138
+    }
+  ],
+  "PIT": [
+    {
+      "name": "Minkah Fitzpatrick",
+      "amount": 6855000
+    },
+    {
+      "name": "Jonnu Smith",
+      "amount": 3872500
+    },
+    {
+      "name": "Cameron Johnston",
+      "amount": 958334
+    },
+    {
+      "name": "Calvin Anderson",
+      "amount": 415000
+    }
+  ],
+  "SF": [
+    {
+      "name": "Javon Hargrave",
+      "amount": 16156528
+    },
+    {
+      "name": "Jauan Jennings",
+      "amount": 8030000
+    },
+    {
+      "name": "Yetur Gross-Matos",
+      "amount": 4959000
+    },
+    {
+      "name": "Maliek Collins",
+      "amount": 4074000
+    },
+    {
+      "name": "Bryce Huff",
+      "amount": 2927000
+    },
+    {
+      "name": "Jordan Elliott",
+      "amount": 1395000
+    },
+    {
+      "name": "George Odum",
+      "amount": 1216668
+    },
+    {
+      "name": "Jake Moody",
+      "amount": 214378
+    }
+  ],
+  "SEA": [
+    {
+      "name": "Sataoa Laumea",
+      "amount": 108258
+    },
+    {
+      "name": "Damien Martinez",
+      "amount": 104208
+    }
+  ],
+  "TB": [
+    {
+      "name": "Mike Evans",
+      "amount": 13074000
+    },
+    {
+      "name": "Michael Pratt",
+      "amount": 125000
+    }
+  ],
+  "TEN": [
+    {
+      "name": "Lloyd Cushenberry",
+      "amount": 9050000
+    },
+    {
+      "name": "L'Jarius Sneed",
+      "amount": 8115294
+    },
+    {
+      "name": "Arden Key",
+      "amount": 4600000
+    },
+    {
+      "name": "T'Vondre Sweat",
+      "amount": 1883614
+    },
+    {
+      "name": "Xavier Woods",
+      "amount": 1000000
+    },
+    {
+      "name": "Jarvis Brownlee",
+      "amount": 171018
+    },
+    {
+      "name": "Jha'Quan Jackson",
+      "amount": 101834
+    }
+  ],
+  "WSH": [
+    {
+      "name": "Deebo Samuel",
+      "amount": 12344424
+    },
+    {
+      "name": "Tyler Biadasz",
+      "amount": 8100000
+    },
+    {
+      "name": "Dominique Hampton",
+      "amount": 156642
+    }
+  ]
+}

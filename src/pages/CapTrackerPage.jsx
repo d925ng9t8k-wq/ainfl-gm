@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import { deadCapCharges as bengalsDeadCap } from '../data/bengalsRoster';
+import { teamDeadCaps } from '../data/teamDeadCaps';
 
 const POS_GROUPS = {
   QB: ['QB'],
@@ -35,9 +36,8 @@ function getGroup(pos) {
 
 export default function CapTrackerPage() {
   const { roster, cutPlayers, capUsed, capAvailable, totalCap, currentTeamAbbr } = useGame();
-  // Only show pre-existing dead cap charges for Bengals (we have detailed data)
-  // Other teams don't have individual dead cap charge breakdowns
-  const deadCapCharges = currentTeamAbbr === 'CIN' ? bengalsDeadCap : [];
+  // Use team-specific dead cap data; fall back to hardcoded Bengals data for CIN
+  const deadCapCharges = teamDeadCaps[currentTeamAbbr] || (currentTeamAbbr === 'CIN' ? bengalsDeadCap : []);
   const isOverCap = capUsed > totalCap;
   const capPct = Math.min((capUsed / totalCap) * 100, 100);
 
