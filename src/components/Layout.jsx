@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import AiSuggest from './AiSuggest';
+import ScenarioManager from './ScenarioManager';
 
 const navItems = [
   { path: '/', label: 'Roster', iconType: 'roster' },
@@ -383,6 +384,7 @@ export default function Layout({ children }) {
               </div>
               <div style={{ color: '#94A3B8', fontSize: 11, fontFamily: "'Oswald', 'Inter', system-ui, sans-serif", letterSpacing: '0.06em', textTransform: 'uppercase' }}>2026 Offseason Simulator</div>
             </div>
+            <ScenarioManager />
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ color: isOverCap ? '#FF2D55' : '#39FF14', fontSize: 13, fontWeight: 700, textShadow: isOverCap ? '0 0 8px rgba(255,45,85,0.3)' : '0 0 8px rgba(57,255,20,0.2)' }}>

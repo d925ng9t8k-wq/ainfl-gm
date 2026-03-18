@@ -45,6 +45,8 @@ const initialState = {
   draftComplete: false,
   draftClassAdded: false,
   currentDraftPick: 0,
+  savedScenarios: [],
+  activeScenarioName: null,
 };
 
 function computeCapUsed(roster) {
@@ -381,6 +383,48 @@ function gameReducer(state, action) {
       };
     }
 
+    case 'SAVE_SCENARIO': {
+      const { name } = action.payload;
+      const snapshot = {
+        name,
+        savedAt: new Date().toISOString(),
+        teamAbbr: state.currentTeamAbbr,
+        roster: state.roster,
+        signingHistory: state.signingHistory,
+        tradeHistory: state.tradeHistory,
+        cutPlayers: state.cutPlayers,
+        draftedPlayers: state.draftedPlayers,
+        freeAgentPool: state.freeAgentPool,
+        myPicks: state.myPicks,
+        draftComplete: state.draftComplete,
+        draftClassAdded: state.draftClassAdded,
+      };
+      const existing = state.savedScenarios.filter(s => s.name !== name);
+      const scenarios = [...existing, snapshot].slice(-5);
+      return { ...state, savedScenarios: scenarios, activeScenarioName: name };
+    }
+
+    case 'LOAD_SCENARIO': {
+      const { name } = action.payload;
+      const scenario = state.savedScenarios.find(s => s.name === name);
+      if (!scenario) return state;
+      return {
+        ...state,
+        ...scenario,
+        savedScenarios: state.savedScenarios,
+        activeScenarioName: name,
+      };
+    }
+
+    case 'DELETE_SCENARIO': {
+      const { name } = action.payload;
+      return {
+        ...state,
+        savedScenarios: state.savedScenarios.filter(s => s.name !== name),
+        activeScenarioName: state.activeScenarioName === name ? null : state.activeScenarioName,
+      };
+    }
+
     case 'RESET_GAME':
       return initialState;
 
@@ -479,6 +523,9 @@ export function GameProvider({ children }) {
   const tradeDraftPicks = (sentPicks, receivedPicks, sentPlayers, receivedPlayers, partnerTeamAbbr) => {
     dispatch({ type: 'TRADE_DRAFT_PICKS', payload: { sentPicks, receivedPicks, sentPlayers, receivedPlayers, partnerTeamAbbr } });
   };
+  const saveScenario = (name) => dispatch({ type: 'SAVE_SCENARIO', payload: { name } });
+  const loadScenario = (name) => dispatch({ type: 'LOAD_SCENARIO', payload: { name } });
+  const deleteScenario = (name) => dispatch({ type: 'DELETE_SCENARIO', payload: { name } });
 
   return (
     <GameContext.Provider value={{
@@ -500,6 +547,9 @@ export function GameProvider({ children }) {
       selectTeam,
       addDraftClass,
       tradeDraftPicks,
+      saveScenario,
+      loadScenario,
+      deleteScenario,
     }}>
       {children}
     </GameContext.Provider>
