@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
-import AiSuggest from './AiSuggest';
+import FloatingMenu from './FloatingMenu';
 import ScenarioManager from './ScenarioManager';
 
 const navItems = [
@@ -31,221 +31,9 @@ function NavIcon({ type }) {
       return (<svg {...props}><path d="M4 20h16"/><path d="M4 20V10l4-4 4 6 4-8 4 6v10"/></svg>);
     case 'season':
       return (<svg {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V10"/><path d="M14 22V10"/><path d="M5 9h14l-1 7H6L5 9z"/></svg>);
-    case 'support':
-      return (<svg {...props}><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor" stroke="none"/></svg>);
     default:
       return null;
   }
-}
-
-function FeedbackWidget() {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [feedbackType, setFeedbackType] = React.useState('feature');
-  const [message, setMessage] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [submitted, setSubmitted] = React.useState(false);
-  const [sending, setSending] = React.useState(false);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!message.trim()) return;
-    setSending(true);
-    const body = [
-      `Type: ${feedbackType}`,
-      `Message: ${message}`,
-      email ? `Email: ${email}` : 'Email: (anonymous)',
-      `Page: ${window.location.pathname}`,
-      `Device: ${/Mobile|iPhone|Android/.test(navigator.userAgent) ? 'Mobile' : 'Desktop'}`,
-      `Time: ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })} ET`,
-    ].join('\n');
-    fetch('https://ntfy.sh/ainfl-gm-visitors-jf2026', {
-      method: 'POST',
-      headers: { 'Title': `AiNFL GM Feedback: ${feedbackType}`, 'Priority': '4', 'Tags': 'memo', 'Email': 'emailfishback@gmail.com' },
-      body: body,
-    }).then(() => {
-      setSubmitted(true);
-      setSending(false);
-      setTimeout(() => { setSubmitted(false); setIsOpen(false); setMessage(''); setEmail(''); }, 3000);
-    }).catch(() => setSending(false));
-  }
-
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        style={{
-          position: 'fixed',
-          bottom: 70,
-          right: 12,
-          zIndex: 999,
-          background: 'linear-gradient(135deg, #00D4FF, #00A0CC)',
-          color: '#000',
-          border: 'none',
-          borderRadius: 24,
-          padding: '8px 14px',
-          cursor: 'pointer',
-          fontWeight: 700,
-          fontSize: 12,
-          fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-          boxShadow: '0 2px 16px rgba(0,240,255,0.3)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 5,
-        }}
-      >
-        <span style={{ fontSize: 16 }}>💬</span> Feedback
-      </button>
-    );
-  }
-
-  return (
-    <div style={{
-      position: 'fixed',
-      bottom: 70,
-      right: 12,
-      zIndex: 999,
-      width: 300,
-      maxWidth: 'calc(100vw - 24px)',
-      background: 'rgba(10, 22, 40, 0.97)',
-      border: '1px solid rgba(0,240,255,0.25)',
-      borderRadius: 14,
-      boxShadow: '0 4px 30px rgba(0,0,0,0.6), 0 0 20px rgba(0,240,255,0.1)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-      overflow: 'hidden',
-    }}>
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(0,240,255,0.12), rgba(195,0,255,0.08))',
-        padding: '12px 14px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <div>
-          <div style={{ color: '#00F0FF', fontWeight: 700, fontSize: 13, fontFamily: "'Oswald', 'Inter', system-ui, sans-serif", letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            Help Us Improve
-          </div>
-          <div style={{ color: '#94A3B8', fontSize: 10, marginTop: 1 }}>Built for the community, by the community</div>
-        </div>
-        <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: '#94A3B8', fontSize: 18, cursor: 'pointer', padding: 4 }}>✕</button>
-      </div>
-
-      {submitted ? (
-        <div style={{ padding: 24, textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 8 }}>🙏</div>
-          <div style={{ color: '#39FF14', fontWeight: 700, fontSize: 14 }}>Thank you!</div>
-          <div style={{ color: '#94A3B8', fontSize: 12, marginTop: 4 }}>Your feedback helps shape AiNFL GM</div>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} style={{ padding: 14 }}>
-          <div style={{ marginBottom: 10 }}>
-            <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 4 }}>What type of feedback?</div>
-            <div style={{ display: 'flex', gap: 4 }}>
-              {[
-                { value: 'feature', label: '💡 Feature' },
-                { value: 'bug', label: '🐛 Bug' },
-                { value: 'data', label: '📊 Data Fix' },
-                { value: 'other', label: '💬 Other' },
-              ].map(opt => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setFeedbackType(opt.value)}
-                  style={{
-                    background: feedbackType === opt.value ? 'rgba(0,240,255,0.2)' : 'rgba(30,41,59,0.6)',
-                    color: feedbackType === opt.value ? '#00F0FF' : '#94A3B8',
-                    border: feedbackType === opt.value ? '1px solid rgba(0,240,255,0.4)' : '1px solid rgba(0,240,255,0.1)',
-                    borderRadius: 6,
-                    padding: '5px 8px',
-                    fontSize: 11,
-                    cursor: 'pointer',
-                    flex: 1,
-                    minHeight: 32,
-                  }}
-                >{opt.label}</button>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: 10 }}>
-            <textarea
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              placeholder="Tell us what you'd like to see improved, report a bug, or suggest a feature..."
-              rows={4}
-              style={{
-                width: '100%',
-                background: 'rgba(30,41,59,0.6)',
-                color: '#E2E8F0',
-                border: '1px solid rgba(0,240,255,0.15)',
-                borderRadius: 8,
-                padding: 10,
-                fontSize: 13,
-                resize: 'vertical',
-                fontFamily: "'Inter', system-ui, sans-serif",
-                outline: 'none',
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: 12 }}>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Email (optional — for follow-up)"
-              style={{
-                width: '100%',
-                background: 'rgba(30,41,59,0.6)',
-                color: '#E2E8F0',
-                border: '1px solid rgba(0,240,255,0.15)',
-                borderRadius: 8,
-                padding: '8px 10px',
-                fontSize: 12,
-                fontFamily: "'Inter', system-ui, sans-serif",
-                outline: 'none',
-              }}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={!message.trim() || sending}
-            style={{
-              width: '100%',
-              background: message.trim() ? 'linear-gradient(135deg, #00D4FF, #00A0CC)' : 'rgba(30,41,59,0.6)',
-              color: message.trim() ? '#000' : '#64748b',
-              border: 'none',
-              borderRadius: 8,
-              padding: '10px 0',
-              fontWeight: 700,
-              fontSize: 13,
-              fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              cursor: message.trim() ? 'pointer' : 'not-allowed',
-              boxShadow: message.trim() ? '0 2px 12px rgba(0,240,255,0.3)' : 'none',
-            }}
-          >
-            {sending ? 'Sending...' : 'Submit Feedback'}
-          </button>
-
-          <div style={{ textAlign: 'center', marginTop: 8 }}>
-            <a
-              href="https://github.com/d925ng9t8k-wq/ainfl-gm/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#64748b', fontSize: 10, textDecoration: 'none' }}
-            >
-              Or submit detailed requests on GitHub →
-            </a>
-          </div>
-        </form>
-      )}
-    </div>
-  );
 }
 
 export default function Layout({ children }) {
@@ -559,8 +347,7 @@ export default function Layout({ children }) {
         </div>
       </nav>
 
-      <AiSuggest />
-      <FeedbackWidget />
+      <FloatingMenu />
     </div>
   );
 }

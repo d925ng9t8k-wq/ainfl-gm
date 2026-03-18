@@ -490,10 +490,11 @@ function generateSummarySuggestions(roster, signingHistory, cutPlayers, tradeHis
   return suggestions.slice(0, 3);
 }
 
-export default function AiSuggest() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function AiSuggest({ embedded, onClose }) {
+  const [isOpen, setIsOpen] = useState(!!embedded);
   const location = useLocation();
   const game = useGame();
+  const handleClose = () => { if (onClose) onClose(); else setIsOpen(false); };
 
   const {
     roster, freeAgentPool, draftBoard, capAvailable, totalCap,
@@ -520,6 +521,7 @@ export default function AiSuggest() {
   }, [location.pathname, roster, freeAgentPool, draftBoard, capAvailable, totalCap, draftStarted, draftComplete, draftedPlayers, myPicks, currentDraftPick, signingHistory, cutPlayers, tradeHistory]);
 
   if (!isOpen) {
+    if (embedded) return null;
     return (
       <button
         onClick={() => setIsOpen(true)}
@@ -555,9 +557,10 @@ export default function AiSuggest() {
 
   return (
     <div style={{
-      position: 'fixed',
-      bottom: 70,
-      left: 12,
+      position: embedded ? 'absolute' : 'fixed',
+      bottom: embedded ? 52 : 70,
+      right: embedded ? 0 : undefined,
+      left: embedded ? undefined : 12,
       zIndex: 999,
       width: 340,
       maxWidth: 'calc(100vw - 24px)',
@@ -609,7 +612,7 @@ export default function AiSuggest() {
           </div>
         </div>
         <button
-          onClick={() => setIsOpen(false)}
+          onClick={handleClose}
           style={{
             background: 'none',
             border: 'none',
