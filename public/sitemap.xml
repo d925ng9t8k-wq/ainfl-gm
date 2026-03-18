@@ -1,9 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
   <url><loc>https://ainflgm.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://ainflgm.com/cap</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/fa</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/trades</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/draft</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ainflgm.com/summary</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/season</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- All 32 NFL team pages -->
+  <url><loc>https://ainflgm.com/cardinals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/falcons</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/ravens</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/bills</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/panthers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/bears</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/bengals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/browns</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/cowboys</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/broncos</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/lions</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/packers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/texans</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/colts</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/jaguars</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/chiefs</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/raiders</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/chargers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/rams</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/dolphins</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/vikings</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/patriots</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/saints</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/giants</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/jets</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/eagles</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/steelers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/49ers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/seahawks</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/buccaneers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/titans</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/commanders</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
 </urlset>

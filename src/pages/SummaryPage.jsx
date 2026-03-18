@@ -2,6 +2,7 @@ import React, { useRef, useState, useMemo } from 'react';
 import { toPng } from 'html-to-image';
 import { useGame } from '../context/GameContext';
 import { computeBaselineGrade, preseasonMoves } from '../data/offseasonMoves';
+import Leaderboard, { submitToLeaderboard } from '../components/Leaderboard';
 
 function gradeFromScore(score) {
   if (score >= 95) return 'A+';
@@ -183,6 +184,10 @@ export default function SummaryPage() {
   const summaryRef = useRef(null);
   const [exporting, setExporting] = useState(false);
   const [shareLink, setShareLink] = useState('');
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [submitUsername, setSubmitUsername] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   const accentColor = selectedTeamColors?.primaryColor || '#FB4F14';
 
@@ -256,6 +261,19 @@ export default function SummaryPage() {
     window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
   }
 
+  function handleSubmitToLeaderboard() {
+    submitToLeaderboard({
+      username: submitUsername.trim() || 'Anonymous GM',
+      team: currentTeamAbbr,
+      overallGrade: grades.overall.grade,
+      draftGrade: grades.draft.grade,
+      faGrade: grades.fa.grade,
+    });
+    setSubmitted(true);
+    setShowSubmitModal(false);
+    setSubmitUsername('');
+  }
+
   // Position group cap breakdown
   const posGroupCap = {};
   roster.forEach(p => {
@@ -326,6 +344,32 @@ export default function SummaryPage() {
               </div>
             );
           })}
+        </div>
+
+        {/* Leaderboard Actions */}
+        <div style={{
+          display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}>
+          <button onClick={() => setShowSubmitModal(true)} disabled={submitted} style={{
+            background: submitted ? '#1e293b' : 'linear-gradient(135deg, #f59e0b, #d97706)',
+            color: submitted ? '#64748b' : '#000', border: 'none', borderRadius: 10,
+            padding: '10px 20px', cursor: submitted ? 'default' : 'pointer',
+            fontWeight: 800, fontSize: 14, letterSpacing: 0.3,
+            boxShadow: submitted ? 'none' : '0 0 20px rgba(245,158,11,0.3)',
+            transition: 'all 0.2s',
+          }}>
+            {submitted ? 'Submitted!' : 'Submit to Leaderboard'}
+          </button>
+          <button onClick={() => setShowLeaderboard(true)} style={{
+            background: '#0f172a', color: '#00f0ff',
+            border: '1px solid rgba(0,240,255,0.3)', borderRadius: 10,
+            padding: '10px 20px', cursor: 'pointer',
+            fontWeight: 700, fontSize: 14,
+            transition: 'all 0.2s',
+          }}>
+            View Leaderboard
+          </button>
         </div>
 
         {/* Baseline Offseason Report */}
@@ -639,6 +683,87 @@ export default function SummaryPage() {
           </div>
         </div>
       </div>
+
+      {/* Submit Modal */}
+      {showSubmitModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.85)', zIndex: 9998,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 16,
+        }} onClick={(e) => { if (e.target === e.currentTarget) setShowSubmitModal(false); }}>
+          <div style={{
+            background: '#0a0f1e', border: '1px solid rgba(0,240,255,0.2)',
+            borderRadius: 16, padding: 32, width: '100%', maxWidth: 420,
+          }}>
+            <h3 style={{ margin: '0 0 8px', color: '#fff', fontSize: 18, fontWeight: 800 }}>
+              Submit to Leaderboard
+            </h3>
+            <div style={{ color: '#64748b', fontSize: 12, marginBottom: 20 }}>
+              Share your {currentTeamAbbr} offseason grade with the community
+            </div>
+
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: 16 }}>
+                {[
+                  { label: 'Overall', grade: grades.overall.grade },
+                  { label: 'Draft', grade: grades.draft.grade },
+                  { label: 'FA', grade: grades.fa.grade },
+                ].map(({ label, grade }) => (
+                  <div key={label} style={{ textAlign: 'center' }}>
+                    <div style={{ color: '#94A3B8', fontSize: 11, marginBottom: 4 }}>{label}</div>
+                    <div style={{
+                      color: gradeColor(grade), fontSize: 28, fontWeight: 900,
+                    }}>{grade}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ color: '#94A3B8', fontSize: 12, display: 'block', marginBottom: 6 }}>
+                Username (optional)
+              </label>
+              <input
+                type="text"
+                value={submitUsername}
+                onChange={e => setSubmitUsername(e.target.value)}
+                placeholder="Anonymous GM"
+                maxLength={24}
+                style={{
+                  width: '100%', background: '#0f172a', color: '#fff',
+                  border: '1px solid rgba(0,240,255,0.2)', borderRadius: 8,
+                  padding: '10px 14px', fontSize: 14, outline: 'none',
+                  boxSizing: 'border-box',
+                }}
+                onKeyDown={e => { if (e.key === 'Enter') handleSubmitToLeaderboard(); }}
+                autoFocus
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={handleSubmitToLeaderboard} style={{
+                flex: 1, background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                color: '#000', border: 'none', borderRadius: 10,
+                padding: '12px', cursor: 'pointer', fontWeight: 800, fontSize: 14,
+              }}>Submit</button>
+              <button onClick={() => setShowSubmitModal(false)} style={{
+                flex: 1, background: '#1e293b', color: '#94A3B8',
+                border: '1px solid #334155', borderRadius: 10,
+                padding: '12px', cursor: 'pointer', fontWeight: 600, fontSize: 14,
+              }}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Leaderboard Modal */}
+      {showLeaderboard && (
+        <Leaderboard
+          onClose={() => setShowLeaderboard(false)}
+          accentColor={accentColor}
+        />
+      )}
     </div>
   );
 }
