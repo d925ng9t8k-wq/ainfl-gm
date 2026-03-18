@@ -40,20 +40,41 @@
   <body>
     <div id="root"></div>
     <script>
-      // Aggressive cache nuke
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(r => r.forEach(reg => reg.unregister()));
-        caches.keys().then(k => k.forEach(name => caches.delete(name)));
-      }
-      // Force reload if on old version
-      var CURRENT_BUILD = '20260318v20';
-      if (localStorage.getItem('_build') !== CURRENT_BUILD) {
-        localStorage.clear();
-        localStorage.setItem('_build', CURRENT_BUILD);
-        if (!window.location.search.includes('fresh')) {
-          window.location.replace(window.location.pathname + '?fresh=' + Date.now());
+      // Smart cache management
+      (function() {
+        // Unregister old service workers
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(r) { r.forEach(function(reg) { reg.unregister(); }); });
+          caches.keys().then(function(k) { k.forEach(function(name) { caches.delete(name); }); });
         }
-      }
+
+        // Version-based cache busting
+        var BUILD = '20260318v20';
+        var stored = localStorage.getItem('_build');
+        if (stored && stored !== BUILD) {
+          // Version mismatch — need to load new JS bundle
+          localStorage.clear();
+          localStorage.setItem('_build', BUILD);
+          // Delete all browser caches via Cache API
+          if (window.caches) {
+            caches.keys().then(function(names) {
+              return Promise.all(names.map(function(name) { return caches.delete(name); }));
+            }).then(function() {
+              // Force a true hard reload bypassing HTTP cache
+              window.location.href = window.location.pathname + '?v=' + BUILD + '&t=' + Date.now();
+            });
+          } else {
+            window.location.href = window.location.pathname + '?v=' + BUILD + '&t=' + Date.now();
+          }
+          // Prevent the rest of the page from loading with old JS
+          document.write('<html><body style="background:#000814;color:#00F0FF;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh"><div style="text-align:center"><h2>Updating AiNFL GM...</h2><p>Loading latest data</p></div></body></html>');
+          document.close();
+          return;
+        }
+        if (!stored) {
+          localStorage.setItem('_build', BUILD);
+        }
+      })();
     </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>
