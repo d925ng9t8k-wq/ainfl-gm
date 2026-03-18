@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="icon" type="image/svg+xml" href="/bengals-icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#FB4F14" />
@@ -37,10 +40,19 @@
   <body>
     <div id="root"></div>
     <script>
-      // One-time service worker + cache nuke for theme update
+      // Aggressive cache nuke
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(r => r.forEach(reg => reg.unregister()));
         caches.keys().then(k => k.forEach(name => caches.delete(name)));
+      }
+      // Force reload if on old version
+      var CURRENT_BUILD = '20260318v1';
+      if (localStorage.getItem('_build') !== CURRENT_BUILD) {
+        localStorage.clear();
+        localStorage.setItem('_build', CURRENT_BUILD);
+        if (!window.location.search.includes('fresh')) {
+          window.location.replace(window.location.pathname + '?fresh=' + Date.now());
+        }
       }
     </script>
     <script type="module" src="/src/main.jsx"></script>
