@@ -1,65 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import { allRosters } from '../data/allRosters';
-
-// Simplified trade value chart (based on Jimmy Johnson chart, scaled)
-const PICK_VALUES = {
-  '1-1': 3000, '1-2': 2600, '1-3': 2200, '1-4': 1800, '1-5': 1700,
-  '1-6': 1600, '1-7': 1500, '1-8': 1400, '1-9': 1350, '1-10': 1300,
-  '1-11': 1250, '1-12': 1200, '1-13': 1150, '1-14': 1100, '1-15': 1050,
-  '1-16': 1000, '1-17': 950, '1-18': 900, '1-19': 850, '1-20': 800,
-  '1-21': 750, '1-22': 700, '1-23': 650, '1-24': 600, '1-25': 550,
-  '1-26': 500, '1-27': 480, '1-28': 460, '1-29': 440, '1-30': 420,
-  '1-31': 400, '1-32': 380,
-  '2-1': 360, '2-2': 340, '2-3': 320, '2-4': 300, '2-5': 290,
-  '2-10': 260, '2-17': 230, '2-20': 210, '2-32': 180,
-  '3-1': 170, '3-17': 130, '3-32': 100,
-  '4-1': 95, '4-17': 75, '4-32': 60,
-  '5-1': 55, '5-17': 45, '5-32': 35,
-  '6-1': 30, '6-17': 22, '6-32': 16,
-  '7-1': 15, '7-17': 10, '7-32': 6,
-};
-
-function getPickValue(round, pick) {
-  const key = `${round}-${pick}`;
-  if (PICK_VALUES[key]) return PICK_VALUES[key];
-  // Interpolate roughly
-  const base = [0, 3000, 360, 170, 95, 55, 30, 15][round] || 10;
-  return Math.max(5, base - (pick - 1) * (base * 0.55 / 32));
-}
-
-function getPlayerValue(player) {
-  const cap = player.capHit || 1;
-  const age = player.age || 27;
-
-  // Base value scales with cap hit but with diminishing returns at high salaries
-  // $1M player ~ 30 pts, $10M ~ 200 pts, $25M ~ 400 pts, $50M ~ 600 pts
-  const baseValue = 80 * Math.sqrt(cap);
-
-  // Age curve: peak value at 25-27, declining after
-  let ageMult = 1.0;
-  if (age <= 24) ageMult = 0.9; // young but unproven
-  else if (age <= 27) ageMult = 1.1; // prime
-  else if (age <= 29) ageMult = 1.0;
-  else if (age <= 31) ageMult = 0.8;
-  else if (age <= 33) ageMult = 0.55;
-  else ageMult = 0.3; // 34+
-
-  // Premium positions get a boost
-  const pos = (player.position || '').toUpperCase();
-  let posMult = 1.0;
-  if (pos === 'QB') posMult = 1.5;
-  else if (['DE', 'EDGE', 'DT'].includes(pos)) posMult = 1.15;
-  else if (['OT', 'LT', 'RT'].includes(pos)) posMult = 1.1;
-  else if (pos === 'CB') posMult = 1.1;
-  else if (['WR', 'TE'].includes(pos)) posMult = 1.05;
-  else if (['RB', 'K', 'P', 'LS'].includes(pos)) posMult = 0.75;
-
-  // Years remaining boost (more team control = more valuable)
-  const yrsBoost = 1 + (player.yearsRemaining || 0) * 0.08;
-
-  return Math.max(Math.round(baseValue * ageMult * posMult * yrsBoost), 5);
-}
+import { getPickValue, getPlayerValue, getFuturePickValue } from '../utils/tradeValues';
 
 function getTeamPlayers(teamAbbr) {
   const teamData = allRosters[teamAbbr];
@@ -192,13 +134,7 @@ export default function TradePage() {
     );
   }
 
-  // Future pick value: estimate based on mid-round 2026 value with discount
-  function getFuturePickValue(round, year) {
-    // Use approximate mid-round 2026 pick value
-    const base2026 = [0, 1000, 270, 135, 78, 45, 23, 11][round] || 10;
-    const discount = year === 2027 ? 0.85 : 0.70;
-    return Math.round(base2026 * discount);
-  }
+
 
   function toggleMyFuturePick(round, year) {
     const key = `${year}-R${round}`;

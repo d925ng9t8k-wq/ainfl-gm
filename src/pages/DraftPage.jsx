@@ -2,45 +2,7 @@ import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { useGame } from '../context/GameContext';
 import { allRosters } from '../data/allRosters';
 
-// Jimmy Johnson trade value chart approximation
-function tradeValue(pickNumber) {
-  return 800 * Math.pow(0.988, pickNumber) + 20;
-}
-
-// Estimate trade value of a player using a more realistic NFL valuation
-// Based roughly on how teams value players: contract, age, positional value
-function playerTradeValue(player) {
-  const cap = player.capHit || 1;
-  const age = player.age || 27;
-
-  // Base value scales with cap hit but with diminishing returns at high salaries
-  // $1M player ≈ 30 pts, $10M ≈ 200 pts, $25M ≈ 400 pts, $50M ≈ 600 pts
-  const baseValue = 80 * Math.sqrt(cap);
-
-  // Age curve: peak value at 25-27, declining after
-  let ageMult = 1.0;
-  if (age <= 24) ageMult = 0.9; // young but unproven
-  else if (age <= 27) ageMult = 1.1; // prime
-  else if (age <= 29) ageMult = 1.0;
-  else if (age <= 31) ageMult = 0.8;
-  else if (age <= 33) ageMult = 0.55;
-  else ageMult = 0.3; // 34+
-
-  // Premium positions get a boost
-  const pos = (player.position || '').toUpperCase();
-  let posMult = 1.0;
-  if (pos === 'QB') posMult = 1.5;
-  else if (['DE', 'EDGE', 'DT'].includes(pos)) posMult = 1.15;
-  else if (['OT', 'LT', 'RT'].includes(pos)) posMult = 1.1;
-  else if (pos === 'CB') posMult = 1.1;
-  else if (['WR', 'TE'].includes(pos)) posMult = 1.05;
-  else if (['RB', 'K', 'P', 'LS'].includes(pos)) posMult = 0.75;
-
-  // Years remaining boost (more team control = more valuable)
-  const yrsBoost = 1 + (player.yearsRemaining || 0) * 0.08;
-
-  return Math.max(Math.round(baseValue * ageMult * posMult * yrsBoost), 5);
-}
+import { getPickValueByOverall as tradeValue, getPlayerValue as playerTradeValue } from '../utils/tradeValues';
 
 // Build full pick order from all teams
 function buildPickOrder(allTeams) {
