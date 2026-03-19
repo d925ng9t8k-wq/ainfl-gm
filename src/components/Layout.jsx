@@ -226,8 +226,8 @@ export default function Layout({ children }) {
           position: 'absolute',
           inset: 0,
           backgroundImage: 'url(/nfl-hero.jpg)',
-          backgroundSize: '110%',
-          backgroundPosition: 'center 5%',
+          backgroundSize: '100%',
+          backgroundPosition: 'center 15%',
           filter: 'brightness(0.7) saturate(0.9)',
           imageRendering: 'auto',
         }} />
