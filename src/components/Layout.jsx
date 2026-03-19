@@ -227,7 +227,7 @@ export default function Layout({ children }) {
           inset: 0,
           backgroundImage: 'url(/nfl-hero.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 20%',
+          backgroundPosition: 'center 40%',
           filter: 'brightness(0.7) saturate(0.9)',
           imageRendering: 'auto',
         }} />
