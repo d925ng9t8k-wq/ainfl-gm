@@ -211,18 +211,62 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      {/* Ad Slot: Leaderboard below nav — hidden until AdSense is configured */}
-      {/* <div className="ad-slot-leaderboard" style={{
-        maxWidth: 1200, margin: '0 auto', padding: '8px 16px', display: 'flex', justifyContent: 'center',
+      {/* Hero Banner */}
+      <div className="hero-banner" style={{
+        position: 'relative',
+        width: '100%',
+        height: 120,
+        overflow: 'hidden',
+        borderBottom: '1px solid rgba(0,240,255,0.15)',
       }}>
         <div style={{
-          width: '100%', maxWidth: 728, height: 90, background: 'rgba(15,23,42,0.85)',
-          border: '1px solid rgba(0,240,255,0.1)', borderRadius: 6, display: 'flex',
-          alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 11,
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'url(/nfl-hero.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 30%',
+          filter: 'brightness(0.5) saturate(0.7)',
+        }} />
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(90deg, rgba(0,8,20,0.85) 0%, rgba(0,8,20,0.4) 50%, rgba(0,8,20,0.85) 100%)',
+        }} />
+        <div style={{
+          position: 'relative',
+          height: '100%',
+          maxWidth: 1200,
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 16px',
         }}>
-          <span>Ad</span>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: 'clamp(14px, 3vw, 20px)',
+              fontWeight: 800,
+              fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#fff',
+              textShadow: '0 2px 12px rgba(0,0,0,0.8)',
+            }}>
+              Be The GM
+            </div>
+            <div style={{
+              fontSize: 'clamp(10px, 2vw, 12px)',
+              color: 'rgba(148,163,184,0.9)',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              marginTop: 4,
+              fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+            }}>
+              Manage Any Team &bull; Real Cap Data &bull; Full Mock Draft
+            </div>
+          </div>
         </div>
-      </div> */}
+      </div>
 
       {/* Main Content */}
       <main style={{

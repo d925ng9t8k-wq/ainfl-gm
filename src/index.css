@@ -446,6 +446,10 @@ main {
   .cap-progress-bar {
     display: none !important;
   }
+
+  .hero-banner {
+    height: 80px !important;
+  }
 }
 
 @media (max-width: 480px) {
