@@ -215,22 +215,22 @@ export default function Layout({ children }) {
       <div className="hero-banner" style={{
         position: 'relative',
         width: '100%',
-        height: 120,
+        height: 160,
         overflow: 'hidden',
-        borderBottom: '1px solid rgba(0,240,255,0.15)',
+        borderBottom: '2px solid rgba(0,240,255,0.25)',
       }}>
         <div style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: 'url(/nfl-hero.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 30%',
-          filter: 'brightness(0.5) saturate(0.7)',
+          backgroundPosition: 'center 15%',
+          filter: 'brightness(0.65) saturate(0.85)',
         }} />
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(90deg, rgba(0,8,20,0.85) 0%, rgba(0,8,20,0.4) 50%, rgba(0,8,20,0.85) 100%)',
+          background: 'linear-gradient(90deg, rgba(0,8,20,0.7) 0%, rgba(0,8,20,0.15) 50%, rgba(0,8,20,0.7) 100%)',
         }} />
         <div style={{
           position: 'relative',
@@ -238,19 +238,19 @@ export default function Layout({ children }) {
           maxWidth: 1200,
           margin: '0 auto',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
-          padding: '0 16px',
+          padding: '0 16px 14px',
         }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{
-              fontSize: 'clamp(14px, 3vw, 20px)',
-              fontWeight: 800,
+              fontSize: 'clamp(20px, 4vw, 30px)',
+              fontWeight: 900,
               fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
-              letterSpacing: '0.12em',
+              letterSpacing: '0.14em',
               textTransform: 'uppercase',
               color: '#fff',
-              textShadow: '0 2px 12px rgba(0,0,0,0.8)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 30px rgba(0,240,255,0.3)',
             }}>
               Be The GM
             </div>
