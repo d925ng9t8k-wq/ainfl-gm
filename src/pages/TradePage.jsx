@@ -231,14 +231,13 @@ export default function TradePage() {
       return;
     }
 
-    // Trade fairness check: values must be within 15% of each other
-    const maxVal = Math.max(myValue, theirValue);
-    const minVal = Math.min(myValue, theirValue);
-    const pctDiff = maxVal > 0 ? ((maxVal - minVal) / maxVal) * 100 : 0;
-    if (pctDiff > 15 && !forceTrade) {
-      const side = myValue > theirValue ? 'giving up more' : 'receiving more';
-      setFeedback(`Trade declined — values are ${pctDiff.toFixed(0)}% apart (must be within 15%). You are ${side} value (${myValue} pts vs ${theirValue} pts). Enable "Force Trade" to override.`);
-      return;
+    // Trade fairness check: user cannot receive more than 15% extra value
+    if (theirValue > myValue && myValue > 0) {
+      const pctOver = ((theirValue - myValue) / myValue) * 100;
+      if (pctOver > 15 && !forceTrade) {
+        setFeedback(`Trade declined — you're receiving ${pctOver.toFixed(0)}% more value than you're giving up (${theirValue} pts vs ${myValue} pts). The other GM wouldn't accept this. Enable "Force Trade" to override.`);
+        return;
+      }
     }
 
     tradePlayer(myOfferPlayers, myOfferPicks, theirOfferPlayers, theirOfferPicks, targetTeam.name);
