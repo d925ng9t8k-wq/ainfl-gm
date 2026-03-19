@@ -448,7 +448,8 @@ main {
   }
 
   .hero-banner {
-    height: 110px !important;
+    height: 120px !important;
+    border-radius: 0 !important;
   }
 }
 

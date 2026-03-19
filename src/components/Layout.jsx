@@ -215,22 +215,26 @@ export default function Layout({ children }) {
       <div className="hero-banner" style={{
         position: 'relative',
         width: '100%',
-        height: 160,
+        maxWidth: 1200,
+        margin: '0 auto',
+        height: 180,
         overflow: 'hidden',
         borderBottom: '2px solid rgba(0,240,255,0.25)',
+        borderRadius: '0 0 12px 12px',
       }}>
         <div style={{
           position: 'absolute',
           inset: 0,
           backgroundImage: 'url(/nfl-hero.jpg)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center 15%',
-          filter: 'brightness(0.65) saturate(0.85)',
+          backgroundPosition: 'center 20%',
+          filter: 'brightness(0.7) saturate(0.9)',
+          imageRendering: 'auto',
         }} />
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(90deg, rgba(0,8,20,0.7) 0%, rgba(0,8,20,0.15) 50%, rgba(0,8,20,0.7) 100%)',
+          background: 'linear-gradient(180deg, rgba(0,8,20,0.3) 0%, rgba(0,8,20,0.1) 40%, rgba(0,8,20,0.6) 100%)',
         }} />
         <div style={{
           position: 'relative',
