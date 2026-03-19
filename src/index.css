@@ -418,6 +418,13 @@ main {
 }
 
 /* ===== Media Queries (preserved) ===== */
+/* Show landscape hint only in portrait on small screens */
+@media (max-width: 768px) and (orientation: portrait) {
+  .landscape-hint {
+    display: flex !important;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     font-size: 13px;

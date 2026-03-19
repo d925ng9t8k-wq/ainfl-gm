@@ -677,7 +677,7 @@ export default function DraftPage() {
   function renderFullBoard() {
     const rounds = [1, 2, 3, 4, 5, 6, 7];
     return (
-      <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 200px)' }}>
+      <div style={{ overflowX: 'auto', overflowY: 'auto', maxHeight: 'calc(100vh - 200px)', WebkitOverflowScrolling: 'touch' }}>
         {rounds.map(r => {
           const roundPicks = fullPickOrder.filter(p => getRoundForOverall(p.overall) === r);
           return (
@@ -1710,7 +1710,7 @@ export default function DraftPage() {
           ref={draftBoardRef}
           style={{
             background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 10, padding: 10,
-            overflowY: 'auto', maxHeight: 'calc(100vh - 160px)',
+            overflowX: 'auto', overflowY: 'auto', maxHeight: 'calc(100vh - 160px)', WebkitOverflowScrolling: 'touch',
           }}
         >
           {viewMode === 'fullBoard' ? (

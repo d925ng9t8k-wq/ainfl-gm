@@ -37,6 +37,7 @@ function NavIcon({ type }) {
 }
 
 export default function Layout({ children }) {
+  const [hintDismissed, setHintDismissed] = React.useState(false);
   const { capUsed, totalCap, capAvailable, allTeams, currentTeamAbbr, selectedTeamColors, selectTeam } = useGame();
   const capPct = Math.min((capUsed / totalCap) * 100, 100);
   const isOverCap = capUsed > totalCap;
@@ -51,6 +52,31 @@ export default function Layout({ children }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
+
+      {/* Landscape suggestion for mobile portrait */}
+      {!hintDismissed && (
+        <div className="landscape-hint" style={{
+          display: 'none',
+          background: 'linear-gradient(90deg, rgba(0,240,255,0.08), rgba(251,79,20,0.08))',
+          border: '1px solid rgba(0,240,255,0.15)',
+          padding: '6px 16px',
+          fontSize: 11,
+          color: '#94A3B8',
+          fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+          letterSpacing: '0.04em',
+          gap: 6,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <span style={{ flex: 1, textAlign: 'center' }}>
+            <span style={{ fontSize: 14 }}>{'\uD83D\uDD04'}</span> For the best experience, rotate your phone to landscape
+          </span>
+          <button
+            onClick={() => setHintDismissed(true)}
+            style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 16, cursor: 'pointer', padding: '0 4px', lineHeight: 1 }}
+          >{'\u2715'}</button>
+        </div>
+      )}
 
       {/* Top Nav */}
       <header style={{
