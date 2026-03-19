@@ -301,14 +301,12 @@ export default function Layout({ children }) {
       {/* Main Content */}
       <main style={{
         flex: 1,
-        padding: '16px',
-        paddingLeft: '24px',
+        padding: '16px 16px 16px 24px',
         maxWidth: 1200,
         margin: '0 auto',
         width: '100%',
         boxSizing: 'border-box',
         position: 'relative',
-        borderLeft: '1px solid rgba(0,240,255,0.08)',
       }}>
         {/* Robot sentinel - visible on the left side, overlapping content edge */}
         <div className="robot-watermark" style={{

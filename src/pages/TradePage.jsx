@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
 import { allRosters } from '../data/allRosters';
 import { getPickValue, getPlayerValue, getFuturePickValue } from '../utils/tradeValues';
+import PredictionMarkets from '../components/PredictionMarkets';
 
 function getTeamPlayers(teamAbbr) {
   const teamData = allRosters[teamAbbr];
@@ -570,6 +571,8 @@ export default function TradePage() {
           ))}
         </div>
       )}
+
+      <PredictionMarkets maxMarkets={3} />
     </div>
   );
 }

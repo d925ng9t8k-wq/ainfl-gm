@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useGame } from '../context/GameContext';
+import PredictionMarkets from '../components/PredictionMarkets';
 
 const NEEDS_MAP = {
   QB: (roster) => roster.filter(p => p.position === 'QB').length < 2 ? 'Need' : 'Set',
@@ -428,6 +429,8 @@ export default function FreeAgencyPage() {
           capAvailable={capAvailable}
         />
       )}
+
+      <PredictionMarkets maxMarkets={4} />
     </div>
   );
 }

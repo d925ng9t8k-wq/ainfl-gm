@@ -425,6 +425,13 @@ main {
   }
 }
 
+/* Left accent border on main content area (desktop only, pairs with robot watermark) */
+@media (min-width: 769px) {
+  main {
+    border-left: 1px solid rgba(0,240,255,0.08);
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     font-size: 13px;
