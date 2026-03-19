@@ -133,6 +133,8 @@ export default function TradePage() {
   const [myFuturePicks, setMyFuturePicks] = useState([]);
   const [theirFuturePicks, setTheirFuturePicks] = useState([]);
   const [forceTrade, setForceTrade] = useState(false);
+  const [mySearch, setMySearch] = useState('');
+  const [theirSearch, setTheirSearch] = useState('');
 
   const otherTeams = allTeams.filter(t => t.abbreviation !== currentTeamAbbr);
   const targetTeam = allTeams.find(t => t.id === Number(selectedTeam));
@@ -273,7 +275,7 @@ export default function TradePage() {
         <label style={{ display: 'block', color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Select Trade Partner</label>
         <select
           value={selectedTeam}
-          onChange={e => { setSelectedTeam(e.target.value); setTheirOfferPlayers([]); setTheirOfferPicks([]); setTheirFuturePicks([]); }}
+          onChange={e => { setSelectedTeam(e.target.value); setTheirOfferPlayers([]); setTheirOfferPicks([]); setTheirFuturePicks([]); setTheirSearch(''); }}
           style={{ background: '#1e293b', color: '#fff', border: '1px solid rgba(0,240,255,0.18)', borderRadius: 8, padding: '8px 12px', fontSize: 14, width: '100%', maxWidth: 300 }}
         >
           <option value="">-- Select Team --</option>
@@ -295,8 +297,27 @@ export default function TradePage() {
           <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>My Offers ({currentTeamLabel})</h3>
           <div style={{ marginBottom: 8 }}>
             <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Players</div>
+            <input
+              type="text"
+              value={mySearch}
+              onChange={e => setMySearch(e.target.value)}
+              placeholder="Search players..."
+              style={{
+                width: '100%',
+                background: 'rgba(30,41,59,0.6)',
+                color: '#E2E8F0',
+                border: '1px solid rgba(0,240,255,0.15)',
+                borderRadius: 8,
+                padding: '6px 10px',
+                fontSize: 12,
+                fontFamily: "'Inter', system-ui, sans-serif",
+                outline: 'none',
+                marginBottom: 6,
+                boxSizing: 'border-box',
+              }}
+            />
             <div style={{ maxHeight: 250, overflowY: 'auto' }}>
-              {[...roster].sort((a, b) => b.capHit - a.capHit).map(p => {
+              {[...roster].filter(p => !mySearch || p.name.toLowerCase().includes(mySearch.toLowerCase())).sort((a, b) => b.capHit - a.capHit).map(p => {
                 const selected = !!myOfferPlayers.find(x => x.id === p.id);
                 return (
                   <div
@@ -381,8 +402,27 @@ export default function TradePage() {
             <>
               <div style={{ marginBottom: 8 }}>
                 <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 6 }}>Their Players</div>
+                <input
+                  type="text"
+                  value={theirSearch}
+                  onChange={e => setTheirSearch(e.target.value)}
+                  placeholder="Search players..."
+                  style={{
+                    width: '100%',
+                    background: 'rgba(30,41,59,0.6)',
+                    color: '#E2E8F0',
+                    border: '1px solid rgba(0,240,255,0.15)',
+                    borderRadius: 8,
+                    padding: '6px 10px',
+                    fontSize: 12,
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    outline: 'none',
+                    marginBottom: 6,
+                    boxSizing: 'border-box',
+                  }}
+                />
                 <div style={{ maxHeight: 250, overflowY: 'auto' }}>
-                  {[...targetTeamPlayers].sort((a, b) => b.capHit - a.capHit).map(p => {
+                  {[...targetTeamPlayers].filter(p => !theirSearch || p.name.toLowerCase().includes(theirSearch.toLowerCase())).sort((a, b) => b.capHit - a.capHit).map(p => {
                     const selected = !!theirOfferPlayers.find(x => x.id === p.id);
                     return (
                       <div

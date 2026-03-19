@@ -25,6 +25,7 @@ export default function RosterPage() {
   const [confirmCut, setConfirmCut] = useState(null);
   const [confirmRestructure, setConfirmRestructure] = useState(null);
   const [extendingPlayer, setExtendingPlayer] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   function isExtensionEligible(player) {
     // Player must be on the roster (has a cap hit)
@@ -41,7 +42,9 @@ export default function RosterPage() {
     return true;
   }
 
-  const filtered = roster.filter(p => {
+  const filteredRoster = roster.filter(p => !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  const filtered = filteredRoster.filter(p => {
     if (filterPos === 'All') return true;
     return posGroup(p.position) === filterPos;
   });
@@ -101,6 +104,27 @@ export default function RosterPage() {
           </button>
         ))}
       </div>
+
+      {/* Search */}
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={e => setSearchQuery(e.target.value)}
+        placeholder="Search players..."
+        style={{
+          width: '100%',
+          maxWidth: 300,
+          background: 'rgba(30,41,59,0.6)',
+          color: '#E2E8F0',
+          border: '1px solid rgba(0,240,255,0.15)',
+          borderRadius: 8,
+          padding: '8px 12px',
+          fontSize: 13,
+          fontFamily: "'Inter', system-ui, sans-serif",
+          outline: 'none',
+          marginBottom: 12,
+        }}
+      />
 
       {/* Table */}
       <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid rgba(0,240,255,0.12)', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>

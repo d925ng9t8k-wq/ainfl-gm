@@ -186,6 +186,7 @@ export default function DraftPage() {
   const [customTradeRecvPicks, setCustomTradeRecvPicks] = useState([]);
   const [customTradeRecvPlayers, setCustomTradeRecvPlayers] = useState([]);
   const [customTradeForce, setCustomTradeForce] = useState(false);
+  const [prospectSearch, setProspectSearch] = useState('');
 
   const draftBoardRef = useRef(null);
   const currentPickRef = useRef(null);
@@ -249,8 +250,11 @@ export default function DraftPage() {
         return false;
       });
     }
+    if (prospectSearch.trim() !== '') {
+      list = list.filter(p => p.name.toLowerCase().includes(prospectSearch.toLowerCase()));
+    }
     return list;
-  }, [draftBoard, filterPos]);
+  }, [draftBoard, filterPos, prospectSearch]);
 
   const positions = useMemo(() => {
     const set = new Set(draftBoard.map(p => p.position));
@@ -1872,6 +1876,24 @@ export default function DraftPage() {
               {/* Position Filter + Trade Down */}
               <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    value={prospectSearch}
+                    onChange={e => setProspectSearch(e.target.value)}
+                    placeholder="Search prospects..."
+                    style={{
+                      flex: 1,
+                      maxWidth: 220,
+                      background: 'rgba(30,41,59,0.6)',
+                      color: '#E2E8F0',
+                      border: '1px solid rgba(0,240,255,0.15)',
+                      borderRadius: 8,
+                      padding: '8px 12px',
+                      fontSize: 12,
+                      fontFamily: "'Inter', system-ui, sans-serif",
+                      outline: 'none',
+                    }}
+                  />
                   <span style={{ color: '#94A3B8', fontSize: 12 }}>Filter:</span>
                   <select
                     value={filterPos}

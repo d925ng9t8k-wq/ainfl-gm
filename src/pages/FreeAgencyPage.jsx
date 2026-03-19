@@ -239,6 +239,7 @@ export default function FreeAgencyPage() {
   const [sortBy, setSortBy] = useState('priceDesc');
   const [signingPlayer, setSigningPlayer] = useState(null);
   const [signedFeedback, setSignedFeedback] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Build available positions from actual data for reliable filtering
   const availablePositions = useMemo(() => {
@@ -248,6 +249,10 @@ export default function FreeAgencyPage() {
 
   const filtered = useMemo(() => {
     let list = freeAgentPool;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(p => p.name.toLowerCase().includes(q));
+    }
     if (filterPos !== 'All') {
       // Match exact position or position group
       list = list.filter(p => {
@@ -268,7 +273,7 @@ export default function FreeAgencyPage() {
       return 0;
     });
     return list;
-  }, [freeAgentPool, filterPos, sortBy]);
+  }, [freeAgentPool, filterPos, sortBy, searchQuery]);
 
   function handleSign(years, aav, details) {
     signPlayer(signingPlayer, years, aav, details);
@@ -312,6 +317,24 @@ export default function FreeAgencyPage() {
             >{pos}</button>
           ))}
         </div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Search free agents..."
+          style={{
+            width: '100%',
+            maxWidth: 300,
+            background: 'rgba(30,41,59,0.6)',
+            color: '#E2E8F0',
+            border: '1px solid rgba(0,240,255,0.15)',
+            borderRadius: 8,
+            padding: '8px 12px',
+            fontSize: 13,
+            fontFamily: "'Inter', system-ui, sans-serif",
+            outline: 'none',
+          }}
+        />
         <select
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
