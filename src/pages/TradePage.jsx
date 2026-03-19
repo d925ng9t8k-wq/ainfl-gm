@@ -231,9 +231,13 @@ export default function TradePage() {
       return;
     }
 
-    const ratio = myValue > 0 ? theirValue / myValue : 0;
-    if (ratio < 0.6) {
-      setFeedback('Trade rejected -- too one-sided (you would be giving up too much value).');
+    // Trade fairness check: values must be within 15% of each other
+    const maxVal = Math.max(myValue, theirValue);
+    const minVal = Math.min(myValue, theirValue);
+    const pctDiff = maxVal > 0 ? ((maxVal - minVal) / maxVal) * 100 : 0;
+    if (pctDiff > 15 && !forceTrade) {
+      const side = myValue > theirValue ? 'giving up more' : 'receiving more';
+      setFeedback(`Trade declined — values are ${pctDiff.toFixed(0)}% apart (must be within 15%). You are ${side} value (${myValue} pts vs ${theirValue} pts). Enable "Force Trade" to override.`);
       return;
     }
 
@@ -258,10 +262,10 @@ export default function TradePage() {
 
       {feedback && (
         <div style={{
-          background: (feedback.startsWith('Trade rejected') || feedback.startsWith('This trade would violate')) ? 'rgba(255,68,68,0.15)' : 'rgba(74,222,128,0.15)',
-          border: `1px solid ${(feedback.startsWith('Trade rejected') || feedback.startsWith('This trade would violate')) ? '#ff4444' : '#4ade80'}`,
+          background: (feedback.startsWith('Trade rejected') || feedback.startsWith('Trade declined') || feedback.startsWith('This trade would violate')) ? 'rgba(255,68,68,0.15)' : 'rgba(74,222,128,0.15)',
+          border: `1px solid ${(feedback.startsWith('Trade rejected') || feedback.startsWith('Trade declined') || feedback.startsWith('This trade would violate')) ? '#ff4444' : '#4ade80'}`,
           borderRadius: 8, padding: 10, marginBottom: 12,
-          color: (feedback.startsWith('Trade rejected') || feedback.startsWith('This trade would violate')) ? '#ff4444' : '#4ade80', fontSize: 13,
+          color: (feedback.startsWith('Trade rejected') || feedback.startsWith('Trade declined') || feedback.startsWith('This trade would violate')) ? '#ff4444' : '#4ade80', fontSize: 13,
         }}>{feedback}</div>
       )}
 
