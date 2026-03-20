@@ -248,14 +248,15 @@ export default function SummaryPage() {
     const drafted = draftedPlayers.length;
     const trades = tradeHistory.filter(t => t.type === 'trade').length;
 
+    const gradeEmoji = grade.startsWith('A') ? '\u{1F525}' : grade.startsWith('B') ? '\u{1F4AA}' : '\u{1F914}';
     const text = encodeURIComponent(
-      `I just ran the ${currentTeamObj?.name || team} offseason on AiNFL GM \u{1F916}\u{1F3C8}\n\n` +
+      `${gradeEmoji} I earned a ${grade} running the ${currentTeamObj?.name || team} offseason on AiNFL GM!\n\n` +
       `\u{1F4CA} Overall Grade: ${grade}\n` +
-      `\u270D\uFE0F ${signings} FA signing${signings !== 1 ? 's' : ''}\n` +
-      `\u{1F504} ${trades} trade${trades !== 1 ? 's' : ''}\n` +
+      `\u270D\uFE0F ${signings} FA signing${signings !== 1 ? 's' : ''} | ` +
+      `\u{1F504} ${trades} trade${trades !== 1 ? 's' : ''} | ` +
       `\u{1F3AF} ${drafted} draft pick${drafted !== 1 ? 's' : ''}\n\n` +
-      `Can you beat my grade?\n` +
-      `ainflgm.com/${team.toLowerCase()}`
+      `Think you can do better? Try it yourself \u{1F447}\n` +
+      `ainflgm.com`
     );
 
     window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
@@ -320,27 +321,75 @@ export default function SummaryPage() {
       )}
 
       <div ref={summaryRef} style={{ background: '#0f0f0f', padding: 4 }}>
-        {/* Grade Cards */}
+        {/* Overall Grade Hero */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          background: '#0f172a', border: `2px solid ${accentColor}`,
+          borderRadius: 16, padding: '24px 16px 20px', marginBottom: 16,
+          position: 'relative', overflow: 'hidden',
+        }}>
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            background: `radial-gradient(ellipse at center, ${gradeColor(grades.overall.grade)}08 0%, transparent 70%)`,
+            pointerEvents: 'none',
+          }} />
+          <div style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600, letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 8, fontFamily: 'Oswald, sans-serif' }}>Overall Offseason Grade</div>
+          {/* Shield badge */}
+          <div style={{
+            position: 'relative', width: 110, height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 8,
+          }}>
+            <svg viewBox="0 0 110 120" width="110" height="120" style={{ position: 'absolute', top: 0, left: 0 }}>
+              <path d="M55 4 L102 20 L102 70 Q102 100 55 116 Q8 100 8 70 L8 20 Z"
+                fill={gradeColor(grades.overall.grade) + '18'}
+                stroke={gradeColor(grades.overall.grade)}
+                strokeWidth="2.5"
+              />
+            </svg>
+            <span style={{
+              color: gradeColor(grades.overall.grade), fontSize: 48, fontWeight: 900,
+              fontFamily: 'Oswald, sans-serif', lineHeight: 1, position: 'relative', zIndex: 1,
+              textShadow: `0 0 24px ${gradeColor(grades.overall.grade)}44`,
+            }}>{grades.overall.grade}</span>
+          </div>
+          <div style={{ color: '#64748b', fontSize: 12 }}>
+            Pre-season {grades.preseason.grade} + Your simulation ({grades.userWeight}% weight)
+          </div>
+        </div>
+
+        {/* Category Grade Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 16 }}>
           {[
-            { label: 'Free Agency', key: 'fa', detail: `${signingHistory.length} signings` },
-            { label: 'Trades & Cuts', key: 'trades', detail: `${tradeHistory.filter(t=>t.type==='trade').length} trades, ${cutPlayers.length} cuts` },
-            { label: 'Draft', key: 'draft', detail: `${draftedPlayers.length} picks` },
-            { label: 'Pre-Season', key: 'preseason', detail: `Real offseason moves` },
-            { label: 'Your Moves', key: 'yourMoves', detail: `Simulation actions` },
-            { label: 'Overall', key: 'overall', detail: `Pre-season ${grades.preseason.grade} + Sim ${grades.userWeight}%` },
-          ].map(({ label, key, detail }) => {
+            { label: 'Free Agency', key: 'fa', detail: `${signingHistory.length} signings`, isBaseline: false },
+            { label: 'Trades & Cuts', key: 'trades', detail: `${tradeHistory.filter(t=>t.type==='trade').length} trades, ${cutPlayers.length} cuts`, isBaseline: false },
+            { label: 'Draft', key: 'draft', detail: `${draftedPlayers.length} picks`, isBaseline: false },
+            { label: 'Pre-Season', key: 'preseason', detail: `Real moves (baseline)`, isBaseline: true },
+            { label: 'Your Moves', key: 'yourMoves', detail: `Simulation actions`, isBaseline: false },
+          ].map(({ label, key, detail, isBaseline }) => {
             const { grade, score } = grades[key];
             const color = gradeColor(grade);
             return (
               <div key={key} style={{
-                background: '#0f172a',
-                border: `1px solid ${key === 'overall' ? accentColor : 'rgba(0,240,255,0.12)'}`,
+                background: isBaseline ? '#0d1525' : '#0f172a',
+                border: `1px solid ${isBaseline ? '#334155' : 'rgba(0,240,255,0.12)'}`,
                 borderRadius: 12, padding: 16, textAlign: 'center',
+                position: 'relative', overflow: 'hidden',
               }}>
-                <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>{label}</div>
-                <div style={{ color, fontSize: 36, fontWeight: 900, lineHeight: 1 }}>{grade}</div>
-                <div style={{ color: '#64748b', fontSize: 11, marginTop: 4 }}>{detail}</div>
+                {isBaseline && (
+                  <div style={{
+                    position: 'absolute', top: 6, right: 8, fontSize: 9, color: '#64748b',
+                    background: '#1e293b', borderRadius: 4, padding: '1px 5px', fontWeight: 600,
+                  }}>BASELINE</div>
+                )}
+                <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 8, fontFamily: 'Oswald, sans-serif', letterSpacing: 0.5 }}>{label}</div>
+                {/* Circular badge */}
+                <div style={{
+                  width: 56, height: 56, borderRadius: '50%', margin: '0 auto 6px',
+                  background: color + '18', border: `2px solid ${color}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <span style={{ color, fontSize: 22, fontWeight: 900, fontFamily: 'Oswald, sans-serif', lineHeight: 1 }}>{grade}</span>
+                </div>
+                <div style={{ color: '#64748b', fontSize: 11 }}>{detail}</div>
               </div>
             );
           })}
@@ -378,12 +427,17 @@ export default function SummaryPage() {
             <h3 style={{ margin: 0, color: '#fff', fontSize: 15 }}>Pre-Simulation Offseason Report</h3>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ color: '#94A3B8', fontSize: 12 }}>Baseline Grade:</span>
-              <span style={{
-                background: gradeColor(baseline.grade) + '22',
-                color: gradeColor(baseline.grade),
-                border: `1px solid ${gradeColor(baseline.grade)}`,
-                borderRadius: 6, padding: '2px 10px', fontSize: 16, fontWeight: 900,
-              }}>{baseline.grade}</span>
+              <div style={{
+                width: 44, height: 44, borderRadius: '50%',
+                background: gradeColor(baseline.grade) + '18',
+                border: `2px solid ${gradeColor(baseline.grade)}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{
+                  color: gradeColor(baseline.grade), fontSize: 18, fontWeight: 900,
+                  fontFamily: 'Oswald, sans-serif',
+                }}>{baseline.grade}</span>
+              </div>
             </div>
           </div>
 
@@ -462,7 +516,7 @@ export default function SummaryPage() {
 
         {/* Grading Breakdown */}
         <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
-          <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>Your Simulation Grade Breakdown</h3>
+          <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15, fontFamily: 'Oswald, sans-serif' }}>Your Simulation Grade Breakdown</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, fontSize: 12 }}>
             <div>
               <div style={{ color: '#94A3B8', marginBottom: 6, fontWeight: 600 }}>Positive Factors</div>
@@ -584,24 +638,59 @@ export default function SummaryPage() {
 
         {/* Cap Breakdown by Position */}
         <div style={{ background: '#0f172a', border: '1px solid rgba(0,240,255,0.12)', borderRadius: 12, padding: 16, marginBottom: 16 }}>
-          <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15 }}>Cap Allocation by Position</h3>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {Object.entries(posGroupCap)
-              .sort((a, b) => b[1] - a[1])
-              .map(([group, total]) => {
-                const pct = capUsed > 0 ? (total / capUsed * 100) : 0;
-                return (
-                  <div key={group} style={{
-                    background: '#0a0f1e', borderRadius: 8, padding: '8px 12px',
-                    minWidth: 80, textAlign: 'center',
-                  }}>
-                    <div style={{ color: accentColor, fontSize: 12, fontWeight: 700 }}>{group}</div>
-                    <div style={{ color: '#fff', fontSize: 14, fontWeight: 700 }}>${total.toFixed(1)}M</div>
-                    <div style={{ color: '#64748b', fontSize: 10 }}>{pct.toFixed(1)}%</div>
-                  </div>
-                );
-              })}
-          </div>
+          <h3 style={{ margin: '0 0 12px', color: '#fff', fontSize: 15, fontFamily: 'Oswald, sans-serif' }}>Cap Allocation by Position</h3>
+          {/* Stacked bar visualization */}
+          {(() => {
+            const sortedGroups = Object.entries(posGroupCap).sort((a, b) => b[1] - a[1]);
+            const barColors = {
+              QB: '#ef4444', RB: '#f97316', WR: '#facc15', TE: '#a3e635',
+              OL: '#4ade80', DL: '#22d3ee', LB: '#60a5fa', CB: '#a78bfa',
+              S: '#e879f9', ST: '#94A3B8', Other: '#64748b',
+            };
+            return (
+              <>
+                {/* Compact stacked bar */}
+                <div style={{ display: 'flex', height: 18, borderRadius: 9, overflow: 'hidden', marginBottom: 14, background: '#0a0f1e' }}>
+                  {sortedGroups.map(([group, total]) => {
+                    const pct = capUsed > 0 ? (total / capUsed * 100) : 0;
+                    if (pct < 0.5) return null;
+                    return (
+                      <div key={group} title={`${group}: $${total.toFixed(1)}M (${pct.toFixed(1)}%)`} style={{
+                        width: `${pct}%`, background: barColors[group] || '#64748b',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 9, fontWeight: 700, color: '#000',
+                        minWidth: pct > 4 ? 0 : 0,
+                      }}>
+                        {pct > 6 ? group : ''}
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Per-group rows with bars */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {sortedGroups.map(([group, total]) => {
+                    const pct = capUsed > 0 ? (total / capUsed * 100) : 0;
+                    const maxPct = capUsed > 0 ? (sortedGroups[0][1] / capUsed * 100) : 0;
+                    const barWidth = maxPct > 0 ? (pct / maxPct * 100) : 0;
+                    return (
+                      <div key={group} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 32, color: barColors[group] || '#64748b', fontSize: 12, fontWeight: 700, textAlign: 'right', flexShrink: 0, fontFamily: 'Oswald, sans-serif' }}>{group}</div>
+                        <div style={{ flex: 1, height: 16, background: '#0a0f1e', borderRadius: 4, overflow: 'hidden', position: 'relative' }}>
+                          <div style={{
+                            height: '100%', width: `${barWidth}%`,
+                            background: `linear-gradient(90deg, ${barColors[group] || '#64748b'}cc, ${barColors[group] || '#64748b'}88)`,
+                            borderRadius: 4, transition: 'width 0.3s ease',
+                          }} />
+                        </div>
+                        <div style={{ width: 68, color: '#fff', fontSize: 12, fontWeight: 600, textAlign: 'right', flexShrink: 0 }}>${total.toFixed(1)}M</div>
+                        <div style={{ width: 40, color: '#64748b', fontSize: 11, textAlign: 'right', flexShrink: 0 }}>{pct.toFixed(0)}%</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })()}
         </div>
 
         {/* Timeline */}
