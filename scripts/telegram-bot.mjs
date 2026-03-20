@@ -10,11 +10,11 @@
  * Set TELEGRAM_CHAT_ID after first message from Jasson.
  */
 
-const TOKEN = process.env.TELEGRAM_BOT_TOKEN || 'PASTE_TOKEN_HERE';
+const TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8767603151:AAGDg_yjVtJNyFe-deEy2FGYdnBOiM43B9E';
 const BASE = `https://api.telegram.org/bot${TOKEN}`;
 
 // Chat ID gets set after Jasson first messages the bot
-let CHAT_ID = process.env.TELEGRAM_CHAT_ID || '';
+let CHAT_ID = process.env.TELEGRAM_CHAT_ID || '8784022142';
 
 const command = process.argv[2];
 const message = process.argv.slice(3).join(' ');
