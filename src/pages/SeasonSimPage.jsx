@@ -63,12 +63,34 @@ function calculatePositionStrengths(roster) {
   for (const [group, data] of Object.entries(groups)) {
     const benchmark = CAP_BENCHMARKS[group];
     const count = data.players.length;
-    // Score based on cap investment relative to benchmark, plus depth bonus
-    let rawScore = (data.totalCap / benchmark) * 50;
-    // Depth bonus: having enough players matters
-    const idealDepth = group === 'QB' ? 2 : group === 'K' || group === 'P' ? 1 : group === 'OL' ? 5 : 3;
-    const depthRatio = Math.min(count / idealDepth, 1.5);
-    rawScore *= (0.5 + 0.5 * depthRatio);
+    const capRatio = data.totalCap / benchmark;
+
+    let rawScore;
+    if (group === 'QB') {
+      // QB scoring: elite QBs have high cap hits which signals strength
+      // A QB at benchmark (~55M) is elite and should score ~80+
+      // Use a curve that rewards high cap investment strongly
+      if (capRatio >= 0.8) {
+        // Elite/franchise QB territory: score 70-95
+        rawScore = 70 + Math.min((capRatio - 0.8) * 80, 25);
+      } else if (capRatio >= 0.4) {
+        // Mid-tier QB: score 40-70
+        rawScore = 40 + ((capRatio - 0.4) / 0.4) * 30;
+      } else {
+        // Budget/rookie QB: score 15-40
+        rawScore = 15 + (capRatio / 0.4) * 25;
+      }
+      // Slight depth adjustment for QB (backup matters less)
+      const depthBonus = count >= 2 ? 1.0 : 0.9;
+      rawScore *= depthBonus;
+    } else {
+      // Non-QB positions: use cap ratio but scale so benchmark = ~55-65 range
+      rawScore = capRatio * 45;
+      // Depth bonus: having enough players matters
+      const idealDepth = group === 'K' || group === 'P' ? 1 : group === 'OL' ? 5 : 3;
+      const depthRatio = Math.min(count / idealDepth, 1.5);
+      rawScore *= (0.5 + 0.5 * depthRatio);
+    }
     strengths[group] = Math.max(0, Math.min(100, rawScore));
   }
 
@@ -89,22 +111,25 @@ function calculateRosterStrength(roster) {
 
   // QB multiplier: great QB amplifies, bad QB diminishes
   const qbScore = strengths.QB || 0;
-  if (qbScore > 70) {
-    baseScore *= 1 + (qbScore - 70) * 0.005; // up to 15% boost
-  } else if (qbScore < 30) {
-    baseScore *= 0.7 + (qbScore / 30) * 0.3; // up to 30% penalty
+  if (qbScore > 75) {
+    baseScore *= 1 + (qbScore - 75) * 0.003; // modest boost for elite QB
+  } else if (qbScore < 35) {
+    baseScore *= 0.75 + (qbScore / 35) * 0.25; // penalty for weak QB
   }
 
   return { overall: Math.max(0, Math.min(100, baseScore)), positions: strengths };
 }
 
 function projectWins(strengthScore, seed) {
-  // Map score to expected wins: 50 -> 8.5, 70 -> 11.5, 30 -> 4.5
-  const baseWins = 3 + (strengthScore / 100) * 14;
-  // Randomness: ±1.5 wins
+  // Map score to expected wins: 50 -> ~8, 70 -> ~10.5, 30 -> ~5.5
+  // More compressed range — average teams get 8-9 wins, elite ~11-12
+  const baseWins = 2 + (strengthScore / 100) * 12;
+  // More randomness: ±2.5 wins for realistic variance
   const rng = seededRandom(seed);
-  const noise = (rng() - 0.5) * 3;
-  const rawWins = Math.max(0, Math.min(17, baseWins + noise));
+  const noise = (rng() - 0.5) * 5;
+  // Add regression to mean (pull toward 8.5)
+  const regressed = baseWins * 0.85 + 8.5 * 0.15;
+  const rawWins = Math.max(0, Math.min(17, regressed + noise));
   const wins = Math.round(rawWins);
   const losses = 17 - wins;
 
@@ -217,10 +242,10 @@ export default function SeasonSimPage() {
   }
 
   function getStrengthLabel(score) {
-    if (score >= 80) return 'ELITE';
-    if (score >= 60) return 'STRONG';
-    if (score >= 40) return 'AVERAGE';
-    if (score >= 20) return 'WEAK';
+    if (score >= 85) return 'ELITE';
+    if (score >= 65) return 'STRONG';
+    if (score >= 45) return 'AVERAGE';
+    if (score >= 25) return 'WEAK';
     return 'CRITICAL';
   }
 

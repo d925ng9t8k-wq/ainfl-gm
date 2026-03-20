@@ -8,6 +8,18 @@ const DB_POSITIONS = ['CB', 'S', 'FS', 'SS'];
 const ST_POSITIONS = ['K', 'P', 'LS'];
 const LB_POSITIONS = ['LB', 'MLB', 'OLB'];
 
+const POS_GROUP_COLORS = {
+  QB: '#FB4F14',
+  RB: '#f59e0b',
+  WR: '#10b981',
+  TE: '#3b82f6',
+  OL: '#8b5cf6',
+  DL: '#ec4899',
+  LB: '#06b6d4',
+  DB: '#84cc16',
+  ST: '#94a3b8',
+};
+
 function posGroup(pos) {
   if (OL_POSITIONS.includes(pos)) return 'OL';
   if (DL_POSITIONS.includes(pos)) return 'DL';
@@ -18,7 +30,7 @@ function posGroup(pos) {
 }
 
 export default function RosterPage() {
-  const { roster, cutPlayer, restructureContract, extendPlayer, capUsed, totalCap } = useGame();
+  const { roster, cutPlayer, restructureContract, extendPlayer, capUsed, totalCap, capAvailable, tradeHistory, cutPlayers } = useGame();
   const [filterPos, setFilterPos] = useState('All');
   const [sortKey, setSortKey] = useState('capHit');
   const [sortDir, setSortDir] = useState('desc');
@@ -26,6 +38,16 @@ export default function RosterPage() {
   const [confirmRestructure, setConfirmRestructure] = useState(null);
   const [extendingPlayer, setExtendingPlayer] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hoveredRow, setHoveredRow] = useState(null);
+
+  // Roster moves counts from tradeHistory
+  const cutCount = (tradeHistory || []).filter(t => t.type === 'cut').length;
+  const restructureCount = (tradeHistory || []).filter(t => t.type === 'restructure').length;
+  const extensionCount = (tradeHistory || []).filter(t => t.type === 'extension').length;
+  const totalMoves = cutCount + restructureCount + extensionCount;
+
+  // Dead cap from cut players
+  const deadCapTotal = (cutPlayers || []).reduce((sum, p) => sum + (p.deadCap || 0), 0);
 
   function isExtensionEligible(player) {
     // Player must be on the roster (has a cap hit)
@@ -76,10 +98,55 @@ export default function RosterPage() {
     <div>
       {/* Header */}
       <div style={{ marginBottom: 16 }}>
-        <h1 style={{ margin: 0, fontSize: 22, color: 'var(--bengals-orange)' }}>Roster Management</h1>
-        <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: 14 }}>
-          {roster.length} players · ${capUsed.toFixed(1)}M / ${totalCap}M cap used
-        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+          <h1 style={{ margin: 0, fontSize: 22, color: 'var(--bengals-orange)' }}>Roster Management</h1>
+          {totalMoves > 0 && (
+            <span style={{
+              background: 'var(--bengals-orange)',
+              color: '#000',
+              fontSize: 11,
+              fontWeight: 800,
+              padding: '3px 10px',
+              borderRadius: 12,
+              letterSpacing: '0.02em',
+            }}>
+              {totalMoves} move{totalMoves !== 1 ? 's' : ''}
+              {cutCount > 0 && ` · ${cutCount} cut${cutCount !== 1 ? 's' : ''}`}
+              {restructureCount > 0 && ` · ${restructureCount} restructure${restructureCount !== 1 ? 's' : ''}`}
+              {extensionCount > 0 && ` · ${extensionCount} ext${extensionCount !== 1 ? 's' : ''}`}
+            </span>
+          )}
+        </div>
+
+        {/* Summary Stat Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 10,
+          marginBottom: 4,
+        }}>
+          {[
+            { label: 'Players', value: roster.length, color: '#CBD5E1' },
+            { label: 'Cap Used', value: `$${capUsed.toFixed(1)}M`, color: capUsed / totalCap > 0.92 ? '#facc15' : '#4ade80' },
+            { label: 'Cap Available', value: `$${(capAvailable != null ? capAvailable : totalCap - capUsed).toFixed(1)}M`, color: (capAvailable != null ? capAvailable : totalCap - capUsed) < 0 ? '#ff4444' : '#4ade80' },
+            { label: 'Dead Cap', value: `$${deadCapTotal.toFixed(1)}M`, color: deadCapTotal > 0 ? '#facc15' : '#64748b' },
+          ].map(stat => (
+            <div key={stat.label} style={{
+              background: 'rgba(15,23,42,0.8)',
+              border: '1px solid rgba(0,240,255,0.10)',
+              borderRadius: 10,
+              padding: '10px 14px',
+              textAlign: 'center',
+            }}>
+              <div style={{ color: '#64748b', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+                {stat.label}
+              </div>
+              <div style={{ color: stat.color, fontSize: 18, fontWeight: 800 }}>
+                {stat.value}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Position Filter */}
@@ -161,9 +228,14 @@ export default function RosterPage() {
             {sorted.map((player, idx) => (
               <tr
                 key={player.id}
+                onMouseEnter={() => setHoveredRow(player.id)}
+                onMouseLeave={() => setHoveredRow(null)}
                 style={{
-                  background: player.isFranchise ? 'rgba(251,79,20,0.1)' : idx % 2 === 0 ? '#0a0f1e' : '#141414',
+                  background: hoveredRow === player.id
+                    ? 'rgba(0,240,255,0.06)'
+                    : player.isFranchise ? 'rgba(251,79,20,0.1)' : idx % 2 === 0 ? '#0a0f1e' : '#141414',
                   borderBottom: '1px solid #1a2420',
+                  transition: 'background 0.12s ease',
                 }}
               >
                 <td style={{ padding: '9px 12px' }}>
@@ -182,14 +254,23 @@ export default function RosterPage() {
                   </div>
                 </td>
                 <td style={{ padding: '9px 12px' }}>
-                  <span style={{
-                    background: '#2a2a2a',
-                    color: 'var(--bengals-orange)',
-                    padding: '2px 6px',
-                    borderRadius: 4,
-                    fontSize: 11,
-                    fontWeight: 700,
-                  }}>{player.position}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: '50%',
+                      background: POS_GROUP_COLORS[posGroup(player.position)] || '#64748b',
+                      flexShrink: 0,
+                    }} />
+                    <span style={{
+                      background: '#2a2a2a',
+                      color: 'var(--bengals-orange)',
+                      padding: '2px 6px',
+                      borderRadius: 4,
+                      fontSize: 11,
+                      fontWeight: 700,
+                    }}>{player.position}</span>
+                  </div>
                 </td>
                 <td style={{ padding: '9px 12px', color: '#CBD5E1' }}>{player.age}</td>
                 <td style={{ padding: '9px 12px', color: '#fff', fontWeight: 600 }}>

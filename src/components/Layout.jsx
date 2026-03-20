@@ -12,6 +12,7 @@ const navItems = [
   { path: '/draft', label: 'Draft', iconType: 'draft' },
   { path: '/summary', label: 'Summary', iconType: 'summary' },
   { path: '/season', label: 'Season', iconType: 'season' },
+  { path: '/markets', label: 'Markets', iconType: 'markets' },
 ];
 
 function NavIcon({ type }) {
@@ -31,6 +32,8 @@ function NavIcon({ type }) {
       return (<svg {...props}><path d="M4 20h16"/><path d="M4 20V10l4-4 4 6 4-8 4 6v10"/></svg>);
     case 'season':
       return (<svg {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 22V10"/><path d="M14 22V10"/><path d="M5 9h14l-1 7H6L5 9z"/></svg>);
+    case 'markets':
+      return (<svg {...props}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>);
     default:
       return null;
   }

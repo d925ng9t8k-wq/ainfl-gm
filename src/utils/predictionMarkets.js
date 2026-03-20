@@ -61,7 +61,7 @@ function formatVolume(volume) {
  * Fetch NFL-related markets from Polymarket.
  * Tries multiple search terms and deduplicates results.
  */
-async function fetchLiveMarkets() {
+async function fetchLiveMarkets(limit = 8) {
   const seenIds = new Set();
   const markets = [];
 
@@ -111,7 +111,7 @@ async function fetchLiveMarkets() {
 
   // Sort by volume (most liquid markets first)
   markets.sort((a, b) => b.volumeRaw - a.volumeRaw);
-  return markets.slice(0, 8);
+  return markets.slice(0, limit);
 }
 
 /**
@@ -192,6 +192,107 @@ const MOCK_NFL_MARKETS = [
     endDate: '2027-04-25T00:00:00Z',
     image: null,
   },
+  {
+    id: 'mock-6',
+    question: 'Will any NFL team go undefeated in 2026 regular season?',
+    outcomes: [
+      { name: 'Yes', probability: 3 },
+      { name: 'No', probability: 97 },
+    ],
+    volume: '$280K',
+    volumeRaw: 280000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-01-10T00:00:00Z',
+    image: null,
+  },
+  {
+    id: 'mock-7',
+    question: 'AFC Championship winner 2026-27?',
+    outcomes: [
+      { name: 'Kansas City Chiefs', probability: 20 },
+      { name: 'Buffalo Bills', probability: 16 },
+      { name: 'Baltimore Ravens', probability: 14 },
+      { name: 'Cincinnati Bengals', probability: 10 },
+      { name: 'Houston Texans', probability: 8 },
+    ],
+    volume: '$2.1M',
+    volumeRaw: 2100000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-01-28T00:00:00Z',
+    image: null,
+  },
+  {
+    id: 'mock-8',
+    question: 'NFC Championship winner 2026-27?',
+    outcomes: [
+      { name: 'Detroit Lions', probability: 18 },
+      { name: 'Philadelphia Eagles', probability: 16 },
+      { name: 'San Francisco 49ers', probability: 12 },
+      { name: 'Green Bay Packers', probability: 10 },
+      { name: 'Dallas Cowboys', probability: 8 },
+    ],
+    volume: '$1.9M',
+    volumeRaw: 1900000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-01-28T00:00:00Z',
+    image: null,
+  },
+  {
+    id: 'mock-9',
+    question: 'NFL Offensive Rookie of the Year 2026?',
+    outcomes: [
+      { name: 'Shedeur Sanders', probability: 18 },
+      { name: 'Cam Ward', probability: 16 },
+      { name: 'Travis Hunter', probability: 14 },
+      { name: 'Tetairoa McMillan', probability: 10 },
+    ],
+    volume: '$420K',
+    volumeRaw: 420000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-02-08T00:00:00Z',
+    image: null,
+  },
+  {
+    id: 'mock-10',
+    question: 'Will Patrick Mahomes throw 40+ TDs in 2026?',
+    outcomes: [
+      { name: 'Yes', probability: 28 },
+      { name: 'No', probability: 72 },
+    ],
+    volume: '$310K',
+    volumeRaw: 310000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-01-10T00:00:00Z',
+    image: null,
+  },
+  {
+    id: 'mock-11',
+    question: 'NFL Defensive Player of the Year 2026?',
+    outcomes: [
+      { name: 'Myles Garrett', probability: 15 },
+      { name: 'Micah Parsons', probability: 14 },
+      { name: 'T.J. Watt', probability: 12 },
+      { name: 'Nick Bosa', probability: 10 },
+    ],
+    volume: '$250K',
+    volumeRaw: 250000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-02-08T00:00:00Z',
+    image: null,
+  },
+  {
+    id: 'mock-12',
+    question: 'Total points scored in Super Bowl LXI over/under 49.5?',
+    outcomes: [
+      { name: 'Over', probability: 52 },
+      { name: 'Under', probability: 48 },
+    ],
+    volume: '$180K',
+    volumeRaw: 180000,
+    link: `${POLYMARKET_BASE}`,
+    endDate: '2027-02-15T00:00:00Z',
+    image: null,
+  },
 ];
 
 /**
@@ -199,32 +300,33 @@ const MOCK_NFL_MARKETS = [
  * Uses 15-minute cache. Falls back to mock data if no live NFL markets found.
  * Returns empty array silently on errors (never breaks the app).
  */
-export async function getNFLMarkets() {
+export async function getNFLMarkets(limit = 8) {
   try {
     const now = Date.now();
 
     // Return cached data if still fresh
     if (cache.data && (now - cache.timestamp) < CACHE_DURATION_MS) {
-      return cache.data;
+      // Apply limit to cached data
+      return { ...cache.data, markets: cache.data.markets.slice(0, limit) };
     }
 
-    // Try live data
-    const liveMarkets = await fetchLiveMarkets();
+    // Try live data — fetch up to the requested limit
+    const liveMarkets = await fetchLiveMarkets(Math.max(limit, 8));
 
     if (liveMarkets.length > 0) {
       cache.data = { markets: liveMarkets, isLive: true };
       cache.timestamp = now;
-      return cache.data;
+      return { ...cache.data, markets: liveMarkets.slice(0, limit) };
     }
 
     // Fall back to mock data
     // TODO: Remove mock fallback once Polymarket consistently has NFL markets
     cache.data = { markets: MOCK_NFL_MARKETS, isLive: false };
     cache.timestamp = now;
-    return cache.data;
+    return { ...cache.data, markets: MOCK_NFL_MARKETS.slice(0, limit) };
   } catch {
     // If everything fails, return mock data so the component still renders
-    return { markets: MOCK_NFL_MARKETS, isLive: false };
+    return { markets: MOCK_NFL_MARKETS.slice(0, limit), isLive: false };
   }
 }
 
