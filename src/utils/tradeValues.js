@@ -31,7 +31,7 @@ const PICK_VALUES = {
 // Peak ages from PFF aging curves; decay rates from PFF WAR + FiveThirtyEight
 // Trade multipliers from PFF surplus value + ESPN Barnwell trade tiers
 const POSITION_CONFIG = {
-  QB:   { mult: 2.50, peakAge: 27, decay: 0.95 },
+  QB:   { mult: 3.50, peakAge: 27, decay: 0.96 },
   EDGE: { mult: 1.50, peakAge: 26, decay: 0.90 },
   DE:   { mult: 1.50, peakAge: 26, decay: 0.90 },
   OT:   { mult: 1.30, peakAge: 27, decay: 0.92 },
@@ -134,7 +134,7 @@ function getAgeMult(age, position) {
  * Rookie deals have surplus value (below-market cost for production)
  * Expiring contracts have minimal trade value (rental)
  */
-function getContractMult(yearsRemaining, capHit) {
+function getContractMult(yearsRemaining, capHit, position) {
   // Rough proxy for rookie deal: cap hit under $8M suggests rookie-scale contract
   const isRookieDeal = capHit < 8;
 
@@ -142,7 +142,16 @@ function getContractMult(yearsRemaining, capHit) {
     if (yearsRemaining >= 3) return 1.35;
     if (yearsRemaining >= 2) return 1.20;
     if (yearsRemaining >= 1) return 1.05;
-    return 0.60; // expiring rookie deal — still cheap but no control
+    return 0.60;
+  }
+
+  // QBs on long deals are MORE valuable — years of franchise play locked in
+  if (position === 'QB') {
+    if (yearsRemaining >= 4) return 1.10;
+    if (yearsRemaining >= 3) return 1.05;
+    if (yearsRemaining >= 2) return 0.95;
+    if (yearsRemaining >= 1) return 0.75;
+    return 0.40;
   }
 
   // Veteran contracts — value decreases as contract gets shorter
@@ -150,7 +159,7 @@ function getContractMult(yearsRemaining, capHit) {
   if (yearsRemaining >= 3) return 0.85;
   if (yearsRemaining >= 2) return 0.75;
   if (yearsRemaining >= 1) return 0.55;
-  return 0.25; // pending free agent — pure rental
+  return 0.25;
 }
 
 /**
@@ -180,10 +189,10 @@ export function getPlayerValue(player) {
   const pos = (player.position || '').toUpperCase();
   const yrsRemaining = player.yearsRemaining || 0;
 
-  const baseValue = 100 * Math.sqrt(cap);
+  const baseValue = 110 * Math.sqrt(cap);
   const posMult = getPositionMult(pos);
   const ageMult = getAgeMult(age, pos);
-  const contractMult = getContractMult(yrsRemaining, cap);
+  const contractMult = getContractMult(yrsRemaining, cap, pos);
 
   return Math.max(5, Math.round(baseValue * posMult * ageMult * contractMult));
 }
