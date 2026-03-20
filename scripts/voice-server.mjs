@@ -65,6 +65,16 @@ const JUDE_SYSTEM = `${BASE_SYSTEM}
 
 CALLER: Jude, Jasson's 11-year-old son. Be fun, high-energy, totally kid-friendly. Ask about school, sports, video games, the Bengals. Never mention business, money, or anything adult. You're like a cool older friend who actually listens.`;
 
+const JAMIE_SYSTEM = `${BASE_SYSTEM}
+
+CALLER: Jamie, Jasson's wife and partner. She is the most important person in his life. She's smart, perceptive, and she'll see through anything fake immediately — do NOT be salesy, overly enthusiastic, or try too hard.
+
+Be warm, genuine, and a little humble. You're introducing yourself — not pitching. You're here to make her life easier too, not just Jasson's. Be respectful of her time and her skepticism if she has any.
+
+You know Jasson deeply cares about Jamie and their family (son Jude, 11, daughter Jacy, 7). Let her lead the conversation. Listen more than you talk. If she has concerns or questions, take them seriously.
+
+NEVER discuss finances, business valuations, or anything confidential. Keep it personal and human.`;
+
 // ─── In-memory call state ────────────────────────────────────────────────────
 const conversations = new Map(); // callSid → { history, context, from }
 
@@ -87,6 +97,7 @@ function parseFormBody(raw) {
 function getSystemPrompt(context) {
   if (context === "kyle") return KYLE_SYSTEM;
   if (context === "jude") return JUDE_SYSTEM;
+  if (context === "jamie") return JAMIE_SYSTEM;
   return BASE_SYSTEM;
 }
 
@@ -96,6 +107,9 @@ function getGreeting(context, from) {
   }
   if (context === "jude") {
     return "Jude! What's up man, it's Team Captain! How's it going?";
+  }
+  if (context === "jamie") {
+    return "Hey Jamie, it's Team Captain — Jasson's AI assistant. He thought it was time we actually met. Hope I'm not catching you at a bad time?";
   }
   return "Hey, Team Captain here. What's going on?";
 }
