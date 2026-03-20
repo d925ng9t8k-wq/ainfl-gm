@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useGame } from '../context/GameContext';
 import PredictionMarkets from '../components/PredictionMarkets';
 
@@ -17,6 +17,92 @@ const NEEDS_MAP = {
   S: (roster) => roster.filter(p => ['S', 'FS', 'SS'].includes(p.position)).length < 2 ? 'Need' : 'Set',
 };
 
+// Position group color mapping for accent bars
+const POSITION_COLORS = {
+  QB: '#e74c3c',
+  RB: '#2ecc71',
+  WR: '#3498db',
+  TE: '#9b59b6',
+  OT: '#e67e22', LT: '#e67e22', RT: '#e67e22',
+  OG: '#d35400', LG: '#d35400', RG: '#d35400', G: '#d35400',
+  C: '#f39c12',
+  DE: '#e74c3c', EDGE: '#e74c3c', ED: '#e74c3c',
+  DT: '#c0392b',
+  LB: '#1abc9c', MLB: '#1abc9c', OLB: '#1abc9c',
+  CB: '#2980b9',
+  S: '#8e44ad', FS: '#8e44ad', SS: '#8e44ad',
+  K: '#7f8c8d', P: '#7f8c8d',
+};
+
+function getPositionColor(position) {
+  return POSITION_COLORS[position] || '#64748b';
+}
+
+// Tier badge based on rating
+function TierBadge({ rating }) {
+  let tier, color, bg;
+  if (rating >= 88) {
+    tier = 'Elite';
+    color = '#fbbf24';
+    bg = 'rgba(251,191,36,0.15)';
+  } else if (rating >= 80) {
+    tier = 'Pro Bowl';
+    color = '#a78bfa';
+    bg = 'rgba(167,139,250,0.15)';
+  } else if (rating >= 72) {
+    tier = 'Starter';
+    color = '#4ade80';
+    bg = 'rgba(74,222,128,0.15)';
+  } else if (rating >= 64) {
+    tier = 'Rotational';
+    color = '#38bdf8';
+    bg = 'rgba(56,189,248,0.12)';
+  } else {
+    tier = 'Depth';
+    color = '#94a3b8';
+    bg = 'rgba(148,163,184,0.12)';
+  }
+
+  return (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 4,
+      background: bg,
+      border: `1px solid ${color}33`,
+      color,
+      padding: '2px 7px',
+      borderRadius: 4,
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: '0.03em',
+      whiteSpace: 'nowrap',
+    }}>
+      {tier}
+    </span>
+  );
+}
+
+// Star rating display (1-5 stars derived from 0-100 rating)
+function StarRating({ rating }) {
+  // Map 50-99 rating to 1-5 stars
+  const stars = Math.max(1, Math.min(5, Math.round((rating - 50) / 10)));
+  const fullStars = stars;
+  const emptyStars = 5 - fullStars;
+  const starColor = rating >= 88 ? '#fbbf24' : rating >= 75 ? '#facc15' : rating >= 65 ? '#fb923c' : '#94a3b8';
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      {Array.from({ length: fullStars }, (_, i) => (
+        <span key={`f${i}`} style={{ color: starColor, fontSize: 12, lineHeight: 1 }}>&#9733;</span>
+      ))}
+      {Array.from({ length: emptyStars }, (_, i) => (
+        <span key={`e${i}`} style={{ color: 'rgba(148,163,184,0.3)', fontSize: 12, lineHeight: 1 }}>&#9733;</span>
+      ))}
+    </div>
+  );
+}
+
 function RatingBar({ rating }) {
   const color = rating >= 85 ? '#4ade80' : rating >= 75 ? '#facc15' : rating >= 65 ? '#fb923c' : '#94a3b8';
   return (
@@ -27,6 +113,28 @@ function RatingBar({ rating }) {
       <span style={{ color, fontSize: 12, fontWeight: 700, minWidth: 24 }}>{rating}</span>
     </div>
   );
+}
+
+// CSS keyframes injected once
+const KEYFRAMES_ID = 'fa-signing-keyframes';
+function ensureKeyframes() {
+  if (typeof document !== 'undefined' && !document.getElementById(KEYFRAMES_ID)) {
+    const style = document.createElement('style');
+    style.id = KEYFRAMES_ID;
+    style.textContent = `
+      @keyframes fa-sign-flash {
+        0% { box-shadow: 0 0 0 0 rgba(74,222,128,0.6); background-color: rgba(74,222,128,0.15); }
+        40% { box-shadow: 0 0 20px 4px rgba(74,222,128,0.4); background-color: rgba(74,222,128,0.12); }
+        100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); background-color: transparent; opacity: 0; transform: scale(0.96); }
+      }
+      @keyframes fa-checkmark {
+        0% { transform: scale(0); opacity: 0; }
+        50% { transform: scale(1.2); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
 }
 
 function SigningModal({ player, onSign, onClose, capAvailable }) {
@@ -234,6 +342,120 @@ function SigningModal({ player, onSign, onClose, capAvailable }) {
   );
 }
 
+// Player card with position accent bar and signing animation
+function PlayerCard({ player, roster, onNegotiate, isJustSigned }) {
+  const need = NEEDS_MAP[player.position] ? NEEDS_MAP[player.position](roster) : null;
+  const posColor = getPositionColor(player.position);
+
+  return (
+    <div
+      style={{
+        background: '#0f172a',
+        border: '1px solid rgba(0,240,255,0.12)',
+        borderRadius: 10,
+        display: 'flex',
+        overflow: 'hidden',
+        position: 'relative',
+        ...(isJustSigned ? {
+          animation: 'fa-sign-flash 1.2s ease-out forwards',
+        } : {}),
+      }}
+    >
+      {/* Position-colored accent bar */}
+      <div style={{
+        width: 4,
+        minHeight: '100%',
+        background: `linear-gradient(180deg, ${posColor}, ${posColor}88)`,
+        flexShrink: 0,
+      }} />
+
+      {/* Card content */}
+      <div style={{
+        padding: 14,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        flex: 1,
+        position: 'relative',
+      }}>
+        {/* Signing success overlay */}
+        {isJustSigned && (
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(74,222,128,0.08)',
+            zIndex: 2,
+            pointerEvents: 'none',
+          }}>
+            <span style={{
+              fontSize: 32,
+              animation: 'fa-checkmark 0.4s ease-out forwards',
+              color: '#4ade80',
+            }}>&#10003;</span>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>{player.name}</div>
+            <div style={{ color: '#94A3B8', fontSize: 12 }}>{player.previousTeam}</div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+            <span style={{
+              background: '#2a2a2a',
+              color: 'var(--bengals-orange)',
+              padding: '2px 6px',
+              borderRadius: 4,
+              fontSize: 11,
+              fontWeight: 700,
+            }}>{player.position}</span>
+            {need && (
+              <span style={{
+                fontSize: 10,
+                fontWeight: 700,
+                color: need === 'Need' ? '#4ade80' : '#64748b',
+              }}>{need === 'Need' ? '\u2605 NEED' : 'Depth'}</span>
+            )}
+          </div>
+        </div>
+
+        {/* Tier badge + star rating row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
+          <TierBadge rating={player.rating} />
+          <StarRating rating={player.rating} />
+        </div>
+
+        <RatingBar rating={player.rating} />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94A3B8' }}>
+          <span>Age: <strong style={{ color: '#CBD5E1' }}>{player.age}</strong></span>
+          <span>Ask: <strong style={{ color: '#facc15' }}>${player.askingPrice}M/{player.yearsRequested}yr</strong></span>
+        </div>
+
+        <button
+          onClick={() => onNegotiate(player)}
+          style={{
+            background: 'var(--bengals-orange)',
+            color: '#000',
+            border: 'none',
+            borderRadius: 6,
+            padding: '7px 0',
+            cursor: 'pointer',
+            fontWeight: 700,
+            fontSize: 13,
+            marginTop: 4,
+          }}
+        >
+          Negotiate Contract
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function FreeAgencyPage() {
   const { freeAgentPool, roster, signPlayer, capAvailable } = useGame();
   const [filterPos, setFilterPos] = useState('All');
@@ -241,6 +463,11 @@ export default function FreeAgencyPage() {
   const [signingPlayer, setSigningPlayer] = useState(null);
   const [signedFeedback, setSignedFeedback] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [recentlySigned, setRecentlySigned] = useState([]);
+  const [justSignedId, setJustSignedId] = useState(null);
+
+  // Inject keyframe animations
+  useEffect(() => { ensureKeyframes(); }, []);
 
   // Build available positions from actual data for reliable filtering
   const availablePositions = useMemo(() => {
@@ -276,13 +503,43 @@ export default function FreeAgencyPage() {
     return list;
   }, [freeAgentPool, filterPos, sortBy, searchQuery]);
 
-  function handleSign(years, aav, details) {
-    signPlayer(signingPlayer, years, aav, details);
+  const handleSign = useCallback((years, aav, details) => {
+    const player = signingPlayer;
+
+    // Trigger flash animation on the card
+    setJustSignedId(player.id);
+
+    // Add to recently signed list
+    const signedEntry = {
+      id: player.id,
+      name: player.name,
+      position: player.position,
+      rating: player.rating,
+      age: player.age,
+      previousTeam: player.previousTeam,
+      years,
+      aav,
+      totalValue: parseFloat((aav * years).toFixed(1)),
+      guaranteed: details?.guaranteed || 0,
+      year1CapHit: details?.year1CapHit || aav,
+      signedAt: Date.now(),
+    };
+
+    setRecentlySigned(prev => [signedEntry, ...prev]);
+
+    // Show feedback
     const gtd = details?.guaranteed ? ` ($${details.guaranteed.toFixed(1)}M guaranteed)` : '';
-    setSignedFeedback(`Signed ${signingPlayer.name}! ${years}yr/$${(aav * years).toFixed(1)}M ($${aav.toFixed(1)}M/yr)${gtd}`);
+    setSignedFeedback(`Signed ${player.name}! ${years}yr/$${(aav * years).toFixed(1)}M ($${aav.toFixed(1)}M/yr)${gtd}`);
     setSigningPlayer(null);
+
+    // After animation completes, actually sign and remove from pool
+    setTimeout(() => {
+      signPlayer(player, years, aav, details);
+      setJustSignedId(null);
+    }, 1200);
+
     setTimeout(() => setSignedFeedback(''), 5000);
-  }
+  }, [signingPlayer, signPlayer]);
 
   return (
     <div>
@@ -293,7 +550,7 @@ export default function FreeAgencyPage() {
 
       {signedFeedback && (
         <div style={{ background: 'rgba(74,222,128,0.15)', border: '1px solid #4ade80', borderRadius: 8, padding: 10, marginBottom: 12, color: '#4ade80', fontSize: 13 }}>
-          ✓ {signedFeedback}
+          &#10003; {signedFeedback}
         </div>
       )}
 
@@ -350,71 +607,15 @@ export default function FreeAgencyPage() {
 
       {/* Player Cards Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
-        {filtered.map(player => {
-          const need = NEEDS_MAP[player.position] ? NEEDS_MAP[player.position](roster) : null;
-          return (
-            <div
-              key={player.id}
-              style={{
-                background: '#0f172a',
-                border: '1px solid rgba(0,240,255,0.12)',
-                borderRadius: 10,
-                padding: 14,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                  <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>{player.name}</div>
-                  <div style={{ color: '#94A3B8', fontSize: 12 }}>{player.previousTeam}</div>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-                  <span style={{
-                    background: '#2a2a2a',
-                    color: 'var(--bengals-orange)',
-                    padding: '2px 6px',
-                    borderRadius: 4,
-                    fontSize: 11,
-                    fontWeight: 700,
-                  }}>{player.position}</span>
-                  {need && (
-                    <span style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: need === 'Need' ? '#4ade80' : '#64748b',
-                    }}>{need === 'Need' ? '★ NEED' : 'Depth'}</span>
-                  )}
-                </div>
-              </div>
-
-              <RatingBar rating={player.rating} />
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94A3B8' }}>
-                <span>Age: <strong style={{ color: '#CBD5E1' }}>{player.age}</strong></span>
-                <span>Ask: <strong style={{ color: '#facc15' }}>${player.askingPrice}M/{player.yearsRequested}yr</strong></span>
-              </div>
-
-              <button
-                onClick={() => setSigningPlayer(player)}
-                style={{
-                  background: 'var(--bengals-orange)',
-                  color: '#000',
-                  border: 'none',
-                  borderRadius: 6,
-                  padding: '7px 0',
-                  cursor: 'pointer',
-                  fontWeight: 700,
-                  fontSize: 13,
-                  marginTop: 4,
-                }}
-              >
-                Negotiate Contract
-              </button>
-            </div>
-          );
-        })}
+        {filtered.map(player => (
+          <PlayerCard
+            key={player.id}
+            player={player}
+            roster={roster}
+            onNegotiate={setSigningPlayer}
+            isJustSigned={justSignedId === player.id}
+          />
+        ))}
       </div>
 
       {filtered.length === 0 && (
@@ -428,6 +629,122 @@ export default function FreeAgencyPage() {
           onClose={() => setSigningPlayer(null)}
           capAvailable={capAvailable}
         />
+      )}
+
+      {/* Recently Signed Section */}
+      {recentlySigned.length > 0 && (
+        <div style={{ marginTop: 32 }}>
+          <h2 style={{
+            margin: '0 0 12px',
+            fontSize: 16,
+            color: '#4ade80',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <span style={{ fontSize: 14 }}>&#10003;</span>
+            Recently Signed ({recentlySigned.length})
+          </h2>
+          <div style={{
+            background: 'rgba(74,222,128,0.04)',
+            border: '1px solid rgba(74,222,128,0.15)',
+            borderRadius: 10,
+            overflow: 'hidden',
+          }}>
+            {/* Table header */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '4px 1fr 60px 50px 100px 90px 90px',
+              gap: 0,
+              padding: '8px 12px 8px 0',
+              background: 'rgba(74,222,128,0.06)',
+              borderBottom: '1px solid rgba(74,222,128,0.1)',
+              fontSize: 10,
+              fontWeight: 700,
+              color: '#64748b',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+            }}>
+              <span />
+              <span style={{ paddingLeft: 12 }}>Player</span>
+              <span>Pos</span>
+              <span>OVR</span>
+              <span>Contract</span>
+              <span>Guaranteed</span>
+              <span>Y1 Cap Hit</span>
+            </div>
+
+            {recentlySigned.map((entry) => (
+              <div key={entry.id + '-signed'} style={{
+                display: 'grid',
+                gridTemplateColumns: '4px 1fr 60px 50px 100px 90px 90px',
+                gap: 0,
+                padding: '10px 12px 10px 0',
+                borderBottom: '1px solid rgba(74,222,128,0.06)',
+                alignItems: 'center',
+                fontSize: 13,
+              }}>
+                {/* Position accent */}
+                <div style={{
+                  width: 4,
+                  height: '100%',
+                  minHeight: 24,
+                  background: getPositionColor(entry.position),
+                  borderRadius: '0 2px 2px 0',
+                }} />
+                <div style={{ paddingLeft: 12 }}>
+                  <div style={{ color: '#fff', fontWeight: 600, fontSize: 13 }}>{entry.name}</div>
+                  <div style={{ color: '#64748b', fontSize: 11 }}>from {entry.previousTeam}</div>
+                </div>
+                <span style={{
+                  color: 'var(--bengals-orange)',
+                  fontWeight: 700,
+                  fontSize: 11,
+                }}>{entry.position}</span>
+                <span style={{ color: '#CBD5E1', fontWeight: 700, fontSize: 12 }}>{entry.rating}</span>
+                <span style={{ color: '#facc15', fontWeight: 700, fontSize: 12 }}>
+                  {entry.years}yr/${entry.totalValue.toFixed(1)}M
+                </span>
+                <span style={{ color: '#4ade80', fontSize: 12 }}>
+                  ${entry.guaranteed.toFixed(1)}M
+                </span>
+                <span style={{ color: '#CBD5E1', fontSize: 12 }}>
+                  ${entry.year1CapHit.toFixed(1)}M
+                </span>
+              </div>
+            ))}
+
+            {/* Totals row */}
+            {recentlySigned.length > 1 && (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '4px 1fr 60px 50px 100px 90px 90px',
+                gap: 0,
+                padding: '10px 12px 10px 0',
+                background: 'rgba(74,222,128,0.06)',
+                fontSize: 12,
+                fontWeight: 700,
+                alignItems: 'center',
+              }}>
+                <span />
+                <span style={{ paddingLeft: 12, color: '#94A3B8' }}>
+                  Total ({recentlySigned.length} signings)
+                </span>
+                <span />
+                <span />
+                <span style={{ color: '#facc15' }}>
+                  ${recentlySigned.reduce((s, e) => s + e.totalValue, 0).toFixed(1)}M
+                </span>
+                <span style={{ color: '#4ade80' }}>
+                  ${recentlySigned.reduce((s, e) => s + e.guaranteed, 0).toFixed(1)}M
+                </span>
+                <span style={{ color: '#CBD5E1' }}>
+                  ${recentlySigned.reduce((s, e) => s + e.year1CapHit, 0).toFixed(1)}M
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       <PredictionMarkets maxMarkets={4} />
