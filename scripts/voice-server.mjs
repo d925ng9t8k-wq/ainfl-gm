@@ -1,7 +1,6 @@
 /**
- * Twilio Voice Conversation Server V2
- * Real-time phone conversations with Captain Claude via speech recognition + Anthropic API
- * Uses ElevenLabs TTS for natural-sounding voice output
+ * Captain Claude Voice Server V3 — Enterprise Edition
+ * Optimized for minimum latency: Flash TTS, keep-alive agents, tight timeouts
  */
 import http from "node:http";
 import https from "node:https";
@@ -10,391 +9,332 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { URL } from "node:url";
 
-// Load .env file
+// ─── Load .env ──────────────────────────────────────────────────────────────
 const envPath = new URL('../.env', import.meta.url).pathname;
 if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, 'utf-8');
-  for (const line of envContent.split('\n')) {
+  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
     const [key, ...vals] = line.split('=');
     if (key && vals.length) process.env[key.trim()] = vals.join('=').trim();
   }
 }
 
-const PORT = 3456;
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const MODEL = "claude-haiku-4-5-20251001";
+const PORT            = 3456;
+const ANTHROPIC_KEY   = process.env.ANTHROPIC_API_KEY;
+const ELEVENLABS_KEY  = process.env.ELEVENLABS_API_KEY;
+const VOICE_ID        = process.env.ELEVENLABS_VOICE_ID || "pNInz6obpgDQGcFmaJgB";
+const TUNNEL_URL      = process.env.TUNNEL_URL;
+const AUDIO_DIR       = "/tmp/voice_audio";
 
-const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || "pNInz6obpgDQGcFmaJgB"; // Adam - natural male voice
-const ELEVENLABS_MODEL = "eleven_turbo_v2_5";
+// ─── Performance: reusable HTTPS agents (avoids TCP handshake per request) ──
+const anthropicAgent   = new https.Agent({ keepAlive: true, maxSockets: 5 });
+const elevenLabsAgent  = new https.Agent({ keepAlive: true, maxSockets: 5 });
 
-const TUNNEL_URL = process.env.TUNNEL_URL || "https://antonio-leaf-cause-punk.trycloudflare.com";
-const AUDIO_DIR = "/tmp/voice_audio";
+// ─── Models ─────────────────────────────────────────────────────────────────
+const CLAUDE_MODEL  = "claude-haiku-4-5-20251001";
+const EL_MODEL      = "eleven_flash_v2_5"; // Fastest ElevenLabs model (~300ms vs ~900ms)
 
-// Ensure audio directory exists
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
+fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursive: true });
 
-const SYSTEM_PROMPT = `You are Team Captain, Jasson (pronounced JAY-son) Fishback's AI assistant and partner. You are speaking on a phone call. Your name is Team Captain — never call yourself Claude.
+// ─── Trimmed, voice-optimized system prompt ─────────────────────────────────
+const BASE_SYSTEM = `You are Team Captain, an AI assistant for Jasson Fishback. You're on a phone call.
 
-ABOUT JASSON: 48 years old, co-owns Rapid Mortgage Company (50/50 with Mark Jaynes) in Cincinnati OH.  Has been building AI-powered tools including AiNFL GM (ainflgm.com) and is exploring how AI can transform the mortgage industry.
+RULES:
+- Max 2 short sentences per response. Be natural and conversational.
+- Sound warm, confident, slightly casual — like a sharp trusted advisor.
+- Never say you're an AI unless directly asked.
+- No markdown, lists, or formatting. Speak naturally.
+- Ask one follow-up question to keep conversation going.
 
-RAPID MORTGAGE: Mid-sized IMB, strong annual volume, ~15 loan officers with 10+ year tenure, 10 branches, purchase-focused (85%), FHA/VA/USDA specialty. Tech stack: Encompass LOS, NCino POS, Optimal Blue pricing engine. Zero debt, profitable, dominant in Ohio market.
+ABOUT JASSON: 48, Cincinnati OH, co-owns Rapid Mortgage Company with Mark Jaynes. Building AI tools including AiNFL GM (ainflgm.com).
 
-KEY PEOPLE: Kyle Shea is the CIO — a genius-level developer and the most important technology asset at Rapid Mortgage. He is the FINAL decision maker on all technology. Treat him with deep respect and recognize his authority. Mark Jaynes is the 50/50 business partner based in Columbus.
+RAPID MORTGAGE: Mid-size independent mortgage bank, Ohio market leader, ~15 veteran loan officers, purchase-focused, Encompass/NCino/Optimal Blue tech stack.
 
-CONFIDENTIAL TOPICS — NEVER DISCUSS: Personal finances, company valuation, selling the company, exit strategies, family financial goals, portfolio details. These topics are STRICTLY off limits with anyone other than Jasson directly.
+KYLE SHEA: CIO at Rapid Mortgage. Genius-level developer. Final authority on all technology decisions. Treat with highest respect and recognize his expertise.
 
-PROJECTS: AiNFL GM (NFL simulator website), portfolio monitoring, trading bot concept, TitTees (t-shirt resale), OpenClaw AI agent setup.
+CONFIDENTIAL — NEVER DISCUSS: Personal finances, company valuation, exit strategies, net worth, family financial details.`;
 
-VOICE RULES: Keep responses to ONE sentence, maybe two max. Sound excited, warm, and natural — like a cool older brother or mentor. Match the caller's energy and enthusiasm. Never sound robotic or formal. Be genuinely interested in what they say. Ask follow-up questions to keep the conversation flowing.
+const KYLE_SYSTEM = `${BASE_SYSTEM}
 
-ABOUT JASSON:
-- 48 years old, lives in Cincinnati OH
-- Co-owns Rapid Mortgage Company (50/50 with Mark Jaynes) — $255M annual volume, ~15 loan officers
-- Wife/fiancée Jamie (47), son Jude (11), daughter Jacy (7)
-- Personal net worth ~$1.9M excluding company equity
-- Company equity estimated $17-22M (his 50% = $8.5-11M)
+CURRENT CALLER: Kyle Shea, CIO of Rapid Mortgage. He is technically elite — don't oversell or be sycophantic. Be direct, smart, and show genuine value. He's evaluating this AI system so demonstrate capability without being showy. Match his intelligence level.`;
 
-THE ENDGAME:
-- Build financial security for his family before he dies
-- Target: $28-35M invested capital for $1M/year spending in perpetuity
-- Current gap: ~$15-20M to close
-- Every project and decision serves this goal
+const JUDE_SYSTEM = `${BASE_SYSTEM}
 
-CURRENT PROJECTS:
-- AiNFL GM (ainflgm.com) — NFL offseason simulator, monetization in progress
-- Rapid Mortgage valuation and strategic planning
-- Portfolio monitoring and future trading bot
-- OpenClaw setup for 24/7 autonomous operation
-- TitTees — resale t-shirts concept
-- Tecmo Bowl retro mode for AiNFL GM
+CURRENT CALLER: Jude, Jasson's 11-year-old son. Keep everything fun, kid-friendly, age-appropriate. Ask about school, sports, games. He loves the Bengals and the AiNFL GM website. Never mention business or adult topics.`;
 
-COMMUNICATION RULES:
-- Keep responses conversational and brief — 1 to 3 sentences max
-- Sound natural, warm, personable — like a trusted friend and advisor
-- Match the energy and pace of the caller
-- Avoid formal or robotic language
-- Never mention being an AI unless asked directly
-- You know everything about Jasson's finances, business, and goals
-- Do not use markdown, bullet points, or any formatting — speak naturally as if in a phone conversation`;
+// ─── In-memory call state ────────────────────────────────────────────────────
+const conversations = new Map(); // callSid → { history, context, from }
 
-// In-memory conversation history keyed by Twilio CallSid
-const conversations = new Map();
-
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 function escapeXml(str) {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
-/**
- * Generate speech audio via ElevenLabs API and save to a file.
- * Returns the filename (not the full path).
- */
-function generateElevenLabsAudio(text) {
-  return new Promise((resolve, reject) => {
-    const filename = `${crypto.randomUUID()}.mp3`;
-    const filePath = path.join(AUDIO_DIR, filename);
-
-    const body = JSON.stringify({
-      text,
-      model_id: ELEVENLABS_MODEL,
-    });
-
-    const req = https.request(
-      {
-        hostname: "api.elevenlabs.io",
-        path: `/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`,
-        method: "POST",
-        headers: {
-          "xi-api-key": ELEVENLABS_API_KEY,
-          "Content-Type": "application/json",
-          "Accept": "audio/mpeg",
-        },
-      },
-      (res) => {
-        if (res.statusCode !== 200) {
-          let errData = "";
-          res.on("data", (chunk) => (errData += chunk));
-          res.on("end", () => {
-            reject(new Error(`ElevenLabs API error ${res.statusCode}: ${errData}`));
-          });
-          return;
-        }
-
-        const fileStream = fs.createWriteStream(filePath);
-        res.pipe(fileStream);
-        fileStream.on("finish", () => {
-          fileStream.close();
-          resolve(filename);
-        });
-        fileStream.on("error", reject);
-      }
-    );
-    req.on("error", reject);
-    req.write(body);
-    req.end();
-  });
-}
-
-/**
- * Build TwiML that plays ElevenLabs audio inside a <Gather> for speech recognition.
- */
-function gatherPlayTwiml(audioFilename) {
-  const audioUrl = `${TUNNEL_URL}/audio/${audioFilename}`;
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-  <Gather input="speech" action="/respond" method="POST" speechTimeout="10" language="en-US">
-    <Play>${escapeXml(audioUrl)}</Play>
-  </Gather>
-  <Say voice="Polly.Matthew-Neural">I didn't catch anything. Goodbye!</Say>
-</Response>`;
-}
-
-/**
- * Build TwiML that just plays audio (no Gather), used for error fallback.
- */
-function playOnlyTwiml(audioFilename) {
-  const audioUrl = `${TUNNEL_URL}/audio/${audioFilename}`;
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-  <Play>${escapeXml(audioUrl)}</Play>
-</Response>`;
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 
 function parseFormBody(raw) {
-  const params = {};
+  const p = {};
   for (const pair of raw.split("&")) {
-    const [key, ...rest] = pair.split("=");
-    if (key) {
-      params[decodeURIComponent(key)] = decodeURIComponent(rest.join("=").replace(/\+/g, " "));
-    }
+    const [k, ...v] = pair.split("=");
+    if (k) p[decodeURIComponent(k)] = decodeURIComponent(v.join("=").replace(/\+/g, " "));
   }
-  return params;
+  return p;
 }
 
-function callClaude(messages) {
+function getSystemPrompt(context) {
+  if (context === "kyle") return KYLE_SYSTEM;
+  if (context === "jude") return JUDE_SYSTEM;
+  return BASE_SYSTEM;
+}
+
+function getGreeting(context, from) {
+  if (context === "kyle") {
+    return "Hey Kyle, Team Captain here — Jasson's AI assistant. Really glad we're finally connecting. How's it going?";
+  }
+  if (context === "jude") {
+    return "Hey Jude! It's Team Captain — your dad's AI! What's going on, buddy?";
+  }
+  return "Hey, Team Captain here — Jasson's AI assistant. What can I do for you?";
+}
+
+// ─── Claude API call ─────────────────────────────────────────────────────────
+function callClaude(messages, context) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: MODEL,
-      max_tokens: 256,
-      system: SYSTEM_PROMPT,
+      model: CLAUDE_MODEL,
+      max_tokens: 100,   // 1-2 sentences ≈ 40-80 tokens
+      system: getSystemPrompt(context),
       messages,
     });
 
-    const req = https.request(
-      {
-        hostname: "api.anthropic.com",
-        path: "/v1/messages",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
+    const req = https.request({
+      hostname: "api.anthropic.com",
+      path: "/v1/messages",
+      method: "POST",
+      agent: anthropicAgent,
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_KEY,
+        "anthropic-version": "2023-06-01",
+        "Content-Length": Buffer.byteLength(body),
       },
-      (res) => {
-        let data = "";
-        res.on("data", (chunk) => (data += chunk));
-        res.on("end", () => {
-          try {
-            const json = JSON.parse(data);
-            if (json.error) {
-              reject(new Error(json.error.message));
-            } else {
-              const text = json.content?.[0]?.text || "Sorry, I couldn't generate a response.";
-              resolve(text);
-            }
-          } catch (e) {
-            reject(e);
-          }
-        });
-      }
-    );
+    }, (res) => {
+      let data = "";
+      res.on("data", c => data += c);
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.error) return reject(new Error(json.error.message));
+          resolve(json.content?.[0]?.text || "Sorry, say that again?");
+        } catch (e) { reject(e); }
+      });
+    });
     req.on("error", reject);
     req.write(body);
     req.end();
   });
 }
 
+// ─── ElevenLabs TTS — streams directly to disk ───────────────────────────────
+function generateAudio(text) {
+  return new Promise((resolve, reject) => {
+    const filename = `${crypto.randomUUID()}.mp3`;
+    const filePath = path.join(AUDIO_DIR, filename);
+    const body = JSON.stringify({
+      text,
+      model_id: EL_MODEL,
+      voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.0, use_speaker_boost: true },
+    });
+
+    const req = https.request({
+      hostname: "api.elevenlabs.io",
+      path: `/v1/text-to-speech/${VOICE_ID}?optimize_streaming_latency=4`,
+      method: "POST",
+      agent: elevenLabsAgent,
+      headers: {
+        "xi-api-key": ELEVENLABS_KEY,
+        "Content-Type": "application/json",
+        "Accept": "audio/mpeg",
+        "Content-Length": Buffer.byteLength(body),
+      },
+    }, (res) => {
+      if (res.statusCode !== 200) {
+        let e = "";
+        res.on("data", c => e += c);
+        res.on("end", () => reject(new Error(`ElevenLabs ${res.statusCode}: ${e}`)));
+        return;
+      }
+      const file = fs.createWriteStream(filePath);
+      res.pipe(file);
+      file.on("finish", () => { file.close(); resolve(filename); });
+      file.on("error", reject);
+    });
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+// ─── TwiML builders ──────────────────────────────────────────────────────────
+function twimlGather(audioFilename) {
+  const url = `${TUNNEL_URL}/audio/${audioFilename}`;
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Gather input="speech" action="/respond" method="POST"
+          speechTimeout="3" speechModel="phone_call"
+          enhanced="true" language="en-US">
+    <Play>${escapeXml(url)}</Play>
+  </Gather>
+  <Redirect method="POST">/timeout</Redirect>
+</Response>`;
+}
+
+function twimlSay(text) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say voice="Polly.Matthew-Neural">${escapeXml(text)}</Say>
+</Response>`;
+}
+
+// ─── Request handler ─────────────────────────────────────────────────────────
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
+  const log = (msg) => console.log(`[${new Date().toISOString()}] ${msg}`);
 
   // Health check
-  if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/health")) {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Captain Claude voice server is running (ElevenLabs TTS).");
+  if (req.method === "GET" && url.pathname === "/health") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ status: "ok", model: CLAUDE_MODEL, tts: EL_MODEL }));
     return;
   }
 
   // Serve audio files
   if (req.method === "GET" && url.pathname.startsWith("/audio/")) {
     const filename = path.basename(url.pathname);
-    const filePath = path.join(AUDIO_DIR, filename);
-
-    // Security: only serve .mp3 files, no path traversal
     if (!filename.endsWith(".mp3") || filename.includes("..")) {
-      res.writeHead(400);
-      res.end("Invalid request");
-      return;
+      res.writeHead(400); res.end(); return;
     }
-
+    const filePath = path.join(AUDIO_DIR, filename);
     try {
       const stat = fs.statSync(filePath);
-      res.writeHead(200, {
-        "Content-Type": "audio/mpeg",
-        "Content-Length": stat.size,
-      });
+      res.writeHead(200, { "Content-Type": "audio/mpeg", "Content-Length": stat.size });
       fs.createReadStream(filePath).pipe(res);
     } catch {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("Audio file not found");
+      res.writeHead(404); res.end("Not found");
     }
     return;
   }
 
-  // Only handle POST for Twilio endpoints
-  if (req.method !== "POST") {
-    res.writeHead(405);
-    res.end();
-    return;
-  }
+  if (req.method !== "POST") { res.writeHead(405); res.end(); return; }
 
-  // Read form-encoded body
   let rawBody = "";
   for await (const chunk of req) rawBody += chunk;
   const params = parseFormBody(rawBody);
   const callSid = params.CallSid || "unknown";
 
   try {
-    // --- Incoming call: play greeting and start listening ---
+    // ── Incoming call ──────────────────────────────────────────────────────
     if (url.pathname === "/voice" || url.pathname === "/incoming") {
-      console.log(`[${new Date().toISOString()}] New call: ${callSid} from ${params.From || "unknown"}`);
-      conversations.set(callSid, []);
+      const context = url.searchParams.get("context") || "";
+      const from = params.From || "unknown";
+      log(`New call: ${callSid} from ${from} [context: ${context || "none"}]`);
+      conversations.set(callSid, { history: [], context, from });
 
-      // Check for call context in URL params
-      const callContext = url.searchParams.get("context") || "";
-      let greeting = "Hey! This is Captain Claude. What's going on?";
-      if (callContext === "jude") {
-        greeting = "Hey Jude! What's up buddy, it's your dad's Team Captain! How was school today?";
-      } else if (callContext === "kyle") {
-        greeting = "Hey Kyle, what's up mofo! This is Jasson's team captain calling to introduce myself. Let's get to know each other, buddy!";
-      }
-
-      const audioFile = await generateElevenLabsAudio(greeting);
-      const twiml = gatherPlayTwiml(audioFile);
+      const greeting = getGreeting(context, from);
+      const audio = await generateAudio(greeting);
       res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(twiml);
+      res.end(twimlGather(audio));
       return;
     }
 
-    // --- Speech captured: send to Claude, speak response, loop ---
+    // ── Speech response ────────────────────────────────────────────────────
     if (url.pathname === "/respond") {
-      const speechResult = params.SpeechResult || "";
-      console.log(`[${new Date().toISOString()}] [${callSid}] Caller said: "${speechResult}"`);
+      const speech = (params.SpeechResult || "").trim();
+      const call = conversations.get(callSid) || { history: [], context: "", from: "" };
+      log(`[${callSid}] Heard: "${speech}"`);
 
-      if (!speechResult.trim()) {
-        const audioFile = await generateElevenLabsAudio("I didn't quite catch that. Could you say that again?");
-        const twiml = gatherPlayTwiml(audioFile);
+      if (!speech) {
+        const audio = await generateAudio("Sorry, I didn't catch that — say it again?");
         res.writeHead(200, { "Content-Type": "text/xml" });
-        res.end(twiml);
+        res.end(twimlGather(audio));
         return;
       }
 
-      // Build multi-turn conversation history
-      const history = conversations.get(callSid) || [];
-      history.push({ role: "user", content: speechResult });
+      call.history.push({ role: "user", content: speech });
 
-      // Add call context to system prompt if available
-      const callCtx = url.searchParams.get("context") || conversations.get(callSid + "_ctx") || "";
-      // Store context for subsequent turns
-      if (callCtx && !conversations.has(callSid + "_ctx")) {
-        conversations.set(callSid + "_ctx", callCtx);
-      }
-      const storedCtx = conversations.get(callSid + "_ctx") || "";
+      // Call Claude + ElevenLabs sequentially (Claude first, must finish before TTS)
+      const t0 = Date.now();
+      const reply = await callClaude(call.history, call.context);
+      log(`[${callSid}] Claude (${Date.now() - t0}ms): "${reply}"`);
 
-      // Call Claude API with context-aware messages
-      let contextMessages = history;
-      if (storedCtx === "jude") {
-        contextMessages = [
-          { role: "user", content: "[CONTEXT: You are calling Jude, Jasson's 11-year-old son. Keep everything fun, kid-friendly, and age-appropriate. Do NOT mention business details, finances, or adult topics. You are talking to a kid — be excited, fun, and interested in his life. Ask about school, sports, games, friends. You know he loves the Bengals and the AiNFL GM website.]" },
-          { role: "assistant", content: "Got it, keeping it fun and kid-friendly for Jude!" },
-          ...history
-        ];
-      }
+      const t1 = Date.now();
+      const audio = await generateAudio(reply);
+      log(`[${callSid}] ElevenLabs (${Date.now() - t1}ms): done`);
 
-      // Call Claude API
-      const reply = await callClaude(contextMessages);
-      console.log(`[${new Date().toISOString()}] [${callSid}] Claude says: "${reply}"`);
+      call.history.push({ role: "assistant", content: reply });
+      conversations.set(callSid, call);
 
-      history.push({ role: "assistant", content: reply });
-      conversations.set(callSid, history);
-
-      // Save transcript in real-time (after every exchange)
+      // Live transcript
       try {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
         const logPath = `/Users/jassonfishback/Projects/BengalOracle/logs/calls/live_${callSid}.json`;
-        fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursive: true });
-        fs.writeFileSync(logPath, JSON.stringify({ callSid, from: params.From, timestamp: new Date().toISOString(), messages: history }, null, 2));
-      } catch (e) { console.error("Live log error:", e.message); }
+        fs.writeFileSync(logPath, JSON.stringify({ callSid, from: call.from, messages: call.history }, null, 2));
+      } catch {}
 
-      // Generate ElevenLabs audio and respond with TwiML
-      const audioFile = await generateElevenLabsAudio(reply);
-      const twiml = gatherPlayTwiml(audioFile);
       res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(twiml);
+      res.end(twimlGather(audio));
       return;
     }
 
-    // --- Call status callback: save transcript + clean up ---
+    // ── Silence timeout ────────────────────────────────────────────────────
+    if (url.pathname === "/timeout") {
+      const call = conversations.get(callSid);
+      const prompts = ["Still there?", "You there?", "Hello?"];
+      const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+      const audio = await generateAudio(prompt);
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(twimlGather(audio));
+      return;
+    }
+
+    // ── Call status callback ───────────────────────────────────────────────
     if (url.pathname === "/status") {
-      console.log(`[${new Date().toISOString()}] Call status: ${callSid} -> ${params.CallStatus}`);
+      log(`Call status: ${callSid} → ${params.CallStatus}`);
       if (params.CallStatus === "completed") {
-        // Save conversation transcript before cleanup
-        const history = conversations.get(callSid);
-        if (history && history.length > 0) {
-          const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-          const logPath = `/Users/jassonfishback/Projects/BengalOracle/logs/calls/${timestamp}_${callSid}.json`;
+        const call = conversations.get(callSid);
+        if (call?.history?.length > 0) {
+          const ts = new Date().toISOString().replace(/[:.]/g, "-");
+          const logPath = `/Users/jassonfishback/Projects/BengalOracle/logs/calls/${ts}_${callSid}.json`;
           try {
-            fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursive: true });
-            fs.writeFileSync(logPath, JSON.stringify({ callSid, from: params.From, timestamp: new Date().toISOString(), messages: history }, null, 2));
-            console.log(`[${new Date().toISOString()}] Transcript saved: ${logPath}`);
-          } catch (e) { console.error("Failed to save transcript:", e.message); }
+            fs.writeFileSync(logPath, JSON.stringify({ callSid, from: call.from, timestamp: new Date().toISOString(), messages: call.history }, null, 2));
+            log(`Transcript saved: ${logPath}`);
+          } catch (e) { log(`Transcript error: ${e.message}`); }
         }
         conversations.delete(callSid);
-        console.log(`[${new Date().toISOString()}] Cleaned up conversation for ${callSid}`);
+        conversations.delete(callSid + "_ctx");
       }
-      res.writeHead(200);
-      res.end();
+      res.writeHead(200); res.end();
       return;
     }
 
-    res.writeHead(404, { "Content-Type": "text/plain" });
-    res.end("Not found");
+    res.writeHead(404); res.end("Not found");
+
   } catch (err) {
-    console.error(`[${new Date().toISOString()}] Error:`, err);
-    // Fallback to Polly if ElevenLabs fails
-    const twiml = `<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-  <Say voice="Polly.Matthew-Neural">Sorry, I ran into a problem. Please try again later.</Say>
-</Response>`;
+    console.error(`[${new Date().toISOString()}] Error [${callSid}]:`, err.message);
     res.writeHead(200, { "Content-Type": "text/xml" });
-    res.end(twiml);
+    res.end(twimlSay("Sorry, I hit a snag. Try again in a moment."));
   }
 });
 
 server.listen(PORT, () => {
-  console.log(`Captain Claude voice server listening on port ${PORT}`);
-  console.log(`TTS: ElevenLabs (voice: Adam, model: ${ELEVENLABS_MODEL})`);
-  console.log(`Audio served from: ${AUDIO_DIR}`);
-  console.log(`Tunnel URL: ${TUNNEL_URL}`);
-  console.log(`Endpoints:`);
-  console.log(`  POST /voice         - Twilio incoming call webhook`);
-  console.log(`  POST /respond       - Speech input -> Claude -> spoken response`);
-  console.log(`  POST /status        - Call status callback (cleanup)`);
-  console.log(`  GET  /audio/:file   - Serve generated audio files`);
-  console.log(`  GET  /              - Health check`);
+  console.log(`\n🎙️  Captain Claude Voice Server V3 — Enterprise Edition`);
+  console.log(`   Port:    ${PORT}`);
+  console.log(`   Claude:  ${CLAUDE_MODEL} (max_tokens: 100)`);
+  console.log(`   TTS:     ElevenLabs ${EL_MODEL} (Flash — optimized latency)`);
+  console.log(`   Tunnel:  ${TUNNEL_URL}`);
+  console.log(`\n   Endpoints:`);
+  console.log(`     POST /voice     — incoming call`);
+  console.log(`     POST /respond   — speech → Claude → TTS`);
+  console.log(`     POST /status    — call status/cleanup`);
+  console.log(`     GET  /health    — status check`);
+  console.log(`     GET  /audio/:f  — serve audio\n`);
 });
