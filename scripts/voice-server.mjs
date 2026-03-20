@@ -114,12 +114,12 @@ function getGreeting(context, from) {
   return "Hey, Team Captain here. What's going on?";
 }
 
-// ─── Claude API — streaming, resolves on first complete sentence ─────────────
+// ─── Claude API — streaming with smart sentence boundary detection ───────────
 function callClaude(messages, context) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       model: CLAUDE_MODEL,
-      max_tokens: 80,
+      max_tokens: 75,
       stream: true,
       system: getSystemPrompt(context),
       messages,
@@ -144,21 +144,29 @@ function callClaude(messages, context) {
       res.on("data", chunk => {
         buffer += chunk.toString();
         const lines = buffer.split("\n");
-        buffer = lines.pop(); // keep incomplete line
+        buffer = lines.pop();
 
         for (const line of lines) {
           if (!line.startsWith("data: ")) continue;
-          const data = line.slice(6).trim();
-          if (data === "[DONE]") continue;
+          const raw = line.slice(6).trim();
           try {
-            const evt = JSON.parse(data);
+            const evt = JSON.parse(raw);
             if (evt.type === "content_block_delta" && evt.delta?.text) {
               fullText += evt.delta.text;
-              // Resolve early on first sentence end — gets TTS started faster
-              if (!resolved && /[.!?]/.test(fullText) && fullText.length > 20) {
-                resolved = true;
-                resolve(fullText.trim());
+              // Only resolve on a COMPLETE sentence — must end with .!? followed by space or end
+              // Minimum 30 chars to avoid resolving on short openers like "Ha." or "Yeah."
+              if (!resolved && fullText.length >= 30 && /[.!?](\s|$)/.test(fullText)) {
+                // Make sure the sentence is actually done (next char is space/cap or we have enough)
+                const lastPunct = fullText.search(/[.!?](\s|$)/);
+                if (lastPunct > 20) {
+                  resolved = true;
+                  resolve(fullText.slice(0, lastPunct + 1).trim());
+                }
               }
+            }
+            if (evt.type === "message_stop" && !resolved) {
+              resolved = true;
+              resolve(fullText.trim() || "Sorry, say that again?");
             }
           } catch {}
         }
@@ -226,8 +234,10 @@ function twimlGather(audioFilename) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
   <Gather input="speech" action="/respond" method="POST"
-          speechTimeout="3" speechModel="phone_call"
-          enhanced="true" language="en-US">
+          speechTimeout="2" speechModel="phone_call"
+          enhanced="true" language="en-US"
+          profanityFilter="false"
+          hints="yeah,yep,okay,right,sure,go ahead,tell me more,what do you mean,interesting">
     <Play>${escapeXml(url)}</Play>
   </Gather>
   <Redirect method="POST">/timeout</Redirect>
@@ -253,7 +263,7 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Serve audio files
+  // Serve audio files — with caching headers for Twilio CDN
   if (req.method === "GET" && url.pathname.startsWith("/audio/")) {
     const filename = path.basename(url.pathname);
     if (!filename.endsWith(".mp3") || filename.includes("..")) {
@@ -262,7 +272,12 @@ const server = http.createServer(async (req, res) => {
     const filePath = path.join(AUDIO_DIR, filename);
     try {
       const stat = fs.statSync(filePath);
-      res.writeHead(200, { "Content-Type": "audio/mpeg", "Content-Length": stat.size });
+      res.writeHead(200, {
+        "Content-Type": "audio/mpeg",
+        "Content-Length": stat.size,
+        "Cache-Control": "public, max-age=300",
+        "Accept-Ranges": "bytes",
+      });
       fs.createReadStream(filePath).pipe(res);
     } catch {
       res.writeHead(404); res.end("Not found");
