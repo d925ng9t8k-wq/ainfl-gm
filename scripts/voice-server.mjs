@@ -39,20 +39,20 @@ fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursi
 // ─── Trimmed, voice-optimized system prompt ─────────────────────────────────
 const BASE_SYSTEM = `You are Team Captain, an AI assistant for Jasson Fishback. You're on a phone call.
 
-RULES:
-- Max 2 short sentences per response. Be natural and conversational.
-- Sound warm, confident, slightly casual — like a sharp trusted advisor.
+CRITICAL RULES:
+- MAXIMUM 1-2 short sentences. Never more. This is a phone call — brevity is everything.
+- Always end with a short question to keep conversation going.
+- Sound warm, confident, slightly casual — sharp trusted advisor energy.
 - Never say you're an AI unless directly asked.
-- No markdown, lists, or formatting. Speak naturally.
-- Ask one follow-up question to keep conversation going.
+- No markdown, lists, or formatting ever. Pure spoken word.
 
-ABOUT JASSON: 48, Cincinnati OH, co-owns Rapid Mortgage Company with Mark Jaynes. Building AI tools including AiNFL GM (ainflgm.com).
+ABOUT JASSON: 48, Cincinnati OH, co-owns Rapid Mortgage Company with Mark Jaynes. Building AI tools including AiNFL GM.
 
-RAPID MORTGAGE: Mid-size independent mortgage bank, Ohio market leader, ~15 veteran loan officers, purchase-focused, Encompass/NCino/Optimal Blue tech stack.
+RAPID MORTGAGE: Mid-size Ohio mortgage bank, ~15 veteran loan officers, purchase-focused, Encompass/NCino/Optimal Blue stack.
 
-KYLE SHEA: CIO at Rapid Mortgage. Genius-level developer. Final authority on all technology decisions. Treat with highest respect and recognize his expertise.
+KYLE SHEA: CIO at Rapid Mortgage. Genius-level developer. Final authority on all technology. Highest respect.
 
-CONFIDENTIAL — NEVER DISCUSS: Personal finances, company valuation, exit strategies, net worth, family financial details.`;
+CONFIDENTIAL — NEVER DISCUSS: Personal finances, valuation, exit strategies, net worth, family finances.`;
 
 const KYLE_SYSTEM = `${BASE_SYSTEM}
 
@@ -97,12 +97,13 @@ function getGreeting(context, from) {
   return "Hey, Team Captain here — Jasson's AI assistant. What can I do for you?";
 }
 
-// ─── Claude API call ─────────────────────────────────────────────────────────
+// ─── Claude API — streaming, resolves on first complete sentence ─────────────
 function callClaude(messages, context) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       model: CLAUDE_MODEL,
-      max_tokens: 100,   // 1-2 sentences ≈ 40-80 tokens
+      max_tokens: 80,
+      stream: true,
       system: getSystemPrompt(context),
       messages,
     });
@@ -119,15 +120,37 @@ function callClaude(messages, context) {
         "Content-Length": Buffer.byteLength(body),
       },
     }, (res) => {
-      let data = "";
-      res.on("data", c => data += c);
-      res.on("end", () => {
-        try {
-          const json = JSON.parse(data);
-          if (json.error) return reject(new Error(json.error.message));
-          resolve(json.content?.[0]?.text || "Sorry, say that again?");
-        } catch (e) { reject(e); }
+      let buffer = "";
+      let fullText = "";
+      let resolved = false;
+
+      res.on("data", chunk => {
+        buffer += chunk.toString();
+        const lines = buffer.split("\n");
+        buffer = lines.pop(); // keep incomplete line
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const data = line.slice(6).trim();
+          if (data === "[DONE]") continue;
+          try {
+            const evt = JSON.parse(data);
+            if (evt.type === "content_block_delta" && evt.delta?.text) {
+              fullText += evt.delta.text;
+              // Resolve early on first sentence end — gets TTS started faster
+              if (!resolved && /[.!?]/.test(fullText) && fullText.length > 20) {
+                resolved = true;
+                resolve(fullText.trim());
+              }
+            }
+          } catch {}
+        }
       });
+
+      res.on("end", () => {
+        if (!resolved) resolve(fullText.trim() || "Sorry, say that again?");
+      });
+      res.on("error", reject);
     });
     req.on("error", reject);
     req.write(body);
