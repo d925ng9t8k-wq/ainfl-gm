@@ -39,8 +39,30 @@ function NavIcon({ type }) {
   }
 }
 
+// Ensure a color has sufficient contrast against a dark background
+// Returns the color if bright enough, otherwise returns a lightened version or white
+function ensureContrast(hexColor) {
+  if (!hexColor) return '#FFFFFF';
+  const hex = hexColor.replace('#', '');
+  if (hex.length !== 6) return '#FFFFFF';
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  // Relative luminance (perceived brightness)
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  if (luminance >= 0.35) return hexColor; // bright enough
+  if (luminance >= 0.15) {
+    // Lighten the color by blending with white
+    const factor = 0.5;
+    const lr = Math.round(r + (255 - r) * factor);
+    const lg = Math.round(g + (255 - g) * factor);
+    const lb = Math.round(b + (255 - b) * factor);
+    return `#${lr.toString(16).padStart(2, '0')}${lg.toString(16).padStart(2, '0')}${lb.toString(16).padStart(2, '0')}`;
+  }
+  return '#FFFFFF'; // too dark, use white
+}
+
 export default function Layout({ children }) {
-  const [hintDismissed, setHintDismissed] = React.useState(false);
   const { capUsed, totalCap, capAvailable, allTeams, currentTeamAbbr, selectedTeamColors, selectTeam } = useGame();
   const capPct = Math.min((capUsed / totalCap) * 100, 100);
   const isOverCap = capUsed > totalCap;
@@ -50,36 +72,12 @@ export default function Layout({ children }) {
   const primaryColor = selectedTeamColors?.primaryColor || '#FB4F14';
   const secondaryColor = selectedTeamColors?.secondaryColor || '#000000';
 
-  // Use team's primary color as accent, falling back for very dark colors
-  const accentColor = primaryColor === '#000000' ? (secondaryColor !== '#000000' ? secondaryColor : '#FB4F14') : primaryColor;
+  // Use team's primary color as accent, ensuring good contrast against dark backgrounds
+  const rawAccent = primaryColor === '#000000' ? (secondaryColor !== '#000000' ? secondaryColor : '#FB4F14') : primaryColor;
+  const accentColor = ensureContrast(rawAccent);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
-
-      {/* Landscape suggestion for mobile portrait */}
-      {!hintDismissed && (
-        <div className="landscape-hint" style={{
-          display: 'none',
-          background: 'linear-gradient(90deg, rgba(0,240,255,0.08), rgba(251,79,20,0.08))',
-          border: '1px solid rgba(0,240,255,0.15)',
-          padding: '6px 16px',
-          fontSize: 11,
-          color: '#94A3B8',
-          fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
-          letterSpacing: '0.04em',
-          gap: 6,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <span style={{ flex: 1, textAlign: 'center' }}>
-            <span style={{ fontSize: 14 }}>{'\uD83D\uDD04'}</span> For the best experience, rotate your phone to landscape
-          </span>
-          <button
-            onClick={() => setHintDismissed(true)}
-            style={{ background: 'none', border: 'none', color: '#64748b', fontSize: 16, cursor: 'pointer', padding: '0 4px', lineHeight: 1 }}
-          >{'\u2715'}</button>
-        </div>
-      )}
 
       {/* Top Nav */}
       <header style={{
@@ -186,7 +184,7 @@ export default function Layout({ children }) {
                   value={currentTeamAbbr}
                   onChange={e => selectTeam(e.target.value)}
                   style={{
-                    background: 'rgba(30,41,59,0.6)',
+                    background: 'rgba(30,41,59,0.9)',
                     color: accentColor,
                     border: '1px solid rgba(0,240,255,0.15)',
                     borderRadius: 6,
@@ -200,7 +198,7 @@ export default function Layout({ children }) {
                   }}
                 >
                   {allTeams.map(t => (
-                    <option key={t.abbreviation} value={t.abbreviation}>{t.city} {t.name}</option>
+                    <option key={t.abbreviation} value={t.abbreviation} style={{ background: '#1e293b', color: '#E2E8F0' }}>{t.city} {t.name}</option>
                   ))}
                 </select>
               </div>

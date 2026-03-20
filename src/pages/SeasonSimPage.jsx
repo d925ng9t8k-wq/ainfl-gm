@@ -36,6 +36,25 @@ const CAP_BENCHMARKS = {
   QB: 55, WR: 25, RB: 10, TE: 12, OL: 18, DL: 18, LB: 14, CB: 18, S: 12, K: 5, P: 3,
 };
 
+function ensureColorContrast(hexColor) {
+  if (!hexColor) return '#FFFFFF';
+  const hex = hexColor.replace('#', '');
+  if (hex.length !== 6) return '#FFFFFF';
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  if (luminance >= 0.35) return hexColor;
+  if (luminance >= 0.15) {
+    const f = 0.5;
+    const lr = Math.round(r + (255 - r) * f);
+    const lg = Math.round(g + (255 - g) * f);
+    const lb = Math.round(b + (255 - b) * f);
+    return `#${lr.toString(16).padStart(2, '0')}${lg.toString(16).padStart(2, '0')}${lb.toString(16).padStart(2, '0')}`;
+  }
+  return '#FFFFFF';
+}
+
 function classifyPosition(pos) {
   if (!pos) return null;
   const upper = pos.toUpperCase();
@@ -121,14 +140,18 @@ function calculateRosterStrength(roster) {
 }
 
 function projectWins(strengthScore, seed) {
-  // Map score to expected wins: 50 -> ~8, 70 -> ~10.5, 30 -> ~5.5
-  // More compressed range — average teams get 8-9 wins, elite ~11-12
-  const baseWins = 2 + (strengthScore / 100) * 12;
-  // More randomness: ±2.5 wins for realistic variance
+  // Map strength score to expected wins with strong regression to 8.5 mean
+  // Score 20 -> ~4.5 wins, 40 -> ~6.5, 50 -> ~8, 60 -> ~9.5, 80 -> ~11.5
+  // Use a curve that compresses the middle and stretches extremes
+  const normalizedScore = (strengthScore - 50) / 50; // -1 to 1
+  // Apply slight S-curve: exaggerate extremes, compress middle
+  const curved = normalizedScore * (0.8 + 0.2 * Math.abs(normalizedScore));
+  const rawBaseWins = 8.5 + curved * 5.0; // Range: ~3.5 to ~13.5
+  // Heavy regression toward 8.5 — talent alone doesn't guarantee wins
+  const regressed = rawBaseWins * 0.65 + 8.5 * 0.35;
+  // More randomness: ±3 wins for realistic NFL variance
   const rng = seededRandom(seed);
-  const noise = (rng() - 0.5) * 5;
-  // Add regression to mean (pull toward 8.5)
-  const regressed = baseWins * 0.85 + 8.5 * 0.15;
+  const noise = (rng() - 0.5) * 6 + (rng() - 0.5) * 2; // wider spread, slight skew
   const rawWins = Math.max(0, Math.min(17, regressed + noise));
   const wins = Math.round(rawWins);
   const losses = 17 - wins;
@@ -190,7 +213,8 @@ export default function SeasonSimPage() {
   const [simSeed, setSimSeed] = useState(() => Date.now());
 
   const primaryColor = selectedTeamColors?.primaryColor || '#FB4F14';
-  const accentColor = primaryColor === '#000000' ? (selectedTeamColors?.secondaryColor !== '#000000' ? selectedTeamColors?.secondaryColor : '#FB4F14') : primaryColor;
+  const rawAccent = primaryColor === '#000000' ? (selectedTeamColors?.secondaryColor !== '#000000' ? selectedTeamColors?.secondaryColor : '#FB4F14') : primaryColor;
+  const accentColor = ensureColorContrast(rawAccent);
 
   const { overall, positions } = useMemo(() => calculateRosterStrength(roster), [roster]);
 
