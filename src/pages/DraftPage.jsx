@@ -223,6 +223,14 @@ export default function DraftPage() {
     return ['All', ...Array.from(set).sort()];
   }, [draftBoard]);
 
+  // Map prospect id -> projected overall pick number based on rank among available prospects
+  const projectedPickMap = useMemo(() => {
+    const sorted = [...draftBoard].sort((a, b) => a.rank - b.rank);
+    const map = new Map();
+    sorted.forEach((p, i) => { map.set(p.id, currentPickIdx + 1 + i); });
+    return map;
+  }, [draftBoard, currentPickIdx]);
+
   // Helper: map a position string to a position group for CPU needs tracking
   const getPosGroup = useCallback((pos) => {
     if (!pos) return 'Other';
@@ -1654,6 +1662,60 @@ export default function DraftPage() {
         </div>
       </div>
 
+      {/* Your Picks Summary Strip */}
+      {draftStarted && !draftComplete && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10,
+          padding: '6px 10px', background: '#0a0f1e', borderRadius: 8,
+          border: '1px solid rgba(0,240,255,0.10)', overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+        }}>
+          <span style={{ color: '#94A3B8', fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', marginRight: 2 }}>YOUR PICKS:</span>
+          {myPicks
+            .filter(pk => getRoundForOverall(pk.overall) <= draftRounds)
+            .sort((a, b) => a.overall - b.overall)
+            .map(pk => {
+              const drafted = getDraftedPick(pk.overall);
+              const isNext = !drafted && currentPick && !isUserPick
+                ? pk.overall === myPicks
+                    .filter(p => getRoundForOverall(p.overall) <= draftRounds && !getDraftedPick(p.overall))
+                    .sort((a, b) => a.overall - b.overall)[0]?.overall
+                : currentPick && pk.overall === currentPick.overall && isUserPick;
+              const isUsed = !!drafted;
+              return (
+                <div key={pk.overall} style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  padding: '3px 8px', borderRadius: 6, flexShrink: 0,
+                  background: isNext ? accentBg(accentColor) : isUsed ? 'rgba(74,222,128,0.08)' : 'rgba(30,41,59,0.5)',
+                  border: isNext ? `1.5px solid ${accentColor}` : isUsed ? '1px solid rgba(74,222,128,0.2)' : '1px solid rgba(100,116,139,0.15)',
+                  animation: isNext ? 'pulse-border 1.5s ease-in-out infinite' : 'none',
+                }}>
+                  <span style={{
+                    fontSize: 10, fontWeight: 700,
+                    color: isNext ? accentColor : isUsed ? '#4ade80' : '#64748b',
+                  }}>
+                    R{pk.round}
+                  </span>
+                  <span style={{
+                    fontSize: 12, fontWeight: 800,
+                    color: isNext ? accentColor : isUsed ? '#4ade80' : '#94A3B8',
+                  }}>
+                    #{pk.overall}
+                  </span>
+                  {isUsed && drafted && (
+                    <span style={{ fontSize: 8, color: '#4ade80', whiteSpace: 'nowrap', maxWidth: 60, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {drafted.prospect.position}
+                    </span>
+                  )}
+                  {isNext && !isUsed && (
+                    <span style={{ fontSize: 8, color: accentColor, fontWeight: 700 }}>NEXT</span>
+                  )}
+                </div>
+              );
+            })}
+        </div>
+      )}
+
       {/* Modals */}
       {renderResetModal()}
       {renderTradeUpModal()}
@@ -1824,13 +1886,15 @@ export default function DraftPage() {
           {!isSimulating && isUserPick && currentPick && !draftComplete && (
             <div>
               <div style={{
-                background: accentBg(accentColor), border: `1px solid ${accentColor}`,
-                borderRadius: 8, padding: 12, marginBottom: 12, textAlign: 'center',
+                background: accentBg(accentColor), border: `2px solid ${accentColor}`,
+                borderRadius: 10, padding: 16, marginBottom: 12, textAlign: 'center',
+                animation: 'user-pick-glow 2s ease-in-out infinite',
+                boxShadow: `0 0 20px ${accentColor}44, 0 0 40px ${accentColor}22`,
               }}>
-                <div style={{ color: accentColor, fontWeight: 800, fontSize: 16, marginBottom: 2 }}>
-                  ON THE CLOCK
+                <div style={{ color: accentColor, fontWeight: 900, fontSize: 24, marginBottom: 4, letterSpacing: 2, textTransform: 'uppercase' }}>
+                  YOUR PICK
                 </div>
-                <div style={{ color: '#fff', fontSize: 13 }}>
+                <div style={{ color: '#fff', fontSize: 14, fontWeight: 600 }}>
                   Pick #{currentPick.overall} -- Round {getRoundForOverall(currentPick.overall)}
                 </div>
               </div>
@@ -1892,7 +1956,9 @@ export default function DraftPage() {
 
               {/* Prospect List */}
               <div style={{ overflowY: 'auto' }}>
-                {availableProspects.map(p => (
+                {availableProspects.map((p, idx) => {
+                  const projectedPick = projectedPickMap.get(p.id) || null;
+                  return (
                   <div
                     key={p.id}
                     style={{
@@ -1905,7 +1971,12 @@ export default function DraftPage() {
                     onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                      <span style={{ color: '#64748b', fontSize: 11, minWidth: 24, textAlign: 'right' }}>#{p.rank}</span>
+                      <div style={{ minWidth: 28, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                        <span style={{ color: '#64748b', fontSize: 11 }}>#{p.rank}</span>
+                        {projectedPick && projectedPick <= totalPicks && (
+                          <span style={{ color: '#475569', fontSize: 9 }}>~{projectedPick}</span>
+                        )}
+                      </div>
                       <div style={{ minWidth: 0 }}>
                         <div style={{ color: '#fff', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {p.name}
@@ -1933,7 +2004,8 @@ export default function DraftPage() {
                       </button>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
                 {availableProspects.length > 100 && (
                   <p style={{ color: '#64748b', fontSize: 11, textAlign: 'center', marginTop: 8 }}>
                     {availableProspects.length} prospects available. Use filter to narrow.
@@ -1991,6 +2063,10 @@ export default function DraftPage() {
         @keyframes pulse-pause {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.85; transform: scale(1.03); }
+        }
+        @keyframes user-pick-glow {
+          0%, 100% { box-shadow: 0 0 20px ${accentColor}44, 0 0 40px ${accentColor}22; border-color: ${accentColor}; }
+          50% { box-shadow: 0 0 30px ${accentColor}66, 0 0 60px ${accentColor}33; border-color: ${accentColor}cc; }
         }
       `}</style>
     </div>
