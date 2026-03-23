@@ -1547,6 +1547,30 @@ export default function DraftPage() {
           <div style={{ color: '#475569', fontSize: 13 }}>Avg prospect grade: {draftRecap.avgGrade}</div>
         </div>
 
+        {/* Post-Draft CTA */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(251,79,20,0.12), rgba(251,79,20,0.04))',
+          border: '1px solid rgba(251,79,20,0.2)', borderRadius: 10, padding: '14px 18px',
+          marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexWrap: 'wrap', gap: 10,
+        }}>
+          <div style={{ color: '#E2E8F0', fontSize: 13, lineHeight: 1.5 }}>
+            <strong>Think your team can win it all?</strong> Take your GM skills to the prediction markets.
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <a href="https://polymarket.com" target="_blank" rel="noopener noreferrer" style={{
+              padding: '6px 14px', borderRadius: 6, fontSize: 12, fontWeight: 700,
+              textDecoration: 'none', color: '#000', background: '#00f0ff',
+              fontFamily: "'Oswald', sans-serif", letterSpacing: '0.04em', textTransform: 'uppercase',
+            }}>Polymarket</a>
+            <a href="https://buymeacoffee.com/ainflgm" target="_blank" rel="noopener noreferrer" style={{
+              padding: '6px 14px', borderRadius: 6, fontSize: 12, fontWeight: 700,
+              textDecoration: 'none', color: '#fff', background: '#FB4F14',
+              fontFamily: "'Oswald', sans-serif", letterSpacing: '0.04em',
+            }}>Support AiNFL GM</a>
+          </div>
+        </div>
+
         {/* Draft Class Cards */}
         <div style={{ marginBottom: 24 }}>
           <h3 style={{ color: '#fff', fontSize: 15, margin: '0 0 10px' }}>Your Draft Class</h3>

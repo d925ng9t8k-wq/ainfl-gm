@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useGame } from '../context/GameContext';
+import PredictionMarkets from '../components/PredictionMarkets';
 import { deadCapCharges as bengalsDeadCap } from '../data/bengalsRoster';
 import { teamDeadCaps } from '../data/teamDeadCaps';
 
@@ -552,6 +553,8 @@ export default function CapTrackerPage() {
           )}
         </div>
       </div>
+
+      <PredictionMarkets maxMarkets={3} />
     </div>
   );
 }

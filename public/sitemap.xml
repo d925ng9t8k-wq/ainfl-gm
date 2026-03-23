@@ -8,6 +8,8 @@
   <url><loc>https://ainflgm.com/draft</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://ainflgm.com/summary</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/season</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/markets</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
 
   <!-- All 32 NFL team pages -->
   <url><loc>https://ainflgm.com/cardinals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>

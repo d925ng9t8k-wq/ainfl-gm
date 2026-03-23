@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useGame } from '../context/GameContext';
+import PredictionMarkets from '../components/PredictionMarkets';
 
 // NFL divisions
 const DIVISIONS = {
@@ -676,6 +677,8 @@ export default function SeasonSimPage() {
           />
         </div>
       </div>
+
+      <PredictionMarkets maxMarkets={3} />
     </div>
   );
 }

@@ -1,0 +1,251 @@
+/**
+ * Inbox Monitor — Watches /tmp/telegram-inbox.txt for new messages
+ * Multi-channel failover: if messages unacknowledged >60s, alerts via iMessage + email
+ * Runs as an independent process alongside webhook server
+ */
+import fs from 'node:fs';
+import https from 'node:https';
+import { execSync } from 'node:child_process';
+
+// Load .env
+const envPath = new URL('../.env', import.meta.url).pathname;
+if (fs.existsSync(envPath)) {
+  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
+    const [key, ...vals] = line.split('=');
+    if (key && vals.length) process.env[key.trim()] = vals.join('=').trim();
+  }
+}
+
+const INBOX_FILE = '/tmp/telegram-inbox.txt';
+const ALERT_FILE = '/tmp/telegram-alert.txt'; // Signal file for Claude Code
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID || '8784022142';
+const JASSON_PHONE = '5134031829';
+const JASSON_EMAIL = 'emailfishback@gmail.com';
+
+let lastLineCount = 0;
+let lastAlertTime = 0;
+let unacknowledgedSince = null;
+let escalationLevel = 0; // 0=none, 1=iMessage, 2=email, 3=phone
+
+function getLineCount() {
+  try {
+    const content = fs.readFileSync(INBOX_FILE, 'utf-8');
+    return content.split('\n').filter(l => l.trim()).length;
+  } catch { return 0; }
+}
+
+function getNewMessages() {
+  try {
+    const lines = fs.readFileSync(INBOX_FILE, 'utf-8').split('\n').filter(l => l.trim());
+    return lines.slice(lastLineCount);
+  } catch { return []; }
+}
+
+function writeAlert(messages) {
+  const alert = `NEW_MESSAGES_AT=${new Date().toISOString()}\n${messages.join('\n')}\n`;
+  fs.writeFileSync(ALERT_FILE, alert);
+}
+
+// Send iMessage alert to Jasson
+function sendIMessage(message) {
+  try {
+    // Write AppleScript to temp file to avoid quote escaping issues
+    const escaped = message.replace(/"/g, '\\"');
+    const script = `tell application "Messages"
+  set targetService to 1st account whose service type = iMessage
+  set targetBuddy to participant "${JASSON_PHONE}" of targetService
+  send "${escaped}" to targetBuddy
+end tell`;
+    fs.writeFileSync('/tmp/imessage_alert.scpt', script);
+    execSync('osascript /tmp/imessage_alert.scpt');
+    console.log('[MONITOR] iMessage alert sent');
+    return true;
+  } catch (e) {
+    console.error('[MONITOR] iMessage failed:', e.message);
+    return false;
+  }
+}
+
+// Send email alert via Mail.app
+function sendEmail(subject, body) {
+  try {
+    const escapedSubject = subject.replace(/"/g, '\\"');
+    const escapedBody = body.replace(/"/g, '\\"');
+    const script = `tell application "Mail"
+  set newMessage to make new outgoing message with properties {subject:"${escapedSubject}", content:"${escapedBody}", visible:false}
+  tell newMessage
+    make new to recipient at end of to recipients with properties {address:"${JASSON_EMAIL}"}
+  end tell
+  send newMessage
+end tell`;
+    fs.writeFileSync('/tmp/email_alert.scpt', script);
+    execSync('osascript /tmp/email_alert.scpt');
+    console.log('[MONITOR] Email alert sent via Mail.app');
+    return true;
+  } catch (e) {
+    console.error('[MONITOR] Email failed:', e.message);
+    return false;
+  }
+}
+
+// Self-health check — verify webhook server is alive
+async function checkWebhookHealth() {
+  try {
+    const res = await fetch('http://localhost:3457/health');
+    if (!res.ok) throw new Error('Webhook unhealthy');
+    return true;
+  } catch {
+    console.error('[MONITOR] WEBHOOK SERVER DOWN — attempting restart');
+    try {
+      execSync('nohup node /Users/jassonfishback/Projects/BengalOracle/scripts/telegram-webhook.mjs > /tmp/telegram-webhook.log 2>&1 &');
+      console.log('[MONITOR] Webhook server restart attempted');
+    } catch (e) {
+      console.error('[MONITOR] Restart failed:', e.message);
+    }
+    return false;
+  }
+}
+
+// Main check loop
+setInterval(async () => {
+  try {
+  const currentCount = getLineCount();
+
+  if (currentCount > lastLineCount) {
+    const newMessages = getNewMessages();
+    console.log(`[MONITOR] ${newMessages.length} new message(s) detected`);
+
+    // Write alert file for Claude Code to pick up
+    writeAlert(newMessages);
+
+    if (!unacknowledgedSince) {
+      unacknowledgedSince = Date.now();
+      escalationLevel = 0;
+    }
+
+    lastLineCount = currentCount;
+  }
+
+  // Escalation ladder for unacknowledged messages
+  const alertFileExists = fs.existsSync(ALERT_FILE);
+  if (unacknowledgedSince && alertFileExists) {
+    const waitSeconds = (Date.now() - unacknowledgedSince) / 1000;
+    if (waitSeconds > 55 && waitSeconds < 65 && escalationLevel < 1) {
+      console.log(`[MONITOR] Escalation check: ${Math.round(waitSeconds)}s elapsed, level=${escalationLevel}`);
+    }
+
+    // Check webhook health first
+    const webhookAlive = await checkWebhookHealth();
+    const EMAIL_REMINDER = 'Reminder: email may still be functional - try captain@ainflgm.com.';
+
+    // Determine problem type and ETA
+    let problemMsg, etaSeconds;
+    if (webhookAlive) {
+      // Webhook running but 9 is stuck/disconnected - no auto-fix available
+      problemMsg = '[9 Alert] Telegram webhook is running but 9 appears disconnected or stuck. Messages are queued but not being processed.';
+      etaSeconds = null; // Unknown - no auto-fix
+    } else {
+      // Webhook crashed - auto-restart should fix in ~30s
+      problemMsg = '[9 Alert] Telegram webhook server crashed. Auto-restart initiated.';
+      etaSeconds = 30;
+    }
+
+    // Level 1: After 60 seconds — first iMessage with problem + ETA
+    if (waitSeconds > 120 && escalationLevel < 1) {
+      const etaText = etaSeconds
+        ? `ETA to restore: ~${etaSeconds} seconds. Will confirm when back online.`
+        : 'ETA unknown - will follow up within 2 minutes with update.';
+      console.log(`[MONITOR] ESCALATION L1: Messages unacknowledged for ${Math.round(waitSeconds)}s — sending iMessage`);
+      sendIMessage(`${problemMsg} ${etaText} ${EMAIL_REMINDER}`);
+      escalationLevel = 1;
+      lastAlertTime = Date.now();
+    }
+
+    // Follow-up: fires when ETA is exceeded, or at 2 min if ETA was unknown
+    const followUpThreshold = etaSeconds
+      ? (60 + etaSeconds + 60) * 1000  // initial 60s + ETA + 60s buffer
+      : 120000; // 2 minutes if ETA unknown
+    if (escalationLevel >= 1 && Date.now() - lastAlertTime > followUpThreshold) {
+      const minutes = Math.round(waitSeconds / 60);
+      let statusMsg;
+      if (webhookAlive) {
+        statusMsg = `[9 Update] Still unresponsive after ${minutes} min. Webhook is running but 9 is not processing messages. You may need to restart the terminal session.`;
+      } else {
+        statusMsg = `[9 Update] Auto-restart was attempted but Telegram is still down after ${minutes} min. Manual intervention likely needed - please check the terminal.`;
+      }
+      console.log(`[MONITOR] Follow-up iMessage — ${minutes}min elapsed`);
+      sendIMessage(`${statusMsg} ${EMAIL_REMINDER}`);
+      lastAlertTime = Date.now();
+    }
+
+    // Level 2: After 3 minutes — also send email
+    if (waitSeconds > 180 && escalationLevel < 2) {
+      console.log(`[MONITOR] ESCALATION L2: Messages unacknowledged for ${Math.round(waitSeconds)}s — sending email`);
+      sendEmail(
+        '[9] Communication Alert — Telegram messages unprocessed',
+        `${problemDesc}\n\nYour Telegram messages have been waiting ${Math.round(waitSeconds)} seconds without being processed.\n\nPlease check the terminal or restart the session.\n\n— 9 Inbox Monitor`
+      );
+      escalationLevel = 2;
+    }
+
+    // Level 3: After 5 minutes — phone call via Twilio
+    if (waitSeconds > 300 && escalationLevel < 3) {
+      console.log(`[MONITOR] ESCALATION L3: Messages unacknowledged for ${Math.round(waitSeconds)}s — phone alert`);
+      const TWILIO_SID = process.env.TWILIO_ACCOUNT_SID;
+      const TWILIO_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+      const TWILIO_FROM = process.env.TWILIO_FROM_NUMBER;
+      if (TWILIO_SID && TWILIO_TOKEN && TWILIO_FROM) {
+        const auth = Buffer.from(`${TWILIO_SID}:${TWILIO_TOKEN}`).toString('base64');
+        const body = new URLSearchParams({
+          To: `+1${JASSON_PHONE}`,
+          From: TWILIO_FROM,
+          Twiml: `<Response><Say voice="Polly.Matthew-Neural">Alert from 9. Your Telegram messages have not been processed for over 5 minutes. Please check the terminal session. Repeat: please check the terminal.</Say></Response>`,
+        }).toString();
+
+        const req = https.request({
+          hostname: 'api.twilio.com',
+          path: `/2010-04-01/Accounts/${TWILIO_SID}/Calls.json`,
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${auth}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(body),
+          },
+        }, (res) => {
+          let d = '';
+          res.on('data', c => d += c);
+          res.on('end', () => console.log('[MONITOR] Phone alert sent'));
+        });
+        req.write(body);
+        req.end();
+      }
+      escalationLevel = 3;
+    }
+  }
+
+  // If alert file was consumed (deleted by Claude Code), reset escalation
+  if (unacknowledgedSince && !fs.existsSync(ALERT_FILE)) {
+    if (escalationLevel > 0) {
+      console.log('[MONITOR] Alert acknowledged — resetting escalation');
+      // Send restoration confirmation via iMessage
+      sendIMessage('[9] Telegram restored. All messages processed. Back to normal operations.');
+    }
+    unacknowledgedSince = null;
+    escalationLevel = 0;
+  }
+  } catch (err) {
+    console.error('[MONITOR] ERROR in check loop:', err.message, err.stack);
+  }
+}, 3000); // Check every 3 seconds
+
+// Health check webhook server every 30 seconds
+setInterval(async () => {
+  await checkWebhookHealth();
+}, 30000);
+
+console.log('[MONITOR] Inbox monitor started — checking every 3s');
+console.log(`[MONITOR] Watching: ${INBOX_FILE}`);
+console.log(`[MONITOR] Alert file: ${ALERT_FILE}`);
+console.log('[MONITOR] Escalation ladder: 60s→iMessage, 180s→email, 300s→phone call');
+console.log('[MONITOR] Webhook health check: every 30s');

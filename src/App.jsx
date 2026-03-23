@@ -10,6 +10,7 @@ import DraftPage from './pages/DraftPage';
 import SummaryPage from './pages/SummaryPage';
 import SeasonSimPage from './pages/SeasonSimPage';
 import MarketsPage from './pages/MarketsPage';
+import PrivacyPage from './pages/PrivacyPage';
 
 // Team slug to abbreviation mapping
 const TEAM_SLUGS = {
@@ -90,6 +91,7 @@ export default function App() {
             <Route path="/summary" element={<SummaryPage />} />
             <Route path="/season" element={<SeasonSimPage />} />
             <Route path="/markets" element={<MarketsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/team/:teamSlug" element={<TeamRedirect />} />
             <Route path="/:teamSlug" element={<TeamRedirect />} />
             <Route path="*" element={<Navigate to="/" replace />} />

@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import FloatingMenu from './FloatingMenu';
 import ScenarioManager from './ScenarioManager';
+import ShareButtons from './ShareButtons';
+import EmailCapture from './EmailCapture';
 
 const navItems = [
   { path: '/', label: 'Roster', iconType: 'roster' },
@@ -331,18 +333,74 @@ export default function Layout({ children }) {
           {children}
         </div>
 
-        {/* Ad Slot: Footer ad — hidden until AdSense is configured */}
-        {/* <div className="ad-slot-footer" style={{
+        {/* Email Capture */}
+        <div style={{
           marginTop: 24, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
+          padding: '0 16px',
+        }}>
+          <div style={{ width: '100%', maxWidth: 600 }}>
+            <EmailCapture />
+          </div>
+        </div>
+
+        {/* Support Banner */}
+        <div style={{
+          marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
+          padding: '0 16px',
+        }}>
+          <a href="https://buymeacoffee.com/ainflgm" target="_blank" rel="noopener noreferrer" style={{
+            width: '100%', maxWidth: 600, padding: '14px 20px',
+            background: 'linear-gradient(135deg, rgba(251,79,20,0.18), rgba(251,79,20,0.06))',
+            border: '1px solid rgba(251,79,20,0.35)', borderRadius: 10,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
+            textDecoration: 'none', color: '#E2E8F0', fontSize: 13,
+            transition: 'all 0.2s',
+            boxShadow: '0 2px 12px rgba(251,79,20,0.08)',
+          }}>
+            <span style={{ fontSize: 22, lineHeight: 1 }}>&#9749;</span>
+            <div>
+              <div style={{ fontWeight: 700, fontFamily: "'Oswald', sans-serif", letterSpacing: '0.04em', textTransform: 'uppercase', fontSize: 14, color: '#FB4F14' }}>
+                Support AiNFL GM
+              </div>
+              <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 2 }}>
+                Every dollar fuels new features and better data
+              </div>
+            </div>
+          </a>
+        </div>
+
+        {/* Ad Slot: Ready for AdSense — replace inner content with ad code when approved */}
+        <div id="ad-slot-footer" style={{
+          marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
+          padding: '0 16px',
         }}>
           <div style={{
-            width: '100%', maxWidth: 728, height: 90, background: 'rgba(15,23,42,0.85)',
-            border: '1px solid rgba(0,240,255,0.1)', borderRadius: 6, display: 'flex',
-            alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: 11,
+            width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,23,42,0.5)',
+            border: '1px solid rgba(0,240,255,0.08)', borderRadius: 6, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', color: '#334155', fontSize: 10,
+            overflow: 'hidden',
           }}>
-            <span>Ad</span>
+            {/* AdSense code will go here once approved */}
           </div>
-        </div> */}
+        </div>
+
+        {/* Share + Footer */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
+          padding: '12px 16px 4px', position: 'relative', zIndex: 1,
+        }}>
+          <ShareButtons title="AiNFL GM - Free AI-powered NFL offseason simulator. Be the GM of any team!" />
+          <div style={{
+            display: 'flex', justifyContent: 'center', gap: 16,
+            fontSize: 11, color: '#475569',
+          }}>
+            <a href="/privacy" style={{ color: '#475569', textDecoration: 'none' }}>Privacy Policy</a>
+            <span>|</span>
+            <a href="https://buymeacoffee.com/ainflgm" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', textDecoration: 'none' }}>Support Us</a>
+            <span>|</span>
+            <span>ainflgm.com</span>
+          </div>
+        </div>
       </main>
 
       {/* Bottom Tab Nav */}

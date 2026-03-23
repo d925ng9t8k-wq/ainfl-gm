@@ -771,6 +771,17 @@ export default function SummaryPage() {
             </table>
           </div>
         </div>
+
+        {/* Branding watermark — appears in exported images */}
+        <div style={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6,
+          padding: '8px 0 4px', color: '#475569', fontSize: 10,
+          fontFamily: "'Inter', system-ui, sans-serif",
+        }}>
+          <span>Built with</span>
+          <span style={{ color: '#00f0ff', fontWeight: 700, fontFamily: "'Oswald', sans-serif", letterSpacing: '0.04em' }}>AiNFL GM</span>
+          <span>— ainflgm.com</span>
+        </div>
       </div>
 
       {/* Submit Modal */}

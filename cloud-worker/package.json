@@ -1,0 +1,11 @@
+{
+  "name": "9-cloud-standin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloud backup for 9 — handles Telegram + voice failover when Mac is down",
+  "scripts": {
+    "deploy": "bash deploy.sh",
+    "dev": "wrangler dev",
+    "tail": "wrangler tail"
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
+import PredictionMarkets from '../components/PredictionMarkets';
 
 const POSITIONS = ['All', 'QB', 'RB', 'WR', 'TE', 'OL', 'DL', 'LB', 'DB', 'ST'];
 const OL_POSITIONS = ['LT', 'RT', 'LG', 'RG', 'C', 'OT', 'OG', 'IOL'];
@@ -336,6 +337,8 @@ export default function RosterPage() {
       {sorted.length === 0 && (
         <div style={{ textAlign: 'center', padding: 40, color: '#64748b' }}>No players at this position</div>
       )}
+
+      <PredictionMarkets maxMarkets={3} />
 
       {/* Cut Confirmation Modal */}
       {confirmCut && (

@@ -1,0 +1,16 @@
+name = "9-cloud-standin"
+main = "src/worker.js"
+compatibility_date = "2024-09-01"
+
+[vars]
+CHAT_ID = "8784022142"
+
+# KV namespace for state sync
+[[kv_namespaces]]
+binding = "STATE"
+id = "beaed39708284704b322b20b5190e22d"
+
+# Cron trigger DISABLED — cloud standin causes more harm than good with stale KV data
+# Re-enable ONLY after KV sync is verified working end-to-end
+# [triggers]
+# crons = ["*/5 * * * *"]

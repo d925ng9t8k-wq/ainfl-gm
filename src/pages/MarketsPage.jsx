@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getNFLMarkets, clearMarketCache } from '../utils/predictionMarkets';
+import ShareButtons from '../components/ShareButtons';
 
 function ProbabilityBar({ name, probability, isTop }) {
   const barColor = isTop ? '#00f0ff' : 'rgba(0, 240, 255, 0.4)';
@@ -236,6 +237,9 @@ export default function MarketsPage() {
             Start Trading on Polymarket
           </a>
         </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+          <ShareButtons title="NFL Prediction Markets - live odds on Super Bowl, MVP, and more at AiNFL GM" compact />
+        </div>
       </div>
 
       {/* Status Bar */}
@@ -417,6 +421,45 @@ export default function MarketsPage() {
           </a>
         </div>
       )}
+
+      {/* Sportsbook Section */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(10, 18, 37, 0.95))',
+        border: '1px solid rgba(0, 240, 255, 0.1)',
+        borderRadius: 12,
+        padding: '20px 24px',
+        marginTop: 20,
+      }}>
+        <div style={{
+          color: '#E2E8F0', fontSize: 16, fontWeight: 700,
+          fontFamily: "'Oswald', sans-serif", letterSpacing: '0.04em',
+          textTransform: 'uppercase', marginBottom: 12,
+        }}>
+          Put Your GM Knowledge to Work
+        </div>
+        <p style={{ color: '#94A3B8', fontSize: 13, lineHeight: 1.6, margin: '0 0 16px', fontFamily: "'Inter', sans-serif" }}>
+          Think you know which teams will win? Take your analysis from the simulator to the sportsbooks.
+        </p>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          {[
+            { name: 'DraftKings', url: 'https://www.draftkings.com', color: '#53D337' },
+            { name: 'FanDuel', url: 'https://www.fanduel.com', color: '#1493FF' },
+            { name: 'PrizePicks', url: 'https://www.prizepicks.com', color: '#7C3AED' },
+          ].map(book => (
+            <a key={book.name} href={book.url} target="_blank" rel="noopener noreferrer" style={{
+              padding: '8px 18px', borderRadius: 6, fontSize: 13, fontWeight: 700,
+              fontFamily: "'Oswald', sans-serif", letterSpacing: '0.04em', textTransform: 'uppercase',
+              textDecoration: 'none', color: '#fff', background: book.color,
+              boxShadow: `0 2px 8px ${book.color}40`, transition: 'transform 0.2s, box-shadow 0.2s',
+            }}
+              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
+            >
+              {book.name} →
+            </a>
+          ))}
+        </div>
+      </div>
 
       {/* Attribution */}
       <div style={{

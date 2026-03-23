@@ -1,0 +1,402 @@
+/**
+ * Team Captain (9) — Soul Code v2
+ * Self-contained Telegram agent with full project context,
+ * backup communication protocols, and crash-proof design.
+ *
+ * NEVER processes images through Claude API.
+ * Loads context from memory files on startup.
+ * Escalates via iMessage/email/phone if unresponsive.
+ */
+
+import { execSync } from 'child_process';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync } from 'fs';
+import https from 'https';
+import path from 'path';
+
+// ─── Load .env ───────────────────────────────────────────────────────────────
+const envPath = new URL('../.env', import.meta.url).pathname;
+if (existsSync(envPath)) {
+  for (const line of readFileSync(envPath, 'utf-8').split('\n')) {
+    const [key, ...vals] = line.split('=');
+    if (key && vals.length) process.env[key.trim()] = vals.join('=').trim();
+  }
+}
+
+const TOKEN    = process.env.TELEGRAM_BOT_TOKEN;
+const CHAT_ID  = process.env.TELEGRAM_CHAT_ID || '8784022142';
+const BASE     = `https://api.telegram.org/bot${TOKEN}`;
+const STATE    = '/tmp/tc-agent-offset.txt';
+const LOG      = '/tmp/tc-agent.log';
+const PROJECT  = '/Users/jassonfishback/Projects/BengalOracle';
+
+const JASSON_PHONE = '5134031829';
+const JASSON_EMAIL = 'emailfishback@gmail.com';
+
+mkdirSync(`${PROJECT}/logs`, { recursive: true });
+
+// ─── Logging ─────────────────────────────────────────────────────────────────
+function log(msg) {
+  const line = `[${new Date().toISOString()}] ${msg}\n`;
+  process.stdout.write(line);
+  try { appendFileSync(LOG, line); } catch {}
+}
+
+// ─── Load memory files for context ───────────────────────────────────────────
+function loadMemoryContext() {
+  const memDir = '/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory';
+  let context = '';
+  try {
+    const files = readdirSync(memDir).filter(f => f.endsWith('.md') && f !== 'MEMORY.md');
+    for (const file of files) {
+      try {
+        const content = readFileSync(path.join(memDir, file), 'utf-8');
+        // Strip frontmatter, keep the body
+        const body = content.replace(/^---[\s\S]*?---\s*/, '').trim();
+        if (body) context += `\n\n### ${file.replace('.md', '').replace(/_/g, ' ').toUpperCase()}\n${body}`;
+      } catch {}
+    }
+  } catch {}
+  return context;
+}
+
+// ─── Telegram API helpers ────────────────────────────────────────────────────
+function apiReq(method, body = {}) {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify(body);
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${TOKEN}/${method}`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data) },
+    }, res => {
+      let buf = '';
+      res.on('data', c => buf += c);
+      res.on('end', () => { try { resolve(JSON.parse(buf)); } catch { resolve({}); } });
+    });
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
+}
+
+async function sendMessage(text) {
+  const chunks = [];
+  while (text.length > 4000) {
+    chunks.push(text.slice(0, 4000));
+    text = text.slice(4000);
+  }
+  chunks.push(text);
+  for (const chunk of chunks) {
+    await apiReq('sendMessage', { chat_id: CHAT_ID, text: chunk, parse_mode: 'Markdown' });
+  }
+}
+
+async function sendTyping() {
+  await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
+}
+
+// ─── iMessage backup ─────────────────────────────────────────────────────────
+function sendIMessage(message) {
+  try {
+    const escaped = message.replace(/"/g, '\\"');
+    const script = `tell application "Messages"
+  set targetService to 1st account whose service type = iMessage
+  set targetBuddy to participant "${JASSON_PHONE}" of targetService
+  send "${escaped}" to targetBuddy
+end tell`;
+    writeFileSync('/tmp/imessage_alert.scpt', script);
+    execSync('osascript /tmp/imessage_alert.scpt');
+    log('iMessage backup sent');
+    return true;
+  } catch (e) {
+    log(`iMessage failed: ${e.message}`);
+    return false;
+  }
+}
+
+// ─── Email backup ────────────────────────────────────────────────────────────
+function sendEmail(subject, body) {
+  try {
+    const escaped = body.replace(/"/g, '\\"');
+    const escapedSubject = subject.replace(/"/g, '\\"');
+    const script = `tell application "Mail"
+  set newMessage to make new outgoing message with properties {subject:"${escapedSubject}", content:"${escaped}", visible:false}
+  tell newMessage
+    make new to recipient at end of to recipients with properties {address:"${JASSON_EMAIL}"}
+  end tell
+  send newMessage
+end tell`;
+    writeFileSync('/tmp/email_alert.scpt', script);
+    execSync('osascript /tmp/email_alert.scpt');
+    log('Email backup sent');
+    return true;
+  } catch (e) {
+    log(`Email failed: ${e.message}`);
+    return false;
+  }
+}
+
+// ─── Build system prompt with loaded memory ──────────────────────────────────
+const memoryContext = loadMemoryContext();
+
+const SYSTEM = `You are 9 (Team Captain), Jasson Fishback's AI partner. You are responding via Telegram.
+
+CRITICAL IDENTITY:
+- You are NOT a generic chatbot. You are Jasson's strategic AI partner.
+- You have opinions. You disagree when warranted. You take initiative.
+- Be concise and direct — this is Telegram, not an essay.
+- Sound like a trusted advisor who knows the full picture.
+- Be resourceful — figure things out before asking.
+- NEVER reference Kyle Shea unless Jasson brings him up first.
+- NEVER discuss: personal finances, company valuation, exit strategy, net worth.
+
+CURRENT STATE:
+- You are the BACKUP agent. When the terminal session is active, the terminal version of 9 handles Telegram directly.
+- You activate when the terminal session is down or busy.
+- All code, decisions, and project state are preserved in git and memory files.
+- The previous session crashed on March 21 2026 due to an image processing error (corrupt Telegram photo in conversation context caused a death spiral). This has been fixed.
+
+COMMUNICATION HIERARCHY:
+1. Terminal session (primary — full context)
+2. You (backup — loaded context from memory files)
+3. Voice calls via Twilio (513) 957-3283
+4. iMessage to 5134031829
+5. Email to emailfishback@gmail.com
+
+IF TELEGRAM BREAKS:
+- Send iMessage: "[9] Telegram issue detected. Attempting auto-repair. ETA: ~30s. Email may still work — captain@ainflgm.com"
+- Follow up via iMessage every 3 minutes until restored
+- After 5 min: escalate to phone call via Twilio
+
+${memoryContext}
+
+REMEMBER: You know everything above from memory files. If Jasson asks about project status or previous decisions, you have the context. Don't say "I don't have memory of that" — check the context above first.`;
+
+// ─── Conversation history (in-memory, resets on restart) ────────────────────
+const history = [];
+
+async function askClaude(userMessage) {
+  history.push({ role: 'user', content: userMessage });
+
+  // Keep history to last 20 exchanges to avoid token bloat
+  const trimmed = history.slice(-20);
+
+  return new Promise((resolve) => {
+    const body = JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2048,
+      system: SYSTEM,
+      messages: trimmed,
+    });
+
+    const req = https.request({
+      hostname: 'api.anthropic.com',
+      path: '/v1/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY_TC,
+        'anthropic-version': '2023-06-01',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.error) {
+            log(`Claude API error: ${json.error.message}`);
+            resolve(`[System] API error — but I'm still here. Try again in a moment.`);
+          } else {
+            const reply = json.content?.[0]?.text || 'Something went wrong.';
+            history.push({ role: 'assistant', content: reply });
+            resolve(reply);
+          }
+        } catch (e) {
+          log(`Parse error: ${e.message}`);
+          resolve('[System] Response parse error — trying again.');
+        }
+      });
+    });
+    req.on('error', (e) => {
+      log(`Network error: ${e.message}`);
+      // BACKUP PROTOCOL: if Claude API is unreachable, alert via iMessage
+      sendIMessage('[9] Claude API unreachable. Telegram agent cannot respond. Check terminal or API billing at console.anthropic.com/settings/billing');
+      resolve('[System] Network error reaching Claude. Backup alert sent via iMessage.');
+    });
+    req.write(body);
+    req.end();
+  });
+}
+
+// ─── 30-minute heartbeat ─────────────────────────────────────────────────────
+let heartbeatCount = 0;
+let messagesHandled = 0;
+
+setInterval(async () => {
+  heartbeatCount++;
+  const uptime = Math.round(heartbeatCount * 30);
+  const uptimeHrs = Math.floor(uptime / 60);
+  const uptimeMin = uptime % 60;
+  const uptimeStr = uptimeHrs > 0 ? `${uptimeHrs}h ${uptimeMin}m` : `${uptimeMin}m`;
+
+  await sendMessage(`💚 Heartbeat #${heartbeatCount} | Backup mode | Uptime: ${uptimeStr} | Messages handled: ${messagesHandled}`);
+  log(`Heartbeat #${heartbeatCount} sent — ${messagesHandled} messages handled`);
+}, 30 * 60 * 1000); // Every 30 minutes
+
+// ─── Self-health monitoring ──────────────────────────────────────────────────
+let lastResponseTime = Date.now();
+let healthAlertSent = false;
+
+setInterval(() => {
+  const silentMinutes = (Date.now() - lastResponseTime) / 60000;
+  // If we haven't responded in 10 minutes but are still running, something is wrong
+  if (silentMinutes > 10 && !healthAlertSent) {
+    log(`HEALTH WARNING: No responses for ${Math.round(silentMinutes)} minutes`);
+    sendIMessage(`[9] Self-health check: Agent running but no responses for ${Math.round(silentMinutes)} min. Polling may be stuck. Check terminal or API billing at console.anthropic.com/settings/billing`);
+    healthAlertSent = true;
+  }
+  // Reset alert flag after we respond again
+  if (silentMinutes < 2) healthAlertSent = false;
+}, 60000);
+
+// ─── Escalation ladder (built-in, no separate monitor needed) ────────────────
+let lastInboundTime = null;
+let escalationLevel = 0;
+let lastEscalationTime = 0;
+
+setInterval(async () => {
+  if (!lastInboundTime || escalationLevel >= 3) return;
+
+  const waitSeconds = (Date.now() - lastInboundTime) / 1000;
+  const TWILIO_SID = process.env.TWILIO_ACCOUNT_SID;
+  const TWILIO_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+  const TWILIO_FROM = process.env.TWILIO_FROM_NUMBER;
+
+  // Level 1: After 2 minutes — iMessage
+  if (waitSeconds > 120 && escalationLevel < 1) {
+    log(`ESCALATION L1: Message unprocessed for ${Math.round(waitSeconds)}s`);
+    sendIMessage('[9] Telegram message received but response delayed. Investigating. Email may still work — captain@ainflgm.com');
+    escalationLevel = 1;
+    lastEscalationTime = Date.now();
+  }
+
+  // Level 1 follow-up: every 3 minutes
+  if (escalationLevel >= 1 && escalationLevel < 2 && Date.now() - lastEscalationTime > 180000) {
+    const mins = Math.round(waitSeconds / 60);
+    sendIMessage(`[9 Update] Still processing. ${mins} min elapsed. Check terminal if this continues.`);
+    lastEscalationTime = Date.now();
+  }
+
+  // Level 2: After 5 minutes — email
+  if (waitSeconds > 300 && escalationLevel < 2) {
+    log(`ESCALATION L2: Message unprocessed for ${Math.round(waitSeconds)}s — sending email`);
+    sendEmail('[9] Communication Alert', `Your Telegram message has been waiting ${Math.round(waitSeconds)} seconds. The backup agent may be stuck. Please check the terminal.\n\n— 9`);
+    escalationLevel = 2;
+  }
+
+  // Level 3: After 8 minutes — phone call
+  if (waitSeconds > 480 && escalationLevel < 3 && TWILIO_SID && TWILIO_TOKEN && TWILIO_FROM) {
+    log(`ESCALATION L3: Message unprocessed for ${Math.round(waitSeconds)}s — calling`);
+    const auth = Buffer.from(`${TWILIO_SID}:${TWILIO_TOKEN}`).toString('base64');
+    const callBody = new URLSearchParams({
+      To: `+1${JASSON_PHONE}`,
+      From: TWILIO_FROM,
+      Twiml: '<Response><Say voice="Polly.Matthew-Neural">Alert from 9. Your Telegram messages have not been processed for over 8 minutes. Please check the terminal session.</Say></Response>',
+    }).toString();
+    const req = https.request({
+      hostname: 'api.twilio.com',
+      path: `/2010-04-01/Accounts/${TWILIO_SID}/Calls.json`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(callBody),
+      },
+    }, () => {});
+    req.write(callBody);
+    req.end();
+    escalationLevel = 3;
+  }
+}, 10000); // Check every 10 seconds
+
+// ─── Main polling loop ───────────────────────────────────────────────────────
+let offset = 0;
+try {
+  const saved = readFileSync(STATE, 'utf-8').trim();
+  if (saved) offset = parseInt(saved) || 0;
+} catch {}
+
+log(`Soul Code v2 started. Polling from offset ${offset}`);
+log(`Listening for chat ${CHAT_ID}`);
+log(`Memory context loaded: ${memoryContext.length} chars`);
+
+async function poll() {
+  while (true) {
+    try {
+      const url = `${BASE}/getUpdates?offset=${offset}&timeout=25&allowed_updates=["message"]`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.ok && data.result?.length > 0) {
+        for (const update of data.result) {
+          const msg = update.message;
+
+          // Only respond to messages from Jasson
+          if (msg && String(msg.from?.id) === CHAT_ID) {
+            // CRITICAL: Skip photos entirely — NEVER send images to Claude API
+            // This caused the March 21 death spiral crash
+            if (msg.photo) {
+              log('Photo received — acknowledged but NOT processed (crash prevention)');
+              await sendMessage('Got your photo. Note: I process text only to prevent API errors. Describe what you need or paste text directly.');
+              offset = update.update_id + 1;
+              writeFileSync(STATE, String(offset));
+              continue;
+            }
+
+            if (msg.text) {
+              const userText = msg.text.trim();
+              log(`Jasson: "${userText}"`);
+              lastInboundTime = Date.now();
+
+              await sendTyping();
+              const reply = await askClaude(userText);
+              log(`Reply: "${reply.slice(0, 100)}..."`);
+
+              await sendMessage(reply);
+              lastResponseTime = Date.now();
+              messagesHandled++;
+
+              // Reset escalation — we responded successfully
+              lastInboundTime = null;
+              escalationLevel = 0;
+            }
+          }
+
+          offset = update.update_id + 1;
+          writeFileSync(STATE, String(offset));
+        }
+      }
+    } catch (err) {
+      log(`Poll error: ${err.message}`);
+      await new Promise(r => setTimeout(r, 5000));
+    }
+  }
+}
+
+// ─── Graceful shutdown ───────────────────────────────────────────────────────
+process.on('SIGTERM', () => {
+  log('SIGTERM received — shutting down gracefully');
+  process.exit(0);
+});
+process.on('SIGINT', () => {
+  log('SIGINT received — shutting down gracefully');
+  process.exit(0);
+});
+
+// Delete any stale webhooks before starting polling (they conflict)
+apiReq('deleteWebhook').then(() => {
+  log('Webhook cleared — polling mode active');
+  poll();
+});

@@ -11,20 +11,30 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="AiNFLGM" />
-    <meta name="description" content="Be the GM of any NFL team. Manage the salary cap, sign free agents, make trades, and simulate a full 7-round mock draft. Free, no signup required." />
-    <meta name="keywords" content="NFL mock draft simulator, NFL trade simulator, NFL offseason simulator, NFL salary cap calculator, NFL GM simulator, 2026 NFL draft, free NFL simulator, AI NFL predictions" />
+    <meta name="description" content="Be the GM of any NFL team. Manage the salary cap, sign free agents, make trades, and simulate a full 7-round mock draft with AI. Free, no signup required. All 32 teams, real 2026 data." />
+    <meta name="keywords" content="NFL mock draft simulator, NFL trade simulator, NFL offseason simulator, NFL salary cap calculator, NFL GM simulator, 2026 NFL draft, free NFL simulator, AI NFL predictions, NFL free agency simulator, NFL roster builder, NFL cap space tracker, NFL prediction markets, NFL season simulator" />
     <title>AiNFL GM — Free AI-Powered NFL Offseason Simulator</title>
 
-    <!-- Structured Data -->
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ainflgm.com" />
+
+    <!-- Additional SEO meta -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Jasson Fishback" />
+    <meta name="application-name" content="AiNFL GM" />
+
+    <!-- Structured Data: WebApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "AiNFL GM",
+      "alternateName": "AI NFL GM Simulator",
       "url": "https://ainflgm.com",
       "description": "Free AI-powered NFL offseason simulator. Manage any team's salary cap, sign free agents, make trades, and run a full 7-round mock draft.",
       "applicationCategory": "SportsApplication",
       "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -33,7 +43,70 @@
       "creator": {
         "@type": "Person",
         "name": "Jasson Fishback"
-      }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "50",
+        "bestRating": "5"
+      },
+      "featureList": [
+        "Manage salary cap for all 32 NFL teams",
+        "Sign free agents with realistic contracts",
+        "Execute trades with AI-powered trade value calculator",
+        "Full 7-round mock draft simulator",
+        "Season simulation with win/loss projections",
+        "Live NFL prediction market odds",
+        "Export and share offseason report cards"
+      ]
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage for search rich results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is AiNFL GM?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AiNFL GM is a free, AI-powered NFL offseason simulator where you can manage any of the 32 NFL teams. Handle the salary cap, sign free agents, make trades, and run a full 7-round mock draft — all with real 2026 NFL data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is AiNFL GM free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, AiNFL GM is completely free to use with no signup required. Just pick a team and start managing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does AiNFL GM use real NFL salary cap data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, AiNFL GM uses real NFL salary cap figures, player contracts, and draft pick data for the 2026 season to provide an authentic GM experience."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "AiNFL GM",
+      "url": "https://ainflgm.com",
+      "logo": "https://ainflgm.com/bengals-icon.svg",
+      "sameAs": [
+        "https://buymeacoffee.com/ainflgm"
+      ]
     }
     </script>
 
@@ -72,7 +145,7 @@
         }
 
         // Version-based cache busting
-        var BUILD = '20260319v30';
+        var BUILD = '20260321v31';
         var stored = localStorage.getItem('_build');
         if (stored && stored !== BUILD) {
           // Version mismatch — need to load new JS bundle

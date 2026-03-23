@@ -1,0 +1,231 @@
+/**
+ * Telegram Webhook Server — Push-based message receiving
+ * Runs on port 3457 alongside the voice server (3456)
+ * Messages are written to /tmp/telegram-inbox.txt for Team Captain to read
+ */
+import http from 'node:http';
+import fs from 'node:fs';
+import https from 'node:https';
+import { execSync } from 'node:child_process';
+
+// Load .env
+const envPath = new URL('../.env', import.meta.url).pathname;
+if (fs.existsSync(envPath)) {
+  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
+    const [key, ...vals] = line.split('=');
+    if (key && vals.length) process.env[key.trim()] = vals.join('=').trim();
+  }
+}
+
+const PORT = 3457;
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TUNNEL_URL = process.env.TUNNEL_URL;
+const INBOX_FILE = '/tmp/telegram-inbox.txt';
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID || '8784022142';
+
+// Failover config
+const TWILIO_SID = process.env.TWILIO_ACCOUNT_SID;
+const TWILIO_TOKEN = process.env.TWILIO_AUTH_TOKEN;
+const TWILIO_FROM = process.env.TWILIO_FROM_NUMBER;
+const JASSON_PHONE = '+15134031829';
+
+let lastMessageTime = Date.now();
+let healthCheckInterval;
+
+const server = http.createServer(async (req, res) => {
+  // Health check
+  if (req.method === 'GET' && req.url === '/health') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ status: 'ok', lastMessage: new Date(lastMessageTime).toISOString() }));
+    return;
+  }
+
+  // Telegram webhook endpoint
+  if (req.method === 'POST' && req.url === '/telegram-webhook') {
+    let body = '';
+    for await (const chunk of req) body += chunk;
+
+    try {
+      const update = JSON.parse(body);
+      const msg = update.message;
+      if (msg && msg.text) {
+        const timestamp = new Date().toISOString();
+        const from = msg.from.first_name || 'Unknown';
+        const line = `[${timestamp}] ${from}: ${msg.text}\n`;
+
+        // Write to inbox file
+        fs.appendFileSync(INBOX_FILE, line);
+        lastMessageTime = Date.now();
+        console.log(`[WEBHOOK] ${from}: ${msg.text}`);
+      }
+      // Also handle photos
+      if (msg && msg.photo) {
+        const timestamp = new Date().toISOString();
+        const from = msg.from.first_name || 'Unknown';
+        fs.appendFileSync(INBOX_FILE, `[${timestamp}] ${from}: [PHOTO]\n`);
+        lastMessageTime = Date.now();
+        console.log(`[WEBHOOK] ${from}: [PHOTO]`);
+      }
+    } catch (e) {
+      console.error('Webhook parse error:', e.message);
+    }
+
+    res.writeHead(200);
+    res.end('OK');
+    return;
+  }
+
+  res.writeHead(404);
+  res.end('Not found');
+});
+
+// Register webhook with Telegram
+async function registerWebhook() {
+  const webhookUrl = `${TUNNEL_URL}/telegram-webhook`;
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=["message"]`;
+
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const result = JSON.parse(data);
+          console.log(`Webhook registration: ${result.ok ? 'SUCCESS' : 'FAILED'} — ${result.description || ''}`);
+          resolve(result.ok);
+        } catch { reject(new Error('Parse error')); }
+      });
+    }).on('error', reject);
+  });
+}
+
+// Send alert via Twilio phone call
+function alertViaPhone(message) {
+  const auth = Buffer.from(`${TWILIO_SID}:${TWILIO_TOKEN}`).toString('base64');
+  const body = new URLSearchParams({
+    To: JASSON_PHONE,
+    From: TWILIO_FROM,
+    Twiml: `<Response><Say voice="Polly.Matthew-Neural">${message}</Say></Response>`,
+  }).toString();
+
+  const req = https.request({
+    hostname: 'api.twilio.com',
+    path: `/2010-04-01/Accounts/${TWILIO_SID}/Calls.json`,
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(body),
+    },
+  }, (res) => {
+    let d = '';
+    res.on('data', c => d += c);
+    res.on('end', () => console.log('Phone alert sent'));
+  });
+  req.write(body);
+  req.end();
+}
+
+// Send alert via iMessage
+function alertViaIMessage(message) {
+  try {
+    execSync(`osascript -e 'tell application "Messages" to set targetService to 1st account whose service type = iMessage' -e 'tell application "Messages" to set targetBuddy to participant "5134031829" of targetService' -e 'tell application "Messages" to send "${message}" to targetBuddy'`);
+    console.log('iMessage alert sent');
+  } catch { console.error('iMessage failed'); }
+}
+
+// Self-repair: check if webhook is still receiving
+function startHealthMonitor() {
+  healthCheckInterval = setInterval(async () => {
+    const silentSeconds = (Date.now() - lastMessageTime) / 1000;
+
+    // If no messages for 5 minutes during waking hours, check health
+    if (silentSeconds > 300) {
+      console.log(`No messages for ${Math.round(silentSeconds)}s — checking webhook health...`);
+
+      // Verify tunnel is alive
+      try {
+        const res = await fetch(`${TUNNEL_URL}/health`);
+        if (!res.ok) throw new Error('Tunnel down');
+        console.log('Tunnel OK');
+      } catch {
+        console.error('TUNNEL DOWN — re-registering webhook...');
+        await registerWebhook();
+      }
+    }
+  }, 60000); // Check every minute
+}
+
+// Recover missed messages using getUpdates (temporary polling to catch what webhook missed)
+async function recoverMissedMessages() {
+  // Temporarily remove webhook to use getUpdates
+  const deleteUrl = `https://api.telegram.org/bot${BOT_TOKEN}/deleteWebhook`;
+  await new Promise((resolve) => {
+    https.get(deleteUrl, (res) => {
+      let d = '';
+      res.on('data', c => d += c);
+      res.on('end', () => resolve());
+    }).on('error', resolve);
+  });
+
+  // Fetch any pending updates
+  const updatesUrl = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?timeout=3`;
+  return new Promise((resolve) => {
+    https.get(updatesUrl, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const result = JSON.parse(data);
+          if (result.ok && result.result.length > 0) {
+            let recovered = 0;
+            let maxUpdateId = 0;
+            for (const update of result.result) {
+              if (update.message && update.message.text) {
+                const timestamp = new Date(update.message.date * 1000).toISOString();
+                const from = update.message.from.first_name || 'Unknown';
+                const line = `[${timestamp}] ${from}: ${update.message.text}\n`;
+                fs.appendFileSync(INBOX_FILE, line);
+                recovered++;
+                console.log(`[RECOVERY] ${from}: ${update.message.text}`);
+              }
+              if (update.update_id > maxUpdateId) maxUpdateId = update.update_id;
+            }
+            // Acknowledge recovered updates
+            if (maxUpdateId > 0) {
+              https.get(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${maxUpdateId + 1}&timeout=1`, () => {});
+            }
+            console.log(`[RECOVERY] Recovered ${recovered} missed message(s)`);
+          } else {
+            console.log('[RECOVERY] No missed messages found');
+          }
+        } catch { console.error('[RECOVERY] Parse error'); }
+        resolve();
+      });
+    }).on('error', () => resolve());
+  });
+}
+
+server.listen(PORT, async () => {
+  console.log(`\n📡 Telegram Webhook Server`);
+  console.log(`   Port: ${PORT}`);
+  console.log(`   Inbox: ${INBOX_FILE}`);
+  console.log(`   Tunnel: ${TUNNEL_URL}`);
+
+  // DO NOT clear inbox — preserve messages from before crash
+  // Ensure inbox file exists
+  if (!fs.existsSync(INBOX_FILE)) {
+    fs.writeFileSync(INBOX_FILE, '');
+  }
+
+  // Recover any messages missed during downtime
+  await recoverMissedMessages();
+
+  // Register webhook (re-enables push mode after recovery polling)
+  await registerWebhook();
+
+  // Start health monitor
+  startHealthMonitor();
+
+  console.log(`   Status: READY — messages will be pushed here instantly\n`);
+});
