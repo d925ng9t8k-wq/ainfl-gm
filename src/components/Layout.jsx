@@ -400,6 +400,25 @@ export default function Layout({ children }) {
             <span>|</span>
             <span>ainflgm.com</span>
           </div>
+          <div style={{
+            maxWidth: 600,
+            textAlign: 'center',
+            fontSize: 10,
+            color: '#334155',
+            lineHeight: 1.5,
+            marginTop: 8,
+            padding: '0 8px',
+          }}>
+            <p style={{ margin: '0 0 4px' }}>
+              This site may contain affiliate links. If you sign up for a service through our links, we may earn a commission at no extra cost to you.
+            </p>
+            <p style={{ margin: 0 }}>
+              If you or someone you know has a gambling problem, call{' '}
+              <a href="tel:18004262537" style={{ color: '#334155', textDecoration: 'underline' }}>1-800-GAMBLER</a>
+              {' '}or visit{' '}
+              <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer" style={{ color: '#334155', textDecoration: 'underline' }}>ncpgambling.org</a>.
+            </p>
+          </div>
         </div>
       </main>
 
