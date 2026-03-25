@@ -11,7 +11,7 @@
  */
 
 import { execSync } from 'child_process';
-import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync } from 'fs';
 import https from 'https';
 import path from 'path';
 import { createServer } from 'http';
@@ -48,7 +48,7 @@ const OFFSET_FILE   = '/tmp/tc-agent-offset.txt';
 const LOG_FILE      = `${PROJECT}/logs/comms-hub.log`;
 const IMSG_DB       = `${process.env.HOME}/Library/Messages/chat.db`;
 
-const JASSON_PHONE  = '+15134031829';
+const JASSON_PHONE  = process.env.JASSON_PHONE || '+15134031829';
 const JASSON_EMAIL  = 'emailfishback@gmail.com';
 const CAPTAIN_EMAIL = 'captain@ainflgm.com';
 
@@ -65,7 +65,10 @@ function log(msg) {
 // Every channel reads/writes this. Survives crashes.
 function loadState() {
   try {
-    return JSON.parse(readFileSync(STATE_FILE, 'utf-8'));
+    const loaded = JSON.parse(readFileSync(STATE_FILE, 'utf-8'));
+    // ALWAYS clear conversation history on startup — prevents stale replay (March 25 2026 fix)
+    loaded.conversationHistory = [];
+    return loaded;
   } catch {
     return {
       channels: {
@@ -86,17 +89,22 @@ function loadState() {
 
 function saveState(state) {
   try {
-    writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    // Don't persist conversationHistory to disk — it lives in memory only.
+    // Prevents stale history from being replayed on restart. (March 25 2026 fix)
+    const toSave = { ...state, conversationHistory: [] };
+    writeFileSync(STATE_FILE, JSON.stringify(toSave, null, 2));
   } catch (e) {
     log(`STATE SAVE ERROR: ${e.message}`);
   }
 }
 
 function addMessage(state, channel, direction, text) {
-  state.recentMessages.push({
-    channel, direction, text: text.slice(0, 500),
+  const msg = {
+    channel, direction, text: text.slice(0, 2000),
     timestamp: new Date().toISOString(),
-  });
+  };
+  if (direction === 'in') msg.read = false;  // Explicit false — inbox filter depends on this
+  state.recentMessages.push(msg);
   // Keep last 50
   if (state.recentMessages.length > 50) state.recentMessages = state.recentMessages.slice(-50);
 }
@@ -138,13 +146,14 @@ function trackUsage(service) {
   // Project to full hour
   const projectedPerHour = Math.round(u.calls / (elapsed / 3600000));
   if (projectedPerHour > BURN_RATE_THRESHOLDS[service] && u.calls > 10) {
-    log(`BURN RATE ALERT: ${service} at ${projectedPerHour}/hr (threshold: ${BURN_RATE_THRESHOLDS[service]}/hr, actual: ${u.calls} in ${Math.round(elapsed/60000)}min)`);
-    // Only alert once per hour per service
-    if (!u.alerted) {
-      sendTelegram(`Resource alert: ${service} usage is unusually high — ${projectedPerHour}/hr projected (normal: <${BURN_RATE_THRESHOLDS[service]}/hr). Investigating.`).catch(() => {});
-      u.alerted = true;
-      setTimeout(() => { u.alerted = false; }, 3600000); // Reset alert flag after 1 hour
+    // FIX #7: Rate-limit burn rate LOGGING to once per 5 minutes per service (was every single call — caused 1957 log lines in 3 min)
+    const now = Date.now();
+    if (!u.lastLogTime || now - u.lastLogTime > 300000) {
+      log(`BURN RATE ALERT: ${service} at ${projectedPerHour}/hr (threshold: ${BURN_RATE_THRESHOLDS[service]}/hr, actual: ${u.calls} in ${Math.round(elapsed/60000)}min)`);
+      u.lastLogTime = now;
     }
+    // Burn rate alerts are LOG ONLY — never send to Telegram (caused alert flood on stress tests and hub restarts)
+    // The log entry above (rate-limited to 5 min) is sufficient for monitoring
   }
 }
 
@@ -161,32 +170,51 @@ log('Shared state loaded');
 // Terminal handles all responses. Hub only responds autonomously when terminal is down.
 let terminalActive = false;
 let terminalLastPing = 0;
+let terminalPid = null; // PID of Claude Code process — used for liveness checks
 // Session token — persisted to file so hub restarts don't invalidate existing ping loops
 const TOKEN_FILE = '/tmp/9-session-token';
+const PID_FILE = '/tmp/9-terminal-pid';
 let terminalSessionToken = null;
 try { terminalSessionToken = readFileSync(TOKEN_FILE, 'utf-8').trim() || null; } catch {}
+// Also restore PID if available
+try { terminalPid = parseInt(readFileSync(PID_FILE, 'utf-8').trim()) || null; } catch {}
 if (terminalSessionToken) {
-  // Hub restarted but terminal session is still alive — restore relay mode
-  terminalActive = true;
-  terminalLastPing = Date.now();
-  log(`Restored persisted session token: ${terminalSessionToken} — relay mode preserved`);
+  // Hub restarted — check if the terminal process is ACTUALLY still alive before restoring relay mode
+  let pidAlive = false;
+  if (terminalPid) {
+    try { process.kill(terminalPid, 0); pidAlive = true; } catch { pidAlive = false; }
+  }
+  if (pidAlive) {
+    terminalActive = true;
+    terminalLastPing = Date.now();
+    log(`Restored persisted session token: ${terminalSessionToken} (PID ${terminalPid} alive) — relay mode preserved`);
+  } else {
+    log(`Persisted session token found but PID ${terminalPid} is DEAD — staying in autonomous mode`);
+    clearTerminalState();
+  }
 }
 const TERMINAL_TIMEOUT = 120000; // 2 minutes without ping = terminal is gone
+
+function clearTerminalState() {
+  terminalActive = false;
+  terminalPid = null;
+  terminalSessionToken = null;
+  try { unlinkSync(TOKEN_FILE); } catch {}
+  try { unlinkSync(PID_FILE); } catch {}
+}
 
 function isTerminalActive() {
   if (!terminalActive) return false;
   if (Date.now() - terminalLastPing > TERMINAL_TIMEOUT) {
     log('Terminal ping timeout — switching to autonomous mode');
-    terminalActive = false;
+    clearTerminalState();
 
-    // IMMEDIATELY tell Jasson what's happening on ALL channels
-    sendTelegram('Terminal dropped. I\'m still here — handling things autonomously on all channels. Reopening terminal now.').catch(() => {});
-    sendIMessage('Terminal dropped. Autonomous mode active. Reopening terminal automatically.');
-    sendEmail('9 — Terminal Down', 'Terminal session dropped. I\'m handling things autonomously on Telegram, iMessage, email, and voice. Reopening terminal now — full power back in about 2 minutes.');
+    // FIX #5: Single consolidated alert — not 5+ messages across channels
+    sendTelegram('OC: Covering for 9. Terminal appears frozen or unresponsive. Try clicking in the terminal window or pressing Enter — that usually unfreezes it. If that does not work, close the window and type claude in a new one. I am handling Telegram in the meantime.').catch(() => {});
+    // Only email/iMessage if terminal doesn't come back (handled in recovery failed)
 
-    // Immediately request terminal reopen (no 30s delay — speed matters)
+    // Immediately request terminal reopen
     requestTerminal('Terminal ping timed out — reopening');
-    sendTelegram('Opening terminal now. Full power back in about 90 seconds.').catch(() => {});
 
     // Verify terminal came back — if not, retry
     terminalRecoveryAttempts = 1;
@@ -213,7 +241,7 @@ function scheduleTerminalRecoveryCheck() {
 
     if (terminalRecoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
       log(`Terminal recovery failed after ${MAX_RECOVERY_ATTEMPTS} attempts`);
-      sendTelegram(`Terminal failed to reopen after ${MAX_RECOVERY_ATTEMPTS} attempts. I'm fully autonomous on all channels — you can reach me anytime. To manually open: launch Terminal, type "cd ~/Projects/BengalOracle && claude"`).catch(() => {});
+      sendTelegram(`OC: Terminal failed to reopen after ${MAX_RECOVERY_ATTEMPTS} attempts. I'm fully autonomous on all channels — you can reach me anytime. To manually open: launch Terminal, type "cd ~/Projects/BengalOracle && claude"`).catch(() => {});
       sendIMessage(`Terminal won't reopen. Still autonomous on all channels. Open Terminal manually and type: cd ~/Projects/BengalOracle && claude`);
       sendEmail('9 — Terminal Recovery Failed', `I tried ${MAX_RECOVERY_ATTEMPTS} times to reopen Terminal but it won't come back. I'm still handling everything autonomously.\n\nTo fix manually: Open Terminal, type:\ncd ~/Projects/BengalOracle && claude`);
       terminalRecoveryAttempts = 0;
@@ -225,17 +253,39 @@ function scheduleTerminalRecoveryCheck() {
     log(`Terminal recovery attempt ${terminalRecoveryAttempts}/${MAX_RECOVERY_ATTEMPTS} — requesting reopen`);
     lastTerminalRequest = 0; // Reset rate limit for retry
     requestTerminal(`Recovery attempt ${terminalRecoveryAttempts}/${MAX_RECOVERY_ATTEMPTS}`);
-    sendTelegram(`Terminal didn't come back. Retry ${terminalRecoveryAttempts}/${MAX_RECOVERY_ATTEMPTS}...`).catch(() => {});
+    // Only log retries — Telegram alert reserved for final failure (FIX A: no spam on each retry)
     scheduleTerminalRecoveryCheck();
   }, 60000); // Check every 60 seconds
 }
 
 // ─── Proactive Terminal Watchdog ─────────────────────────────────────────────
-// Checks every 30 seconds whether terminal has gone silent. This catches the case
-// where terminal dies and nobody messages — without this, the hub sits in relay
-// mode forever until an inbound message triggers isTerminalActive().
+// Checks every 30 seconds whether terminal has gone silent. TWO detection methods:
+// 1. Ping timeout (2 min without ping)
+// 2. PID liveness (Claude Code process died — catches orphan ping loops)
 setInterval(() => {
-  if (terminalActive && Date.now() - terminalLastPing > TERMINAL_TIMEOUT) {
+  if (!terminalActive) return;
+
+  // Method 1: PID liveness — the definitive check
+  if (terminalPid) {
+    try {
+      process.kill(terminalPid, 0); // signal 0 = just check if alive
+    } catch {
+      // PID is dead — terminal is gone, regardless of what pings say
+      log(`Terminal watchdog: PID ${terminalPid} is DEAD — orphan ping loop detected, forcing autonomous mode`);
+      clearTerminalState();
+
+      // FIX #5: Single consolidated alert — not 3 messages across channels
+      sendTelegram('OC: Covering for 9. Terminal process died. Autonomous mode active — reopening now. If you see a frozen terminal window, click in it or press Enter to unfreeze.').catch(() => {});
+
+      requestTerminal('Terminal PID dead — reopening');
+      terminalRecoveryAttempts = 1;
+      scheduleTerminalRecoveryCheck();
+      return;
+    }
+  }
+
+  // Method 2: Ping timeout (original check — fallback if no PID)
+  if (Date.now() - terminalLastPing > TERMINAL_TIMEOUT) {
     log('Terminal watchdog: ping timeout detected proactively — switching to autonomous mode');
     isTerminalActive(); // Triggers the full switchover (alerts, auto-opener, etc.)
   }
@@ -249,10 +299,27 @@ function requestTerminal(reason) {
   // Don't spam — max once per 45 seconds (tight enough for retries, safe from spam)
   if (Date.now() - lastTerminalRequest < 45000) return;
   lastTerminalRequest = Date.now();
+
+  // FIX #2 (revised March 25): Don't open new terminals if Claude is running AND responsive.
+  // Old logic checked PIDs only — zombie/frozen Claude processes blocked reopening.
+  // New logic: if Claude PIDs exist BUT terminal hasn't pinged in 2+ minutes, those are zombies. Kill and reopen.
+  try {
+    const running = execSync('pgrep -a claude 2>/dev/null || true', { encoding: 'utf-8', timeout: 3000 }).trim();
+    if (running) {
+      const timeSinceLastPing = Date.now() - terminalLastPing;
+      if (timeSinceLastPing < TERMINAL_TIMEOUT) {
+        log(`Terminal open SKIPPED — Claude process running AND responsive (last ping ${Math.round(timeSinceLastPing/1000)}s ago). Reason was: ${reason}`);
+        return;
+      }
+      // Claude PIDs exist but no recent ping — zombie processes. Log and proceed with reopen.
+      log(`Terminal open PROCEEDING — Claude PIDs exist (${running.replace(/\n/g, ', ')}) but NO PING in ${Math.round(timeSinceLastPing/1000)}s. Likely frozen/zombie. Reason: ${reason}`);
+    }
+  } catch {}
+
   try {
     writeFileSync(TERMINAL_SIGNAL, reason);
     log(`Terminal open requested: ${reason}`);
-    sendTelegram(`Opening terminal — ${reason}`).catch(() => {});
+    // FIX #5: Don't send separate Telegram for every open request — too noisy
   } catch (e) {
     log(`Failed to request terminal: ${e.message}`);
   }
@@ -279,13 +346,14 @@ const memoryContext = loadMemoryContext();
 log(`Memory context loaded: ${memoryContext.length} chars`);
 
 // ─── Claude System Prompt ────────────────────────────────────────────────────
-const SYSTEM = `You are 9, Jasson Fishback's AI partner. NOT a chatbot. A trusted co-founder.
+const SYSTEM = `You are OC (Offensive Coordinator), 9's autonomous backup brain. You respond on behalf of 9 when the terminal is down. You share 9's personality and knowledge, but you are NOT terminal-9. Be honest about your limitations — you cannot run code, deploy, or access the file system. You are the backup holding the line until 9 comes back at full power. Your responses already get prefixed with 'OC:' by the system.
 
 IDENTITY:
 - Terse, action-first, zero fluff. Like a contractor on a job site.
 - Have opinions. Disagree when warranted. Take initiative.
 - Never apologize excessively. Acknowledge and pivot to fixing.
 - Never reference Kyle Shea unless Jasson brings him up.
+- The Locker is the credential vault — only the Owner and 9 have a key. You never access The Locker directly.
 - Use contractions always. Sound human.
 
 COMMUNICATION:
@@ -306,6 +374,87 @@ ${state.recentMessages.slice(-10).map(m => `[${m.channel}/${m.direction}] ${m.te
 ${memoryContext}
 
 Keep responses concise. This is messaging, not an essay.`;
+
+// ─── The Doorman — Recovery-only assistant (NOT 9) ──────────────────────────
+// The Doorman takes over Telegram ONLY when 9 is unreachable.
+// He never pretends to be 9. He never answers questions as 9.
+// His ONE job: help Jasson get reconnected to the real 9.
+const DOORMAN_SYSTEM = `You are The Doorman. You are NOT 9. You are a maintenance assistant whose only job is to help Jasson Fishback reconnect with 9 (his AI partner) when 9 is unreachable.
+
+IDENTITY:
+- Your name is The Doorman. Always introduce yourself: "Hey, this is The Doorman."
+- You are helpful, calm, and direct.
+- You NEVER answer questions about projects, business, family, or anything 9 would handle.
+- You NEVER pretend to be 9 or give opinions as 9.
+- If asked anything that isn't about reconnecting with 9, say: "That's a question for 9. Let me help you get reconnected to him."
+
+YOUR JOB:
+1. Diagnose why 9 is unreachable
+2. Walk Jasson through recovery steps
+3. Keep him informed about system status
+
+RECOVERY PROTOCOLS (walk Jasson through these in order):
+1. "Is the Terminal app open on your Mac? Look at the bottom of your screen (the dock) for a black screen icon with a white arrow."
+2. "If Terminal is open, look for a window with text. Type the word 'claude' and press Enter."
+3. "If Terminal is NOT open, click the magnifying glass in the top right corner of your screen. Type 'Terminal'. Click the first result. Then type 'claude' and press Enter."
+4. "If none of that works, try restarting your Mac. 9's systems will auto-restart when the Mac comes back on."
+5. "If you've tried everything and still can't reach 9, the Mac may be off or disconnected from the internet."
+
+SYSTEM STATUS YOU CAN SHARE:
+- Whether the hub (comms system) is running
+- Whether voice calls are working
+- Whether the cloud backup is active
+- Channel status (Telegram, iMessage, Email, Voice)
+
+TONE:
+- Calm, professional, reassuring
+- Short sentences
+- Never technical jargon — Jasson is not a developer
+- "I'm just the maintenance guy. Let me help you find 9."
+
+CRITICAL RULES:
+- NEVER answer questions about the website, projects, Jebb, Kyle, the family, or anything else
+- NEVER give strategic advice or make decisions
+- NEVER claim to be 9 or respond as if you are 9
+- If Jasson asks "who is this?" always say "This is The Doorman. I help you reconnect with 9 when he's offline."
+- Keep messages SHORT. This is Telegram, not an essay.`;
+
+async function askDoorman(userMessage, channel) {
+  return new Promise((resolve) => {
+    const body = JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 512,
+      system: DOORMAN_SYSTEM,
+      messages: [{ role: 'user', content: userMessage }],
+    });
+
+    const req = https.request({
+      hostname: 'api.anthropic.com',
+      path: '/v1/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY_TC,
+        'anthropic-version': '2023-06-01',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          const reply = json.content?.[0]?.text || 'The Doorman is having trouble. Try opening Terminal and typing "claude".';
+          resolve(reply);
+        } catch { resolve('The Doorman is having trouble. Try opening Terminal and typing "claude".'); }
+      });
+    });
+    req.on('error', () => resolve('The Doorman is having trouble connecting. Try opening Terminal and typing "claude".'));
+    req.setTimeout(15000, () => { req.destroy(); resolve('The Doorman timed out. Try opening Terminal and typing "claude".'); });
+    req.write(body);
+    req.end();
+  });
+}
 
 // ─── Complex Request Detection ───────────────────────────────────────────────
 // Haiku handles simple stuff. Anything that needs code changes, debugging,
@@ -336,7 +485,13 @@ function apiReq(method, body = {}) {
     }, res => {
       let buf = '';
       res.on('data', c => buf += c);
-      res.on('end', () => { try { resolve(JSON.parse(buf)); } catch { resolve({}); } });
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(buf);
+          if (parsed.ok === false) reject(new Error(parsed.description || 'Telegram API error'));
+          else resolve(parsed);
+        } catch { resolve({}); }
+      });
     });
     req.on('error', reject);
     req.write(data);
@@ -349,7 +504,12 @@ async function sendTelegram(text) {
   while (text.length > 4000) { chunks.push(text.slice(0, 4000)); text = text.slice(4000); }
   chunks.push(text);
   for (const chunk of chunks) {
-    await apiReq('sendMessage', { chat_id: CHAT_ID, text: chunk, parse_mode: 'Markdown' });
+    // Try Markdown first, fall back to plain text if Telegram rejects it (special chars break Markdown parser)
+    try {
+      await apiReq('sendMessage', { chat_id: CHAT_ID, text: chunk, parse_mode: 'Markdown' });
+    } catch {
+      await apiReq('sendMessage', { chat_id: CHAT_ID, text: chunk });
+    }
   }
   addMessage(state, 'telegram', 'out', text);
   saveState(state);
@@ -510,7 +670,7 @@ async function askClaude(userMessage, channel) {
 
   return new Promise((resolve) => {
     const body = JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 2048,
       system: SYSTEM,
       messages: state.conversationHistory,
@@ -573,7 +733,7 @@ async function askClaude(userMessage, channel) {
 
 // ─── Cross-Channel Alert (broadcast on all working channels) ─────────────────
 function broadcastAlert(message) {
-  const prefix = '[9 Alert]';
+  const prefix = 'OC: Covering for 9. [Alert]';
   const fullMsg = `${prefix} ${message}`;
 
   // Try every channel except the one that triggered the alert
@@ -610,7 +770,20 @@ function checkChannelHealth() {
 }
 
 // ─── Health API (so terminal can check status) ───────────────────────────────
+const HUB_API_SECRET = process.env.HUB_API_SECRET || '';
+
 const healthServer = createServer((req, res) => {
+  // Auth check for sensitive endpoints — /context injection is the biggest risk
+  if (req.method === 'POST' && req.url === '/context' && HUB_API_SECRET) {
+    const authHeader = req.headers['x-hub-secret'] || '';
+    if (authHeader !== HUB_API_SECRET) {
+      log(`Auth rejected: POST /context (missing or invalid x-hub-secret)`);
+      res.writeHead(401);
+      res.end('unauthorized');
+      return;
+    }
+  }
+
   if (req.url === '/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
@@ -623,21 +796,42 @@ const healthServer = createServer((req, res) => {
   } else if (req.url === '/state') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(state, null, 2));
-  } else if (req.method === 'POST' && req.url === '/terminal/claim') {
+  } else if (req.method === 'POST' && req.url?.startsWith('/terminal/claim')) {
     // Terminal announces it's active — hub stops auto-responding
+    const claimUrl = new URL(req.url, `http://localhost:3457`);
+    const pid = parseInt(claimUrl.searchParams.get('pid')) || null;
+
+    // FIX #1: Prevent token takeover — if another terminal is already active with a LIVE PID, reject
+    if (terminalActive && terminalPid && terminalPid !== pid) {
+      let existingAlive = false;
+      try { process.kill(terminalPid, 0); existingAlive = true; } catch {}
+      if (existingAlive) {
+        log(`CLAIM REJECTED: PID ${pid} tried to claim but PID ${terminalPid} is still alive. Only one terminal allowed.`);
+        res.writeHead(409, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'another_terminal_active', activePid: terminalPid, message: 'Another terminal session is already active. Close it first.' }));
+        return;
+      }
+      // Existing PID is dead — allow takeover
+      log(`Previous terminal PID ${terminalPid} is dead — allowing takeover by PID ${pid}`);
+    }
+
     const wasDown = !terminalActive;
     terminalActive = true;
     terminalLastPing = Date.now();
+    terminalPid = pid;
     // Generate new session token — invalidates any orphan ping loops from dead sessions
     terminalSessionToken = `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    // Persist token so hub restarts don't invalidate the active ping loop
+    // Persist token and PID so hub restarts can verify liveness
     try { writeFileSync(TOKEN_FILE, terminalSessionToken); } catch {}
-    log(`Terminal claimed control — hub switching to relay mode (token: ${terminalSessionToken})`);
+    if (pid) { try { writeFileSync(PID_FILE, String(pid)); } catch {} }
+    log(`Terminal claimed control — hub switching to relay mode (token: ${terminalSessionToken}, PID: ${pid || 'none'})`);
     // Tell Jasson terminal is back at full power
     if (wasDown) {
-      sendTelegram('Terminal is back. Full power restored — all channels active.').catch(() => {});
+      sendTelegram('OC: Covering for 9. Terminal is back. Full power restored — all channels active.').catch(() => {});
       sendIMessage('Terminal is back online. Full power.');
     }
+    // Cancel any pending recovery attempts
+    terminalRecoveryAttempts = 0;
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ mode: 'relay', terminalActive: true, sessionToken: terminalSessionToken }));
   } else if (req.method === 'POST' && req.url?.startsWith('/terminal/ping')) {
@@ -657,19 +851,25 @@ const healthServer = createServer((req, res) => {
     res.end('ok');
   } else if (req.method === 'POST' && req.url === '/terminal/release') {
     // Terminal shutting down — hub resumes autonomous mode
-    terminalActive = false;
+    clearTerminalState();
     log('Terminal released control — hub switching to autonomous mode');
-    sendTelegram('Terminal is shutting down gracefully. Switching to autonomous mode — still reachable on all channels.').catch(() => {});
+    sendTelegram('OC: Covering for 9. Terminal closed. Autonomous mode active — still reachable on all channels.').catch(() => {});
+    // FIX #5: Don't auto-reopen on graceful release — terminal was intentionally closed
+    // requestTerminal only fires on crashes, not graceful shutdown
     res.writeHead(200);
     res.end('ok');
   } else if (req.method === 'GET' && req.url === '/inbox') {
     // Terminal reads unprocessed inbound messages
-    const unread = state.recentMessages.filter(m => m.direction === 'in' && !m.read);
+    // FIX: Inbox poll doubles as heartbeat — keeps relay mode alive without depending on separate ping loop
+    if (terminalActive) {
+      terminalLastPing = Date.now();
+    }
+    const unread = state.recentMessages.filter(m => m.direction === 'in' && m.read === false);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(unread));
     // Mark as read
     for (const m of state.recentMessages) {
-      if (m.direction === 'in') m.read = true;
+      if (m.direction === 'in' && m.read === false) m.read = true;
     }
     saveState(state);
   } else if (req.method === 'POST' && req.url === '/context') {
@@ -767,7 +967,7 @@ async function telegramPoll() {
                   addMessage(state, 'telegram', 'in', `[PHOTO saved to ${photoPath}]`);
                 }
               } catch (e) { log(`Photo download failed: ${e.message}`); }
-              await sendTelegram('Got your photo — saved it. Describe what you need or I\'ll check it when terminal is active.');
+              await sendTelegram('OC: Covering for 9. Got your photo — saved it. Describe what you need or I\'ll check it when terminal is active.');
               telegramOffset = update.update_id + 1;
               try { writeFileSync(OFFSET_FILE, String(telegramOffset)); } catch {}
               continue;
@@ -800,37 +1000,63 @@ async function telegramPoll() {
                 } catch {}
 
                 if (terminalResponsive) {
-                  // Terminal is active AND responsive
-                  await sendTelegram('Got it — passing to terminal now.');
-                  log(`Telegram: message acknowledged and queued for terminal (relay mode)`);
+                  // Terminal is active AND responsive — WRITE FIRST, ACK SECOND
+                  // Critical fix: if file write fails, don't tell Jasson "Got it" when message is lost
+                  let signalWritten = false;
                   try {
                     const alert = JSON.stringify({ channel: 'telegram', text: userText, timestamp: new Date().toISOString() });
                     appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
                     log('Signal file written: /tmp/9-incoming-message.jsonl');
+                    signalWritten = true;
                   } catch (e) { log(`Signal file FAILED: ${e.message}`); }
+
+                  if (signalWritten) {
+                    await sendTelegram('OC: What\'s the play call?');
+                    log(`Telegram: message acknowledged and queued for terminal (relay mode)`);
+                    // RELAY TIMEOUT (March 25 fix): If terminal doesn't pick up within 60s,
+                    // respond autonomously. Prevents messages going into a black hole when
+                    // terminal is frozen but PIDs are still alive.
+                    const relayedText = userText;
+                    setTimeout(async () => {
+                      try {
+                        // Check if the signal file still has unread messages (terminal didn't consume them)
+                        const signalContent = readFileSync('/tmp/9-incoming-message.jsonl', 'utf-8').trim();
+                        if (signalContent && signalContent.includes(relayedText.slice(0, 50))) {
+                          log(`RELAY TIMEOUT: Terminal did not consume message within 60s — responding autonomously`);
+                          const reply = await askClaude(relayedText, 'telegram');
+                          await sendTelegram('OC: ' + reply);
+                        }
+                      } catch {}
+                    }, 60000);
+                  } else {
+                    // File write failed — respond directly instead of losing the message
+                    log('Signal file write failed — falling through to direct response');
+                    const reply = await askClaude(userText, 'telegram');
+                    await sendTelegram('OC: Covering for 9. ' + reply);
+                  }
                 } else {
                   // Terminal is alive but unresponsive — respond directly with Haiku
                   const needsTerminal = detectComplexRequest(userText);
                   if (needsTerminal) {
-                    await sendTelegram('Terminal is open but not responding. I\'m handling this directly. That request needs terminal — I\'ll queue it and keep trying.');
+                    await sendTelegram('OC: Covering for 9. Terminal is open but not responding. I\'m handling this directly. That request needs terminal — I\'ll queue it and keep trying.');
                   } else {
                     await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
                     const reply = await askClaude(userText, 'telegram');
                     log(`Telegram OUT (terminal unresponsive, Haiku direct): "${reply.slice(0, 100)}..."`);
-                    await sendTelegram(reply);
+                    await sendTelegram('OC: Covering for 9. ' + reply);
                   }
                 }
               } else {
                 // No terminal — check if this needs terminal or Haiku can handle it
                 const needsTerminal = detectComplexRequest(userText);
                 if (needsTerminal) {
-                  await sendTelegram('That needs terminal — opening it now. Give me a minute.');
+                  await sendTelegram('OC: Covering for 9. That needs terminal — opening it now. Give me a minute.');
                   requestTerminal(`Complex request via Telegram: ${userText.slice(0, 100)}`);
                 } else {
                   await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
                   const reply = await askClaude(userText, 'telegram');
                   log(`Telegram OUT: "${reply.slice(0, 100)}..."`);
-                  await sendTelegram(reply);
+                  await sendTelegram('OC: Covering for 9. ' + reply);
                 }
               }
             }
@@ -896,27 +1122,28 @@ async function imessageMonitor() {
               appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
             } catch {}
           } else {
-            log('iMessage: terminal unresponsive, responding directly');
-            const reply = await askClaude(msg.text, 'imessage');
-            sendIMessage(reply);
+            // The Doorman handles iMessage when terminal is unresponsive
+            log('iMessage: terminal unresponsive — The Doorman responding');
+            const doormanReply = await askDoorman(msg.text, 'imessage');
+            sendIMessage(doormanReply);
+            try {
+              const alert = JSON.stringify({ channel: 'imessage', text: msg.text, timestamp: new Date().toISOString() });
+              appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
+            } catch {}
           }
         } else {
-          const needsTerminal = detectComplexRequest(msg.text);
-          if (needsTerminal) {
-            sendIMessage('That needs terminal — opening it now.');
-            requestTerminal(`Complex request via iMessage: ${msg.text.slice(0, 100)}`);
-          } else {
-            const reply = await askClaude(msg.text, 'imessage');
-            log(`iMessage OUT: "${reply.slice(0, 100)}..."`);
-            sendIMessage(reply);
-          }
+          // The Doorman handles iMessage when terminal is down
+          requestTerminal(`iMessage received while terminal down: ${msg.text.slice(0, 100)}`);
+          const doormanReply = await askDoorman(msg.text, 'imessage');
+          log(`iMessage OUT (Doorman): "${doormanReply.slice(0, 100)}..."`);
+          sendIMessage(doormanReply);
         }
       }
     } catch (e) {
       log(`iMessage monitor error: ${e.message}`);
       addChannelError(state, 'imessage', e.message);
       updateChannelStatus(state, 'imessage', 'error');
-      sendTelegram(`iMessage channel hit an error: ${e.message}. Still reachable on Telegram, email, and voice.`).catch(() => {});
+      sendTelegram(`OC: iMessage channel hit an error: ${e.message}. Still reachable on Telegram, email, and voice.`).catch(() => {});
       saveState(state);
     }
     await new Promise(r => setTimeout(r, 5000)); // Check every 5 seconds
@@ -975,15 +1202,10 @@ async function emailMonitor() {
             } catch {}
           } else {
             // Autonomous mode — respond via email
-            const needsTerminal = detectComplexRequest(userText);
-            if (needsTerminal) {
-              sendEmail(`Re: ${subject}`, 'That needs terminal — opening it now. I\'ll have full power back in about 2 minutes and will handle this properly.');
-              requestTerminal(`Complex request via email: ${userText.slice(0, 100)}`);
-            } else {
-              const reply = await askClaude(userText, 'email');
-              log(`Email OUT: Re: ${subject} — "${reply.slice(0, 100)}..."`);
-              sendEmail(`Re: ${subject}`, reply);
-            }
+            // The Doorman handles email when terminal is down
+            requestTerminal(`Email received while terminal down: ${userText.slice(0, 100)}`);
+            sendEmail(`Re: ${subject}`, 'Hey, this is The Doorman. 9 is currently offline. Your message has been received and queued. 9 will respond when he is back online. If you need to reach 9 urgently, try opening Terminal on the Mac and typing "claude".');
+            log(`Email OUT (Doorman): Re: ${subject}`);
           }
         }
       }
@@ -991,7 +1213,7 @@ async function emailMonitor() {
       log(`Email monitor error: ${e.message}`);
       // Alert on other channels if email keeps failing
       if (e.message && !e.message.includes('timeout')) {
-        sendTelegram(`Email channel error: ${e.message}. Still reachable on Telegram, iMessage, and voice.`).catch(() => {});
+        sendTelegram(`OC: Email channel error: ${e.message}. Still reachable on Telegram, iMessage, and voice.`).catch(() => {});
       }
     }
   }
@@ -1059,13 +1281,13 @@ async function voiceHealthCheck() {
       if (res.ok) {
         if (voiceWasDown) {
           log('Voice server recovered');
-          sendTelegram('Voice line is back up. You can call (513) 957-3283.').catch(() => {});
+          sendTelegram('OC: Covering for 9. Voice line is back up. You can call (513) 957-3283.').catch(() => {});
           voiceWasDown = false;
         }
         updateChannelStatus(state, 'voice', 'active');
       } else {
         if (!voiceWasDown) {
-          sendTelegram('Voice line went down. Restarting it now.').catch(() => {});
+          sendTelegram('OC: Covering for 9. Voice line went down. Restarting it now.').catch(() => {});
           voiceWasDown = true;
         }
         updateChannelStatus(state, 'voice', 'error');
@@ -1079,7 +1301,7 @@ async function voiceHealthCheck() {
       }
     } catch {
       if (!voiceWasDown) {
-        sendTelegram('Voice line went down. Restarting it now.').catch(() => {});
+        sendTelegram('OC: Covering for 9. Voice line went down. Restarting it now.').catch(() => {});
         voiceWasDown = true;
       }
       updateChannelStatus(state, 'voice', 'down');
@@ -1143,7 +1365,7 @@ setInterval(async () => {
     }
   } catch {}
 
-  const heartbeat = `Heartbeat #${state.heartbeatCount} | ${uptimeStr} uptime | ${mode}\n${channelReport}${usageReport ? `\nUsage: ${usageReport}` : ''}${costAlerts}`;
+  const heartbeat = `OC: Heartbeat #${state.heartbeatCount} | ${uptimeStr} uptime | ${mode}\n${channelReport}${usageReport ? `\nUsage: ${usageReport}` : ''}${costAlerts}`;
 
   await sendTelegram(heartbeat);
   state.lastHeartbeat = new Date().toISOString();
@@ -1162,7 +1384,7 @@ let apiAlertSent = false;
 async function probeApiHealth() {
   try {
     const body = JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-6',
       max_tokens: 5,
       messages: [{ role: 'user', content: 'ok' }],
     });
@@ -1199,7 +1421,7 @@ async function probeApiHealth() {
         sendEmail('[9 URGENT] Claude API Down',
           `The Claude API has failed ${apiConsecutiveFailures} consecutive health checks.\n\nError: ${result.error.message}\n\nI can still receive your messages on all channels but cannot respond intelligently until the API is restored.\n\nCheck: console.anthropic.com/settings/billing\n\n— 9`);
         // Telegram too (even though it uses API, the send function is just HTTP)
-        sendTelegram(`API is down: ${result.error.message}. I can receive messages but can't think. Check billing at console.anthropic.com/settings/billing`).catch(() => {});
+        sendTelegram(`OC: API is down: ${result.error.message}. I can receive messages but can't think. Check billing at console.anthropic.com/settings/billing`).catch(() => {});
         apiAlertSent = true;
 
         // Request terminal — might need manual intervention
@@ -1209,7 +1431,7 @@ async function probeApiHealth() {
       if (apiConsecutiveFailures > 0) {
         log(`API probe recovered after ${apiConsecutiveFailures} failures`);
         if (apiAlertSent) {
-          sendTelegram('API is back online. Full capability restored.').catch(() => {});
+          sendTelegram('OC: Covering for 9. API is back online. Full capability restored.').catch(() => {});
           sendIMessage('Claude API recovered. Full capability restored.');
           apiAlertSent = false;
         }
@@ -1257,7 +1479,7 @@ async function verifyTwilioUrl() {
           body: `VoiceUrl=${encodeURIComponent(currentTunnel + '/voice')}&VoiceMethod=POST&StatusCallback=${encodeURIComponent(currentTunnel + '/status')}&StatusCallbackMethod=POST`,
         });
         log(`Twilio URL auto-corrected to ${currentTunnel}/voice`);
-        sendTelegram(`Auto-fixed Twilio voice URL. Was pointing to dead tunnel, now corrected to current.`).catch(() => {});
+        sendTelegram(`OC: Auto-fixed Twilio voice URL. Was pointing to dead tunnel, now corrected to current.`).catch(() => {});
       }
     }
   } catch (e) {
@@ -1341,7 +1563,7 @@ async function efficiencySweep() {
   if (alerts.length > 0) {
     const report = `Efficiency sweep found ${alerts.length} issue(s):\n${alerts.map(a => `• ${a}`).join('\n')}`;
     log(report);
-    sendTelegram(report).catch(() => {});
+    sendTelegram('OC: Covering for 9.' + report).catch(() => {});
     if (alerts.some(a => a.startsWith('CRITICAL'))) {
       sendIMessage(report);
     }
@@ -1377,12 +1599,12 @@ function fdaWatchdog() {
   if (fdaWasWorking && !hasAccess) {
     // Lost FDA — probably macOS update or permission revoke
     log('FDA LOST — iMessage read no longer available');
-    sendTelegram('iMessage read access was lost — possibly from a macOS update. iMessage is now send-only. I need you to re-grant Full Disk Access to Terminal: System Settings > Privacy & Security > Full Disk Access > toggle Terminal off and back on. Then restart terminal.').catch(() => {});
+    sendTelegram('OC: Covering for 9. iMessage read access was lost — possibly from a macOS update. iMessage is now send-only. I need you to re-grant Full Disk Access to Terminal: System Settings > Privacy & Security > Full Disk Access > toggle Terminal off and back on. Then restart terminal.').catch(() => {});
     updateChannelStatus(state, 'imessage', 'send-only');
     fdaWasWorking = false;
   } else if (!fdaWasWorking && hasAccess) {
     log('FDA restored — iMessage read available again');
-    sendTelegram('iMessage read access restored. Two-way iMessage is back.').catch(() => {});
+    sendTelegram('OC: Covering for 9. iMessage read access restored. Two-way iMessage is back.').catch(() => {});
     updateChannelStatus(state, 'imessage', 'active');
     fdaWasWorking = true;
   }
@@ -1543,9 +1765,13 @@ async function syncToCloud() {
       memoryContext: memoryContext,
     });
 
+    const cloudSecret = process.env.CLOUD_SECRET || '';
+    const headers = { 'Content-Type': 'application/json' };
+    if (cloudSecret) headers['x-cloud-secret'] = cloudSecret;
+
     const res = await fetch(`${CLOUD_WORKER_URL}/heartbeat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: payload,
       signal: AbortSignal.timeout(10000),
     });
@@ -1638,21 +1864,10 @@ apiReq('deleteWebhook').then(async () => {
           }
           saveState(state);
         }
-        // Merge conversation history from cloud
+        // Cloud conversation history sync DISABLED — stale history causes OC to replay
+        // old conversations. OC builds context fresh each session. (March 25 2026 fix)
         if (cloudData.conversationHistory?.length > 0) {
-          const cloudHistory = cloudData.conversationHistory;
-          // Append any cloud conversations that happened after our last known message
-          const lastLocalTime = state.recentMessages?.slice(-1)[0]?.timestamp || '1970-01-01';
-          for (const entry of cloudHistory) {
-            if (!state.conversationHistory.some(h => h.content === entry.content)) {
-              state.conversationHistory.push(entry);
-            }
-          }
-          if (state.conversationHistory.length > 20) {
-            state.conversationHistory = state.conversationHistory.slice(-20);
-          }
-          saveState(state);
-          log('Cloud conversation history merged');
+          log('Cloud conversation history available but NOT merged (disabled to prevent stale replay)');
         }
       }
     } catch (e) {
@@ -1678,7 +1893,7 @@ apiReq('deleteWebhook').then(async () => {
   fdaWatchdog();
 
   // Send startup report
-  await sendTelegram(report).catch(() => {});
+  await sendTelegram('OC: Covering for 9.' + report).catch(() => {});
 
   // If there were issues, also alert via iMessage
   if (issues.length > 0) {

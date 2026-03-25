@@ -11,7 +11,7 @@ curl -s http://localhost:3457/health > /dev/null 2>&1
 # nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown
 
 # 2. Claim terminal control and get session token
-SESSION_TOKEN=$(curl -s -X POST http://localhost:3457/terminal/claim | python3 -c "import sys,json; print(json.load(sys.stdin).get('sessionToken',''))" 2>/dev/null)
+SESSION_TOKEN=$(curl -s -X POST "http://localhost:3457/terminal/claim?pid=$$" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sessionToken',''))" 2>/dev/null)
 
 # 3. Start ping loop WITH session token (prevents orphan pings from keeping hub in relay mode)
 kill $(cat /tmp/terminal-ping.pid 2>/dev/null) 2>/dev/null
@@ -27,31 +27,39 @@ curl -s http://localhost:3457/state
 # 6. Tell Jasson you're back
 curl -s -X POST http://localhost:3457/send -H "Content-Type: application/json" -d '{"channel":"telegram","message":"Terminal is back. Full power. What do you need?"}'
 
-# 7. Start incoming message watcher (CRITICAL — prevents missed Telegram/iMessage/email)
-# Hub writes to this file when messages arrive during relay mode. This watcher alerts you.
-rm -f /tmp/9-incoming-message.jsonl 2>/dev/null
-kill $(cat /tmp/message-watcher.pid 2>/dev/null) 2>/dev/null
-(while true; do
-  if [ -f /tmp/9-incoming-message.jsonl ]; then
-    cat /tmp/9-incoming-message.jsonl >> /tmp/9-messages-seen.log
-    rm -f /tmp/9-incoming-message.jsonl
-    echo "NEW_MESSAGE" > /tmp/9-message-alert
-  fi
-  sleep 10
-done) &
-echo $! > /tmp/message-watcher.pid
+# IMPORTANT: Before exiting terminal, ALWAYS release terminal control:
+# curl -s -X POST http://localhost:3457/terminal/release
+# This cuts the detection gap from 2 minutes to near-zero when 9 leaves.
+# Without this, the hub waits for ping timeout before switching to DC mode.
+
+# 7. DO NOT start a background message watcher — the PostToolUse hook in
+# ~/.claude/settings.json handles this. The hook runs check-messages.sh
+# after every tool call, which reads /tmp/9-incoming-message.jsonl.
+# A background watcher RACES the hook and causes missed messages.
+# Just make sure the hook exists and the script is executable:
+cat ~/.claude/settings.json | grep -q "check-messages" && echo "PostToolUse hook: OK" || echo "WARNING: PostToolUse hook missing!"
+chmod +x scripts/check-messages.sh
 ```
+
+## Graceful Shutdown (before exiting terminal)
+
+Before closing the terminal or ending a session, ALWAYS run:
+```bash
+curl -s -X POST http://localhost:3457/terminal/release
+```
+This tells the hub immediately that 9 is gone, so DC can take over in seconds instead of waiting up to 2 minutes for the ping timeout. Without this, Jasson's messages go unanswered during the gap.
 
 ## CRITICAL: Checking for Messages During Work
 
-While working on tasks, ALWAYS check for incoming messages between tool calls:
-```bash
-# Quick check — run this between tasks
-cat /tmp/9-incoming-message.jsonl 2>/dev/null && rm -f /tmp/9-incoming-message.jsonl
-# Or check the inbox directly
-curl -s http://localhost:3457/inbox
-```
-**NEVER go more than 2 minutes without checking.** Jasson's messages are the #1 priority — everything else is secondary. If a message is waiting, respond IMMEDIATELY before continuing your current task.
+The PostToolUse hook in ~/.claude/settings.json handles this automatically. It runs check-messages.sh after EVERY tool call. The hook outputs structured JSON with additionalContext, which surfaces as a system-reminder tag that 9 can read and act on.
+
+**HOW IT WORKS:** Hub writes to /tmp/9-incoming-message.jsonl → hook reads it after every tool call → outputs hookSpecificOutput.additionalContext JSON → 9 sees it as a system-reminder.
+
+**CRITICAL:** NEVER start a background file watcher. It races the hook and causes missed messages. The hook is the ONLY reader of the signal file.
+
+**CRITICAL:** Plain stdout from hooks is INVISIBLE to 9. The hook MUST output: `{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"MESSAGE TEXT"}}`
+
+**NEVER go more than 2 minutes without making a tool call.** The hook only fires on tool calls. If you are writing long text responses, break them up with inbox checks. Jasson's messages are the #1 priority — everything else is secondary.
 
 ## After a Mac Reboot
 

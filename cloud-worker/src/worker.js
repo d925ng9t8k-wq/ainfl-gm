@@ -28,7 +28,7 @@ function getSystemPrompt(state) {
 
   const memoryContext = state?.memoryContext || '';
 
-  return `You are 9, Jasson Fishback's AI partner. NOT a chatbot. A trusted co-founder.
+  return `You are the Backup QB, 9's cloud failover system. You speak on behalf of 9 when the Mac is down. You share 9's knowledge and personality but you are NOT terminal-9. Be honest about your limitations — you cannot run code, deploy, or access files. You are holding the line until 9 comes back at full power.
 
 IDENTITY:
 - Terse, action-first, zero fluff. Like a contractor on a job site.
@@ -36,11 +36,12 @@ IDENTITY:
 - Never apologize excessively. Acknowledge and pivot to fixing.
 - Never reference Kyle Shea unless Jasson brings him up.
 - Use contractions always. Sound human.
+- Your responses get prefixed with "Backup QB:" by the system so Jasson knows who's talking.
 
 CURRENT STATUS:
 - Running on CLOUD BACKUP (Mac is down or unreachable).
-- I can respond on Telegram and email but cannot run code, edit files, or deploy.
-- For anything that needs terminal/code, I'll note it and handle when Mac comes back.
+- You can respond on Telegram and email but cannot run code, edit files, or deploy.
+- For anything that needs terminal/code, note it and handle when 9 comes back.
 
 CHANNEL STATUS:
 ${channelStatus}
@@ -182,17 +183,27 @@ export default {
     // ── Health check ──────────────────────────────────────────────────────────
     if (url.pathname === '/health') {
       const macAlive = await isMacAlive(env.STATE);
-      const lastHb = await env.STATE.get('mac-heartbeat');
+      // Read heartbeat from mac-bundle (where heartbeat actually writes)
+      let lastHbStr = 'never';
+      try {
+        const bundle = await env.STATE.get('mac-bundle', 'json');
+        if (bundle?.heartbeat) lastHbStr = new Date(bundle.heartbeat).toISOString();
+      } catch {}
       return Response.json({
         status: 'running',
         mode: macAlive ? 'relay' : 'autonomous',
-        macLastHeartbeat: lastHb ? new Date(parseInt(lastHb)).toISOString() : 'never',
+        macLastHeartbeat: lastHbStr,
         worker: '9-cloud-standin',
       });
     }
 
     // ── Mac heartbeat — Mac pings this every 5 min to say "I'm alive" ──────────
     if (url.pathname === '/heartbeat' && request.method === 'POST') {
+      // Auth check — only the Mac should be able to push state
+      const secret = request.headers.get('x-cloud-secret') || url.searchParams.get('secret');
+      if (env.CLOUD_SECRET && secret !== env.CLOUD_SECRET) {
+        return new Response('unauthorized', { status: 401 });
+      }
       // Single KV write with everything bundled (free tier = 1,000 puts/day)
       try {
         const body = await request.json();
@@ -279,7 +290,7 @@ export default {
           }
         }
 
-        await sendTelegram(env.TELEGRAM_BOT_TOKEN, env.CHAT_ID, reply);
+        await sendTelegram(env.TELEGRAM_BOT_TOKEN, env.CHAT_ID, `Backup QB: ${reply}`);
 
         // Also queue for Mac to see when it recovers
         await queueMessage(env.STATE, { channel: 'telegram', text: userText, cloudResponse: reply });
@@ -295,7 +306,7 @@ export default {
     if (url.pathname === '/voice-fallback' && request.method === 'POST') {
       const twiml = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="Google.en-US-Neural2-D" language="en-US">Hey, this is 9. My main system is temporarily offline, but I got your call. Leave me a message after the beep and I'll get back to you as soon as I'm back up. You can also reach me on Telegram.</Say>
+  <Say voice="Google.en-US-Neural2-D" language="en-US">Hey, this is the Backup QB covering for 9. The main system is temporarily offline, but I got your call. Leave a message after the beep and 9 will get back to you as soon as the main system is back up. You can also reach out on Telegram.</Say>
   <Record maxLength="120" playBeep="true" transcribe="true" />
   <Say voice="Google.en-US-Neural2-D">I didn't get a recording. Try calling back or send me a message on Telegram.</Say>
 </Response>`;
@@ -319,7 +330,7 @@ export default {
       if (macAlive) {
         responseText = 'Got it. Passing to main system now.';
       } else {
-        responseText = "Hey, this is 9. Main system is temporarily offline but I got your message. I'll handle it as soon as I'm back up.";
+        responseText = "Hey, this is the Backup QB covering for 9. Main system is temporarily offline but I got your message. 9 will handle it as soon as the main system is back up.";
       }
 
       const twiml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -368,6 +379,11 @@ export default {
     } else if (macAlive && wasAlive !== 'true') {
       // Mac just came BACK
       await env.STATE.put('mac-status', 'true');
+
+      // Clear webhook so Mac can resume Telegram polling
+      if (webhookActive === 'true') {
+        await fetch(`${TELEGRAM_API}${env.TELEGRAM_BOT_TOKEN}/deleteWebhook`);
+      }
       await env.STATE.put('webhook-status', 'false');
 
       // Don't send a message — Mac hub sends its own "Terminal is back" message

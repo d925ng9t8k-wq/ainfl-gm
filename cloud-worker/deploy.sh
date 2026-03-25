@@ -24,7 +24,7 @@ echo "════════════════════════�
 # Step 1: Create KV namespace
 echo ""
 echo "Step 1: Creating KV namespace..."
-KV_OUTPUT=$(npx wrangler kv namespace create STATE 2>&1)
+KV_OUTPUT=$(npx wrangler kv namespace create STATE 2>&1) || true
 KV_ID=$(echo "$KV_OUTPUT" | grep -o 'id = "[^"]*"' | head -1 | cut -d'"' -f2)
 
 if [ -z "$KV_ID" ]; then
