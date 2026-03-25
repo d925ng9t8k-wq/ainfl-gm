@@ -784,6 +784,50 @@ export default function SummaryPage() {
         </div>
       </div>
 
+      {/* Support CTA — shown after summary results when user feels the value */}
+      <a
+        href="https://buymeacoffee.com/ainflgm"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 14,
+          margin: '20px 0 12px',
+          padding: '16px 24px',
+          background: 'linear-gradient(135deg, rgba(251,79,20,0.15), rgba(255,129,63,0.08))',
+          border: '1px solid rgba(251,79,20,0.35)',
+          borderRadius: 14,
+          textDecoration: 'none',
+          color: '#E2E8F0',
+          transition: 'all 0.2s ease',
+          boxShadow: '0 2px 16px rgba(251,79,20,0.1)',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(251,79,20,0.6)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(251,79,20,0.2)'; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(251,79,20,0.35)'; e.currentTarget.style.boxShadow = '0 2px 16px rgba(251,79,20,0.1)'; }}
+      >
+        <span style={{ fontSize: 28, lineHeight: 1 }}>&#9749;</span>
+        <div>
+          <div style={{
+            fontWeight: 800,
+            fontSize: 15,
+            fontFamily: "'Oswald', sans-serif",
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            color: '#FB4F14',
+          }}>
+            Enjoyed your offseason? Buy us a coffee
+          </div>
+          <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 3 }}>
+            100% free, built by one person. Every dollar goes toward better data and new features.
+          </div>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FB4F14" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.7 }}>
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+
       {/* Submit Modal */}
       {showSubmitModal && (
         <div style={{

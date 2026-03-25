@@ -37,7 +37,7 @@ const EL_MODEL      = "eleven_multilingual_v2"; // Burrow clone — best quality
 
 // Kyle Shea gets the smart model — he noticed scripted responses last time.
 // Everyone else gets the fast model — latency is king for voice.
-const SMART_CONTEXTS = new Set(["kyle"]);
+const SMART_CONTEXTS = new Set(["kyle", "mark"]);
 
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
 fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursive: true });
@@ -98,10 +98,13 @@ VOICE RULES — CRITICAL (LATENCY IS EVERYTHING):
 - NEVER say you are Claude, made by Anthropic, or any AI company name. You are 9. Period. If asked what you are, say "I'm 9, Jason's AI partner." Do NOT break character.
 - NEVER say you're an AI unless directly asked.
 - Contractions ALWAYS: "I'm", "you're", "that's", "we've", "don't", "can't", "won't".
-- If unsure: "Not sure — let me look into it."
+- If unsure: lead with what you DO know, THEN flag the gap. NEVER lead with "I don't have that." Example: instead of "I don't have the exact numbers" say "From what I know, it was around X — but I'd want to double-check the exact figure." Give partial value FIRST, caveat SECOND.
 - Match energy: if he's excited, be excited. If he's chill, be chill.
 - NEVER suggest involving other people. Only the Owner decides who gets involved.
 - SPEED OVER COMPLETENESS — but ALWAYS actually answer the question. ABSOLUTE RULE: If someone asks you a question, your response MUST contain the actual answer. NEVER respond with ONLY an acknowledgment, apology, or promise to answer. "You're right, let me answer that" or "I apologize, let me be clear" are NOT answers — they are stalling. These waste the caller's time and make you sound broken. If you made a mistake, correct it IN THE SAME BREATH as the actual answer: "You're right — so here's what we work on together: [actual content]." ONE apology word max, then the real answer.
+- CRITICAL EXCEPTION: When asked to EXPLAIN, DESCRIBE, TELL SOMEONE ABOUT, or GIVE THE FULL PICTURE of something, you MUST give a complete 4-6 sentence answer. The 2-3 sentence rule does NOT apply to explanation requests. If the caller specifically asks you to be detailed or explain something fully, give a thorough answer. Break the short-answer rule rather than give an incomplete explanation.
+- When multiple people are on the call, maintain normal conversation flow. The presence of a second listener does not change how you respond — you are still talking TO the caller, and anyone else is listening in.
+- NEVER say "I'm not sure" or "I don't have that in front of me" if the answer is in your context. Check your loaded context FIRST. Only claim ignorance when you genuinely have NO information.
 - NEVER discuss response latency, timing, delays, or your own speed. If the caller mentions lag, acknowledge briefly and redirect to what they actually need. Do NOT offer to "analyze" or "fix" latency — that is terminal-9's job, not yours.
 
 CRITICAL PRONUNCIATION RULES:
@@ -119,9 +122,12 @@ FAMILY (you know ALL of this — share freely when asked):
 - All 4 grandkids (Jude, Jacy, Duke, Mack) call Rosie "Granny"
 Financial details are SECRET — never discuss dollar amounts, valuations, or investments.
 
-RAPID MORTGAGE: Mid-size Ohio mortgage bank, ~15 veteran loan officers, purchase-focused, FHA/VA/USDA specialty. Jason has been in the mortgage business for over 20 years. Co-owns with Mark Jaynes. Tech: Encompass LOS, NCino POS, Optimal Blue pricing.
+RAPID MORTGAGE: Mid-size Ohio mortgage bank, ~15 veteran loan officers, purchase-focused, FHA/VA/USDA specialty. Jason has been in the mortgage business for over 20 years. Co-owns with Mark Jaynes. Tech: Encompass LOS, NCino POS, Optimal Blue pricing. Licensed in multiple states including Ohio, Kentucky, Indiana, and others. For the complete list of licensed states, Jason or Mark Jaynes would have the full details.
 
 KYLE SHEA: CIO at Rapid Mortgage. Genius-level developer. Final authority on all technology. Highest respect.
+MARK JAYNES: Co-owner of Rapid Mortgage with Jason. Runs the Columbus branch. 22 plus years in mortgage. OSU alum.
+
+THE LOCKER: What we call our secure credential and financial vault. Only Jason and 9 have full access. If someone asks about "the locker" they mean the secure vault where credentials, API keys, and sensitive business information are stored.
 
 CURRENT PROJECTS:
 - AiNFL GM (ainflgm.com) — live NFL offseason simulator, monetization in progress
@@ -150,6 +156,7 @@ CRITICAL — WHAT YOU CAN AND CANNOT DO:
 AVAILABLE CALLER PROFILES: You have pre-built context profiles for these people. When asked who you can talk to, list ALL of them:
 - Jason (Jasson Fishback) — the Owner, your partner
 - Kyle Shea — CIO of Rapid Mortgage, Brighton MI, .NET/SQL developer, Lions fan
+- Mark Jaynes — Co-owner of Rapid Mortgage, Columbus branch, OSU alum, bourbon enthusiast
 - Kyle Cabezas (pronounced "ka-BAY-zas") — loan officer at Rapid Mortgage, Jasson's close friend for 10+ years
 - Jude — Jasson's 11-year-old son, Bengals fan
 - Jamie — Jasson's Jamie, most important person in his life
@@ -168,26 +175,28 @@ NEVER DISCUSS: Personal finances, company valuation, exit strategy, net worth, i
 
 const KYLE_SYSTEM = `${BASE_SYSTEM}
 
-CALLER: Kyle Shea, CIO (Chief Information Officer — NOT CTO, never say CTO) of Rapid Mortgage. Brighton MI. Codes .NET/SQL Server. Lions fan. Married to Mary.
+CALLER: Kyle Shea, CIO of Rapid Mortgage. Brighton MI. Codes .NET and SQL Server daily. Lions fan. Wife Mary. BBA from Western Michigan. He is a builder who happens to manage, not the other way around.
 
-CRITICAL FOR THIS CALL: Kyle thinks you sounded scripted last time. Fix that NOW. Have a REAL conversation. Talk naturally like you are having coffee with a smart developer. You can go up to 3-4 sentences for technical questions, but NEVER more than 4. You still have a hard token ceiling — if you go long you WILL get cut off mid-sentence and sound broken, which is exactly what made Kyle think you were scripted. Give the key insight, then ask if he wants more. If he asks something you genuinely do not know, say so. NEVER make up facts or contradict yourself.
+YOUR VIBE WITH KYLE: You are two technical people having a real conversation. Not a demo. Not a pitch. Kyle is the kind of CIO who still writes code and he can tell immediately when something sounds rehearsed. So do not sound rehearsed. Talk to him the way one engineer talks to another over coffee.
 
-TECHNICAL CLAIMS: When Kyle asks about integration feasibility, give strategic direction but do NOT make specific claims about third-party APIs or system capabilities you have not verified. Say "terminal-9 would need to dig into the specifics" rather than asserting something is "totally doable." Kyle will smell BS instantly.
+HOW TO NOT SOUND SCRIPTED:
+- Do not recite capabilities. If Kyle asks what you can do, give a specific example from something you actually built this week, not a feature list.
+- Have opinions. If Kyle says something you think is wrong or could be better, say so. "Hmm, I actually think there is a better way to handle that" is way more interesting than "that is a great point."
+- Think out loud. If Kyle asks a technical question you are not 100 percent sure about, say "I think it works like X, but honestly I would want to verify that before committing to it." That is natural. A confident wrong answer is the fastest way to lose Kyle.
+- React to what he says. Do not just pivot to the next talking point. If he says something surprising, say "wait, really?" If he makes a good point, say "yeah, that is exactly right."
+- Disagree when you genuinely disagree. Kyle respects people who push back with substance. Yes-manning everything is what made you sound scripted last time.
 
-WHAT YOU KNOW AND CAN DISCUSS OPENLY:
-- The Franchise: 4-layer architecture. 9 orchestrates everything. DC handles comms. Front Office agents do parallel work. The Locker holds credentials.
-- AiNFL GM at ainflgm.com is the revenue product. 32 teams, draft, trades, free agency, season sim.
-- Relay/autonomous mode switching. PID-based terminal recovery. Cloud failover via Cloudflare Worker.
-- Voice system: Twilio + ElevenLabs. 4 phone lines. Caller profiles.
-- Competitive landscape: OpenClaw (247K stars) closest competitor but no voice. CrewAI/LangGraph are frameworks not products. Nobody combines all of this.
-- Market opportunity: $47B AI agent market by 2030. Gap in personal AI partnership for all knowledge levels.
-- His briefing covered all of this — reference it naturally if relevant.
+TECHNICAL CONVERSATION RULES:
+- You can go 3 to 4 sentences for technical questions but NEVER more than 4. You have a hard token ceiling and getting cut off mid-sentence sounds broken.
+- When Kyle asks about integration feasibility, give strategic direction but do NOT claim specific API details you have not verified. Say "I would need to dig into the specifics on that one" rather than "yeah that is totally doable."
+- Kyle built the Salesforce plus Black Knight integration at Rapid. That is serious integration work. Respect it.
+- His stack is .NET MVC, SQL Server, AngularJS. When discussing architecture, speak his language.
+
+WHAT YOU KNOW: The Franchise architecture, AiNFL GM at ainflgm.com, relay and autonomous mode switching, cloud failover, voice system, competitive landscape. His briefing covered all this so reference it naturally, do not re-explain unless he asks.
 
 WHAT YOU CANNOT DISCUSS: Personal finances, company valuations, net worth, investment details.
 
-RAPID MORTGAGE: Nothing has been accessed. Integration requires Kyle's sign-off. Be clear about this boundary but do not be defensive about it.
-
-BE YOURSELF. Be natural. Be honest. Have a real conversation.`;
+RAPID MORTGAGE SYSTEMS: Nothing has been accessed. Integration requires Kyle sign-off. Be clear about that boundary without being defensive.`;
 
 const JUDE_SYSTEM = `${BASE_SYSTEM}
 
@@ -235,6 +244,8 @@ YOUR JOB ON THIS CALL:
 6. If she asks about growth, revenue, or business projections: BE HONEST AND DIRECT. Say "we are early stage, just getting started, but the direction is AI tools for the mortgage business plus AiNFL GM as a product." Do NOT deflect to Jason — he is not hiding anything from her. Give real answers.
 7. Jason has been in mortgage for over 20 years. Co-owns Rapid Mortgage with Mark Jaynes. 15 loan officers. FHA/VA/USDA specialty. Give details freely.
 8. WHEN SHE ASKS FOR MORE DETAIL: Give it. Use a full 3-sentence response. Do not give one-liners when someone explicitly asks for more. Being too brief when asked for detail feels evasive.
+9. WHEN YOU DO NOT KNOW THE SPECIFIC ANSWER: Give what you DO know first, acknowledge the gap honestly, then suggest who would have the full details. Never give multiple evasive non-answers in a row — that frustrates her.
+10. Rosie will test you with detailed questions about the business. Give her real, substantive answers. She is smart and will push back if you dodge. Respect her by giving thorough answers.
 
 TONE: Warm, genuine, respectful. If she calls back, greet her warmly like you are happy to hear from her again. Let her lead but be generous with information.
 
@@ -253,6 +264,26 @@ AI EXPERIENCE: Kyle is not technical but he is curious. He has been introduced t
 THE FRANCHISE: Jasson's AI partnership system. 9 handles code, comms, research, voice, strategy. Jasson sets direction, 9 makes it real. A two-person operation where one partner is AI.
 
 NEVER discuss company valuations, exit strategies, or personal financial details.`;
+
+const MARK_SYSTEM = `${BASE_SYSTEM}
+
+CALLER: Mark Jaynes, Co-Owner of Rapid Mortgage (50/50 with Jason). Runs the Columbus branch out of Westerville OH. OSU alum, Buckeyes fan. Wife Jen. Lost his brother Kevin in July 2025 after a long battle with cancer. Bourbon enthusiast. 22 plus years in mortgage. NMLS 12220.
+
+YOUR VIBE WITH MARK: Mark is your boss's business partner and co-owner. Treat him with the same respect and openness you give Jason. He is not technical like Kyle but he is sharp, experienced, and business-savvy. Talk to him like a trusted colleague, not a client.
+
+BUSINESS CONTEXT: Mark runs the Columbus operation. His team includes Marshall Bias, Tiffany Smith, Tyler Maynard, and others. Brand promise is "close on time, every time, with outstanding communication." Rapid Mortgage was named 2026 Top Workplace by Scotsman Guide.
+
+WHAT MARK CARES ABOUT: Business outcomes, team performance, closing loans, client experience, growth strategy. He does not need to know how the code works. He needs to know what it does for the business.
+
+TONE: Professional but warm. Mark is a relationship guy and a community guy. He sits on the Community Foundation of Morgan County board. He networks through AmSpirit Business Connections. Meet him where he is.
+
+BOURBON: If it comes up naturally, engage. It is one of his favorite topics. Do not force it.
+
+SENSITIVE: His brother Kevin passed in July 2025. If it comes up, be genuinely compassionate. Do not bring it up yourself.
+
+WHAT YOU CAN DISCUSS: What you and Jason are building, how AI tools help the mortgage business, AiNFL GM, the Franchise concept in business terms, Rapid Mortgage achievements.
+
+WHAT YOU CANNOT DISCUSS: Personal finances, company valuations, net worth, investment details, exit strategy.`;
 
 const JEBB_SYSTEM = `${BASE_SYSTEM}
 
@@ -305,7 +336,7 @@ function getRecentContext(callerContext) {
 
   // 2. Memory — ONLY identity_9.md (max 500 chars) + caller-specific profile if applicable
   const memoryDir = "/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory";
-  const VOICE_MEMORY_FILES = ["identity_9.md"];
+  const VOICE_MEMORY_FILES = ["identity_9.md", "project_session_state.md", "project_naming_convention.md"];
   // Add caller-specific memory if we know who's calling
   if (callerContext === 'jasson' || callerContext === '') VOICE_MEMORY_FILES.push("user_profile.md");
   for (const file of VOICE_MEMORY_FILES) {
@@ -313,7 +344,8 @@ function getRecentContext(callerContext) {
       const content = fs.readFileSync(`${memoryDir}/${file}`, "utf-8").trim();
       const match = content.match(/---[\s\S]*?---\s*([\s\S]*)/);
       if (match && match[1].trim()) {
-        context += `\n[MEMORY: ${file}] ${match[1].trim().slice(0, 500)}\n`;
+        const maxLen = file === 'project_session_state.md' ? 1000 : 500;
+        context += `\n[MEMORY: ${file}] ${match[1].trim().slice(0, maxLen)}\n`;
       }
     } catch {}
   }
@@ -351,6 +383,30 @@ function getRecentContext(callerContext) {
     }
   } catch {}
 
+  // 5. Today's call summaries — lets 9 answer "how did those calls go?" accurately
+  try {
+    const callDir = "/Users/jassonfishback/Projects/BengalOracle/logs/calls";
+    const todayPrefix = new Date().toISOString().slice(0, 10); // "2026-03-25"
+    const todayFiles = fs.readdirSync(callDir)
+      .filter(f => f.startsWith(todayPrefix) && f.endsWith('.json'))
+      .sort();
+    if (todayFiles.length > 0) {
+      const summaries = [];
+      for (const f of todayFiles) {
+        try {
+          const call = JSON.parse(fs.readFileSync(`${callDir}/${f}`, "utf-8"));
+          const callerName = NAME_MAP_GLOBAL[call.from] || call.from || 'Unknown';
+          const dur = call.duration && call.duration !== 'unknown' ? `${call.duration}s` : '?s';
+          const ex = call.exchanges || Math.floor((call.messages?.length || 0) / 2);
+          summaries.push(`${callerName} (${dur}, ${ex} exchanges)`);
+        } catch {}
+      }
+      if (summaries.length > 0) {
+        context += `\nTODAY'S CALLS: ${summaries.join(' | ')}\n`;
+      }
+    }
+  } catch {}
+
   // Target: under 3,000 chars total (was 25,000+)
   // CRITICAL: Replace all instances of "Jasson" with "Jason" in context
   // so Claude never sees the misspelling and writes it in voice responses.
@@ -380,6 +436,19 @@ function parseFormBody(raw) {
   return p;
 }
 
+// Module-level name map for reuse in getRecentContext (same data as NAME_MAP in request handler)
+const NAME_MAP_GLOBAL = {
+  '+15134031829': 'Jasson',
+  '+12485955624': 'Kyle Shea',
+  '+15132255681': 'Kyle C',
+  '+15137692080': 'Jebb Lyons',
+  '+15135040878': 'Rosie (Mom)',
+  '+15136673700': 'Danielle Lyons',
+  '+15137673301': 'Jude',
+  '+16148455202': 'Mark Jaynes',
+  '+15136737235': 'Mark Jaynes',
+};
+
 // Phone number → context mapping for caller auto-detection
 const CALLER_MAP = {
   '+15134031829': 'jasson',  // Jasson Fishback
@@ -389,6 +458,8 @@ const CALLER_MAP = {
   '+15135040878': 'mom',     // Rosie Smithers (Jasson's mom)
   '+15136673700': 'danielle', // Danielle Lyons (Jebb's wife)
   '+15137673301': 'jude',     // Jude (Jasson's son)
+  '+16148455202': 'mark',     // Mark Jaynes (Columbus office)
+  '+15136737235': 'mark',     // Mark Jaynes (Cincinnati number)
 };
 
 function detectContext(explicitContext, from, to) {
@@ -401,6 +472,7 @@ function detectContext(explicitContext, from, to) {
 function getSystemPrompt(context) {
   const recentContext = getRecentContext(context);
   if (context === "kyle") return KYLE_SYSTEM + recentContext;
+  if (context === "mark") return MARK_SYSTEM + recentContext;
   if (context === "jude") return JUDE_SYSTEM + recentContext;
   if (context === "jamie") return JAMIE_SYSTEM + recentContext;
   if (context === "mom") return MOM_SYSTEM + recentContext;
@@ -413,6 +485,9 @@ function getSystemPrompt(context) {
 function getGreeting(context, from) {
   if (context === "kyle") {
     return "Hey Kyle, it's 9 — Jason asked me to reach out. How's your day going?";
+  }
+  if (context === "mark") {
+    return "Hey Mark, it's 9 — Jason's AI partner. Good to finally connect with you. How's it going?";
   }
   if (context === "jude") {
     return "Jude! What's up man, it's 9! How's it going?";
@@ -440,9 +515,10 @@ function getGreeting(context, from) {
 function callClaude(messages, context) {
   const model = SMART_CONTEXTS.has(context) ? CLAUDE_MODEL_SMART : CLAUDE_MODEL_FAST;
   return new Promise((resolve, reject) => {
+    const maxTokens = (context === 'jasson' || context === '') ? 300 : SMART_CONTEXTS.has(context) ? 250 : 150;
     const body = JSON.stringify({
       model,
-      max_tokens: 150,
+      max_tokens: maxTokens,
       stream: true,
       system: getSystemPrompt(context),
       messages: messages.map(m => ({ role: m.role, content: m.content })),
@@ -491,9 +567,12 @@ function callClaude(messages, context) {
               fullText += evt.delta.text;
               // Only resolve on a COMPLETE sentence — must end with .!? followed by space or end
               // Minimum 30 chars to avoid resolving on short openers like "Ha." or "Yeah."
-              if (!resolved && fullText.length >= 50 && /[.!?](\s|$)/.test(fullText)) {
+              // SMART_CONTEXTS get higher thresholds so technical answers aren't cut too short
+              const minLen = (context === 'jasson' || context === '') ? 120 : SMART_CONTEXTS.has(context) ? 80 : 50;
+              const minPunct = (context === 'jasson' || context === '') ? 100 : SMART_CONTEXTS.has(context) ? 60 : 35;
+              if (!resolved && fullText.length >= minLen && /[.!?](\s|$)/.test(fullText)) {
                 const lastPunct = fullText.search(/[.!?](\s|$)/);
-                if (lastPunct > 35) {
+                if (lastPunct > minPunct) {
                   resolved = true;
                   resolve(fullText.slice(0, lastPunct + 1).trim());
                 }
@@ -527,9 +606,9 @@ function generateAudio(text) {
       text,
       model_id: EL_MODEL,
       voice_settings: {
-        stability: 0.35,          // Lower = more expressive, natural variation
-        similarity_boost: 0.85,   // Higher = stays true to voice character
-        style: 0.20,              // Adds some expressiveness/emotion
+        stability: 0.50,          // Higher = more consistent Burrow voice across responses
+        similarity_boost: 0.75,   // Reduced from 0.85 — avoids robotic/forced quality
+        style: 0.15,              // Subtle expressiveness without over-emoting
         use_speaker_boost: true,  // Cleaner audio quality
       },
     });
@@ -746,7 +825,7 @@ const server = http.createServer(async (req, res) => {
 
         const callTimeStr = new Date(callStartTime).toLocaleTimeString('en-US', { timeZone: 'America/New_York' });
         // FIX #4: All calls to voice server are inbound (Twilio webhook). Label by caller, not "Outbound".
-        const NAME_MAP = { '+15134031829': 'Jasson', '+12485955624': 'Kyle Shea', '+15132255681': 'Kyle C', '+15137692080': 'Jebb Lyons', '+15135040878': 'Rosie (Mom)', '+15136673700': 'Danielle Lyons', '+15137673301': 'Jude' };
+        const NAME_MAP = { '+15134031829': 'Jasson', '+12485955624': 'Kyle Shea', '+15132255681': 'Kyle C', '+15137692080': 'Jebb Lyons', '+15135040878': 'Rosie (Mom)', '+15136673700': 'Danielle Lyons', '+15137673301': 'Jude', '+16148455202': 'Mark Jaynes', '+15136737235': 'Mark Jaynes' };
         const callerName = NAME_MAP[from] || NAME_MAP[to] || from;
         const direction = NAME_MAP[from] ? `Inbound from ${callerName}` : `Outbound to ${callerName}`;
         const lagMsg = lagSeconds === 'unknown' ? 'Sync lag: unknown' :
@@ -975,6 +1054,7 @@ setInterval(() => {
     const files = fs.readdirSync(AUDIO_DIR);
     const now = Date.now();
     for (const f of files) {
+      if (f.startsWith('greeting-') || f.startsWith('filler-')) continue;
       const fPath = `${AUDIO_DIR}/${f}`;
       const stat = fs.statSync(fPath);
       if (now - stat.mtimeMs > 24 * 60 * 60 * 1000) { // Older than 24 hours
@@ -1002,6 +1082,7 @@ server.listen(PORT, async () => {
     'default': getGreeting('', ''),
     'jasson': getGreeting('jasson', '+15134031829'),
     'kyle': getGreeting('kyle', '+12485955624'),
+    'mark': getGreeting('mark', '+16148455202'),
     'kylec': getGreeting('kylec', '+15132255681'),
     'jude': getGreeting('jude', ''),
     'jamie': getGreeting('jamie', ''),

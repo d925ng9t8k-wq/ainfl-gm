@@ -479,6 +479,41 @@ export default function Layout({ children }) {
       </nav>
 
       <FloatingMenu />
+
+      {/* Floating Buy Me A Coffee button — always visible */}
+      <a
+        href="https://buymeacoffee.com/ainflgm"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Support us on Buy Me A Coffee"
+        className="bmac-float"
+        style={{
+          position: 'fixed',
+          bottom: 120,
+          right: 12,
+          zIndex: 997,
+          width: 42,
+          height: 42,
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #FF813F, #FB4F14)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 2px 12px rgba(251,79,20,0.4), 0 0 20px rgba(251,79,20,0.15)',
+          border: '2px solid rgba(251,79,20,0.5)',
+          textDecoration: 'none',
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          cursor: 'pointer',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.12)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(251,79,20,0.6), 0 0 30px rgba(251,79,20,0.25)'; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(251,79,20,0.4), 0 0 20px rgba(251,79,20,0.15)'; }}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M6 1v3M10 1v3M14 1v3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </a>
     </div>
   );
 }

@@ -69,11 +69,14 @@ CURRENT_TUNNEL=$(grep TUNNEL_URL ../.env | cut -d= -f2)
 echo "$CURRENT_TUNNEL" | npx wrangler secret put MAC_HUB_URL 2>&1 | tail -1
 echo "  Secrets configured"
 
-# Step 4: Set Telegram webhook
+# Step 4: Telegram webhook — intentionally skipped
+# The Mac hub handles Telegram directly via polling (comms-hub.mjs).
+# Setting the webhook here would hijack all Telegram messages away from the
+# Mac hub while it is running, breaking real-time message delivery.
+# The cloud worker only receives Telegram traffic via the cron heartbeat
+# failover when the Mac hub is unreachable — no webhook needed for that.
 echo ""
-echo "Step 4: Setting Telegram webhook..."
-WEBHOOK_RESULT=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook?url=${WORKER_URL}/webhook")
-echo "  $WEBHOOK_RESULT"
+echo "Step 4: Telegram webhook — skipped (Mac hub handles Telegram while running)"
 
 # Step 5: Set Twilio voice fallback
 echo ""
@@ -108,7 +111,7 @@ echo "════════════════════════�
 echo "  DEPLOYMENT COMPLETE"
 echo ""
 echo "  Worker URL:  $WORKER_URL"
-echo "  Telegram:    webhook active"
+echo "  Telegram:    webhook NOT set (Mac hub owns Telegram while running)"
 echo "  Voice:       fallback configured"
 echo "  SMS:         fallback configured"
 echo ""

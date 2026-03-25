@@ -24,3 +24,12 @@ dist-ssr
 *.sw?
 .env
 .env.local
+
+# Shared state (contains conversation history and session context)
+scripts/shared-state.json
+
+# Cloudflare Wrangler build artifacts
+cloud-worker/.wrangler/
+
+# Playwright MCP browser state
+.playwright-mcp/

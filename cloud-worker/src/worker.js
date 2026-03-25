@@ -340,6 +340,17 @@ export default {
       });
     }
 
+    // ── Kyle Shea presentation page ─────────────────────────────────────────
+    if (url.pathname === '/kyle') {
+      const html = await env.STATE.get('kyle-presentation');
+      if (!html) {
+        return new Response('Presentation not found', { status: 404 });
+      }
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      });
+    }
+
     return new Response('9 Cloud Standin — operational', { status: 200 });
   },
 

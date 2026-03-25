@@ -792,6 +792,14 @@ const healthServer = createServer((req, res) => {
       channels: state.channels,
       recentMessages: state.recentMessages.slice(-5),
       heartbeatCount: state.heartbeatCount,
+      tunnel: {
+        status: tunnelWasDown ? 'down' : 'healthy',
+        lastChecked: tunnelLastChecked,
+        uptimeSince: tunnelUptimeStart ? new Date(tunnelUptimeStart).toISOString() : null,
+        restartCount: tunnelRestartCount,
+        consecutiveFailures: tunnelConsecutiveFailures,
+        totalDownEvents: tunnelDowntimeTotal,
+      },
     }));
   } else if (req.url === '/state') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -894,7 +902,9 @@ const healthServer = createServer((req, res) => {
     req.on('data', c => body += c);
     req.on('end', async () => {
       try {
-        const { channel, message } = JSON.parse(body);
+        const { channel, message: rawMessage } = JSON.parse(body);
+        // Auto-prefix terminal messages with "9: " so Jasson can tell who sent what
+        const message = (rawMessage && !rawMessage.startsWith('9:') && !rawMessage.startsWith('OC:')) ? '9: ' + rawMessage : rawMessage;
         let ok = false;
         if (channel === 'telegram') { await sendTelegram(message); ok = true; }
         else if (channel === 'imessage') { ok = sendIMessage(message); }
@@ -950,10 +960,11 @@ async function telegramPoll() {
         for (const update of data.result) {
           const msg = update.message;
           if (msg && String(msg.from?.id) === CHAT_ID) {
-            // Skip photos — crash prevention
+            // Photos: download to /tmp/, then signal terminal so 9 can read them
             if (msg.photo) {
-              log('Telegram: Photo received — downloading to /tmp/ but NOT sending to Claude');
-              // Download photo for terminal to view later
+              log('Telegram: Photo received — downloading to /tmp/');
+              let photoPath = null;
+              const caption = msg.caption || '';
               try {
                 const photoArr = msg.photo;
                 const largest = photoArr[photoArr.length - 1];
@@ -961,13 +972,25 @@ async function telegramPoll() {
                 if (fileRes.ok) {
                   const fileUrl = `https://api.telegram.org/file/bot${TOKEN}/${fileRes.result.file_path}`;
                   const photoData = await (await fetch(fileUrl)).arrayBuffer();
-                  const photoPath = `/tmp/telegram-photo-${Date.now()}.jpg`;
+                  photoPath = `/tmp/telegram_photo_${Date.now()}.jpg`;
                   writeFileSync(photoPath, Buffer.from(photoData));
                   log(`Photo saved: ${photoPath}`);
-                  addMessage(state, 'telegram', 'in', `[PHOTO saved to ${photoPath}]`);
+                  addMessage(state, 'telegram', 'in', `[PHOTO saved to ${photoPath}]${caption ? ' Caption: ' + caption : ''}`);
+                  // Signal the terminal so 9 can read it
+                  const signal = JSON.stringify({
+                    channel: 'telegram',
+                    text: `[PHOTO received: ${photoPath}]${caption ? ' Caption: ' + caption : ''}`,
+                    timestamp: new Date().toISOString()
+                  });
+                  try { appendFileSync('/tmp/9-incoming-message.jsonl', signal + '\n'); } catch {}
                 }
               } catch (e) { log(`Photo download failed: ${e.message}`); }
-              await sendTelegram('OC: Covering for 9. Got your photo — saved it. Describe what you need or I\'ll check it when terminal is active.');
+              if (isTerminalActive()) {
+                // Terminal is active — 9 will see it via the signal file
+                await sendTelegram('Got your photo — sending to 9 now.');
+              } else {
+                await sendTelegram('OC: Covering for 9. Got your photo — saved it. Describe what you need or I\'ll check it when terminal is active.');
+              }
               telegramOffset = update.update_id + 1;
               try { writeFileSync(OFFSET_FILE, String(telegramOffset)); } catch {}
               continue;
@@ -1011,8 +1034,7 @@ async function telegramPoll() {
                   } catch (e) { log(`Signal file FAILED: ${e.message}`); }
 
                   if (signalWritten) {
-                    await sendTelegram('OC: What\'s the play call?');
-                    log(`Telegram: message acknowledged and queued for terminal (relay mode)`);
+                    log(`Telegram: message queued for terminal (relay mode — no OC ack while terminal active)`);
                     // RELAY TIMEOUT (March 25 fix): If terminal doesn't pick up within 60s,
                     // respond autonomously. Prevents messages going into a black hole when
                     // terminal is frozen but PIDs are still alive.
@@ -1274,6 +1296,16 @@ function restartVoiceWithTunnel() {
 
 let voiceWasDown = false;
 
+// ─── Tunnel Health State ────────────────────────────────────────────────────
+let tunnelWasDown = false;
+let tunnelLastRestartAttempt = 0;
+const TUNNEL_RESTART_COOLDOWN = 120000; // 2 minutes minimum between restart attempts
+let tunnelUptimeStart = Date.now();
+let tunnelDowntimeTotal = 0;
+let tunnelRestartCount = 0;
+let tunnelLastChecked = null;
+let tunnelConsecutiveFailures = 0;
+
 async function voiceHealthCheck() {
   while (true) {
     try {
@@ -1489,6 +1521,157 @@ async function verifyTwilioUrl() {
 
 setInterval(verifyTwilioUrl, 5 * 60 * 1000); // Every 5 minutes
 setTimeout(verifyTwilioUrl, 30000); // Also check 30s after startup
+
+// ─── Tunnel Health Monitor (every 60s) ──────────────────────────────────────
+// Detects silent tunnel death and auto-restarts before anyone notices.
+// The voice health check only checks localhost:3456 — this checks the PUBLIC tunnel.
+async function tunnelHealthCheck() {
+  tunnelLastChecked = new Date().toISOString();
+
+  // Re-read .env for current tunnel URL (it changes on restart)
+  let currentTunnel = process.env.TUNNEL_URL;
+  try {
+    const envContent = readFileSync(envPath, 'utf-8');
+    const tunnelMatch = envContent.match(/TUNNEL_URL=(.*)/);
+    if (tunnelMatch) currentTunnel = tunnelMatch[1].trim();
+  } catch {}
+
+  if (!currentTunnel) {
+    log('Tunnel health check: no TUNNEL_URL configured, skipping');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${currentTunnel}/health`, {
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (res.ok) {
+      tunnelConsecutiveFailures = 0;
+      if (tunnelWasDown) {
+        // Recovery after previous failure
+        const downtimeSecs = Math.round((Date.now() - (tunnelUptimeStart || Date.now())) / 1000);
+        log(`TUNNEL RECOVERED after ${downtimeSecs}s downtime`);
+        tunnelWasDown = false;
+        tunnelUptimeStart = Date.now();
+      }
+    } else {
+      tunnelConsecutiveFailures++;
+      log(`Tunnel health check: HTTP ${res.status} from ${currentTunnel}/health (failure #${tunnelConsecutiveFailures})`);
+      await handleTunnelFailure(currentTunnel);
+    }
+  } catch (e) {
+    tunnelConsecutiveFailures++;
+    log(`Tunnel health check failed: ${e.message} (failure #${tunnelConsecutiveFailures})`);
+    await handleTunnelFailure(currentTunnel);
+  }
+}
+
+async function handleTunnelFailure(currentTunnel) {
+  // Only act on 2+ consecutive failures to avoid false positives from transient network blips
+  if (tunnelConsecutiveFailures < 2) {
+    log('Tunnel: single failure, will retry next cycle before acting');
+    return;
+  }
+
+  const now = Date.now();
+  const timeSinceLastRestart = now - tunnelLastRestartAttempt;
+
+  if (!tunnelWasDown) {
+    tunnelWasDown = true;
+    tunnelDowntimeTotal++;
+    sendTelegram('TUNNEL DOWN — voice calls will failover to Backup QB. Auto-restarting...').catch(() => {});
+    log('TUNNEL DOWN — alerting and preparing restart');
+  }
+
+  // Cooldown check — don't rapid-fire restarts
+  if (timeSinceLastRestart < TUNNEL_RESTART_COOLDOWN) {
+    const waitSecs = Math.round((TUNNEL_RESTART_COOLDOWN - timeSinceLastRestart) / 1000);
+    log(`Tunnel restart on cooldown — ${waitSecs}s remaining`);
+    return;
+  }
+
+  tunnelLastRestartAttempt = now;
+  tunnelRestartCount++;
+  log(`Tunnel restart attempt #${tunnelRestartCount}`);
+
+  try {
+    // Kill only cloudflared (not voice server — it may still be healthy on localhost)
+    try { execSync('pkill -f cloudflared 2>/dev/null'); } catch {}
+    execSync('sleep 3'); // Let the process die cleanly
+
+    // Start new tunnel
+    execSync('nohup cloudflared tunnel --url http://localhost:3456 --no-autoupdate > /tmp/cloudflared.log 2>&1 &');
+    execSync('sleep 6'); // Wait for tunnel to establish and log the URL
+
+    // Get new tunnel URL from cloudflared logs
+    const tunnelLog = readFileSync('/tmp/cloudflared.log', 'utf-8');
+    const match = tunnelLog.match(/https:\/\/[a-z0-9\-]+\.trycloudflare\.com/);
+
+    if (match) {
+      const newUrl = match[0];
+      log(`New tunnel URL: ${newUrl}`);
+
+      // Update .env
+      const envContent = readFileSync(envPath, 'utf-8');
+      const updated = envContent.replace(/TUNNEL_URL=.*/, `TUNNEL_URL=${newUrl}`);
+      writeFileSync(envPath, updated);
+      process.env.TUNNEL_URL = newUrl;
+      log('.env updated with new tunnel URL');
+
+      // Restart voice server so it picks up new TUNNEL_URL
+      try { execSync('pkill -f voice-server 2>/dev/null'); } catch {}
+      execSync('sleep 2');
+      execSync(`nohup /opt/homebrew/bin/node ${PROJECT}/scripts/voice-server.mjs > /tmp/voice-server.log 2>&1 &`);
+      log('Voice server restarted with new tunnel URL');
+
+      // Auto-update Twilio webhook to new tunnel URL
+      const twilioSid = process.env.TWILIO_ACCOUNT_SID;
+      const twilioToken = process.env.TWILIO_AUTH_TOKEN;
+      if (twilioSid && twilioToken) {
+        const authHeader = 'Basic ' + Buffer.from(`${twilioSid}:${twilioToken}`).toString('base64');
+        fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers.json`, {
+          headers: { 'Authorization': authHeader },
+        }).then(r => r.json()).then(data => {
+          for (const pn of data.incoming_phone_numbers || []) {
+            fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers/${pn.sid}.json`, {
+              method: 'POST',
+              headers: { 'Authorization': authHeader, 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: `VoiceUrl=${encodeURIComponent(newUrl + '/voice')}&VoiceMethod=POST&StatusCallback=${encodeURIComponent(newUrl + '/status')}&StatusCallbackMethod=POST`,
+            }).then(() => log(`Twilio webhook updated to ${newUrl}/voice for ${pn.phone_number}`))
+              .catch(e => log(`Twilio webhook update failed for ${pn.phone_number}: ${e.message}`));
+          }
+        }).catch(e => log(`Twilio webhook update failed: ${e.message}`));
+      }
+
+      // Verify the new tunnel is actually working
+      await new Promise(r => setTimeout(r, 3000));
+      try {
+        const verifyRes = await fetch(`${newUrl}/health`, { signal: AbortSignal.timeout(10000) });
+        if (verifyRes.ok) {
+          tunnelWasDown = false;
+          tunnelConsecutiveFailures = 0;
+          tunnelUptimeStart = Date.now();
+          log('TUNNEL RESTORED — verified healthy');
+          sendTelegram(`TUNNEL RESTORED — voice calls are live again. New URL: ${newUrl}`).catch(() => {});
+        } else {
+          log(`Tunnel restart: new URL returned HTTP ${verifyRes.status} — may need another cycle`);
+        }
+      } catch (e) {
+        log(`Tunnel restart: verification failed (${e.message}) — will retry next cycle`);
+      }
+    } else {
+      log('Tunnel restart: could not capture new URL from cloudflared logs');
+      // Log the actual output for debugging
+      try { log(`cloudflared log contents: ${tunnelLog.slice(0, 500)}`); } catch {}
+    }
+  } catch (e) {
+    log(`Tunnel restart error: ${e.message}`);
+  }
+}
+
+setInterval(tunnelHealthCheck, 60000); // Every 60 seconds
+setTimeout(tunnelHealthCheck, 15000);  // First check 15s after startup
 
 // ─── Service Efficiency Sweep (every 2 hours) ───────────────────────────────
 // Checks all third-party service quotas/balances and alerts before limits hit
