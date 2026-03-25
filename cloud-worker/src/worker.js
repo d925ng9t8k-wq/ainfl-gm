@@ -174,6 +174,9 @@ async function clearQueue(kv) {
   await kv.put('message-queue', JSON.stringify([]));
 }
 
+// ─── Polymarket Proxy Cache (instance-scoped, best-effort 15-min TTL) ─────────
+const polymarketCache = { key: null, data: null, timestamp: 0 };
+
 // ─── Main Handler ─────────────────────────────────────────────────────────────
 export default {
   // ─── HTTP Requests (Telegram webhook + state sync endpoints) ────────────────
@@ -338,6 +341,92 @@ export default {
       return new Response(twiml, {
         headers: { 'Content-Type': 'text/xml' },
       });
+    }
+
+    // ── Polymarket CORS proxy — forwards requests to gamma-api.polymarket.com ──
+    if (url.pathname === '/api/polymarket') {
+      const POLYMARKET_API = 'https://gamma-api.polymarket.com/markets';
+
+      // Handle CORS preflight
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400',
+          },
+        });
+      }
+
+      // Forward all query params to Polymarket
+      const upstreamUrl = new URL(POLYMARKET_API);
+      url.searchParams.forEach((value, key) => {
+        upstreamUrl.searchParams.set(key, value);
+      });
+
+      // Check in-memory cache (worker instance scoped — best effort, 15 min TTL)
+      const cacheKey = upstreamUrl.toString();
+      const now = Date.now();
+      if (
+        polymarketCache.key === cacheKey &&
+        polymarketCache.data &&
+        now - polymarketCache.timestamp < 15 * 60 * 1000
+      ) {
+        return new Response(polymarketCache.data, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'X-Cache': 'HIT',
+          },
+        });
+      }
+
+      try {
+        const upstream = await fetch(upstreamUrl.toString(), {
+          headers: { 'Accept': 'application/json' },
+        });
+
+        if (!upstream.ok) {
+          return new Response(
+            JSON.stringify({ error: `Upstream error: ${upstream.status}` }),
+            {
+              status: upstream.status,
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+              },
+            }
+          );
+        }
+
+        const body = await upstream.text();
+
+        // Store in instance cache
+        polymarketCache.key = cacheKey;
+        polymarketCache.data = body;
+        polymarketCache.timestamp = now;
+
+        return new Response(body, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'X-Cache': 'MISS',
+          },
+        });
+      } catch (e) {
+        return new Response(
+          JSON.stringify({ error: `Proxy error: ${e.message}` }),
+          {
+            status: 502,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+          }
+        );
+      }
     }
 
     // ── Kyle Shea presentation page ─────────────────────────────────────────

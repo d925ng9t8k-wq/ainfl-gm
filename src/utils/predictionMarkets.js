@@ -6,7 +6,7 @@
  * No authentication required for read-only access.
  */
 
-const GAMMA_API = 'https://gamma-api.polymarket.com/markets';
+const GAMMA_API = 'https://9-cloud-standin.789k6rym8v.workers.dev/api/polymarket';
 const POLYMARKET_BASE = 'https://polymarket.com'; // TODO: Add referral code when available
 const CACHE_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
