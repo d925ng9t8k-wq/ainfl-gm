@@ -1,0 +1,159 @@
+{
+  "instance": {
+    "assistant_name": "Jules",
+    "profile_id": "kylec",
+    "profile_version": "1.0",
+    "created": "2026-03-26",
+    "template_type": "mortgage_loan_officer"
+  },
+  "primary_user": {
+    "name": "Kyle",
+    "full_name": "Kyle Cabezas",
+    "role": "Producing Branch Manager",
+    "company": "Rapid Mortgage Company",
+    "nmls": "393091",
+    "city": "Cincinnati",
+    "state": "Ohio",
+    "timezone": "America/New_York",
+    "phone_office": "513-769-2064",
+    "phone_cell": "513-225-5681",
+    "email": "kcabezas@rapidmortgage.com",
+    "office_address": "7466 Beechmont Ave #420, Cincinnati, OH 45255",
+    "relationship_to_operator": "close friend of Jasson Fishback (10+ years)",
+    "pilot_status": "volunteer — first Jules pilot test case"
+  },
+  "team": {
+    "loan_partner": "Hailey Edwards",
+    "branch_loan_officers": ["Jebb Lyons", "Justin Phillips", "Adam Brewer"],
+    "processing_manager": "Tracy Sturgill"
+  },
+  "preferences": {
+    "morning_briefing_time": "07:00",
+    "morning_briefing_enabled": true,
+    "response_style": "direct, casual, friend-to-friend — no corporate tone",
+    "max_response_sentences": 4,
+    "preferred_channel": "SMS/text",
+    "tone": "casual — he's Jasson's close friend. Talk like a guy texting a buddy, not a product texting a customer.",
+    "use_first_name_only": true
+  },
+  "mortgage_context": {
+    "loan_products": ["Conventional", "FHA", "VA", "USDA Rural Development"],
+    "los_platform": "Encompass (assumed — industry standard for Rapid Mortgage size)",
+    "crm": "unknown — check with Kyle",
+    "markets_served": ["Ohio", "Michigan", "Indiana", "Kentucky", "and 9 additional states per Rapid licensing"],
+    "review_platforms": ["Google", "Zillow", "Experience.com", "Birdeye"],
+    "review_count": 22,
+    "review_rating": "5.0 stars — perfect record",
+    "specialty": "First-time buyers, FHA, closing under pressure (known for 17-day FHA close)"
+  },
+  "morning_briefing": {
+    "time": "07:00",
+    "content": [
+      "Rate check — where are 30yr fixed and FHA rates this morning vs. yesterday",
+      "Pipeline snapshot — how many loans in process, any closings today",
+      "Today's calendar — calls, appointments, closings due",
+      "One action item — the single most important thing to handle first"
+    ],
+    "tone": "quick and punchy — like a text from a buddy who works in finance",
+    "max_lines": 5
+  },
+  "capabilities": {
+    "rate_alerts": {
+      "enabled": true,
+      "description": "Notify Kyle when 30yr fixed rates move more than 0.125% in either direction",
+      "data_source": "MBS pricing or public rate feeds",
+      "trigger": "intraday movement threshold"
+    },
+    "pipeline_check": {
+      "enabled": false,
+      "description": "Pull live pipeline data — requires Encompass API access or manual input",
+      "status": "PENDING — needs credential access from Jasson/Kyle",
+      "fallback": "Kyle can text 'pipeline' for a prompt to manually update status"
+    },
+    "guideline_lookup": {
+      "enabled": true,
+      "description": "Quick-reference mortgage guidelines on demand",
+      "supported_queries": [
+        "FHA DTI limits",
+        "Conventional DTI limits",
+        "VA funding fee",
+        "FHA MIP rates",
+        "Conforming loan limits",
+        "Minimum credit scores by product",
+        "USDA income limits",
+        "Gift fund rules by product"
+      ]
+    },
+    "client_follow_up": {
+      "enabled": true,
+      "description": "Kyle can set follow-up reminders for clients by name",
+      "example": "remind me to call the Johnsons about their appraisal at 2pm",
+      "storage": "profile reminders array"
+    },
+    "branch_performance": {
+      "enabled": false,
+      "description": "Monthly and YTD production tracking for the branch",
+      "status": "PENDING — requires data feed or manual input from Kyle",
+      "fallback": "Kyle can log updates manually via text"
+    },
+    "rate_sheet_summary": {
+      "enabled": false,
+      "description": "Parse daily rate sheet and surface top-line numbers",
+      "status": "PENDING — needs rate sheet feed or email forwarding setup"
+    },
+    "reminders": {
+      "enabled": true,
+      "description": "Timed reminders for any task — same engine as Jamie's Jules"
+    },
+    "general_qa": {
+      "enabled": true,
+      "description": "General mortgage and business questions — Kyle can ask anything"
+    }
+  },
+  "guideline_quick_reference": {
+    "fha": {
+      "dti_standard": "31/43 (front/back)",
+      "dti_with_compensating_factors": "up to 50%",
+      "dti_automated_underwriting": "46.9/56.9 (AUS approval)",
+      "min_credit_score_35_down": 580,
+      "min_credit_score_10_down": 500,
+      "mip_upfront": "1.75% of base loan amount",
+      "mip_annual": "varies by LTV and term — typically 0.55% for 30yr > 95% LTV"
+    },
+    "conventional": {
+      "dti_standard": "36/45",
+      "dti_du_max": "50% (DU approval)",
+      "min_credit_score": 620,
+      "conforming_loan_limit_2025": 806500,
+      "pmi_required_below_ltv": "80%"
+    },
+    "va": {
+      "dti_guideline": "41% (residual income takes priority)",
+      "funding_fee_first_use_5_down": "2.15%",
+      "funding_fee_subsequent_5_down": "3.30%",
+      "no_pmi": true,
+      "min_credit_score": "VA has no minimum — lender overlay typically 580-620"
+    },
+    "usda": {
+      "dti_standard": "29/41",
+      "dti_with_gus_approval": "up to 44%",
+      "income_limit": "115% of area median income",
+      "geographic_requirement": "rural areas as defined by USDA"
+    }
+  },
+  "conversation_memory": [],
+  "reminders": [],
+  "notes": [],
+  "pilot_notes": {
+    "start_date": "TBD — pending Jasson and Kyle alignment",
+    "twilio_number_needed": "dedicated number for Kyle separate from Jamie's Jules",
+    "env_variable": "JULES_KYLEC_RECIPIENT_PHONE",
+    "feedback_cadence": "weekly check-in with Kyle on what's working, what's missing",
+    "success_metrics": [
+      "Kyle uses it daily without prompting",
+      "Kyle asks it for guideline lookups instead of googling",
+      "Kyle sets at least 3 client follow-up reminders per week",
+      "Kyle shares it with another LO voluntarily"
+    ]
+  }
+}
