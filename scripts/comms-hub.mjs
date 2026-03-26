@@ -291,6 +291,49 @@ setInterval(() => {
   }
 }, 30000);
 
+// ─── Freeze Detector ─────────────────────────────────────────────────────────
+// Reads /tmp/9-last-tool-call (written by check-messages.sh hook after every tool call).
+// If terminal is active but no tool call in 3+ minutes, 9 is likely frozen.
+// Sends ONE alert and tries osascript keystroke to unblock. Flag resets on next ping.
+let freezeAlertSent = false;
+const FREEZE_THRESHOLD_MS = 180000; // 3 minutes
+const LAST_TOOL_CALL_FILE = '/tmp/9-last-tool-call';
+
+setInterval(() => {
+  if (!terminalActive) {
+    freezeAlertSent = false; // Reset when terminal is not active
+    return;
+  }
+
+  try {
+    const raw = readFileSync(LAST_TOOL_CALL_FILE, 'utf-8').trim();
+    const lastCallTs = parseInt(raw) * 1000; // File stores unix seconds, convert to ms
+    if (!lastCallTs || isNaN(lastCallTs)) return;
+
+    const age = Date.now() - lastCallTs;
+    if (age > FREEZE_THRESHOLD_MS && !freezeAlertSent) {
+      const ageMin = Math.round(age / 60000);
+      log(`FREEZE DETECTOR: No tool call in ${ageMin}+ minutes — terminal may be frozen`);
+
+      // Send one alert
+      sendTelegram(`9: WARNING — Terminal may be frozen. No tool call in ${ageMin}+ minutes. Attempting to unblock.`).catch(() => {});
+
+      // Try to unblock via keystroke (simulates pressing Enter in the active window)
+      try {
+        execSync(`osascript -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
+        log('Freeze detector: sent keystroke return via osascript');
+      } catch (e) {
+        log(`Freeze detector: osascript keystroke failed — ${e.message}`);
+      }
+
+      freezeAlertSent = true; // Don't spam — only alert once per freeze
+    }
+  } catch {
+    // File doesn't exist yet or can't be read — terminal hasn't run a tool call
+    // This is normal on startup or before first tool call
+  }
+}, 30000);
+
 // ─── Terminal Auto-Opener ────────────────────────────────────────────────────
 const TERMINAL_SIGNAL = '/tmp/9-open-terminal';
 let lastTerminalRequest = 0;
@@ -855,6 +898,7 @@ const healthServer = createServer((req, res) => {
     }
     terminalLastPing = Date.now();
     terminalActive = true;
+    freezeAlertSent = false; // Fresh ping = terminal is alive, reset freeze flag
     res.writeHead(200);
     res.end('ok');
   } else if (req.method === 'POST' && req.url === '/terminal/release') {
@@ -871,6 +915,7 @@ const healthServer = createServer((req, res) => {
     // FIX: Inbox poll doubles as heartbeat — keeps relay mode alive without depending on separate ping loop
     if (terminalActive) {
       terminalLastPing = Date.now();
+      freezeAlertSent = false; // Inbox poll = terminal active, reset freeze flag
     }
     const unread = state.recentMessages.filter(m => m.direction === 'in' && m.read === false);
     res.writeHead(200, { 'Content-Type': 'application/json' });
