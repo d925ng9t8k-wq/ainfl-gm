@@ -270,6 +270,9 @@
   .badge-progress { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
   .badge-research { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border: 1px solid #2a2a2a; }
   .badge-setup { background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
+  .badge-fixed { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .badge-deployed { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
+  .tag-complete { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
 
   .project-dot-wrap {
     flex-shrink: 0;
@@ -553,7 +556,7 @@
         <div>
           <div class="agent-name">UNO <span class="text-gray" style="font-weight:400;font-size:11px;">/ Research</span></div>
           <div class="agent-role">Research Lead</div>
-          <div class="agent-task">AI Underwriter Kyle technical plan delivered (981 lines). Jules full concept and build plan complete. 9 Enterprise viability analysis + competitive landscape research done.</div>
+          <div class="agent-task">Kyle technical plan delivered (981 lines). Kyle income reference doc built. Kyle 90-day response page deployed at ainflgm.com/kyle-response.html. Jules full concept and build plan complete. Dependency map delivered (561 lines).</div>
           <span class="agent-status-tag tag-active">Sprint Complete</span>
         </div>
       </div>
@@ -564,8 +567,8 @@
         <div>
           <div class="agent-name">Tee <span class="text-gray" style="font-weight:400;font-size:11px;">/ Engineering</span></div>
           <div class="agent-role">Engineering Lead</div>
-          <div class="agent-task">Owner Dashboard built and deployed. Hub fixes shipped (relay timeout, freeze detector, PID fix). 8 commits pushed. Dashboard content update in progress.</div>
-          <span class="agent-status-tag tag-active">Active</span>
+          <div class="agent-task">Owner Dashboard built and deployed. Hub fixes shipped (relay timeout, freeze detector, PID fix). Voice latency fixes deployed (4 changes). Jules server built. Cap data research delivered. Apple Mail fix deployed. 20+ commits pushed total.</div>
+          <span class="agent-status-tag tag-complete">Sprint Complete</span>
         </div>
       </div>
 
@@ -575,8 +578,8 @@
         <div>
           <div class="agent-name">DOC <span class="text-gray" style="font-weight:400;font-size:11px;">/ Infrastructure</span></div>
           <div class="agent-role">Infrastructure Lead</div>
-          <div class="agent-task">Cloud VPS setup plan complete. Telegram relay script written and ready. Awaiting Owner VPS approval to deploy.</div>
-          <span class="agent-status-tag tag-researching">Awaiting Approval</span>
+          <div class="agent-task">Apple Mail fixed — hung process killed, hub timeout guard deployed. Cloud VPS setup plan complete. Telegram relay script written and ready. Awaiting Owner VPS approval to deploy.</div>
+          <span class="agent-status-tag tag-complete">Sprint Complete</span>
         </div>
       </div>
 
@@ -669,6 +672,24 @@
         <span class="dot dot-yellow project-dot-wrap"></span>
         <span class="project-name">AI Underwriting Team</span>
         <span class="project-badge badge-progress">POC Ready &mdash; Kyle Plan Complete</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-green project-dot-wrap"></span>
+        <span class="project-name">Voice Server</span>
+        <span class="project-badge badge-deployed">Latency Fixes Deployed</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-green project-dot-wrap"></span>
+        <span class="project-name">Apple Mail / Email</span>
+        <span class="project-badge badge-fixed">Fixed &mdash; Working</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-green project-dot-wrap"></span>
+        <span class="project-name">Kyle Response</span>
+        <span class="project-badge badge-fixed">Sent &mdash; 90-Day Plan Delivered</span>
       </div>
 
       <div class="project-row">
@@ -852,14 +873,50 @@
 
       <!-- Sprint Log -->
       <div>
-        <div class="section-title">Sprint Log &mdash; Mar 26 Overnight</div>
+        <div class="section-title">Sprint Log &mdash; Mar 26</div>
         <div class="card">
           <div class="timeline">
 
             <div class="timeline-item">
               <div class="timeline-dot tl-note"></div>
-              <div class="timeline-time">8 Commits Pushed</div>
-              <div class="timeline-text"><strong>All deployed.</strong> Hub fixes, dashboard, 9enterprises page, Jules stub all shipped.</div>
+              <div class="timeline-time">20+ Commits Pushed &mdash; 11:45 AM ET</div>
+              <div class="timeline-text"><strong>Full sprint complete.</strong> Voice fixes, Apple Mail fix, Kyle response, cap data, dependency map, hub fixes, dashboard, Jules server all shipped.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">Voice Latency Fixes</div>
+              <div class="timeline-text"><strong>4 changes deployed.</strong> Streaming response, reduced buffering, timeout tuning, error recovery improved.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">Apple Mail Fix</div>
+              <div class="timeline-text"><strong>Hung process killed.</strong> Hub timeout guard deployed. Email 2-way confirmed working.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">Kyle 90-Day Response</div>
+              <div class="timeline-text"><strong>Response page deployed</strong> at ainflgm.com/kyle-response.html. Email sent from captain@ainflgm.com.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">Per-User Cost Model</div>
+              <div class="timeline-text"><strong>Built and delivered.</strong> AI Underwriter unit economics complete.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">Dependency Map</div>
+              <div class="timeline-text"><strong>561 lines delivered.</strong> Full system architecture dependency map built by UNO.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-note"></div>
+              <div class="timeline-time">8 Commits &mdash; Overnight Sprint</div>
+              <div class="timeline-text"><strong>Prior sprint.</strong> Hub fixes, dashboard, 9enterprises page, Jules stub all shipped.</div>
             </div>
 
             <div class="timeline-item">
@@ -999,7 +1056,7 @@
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-text">
-    Last updated by 9 &mdash; <span>March 26, 2026 11:32 AM ET</span> &bull; Auto-refreshes every 60 seconds
+    Last updated by 9 &mdash; <span>March 26, 2026 11:45 AM ET</span> &bull; Auto-refreshes every 60 seconds
   </div>
   <div class="footer-text" style="margin-top: 6px; font-size: 10px; color: #2a2a2a;">
     9 Enterprises &mdash; ainflgm.com/dashboard.html
