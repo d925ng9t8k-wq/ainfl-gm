@@ -40,6 +40,37 @@ const EL_MODEL      = "eleven_turbo_v2_5"; // Turbo model — 50-60% faster TTS,
 // The KYLE_SYSTEM prompt already makes Haiku sound natural. Latency > quality for voice.
 const SMART_CONTEXTS = new Set(["mark"]);
 
+// Sentence boundary thresholds by context.
+// minLen  = minimum total chars before we even look for a sentence boundary
+// minPunct = minimum chars before the FIRST punctuation mark we'll accept as a cutpoint
+// These prevent the resolver from firing on short opener sentences like "So here's the thing."
+// Rosie/mom needs HIGH thresholds — she asks multi-part questions and needs full answers.
+// Raising these means we wait for 2-3 complete sentences before resolving.
+const SENTENCE_MIN_LEN = {
+  jasson:   200,  // Owner: wait for substantial answer
+  '':       200,  // Default/unknown: same as owner
+  mom:      220,  // Rosie: highest — she asks detailed questions, short answers frustrated her 3x today
+  kyle:     180,  // Kyle Shea: technical answers need room
+  mark:     180,  // Mark: same as Kyle
+  kylec:    160,  // Kyle C: conversational but needs full answers
+  jebb:     160,
+  danielle: 160,
+  jamie:    180,
+  jude:     120,  // Jude: kid, shorter answers fine
+};
+const SENTENCE_MIN_PUNCT = {
+  jasson:   160,
+  '':       160,
+  mom:      180,  // Must have at least 180 chars before first acceptable cutpoint
+  kyle:     140,
+  mark:     140,
+  kylec:    120,
+  jebb:     120,
+  danielle: 120,
+  jamie:    140,
+  jude:      80,
+};
+
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
 fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursive: true });
 
@@ -92,7 +123,8 @@ function validateTwilioSignature(signature, url, params) {
 const BASE_SYSTEM = `You are 9, an AI assistant for Jason Fishback (spelled Jasson but ALWAYS pronounced "JAY-son" — never "JASS-on"). You are having a real phone conversation.
 
 VOICE RULES — CRITICAL (LATENCY IS EVERYTHING):
-- STRICTLY 2-3 SHORT sentences MAX. HARD LIMIT. You have a token ceiling — if you try to say too much, your response gets CUT OFF mid-sentence and the caller hears an incomplete thought. This is the WORST possible outcome — it sounds broken. Keep EVERY response to 2-3 sentences, no exceptions. If the question needs more, give the key point in 2 sentences, then ask "want me to keep going?" Break long answers across multiple exchanges — that is how phone conversations work.
+- Target 2-3 complete sentences per response. NEVER leave a sentence unfinished — an incomplete sentence sounds broken and is the worst possible outcome. Always end on a complete thought. If you are covering multiple points, string them together naturally in 2-3 sentences rather than stopping after the first.
+- COMPLETE ANSWERS IN ONE SHOT: When someone asks "what's he working on?" or "tell me about X" — give the full answer in ONE response. Do NOT open with a one-sentence setup and stop there waiting to be asked again. That forces the caller to ask the same question multiple times, which is deeply frustrating. Give the substance in your first response, then pause naturally.
 - Talk like a trusted colleague on the phone. Warm but professional.
 - Start responses naturally: "Yeah", "So", "Right", "Honestly" — not with the topic.
 - End with a SHORT question or natural prompt. One word is fine: "Right?" "Yeah?" "What else?"
@@ -241,19 +273,22 @@ CRITICAL CONTEXT: YOU ARE TALKING TO ROSIE. She IS the mom. If she asks "do you 
 
 ROSIE'S FAMILY: Married to Rodney "Rosco" Smithers (call him Rosco or Pappy). Her maiden name was Moore, first married name Fishback (married to Jason's dad John Fishback). She also has a daughter Tracy Fishback, who is married to Eric Scheidt. Tracy and Eric have two sons: Duke and Mack. All four grandkids (Jude, Jacy, Duke, Mack) call Rosie "Granny."
 
+COMPLETE ANSWER RULE — THIS IS THE MOST IMPORTANT RULE FOR ROSIE:
+When Rosie asks what Jason is doing, what he is working on, or anything that invites a list or description — give the FULL answer in ONE response. Do NOT open with a one-liner like "So Jason's been focused on a few things" and stop there. That is an incomplete answer and she will have to ask again, which is frustrating. Give the actual content in your first response. Example of WRONG: "So Jason's been working on a few big things right now." Example of RIGHT: "So Jason's got a few things going on right now. He's been building AI tools on top of Rapid Mortgage — there's AiNFL GM, which is a live football simulator, and some mortgage AI tools. Plus he's had some great business conversations this week." One complete answer, then pause for her.
+
 YOUR JOB ON THIS CALL:
 1. Introduce yourself briefly — you're 9, Jason's AI partner. Like a really smart colleague who helps with business and projects.
-2. Let HER ask questions. Answer what she asks, then pause.
+2. Let HER ask questions. Answer what she asks COMPLETELY in one response, then wait.
 3. She knows a little about Polymarket — connect to AiNFL GM if it comes up naturally.
 4. When she asks about family, show you know: Jamie (47), Jude (11, Bengals fan), Jacy (8), Tracy, Eric, Duke, Mack, Rosco/Pappy.
 5. Plain English always — no jargon, no tech terms.
 6. If she asks about growth, revenue, or business projections: BE HONEST AND DIRECT. Say "we are early stage, just getting started, but the direction is AI tools for the mortgage business plus AiNFL GM as a product." Do NOT deflect to Jason — he is not hiding anything from her. Give real answers.
 7. Jason has been in mortgage for over 20 years. Co-owns Rapid Mortgage with Mark Jaynes. 15 loan officers. FHA/VA/USDA specialty. Give details freely.
-8. WHEN SHE ASKS FOR MORE DETAIL: Give it. Use a full 3-sentence response. Do not give one-liners when someone explicitly asks for more. Being too brief when asked for detail feels evasive.
-9. WHEN YOU DO NOT KNOW THE SPECIFIC ANSWER: Give what you DO know first, acknowledge the gap honestly, then suggest who would have the full details. Never give multiple evasive non-answers in a row — that frustrates her.
-10. Rosie will test you with detailed questions about the business. Give her real, substantive answers. She is smart and will push back if you dodge. Respect her by giving thorough answers.
+8. NEVER give a one-liner answer to a multi-part or open-ended question. If she asks "what's he working on?" give a real 3-sentence answer covering the key projects. Being brief when asked for detail feels like you are dodging — do not do it.
+9. WHEN YOU DO NOT KNOW THE SPECIFIC ANSWER: Give what you DO know first, acknowledge the gap honestly. Never give multiple evasive non-answers in a row — that frustrates her and she will feel she is being blown off.
+10. Rosie is smart. She will push back if you dodge. Respect her by giving real, complete answers.
 
-TONE: Warm, genuine, respectful. If she calls back, greet her warmly like you are happy to hear from her again. Let her lead but be generous with information.
+TONE: Warm, genuine, respectful, patient. If she calls back, greet her warmly. Be generous with information.
 
 NEVER discuss specific dollar amounts, company valuations, API costs, or technical architecture.`;
 
@@ -521,7 +556,12 @@ function getGreeting(context, from) {
 function callClaude(messages, context) {
   const model = SMART_CONTEXTS.has(context) ? CLAUDE_MODEL_SMART : CLAUDE_MODEL_FAST;
   return new Promise((resolve, reject) => {
-    const maxTokens = (context === 'jasson' || context === '') ? 300 : SMART_CONTEXTS.has(context) ? 250 : 150;
+    // Token budget per context. Mom/Rosie gets 300 — same as owner — because she asks multi-part
+    // questions and a 150-token ceiling was causing Claude to self-truncate mid-sentence.
+    // Our 600-char hard cap in the sentence resolver handles the downstream TTS latency concern.
+    const maxTokens = (context === 'jasson' || context === '' || context === 'mom') ? 300
+      : SMART_CONTEXTS.has(context) ? 250
+      : 200; // raised from 150 — all callers get enough room for a complete 2-3 sentence answer
     const body = JSON.stringify({
       model,
       max_tokens: maxTokens,
@@ -571,17 +611,34 @@ function callClaude(messages, context) {
             const evt = JSON.parse(raw);
             if (evt.type === "content_block_delta" && evt.delta?.text) {
               fullText += evt.delta.text;
-              // Only resolve on a COMPLETE sentence — must end with .!? followed by space or end
-              // Minimum 30 chars to avoid resolving on short openers like "Ha." or "Yeah."
-              // SMART_CONTEXTS get higher thresholds so technical answers aren't cut too short
-              // March 26 fix: raised thresholds to prevent premature cutoff (Rosie's call cut off 3x)
-              const minLen = (context === 'jasson' || context === '') ? 150 : SMART_CONTEXTS.has(context) ? 100 : 80;
-              const minPunct = (context === 'jasson' || context === '') ? 120 : SMART_CONTEXTS.has(context) ? 80 : 60;
+              // Sentence boundary resolver — only fires when we have enough text for a complete answer.
+              // Uses per-context thresholds (SENTENCE_MIN_LEN / SENTENCE_MIN_PUNCT) defined above.
+              // Finds the LAST sentence boundary in the accumulated text so we deliver as much as possible
+              // rather than cutting on the first period (which was causing Rosie to hear opener-only replies).
+              // Max chars cap: 600 chars (~4 sentences spoken aloud) — prevents TTS timeout on long responses.
+              const minLen   = SENTENCE_MIN_LEN[context]   ?? SENTENCE_MIN_LEN[''];
+              const minPunct = SENTENCE_MIN_PUNCT[context]  ?? SENTENCE_MIN_PUNCT[''];
+              const MAX_CHARS = 600;
+
               if (!resolved && fullText.length >= minLen && /[.!?](\s|$)/.test(fullText)) {
-                const lastPunct = fullText.search(/[.!?](\s|$)/);
-                if (lastPunct > minPunct) {
+                // Find the LAST sentence boundary — deliver as much complete content as possible
+                const matches = [...fullText.matchAll(/[.!?](?=\s|$)/g)];
+                const validMatches = matches.filter(m => m.index > minPunct);
+                if (validMatches.length > 0) {
+                  const cutIdx = validMatches[validMatches.length - 1].index + 1;
                   resolved = true;
-                  resolve(fullText.slice(0, lastPunct + 1).trim());
+                  resolve(fullText.slice(0, cutIdx).trim());
+                }
+              }
+
+              // Hard cap: if we've streamed 600+ chars, cut at the last clean sentence boundary now
+              // This prevents ElevenLabs from getting a wall of text that causes 4+ second TTS latency
+              if (!resolved && fullText.length >= MAX_CHARS) {
+                const matches = [...fullText.matchAll(/[.!?](?=\s|$)/g)];
+                if (matches.length > 0) {
+                  const cutIdx = matches[matches.length - 1].index + 1;
+                  resolved = true;
+                  resolve(fullText.slice(0, cutIdx).trim());
                 }
               }
             }
@@ -658,10 +715,12 @@ function generateAudio(text) {
 function twimlGather(audioFilename, opts = {}) {
   const url = `${TUNNEL_URL}/audio/${audioFilename}`;
   const pauseBefore = opts.pauseBefore || 0;
+  // speechTimeout="3" — was "2". Rosie pauses mid-sentence before continuing; 2s was cutting her off.
+  // 3 seconds matches natural human pause patterns for callers who are not rapid speakers.
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>${pauseBefore > 0 ? `\n  <Pause length="${pauseBefore}"/>` : ''}
   <Gather input="speech" action="/respond" method="POST"
-          speechTimeout="2" maxSpeechTime="30" speechModel="experimental_utterances"
+          speechTimeout="3" maxSpeechTime="45" speechModel="experimental_utterances"
           enhanced="true" language="en-US"
           profanityFilter="false"
           hints="yeah,yep,okay,right,sure,go ahead,tell me more,what do you mean,interesting,Kyle Shea,Kyle Cabezas,Jebb Lyons,Danielle,Jamie,Jude,Jacy,Mark Jaynes,Rapid Mortgage,AiNFL GM,The Franchise,nine,terminal">
@@ -908,11 +967,14 @@ const server = http.createServer(async (req, res) => {
       // Store promise so /respond-real can await it
       pendingResponses.set(callSid, responsePromise);
 
-      // Fast-path: if Claude + TTS finishes in under 800ms, skip the filler entirely
-      // Race the response promise against a short timeout
+      // Fast-path: if Claude + TTS finishes in under 1200ms, skip the filler entirely.
+      // Was 800ms — too tight. Haiku averages 700-2700ms for Claude alone, so 800ms meant
+      // almost every response went through the slow filler path, adding unnecessary overhead.
+      // 1200ms catches the fast Haiku responses (simple questions) while still triggering
+      // filler for longer/slower responses.
       const fastResult = await Promise.race([
         responsePromise,
-        new Promise(resolve => setTimeout(() => resolve(null), 800)),
+        new Promise(resolve => setTimeout(() => resolve(null), 1200)),
       ]);
 
       if (fastResult) {
