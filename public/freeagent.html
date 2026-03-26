@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilot — Kyle Cabezas | Dashboard</title>
+<meta http-equiv="refresh" content="60">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #080808; color: #ccc; line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 60px; }
+
+  /* Header */
+  .header { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid #181818; }
+  .brand-image { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; border: 1px solid #222; flex-shrink: 0; }
+  .header-text h1 { font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -0.5px; line-height: 1.2; }
+  .header-text .sub { font-size: 14px; color: #555; margin-top: 4px; }
+  .header-right { margin-left: auto; text-align: right; }
+  .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25); color: #22c55e; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .last-refresh { font-size: 11px; color: #444; margin-top: 6px; }
+
+  /* Grid layout */
+  .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .dashboard-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .full-width { grid-column: 1 / -1; }
+
+  /* Panel */
+  .panel { background: #0f0f0f; border: 1px solid #1e1e1e; border-radius: 14px; overflow: hidden; }
+  .panel-header { padding: 18px 22px 14px; border-bottom: 1px solid #181818; display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #555; }
+  .panel-badge { font-size: 11px; color: #444; background: #151515; border: 1px solid #222; padding: 2px 8px; border-radius: 8px; }
+  .panel-body { padding: 20px 22px; }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 32px 20px; }
+  .empty-state .empty-icon { font-size: 28px; margin-bottom: 12px; opacity: 0.3; }
+  .empty-state p { font-size: 13px; color: #444; line-height: 1.7; }
+  .empty-state .cta { font-size: 13px; color: #818cf8; margin-top: 8px; font-weight: 500; }
+
+  /* Briefing placeholder */
+  .briefing-time { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1; margin-bottom: 6px; }
+  .briefing-sub { font-size: 13px; color: #555; }
+  .briefing-divider { border: none; border-top: 1px solid #181818; margin: 16px 0; }
+  .briefing-lines { list-style: none; padding: 0; }
+  .briefing-lines li { font-size: 13px; color: #666; padding: 6px 0; border-bottom: 1px solid #141414; display: flex; gap: 10px; }
+  .briefing-lines li:last-child { border-bottom: none; }
+  .briefing-lines li .line-label { color: #444; min-width: 80px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+  .briefing-lines li .line-val { color: #666; }
+
+  /* Conversations */
+  .convo-item { padding: 12px 0; border-bottom: 1px solid #141414; display: flex; align-items: flex-start; gap: 12px; }
+  .convo-item:last-child { border-bottom: none; }
+  .convo-dot { width: 8px; height: 8px; border-radius: 50%; background: #2a2a2a; margin-top: 5px; flex-shrink: 0; }
+  .convo-text { font-size: 13px; color: #555; line-height: 1.5; }
+
+  /* Feature status grid */
+  .feature-status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .feat-status-item { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 10px; padding: 14px 16px; }
+  .feat-status-name { font-size: 12px; font-weight: 600; color: #ccc; margin-bottom: 8px; line-height: 1.4; }
+  .conf-badge { display: inline-block; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .conf-badge.green { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: #22c55e; }
+  .conf-badge.yellow { background: rgba(234,179,8,0.12); border: 1px solid rgba(234,179,8,0.25); color: #eab308; }
+  .conf-badge.orange { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); color: #f97316; }
+
+  /* Quick actions */
+  .quick-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: opacity 0.15s; }
+  .action-btn:hover { opacity: 0.8; }
+  .action-btn.primary { background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; }
+  .action-btn.secondary { background: #111; border: 1px solid #222; color: #888; }
+
+  /* Reminders */
+  .reminder-item { padding: 12px 0; border-bottom: 1px solid #141414; display: flex; gap: 12px; align-items: flex-start; }
+  .reminder-item:last-child { border-bottom: none; }
+  .reminder-time { font-size: 11px; font-weight: 700; color: #818cf8; text-transform: uppercase; letter-spacing: 0.5px; min-width: 60px; flex-shrink: 0; margin-top: 2px; }
+  .reminder-text { font-size: 13px; color: #777; line-height: 1.5; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid #141414; }
+  .footer p { font-size: 12px; color: #333; line-height: 1.7; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .container { padding: 24px 16px 48px; }
+    .header { flex-wrap: wrap; }
+    .header-right { margin-left: 0; text-align: left; width: 100%; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .dashboard-grid.three { grid-template-columns: 1fr; }
+    .feature-status-grid { grid-template-columns: 1fr 1fr; }
+    .header-text h1 { font-size: 20px; }
+  }
+  @media (max-width: 420px) {
+    .feature-status-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <img src="9-brand.jpg" alt="9 Enterprises" class="brand-image">
+    <div class="header-text">
+      <h1>Pilot — Kyle Cabezas</h1>
+      <div class="sub">Personal AI Free Agent Dashboard</div>
+    </div>
+    <div class="header-right">
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        Active
+      </div>
+      <div class="last-refresh">Auto-refreshes every 60s</div>
+    </div>
+  </div>
+
+  <!-- Row 1: Reminders + Briefing -->
+  <div class="dashboard-grid">
+
+    <!-- Active Reminders -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Active Reminders</span>
+        <span class="panel-badge">0 active</span>
+      </div>
+      <div class="panel-body">
+        <div class="empty-state">
+          <div class="empty-icon">&#128276;</div>
+          <p>No reminders yet.</p>
+          <p class="cta">Text Pilot to add one.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Today's Briefing -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Today's Briefing</span>
+        <span class="panel-badge">Daily</span>
+      </div>
+      <div class="panel-body">
+        <div class="briefing-time">7:00 AM</div>
+        <div class="briefing-sub">Morning briefing delivered daily</div>
+        <hr class="briefing-divider">
+        <ul class="briefing-lines">
+          <li>
+            <span class="line-label">Rates</span>
+            <span class="line-val">Delivered each morning with yesterday's comparison</span>
+          </li>
+          <li>
+            <span class="line-label">Closings</span>
+            <span class="line-val">Today's schedule + condition status</span>
+          </li>
+          <li>
+            <span class="line-label">Priority</span>
+            <span class="line-val">One action item flagged for your attention</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Row 2: Recent Conversations (full width) -->
+  <div class="dashboard-grid" style="margin-bottom: 20px;">
+    <div class="panel full-width">
+      <div class="panel-header">
+        <span class="panel-title">Recent Conversations</span>
+        <span class="panel-badge">Pilot program</span>
+      </div>
+      <div class="panel-body">
+        <div class="empty-state">
+          <div class="empty-icon">&#128172;</div>
+          <p>Your conversation history will appear here.</p>
+          <p class="cta">Text Pilot at any time to get started.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Feature Status (full width) -->
+  <div class="dashboard-grid" style="margin-bottom: 20px;">
+    <div class="panel full-width">
+      <div class="panel-header">
+        <span class="panel-title">Feature Status</span>
+        <span class="panel-badge">11 features</span>
+      </div>
+      <div class="panel-body">
+        <div class="feature-status-grid">
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Guideline Q&amp;A with Citations</div>
+            <span class="conf-badge green">95%+ Ship it</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Morning Briefing</div>
+            <span class="conf-badge green">95%+ Ship it</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Task &amp; Reminder Management</div>
+            <span class="conf-badge green">95%+ Ship it</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Script Sparring Partner</div>
+            <span class="conf-badge green">95%+ Ship it</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Social Media Ghostwriter</div>
+            <span class="conf-badge green">95%+ Ship it</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Referral Partner Wingman</div>
+            <span class="conf-badge green">95%+ Ship it</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Rate Lock Coach</div>
+            <span class="conf-badge yellow">85% Watching</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Closing Day Commander</div>
+            <span class="conf-badge yellow">85% Watching</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Review Harvester</div>
+            <span class="conf-badge yellow">85% Watching</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Birthday &amp; Anniversary Bomber</div>
+            <span class="conf-badge orange">70% Beta</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Direct Social Media Posting</div>
+            <span class="conf-badge orange">70% Beta</span>
+          </div>
+
+          <div class="feat-status-item">
+            <div class="feat-status-name">Voice</div>
+            <span class="conf-badge orange">70% Beta</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 4: Quick Actions -->
+  <div class="dashboard-grid" style="margin-bottom: 20px;">
+    <div class="panel full-width">
+      <div class="panel-header">
+        <span class="panel-title">Quick Actions</span>
+      </div>
+      <div class="panel-body">
+        <div class="quick-actions">
+          <a href="sms:+1XXXXXXXXXX" class="action-btn primary">
+            &#128172; Text Pilot
+          </a>
+          <a href="/jules-pilot.html" class="action-btn secondary">
+            &#128196; View Pilot Brief
+          </a>
+        </div>
+        <p style="font-size: 12px; color: #444; margin-top: 14px;">Phone number assigned at pilot launch. Questions? Text Jasson.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Pilot — A Free Agent by 9 Enterprises | Pilot Program</p>
+    <p>Dashboard refreshes automatically every 60 seconds</p>
+  </div>
+
+</div>
+</body>
+</html>
