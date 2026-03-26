@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture Response — 90-Day Resolution Plan | 9 Enterprises</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ccc; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 800px; margin: 0 auto; padding: 48px 24px; }
+  .header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #1a1a1a; }
+  .header .badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; padding: 4px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+  .header h1 { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .header .meta { font-size: 13px; color: #555; }
+  .header .meta a { color: #818cf8; text-decoration: none; }
+  .intro { font-size: 15px; color: #aaa; margin-bottom: 32px; }
+  .intro strong { color: #fff; }
+  .dashboard-link { display: inline-block; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); color: #818cf8; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; margin: 12px 0 24px; }
+  .dashboard-link:hover { background: rgba(99,102,241,0.2); }
+  .concern { background: #111; border: 1px solid #222; border-radius: 12px; padding: 28px; margin: 24px 0; }
+  .concern-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-bottom: 6px; }
+  .concern h2 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .concern .quote { font-size: 13px; color: #666; font-style: italic; margin-bottom: 16px; padding-left: 12px; border-left: 2px solid #333; }
+  .status { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .status-resolved { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .status-progress { background: rgba(234,179,8,0.15); color: #eab308; }
+  .status-plan { background: rgba(96,165,250,0.15); color: #60a5fa; }
+  .concern p { font-size: 14px; color: #999; margin-bottom: 10px; }
+  .concern ul { list-style: none; padding: 0; margin: 12px 0; }
+  .concern li { font-size: 14px; color: #999; padding: 4px 0 4px 16px; position: relative; }
+  .concern li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: #333; }
+  .concern strong { color: #ddd; }
+  .timeline-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .timeline-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 1px solid #222; }
+  .timeline-table td { padding: 8px 12px; font-size: 13px; color: #aaa; border-bottom: 1px solid #151515; }
+  .scorecard { background: linear-gradient(135deg, #111, #1a1a2e); border: 1px solid #222; border-radius: 12px; padding: 28px; margin: 32px 0; }
+  .scorecard h2 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 16px; text-align: center; }
+  .score-table { width: 100%; border-collapse: collapse; }
+  .score-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 1px solid #222; }
+  .score-table td { padding: 10px 10px; font-size: 13px; color: #aaa; border-bottom: 1px solid #1a1a1a; }
+  .score-table .resolved { color: #22c55e; }
+  .score-table .building { color: #eab308; }
+  .score-table .ongoing { color: #60a5fa; }
+  .summary-stats { display: flex; justify-content: center; gap: 32px; margin: 20px 0; text-align: center; }
+  .stat-item .num { font-size: 28px; font-weight: 800; }
+  .stat-item .label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-green .num { color: #22c55e; }
+  .stat-yellow .num { color: #eab308; }
+  .stat-blue .num { color: #60a5fa; }
+  .closing { text-align: center; padding: 32px 0; color: #555; font-size: 14px; border-top: 1px solid #1a1a1a; margin-top: 32px; }
+  .closing strong { color: #aaa; }
+  @media (max-width: 640px) { .container { padding: 32px 16px; } .summary-stats { gap: 16px; } .stat-item .num { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="badge">Architecture Response</div>
+  <h1>90-Day Resolution Plan</h1>
+  <p class="meta">TO: Kyle Shea, CIO — Rapid Mortgage &bull; FROM: Jasson Fishback, 9 Enterprises &bull; March 26, 2026</p>
+</div>
+
+<p class="intro">Thank you for the call this morning. Every point you raised was legitimate. This document addresses each one directly — what's already resolved, what's being built right now, and the 90-day plan to close every remaining gap. Within hours of your call, the team built a 561-line dependency map, started a per-user cost model, and began cloud migration. <strong>That speed of iteration is the thesis.</strong></p>
+
+<a href="https://ainflgm.com/dashboard.html" class="dashboard-link">View Live Operations Dashboard &rarr;</a>
+
+<!-- Concern 1 -->
+<div class="concern">
+  <div class="concern-num">Concern 1</div>
+  <h2>No Dependency Map</h2>
+  <div class="quote">You can't productize what you can't fully describe.</div>
+  <span class="status status-resolved">Resolved — Same Day</span>
+  <p>561-line dependency map built within hours of your call. Covers every running process, every external API, every credential, every port, every LaunchAgent, every data store, every communication flow, and every security concern.</p>
+  <p>Available for your review immediately.</p>
+</div>
+
+<!-- Concern 2 -->
+<div class="concern">
+  <div class="concern-num">Concern 2</div>
+  <h2>Autonomous OS Control Is a Security Risk</h2>
+  <div class="quote">Full MacBook control is a significant attack surface for enterprise deployment.</div>
+  <span class="status status-progress">Functional Solution — 30-60 Days</span>
+  <p><strong>Current state (single-operator):</strong> Full OS access is intentional and remains in place for the founder's use case. This is a development workstation, not a deployment model.</p>
+  <p><strong>90-day plan for multi-user:</strong></p>
+  <ul>
+    <li><strong>Day 1-30:</strong> Containerize all services using Docker. Each agent in an isolated container with no host OS access.</li>
+    <li><strong>Day 31-60:</strong> Deploy containerized stack on cloud. Penetration testing on container boundaries.</li>
+    <li><strong>Day 61-90:</strong> Sandboxed execution model documented. Every agent action logged to immutable audit trail.</li>
+  </ul>
+  <p><strong>End state:</strong> Zero host OS access for any deployed instance.</p>
+</div>
+
+<!-- Concern 3 -->
+<div class="concern">
+  <div class="concern-num">Concern 3</div>
+  <h2>Multi-Agent Coordination Adds Overhead</h2>
+  <div class="quote">Adding AI layers on top of AI layers introduces coordination complexity, not efficiency.</div>
+  <span class="status status-resolved">Resolved — Operating Model Revised</span>
+  <p><strong>80% of tasks:</strong> Single focused agent. No coordination overhead.</p>
+  <p><strong>Multi-agent only when:</strong> tasks are genuinely parallelizable and independent.</p>
+  <p><strong>Tiered model selection:</strong> Haiku for volume ($0.0008/1K tokens), Sonnet for judgment ($0.003/1K), Opus for critical ($0.015/1K). Estimated 70% cost reduction vs. running everything on Opus.</p>
+</div>
+
+<!-- Concern 4 -->
+<div class="concern">
+  <div class="concern-num">Concern 4</div>
+  <h2>No Per-User Cost Model</h2>
+  <div class="quote">You cannot price a product you cannot cost.</div>
+  <span class="status status-progress">Building Now — 7-30 Days</span>
+  <ul>
+    <li><strong>Day 1-7:</strong> Complete per-user cost model at 1, 10, 100, 1,000 user scale.</li>
+    <li><strong>Day 8-30:</strong> Validate against actual usage data from current deployment.</li>
+    <li><strong>Day 31-60:</strong> Automated cost tracking dashboard with real-time per-user spend.</li>
+    <li><strong>Day 61-90:</strong> Published pricing tiers backed by verified unit economics.</li>
+  </ul>
+  <p><strong>Preliminary numbers:</strong> Single power user ~$50-150/mo | AI Underwriter per-lender ~$83-222/mo | Jules per-user ~$3-5/mo</p>
+</div>
+
+<!-- Concern 5 -->
+<div class="concern">
+  <div class="concern-num">Concern 5</div>
+  <h2>No SOC 2, SSO, or Audit Logging</h2>
+  <div class="quote">Enterprise procurement gates. Non-negotiable for any serious buyer.</div>
+  <span class="status status-plan">90-Day Accelerated Plan</span>
+  <ul>
+    <li><strong>Day 1-15:</strong> Immutable audit logging for all agent actions and API calls.</li>
+    <li><strong>Day 16-30:</strong> Role-based access control (RBAC) — Admin, operator, LO, underwriter roles.</li>
+    <li><strong>Day 31-45:</strong> SSO integration via OIDC/SAML (Auth0 or Okta).</li>
+    <li><strong>Day 46-60:</strong> Data handling policies. PII classification. Encryption at rest and in transit.</li>
+    <li><strong>Day 61-75:</strong> SOC 2 Type I preparation. Engage compliance auditor.</li>
+    <li><strong>Day 76-90:</strong> SOC 2 Type I readiness review. Target certification within 120 days.</li>
+  </ul>
+  <p><strong>For AI Underwriter at Rapid:</strong> Can deploy without external SOC 2 — Rapid IS the customer and owner. Borrower data never leaves Rapid's environment.</p>
+</div>
+
+<!-- Concern 6 -->
+<div class="concern">
+  <div class="concern-num">Concern 6</div>
+  <h2>Can't Replicate Without Dedicated Hardware</h2>
+  <div class="quote">A Mac per user doesn't scale.</div>
+  <span class="status status-progress">Cloud Migration In Progress — 7-75 Days</span>
+  <ul>
+    <li><strong>Day 1-7:</strong> Deploy cloud Telegram relay on DigitalOcean VPS ($4/mo). Script already written.</li>
+    <li><strong>Day 8-21:</strong> Migrate voice server to cloud VPS.</li>
+    <li><strong>Day 22-45:</strong> Containerize all services. Docker Compose stack.</li>
+    <li><strong>Day 46-60:</strong> Full stack on cloud. Mac becomes dev workstation only.</li>
+    <li><strong>Day 61-75:</strong> Multi-instance deployment. Infrastructure-as-code (Terraform/Pulumi).</li>
+    <li><strong>Day 76-90:</strong> Validated cloud-only deployment. Zero Mac dependency.</li>
+  </ul>
+  <p><strong>Cost per cloud instance:</strong> $10-20/month. Not $2,000 for a MacBook.</p>
+</div>
+
+<!-- Concern 7 -->
+<div class="concern">
+  <div class="concern-num">Concern 7</div>
+  <h2>Terminal Exposure Kills It for Normal Users</h2>
+  <div class="quote">If users touch a terminal, the addressable market is zero.</div>
+  <span class="status status-resolved">Already Solved in Production</span>
+  <p><strong>Jules:</strong> User texts a phone number. Gets AI responses. Zero terminal.</p>
+  <p><strong>AiNFL GM:</strong> User visits a website. Uses the product. Zero terminal.</p>
+  <p><strong>AI Underwriter:</strong> LO opens a web interface. Asks a question. Gets an answer with citation. Zero terminal.</p>
+  <p>The terminal is the operator console. End users never see it, never know it exists.</p>
+</div>
+
+<!-- Concern 8 -->
+<div class="concern">
+  <div class="concern-num">Concern 8</div>
+  <h2>Project Timeline</h2>
+  <div class="quote">18-24 months minimum to go from science project to deployable prototype.</div>
+  <span class="status status-progress">Revised to 90 Days for Vertical Products</span>
+  <table class="timeline-table">
+    <thead><tr><th>Deliverable</th><th>Timeline</th></tr></thead>
+    <tbody>
+      <tr><td>AI Underwriter FHA POC</td><td>Day 1-14</td></tr>
+      <tr><td>AI Underwriter all 5 agencies</td><td>Day 15-45</td></tr>
+      <tr><td>AI Underwriter voice integration</td><td>Day 46-60</td></tr>
+      <tr><td>Jules marketplace (template system)</td><td>Day 30-60</td></tr>
+      <tr><td>Cloud-native deployment</td><td>Day 45-75</td></tr>
+      <tr><td>Audit logging + RBAC</td><td>Day 1-30</td></tr>
+      <tr><td>SSO integration</td><td>Day 31-45</td></tr>
+      <tr><td>SOC 2 Type I readiness</td><td>Day 76-90</td></tr>
+      <tr><td>Per-user cost model validated</td><td>Day 1-30</td></tr>
+    </tbody>
+  </table>
+  <p>Vertical products are deployable within 90 days. Full enterprise platform: 12-18 months (unchanged). These are the revenue generators. The platform follows.</p>
+</div>
+
+<!-- Concern 9 -->
+<div class="concern">
+  <div class="concern-num">Concern 9</div>
+  <h2>AI Can't Architect Its Own Blind Spots</h2>
+  <div class="quote">The system can't identify what it doesn't know. It needs experienced human judgment.</div>
+  <span class="status status-plan">You Are the Solution</span>
+  <p>This is the most important concern on the list. No amount of AI layers fixes this.</p>
+  <p><strong>Proposal: Monthly architecture review sessions.</strong></p>
+  <ul>
+    <li>You review the dependency map, new code, and infrastructure changes</li>
+    <li>You identify security, scalability, and deployment concerns</li>
+    <li>We address them before they become load-bearing</li>
+    <li>Compensated as consulting if appropriate</li>
+  </ul>
+  <p>Your 11-minute call today produced more actionable architectural feedback than months of AI-only iteration. That's the point.</p>
+</div>
+
+<!-- Concern 10 -->
+<div class="concern">
+  <div class="concern-num">Concern 10</div>
+  <h2>Enterprise Language (.NET/Java)</h2>
+  <div class="quote">Enterprise mortgage tech runs on .NET. Node.js is fine for POC but not for procurement.</div>
+  <span class="status status-plan">90-Day Plan — Parallel Build</span>
+  <ul>
+    <li><strong>Day 1-45:</strong> Complete and validate all POCs in Node.js. Prove the concepts.</li>
+    <li><strong>Day 46-75:</strong> Begin .NET rebuild of AI Underwriter core engine. C# with ASP.NET Core, SQL Server/pgvector.</li>
+    <li><strong>Day 76-90:</strong> Parallel operation — Node.js POC alongside .NET production build.</li>
+  </ul>
+  <p>The income calculation engine is a deterministic rules engine — translates cleanly to C#. <strong>Your .NET expertise would drive this rebuild.</strong></p>
+</div>
+
+<!-- Scorecard -->
+<div class="scorecard">
+  <h2>90-Day Scorecard</h2>
+  <div class="summary-stats">
+    <div class="stat-item stat-green"><div class="num">3</div><div class="label">Resolved Today</div></div>
+    <div class="stat-item stat-yellow"><div class="num">6</div><div class="label">90-Day Plans</div></div>
+    <div class="stat-item stat-blue"><div class="num">1</div><div class="label">Ongoing Partnership</div></div>
+  </div>
+  <table class="score-table">
+    <thead><tr><th>#</th><th>Concern</th><th>Status</th><th>Days</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Dependency map</td><td class="resolved">&#10003; RESOLVED</td><td>0</td></tr>
+      <tr><td>2</td><td>OS control security</td><td class="building">Containerization</td><td>30-60</td></tr>
+      <tr><td>3</td><td>Multi-agent overhead</td><td class="resolved">&#10003; RESOLVED</td><td>0</td></tr>
+      <tr><td>4</td><td>Per-user cost model</td><td class="building">Building</td><td>7-30</td></tr>
+      <tr><td>5</td><td>SOC 2 / SSO / Audit</td><td class="building">Accelerated plan</td><td>15-90</td></tr>
+      <tr><td>6</td><td>Hardware dependency</td><td class="building">Cloud migration</td><td>7-75</td></tr>
+      <tr><td>7</td><td>Terminal exposure</td><td class="resolved">&#10003; RESOLVED</td><td>0</td></tr>
+      <tr><td>8</td><td>Project timeline</td><td class="building">90-day verticals</td><td>90</td></tr>
+      <tr><td>9</td><td>AI blind spots</td><td class="ongoing">Architecture reviews</td><td>Ongoing</td></tr>
+      <tr><td>10</td><td>.NET rebuild</td><td class="building">Parallel build</td><td>46-90</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="closing">
+  <p>The call this morning was the most useful feedback this project has received.</p>
+  <p>Every gap you identified is being addressed — not with hand-waving, but with code, documentation, and timelines.</p>
+  <p style="margin-top: 24px;"><strong>Jasson Fishback</strong> &bull; 9 Enterprises &bull; March 26, 2026</p>
+</div>
+
+</div>
+</body>
+</html>
