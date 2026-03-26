@@ -1,14 +1,14 @@
 // 2026 NFL Offseason Transactions — POST-2025 SEASON ONLY
 // Only includes moves made after Super Bowl LX (February 2026)
 // Free agency opened March 9, 2026 (legal tampering) / March 11 (new league year)
-// Sources: ESPN, NFL.com, CBS Sports, Spotrac, SI.com, Bengals.com — verified March 16, 2026
+// Sources: ESPN, NFL.com, CBS Sports, Spotrac, SI.com, Bengals.com — verified March 26, 2026
 export const preseasonMoves = {
   CIN: {
     signings: [
       { player: 'Boye Mafe', position: 'EDGE', previousTeam: 'Seahawks', aav: 20.0, years: 3, total: 60.0, guaranteed: 40.0, rating: 80, date: '2026-03-12' },
       { player: 'Jonathan Allen', position: 'DT', previousTeam: 'Vikings', aav: 13.0, years: 2, total: 26.0, guaranteed: 20.0, rating: 78, date: '2026-03-13', note: 'Up to $28M with incentives' },
       { player: 'Bryan Cook', position: 'S', previousTeam: 'Chiefs', aav: 13.4, years: 3, total: 40.25, guaranteed: 14.0, rating: 76, date: '2026-03-12' },
-      { player: 'Josh Johnson', position: 'QB', previousTeam: 'Free Agent', aav: 1.0, years: 1, total: 1.0, guaranteed: 0.5, rating: 55, date: '2026-03-14' },
+      { player: 'Joe Flacco', position: 'QB', previousTeam: 'Free Agent', aav: 6.0, years: 1, total: 6.0, guaranteed: 3.0, rating: 64, date: '2026-03-25', note: 'Re-signed; up to $9M with incentives. Pro Bowler 2025.' },
     ],
     extensions: [
       { player: 'Orlando Brown Jr.', position: 'OT', details: '2yr/$32M extension through 2028, $23M in first 12 months. Reduced 2026 cap hit from $22M to $19.2M (saved $2.7M). Negotiated without an agent.', date: '2026-03-12' },
@@ -16,7 +16,7 @@ export const preseasonMoves = {
     departures: [
       { player: 'Trey Hendrickson', position: 'DE', destination: 'Ravens', contract: '4yr/$112M, $60M guaranteed, up to $120M with incentives', date: '2026-03-11' },
     ],
-    summary: 'Bengals replaced Trey Hendrickson (4yr/$112M to BAL) with Boye Mafe (3yr/$60M from SEA). Added Jonathan Allen (2yr/$26M) to the interior DL. Bryan Cook (3yr/$40.25M) returns home to Cincinnati to solidify the secondary. Extended Orlando Brown Jr. (2yr/$32M) for cap relief. Signed veteran backup QB Josh Johnson.',
+    summary: 'Bengals replaced Trey Hendrickson (4yr/$112M to BAL) with Boye Mafe (3yr/$60M from SEA). Added Jonathan Allen (2yr/$26M) to the interior DL. Bryan Cook (3yr/$40.25M) returns home to Cincinnati to solidify the secondary. Extended Orlando Brown Jr. (2yr/$32M) for cap relief. Re-signed Pro Bowl backup QB Joe Flacco (1yr/$6M, up to $9M with incentives).',
   },
 
   // AFC EAST
@@ -42,8 +42,9 @@ export const preseasonMoves = {
       { player: 'Tua Tagovailoa', position: 'QB', destination: 'Free Agent', note: 'Released' },
       { player: 'Minkah Fitzpatrick', position: 'S', destination: 'Jets', note: 'Traded for 2026 7th-round pick' },
       { player: 'Bradley Chubb', position: 'DE', destination: 'Bills', note: 'Signed in free agency (3yr/$43.5M)' },
+      { player: 'Jaylen Waddle', position: 'WR', destination: 'Broncos', note: 'Traded for 2026 R1 (#30), R3, R4 (received MIA R4 #111 back)' },
     ],
-    summary: 'Dolphins released Tua Tagovailoa and signed Malik Willis from GB as replacement. Traded Minkah Fitzpatrick to NYJ for a 7th. Lost Bradley Chubb to Buffalo in free agency.',
+    summary: 'Dolphins released Tua Tagovailoa and signed Malik Willis from GB as replacement. Traded Minkah Fitzpatrick to NYJ for a 7th. Lost Bradley Chubb to Buffalo in free agency. Traded WR Jaylen Waddle to DEN for a 2026 first-rounder (#30), third, and fourth (received a fourth back), continuing a full franchise teardown.',
   },
   NE: {
     signings: [
@@ -135,9 +136,10 @@ export const preseasonMoves = {
       { player: 'Braden Smith', position: 'OT', previousTeam: 'Colts', aav: 12.0, years: 3, total: 36.0, guaranteed: 22.0, rating: 77 },
       { player: 'Logan Hall', position: 'DT', previousTeam: 'Buccaneers', aav: 5.0, years: 2, total: 10.0, guaranteed: 6.0, rating: 70 },
       { player: 'Foster Moreau', position: 'TE', previousTeam: 'Free Agent', aav: 3.0, years: 1, total: 3.0, guaranteed: 2.0, rating: 66 },
+      { player: 'Wyatt Teller', position: 'OG', previousTeam: 'Free Agent', aav: 8.0, years: 2, total: 16.0, guaranteed: 10.0, rating: 80, note: 'Up to $23M with incentives', date: '2026-03-20' },
     ],
     departures: [],
-    summary: 'Texans traded for RB David Montgomery (from DET for R4, Juice Scruggs, R7). Signed S Reed Blankenship (PHI), OT Braden Smith, DT Logan Hall, and TE Foster Moreau.',
+    summary: 'Texans traded for RB David Montgomery (from DET for R4, Juice Scruggs, R7). Signed S Reed Blankenship (PHI), OT Braden Smith, DT Logan Hall, TE Foster Moreau, and OG Wyatt Teller (2yr/$16M, up to $23M).',
   },
   IND: {
     signings: [
@@ -191,6 +193,9 @@ export const preseasonMoves = {
 
   // AFC WEST
   DEN: {
+    trades: [
+      { acquired: 'Jaylen Waddle', position: 'WR', from: 'Dolphins', note: 'Sent 2026 R1 (#30), R3 (#94), R4 (#130); received Waddle + MIA R4 (#111)' },
+    ],
     signings: [
       { player: 'J.K. Dobbins', position: 'RB', previousTeam: 'Broncos', aav: 8.0, years: 2, total: 16.0, guaranteed: 12.0, rating: 75, note: 'Re-signing, up to $20M with incentives' },
       { player: 'Dre Greenlaw', position: 'LB', previousTeam: '49ers', aav: 5.0, years: 2, total: 10.0, guaranteed: 6.0, rating: 74 },
@@ -205,7 +210,7 @@ export const preseasonMoves = {
       { player: 'Quinn Meinerz', position: 'OG', details: 'Restructured contract, freed $11M in cap space' },
     ],
     departures: [],
-    summary: 'Broncos re-signed RB J.K. Dobbins (2yr/$16M, up to $20M with incentives) and LBs Dre Greenlaw, Alex Singleton (2yr/$15.5M, $11M gtd), and Justin Strnad (3yr/$19.5M, $10M gtd). Re-signed TE Adam Trautman, RB Jaleel McLaughlin, WR Lil\'Jordan Humphrey, and QB Sam Ehlinger. Restructured OG Quinn Meinerz\'s contract to free $11M in cap space.',
+    summary: 'Broncos made a major splash trading for WR Jaylen Waddle from MIA (sent R1 #30, R3, R4; got Waddle + MIA R4). Re-signed RB J.K. Dobbins (2yr/$16M, up to $20M), LBs Dre Greenlaw, Alex Singleton (2yr/$15.5M), and Justin Strnad (3yr/$19.5M). Re-signed TE Adam Trautman, RB Jaleel McLaughlin, WR Lil\'Jordan Humphrey, and QB Sam Ehlinger. Restructured OG Quinn Meinerz\'s contract for $11M cap relief.',
   },
   KC: {
     trades: [
@@ -492,6 +497,9 @@ export const preseasonMoves = {
       { player: 'Rodney Thomas', position: 'S', previousTeam: 'Free Agent', aav: 1.5, years: 1, total: 1.5, guaranteed: 0.75, rating: 60 },
       { player: "D'Anthony Bell", position: 'S', previousTeam: 'Free Agent', aav: 1.2, years: 1, total: 1.2, guaranteed: 0.6, rating: 58 },
     ],
+    extensions: [
+      { player: 'Jaxon Smith-Njigba', position: 'WR', details: '4yr/$168.6M extension, $120M guaranteed. $42.15M/yr — highest-paid WR in NFL history. $35M signing bonus. Signed March 23, 2026. Under contract through 2031.' },
+    ],
     departures: [
       { player: 'Kenneth Walker III', position: 'RB', destination: 'Chiefs', note: 'Signed in free agency' },
       { player: 'Boye Mafe', position: 'EDGE', destination: 'Bengals', note: 'Signed 3yr/$60M' },
@@ -499,7 +507,7 @@ export const preseasonMoves = {
       { player: 'Tariq Woolen', position: 'CB', destination: 'Eagles', note: 'Signed in free agency' },
       { player: 'Dareke Young', position: 'WR', destination: 'Raiders', note: 'Signed in free agency' },
     ],
-    summary: 'Seahawks re-signed WR Rashid Shaheed (3yr/$51M, $34.7M gtd) and added RB Emanuel Wilson from Green Bay. Re-signed QB Drew Lock, CB Josh Jobe, and added TE Eric Saubert, S Rodney Thomas, and S D\'Anthony Bell. Lost significant talent: RB Kenneth Walker III (KC), EDGE Boye Mafe (CIN), CB Coby Bryant (CHI), CB Tariq Woolen (PHI), and WR Dareke Young (LV).',
+    summary: 'Seahawks re-signed WR Rashid Shaheed (3yr/$51M, $34.7M gtd) and added RB Emanuel Wilson from Green Bay. Re-signed QB Drew Lock, CB Josh Jobe, and added TE Eric Saubert, S Rodney Thomas, and S D\'Anthony Bell. Lost significant talent: RB Kenneth Walker III (KC), EDGE Boye Mafe (CIN), CB Coby Bryant (CHI), CB Tariq Woolen (PHI), and WR Dareke Young (LV). Extended WR Jaxon Smith-Njigba to a record 4yr/$168.6M deal ($120M gtd), making him the highest-paid WR in NFL history after a 2025 season in which he led the NFL with 1,793 receiving yards.',
   },
 };
 

@@ -1,4 +1,4 @@
-// Last updated: March 16, 2026 — sourced EXCLUSIVELY from Spotrac available list (411 UFAs)
+// Last updated: March 26, 2026 — sourced EXCLUSIVELY from Spotrac available list (411 UFAs)
 // Only players verified as unsigned on spotrac.com/nfl/free-agents/_/year/2026/status/available
 export const freeAgents = [
   // QUARTERBACKS
@@ -7,14 +7,12 @@ export const freeAgents = [
   { id: 103, name: 'Russell Wilson', position: 'QB', age: 37, askingPrice: 5.7, yearsRequested: 1, previousTeam: 'Giants', rating: 72 },
   { id: 104, name: 'Zach Wilson', position: 'QB', age: 27, askingPrice: 1.6, yearsRequested: 1, previousTeam: 'Dolphins', rating: 58 },
   { id: 105, name: 'Tyrod Taylor', position: 'QB', age: 37, askingPrice: 4.0, yearsRequested: 1, previousTeam: 'Jets', rating: 62 },
-  { id: 106, name: 'Joe Flacco', position: 'QB', age: 41, askingPrice: 4.3, yearsRequested: 1, previousTeam: 'Bengals', rating: 64 },
 
   // WIDE RECEIVERS
   { id: 110, name: 'Tyreek Hill', position: 'WR', age: 32, askingPrice: 15.1, yearsRequested: 1, previousTeam: 'Dolphins', rating: 88 },
   { id: 111, name: 'Deebo Samuel', position: 'WR', age: 30, askingPrice: 15.8, yearsRequested: 1, previousTeam: 'Commanders', rating: 85 },
   { id: 112, name: 'Stefon Diggs', position: 'WR', age: 32, askingPrice: 13.8, yearsRequested: 1, previousTeam: 'Patriots', rating: 82 },
   { id: 113, name: 'Jauan Jennings', position: 'WR', age: 29, askingPrice: 22.6, yearsRequested: 2, previousTeam: '49ers', rating: 80 },
-  { id: 114, name: 'Christian Kirk', position: 'WR', age: 29, askingPrice: 5.4, yearsRequested: 2, previousTeam: 'Texans', rating: 82 },
   { id: 115, name: 'Curtis Samuel', position: 'WR', age: 30, askingPrice: 1.8, yearsRequested: 1, previousTeam: 'Bills', rating: 70 },
   { id: 116, name: 'Marquise Brown', position: 'WR', age: 29, askingPrice: 5.5, yearsRequested: 2, previousTeam: 'Chiefs', rating: 74 },
   { id: 117, name: 'DeAndre Hopkins', position: 'WR', age: 34, askingPrice: 1.5, yearsRequested: 1, previousTeam: 'Ravens', rating: 72 },
@@ -34,7 +32,6 @@ export const freeAgents = [
   { id: 134, name: 'Cam Robinson', position: 'OT', age: 30, askingPrice: 13.1, yearsRequested: 2, previousTeam: 'Browns', rating: 78 },
   { id: 135, name: 'James Hudson', position: 'OT', age: 27, askingPrice: 1.2, yearsRequested: 2, previousTeam: 'Giants', rating: 64 },
   { id: 136, name: 'Joel Bitonio', position: 'OG', age: 34, askingPrice: 12.9, yearsRequested: 1, previousTeam: 'Browns', rating: 83 },
-  { id: 137, name: 'Wyatt Teller', position: 'OG', age: 31, askingPrice: 10.2, yearsRequested: 2, previousTeam: 'Browns', rating: 80 },
   { id: 138, name: 'Mekhi Becton', position: 'OG', age: 27, askingPrice: 13.5, yearsRequested: 3, previousTeam: 'Chargers', rating: 74 },
   { id: 139, name: 'Kevin Zeitler', position: 'OG', age: 36, askingPrice: 9.2, yearsRequested: 1, previousTeam: 'Titans', rating: 78 },
   { id: 140, name: 'James Daniels', position: 'OG', age: 29, askingPrice: 6.8, yearsRequested: 2, previousTeam: 'Dolphins', rating: 76 },
