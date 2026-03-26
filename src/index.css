@@ -440,6 +440,11 @@ main {
     display: none !important;
   }
 
+  /* Hide sidebar ad slot on mobile — leaderboard footer slot is used instead */
+  .ad-sidebar {
+    display: none !important;
+  }
+
   /* Subtler scan line on mobile */
   #root::before {
     opacity: 0.5;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGame } from '../context/GameContext';
 import PredictionMarkets from '../components/PredictionMarkets';
 
@@ -31,7 +31,7 @@ function posGroup(pos) {
 }
 
 export default function RosterPage() {
-  const { roster, cutPlayer, restructureContract, extendPlayer, capUsed, totalCap, capAvailable, tradeHistory, cutPlayers } = useGame();
+  const { roster, cutPlayer, restructureContract, extendPlayer, capUsed, totalCap, capAvailable, tradeHistory, cutPlayers, allTeams } = useGame();
   const [filterPos, setFilterPos] = useState('All');
   const [sortKey, setSortKey] = useState('capHit');
   const [sortDir, setSortDir] = useState('desc');
@@ -40,6 +40,16 @@ export default function RosterPage() {
   const [extendingPlayer, setExtendingPlayer] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredRow, setHoveredRow] = useState(null);
+  const [welcomeDismissed, setWelcomeDismissed] = useState(() => {
+    try { return localStorage.getItem('ainflgm_welcome_dismissed') === '1'; } catch { return false; }
+  });
+
+  function dismissWelcome() {
+    try { localStorage.setItem('ainflgm_welcome_dismissed', '1'); } catch {}
+    setWelcomeDismissed(true);
+  }
+
+  const teamCount = allTeams ? allTeams.length : 32;
 
   // Roster moves counts from tradeHistory
   const cutCount = (tradeHistory || []).filter(t => t.type === 'cut').length;
@@ -97,6 +107,95 @@ export default function RosterPage() {
 
   return (
     <div>
+
+      {/* Welcome Banner — shown to first-time visitors, dismissed via localStorage */}
+      {!welcomeDismissed && (
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(0,240,255,0.10) 0%, rgba(251,79,20,0.08) 100%)',
+          border: '1px solid rgba(0,240,255,0.25)',
+          borderRadius: 12,
+          padding: '16px 20px',
+          marginBottom: 20,
+          position: 'relative',
+        }}>
+          <button
+            onClick={dismissWelcome}
+            aria-label="Dismiss welcome banner"
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 12,
+              background: 'none',
+              border: 'none',
+              color: '#64748b',
+              fontSize: 18,
+              cursor: 'pointer',
+              lineHeight: 1,
+              padding: '2px 6px',
+            }}
+          >x</button>
+
+          {/* Headline */}
+          <div style={{
+            fontSize: 'clamp(16px, 3.5vw, 20px)',
+            fontWeight: 900,
+            fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: '#E2E8F0',
+            marginBottom: 6,
+          }}>
+            You Are the GM. Build Your Super Bowl Roster.
+          </div>
+
+          {/* Sub-copy */}
+          <div style={{ color: '#94A3B8', fontSize: 13, marginBottom: 14, lineHeight: 1.5 }}>
+            Cut players, restructure contracts, sign free agents, and run a full mock draft — all with real 2026 cap data.
+            Pick any of the {teamCount} NFL teams from the dropdown above to get started.
+          </div>
+
+          {/* Social proof pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+            {[
+              { label: `All ${teamCount} NFL Teams`, icon: '\uD83C\uDFC8' },
+              { label: 'Real 2026 Cap Data', icon: '\uD83D\uDCCA' },
+              { label: 'Free Forever', icon: '\u2705' },
+              { label: 'AI-Powered Analysis', icon: '\uD83E\uDD16' },
+            ].map(pill => (
+              <div key={pill.label} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                background: 'rgba(15,23,42,0.7)',
+                border: '1px solid rgba(0,240,255,0.12)',
+                borderRadius: 20,
+                padding: '4px 12px',
+                fontSize: 12,
+                color: '#CBD5E1',
+                fontWeight: 600,
+              }}>
+                <span style={{ fontSize: 14 }}>{pill.icon}</span>
+                {pill.label}
+              </div>
+            ))}
+          </div>
+
+          {/* CTA nudge */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            color: 'rgba(0,240,255,0.7)',
+            fontSize: 12,
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+          }}>
+            <span style={{ fontSize: 16 }}>\u2191</span>
+            Use the team selector in the header to pick your franchise
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>

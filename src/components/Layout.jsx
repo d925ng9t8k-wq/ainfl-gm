@@ -295,7 +295,7 @@ export default function Layout({ children }) {
               marginTop: 4,
               fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
             }}>
-              Manage Any Team &bull; Real Cap Data &bull; Full Mock Draft
+              All 32 NFL Teams &bull; Real 2026 Cap Data &bull; Free Mock Draft Simulator
             </div>
           </div>
         </div>
@@ -329,8 +329,48 @@ export default function Layout({ children }) {
           maskImage: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 85%)',
           WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 85%)',
         }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          {children}
+
+        {/* Desktop layout: main content + sidebar ad column */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+
+          {/* Primary content area */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {children}
+          </div>
+
+          {/* Ad Slot: Sidebar — desktop only (hidden on mobile via CSS class).
+              Replace the inner div comment with your AdSense ad unit once approved.
+              Recommended size: 160x600 (wide skyscraper) or 300x250 (medium rectangle). */}
+          <aside
+            id="ad-slot-sidebar"
+            className="ad-sidebar"
+            style={{
+              width: 160,
+              flexShrink: 0,
+              position: 'sticky',
+              top: 80,
+              alignSelf: 'flex-start',
+            }}
+          >
+            {/* AdSense sidebar unit — drop ad code here when approved */}
+            <div style={{
+              width: 160,
+              minHeight: 600,
+              background: 'rgba(15,23,42,0.5)',
+              border: '1px solid rgba(0,240,255,0.08)',
+              borderRadius: 6,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#1e293b',
+              fontSize: 10,
+              writingMode: 'vertical-rl',
+              letterSpacing: '0.08em',
+              overflow: 'hidden',
+            }}>
+              {/* AdSense 160x600 */}
+            </div>
+          </aside>
         </div>
 
         {/* Email Capture */}
@@ -369,7 +409,8 @@ export default function Layout({ children }) {
           </a>
         </div>
 
-        {/* Ad Slot: Ready for AdSense — replace inner content with ad code when approved */}
+        {/* Ad Slot: Footer Leaderboard (728x90) — drop AdSense ad unit here once approved.
+            Replace the inner div with your <ins class="adsbygoogle"> tag. */}
         <div id="ad-slot-footer" style={{
           marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
           padding: '0 16px',
@@ -380,7 +421,7 @@ export default function Layout({ children }) {
             alignItems: 'center', justifyContent: 'center', color: '#334155', fontSize: 10,
             overflow: 'hidden',
           }}>
-            {/* AdSense code will go here once approved */}
+            {/* AdSense 728x90 leaderboard — replace this comment with ad code */}
           </div>
         </div>
 
