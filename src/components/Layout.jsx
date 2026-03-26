@@ -394,6 +394,8 @@ export default function Layout({ children }) {
             display: 'flex', justifyContent: 'center', gap: 16,
             fontSize: 11, color: '#475569',
           }}>
+            <a href="/about" style={{ color: '#475569', textDecoration: 'none' }}>About</a>
+            <span>|</span>
             <a href="/privacy" style={{ color: '#475569', textDecoration: 'none' }}>Privacy Policy</a>
             <span>|</span>
             <a href="https://buymeacoffee.com/ainflgm" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', textDecoration: 'none' }}>Support Us</a>
