@@ -138,14 +138,8 @@
     <script>
       // Smart cache management
       (function() {
-        // Unregister old service workers
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(function(r) { r.forEach(function(reg) { reg.unregister(); }); });
-          caches.keys().then(function(k) { k.forEach(function(name) { caches.delete(name); }); });
-        }
-
         // Version-based cache busting
-        var BUILD = '20260321v31';
+        var BUILD = '20260326v32';
         var stored = localStorage.getItem('_build');
         if (stored && stored !== BUILD) {
           // Version mismatch — need to load new JS bundle

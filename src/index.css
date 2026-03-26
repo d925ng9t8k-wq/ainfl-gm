@@ -132,7 +132,7 @@ p {
 button {
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 input[type="range"] {
@@ -261,7 +261,7 @@ a, button, select, input {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
   animation: neonPulse 2s ease-in-out infinite;
 }

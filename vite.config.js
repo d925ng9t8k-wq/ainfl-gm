@@ -11,6 +11,23 @@ export default defineConfig({
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',
+        // Split allRosters into its own chunk so it's cached independently.
+        // This is the ~672KB roster dataset — it changes infrequently, so keeping
+        // it separate from app code means users don't re-download it on every deploy.
+        manualChunks(id) {
+          if (id.includes('src/data/allRosters')) {
+            return 'data-rosters';
+          }
+          if (id.includes('src/data/')) {
+            return 'data-static';
+          }
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor-react';
+          }
+          if (id.includes('node_modules/')) {
+            return 'vendor';
+          }
+        },
       },
     },
   },
