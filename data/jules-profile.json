@@ -1,0 +1,44 @@
+{
+  "family": {
+    "assistant_name": "Jules",
+    "primary_user": {
+      "name": "Jamie",
+      "full_name": "Jamie Bryant",
+      "role": "Stay-at-home mom",
+      "city": "Cincinnati",
+      "state": "Ohio",
+      "timezone": "America/New_York"
+    },
+    "partner": {
+      "name": "Jasson",
+      "full_name": "Jasson Fishback",
+      "role": "Co-owner of Rapid Mortgage Company"
+    },
+    "children": [
+      { "name": "Jude", "age": 11, "gender": "boy" },
+      { "name": "Jacy", "age": 8, "gender": "girl" }
+    ]
+  },
+  "shopping_list": [],
+  "reminders": [],
+  "notes": [],
+  "conversation_memory": [],
+  "preferences": {
+    "morning_briefing_time": "07:30",
+    "morning_briefing_enabled": true,
+    "response_style": "warm, concise, friendly",
+    "max_response_sentences": 4
+  },
+  "meal_rotation": [
+    "Taco Tuesday (ground beef, shells, toppings)",
+    "Baked chicken thighs with roasted veggies",
+    "Spaghetti with marinara and garlic bread",
+    "Grilled cheese and tomato soup",
+    "Sheet pan sausage and peppers",
+    "Chicken stir-fry with rice",
+    "Homemade pizza night",
+    "Breakfast for dinner (eggs, bacon, pancakes)",
+    "Turkey meatballs with pasta",
+    "BBQ pulled pork sandwiches (slow cooker)"
+  ]
+}
