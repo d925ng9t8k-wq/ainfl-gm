@@ -49,6 +49,7 @@ const LOG_FILE      = `${PROJECT}/logs/comms-hub.log`;
 const IMSG_DB       = `${process.env.HOME}/Library/Messages/chat.db`;
 
 const JASSON_PHONE  = process.env.JASSON_PHONE || '+15134031829';
+const JAMIE_PHONE   = process.env.JAMIE_PHONE || ''; // Jamie Bryant — Jules routing. Set JAMIE_PHONE in .env.
 const JASSON_EMAIL  = 'emailfishback@gmail.com';
 const CAPTAIN_EMAIL = 'captain@ainflgm.com';
 
@@ -1144,6 +1145,17 @@ async function telegramPoll() {
   }
 }
 
+// ─── Jules Handler (stub) ─────────────────────────────────────────────────────
+// Jules is Jamie's personal AI assistant — a separate agent from 9/OC.
+// This stub routes iMessages from Jamie to Jules when implemented.
+// TODO: Replace stub with actual Jules Claude API call + response routing.
+async function handleJulesMessage(msg) {
+  log(`Jules message received from ${msg.handle}: "${msg.text.slice(0, 100)}"`);
+  // STUB — actual Jules handler not yet implemented
+  // When implemented: call Claude API with Jules system prompt, respond via iMessage
+  log('Jules handler not yet implemented');
+}
+
 // ─── CHANNEL 2: iMessage Monitor ─────────────────────────────────────────────
 async function imessageMonitor() {
   const canRead = initImsgRowId();
@@ -1162,6 +1174,13 @@ async function imessageMonitor() {
     try {
       const messages = checkNewIMessages();
       for (const msg of messages) {
+        // ── Jules routing: if sender is Jamie, route to Jules handler ──
+        if (JAMIE_PHONE && msg.handle && msg.handle.includes(JAMIE_PHONE.replace(/\D/g, '').slice(-10))) {
+          log(`Jules message received — routing to Jules handler`);
+          await handleJulesMessage(msg);
+          continue; // Jules handles this — don't process as a 9/OC message
+        }
+
         log(`iMessage IN: "${msg.text}"`);
         addMessage(state, 'imessage', 'in', msg.text);
         state.channels.imessage.messagesHandled++;
