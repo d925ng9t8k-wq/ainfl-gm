@@ -1002,7 +1002,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 327.13, "capUsed": 255.41, "deadCap": 24.77, "capSpace": 46.95}
+    "capSummary": {"totalCap": 327.13, "capUsed": 212.97, "deadCap": 73.32, "capSpace": 40.84}
   },
   "ATL": {
     "players": [
@@ -1875,7 +1875,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 304.64, "capUsed": 269.51, "deadCap": 16.29, "capSpace": 18.84}
+    "capSummary": {"totalCap": 304.63, "capUsed": 251.78, "deadCap": 38.84, "capSpace": 14.01}
   },
   "BAL": {
     "players": [
@@ -2650,7 +2650,7 @@ export const allRosters = {
         "baseSalary": 0.89
       }
     ],
-    "capSummary": {"totalCap": 313.75, "capUsed": 267.07, "deadCap": 18.2, "capSpace": 28.48}
+    "capSummary": {"totalCap": 313.75, "capUsed": 266.01, "deadCap": 18.2, "capSpace": 29.54}
   },
   "BUF": {
     "players": [
@@ -3551,7 +3551,7 @@ export const allRosters = {
         "baseSalary": 5
       }
     ],
-    "capSummary": {"totalCap": 300.59, "capUsed": 244.4, "deadCap": 46.16, "capSpace": 10.03}
+    "capSummary": {"totalCap": 300.6, "capUsed": 242.15, "deadCap": 46.16, "capSpace": 12.29}
   },
   "CAR": {
     "players": [
@@ -4508,7 +4508,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 311.58, "capUsed": 290.08, "deadCap": 16.44, "capSpace": 5.06}
+    "capSummary": {"totalCap": 311.59, "capUsed": 287.23, "deadCap": 22.14, "capSpace": 2.21}
   },
   "CHI": {
     "players": [
@@ -5437,7 +5437,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 308.94, "capUsed": 288.55, "deadCap": 19.9, "capSpace": 0.49}
+    "capSummary": {"totalCap": 308.94, "capUsed": 288.8, "deadCap": 19.9, "capSpace": 0.24}
   },
   "CLE": {
     "players": [
@@ -6310,7 +6310,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 338.18, "capUsed": 241.38, "deadCap": 74.05, "capSpace": 22.75}
+    "capSummary": {"totalCap": 338.18, "capUsed": 225.18, "deadCap": 91.6, "capSpace": 21.39}
   },
   "DAL": {
     "players": [
@@ -7239,7 +7239,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 331.09, "capUsed": 275.2, "deadCap": 41.55, "capSpace": 14.34}
+    "capSummary": {"totalCap": 331.09, "capUsed": 275.11, "deadCap": 41.55, "capSpace": 14.42}
   },
   "DEN": {
     "players": [
@@ -8252,7 +8252,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 303.24, "capUsed": 284.13, "deadCap": 1.22, "capSpace": 17.89}
+    "capSummary": {"totalCap": 303.24, "capUsed": 281.08, "deadCap": 3.39, "capSpace": 18.78}
   },
   "DET": {
     "players": [
@@ -9069,7 +9069,7 @@ export const allRosters = {
         "baseSalary": 3
       }
     ],
-    "capSummary": {"totalCap": 322.05, "capUsed": 268.24, "deadCap": 26.47, "capSpace": 27.34}
+    "capSummary": {"totalCap": 322.05, "capUsed": 271.9, "deadCap": 26.47, "capSpace": 23.69}
   },
   "GB": {
     "players": [
@@ -10166,7 +10166,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 313.92, "capUsed": 251.18, "deadCap": 39.2, "capSpace": 23.54}
+    "capSummary": {"totalCap": 313.92, "capUsed": 248.71, "deadCap": 43.2, "capSpace": 22.02}
   },
   "HOU": {
     "players": [
@@ -11095,7 +11095,7 @@ export const allRosters = {
         "baseSalary": 6
       }
     ],
-    "capSummary": {"totalCap": 309.77, "capUsed": 223.34, "deadCap": 66.37, "capSpace": 20.06}
+    "capSummary": {"totalCap": 309.77, "capUsed": 228.04, "deadCap": 66.37, "capSpace": 15.36}
   },
   "IND": {
     "players": [
@@ -12038,7 +12038,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 302.78, "capUsed": 261.41, "deadCap": 9.59, "capSpace": 31.78}
+    "capSummary": {"totalCap": 302.79, "capUsed": 266.57, "deadCap": 9.59, "capSpace": 26.63}
   },
   "JAX": {
     "players": [
@@ -12953,7 +12953,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 309.73, "capUsed": 250.45, "deadCap": 53.34, "capSpace": 5.94}
+    "capSummary": {"totalCap": 309.73, "capUsed": 250.4, "deadCap": 53.34, "capSpace": 5.99}
   },
   "KC": {
     "players": [
@@ -13826,7 +13826,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 301.13, "capUsed": 282.92, "deadCap": 9.77, "capSpace": 8.44}
+    "capSummary": {"totalCap": 301.13, "capUsed": 284.64, "deadCap": 9.77, "capSpace": 6.72}
   },
   "LV": {
     "players": [
@@ -14713,7 +14713,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 314.22, "capUsed": 235.51, "deadCap": 52.01, "capSpace": 26.7}
+    "capSummary": {"totalCap": 314.22, "capUsed": 238.74, "deadCap": 52.01, "capSpace": 23.47}
   },
   "LAC": {
     "players": [
@@ -15572,7 +15572,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 304.91, "capUsed": 236.95, "deadCap": 5.55, "capSpace": 62.41}
+    "capSummary": {"totalCap": 304.92, "capUsed": 250.69, "deadCap": 5.55, "capSpace": 48.68}
   },
   "LAR": {
     "players": [
@@ -16431,7 +16431,7 @@ export const allRosters = {
         "baseSalary": 0.89
       }
     ],
-    "capSummary": {"totalCap": 313.35, "capUsed": 277.58, "deadCap": 8.84, "capSpace": 26.93}
+    "capSummary": {"totalCap": 313.34, "capUsed": 278.49, "deadCap": 8.84, "capSpace": 26.01}
   },
   "MIA": {
     "players": [
@@ -17374,7 +17374,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 307.9, "capUsed": 200.27, "deadCap": 115.91, "capSpace": -8.28}
+    "capSummary": {"totalCap": 307.9, "capUsed": 126.76, "deadCap": 179.2, "capSpace": 1.93}
   },
   "MIN": {
     "players": [
@@ -18219,7 +18219,7 @@ export const allRosters = {
         "baseSalary": 0.89
       }
     ],
-    "capSummary": {"totalCap": 313.95, "capUsed": 288.62, "deadCap": 19.48, "capSpace": 5.85}
+    "capSummary": {"totalCap": 313.95, "capUsed": 273.98, "deadCap": 35.15, "capSpace": 4.83}
   },
   "NE": {
     "players": [
@@ -19190,7 +19190,7 @@ export const allRosters = {
         "baseSalary": 3.5
       }
     ],
-    "capSummary": {"totalCap": 352.0, "capUsed": 280.6, "deadCap": 37.18, "capSpace": 34.22}
+    "capSummary": {"totalCap": 352, "capUsed": 278.5, "deadCap": 38.23, "capSpace": 35.27}
   },
   "NO": {
     "players": [
@@ -20147,7 +20147,7 @@ export const allRosters = {
         "baseSalary": 4
       }
     ],
-    "capSummary": {"totalCap": 316.79, "capUsed": 189.53, "deadCap": 113.97, "capSpace": 13.29}
+    "capSummary": {"totalCap": 316.79, "capUsed": 190.57, "deadCap": 112.11, "capSpace": 14.12}
   },
   "NYG": {
     "players": [
@@ -21174,7 +21174,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 299.84, "capUsed": 270.44, "deadCap": 11.37, "capSpace": 18.03}
+    "capSummary": {"totalCap": 299.84, "capUsed": 285.44, "deadCap": 11.37, "capSpace": 3.03}
   },
   "NYJ": {
     "players": [
@@ -22159,7 +22159,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 322.89, "capUsed": 166.67, "deadCap": 111.25, "capSpace": 44.97}
+    "capSummary": {"totalCap": 322.88, "capUsed": 172.09, "deadCap": 111.25, "capSpace": 39.55}
   },
   "PHI": {
     "players": [
@@ -23004,7 +23004,7 @@ export const allRosters = {
         "baseSalary": 2.5
       }
     ],
-    "capSummary": {"totalCap": 315.64, "capUsed": 224.84, "deadCap": 52.03, "capSpace": 38.77}
+    "capSummary": {"totalCap": 315.64, "capUsed": 229.1, "deadCap": 51.62, "capSpace": 34.93}
   },
   "PIT": {
     "players": [
@@ -23961,7 +23961,7 @@ export const allRosters = {
         "baseSalary": -2.5
       }
     ],
-    "capSummary": {"totalCap": 320.78, "capUsed": 281.27, "deadCap": 12.22, "capSpace": 27.29}
+    "capSummary": {"totalCap": 320.78, "capUsed": 281.51, "deadCap": 12.22, "capSpace": 27.05}
   },
   "SF": {
     "players": [
@@ -24932,7 +24932,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 340.19, "capUsed": 261.35, "deadCap": 39.17, "capSpace": 39.67}
+    "capSummary": {"totalCap": 340.19, "capUsed": 272.84, "deadCap": 39.17, "capSpace": 28.17}
   },
   "SEA": {
     "players": [
@@ -25889,7 +25889,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 314.07, "capUsed": 274.25, "deadCap": 0.48, "capSpace": 39.34}
+    "capSummary": {"totalCap": 314.07, "capUsed": 280.36, "deadCap": 0.48, "capSpace": 33.23}
   },
   "TB": {
     "players": [
@@ -26748,7 +26748,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 316.54, "capUsed": 283.75, "deadCap": 13.33, "capSpace": 19.46}
+    "capSummary": {"totalCap": 316.54, "capUsed": 288.89, "deadCap": 13.33, "capSpace": 14.31}
   },
   "TEN": {
     "players": [
@@ -27719,7 +27719,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 342.73, "capUsed": 249.96, "deadCap": 25.18, "capSpace": 67.59}
+    "capSummary": {"totalCap": 342.74, "capUsed": 254.35, "deadCap": 25.18, "capSpace": 63.2}
   },
   "WSH": {
     "players": [
@@ -28662,6 +28662,6 @@ export const allRosters = {
         "baseSalary": 3
       }
     ],
-    "capSummary": {"totalCap": 327.65, "capUsed": 250.57, "deadCap": 20.69, "capSpace": 56.39}
+    "capSummary": {"totalCap": 327.65, "capUsed": 257.32, "deadCap": 20.69, "capSpace": 49.64}
   }
 };
