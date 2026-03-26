@@ -73,8 +73,9 @@ function checkDegraded() {
 }
 
 // ─── Filler audio for instant response while Claude thinks ──────────────────
-const FILLERS = ["Yeah,", "So,", "Right,", "Hmm,", "Sure,"];
-const pendingResponses = new Map(); // callSid → { audio, done, error }
+const FILLERS = ["Yeah, so...", "Right...", "Hmm, let me think about that...", "Good question..."];
+// pendingResponses: callSid → Promise<string> (resolves to audio filename)
+const pendingResponses = new Map();
 
 // ─── Twilio Signature Validation ─────────────────────────────────────────────
 // Validates X-Twilio-Signature to prevent spoofed webhook requests.
@@ -791,7 +792,7 @@ const server = http.createServer(async (req, res) => {
   const callSid = params.CallSid || "unknown";
 
   // Validate Twilio signature on webhook endpoints (voice, respond, status, timeout)
-  if (TWILIO_AUTH && ["/voice", "/incoming", "/respond", "/status", "/timeout"].includes(url.pathname)) {
+  if (TWILIO_AUTH && ["/voice", "/incoming", "/respond", "/respond-real", "/status", "/timeout"].includes(url.pathname)) {
     const sig = req.headers['x-twilio-signature'];
     const fullUrl = TUNNEL_URL + req.url;
     if (!validateTwilioSignature(sig, fullUrl, params)) {
@@ -876,28 +877,112 @@ const server = http.createServer(async (req, res) => {
       }
 
       call.history.push({ role: "user", content: speech });
-      call.silenceCount = 0; // Reset silence counter — they're talking
-
-      // Call Claude + ElevenLabs sequentially (Claude first, must finish before TTS)
-      const t0 = Date.now();
-      const reply = await callClaude(call.history, call.context);
-      const claudeMs = Date.now() - t0;
-      log(`[${callSid}] Claude (${claudeMs}ms): "${reply}"`);
-
-      const t1 = Date.now();
-      const audio = await generateAudio(reply);
-      const ttsMs = Date.now() - t1;
-      log(`[${callSid}] ElevenLabs (${ttsMs}ms): done`);
-
-      call.history.push({ role: "assistant", content: reply, latency: { claude: claudeMs, tts: ttsMs, total: claudeMs + ttsMs } });
+      call.silenceCount = 0;
       conversations.set(callSid, call);
 
-      // Live transcript
-      try {
-        const logPath = `/Users/jassonfishback/Projects/BengalOracle/logs/calls/live_${callSid}.json`;
-        fs.writeFileSync(logPath, JSON.stringify({ callSid, from: call.from, messages: call.history }, null, 2));
-      } catch {}
+      const t0 = Date.now();
 
+      // Kick off Claude + TTS in background immediately
+      const responsePromise = (async () => {
+        const reply = await callClaude(call.history, call.context);
+        const claudeMs = Date.now() - t0;
+        log(`[${callSid}] Claude (${claudeMs}ms): "${reply}"`);
+
+        const t1 = Date.now();
+        const audio = await generateAudio(reply);
+        const ttsMs = Date.now() - t1;
+        log(`[${callSid}] ElevenLabs (${ttsMs}ms): done`);
+
+        call.history.push({ role: "assistant", content: reply, latency: { claude: claudeMs, tts: ttsMs, total: claudeMs + ttsMs } });
+        conversations.set(callSid, call);
+
+        // Live transcript
+        try {
+          const logPath = `/Users/jassonfishback/Projects/BengalOracle/logs/calls/live_${callSid}.json`;
+          fs.writeFileSync(logPath, JSON.stringify({ callSid, from: call.from, messages: call.history }, null, 2));
+        } catch {}
+
+        return audio;
+      })();
+
+      // Store promise so /respond-real can await it
+      pendingResponses.set(callSid, responsePromise);
+
+      // Fast-path: if Claude + TTS finishes in under 800ms, skip the filler entirely
+      // Race the response promise against a short timeout
+      const fastResult = await Promise.race([
+        responsePromise,
+        new Promise(resolve => setTimeout(() => resolve(null), 800)),
+      ]);
+
+      if (fastResult) {
+        // Done fast enough — return real audio directly, no filler needed
+        pendingResponses.delete(callSid);
+        log(`[${callSid}] Fast-path: response ready in ${Date.now() - t0}ms — skipping filler`);
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(twimlGather(fastResult));
+        return;
+      }
+
+      // Slow-path: play a filler clip and redirect to /respond-real
+      const fillerIdx = Math.floor(Math.random() * FILLERS.length);
+      const fillerFile = `filler-${fillerIdx}.mp3`;
+      const fillerPath = path.join(AUDIO_DIR, fillerFile);
+      const fillerExists = fs.existsSync(fillerPath) && fs.statSync(fillerPath).size > 0;
+
+      if (!fillerExists) {
+        // No filler available — fall back to waiting inline
+        log(`[${callSid}] No filler available — waiting inline`);
+        const audio = await responsePromise;
+        pendingResponses.delete(callSid);
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(twimlGather(audio));
+        return;
+      }
+
+      log(`[${callSid}] Slow-path: playing filler "${FILLERS[fillerIdx]}" while response generates`);
+      const fillerUrl = `${TUNNEL_URL}/audio/${fillerFile}`;
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(`<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Play>${escapeXml(fillerUrl)}</Play>
+  <Redirect method="POST">/respond-real</Redirect>
+</Response>`);
+      return;
+    }
+
+    // ── Real response after filler ─────────────────────────────────────────
+    if (url.pathname === "/respond-real") {
+      const call = conversations.get(callSid) || { history: [], context: "", from: "" };
+      const pending = pendingResponses.get(callSid);
+
+      if (!pending) {
+        // No pending response — shouldn't happen, but recover gracefully
+        log(`[${callSid}] /respond-real: no pending response found`);
+        const audio = await generateAudio("Give me just a moment more.");
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(twimlGather(audio));
+        return;
+      }
+
+      // Wait for the real response — cap at 8 seconds to avoid Twilio timeout (15s limit)
+      const audio = await Promise.race([
+        pending,
+        new Promise(resolve => setTimeout(() => resolve(null), 8000)),
+      ]);
+
+      pendingResponses.delete(callSid);
+
+      if (!audio) {
+        // Timed out — tell the caller and re-gather
+        log(`[${callSid}] /respond-real: response timed out`);
+        const fallback = await generateAudio("Sorry, that took too long — go ahead.");
+        res.writeHead(200, { "Content-Type": "text/xml" });
+        res.end(twimlGather(fallback));
+        return;
+      }
+
+      log(`[${callSid}] /respond-real: delivering real response`);
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twimlGather(audio));
       return;
@@ -1078,7 +1163,8 @@ server.listen(PORT, async () => {
   console.log(`   Tunnel:  ${TUNNEL_URL}`);
   console.log(`\n   Endpoints:`);
   console.log(`     POST /voice     — incoming call`);
-  console.log(`     POST /respond   — speech → Claude → TTS`);
+  console.log(`     POST /respond      — speech → filler or fast-path`);
+  console.log(`     POST /respond-real — await real Claude+TTS response`);
   console.log(`     POST /status    — call status/cleanup`);
   console.log(`     GET  /health    — status check`);
   console.log(`     GET  /audio/:f  — serve audio\n`);
@@ -1107,13 +1193,21 @@ server.listen(PORT, async () => {
   console.log(`[${new Date().toISOString()}] All greetings pre-generated — zero-latency pickup ready`);
 
   // Pre-generate filler audio clips for instant response while Claude thinks
+  let fillerCount = 0;
   for (let i = 0; i < FILLERS.length; i++) {
+    const dest = path.join(AUDIO_DIR, `filler-${i}.mp3`);
+    // Skip if already exists and is non-empty — avoids re-billing on restarts
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 0) {
+      console.log(`[${new Date().toISOString()}] Filler cached: "${FILLERS[i]}"`);
+      fillerCount++;
+      continue;
+    }
     try {
       const file = await generateAudio(FILLERS[i]);
-      const dest = path.join(AUDIO_DIR, `filler-${i}.mp3`);
       fs.renameSync(path.join(AUDIO_DIR, file), dest);
       console.log(`[${new Date().toISOString()}] Pre-generated filler: "${FILLERS[i]}"`);
+      fillerCount++;
     } catch (e) { console.log(`[${new Date().toISOString()}] Filler pre-gen failed for "${FILLERS[i]}": ${e.message}`); }
   }
-  console.log(`[${new Date().toISOString()}] Filler audio ready — instant response enabled`);
+  console.log(`[${new Date().toISOString()}] Filler audio ready (${fillerCount}/${FILLERS.length}) — instant response enabled`);
 });
