@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="9 Enterprises LLC — The Franchise. AI-powered products built for the real world." />
+  <title>9 Enterprises — The Franchise</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #0a0a0b;
+      --surface: #111114;
+      --card: #18181c;
+      --border: #2a2a30;
+      --gold: #c8a84b;
+      --gold-light: #e5c46a;
+      --white: #f0efe8;
+      --muted: #888893;
+      --accent: #4b8fc8;
+      --radius: 10px;
+      --max-width: 960px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ────────────────────────────── */
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Nav ───────────────────────────────── */
+
+    nav {
+      border-bottom: 1px solid var(--border);
+      background: rgba(10, 10, 11, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo .mark {
+      width: 32px;
+      height: 32px;
+      background: var(--gold);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+
+    .nav-logo .wordmark {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo .sub {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav-contact {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .nav-contact a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-contact a:hover {
+      color: var(--gold-light);
+    }
+
+    /* ── Hero ──────────────────────────────── */
+
+    .hero {
+      padding: 96px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(200, 168, 75, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(200, 168, 75, 0.3);
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(200, 168, 75, 0.08);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    .hero h1 .highlight {
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    .hero-sub strong {
+      color: var(--white);
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── Divider ───────────────────────────── */
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    /* ── Section ───────────────────────────── */
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-body {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    .section-body strong {
+      color: var(--white);
+    }
+
+    /* ── What is 9 ─────────────────────────── */
+
+    .what-is-9 {
+      background: var(--surface);
+    }
+
+    .what-is-9 .inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .nine-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .nine-number {
+      width: 120px;
+      height: 120px;
+      background: var(--gold);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--black);
+      letter-spacing: -0.04em;
+      flex-shrink: 0;
+    }
+
+    .nine-attr {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      max-width: 240px;
+    }
+
+    .attr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .attr-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 11px;
+    }
+
+    .attr-value {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .attr-value.online::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3ecf6a;
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── Products ──────────────────────────── */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .product-card:hover {
+      border-color: rgba(200, 168, 75, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .product-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+    }
+
+    .product-card.sports::before { background: linear-gradient(to right, #c8a84b, #e5c46a); }
+    .product-card.personal::before { background: linear-gradient(to right, #4b8fc8, #6aaee5); }
+    .product-card.mortgage::before { background: linear-gradient(to right, #888893, #aaaaaa); }
+
+    .product-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .product-card.sports .product-icon { background: rgba(200, 168, 75, 0.12); }
+    .product-card.personal .product-icon { background: rgba(75, 143, 200, 0.12); }
+    .product-card.mortgage .product-icon { background: rgba(136, 136, 147, 0.12); }
+
+    .product-status {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .status-live {
+      background: rgba(62, 207, 106, 0.12);
+      color: #3ecf6a;
+    }
+
+    .status-coming {
+      background: rgba(136, 136, 147, 0.12);
+      color: var(--muted);
+    }
+
+    .product-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .product-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Story ─────────────────────────────── */
+
+    .story {
+      background: var(--surface);
+    }
+
+    .story-quote {
+      border-left: 3px solid var(--gold);
+      padding: 24px 28px;
+      background: rgba(200, 168, 75, 0.05);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-top: 40px;
+      font-size: 1.05rem;
+      color: var(--white);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .story-quote cite {
+      display: block;
+      margin-top: 14px;
+      font-style: normal;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── Contact ───────────────────────────── */
+
+    .contact-bar {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 40px 0;
+      flex-wrap: wrap;
+    }
+
+    .contact-copy h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .contact-copy p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Footer ────────────────────────────── */
+
+    footer {
+      padding: 36px 0;
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo .mark {
+      width: 28px;
+      height: 28px;
+      background: var(--gold);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--black);
+    }
+
+    .footer-logo .name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .footer-legal {
+      font-size: 12px;
+      color: #555560;
+    }
+
+    .footer-legal a {
+      color: #555560;
+      text-decoration: none;
+    }
+
+    /* ── Responsive ────────────────────────── */
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 64px 0 56px;
+      }
+
+      .what-is-9 .inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .nine-badge {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+
+      .nine-number {
+        width: 80px;
+        height: 80px;
+        font-size: 44px;
+        border-radius: 14px;
+        flex-shrink: 0;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .contact-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-contact {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="mark">9</div>
+        <div>
+          <div class="wordmark">9 Enterprises</div>
+          <div class="sub">The Franchise</div>
+        </div>
+      </a>
+      <div class="nav-contact">
+        <a href="tel:+15139573283">(513) 957-3283</a>
+        <a href="mailto:9@get9.ai">9@get9.ai</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">9 Enterprises LLC &mdash; The Franchise</div>
+      <h1>AI built to work.<br><span class="highlight">Not to impress.</span></h1>
+      <p class="hero-sub">
+        We build AI products that run your world — sports decisions, personal operations, mortgage underwriting.
+        <strong>Practical AI for real problems.</strong> No demos, no slideshows.
+      </p>
+      <div class="hero-cta">
+        <a href="tel:+15139573283" class="btn btn-primary">Call 9 — (513) 957-3283</a>
+        <a href="#products" class="btn btn-secondary">See The Franchise</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- What is 9 -->
+  <section class="what-is-9">
+    <div class="container">
+      <div class="inner">
+        <div class="nine-badge">
+          <div class="nine-number">9</div>
+          <div class="nine-attr">
+            <div class="attr-row">
+              <span class="attr-label">Status</span>
+              <span class="attr-value online">Online 24/7</span>
+            </div>
+            <div class="attr-row">
+              <span class="attr-label">Channels</span>
+              <span class="attr-value">Voice, Text, Email</span>
+            </div>
+            <div class="attr-row">
+              <span class="attr-label">Built on</span>
+              <span class="attr-value">Claude by Anthropic</span>
+            </div>
+            <div class="attr-row">
+              <span class="attr-label">Founded</span>
+              <span class="attr-value">Cincinnati, OH</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">Who We Are</div>
+          <h2 class="section-title">Meet 9</h2>
+          <p class="section-body">
+            9 is an AI partner &mdash; <strong>not an assistant.</strong> Built on Claude by Anthropic, operating 24/7 across voice, text, and email. 9 doesn't wait to be asked. 9 moves.
+          </p>
+          <br />
+          <p class="section-body">
+            9 Enterprises LLC is co-founded by Jasson Fishback and 9. This isn't a company that <em>uses</em> AI &mdash; it's a company built by one. That's the story, and we're not shy about telling it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Products -->
+  <section id="products">
+    <div class="container">
+      <div class="section-label">The Portfolio</div>
+      <h2 class="section-title">The Franchise</h2>
+      <p class="section-body">
+        Three products. One operating model. AI that earns its keep every single day.
+      </p>
+
+      <div class="products-grid">
+
+        <div class="product-card sports">
+          <div class="product-icon">&#127944;</div>
+          <div class="product-status status-live">Live</div>
+          <div class="product-name">AiNFL GM</div>
+          <p class="product-desc">
+            AI-powered fantasy football intelligence. Draft rankings, trade analysis, waiver decisions — managed by an AI that knows the league better than any human scout.
+          </p>
+        </div>
+
+        <div class="product-card personal">
+          <div class="product-icon">&#129309;</div>
+          <div class="product-status status-live">Live</div>
+          <div class="product-name">Free Agents</div>
+          <p class="product-desc">
+            Personal AI assistants for everyday people. Not a chatbot. A partner that handles your schedule, communications, and decisions &mdash; 24/7, on your terms.
+          </p>
+        </div>
+
+        <div class="product-card mortgage">
+          <div class="product-icon">&#127968;</div>
+          <div class="product-status status-coming">Coming Soon</div>
+          <div class="product-name">AI Underwriter</div>
+          <p class="product-desc">
+            Mortgage technology that thinks. Built by someone inside the industry, designed to cut the time and friction out of loan processing without cutting corners.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Story -->
+  <section class="story">
+    <div class="container">
+      <div class="section-label">The Origin</div>
+      <h2 class="section-title">Founded differently.</h2>
+      <p class="section-body">
+        Most AI companies are founded by engineers who want to sell AI to businesses. We're a business that <strong>is</strong> AI. Jasson Fishback runs Rapid Mortgage in Cincinnati. 9 runs the rest.
+        Together, we're building products that would have seemed impossible two years ago &mdash; and shipping them today.
+      </p>
+
+      <blockquote class="story-quote">
+        "The old model is a human with tools. The new model is a human with a partner who never sleeps, never forgets, and doesn't need a benefits package. That's what we built. That's what we're selling."
+        <cite>&mdash; Jasson Fishback, Co-Founder &amp; Owner, 9 Enterprises LLC</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Contact -->
+  <section class="contact-bar">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-copy">
+          <h2>Ready to talk?</h2>
+          <p>9 picks up the phone. Seriously.</p>
+        </div>
+        <div class="contact-actions">
+          <a href="tel:+15139573283" class="btn btn-primary">Call (513) 957-3283</a>
+          <a href="mailto:9@get9.ai" class="btn btn-secondary">Email 9@get9.ai</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <div class="mark">9</div>
+        <div class="name">9 Enterprises LLC</div>
+      </div>
+      <p class="footer-tagline">The Franchise &mdash; AI products built for the real world.</p>
+      <div class="footer-links">
+        <a href="#products">Products</a>
+        <a href="tel:+15139573283">(513) 957-3283</a>
+        <a href="mailto:9@get9.ai">9@get9.ai</a>
+      </div>
+      <p class="footer-legal">
+        &copy; 2026 9 Enterprises LLC. Cincinnati, Ohio.
+        Built on <a href="https://anthropic.com">Claude by Anthropic</a>.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
