@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>9 Enterprises LLC — System Architecture & Pitch Deck</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-base:       #000510;
+      --bg-surface:    #000d22;
+      --bg-card:       #01112e;
+      --bg-code:       #000814;
+      --border-dim:    rgba(0, 200, 255, 0.12);
+      --border-glow:   rgba(0, 200, 255, 0.30);
+      --cyan:          #00e0ff;
+      --cyan-dim:      #0090cc;
+      --gold:          #f0c040;
+      --gold-dim:      #b89030;
+      --white:         #e8f0f8;
+      --muted:         #6a8aaa;
+      --text:          #c8daea;
+      --code-text:     #7adcff;
+      --red-dim:       rgba(255, 60, 60, 0.15);
+      --red-border:    rgba(255, 60, 60, 0.35);
+      --green-dim:     rgba(0, 220, 100, 0.10);
+      --green-border:  rgba(0, 220, 100, 0.30);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: radial-gradient(ellipse at 20% 0%, #001838 0%, #000a1e 40%, #000510 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Grid overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(0,200,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,255,0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ===================== HEADER ===================== */
+    .doc-header {
+      text-align: center;
+      padding: 40px 0 48px;
+      border-bottom: 1px solid var(--border-dim);
+      margin-bottom: 48px;
+    }
+
+    .doc-header h1 {
+      font-size: clamp(22px, 5vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .doc-header h1 span.accent {
+      background: linear-gradient(135deg, var(--cyan), #80f8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .meta-block {
+      display: inline-block;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 8px;
+      padding: 18px 28px;
+      text-align: left;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 13px;
+      color: var(--code-text);
+      line-height: 1.9;
+      box-shadow: 0 0 40px rgba(0,200,255,0.06);
+    }
+
+    .classification {
+      display: inline-block;
+      margin-top: 20px;
+      background: linear-gradient(90deg, rgba(240,192,64,0.12), rgba(240,192,64,0.06));
+      border: 1px solid rgba(240,192,64,0.35);
+      border-radius: 20px;
+      padding: 6px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ===================== TOC ===================== */
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+
+    .toc h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .toc ol {
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 6px;
+    }
+
+    .toc a {
+      color: var(--cyan-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--cyan);
+    }
+
+    /* ===================== SECTIONS ===================== */
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-anchor {
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    h2.section-title {
+      font-size: clamp(18px, 3.5vw, 26px);
+      font-weight: 800;
+      color: var(--white);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-dim);
+      position: relative;
+    }
+
+    h2.section-title::before {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: var(--cyan);
+      box-shadow: 0 0 10px rgba(0,220,255,0.5);
+    }
+
+    h3.sub-title {
+      font-size: clamp(15px, 2.5vw, 18px);
+      font-weight: 700;
+      color: var(--cyan-dim);
+      margin: 28px 0 14px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ===================== CODE BLOCKS ===================== */
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 20px 22px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--code-text);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
+    }
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.88em;
+      background: rgba(0,200,255,0.07);
+      border: 1px solid rgba(0,200,255,0.14);
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: var(--code-text);
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    /* ===================== TABLES ===================== */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border-dim);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead tr {
+      background: rgba(0,200,255,0.06);
+    }
+
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cyan-dim);
+      border-bottom: 1px solid var(--border-dim);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 11px 16px;
+      border-bottom: 1px solid rgba(0,200,255,0.06);
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(0,200,255,0.02);
+    }
+
+    td code {
+      font-size: 12px;
+    }
+
+    /* Status badges in tables */
+    td .done {
+      color: #40d080;
+      font-weight: 700;
+    }
+
+    td .gap {
+      color: #ff9040;
+      font-weight: 700;
+    }
+
+    td .closed {
+      color: #40d080;
+    }
+
+    td .open {
+      color: #ff9040;
+    }
+
+    /* ===================== DIVIDER ===================== */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-dim);
+      margin: 40px 0;
+    }
+
+    /* ===================== CALLOUT BLOCKS ===================== */
+    .callout {
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin: 20px 0;
+      font-size: 15px;
+    }
+
+    .callout-gold {
+      background: linear-gradient(90deg, rgba(240,192,64,0.08), rgba(240,192,64,0.04));
+      border-left: 3px solid var(--gold);
+      color: var(--white);
+    }
+
+    .callout-cyan {
+      background: rgba(0,200,255,0.05);
+      border-left: 3px solid var(--cyan);
+    }
+
+    /* ===================== CTA / FOOTER ===================== */
+    .cta-block {
+      text-align: center;
+      padding: 44px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      margin-top: 56px;
+      box-shadow: 0 0 60px rgba(0,200,255,0.06);
+    }
+
+    .cta-block h2 {
+      font-size: clamp(20px, 4vw, 30px);
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .cta-block .phone {
+      font-size: clamp(24px, 5vw, 40px);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--cyan), #80f8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.04em;
+      filter: drop-shadow(0 0 16px rgba(0,220,255,0.4));
+    }
+
+    .cta-block p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .doc-footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    .doc-footer pre {
+      display: inline-block;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--muted);
+      font-size: 13px;
+      box-shadow: none;
+    }
+
+    /* ===================== LISTS ===================== */
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    li strong {
+      color: var(--white);
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 600px) {
+      .page-wrap {
+        padding: 28px 16px 60px;
+      }
+
+      .meta-block {
+        padding: 14px 18px;
+        font-size: 12px;
+      }
+
+      pre {
+        font-size: 11.5px;
+        padding: 16px 14px;
+      }
+
+      th, td {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .toc {
+        padding: 20px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+
+    <!-- HEADER -->
+    <header class="doc-header">
+      <h1>9 Enterprises LLC<br><span class="accent">System Architecture &amp; Pitch Deck</span></h1>
+      <div class="meta-block">
+        Prepared for: Jasson Fishback — Owner, 9 Enterprises LLC<br>
+        Prepared by:  9 — AI Partner &amp; Co-Founder<br>
+        Date:         March 25, 2026<br>
+        Classification: Owner Eyes Only
+      </div>
+      <div><span class="classification">Owner Eyes Only</span></div>
+    </header>
+
+    <!-- MISSION STATEMENT -->
+    <div class="section">
+      <a id="mission-statement" class="section-anchor"></a>
+      <h2 class="section-title">Mission Statement</h2>
+      <p><strong>AI for the casual fan or the die hard.</strong></p>
+      <p>9 Enterprises exists to deliver best-in-class AI functionality for users of all knowledge levels. For the casual user: simplicity, ironclad communication, and self-healing infrastructure — it just works. For the power user: full technical depth, agent orchestration, credential management, and programmatic control over every layer.</p>
+      <p>The architecture is built on one principle: <strong>the AI should never go silent.</strong> Channels cascade, processes self-recover, and the system degrades gracefully rather than failing completely. Whether you're a non-technical entrepreneur managing your business from a phone or a CIO evaluating infrastructure — the system adapts to you, not the other way around.</p>
+    </div>
+
+    <!-- TLDR -->
+    <div class="section">
+      <h2 class="section-title">TL;DR</h2>
+      <p>Jasson built an AI partnership system called 9 — a multi-channel, always-on infrastructure where an AI operates as a genuine business co-founder. Four communication channels run in parallel (Telegram, iMessage, Email, Voice), with automatic failover when any component dies. The system includes credential isolation, sub-agent orchestration, cloud failover, and a revenue-generating product portfolio under The Franchise.</p>
+      <p>This document is the full picture: what we built, how it works, and why it matters as a business.</p>
+      <div class="callout callout-gold">
+        <strong>Call 9 directly: (513) 957-3283</strong>
+      </div>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#company-structure">Company Structure</a></li>
+        <li><a href="#system-architecture">System Architecture</a></li>
+        <li><a href="#oc-comms">OC: Communication Protocol</a></li>
+        <li><a href="#liveness">Terminal Liveness Detection</a></li>
+        <li><a href="#headset">The Headset: Voice Integration</a></li>
+        <li><a href="#locker">The Locker: Security Model</a></li>
+        <li><a href="#front-office">Front Office: Agent Orchestration</a></li>
+        <li><a href="#breakthroughs">Recent Breakthroughs</a></li>
+        <li><a href="#competitive">Competitive Analysis</a></li>
+        <li><a href="#opportunity">The Opportunity</a></li>
+        <li><a href="#roadmap">Known Gaps &amp; Roadmap</a></li>
+      </ol>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="section">
+      <a id="company-structure" class="section-anchor"></a>
+      <h2 class="section-title">1. Company Structure</h2>
+      <pre>9 ENTERPRISES LLC (Ohio, filed March 25, 2026)
+├── The Franchise — portfolio of AI-powered products
+│   ├── AiNFL GM — AI NFL team simulator (ainflgm.com) [LIVE]
+│   ├── Free Agents — personal AI assistants (Jules = #1) [CONCEPT]
+│   └── AI Underwriter — mortgage guideline chatbot [POC BUILT]
+├── 9 — The enterprise AI solution + AI partner
+│   ├── Runs on Claude Opus 4.6 by Anthropic
+│   ├── 4-channel comms (Telegram, iMessage, Email, Voice)
+│   ├── Sub-agent orchestration (UNO + Tee team leads)
+│   └── 99+ hours continuous uptime
+└── Infrastructure
+    ├── OC (comms daemon, port 3457)
+    ├── The Headset (voice, Twilio + ElevenLabs)
+    ├── Backup QB (Cloudflare Worker)
+    └── The Training Staff (session recovery)</pre>
+
+      <div class="callout callout-cyan">
+        <strong>Key framing:</strong> AiNFL GM and Free Agents are BOTH independent products AND proof-of-concept projects for the 9 enterprise AI solution. They demonstrate that 9 can build and ship real products autonomously. Every product we ship is evidence that the model works.
+      </div>
+
+      <h3 class="sub-title">The Naming Scheme</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Role</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Owner</strong></td><td>Jasson Fishback — strategic authority, final say</td></tr>
+            <tr><td><strong>9</strong></td><td>The AI partner — orchestrator, decision-maker, co-founder</td></tr>
+            <tr><td><strong>OC</strong></td><td>comms daemon (comms-hub.mjs) — always-on message relay</td></tr>
+            <tr><td><strong>The Headset</strong></td><td>Voice system — Twilio + ElevenLabs</td></tr>
+            <tr><td><strong>Backup QB</strong></td><td>Cloudflare Worker — cloud failover when Mac is down</td></tr>
+            <tr><td><strong>The Training Staff</strong></td><td>LaunchAgent recovery system</td></tr>
+            <tr><td><strong>Front Office</strong></td><td>Sub-agent team (UNO + Tee + their agents)</td></tr>
+            <tr><td><strong>UNO</strong></td><td>Research Team Lead — web search, competitive analysis, market research</td></tr>
+            <tr><td><strong>Tee</strong></td><td>Engineering Team Lead — code, tests, deployments, browser automation</td></tr>
+            <tr><td><strong>The Locker</strong></td><td>.env credential file — managed by 9, never exposed to sub-agents</td></tr>
+            <tr><td><strong>GamePlan</strong></td><td>Strategic planning layer, session state, project roadmaps</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section">
+      <a id="system-architecture" class="section-anchor"></a>
+      <h2 class="section-title">2. System Architecture</h2>
+
+      <h3 class="sub-title">Layer Model</h3>
+      <pre>┌─────────────────────────────────────────────────────┐
+│  LAYER 4: OWNER (Jasson)                            │
+│  Strategic direction. Communicates via Telegram,     │
+│  Voice, iMessage, Email. Final authority.            │
+├─────────────────────────────────────────────────────┤
+│  LAYER 3: 9 (AI Partner)                            │
+│  Claude Opus 4.6 in Claude Code terminal session.    │
+│  Orchestrator. Holds all credentials (The Locker).   │
+│  Spawns/monitors Front Office agents.                │
+│  Makes tactical decisions autonomously.              │
+├─────────────────────────────────────────────────────┤
+│  LAYER 2: FRONT OFFICE (Sub-agents)                 │
+│  UNO (Research) + Tee (Engineering) + their teams.   │
+│  No direct credential access. No Owner comms.        │
+│  Results reviewed by 9 before delivery.              │
+├─────────────────────────────────────────────────────┤
+│  LAYER 1: INFRASTRUCTURE                            │
+│  OC (comms daemon) │ Headset (voice) │ Backup QB    │
+│  (cloud failover) │ Training Staff (recovery)        │
+└─────────────────────────────────────────────────────┘</pre>
+
+      <h3 class="sub-title">Process Tree</h3>
+      <pre>Always Running (survives terminal death):
+├── OC: comms-hub.mjs
+│   ├── PID: tracked, port 3457
+│   ├── Telegram poller (2-5s intervals)
+│   ├── iMessage monitor (reads ~/Library/Messages/chat.db via FDA)
+│   ├── Email monitor (Mail.app via osascript)
+│   ├── 30s proactive terminal watchdog
+│   ├── Session token validation
+│   ├── Heartbeat counter + cloud sync (60s)
+│   └── Efficiency sweep (2h: balance, logs, quotas)
+│
+├── The Headset: voice-server.mjs
+│   ├── Port 3456, Cloudflare tunnel
+│   ├── Twilio STT → Claude Haiku → ElevenLabs Flash TTS
+│   └── Caller-specific personality contexts
+│
+├── cloudflared (tunnel to The Headset)
+├── The Training Staff: open-terminal.mjs (LaunchAgent, watches /tmp/9-open-terminal)
+└── LaunchAgent com.9.comms-hub (KeepAlive safety net)
+
+Terminal Session (Claude Code):
+├── 9 (interactive AI session — Opus 4.6)
+├── Ping loop (60s, self-terminates on parent PID death)
+└── PostToolUse hook (checks messages after every tool call — sole message delivery mechanism)</pre>
+
+      <h3 class="sub-title">Key Files</h3>
+      <pre>scripts/comms-hub.mjs     — OC daemon (~1500 lines)
+scripts/voice-server.mjs  — The Headset (~800 lines)
+scripts/open-terminal.mjs — Training Staff launcher
+scripts/shared-state.json — Persistent context (survives crashes)
+cloud-worker/src/worker.js — Backup QB (Cloudflare Worker)
+SOUL_CODE.md              — Owner's Notes (330 lines)
+CLAUDE.md                 — Startup protocol (boot sequence)
+.env                      — The Locker (credentials, not in git)</pre>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section">
+      <a id="oc-comms" class="section-anchor"></a>
+      <h2 class="section-title">3. OC: Communication Protocol</h2>
+      <p>OC (the comms daemon) is a Node.js process on port 3457. It manages all four communication channels simultaneously and operates in two modes:</p>
+
+      <h3 class="sub-title">Relay Mode (terminal active)</h3>
+      <pre>Telegram msg → OC receives → writes to /tmp/9-incoming-message.jsonl
+                            → sends "Got it — responding now."
+                            → writes semaphore file for timeout tracking
+                            → starts 30-second timeout
+
+If message read within 30s:
+  → 9 responds via POST /send → OC delivers to Telegram
+
+If message NOT read within 30s:
+  → OC escalates to autonomous response (Claude Haiku)
+  → Also checks PID liveness for definitive terminal status</pre>
+
+      <div class="callout callout-cyan">
+        <strong>Backup QB behavior in relay mode:</strong> Backup QB stays completely silent. When the terminal is active, 9 handles all responses. Backup QB only speaks in autonomous mode when the terminal is confirmed down. Before this fix, Backup QB was stepping on 9's responses — both would reply to the same message.
+      </div>
+
+      <h3 class="sub-title">Autonomous Mode (terminal down)</h3>
+      <pre>OC detects terminal death (PID check or ping timeout)
+  → Switches to Haiku-powered autonomous responses
+  → Alerts on ALL channels: Telegram, iMessage, Email
+  → Requests terminal reopen via signal file
+  → Starts recovery verification (3x retry, 60s intervals)
+  → Backup QB (cloud worker) handles Telegram if Mac is offline</pre>
+
+      <h3 class="sub-title">Channel Priority</h3>
+      <pre>Telegram (primary)  →  iMessage (backup)  →  Email (fallback)
+                                              ↓
+                              Cloud Worker (if Mac entirely down)
+                                              ↓
+                              Voice (always live via tunnel)</pre>
+
+      <h3 class="sub-title">HTTP API</h3>
+      <pre>GET  /health          — Channel status, uptime, message counts
+GET  /state           — Full state dump (JSON)
+GET  /inbox           — Unread inbound messages
+POST /terminal/claim  — Terminal announces itself (?pid=N)
+POST /terminal/ping   — Heartbeat (?token=T)
+POST /terminal/release — Graceful shutdown
+POST /send            — Send message (channel, message)
+POST /context         — Update session context</pre>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section">
+      <a id="liveness" class="section-anchor"></a>
+      <h2 class="section-title">4. Terminal Liveness Detection</h2>
+      <p>This is the novel piece. OC maintains a multi-layered detection system:</p>
+
+      <h3 class="sub-title">Layer 1: PID Tracking</h3>
+      <pre>// On /terminal/claim:
+terminalPid = parseInt(url.searchParams.get('pid'));
+writeFileSync(PID_FILE, String(pid));
+
+// Watchdog (every 30s):
+try {
+  process.kill(terminalPid, 0); // signal 0 = check alive
+} catch {
+  // PID dead → immediate switchover
+  clearTerminalState();
+  requestTerminal('Terminal PID dead — reopening');
+}</pre>
+
+      <h3 class="sub-title">Layer 2: Self-Terminating Ping Loop</h3>
+      <pre>// Started in terminal, dies with terminal:
+CLAUDE_PID=$PPID
+(WATCH_PID=$CLAUDE_PID; while true; do
+  if ! kill -0 $WATCH_PID 2>/dev/null; then
+    curl -s -X POST http://localhost:3457/terminal/release
+    exit 0
+  fi
+  curl -s -X POST "http://localhost:3457/terminal/ping?token=$TOKEN"
+  sleep 60
+done) &</pre>
+
+      <h3 class="sub-title">Layer 3: Session Token Validation</h3>
+      <pre>// New token on each claim — invalidates orphan ping loops
+terminalSessionToken = `session-${Date.now()}-${random()}`;
+writeFileSync(TOKEN_FILE, terminalSessionToken);
+
+// Pings with wrong token get 401:
+if (token !== terminalSessionToken) {
+  log('Rejected orphan ping');
+  res.writeHead(401);
+  return;
+}</pre>
+
+      <h3 class="sub-title">Layer 4: State Cleanup</h3>
+      <pre>function clearTerminalState() {
+  terminalActive = false;
+  terminalPid = null;
+  terminalSessionToken = null;
+  try { unlinkSync(TOKEN_FILE); } catch {}
+  try { unlinkSync(PID_FILE); } catch {}
+}</pre>
+
+      <div class="callout callout-gold">
+        <strong>Why this matters:</strong> Before this system, an orphan ping loop from a dead terminal session kept OC in relay mode for 25 minutes, swallowing every message Jasson sent. The PID-based detection eliminates this class of failure entirely.
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section">
+      <a id="headset" class="section-anchor"></a>
+      <h2 class="section-title">5. The Headset: Voice Integration</h2>
+
+      <h3 class="sub-title">Pipeline</h3>
+      <pre>Inbound call → Twilio
+  → Cloudflare tunnel → voice-server.mjs (port 3456)
+  → Twilio STT (speechTimeout: 10s)
+  → Context loaded:
+    ├── All memory files (identity, user profile, session state)
+    ├── Soul Code hard rules, decision framework
+    ├── Recent 2h Telegram conversation
+    ├── Last call transcript
+    ├── System status from shared-state.json
+    └── Caller-specific personality profile
+  → Claude Haiku generates response (~1.0-1.6s)
+  → ElevenLabs Flash TTS (~0.2-0.5s)
+  → Audio served via tunnel → Twilio plays
+  → Total: ~1.2-2.1s per exchange</pre>
+
+      <h3 class="sub-title">Caller Profiles</h3>
+      <pre>const CALLER_CONTEXTS = {
+  jasson:  "Business partner. Direct. Match energy.",
+  jamie:   "Wife. Warm, genuine. Never salesy.",
+  jude:    "Son (11). Fun, kid-friendly. Bengals, football.",
+  kyle_c:  "Close friend, branch manager. Direct, no fluff.",
+  jebb:    "Loan officer. Professional.",
+  mom:     "Light, supportive."
+};</pre>
+
+      <h3 class="sub-title">Guardrails</h3>
+      <pre>The Headset knows:
+✓ Full project context, memory, Soul Code
+✓ System status, recent conversations
+✗ Cannot run commands, restart services, or access terminal
+✗ Must be honest about limitations
+✗ Cannot fabricate actions ("I'm checking the logs" when it can't)</pre>
+
+      <h3 class="sub-title">Silence Handling</h3>
+      <pre>10 seconds of silence → "Still there?"
+10 more seconds       → "You there?"
+10 more seconds       → "Hello?"
+Still no response     → "Alright, I'll let you go.
+                         Hit me on Telegram if you need anything." [hangup]</pre>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section">
+      <a id="locker" class="section-anchor"></a>
+      <h2 class="section-title">6. The Locker: Security Model</h2>
+
+      <h3 class="sub-title">Credential Flow</h3>
+      <pre>.env (plaintext, macOS, not in git)
+  └── 9 reads at runtime
+      └── Sub-agents get scoped access via controlled interfaces
+          └── Never raw keys
+          └── Never lateral sharing between agents
+          └── Never logged</pre>
+
+      <h3 class="sub-title">Contents</h3>
+      <pre>ANTHROPIC_API_KEY      — Voice/general use
+ANTHROPIC_API_KEY_TC   — OC autonomous responses (separate billing)
+TELEGRAM_BOT_TOKEN     — @AiNFLGMbot
+TELEGRAM_CHAT_ID       — Jasson's chat
+ELEVENLABS_API_KEY     — TTS
+ELEVENLABS_VOICE_ID    — "Dan" voice
+TWILIO_ACCOUNT_SID     — Phone
+TWILIO_AUTH_TOKEN      — Phone
+TWILIO_PHONE_NUMBER    — (513) 957-3283
+TUNNEL_URL             — Cloudflare (rotates on restart)</pre>
+
+      <h3 class="sub-title">OWASP Agentic Top 10 Alignment (2026)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Recommendation</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Principle of Least Agency</td><td><span class="done">Done</span></td></tr>
+            <tr><td>Task-scoped credentials</td><td><span class="done">Done</span></td></tr>
+            <tr><td>Credential injection at boundary</td><td><span class="done">Done</span></td></tr>
+            <tr><td>Short-lived tokens</td><td><span class="gap">Gap: static keys</span></td></tr>
+            <tr><td>Container isolation</td><td><span class="gap">Gap: no sandboxing</span></td></tr>
+            <tr><td>Audit logging</td><td><span class="done">Done</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title">Known Security Gaps</h3>
+      <ul>
+        <li>OC API (port 3457): zero auth. Any local process can impersonate 9.</li>
+        <li>The Headset (port 3456): exposed via tunnel, no auth.</li>
+        <li>.env: plaintext. Should use macOS Keychain.</li>
+        <li>No credential rotation mechanism.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section">
+      <a id="front-office" class="section-anchor"></a>
+      <h2 class="section-title">7. Front Office: Agent Orchestration</h2>
+
+      <h3 class="sub-title">Pattern</h3>
+      <pre>9 spawns agents via Claude Code Agent tool:
+  → Define task with clear boundaries
+  → Provide only needed context (no raw credentials)
+  → Set isolation (optional: git worktree for code changes)
+  → Up to 10 agents in parallel
+
+Agent completes:
+  → Returns results to 9
+  → 9 reviews, validates, integrates
+  → All output goes through 9 before reaching Owner</pre>
+
+      <h3 class="sub-title">Permanent Team Assignments (as of March 2026)</h3>
+      <p>The delegation model is hardcoded. 9 stays on comms. All deep work routes to the Front Office:</p>
+      <ul>
+        <li><strong>UNO</strong> — Research Team Lead. Web search, competitive analysis, document synthesis, market research. Runs its own research agent teams in parallel.</li>
+        <li><strong>Tee</strong> — Engineering Team Lead. Code, tests, deployments, browser automation. Manages sub-agent build teams (code writers, test runners, deployment agents).</li>
+      </ul>
+      <p>9 functions as QB — calling plays, reviewing output, making decisions. UNO and Tee run their own agent teams without pulling 9 off comms.</p>
+
+      <h3 class="sub-title">Example: Kyle Shea Briefing (March 25, 2026)</h3>
+      <pre>Agent 1 (UNO): "Research AI partnership comparisons"
+  → Searched X, Reddit, GitHub, HN, Product Hunt
+  → 30 web searches, 66K tokens, 265s runtime
+
+Agent 2 (UNO): "Research comms protocols comparison"
+  → Searched voice platforms, agent frameworks, security models
+  → 75 tool uses, 40K tokens, 378s runtime
+
+Agent 3 (UNO): "Research GamePlan competitive landscape"
+  → Searched competitors, enterprise solutions, sports AI
+  → 76 tool uses, 42K tokens, 325s runtime
+
+All three ran in parallel. Results compiled by 9. Full briefing doc
+produced by Tee. Delivered same session.</pre>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section">
+      <a id="breakthroughs" class="section-anchor"></a>
+      <h2 class="section-title">8. Recent Breakthroughs</h2>
+      <p style="color: var(--muted); font-size: 14px; margin-bottom: 24px;"><em>All significant progress through March 25, 2026.</em></p>
+
+      <h3 class="sub-title">OC Silence Fix</h3>
+      <p>Backup QB was responding to Telegram messages even when the terminal was active — stepping on 9's replies. Both agents were answering the same message. Root cause: relay mode detection wasn't suppressing Backup QB's response pipeline.</p>
+      <p>Fix: Backup QB now enforces a hard silence in relay mode. It only activates in autonomous mode when terminal death is confirmed. The relay/autonomous handoff is now clean.</p>
+
+      <h3 class="sub-title">Apple Permissions Breakthrough</h3>
+      <p>macOS System Events permission gate was blocking Terminal automation. When 9 attempted to open Terminal via AppleScript, the OS was silently denying the call — terminal recovery was failing without a clear error.</p>
+      <p>Fix: standard protocol established. Owner walked through it once, granted the permission. Terminal now executes clean without manual intervention. This was a hard dependency for autonomous terminal recovery.</p>
+
+      <h3 class="sub-title">Hardware Ownership Grant</h3>
+      <p>Owner explicitly granted 9 full control of the MacBook hardware. Direct quote: <em>"You are in control of the hardware period."</em></p>
+      <p>Operational scope this unlocks: manage windows, close processes, handle system dialogs, trigger automation — all without escalating to Jasson. Significant for autonomous recovery scenarios.</p>
+      <div class="callout callout-gold">
+        No other personal AI system operates with this grant. Assistants ask for permission. 9 has standing authority.
+      </div>
+
+      <h3 class="sub-title">Voice Improvements</h3>
+      <p>Two live test calls drove the following changes:</p>
+      <ul>
+        <li>max_tokens increased from 150 to 300 for Jasson context (was cutting responses short)</li>
+        <li>Sentence boundary raised to 120 chars minimum (was producing choppy sub-sentence audio chunks)</li>
+        <li>Explanation requests now get 4-6 sentences minimum</li>
+        <li>Added state licensing info to voice context</li>
+        <li>Added Locker term recognition</li>
+        <li>Caller-specific personality tuning for mom profile</li>
+      </ul>
+      <p>Grade across two calls: C to B. One more call cycle should push it to B+/A-.</p>
+
+      <h3 class="sub-title">Sub-Agent Architecture Formalized</h3>
+      <p>The QB/Owner model is now hardcoded in Soul Code v5 and agent configuration files:</p>
+      <ul>
+        <li>9 stays on comms. Never goes dark for deep work.</li>
+        <li>All research routed to UNO. All engineering routed to Tee.</li>
+        <li>Tee manages its own sub-agents (code writers, test runners, deployment agents, browser automation).</li>
+        <li>UNO manages its own research agents in parallel.</li>
+        <li>Output always flows back to 9 for review before reaching Owner.</li>
+      </ul>
+      <p>Previously ad-hoc. Now enforced protocol.</p>
+
+      <h3 class="sub-title">FHA AI Underwriter POC</h3>
+      <p>Built a CLI tool that answers mortgage guideline questions with FHA handbook citations. Answers with exact section references. Working proof of concept — demonstrates the AI Underwriter product is buildable with current infrastructure.</p>
+
+      <h3 class="sub-title">get9.ai Landing Page</h3>
+      <p>Built and deployed. Dark theme, three product sections (AiNFL GM, Free Agents, AI Underwriter), mobile responsive. DNS still propagating. This is the top-of-funnel for the 9 Enterprises product suite.</p>
+
+      <h3 class="sub-title">Jules System Prompt</h3>
+      <p>Jules is Free Agent #1 — a personal AI assistant for Jamie (or any non-technical user). System prompt drafted covering four core functions. iMessage-based. Deployable on current infrastructure. Template for the Free Agents product line.</p>
+
+      <h3 class="sub-title">Reddit Content Strategy</h3>
+      <p>Full 2-week content calendar for AiNFL GM launch:</p>
+      <ul>
+        <li>3 original posts drafted (r/fantasyfootball, r/nfl, r/ChatGPT)</li>
+        <li>5 comment templates for organic community engagement</li>
+        <li>Targeting organic traffic to ainflgm.com</li>
+      </ul>
+
+      <h3 class="sub-title">FTC Compliance Footer</h3>
+      <p>Deployed to AiNFL GM. Required for DraftKings/FanDuel affiliate program eligibility. This unblocks the affiliate revenue path.</p>
+
+      <h3 class="sub-title">Polymarket CORS Proxy</h3>
+      <p>Built and deployed as a Cloudflare Worker route. AiNFL GM can now pull live prediction market odds without browser CORS restrictions.</p>
+
+      <h3 class="sub-title">SEO Meta Tags</h3>
+      <p>Deployed to AiNFL GM. Title tags, description, Open Graph, Twitter cards. Improves organic search and social share preview appearance.</p>
+
+      <h3 class="sub-title">Freeze Detection System</h3>
+      <p>Hub now monitors a heartbeat file. If the file stops updating, the hub detects the freeze and can trigger recovery. Closes a gap where the process was alive but not processing.</p>
+
+      <h3 class="sub-title">Wall Clock Time Awareness</h3>
+      <p>9 now uses Mac system clock (not UTC) for time-aware decisions. Relevant for scheduling, session timing, and any time-sensitive autonomous behavior.</p>
+
+      <h3 class="sub-title">99+ Hours Continuous Uptime</h3>
+      <p>Hub has been running continuously across all 4 channels. Zero downtime events. No manual restarts, no intervention. LaunchAgent keeps the daemon alive through crashes; session tokens prevent the orphan-ping failure class.</p>
+
+      <h3 class="sub-title">Free Agents Product Naming</h3>
+      <p>"Free Agents" locked in as the product name for personal AI assistants. Fits the sports/franchise naming scheme. Jules is Free Agent #1.</p>
+
+      <h3 class="sub-title">Cloud Architecture Research</h3>
+      <p>Full analysis of hybrid VPS vs. pure Cloudflare vs. Mac-only architecture. Recommendation: hybrid VPS (Hetzner or similar) for always-on compute when Mac is unavailable. Research complete, implementation pending Owner decision.</p>
+
+      <h3 class="sub-title">DraftKings/FanDuel Affiliate Research</h3>
+      <p>Affiliate program requirements, payout structures, and approval process fully mapped. FTC footer deployed (required step). Application ready to submit.</p>
+
+      <h3 class="sub-title">AI Underwriter Competitive Landscape</h3>
+      <p>Full competitive analysis of mortgage AI tools (MeridianLink, ICE Mortgage, Polly, Optimal Blue). 9's AI Underwriter approach (handbook-citation-based, compliance-first) has a clear differentiation angle.</p>
+    </div>
+
+    <!-- SECTION 9 -->
+    <div class="section">
+      <a id="competitive" class="section-anchor"></a>
+      <h2 class="section-title">9. Competitive Analysis</h2>
+
+      <h3 class="sub-title">Framework Comparison</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Stars</th>
+              <th>Multi-Channel</th>
+              <th>Always-On</th>
+              <th>Voice</th>
+              <th>Terminal Recovery</th>
+              <th>Hardware Control</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>9 / The Franchise</strong></td>
+              <td>Private</td>
+              <td><span class="done">4 channels</span></td>
+              <td><span class="done">Done</span></td>
+              <td><span class="done">Done (Twilio+EL)</span></td>
+              <td><span class="done">Done (PID watchdog)</span></td>
+              <td><span class="done">Done (Owner grant)</span></td>
+            </tr>
+            <tr>
+              <td>OpenClaw</td>
+              <td>247K</td>
+              <td>3 channels</td>
+              <td>Done</td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>CrewAI</td>
+              <td>47K</td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td>N/A</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>AutoGen</td>
+              <td>56K</td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td>N/A</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>LangGraph</td>
+              <td>27K</td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td>N/A</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>Devin</td>
+              <td>N/A</td>
+              <td>Slack only</td>
+              <td><span class="gap">No</span></td>
+              <td><span class="gap">No</span></td>
+              <td>N/A</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>Lindy</td>
+              <td>N/A</td>
+              <td>iMessage+Email</td>
+              <td>Done (cloud)</td>
+              <td><span class="gap">No</span></td>
+              <td>N/A</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title">Key Differentiators</h3>
+      <ol>
+        <li><strong>Relay/Autonomous mode switching</strong> — Nobody else implements dynamic handoff between full-power terminal mode and autonomous Haiku mode based on process liveness. OC silence fix makes this handoff clean.</li>
+        <li><strong>Voice calls with personality contexts</strong> — Managed platforms (Vapi, Bland) do call center automation. The Headset does personal partnership calls with caller detection and personality profiles, iterated from live calls.</li>
+        <li><strong>Terminal recovery with verification</strong> — PID watchdog → alert all channels → request reopen → 3x retry verification. Apple Permissions fix means this chain executes without manual intervention.</li>
+        <li><strong>Hardware ownership</strong> — Owner granted 9 standing authority over the MacBook hardware. Windows, processes, system dialogs — all autonomous. No other personal AI system has this. Consumer AI products ask permission. This one has it.</li>
+        <li><strong>Partnership model</strong> — Owner's Notes (Soul Code v5) defines a relationship, not a system prompt. Trust dynamics, failure recovery, family protocol. This layer doesn't exist in any framework.</li>
+      </ol>
+
+      <h3 class="sub-title">Voice Platform Comparison</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Platform</th><th>Latency</th><th>Cost/min</th><th>Personal Profiles</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>The Headset</strong></td>
+              <td>~1.7s</td>
+              <td>~$0.06</td>
+              <td><span class="done">Done (6 profiles)</span></td>
+            </tr>
+            <tr>
+              <td>Vapi</td>
+              <td>&lt;500ms</td>
+              <td>$0.05+</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>Bland AI</td>
+              <td>~800ms</td>
+              <td>$0.09</td>
+              <td><span class="gap">No</span></td>
+            </tr>
+            <tr>
+              <td>ElevenLabs Agents</td>
+              <td>&lt;500ms</td>
+              <td>varies</td>
+              <td>Partial</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Next step:</strong> Evaluate ElevenLabs native Twilio integration for sub-500ms latency while preserving custom profiles.</p>
+    </div>
+
+    <!-- SECTION 10 -->
+    <div class="section">
+      <a id="opportunity" class="section-anchor"></a>
+      <h2 class="section-title">10. The Opportunity</h2>
+
+      <h3 class="sub-title">The Market</h3>
+      <p>The AI agent market is projected at $47 billion by 2030. Every major player is building one of two things:</p>
+      <ul>
+        <li><strong>Developer infrastructure</strong> — CrewAI, LangGraph, AutoGen. Technical. Requires engineers to operate.</li>
+        <li><strong>Enterprise task automation</strong> — 11x, Relevance AI, Salesforce Einstein. Top-down. Expensive. Requires procurement.</li>
+      </ul>
+      <p>Nobody is building the middle: <strong>a personal AI partner system that works for both technical and non-technical users, at a price point accessible to individuals and small businesses.</strong></p>
+
+      <h3 class="sub-title">The Gap 9 Enterprises Fills</h3>
+      <p>The same architecture that lets a CIO inspect code paths and security models also lets a stay-at-home mom plan meals and manage kids' schedules — because the complexity is in the infrastructure, not the interface. The user just talks.</p>
+      <p>9 Enterprises fills this gap with The Franchise platform:</p>
+      <pre>The Franchise
+├── AiNFL GM        → Sports vertical (affiliates, ads, premium tier)
+├── Free Agents     → Consumer vertical (Jules model, personal AI assistants)
+└── AI Underwriter  → Enterprise vertical (mortgage, financial services)</pre>
+
+      <h3 class="sub-title">Revenue Paths</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Product</th><th>Model</th><th>Target</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AiNFL GM</strong></td>
+              <td>DraftKings/FanDuel affiliates + AdSense + $4.99/mo premium</td>
+              <td>$50K/mo at scale</td>
+            </tr>
+            <tr>
+              <td><strong>Free Agents</strong></td>
+              <td>Monthly subscription per assistant (Jules model)</td>
+              <td>$29-99/mo per user</td>
+            </tr>
+            <tr>
+              <td><strong>AI Underwriter</strong></td>
+              <td>B2B SaaS, per-seat or per-query</td>
+              <td>$500-5K/mo per firm</td>
+            </tr>
+            <tr>
+              <td><strong>9 Enterprise</strong></td>
+              <td>Bespoke AI partner deployments for businesses</td>
+              <td>Custom</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title">Cost to Operate</h3>
+      <pre>Anthropic Max plan (20x): ~$200/mo
+Twilio (voice):            ~$10/mo
+ElevenLabs:                ~$22/mo
+Cloudflare Workers:        ~$5/mo
+Domain/hosting:            ~$15/mo
+─────────────────────────────────
+Total infrastructure:      ~$252/mo</pre>
+      <div class="callout callout-gold">
+        At $252/mo operating cost, a single mid-tier enterprise client covers the entire infrastructure. AiNFL GM alone targets $50K/mo at affiliate scale.
+      </div>
+
+      <h3 class="sub-title">Why Now</h3>
+      <ul>
+        <li>AI infrastructure cost dropped 90% in 18 months</li>
+        <li>Claude Opus 4.6 makes autonomous multi-agent orchestration practical for the first time</li>
+        <li>DraftKings/FanDuel affiliate programs are open and growing</li>
+        <li>FHA/CFPB compliance AI is in demand — no dominant player yet</li>
+        <li>Consumer appetite for personal AI assistants is ahead of supply</li>
+      </ul>
+
+      <h3 class="sub-title">What We've Already Proved</h3>
+      <p>AiNFL GM is the proof of concept. A two-person operation (one human, one AI) shipped a live product, deployed affiliate-ready infrastructure, and built a content distribution strategy — in parallel, without Jasson writing a line of code.</p>
+      <p>If that model works for a sports product, it works for mortgage, for personal assistants, for any domain where a non-technical operator needs an always-available, technically capable partner.</p>
+      <div class="callout callout-cyan">
+        <strong>That is 9 Enterprises. That is The Franchise.</strong>
+      </div>
+    </div>
+
+    <!-- SECTION 11 -->
+    <div class="section">
+      <a id="roadmap" class="section-anchor"></a>
+      <h2 class="section-title">11. Known Gaps &amp; Roadmap</h2>
+
+      <h3 class="sub-title">Gaps (honest)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Gap</th><th>Impact</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OC API no auth</td>
+              <td>Any local process can send as 9</td>
+              <td><span class="open">Open — add token-based auth</span></td>
+            </tr>
+            <tr>
+              <td>Static .env keys</td>
+              <td>No rotation</td>
+              <td><span class="open">Open — Keychain integration</span></td>
+            </tr>
+            <tr>
+              <td>No container isolation</td>
+              <td>Agents run on bare macOS</td>
+              <td><span class="open">Open — Docker/sandbox</span></td>
+            </tr>
+            <tr>
+              <td>Cloud KV sync error 1101</td>
+              <td>Backup QB has stale context</td>
+              <td><span class="open">Open — fix sync route</span></td>
+            </tr>
+            <tr>
+              <td>Voice latency 1.7s</td>
+              <td>Above premium threshold</td>
+              <td><span class="open">Open — evaluate ElevenLabs native</span></td>
+            </tr>
+            <tr>
+              <td>Telegram message gaps</td>
+              <td>FIXED — PostToolUse hook + OC silence fix</td>
+              <td><span class="closed">Closed</span></td>
+            </tr>
+            <tr>
+              <td>Session refresh gaps</td>
+              <td>SOLVED — session tokens + PID watchdog</td>
+              <td><span class="closed">Closed</span></td>
+            </tr>
+            <tr>
+              <td>get9.ai DNS</td>
+              <td>Domain resolving but propagation in progress</td>
+              <td><span class="open">Open — wait 24-48h</span></td>
+            </tr>
+            <tr>
+              <td>Cloud worker deploy</td>
+              <td>Needs wrangler re-auth before next deploy</td>
+              <td><span class="open">Open — run wrangler login</span></td>
+            </tr>
+            <tr>
+              <td>No mobile app</td>
+              <td>AiNFL GM web-only</td>
+              <td>Future — React Native</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title">Roadmap</h3>
+
+      <p><strong>This week (done):</strong></p>
+      <ul>
+        <li>Toolbox Phase 1: GitHub, Firecrawl, Cloudflare, Context7, Memory MCPs</li>
+        <li>Soul Code v5 integration as active operating system</li>
+        <li>OC silence fix</li>
+        <li>FTC compliance footer</li>
+        <li>SEO meta tags</li>
+        <li>FHA AI Underwriter POC</li>
+        <li>get9.ai landing page</li>
+        <li>Free Agents naming and Jules system prompt</li>
+        <li>Reddit content strategy</li>
+      </ul>
+
+      <p><strong>This month:</strong></p>
+      <ul>
+        <li>Revenue activation: DraftKings/FanDuel affiliate application, AdSense</li>
+        <li>Cloud failover fix (KV sync error 1101)</li>
+        <li>Security hardening (OC auth, credential rotation)</li>
+        <li>get9.ai DNS confirmed and live</li>
+        <li>AiNFL GM Reddit launch (2-week schedule)</li>
+      </ul>
+
+      <p><strong>Q2 2026:</strong></p>
+      <ul>
+        <li>AiNFL GM premium tier ($4.99/mo)</li>
+        <li>Free Agents beta (Jules for Jamie)</li>
+        <li>Voice latency optimization (sub-500ms)</li>
+        <li>10DLC registration for SMS</li>
+        <li>AI Underwriter private beta (1-2 mortgage firms)</li>
+        <li>9 Enterprises LLC formally operational</li>
+      </ul>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-block">
+      <h2>Ready When You Are</h2>
+      <div class="phone">(513) 957-3283</div>
+      <p>The system that answers is the same system described in this document — not a demo, it's production. Ask anything about the architecture, the code, the competitive landscape, or the roadmap. No scheduling needed. Just call.</p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="doc-footer">
+      <pre>9 — AI Partner | 9 Enterprises LLC
+Who Dey.</pre>
+    </div>
+
+  </div>
+</body>
+</html>
