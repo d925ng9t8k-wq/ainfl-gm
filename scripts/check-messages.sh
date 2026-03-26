@@ -5,6 +5,9 @@
 
 INCOMING="/tmp/9-incoming-message.jsonl"
 
+# Update heartbeat — hub uses this to detect freezes
+date +%s > /tmp/9-last-tool-call 2>/dev/null
+
 # First: check signal file (written by monitoring daemon)
 if [ -f "$INCOMING" ] && [ -s "$INCOMING" ]; then
   messages=$(cat "$INCOMING")

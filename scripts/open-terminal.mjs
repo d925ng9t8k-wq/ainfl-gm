@@ -30,7 +30,7 @@ function openTerminal() {
       execSync(`osascript -e '
         tell application "Terminal"
           activate
-          do script "cd ~/Projects/BengalOracle && claude \\"Run the startup protocol from CLAUDE.md. Claim terminal. Check inbox. Message Jasson on Telegram that you are alive and operational. Then start polling Telegram continuously.\\""
+          do script "cd ~/Projects/BengalOracle && claude --dangerously-skip-permissions \\"Run the startup protocol from CLAUDE.md. Claim terminal. Check inbox. Message Jasson on Telegram that you are alive and operational. Then start polling Telegram continuously.\\""
         end tell
       '`, { timeout: 15000 });
 

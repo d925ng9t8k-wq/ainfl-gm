@@ -1,0 +1,46 @@
+{
+  "lastUpdated": "2026-03-25T23:40:00-04:00",
+  "updatedBy": "9",
+  "backlog": [
+    {
+      "id": 1,
+      "priority": "P0",
+      "status": "pending",
+      "task": "Add --dangerously-skip-permissions to open-terminal.mjs launch command",
+      "context": "Prevents permission prompt freezes. Owner approved.",
+      "done": true
+    },
+    {
+      "id": 2,
+      "priority": "P0",
+      "status": "pending",
+      "task": "Build freeze detection heartbeat into comms-hub.mjs",
+      "context": "Check /tmp/9-last-tool-call timestamp. If stale >3 min while terminal active, alert on Telegram + try AppleScript keystroke to unblock.",
+      "done": false
+    },
+    {
+      "id": 3,
+      "priority": "P1",
+      "status": "pending",
+      "task": "Host owner-presentation.md on cloud worker /owner route",
+      "context": "Similar to /kyle route. Needs wrangler deploy (blocked on auth).",
+      "done": false
+    },
+    {
+      "id": 4,
+      "priority": "P1",
+      "status": "pending",
+      "task": "Build Jules routing logic in comms-hub.mjs",
+      "context": "Detect messages from Jamie's number, route to Jules handler with jules-prompt.md system prompt.",
+      "done": false
+    },
+    {
+      "id": 5,
+      "priority": "P2",
+      "status": "pending",
+      "task": "Add morning briefing cron to hub for Jules",
+      "context": "7:30 AM ET daily, send Jamie a 3-line text via iMessage.",
+      "done": false
+    }
+  ]
+}

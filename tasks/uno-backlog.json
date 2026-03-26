@@ -1,0 +1,38 @@
+{
+  "lastUpdated": "2026-03-25T23:40:00-04:00",
+  "updatedBy": "9",
+  "backlog": [
+    {
+      "id": 1,
+      "priority": "P1",
+      "status": "pending",
+      "task": "Research SSH remote access setup for MacBook",
+      "context": "Owner wants to be able to access Terminal from iPhone. Research Termius app + macOS Remote Login setup steps.",
+      "done": false
+    },
+    {
+      "id": 2,
+      "priority": "P1",
+      "status": "pending",
+      "task": "Research Rapid Mortgage state licensing",
+      "context": "Voice caller asked about states Rapid is licensed in. Need to find public NMLS data for Rapid Mortgage Company.",
+      "done": false
+    },
+    {
+      "id": 3,
+      "priority": "P2",
+      "status": "pending",
+      "task": "Research Google AdSense requirements and application process",
+      "context": "For ainflgm.com. Need to know traffic requirements, content policies, estimated revenue at current traffic levels.",
+      "done": false
+    },
+    {
+      "id": 4,
+      "priority": "P2",
+      "status": "pending",
+      "task": "Deep research on AI agent frameworks for competitive positioning",
+      "context": "Update competitive analysis with latest 2026 landscape. Focus on what has changed since the Kyle presentation was written.",
+      "done": false
+    }
+  ]
+}
