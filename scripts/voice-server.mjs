@@ -33,11 +33,12 @@ const elevenLabsAgent  = new https.Agent({ keepAlive: true, maxSockets: 5 });
 // ─── Models ─────────────────────────────────────────────────────────────────
 const CLAUDE_MODEL_FAST  = "claude-haiku-4-5-20251001";
 const CLAUDE_MODEL_SMART = "claude-sonnet-4-20250514";
-const EL_MODEL      = "eleven_multilingual_v2"; // Burrow clone — best quality model
+const EL_MODEL      = "eleven_turbo_v2_5"; // Turbo model — 50-60% faster TTS, near-identical quality for English
+// Previous: eleven_multilingual_v2 — caused 4+ second TTS on longer responses, triggering Twilio timeouts
 
-// Kyle Shea gets the smart model — he noticed scripted responses last time.
-// Everyone else gets the fast model — latency is king for voice.
-const SMART_CONTEXTS = new Set(["kyle", "mark"]);
+// March 26 fix: Kyle pulled off Sonnet. Haiku is 3x faster (0.9s vs 2.9s avg).
+// The KYLE_SYSTEM prompt already makes Haiku sound natural. Latency > quality for voice.
+const SMART_CONTEXTS = new Set(["mark"]);
 
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
 fs.mkdirSync("/Users/jassonfishback/Projects/BengalOracle/logs/calls", { recursive: true });
@@ -572,8 +573,9 @@ function callClaude(messages, context) {
               // Only resolve on a COMPLETE sentence — must end with .!? followed by space or end
               // Minimum 30 chars to avoid resolving on short openers like "Ha." or "Yeah."
               // SMART_CONTEXTS get higher thresholds so technical answers aren't cut too short
-              const minLen = (context === 'jasson' || context === '') ? 120 : SMART_CONTEXTS.has(context) ? 80 : 50;
-              const minPunct = (context === 'jasson' || context === '') ? 100 : SMART_CONTEXTS.has(context) ? 60 : 35;
+              // March 26 fix: raised thresholds to prevent premature cutoff (Rosie's call cut off 3x)
+              const minLen = (context === 'jasson' || context === '') ? 150 : SMART_CONTEXTS.has(context) ? 100 : 80;
+              const minPunct = (context === 'jasson' || context === '') ? 120 : SMART_CONTEXTS.has(context) ? 80 : 60;
               if (!resolved && fullText.length >= minLen && /[.!?](\s|$)/.test(fullText)) {
                 const lastPunct = fullText.search(/[.!?](\s|$)/);
                 if (lastPunct > minPunct) {
@@ -658,7 +660,7 @@ function twimlGather(audioFilename, opts = {}) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>${pauseBefore > 0 ? `\n  <Pause length="${pauseBefore}"/>` : ''}
   <Gather input="speech" action="/respond" method="POST"
-          speechTimeout="auto" maxSpeechTime="30" speechModel="experimental_utterances"
+          speechTimeout="2" maxSpeechTime="30" speechModel="experimental_utterances"
           enhanced="true" language="en-US"
           profanityFilter="false"
           hints="yeah,yep,okay,right,sure,go ahead,tell me more,what do you mean,interesting,Kyle Shea,Kyle Cabezas,Jebb Lyons,Danielle,Jamie,Jude,Jacy,Mark Jaynes,Rapid Mortgage,AiNFL GM,The Franchise,nine,terminal">

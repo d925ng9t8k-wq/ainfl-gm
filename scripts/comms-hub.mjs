@@ -667,7 +667,7 @@ function sendEmail(subject, body) {
   end tell
   send newMsg
 end tell`;
-    execSync(`osascript -e '${script.replace(/'/g, "'\\''")}'`);
+    execSync(`osascript -e '${script.replace(/'/g, "'\\''")}'`, { timeout: 20000 });
     log(`Email sent: ${subject}`);
     addMessage(state, 'email', 'out', `[${subject}] ${body.slice(0, 200)}`);
     updateChannelStatus(state, 'email', 'active');
