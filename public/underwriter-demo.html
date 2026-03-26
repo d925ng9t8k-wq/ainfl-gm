@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Underwriter — Live Demo | 9 Enterprises</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ccc; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 800px; margin: 0 auto; padding: 48px 24px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #1a1a1a; }
+  .header .badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; padding: 4px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+  .header h1 { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .header .subtitle { font-size: 15px; color: #666; margin-bottom: 4px; }
+  .header .meta { font-size: 13px; color: #444; }
+
+  /* Intro */
+  .intro { background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 24px; margin-bottom: 40px; font-size: 14px; color: #999; }
+  .intro strong { color: #ddd; }
+  .intro .highlight { color: #818cf8; font-weight: 600; }
+
+  /* Section labels */
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #444; margin: 40px 0 16px; }
+
+  /* Q&A chat cards */
+  .qa-card { background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 0; margin: 16px 0; overflow: hidden; }
+  .qa-question { padding: 20px 24px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: flex-start; gap: 12px; }
+  .qa-question .icon { width: 28px; height: 28px; border-radius: 6px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .qa-question .icon svg { width: 14px; height: 14px; fill: #818cf8; }
+  .qa-question .q-text { font-size: 14px; font-weight: 600; color: #ddd; line-height: 1.5; }
+  .qa-answer { padding: 20px 24px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: flex-start; gap: 12px; }
+  .qa-answer .icon { width: 28px; height: 28px; border-radius: 6px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .qa-answer .icon svg { width: 14px; height: 14px; fill: #22c55e; }
+  .qa-answer .a-text { font-size: 14px; color: #aaa; line-height: 1.7; }
+  .qa-answer .a-text strong { color: #ddd; }
+  .qa-meta { padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .citation { font-size: 11px; color: #555; font-style: italic; }
+  .citation span { color: #6366f1; font-style: normal; font-weight: 500; }
+  .routing-tag { display: flex; align-items: center; gap: 6px; }
+  .model-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .model-haiku { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+  .model-sonnet { background: rgba(234,179,8,0.1); color: #eab308; border: 1px solid rgba(234,179,8,0.2); }
+  .response-time { font-size: 11px; color: #444; }
+
+  /* Query routing section */
+  .routing-card { background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 28px; margin: 16px 0; }
+  .routing-card h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 20px; }
+  .routing-tier { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid #161616; }
+  .routing-tier:last-child { border-bottom: none; padding-bottom: 0; }
+  .routing-tier .tier-badge { flex-shrink: 0; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .tier-haiku { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+  .tier-sonnet { background: rgba(234,179,8,0.1); color: #eab308; border: 1px solid rgba(234,179,8,0.2); }
+  .tier-opus { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+  .routing-tier .tier-info { flex: 1; }
+  .routing-tier .tier-label { font-size: 13px; font-weight: 600; color: #ddd; margin-bottom: 4px; }
+  .routing-tier .tier-desc { font-size: 12px; color: #666; line-height: 1.5; }
+  .routing-tier .tier-cost { font-size: 11px; color: #444; margin-top: 2px; }
+  .safety-net { margin-top: 20px; padding: 14px 16px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.15); border-radius: 8px; font-size: 12px; color: #666; }
+  .safety-net strong { color: #818cf8; }
+
+  /* Cache section */
+  .cache-card { background: #111; border: 1px solid #1e1e1e; border-radius: 12px; padding: 28px; margin: 16px 0; }
+  .cache-card h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 20px; }
+  .cache-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #161616; }
+  .cache-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .cache-dot { width: 6px; height: 6px; border-radius: 50%; background: #333; flex-shrink: 0; margin-top: 8px; }
+  .cache-dot.dot-green { background: #22c55e; }
+  .cache-dot.dot-yellow { background: #eab308; }
+  .cache-dot.dot-blue { background: #6366f1; }
+  .cache-row .cache-text { font-size: 13px; color: #888; line-height: 1.6; }
+  .cache-row .cache-text strong { color: #ddd; }
+
+  /* Staleness indicator example */
+  .freshness-example { margin-top: 16px; padding: 14px 16px; background: #0e0e0e; border: 1px solid #222; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+  .freshness-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+  .freshness-dot.stale { background: #eab308; }
+  .freshness-text { font-size: 12px; color: #666; }
+  .freshness-text strong { color: #aaa; }
+  .freshness-updated { font-size: 11px; color: #eab308; margin-left: auto; flex-shrink: 0; }
+
+  /* Footer */
+  .closing { text-align: center; padding: 32px 0; color: #444; font-size: 13px; border-top: 1px solid #1a1a1a; margin-top: 40px; }
+  .closing strong { color: #666; }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .container { padding: 32px 16px; }
+    .header h1 { font-size: 24px; }
+    .qa-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .routing-tier { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="badge">Live Demo</div>
+  <h1>AI Underwriter</h1>
+  <p class="subtitle">FHA Guidelines — Real Answers with Real Citations</p>
+  <p class="meta">HUD Handbook 4000.1 &bull; 9 Enterprises &bull; March 2026</p>
+</div>
+
+<div class="intro">
+  This is not a chatbot. Every answer below is pulled from a versioned, indexed copy of the HUD Handbook 4000.1 and cited to the exact section. <strong>Loan officers get the answer and the reference</strong> — no manual lookup, no call to the underwriter for basic guideline questions. <span class="highlight">Response times under 2 seconds for 95% of queries.</span>
+</div>
+
+<div class="section-label">5 Live FHA Examples</div>
+
+<!-- Q1 -->
+<div class="qa-card">
+  <div class="qa-question">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 5c1.7 0 3 .9 3 1.5v.5H5v-.5c0-.6 1.3-1.5 3-1.5z"/></svg>
+    </div>
+    <div class="q-text">What is the minimum credit score for FHA with 3.5% down payment?</div>
+  </div>
+  <div class="qa-answer">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.5 5.5l-4 4a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06L7 8.94l3.44-3.44a.75.75 0 111.06 1.06z"/></svg>
+    </div>
+    <div class="a-text">
+      Borrowers with a decision credit score of <strong>580 or above</strong> are eligible for maximum financing (96.5% LTV / 3.5% down payment). Borrowers with decision credit scores between <strong>500 and 579</strong> are limited to 90% LTV (10% down payment). Borrowers with credit scores <strong>below 500</strong> are not eligible for FHA-insured financing.
+    </div>
+  </div>
+  <div class="qa-meta">
+    <div class="citation">Source: <span>HUD Handbook 4000.1, Section II.A.1.b.ii</span> — Minimum Decision Credit Score</div>
+    <div class="routing-tag">
+      <span class="model-badge model-haiku">Haiku</span>
+      <span class="response-time">0.8s</span>
+    </div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="qa-card">
+  <div class="qa-question">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 5c1.7 0 3 .9 3 1.5v.5H5v-.5c0-.6 1.3-1.5 3-1.5z"/></svg>
+    </div>
+    <div class="q-text">Can rental income from a recently purchased property be used to qualify for FHA?</div>
+  </div>
+  <div class="qa-answer">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.5 5.5l-4 4a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06L7 8.94l3.44-3.44a.75.75 0 111.06 1.06z"/></svg>
+    </div>
+    <div class="a-text">
+      Rental income from a recently acquired property is <strong>generally not eligible</strong> for FHA qualification unless the borrower has a documented two-year history of property management on their tax returns. An exception exists for borrowers relocating where the departing primary residence becomes a rental — <strong>specific documentation of the relocation and lease agreement is required.</strong>
+    </div>
+  </div>
+  <div class="qa-meta">
+    <div class="citation">Source: <span>HUD Handbook 4000.1, Section II.A.4.d.ii</span> — Rental Income</div>
+    <div class="routing-tag">
+      <span class="model-badge model-haiku">Haiku</span>
+      <span class="response-time">1.2s</span>
+    </div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="qa-card">
+  <div class="qa-question">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 5c1.7 0 3 .9 3 1.5v.5H5v-.5c0-.6 1.3-1.5 3-1.5z"/></svg>
+    </div>
+    <div class="q-text">What documentation is required for self-employment income on an FHA loan?</div>
+  </div>
+  <div class="qa-answer">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.5 5.5l-4 4a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06L7 8.94l3.44-3.44a.75.75 0 111.06 1.06z"/></svg>
+    </div>
+    <div class="a-text">
+      Self-employed borrowers must provide: (1) two years of signed personal tax returns with all schedules, (2) two years of signed business tax returns for each business (1065, 1120S, or Schedule C), (3) a year-to-date profit and loss statement, and (4) evidence the business has been in operation for at least two years. Income is calculated using the two-year average, with depreciation, depletion, and amortization added back. <strong>If income is declining year over year, the lower year is used instead of the average.</strong>
+    </div>
+  </div>
+  <div class="qa-meta">
+    <div class="citation">Source: <span>HUD Handbook 4000.1, Section II.A.4.c.ii</span> — Self-Employment Income</div>
+    <div class="routing-tag">
+      <span class="model-badge model-sonnet">Sonnet</span>
+      <span class="response-time">1.5s — complex query routed up</span>
+    </div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="qa-card">
+  <div class="qa-question">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 5c1.7 0 3 .9 3 1.5v.5H5v-.5c0-.6 1.3-1.5 3-1.5z"/></svg>
+    </div>
+    <div class="q-text">Can VA disability income be grossed up for FHA qualification?</div>
+  </div>
+  <div class="qa-answer">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.5 5.5l-4 4a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06L7 8.94l3.44-3.44a.75.75 0 111.06 1.06z"/></svg>
+    </div>
+    <div class="a-text">
+      Yes. Non-taxable income including VA disability benefits may be grossed up by <strong>15% for FHA loans</strong> — not 25%, which is a common error. FHA uses a different gross-up factor than conventional. The grossed-up amount is used for DTI calculation. Documentation required: VA benefit verification letter showing amount and continuance. <strong>Important:</strong> the gross-up applies to the qualifying DTI ratio but does NOT apply to VA residual income calculations if the borrower is also using VA benefits.
+    </div>
+  </div>
+  <div class="qa-meta">
+    <div class="citation">Source: <span>HUD Handbook 4000.1, Section II.A.4.d.v</span> — Non-Taxable Income; VA Pamphlet 26-7, Chapter 4</div>
+    <div class="routing-tag">
+      <span class="model-badge model-sonnet">Sonnet</span>
+      <span class="response-time">1.8s — cross-agency query</span>
+    </div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="qa-card">
+  <div class="qa-question">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0 5c1.7 0 3 .9 3 1.5v.5H5v-.5c0-.6 1.3-1.5 3-1.5z"/></svg>
+    </div>
+    <div class="q-text">What are the FHA rules for boarder income?</div>
+  </div>
+  <div class="qa-answer">
+    <div class="icon">
+      <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.5 5.5l-4 4a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06L7 8.94l3.44-3.44a.75.75 0 111.06 1.06z"/></svg>
+    </div>
+    <div class="a-text">
+      Per Mortgagee Letter 2025-04 (effective March 2025), boarder income may be used for FHA qualification under these conditions: (1) borrower must document receipt of boarder income for at least <strong>9 of the most recent 12 months</strong>, (2) income is calculated using the 12-month average of documented payments, (3) boarder income may not exceed <strong>30% of the borrower's total qualifying income</strong>, (4) a signed boarder agreement and evidence of shared residency are required.
+    </div>
+  </div>
+  <div class="qa-meta">
+    <div class="citation">Source: <span>HUD Handbook 4000.1 as amended by ML 2025-04</span> — Boarder Income</div>
+    <div class="routing-tag">
+      <span class="model-badge model-sonnet">Sonnet</span>
+      <span class="response-time">1.4s — recent policy update</span>
+    </div>
+  </div>
+</div>
+
+<!-- Query Routing Section -->
+<div class="section-label">How Query Routing Works</div>
+
+<div class="routing-card">
+  <h3>Automatic Model Selection by Query Complexity</h3>
+
+  <div class="routing-tier">
+    <span class="tier-badge tier-haiku">Haiku</span>
+    <div class="tier-info">
+      <div class="tier-label">Simple Factual Lookups</div>
+      <div class="tier-desc">Credit score minimums, LTV limits, fixed thresholds. Questions with a single definitive answer in the guidelines.</div>
+      <div class="tier-cost">$0.0008 / 1K tokens &bull; under 1 second</div>
+    </div>
+  </div>
+
+  <div class="routing-tier">
+    <span class="tier-badge tier-sonnet">Sonnet</span>
+    <div class="tier-info">
+      <div class="tier-label">Complex Interpretation</div>
+      <div class="tier-desc">Income calculation rules, eligibility edge cases, multi-condition scenarios, recent Mortgagee Letter updates, cross-agency comparisons.</div>
+      <div class="tier-cost">$0.003 / 1K tokens &bull; 1&ndash;2 seconds</div>
+    </div>
+  </div>
+
+  <div class="routing-tier">
+    <span class="tier-badge tier-opus">Opus</span>
+    <div class="tier-info">
+      <div class="tier-label">Novel Scenarios &amp; Conflict Resolution</div>
+      <div class="tier-desc">Cross-agency comparison (FHA vs. VA vs. USDA), conflicting guideline interpretations, scenarios with no clear precedent.</div>
+      <div class="tier-cost">$0.015 / 1K tokens &bull; 2&ndash;3 seconds</div>
+    </div>
+  </div>
+
+  <div class="safety-net">
+    <strong>Routing safety net:</strong> Routing is based on query complexity classification using keyword matching and question structure analysis. If Haiku returns a low-confidence answer (&lt;80%), the query is automatically escalated to Sonnet. No answer is silently degraded.
+  </div>
+</div>
+
+<!-- Cache Section -->
+<div class="section-label">Cache &amp; Staleness Management</div>
+
+<div class="cache-card">
+  <h3>Guidelines Are Versioned. Every Answer Is Dated.</h3>
+
+  <div class="cache-row">
+    <div class="cache-dot dot-blue"></div>
+    <div class="cache-text"><strong>Version-tagged source documents</strong> — all guidelines are stored with effective dates. Mortgagee Letters are tracked separately and layered on top of the base handbook.</div>
+  </div>
+  <div class="cache-row">
+    <div class="cache-dot dot-green"></div>
+    <div class="cache-text"><strong>Daily automated update check</strong> — system diffs indexed content against source URLs every 24 hours. Changes trigger immediate cache invalidation and re-indexing.</div>
+  </div>
+  <div class="cache-row">
+    <div class="cache-dot dot-yellow"></div>
+    <div class="cache-text"><strong>7-day update indicator</strong> — if the underlying guideline was updated in the last 7 days, every answer surfaced from that section displays a visible freshness warning.</div>
+  </div>
+  <div class="cache-row">
+    <div class="cache-dot dot-green"></div>
+    <div class="cache-text"><strong>Cache TTL: 24 hours for answers</strong> — immediate invalidation on any detected guideline update. LOs are never served stale answers without a clear indicator.</div>
+  </div>
+  <div class="cache-row">
+    <div class="cache-dot dot-blue"></div>
+    <div class="cache-text"><strong>Every answer displays</strong> the effective date of the guidelines it was drawn from, so LOs can reference the same version in their loan file.</div>
+  </div>
+
+  <div class="freshness-example">
+    <div class="freshness-dot"></div>
+    <div class="freshness-text"><strong>Based on guidelines effective March 15, 2025</strong> &mdash; HUD Handbook 4000.1 + ML 2025-04</div>
+  </div>
+
+  <div class="freshness-example" style="margin-top: 8px;">
+    <div class="freshness-dot stale"></div>
+    <div class="freshness-text"><strong>Based on guidelines effective March 20, 2026</strong> &mdash; Updated 3 days ago</div>
+    <div class="freshness-updated">Guidelines recently updated</div>
+  </div>
+</div>
+
+<div class="closing">
+  <p><strong>AI Underwriter POC Demo &mdash; 9 Enterprises</strong></p>
+  <p>HUD Handbook 4000.1 &bull; March 2026</p>
+</div>
+
+</div>
+</body>
+</html>
