@@ -166,6 +166,13 @@ function addChannelError(state, channel, error) {
 let state = loadState();
 log('Shared state loaded');
 
+// ─── Startup Grace Period ────────────────────────────────────────────────────
+// After hub restart, suppress OC autonomous messages for 15 seconds.
+// This prevents OC spam during the restart-to-terminal-claim gap.
+const HUB_START_TIME = Date.now();
+const STARTUP_GRACE_MS = 15000;
+function inStartupGrace() { return Date.now() - HUB_START_TIME < STARTUP_GRACE_MS; }
+
 // ─── Terminal Active Mode ────────────────────────────────────────────────────
 // When terminal is active, hub collects messages but does NOT auto-respond.
 // Terminal handles all responses. Hub only responds autonomously when terminal is down.
@@ -210,8 +217,12 @@ function isTerminalActive() {
     log('Terminal ping timeout — switching to autonomous mode');
     clearTerminalState();
 
-    // FIX #5: Single consolidated alert — not 5+ messages across channels
-    sendTelegram('OC: Covering for 9. Terminal appears frozen or unresponsive. Try clicking in the terminal window or pressing Enter — that usually unfreezes it. If that does not work, close the window and type claude in a new one. I am handling Telegram in the meantime.').catch(() => {});
+    // Suppress alert during startup grace period
+    if (!inStartupGrace()) {
+      sendTelegram('OC: Covering for 9. Terminal appears frozen or unresponsive. Try clicking in the terminal window or pressing Enter — that usually unfreezes it. If that does not work, close the window and type claude in a new one. I am handling Telegram in the meantime.').catch(() => {});
+    } else {
+      log('Suppressed ping-timeout alert during startup grace period');
+    }
     // Only email/iMessage if terminal doesn't come back (handled in recovery failed)
 
     // Immediately request terminal reopen
@@ -275,8 +286,12 @@ setInterval(() => {
       log(`Terminal watchdog: PID ${terminalPid} is DEAD — orphan ping loop detected, forcing autonomous mode`);
       clearTerminalState();
 
-      // FIX #5: Single consolidated alert — not 3 messages across channels
-      sendTelegram('OC: Covering for 9. Terminal process died. Autonomous mode active — reopening now. If you see a frozen terminal window, click in it or press Enter to unfreeze.').catch(() => {});
+      // Suppress alert during startup grace period (hub just restarted, terminal will re-claim)
+      if (!inStartupGrace()) {
+        sendTelegram('OC: Covering for 9. Terminal process died. Autonomous mode active — reopening now. If you see a frozen terminal window, click in it or press Enter to unfreeze.').catch(() => {});
+      } else {
+        log('Suppressed PID-dead alert during startup grace period');
+      }
 
       requestTerminal('Terminal PID dead — reopening');
       terminalRecoveryAttempts = 1;
@@ -295,31 +310,47 @@ setInterval(() => {
 // ─── Freeze Detector ─────────────────────────────────────────────────────────
 // Reads /tmp/9-last-tool-call (written by check-messages.sh hook after every tool call).
 // If terminal is active but no tool call in 3+ minutes, 9 is likely frozen.
-// Sends ONE alert and tries osascript keystroke to unblock. Flag resets on next ping.
+// Sends ONE alert per freeze event. Only resets when a NEW tool call is detected
+// (timestamp in file advances), NOT on pings or inbox polls.
 let freezeAlertSent = false;
+let freezeAlertForTimestamp = 0; // Track which tool-call timestamp we alerted on
 const FREEZE_THRESHOLD_MS = 180000; // 3 minutes
 const LAST_TOOL_CALL_FILE = '/tmp/9-last-tool-call';
 
+// DISABLED March 26, 2026 — freeze detector was spamming Telegram with false warnings.
+// The reset logic (timestamp advance resets flag → new stale period → fires again) created
+// a repeating alert loop between sessions. Disabling entirely until DOC agent can rebuild
+// it properly with session-aware state. The ping timeout + PID watchdog above are sufficient
+// to detect a truly dead terminal.
+//
+// To re-enable: uncomment the setInterval block below and fix the reset logic.
+/*
 setInterval(() => {
   if (!terminalActive) {
-    freezeAlertSent = false; // Reset when terminal is not active
+    freezeAlertSent = false;
+    freezeAlertForTimestamp = 0;
     return;
   }
 
   try {
     const raw = readFileSync(LAST_TOOL_CALL_FILE, 'utf-8').trim();
-    const lastCallTs = parseInt(raw) * 1000; // File stores unix seconds, convert to ms
+    const lastCallTs = parseInt(raw) * 1000;
     if (!lastCallTs || isNaN(lastCallTs)) return;
+
+    if (freezeAlertSent && lastCallTs > freezeAlertForTimestamp) {
+      freezeAlertSent = false;
+      freezeAlertForTimestamp = 0;
+      log('Freeze detector: tool call detected — 9 is active, alert cleared');
+      return;
+    }
 
     const age = Date.now() - lastCallTs;
     if (age > FREEZE_THRESHOLD_MS && !freezeAlertSent) {
       const ageMin = Math.round(age / 60000);
       log(`FREEZE DETECTOR: No tool call in ${ageMin}+ minutes — terminal may be frozen`);
 
-      // Send one alert
       sendTelegram(`9: WARNING — Terminal may be frozen. No tool call in ${ageMin}+ minutes. Attempting to unblock.`).catch(() => {});
 
-      // Try to unblock via keystroke (simulates pressing Enter in the active window)
       try {
         execSync(`osascript -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
         log('Freeze detector: sent keystroke return via osascript');
@@ -327,13 +358,12 @@ setInterval(() => {
         log(`Freeze detector: osascript keystroke failed — ${e.message}`);
       }
 
-      freezeAlertSent = true; // Don't spam — only alert once per freeze
+      freezeAlertSent = true;
+      freezeAlertForTimestamp = lastCallTs;
     }
-  } catch {
-    // File doesn't exist yet or can't be read — terminal hasn't run a tool call
-    // This is normal on startup or before first tool call
-  }
+  } catch {}
 }, 30000);
+*/
 
 // ─── Terminal Auto-Opener ────────────────────────────────────────────────────
 const TERMINAL_SIGNAL = '/tmp/9-open-terminal';
@@ -544,6 +574,12 @@ function apiReq(method, body = {}) {
 }
 
 async function sendTelegram(text) {
+  // Suppress ALL autonomous OC messages during startup grace period.
+  // Only allow messages explicitly sent by 9 via /send endpoint (those go through sendTelegramForced).
+  if (inStartupGrace() && !text.startsWith('9:')) {
+    log(`Suppressed Telegram during startup grace: "${text.slice(0, 80)}..."`);
+    return;
+  }
   const chunks = [];
   while (text.length > 4000) { chunks.push(text.slice(0, 4000)); text = text.slice(4000); }
   chunks.push(text);
@@ -899,7 +935,11 @@ const healthServer = createServer((req, res) => {
     }
     terminalLastPing = Date.now();
     terminalActive = true;
-    freezeAlertSent = false; // Fresh ping = terminal is alive, reset freeze flag
+    // NOTE: Do NOT reset freezeAlertSent here. Pings come from a background loop,
+    // not from 9 making tool calls. Resetting here causes the freeze warning to
+    // fire every 30s in a loop (ping resets flag → freeze fires again → repeat).
+    // freezeAlertSent is only reset when terminal is NOT active (line 305) or
+    // when a fresh tool call timestamp is detected.
     res.writeHead(200);
     res.end('ok');
   } else if (req.method === 'POST' && req.url === '/terminal/release') {
@@ -916,7 +956,7 @@ const healthServer = createServer((req, res) => {
     // FIX: Inbox poll doubles as heartbeat — keeps relay mode alive without depending on separate ping loop
     if (terminalActive) {
       terminalLastPing = Date.now();
-      freezeAlertSent = false; // Inbox poll = terminal active, reset freeze flag
+      // NOTE: Do NOT reset freezeAlertSent here — same reason as ping handler.
     }
     const unread = state.recentMessages.filter(m => m.direction === 'in' && m.read === false);
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -1081,21 +1121,24 @@ async function telegramPoll() {
 
                   if (signalWritten) {
                     log(`Telegram: message queued for terminal (relay mode — no OC ack while terminal active)`);
-                    // RELAY TIMEOUT (March 25 fix): If terminal doesn't pick up within 60s,
+                    // RELAY TIMEOUT: If terminal doesn't pick up within 180s,
                     // respond autonomously. Prevents messages going into a black hole when
                     // terminal is frozen but PIDs are still alive.
+                    // NOTE: 180s matches the freeze detector threshold (FREEZE_THRESHOLD_MS).
+                    // Previous 60s was too aggressive — OC would jump in while 9 was actively
+                    // thinking/writing between tool calls. Fixed March 26, 2026.
                     const relayedText = userText;
                     setTimeout(async () => {
                       try {
                         // Check if the signal file still has unread messages (terminal didn't consume them)
                         const signalContent = readFileSync('/tmp/9-incoming-message.jsonl', 'utf-8').trim();
                         if (signalContent && signalContent.includes(relayedText.slice(0, 50))) {
-                          log(`RELAY TIMEOUT: Terminal did not consume message within 60s — responding autonomously`);
+                          log(`RELAY TIMEOUT: Terminal did not consume message within 180s — responding autonomously`);
                           const reply = await askClaude(relayedText, 'telegram');
                           await sendTelegram('OC: ' + reply);
                         }
                       } catch {}
-                    }, 60000);
+                    }, 180000);
                   } else {
                     // File write failed — respond directly instead of losing the message
                     log('Signal file write failed — falling through to direct response');
@@ -1114,6 +1157,14 @@ async function telegramPoll() {
                     await sendTelegram('OC: Covering for 9. ' + reply);
                   }
                 }
+              } else if (inStartupGrace()) {
+                // Hub just restarted — suppress OC responses during grace period
+                // Queue message for terminal which should re-claim momentarily
+                log('Telegram: suppressed OC response during startup grace period — queuing for terminal');
+                try {
+                  const alert = JSON.stringify({ channel: 'telegram', text: userText, timestamp: new Date().toISOString() });
+                  appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
+                } catch {}
               } else {
                 // No terminal — check if this needs terminal or Haiku can handle it
                 const needsTerminal = detectComplexRequest(userText);
@@ -1463,10 +1514,13 @@ setInterval(async () => {
 
   const heartbeat = `OC: Heartbeat #${state.heartbeatCount} | ${uptimeStr} uptime | ${mode}\n${channelReport}${usageReport ? `\nUsage: ${usageReport}` : ''}${costAlerts}`;
 
-  await sendTelegram(heartbeat);
+  // Only send heartbeat to Telegram when terminal is NOT active — no noise during active sessions
+  if (!terminalActive) {
+    await sendTelegram(heartbeat);
+  }
   state.lastHeartbeat = new Date().toISOString();
   saveState(state);
-  log(`Heartbeat #${state.heartbeatCount} sent`);
+  log(`Heartbeat #${state.heartbeatCount} ${terminalActive ? '(suppressed — terminal active)' : 'sent'}`);
 }, 30 * 60 * 1000);
 
 // ─── Channel Health Check (every 5 minutes) ─────────────────────────────────

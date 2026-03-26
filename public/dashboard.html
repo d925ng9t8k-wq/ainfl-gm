@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Enterprises — Owner Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #080808;
+    color: #e0e0e0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Header ---- */
+  .header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    padding: 32px 20px 28px;
+    text-align: center;
+    border-bottom: 1px solid #1e1e3a;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #818cf8;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+    position: relative;
+  }
+
+  .header h1 span {
+    background: linear-gradient(135deg, #818cf8, #6366f1, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: #666;
+    font-weight: 400;
+  }
+
+  .live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  /* ---- Layout ---- */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .header h1 { font-size: 26px; }
+  }
+
+  /* ---- Section ---- */
+  .section {
+    padding: 28px 0 0;
+  }
+
+  .section-last {
+    padding-bottom: 40px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #555;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1a1a1a;
+  }
+
+  /* ---- Cards ---- */
+  .card {
+    background: #111;
+    border: 1px solid #1e1e1e;
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ---- Status Dots ---- */
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  .dot-green { background: #22c55e; }
+  .dot-yellow { background: #f59e0b; }
+  .dot-orange { background: #fb923c; }
+  .dot-red { background: #ef4444; }
+  .dot-blue { background: #3b82f6; }
+  .dot-purple { background: #a78bfa; }
+  .dot-gray { background: #444; }
+
+  .dot-green.glow { box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); }
+  .dot-yellow.glow { box-shadow: 0 0 8px rgba(245, 158, 11, 0.6); }
+  .dot-red.glow { box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+  .dot-blue.glow { box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
+
+  /* ---- Agent Board ---- */
+  .agent-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #161616;
+  }
+
+  .agent-row:last-child { border-bottom: none; }
+
+  .agent-dot-wrap {
+    padding-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .agent-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .agent-role {
+    font-size: 11px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+
+  .agent-task {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  .agent-status-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 5px;
+    display: inline-block;
+  }
+
+  .tag-active { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .tag-building { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+  .tag-researching { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+  .tag-standby { background: rgba(68, 68, 68, 0.2); color: #666; border: 1px solid #222; }
+  .tag-setting-up { background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
+
+  /* ---- Project Board ---- */
+  .project-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid #161616;
+    gap: 12px;
+  }
+
+  .project-row:last-child { border-bottom: none; }
+
+  .project-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ddd;
+    flex: 1;
+  }
+
+  .project-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 9px;
+    border-radius: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-operational { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .badge-live { background: rgba(251, 146, 60, 0.12); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.2); }
+  .badge-building { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+  .badge-progress { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+  .badge-research { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border: 1px solid #2a2a2a; }
+  .badge-setup { background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
+
+  .project-dot-wrap {
+    flex-shrink: 0;
+  }
+
+  /* ---- To-Do List ---- */
+  .todo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #161616;
+  }
+
+  .todo-item:last-child { border-bottom: none; }
+
+  .todo-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .todo-text {
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.5;
+  }
+
+  .todo-meta {
+    font-size: 11px;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  /* ---- Brainstorm Queue ---- */
+  .brainstorm-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #161616;
+  }
+
+  .brainstorm-item:last-child { border-bottom: none; }
+
+  .brainstorm-icon {
+    width: 22px;
+    height: 22px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #818cf8;
+    margin-top: 1px;
+  }
+
+  .brainstorm-text {
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.5;
+  }
+
+  /* ---- Revenue Tracker ---- */
+  .revenue-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid #161616;
+    gap: 10px;
+  }
+
+  .revenue-row:last-child { border-bottom: none; }
+
+  .revenue-source {
+    font-size: 13px;
+    color: #ccc;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .revenue-status {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 9px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  .rev-active { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .rev-ready { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+  .rev-pending { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border: 1px solid #2a2a2a; }
+  .rev-prerev { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+
+  /* ---- Sprint Log ---- */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #1e1e1e;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 18px;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -21px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #111;
+  }
+
+  .tl-done { background: #22c55e; }
+  .tl-partial { background: #f59e0b; }
+  .tl-note { background: #3b82f6; }
+
+  .timeline-time {
+    font-size: 10px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+
+  .timeline-text {
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.5;
+  }
+
+  .timeline-text strong {
+    color: #e0e0e0;
+    font-weight: 600;
+  }
+
+  /* ---- Comms Health ---- */
+  .comms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .comms-channel {
+    background: #0e0e0e;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .comms-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  .channel-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ddd;
+    margin-bottom: 2px;
+  }
+
+  .channel-detail {
+    font-size: 11px;
+    color: #555;
+  }
+
+  .channel-status {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 8px;
+    border-radius: 5px;
+  }
+
+  .ch-online { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .ch-degraded { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+  .ch-offline { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+  /* ---- Footer ---- */
+  .footer {
+    text-align: center;
+    padding: 24px 20px 32px;
+    border-top: 1px solid #151515;
+    margin-top: 32px;
+  }
+
+  .footer-text {
+    font-size: 11px;
+    color: #3a3a3a;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-text span {
+    color: #555;
+  }
+
+  /* ---- Divider ---- */
+  .section-divider {
+    border: none;
+    border-top: 1px solid #141414;
+    margin: 0;
+  }
+
+  /* ---- Accent Colors ---- */
+  .text-indigo { color: #818cf8; }
+  .text-green { color: #22c55e; }
+  .text-orange { color: #fb923c; }
+  .text-blue { color: #60a5fa; }
+  .text-purple { color: #a78bfa; }
+  .text-yellow { color: #f59e0b; }
+  .text-gray { color: #666; }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">9 Enterprises Operations</div>
+  <h1>Owner <span>Dashboard</span></h1>
+  <div class="header-sub">
+    <span class="live-dot"></span>
+    Live operations board &mdash; March 26, 2026
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ================================================================
+       SECTION 1: AGENT STATUS BOARD
+  ================================================================ -->
+  <div class="section">
+    <div class="section-title">Agent Status Board</div>
+    <div class="card">
+
+      <!-- UNO -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-blue glow"></span></div>
+        <div>
+          <div class="agent-name">UNO <span class="text-gray" style="font-weight:400;font-size:11px;">/ Research</span></div>
+          <div class="agent-role">Research Lead</div>
+          <div class="agent-task">AI Underwriter build &mdash; PDF ingestion, RAG architecture, FHA-first MVP scope</div>
+          <span class="agent-status-tag tag-building">Building</span>
+        </div>
+      </div>
+
+      <!-- TEE -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-green glow"></span></div>
+        <div>
+          <div class="agent-name">Tee <span class="text-gray" style="font-weight:400;font-size:11px;">/ Engineering</span></div>
+          <div class="agent-role">Engineering Lead</div>
+          <div class="agent-task">AiNFLGM data refresh, Jules MVP scaffolding, Owner Dashboard (this page)</div>
+          <span class="agent-status-tag tag-active">Active</span>
+        </div>
+      </div>
+
+      <!-- DOC -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-yellow glow"></span></div>
+        <div>
+          <div class="agent-name">DOC <span class="text-gray" style="font-weight:400;font-size:11px;">/ Infrastructure</span></div>
+          <div class="agent-role">Infrastructure Lead</div>
+          <div class="agent-task">Cloud VPS evaluation (DigitalOcean), voice server migration, Gram fix pending</div>
+          <span class="agent-status-tag tag-researching">Researching</span>
+        </div>
+      </div>
+
+      <!-- MONEY -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-orange"></span></div>
+        <div>
+          <div class="agent-name">MONEY <span class="text-gray" style="font-weight:400;font-size:11px;">/ Monetization</span></div>
+          <div class="agent-role">Revenue Lead</div>
+          <div class="agent-task">AdSense application prep, DraftKings/FanDuel affiliate setup, trading bot research</div>
+          <span class="agent-status-tag tag-building">Building</span>
+        </div>
+      </div>
+
+      <!-- X9 -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-purple"></span></div>
+        <div>
+          <div class="agent-name">X9 <span class="text-gray" style="font-weight:400;font-size:11px;">/ Autonomous</span></div>
+          <div class="agent-role">X/Twitter Presence</div>
+          <div class="agent-task">Account creation pending Owner approval &mdash; strategy and content queue ready to load</div>
+          <span class="agent-status-tag tag-setting-up">Awaiting Approval</span>
+        </div>
+      </div>
+
+      <!-- SCOUT -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-blue"></span></div>
+        <div>
+          <div class="agent-name">SCOUT <span class="text-gray" style="font-weight:400;font-size:11px;">/ Strategy</span></div>
+          <div class="agent-role">Strategy Lead</div>
+          <div class="agent-task">Enterprise viability analysis, trading strategy research, Free Agents marketplace roadmap</div>
+          <span class="agent-status-tag tag-researching">Researching</span>
+        </div>
+      </div>
+
+      <!-- CANVAS -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-gray"></span></div>
+        <div>
+          <div class="agent-name">CANVAS <span class="text-gray" style="font-weight:400;font-size:11px;">/ Design</span></div>
+          <div class="agent-role">Brand &amp; Design Lead</div>
+          <div class="agent-task">Brand system documentation, UI improvement queue for AiNFLGM, Jules visual identity</div>
+          <span class="agent-status-tag tag-standby">Standby</span>
+        </div>
+      </div>
+
+      <!-- PRESS -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-gray"></span></div>
+        <div>
+          <div class="agent-name">PRESS <span class="text-gray" style="font-weight:400;font-size:11px;">/ Content</span></div>
+          <div class="agent-role">Content Lead</div>
+          <div class="agent-task">Reddit strategy development, SEO content plan, social amplification for AiNFLGM launch</div>
+          <span class="agent-status-tag tag-standby">Standby</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================
+       SECTION 2: PROJECT BOARD
+  ================================================================ -->
+  <div class="section">
+    <div class="section-title">Project Board</div>
+    <div class="card">
+
+      <div class="project-row">
+        <span class="dot dot-green glow project-dot-wrap"></span>
+        <span class="project-name">9 Enterprise Solution</span>
+        <span class="project-badge badge-operational">Operational</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-orange project-dot-wrap"></span>
+        <span class="project-name">AiNFLGM.com</span>
+        <span class="project-badge badge-live">Live &mdash; Needs Data Update</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-blue project-dot-wrap"></span>
+        <span class="project-name">Free Agents / Jules</span>
+        <span class="project-badge badge-building">Building MVP</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-yellow project-dot-wrap"></span>
+        <span class="project-name">AI Underwriting Team</span>
+        <span class="project-badge badge-progress">POC In Progress</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-purple project-dot-wrap"></span>
+        <span class="project-name">X9 (Twitter)</span>
+        <span class="project-badge badge-setup">Setting Up</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-gray project-dot-wrap"></span>
+        <span class="project-name">Trading Bot</span>
+        <span class="project-badge badge-research">Researching</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-yellow project-dot-wrap"></span>
+        <span class="project-name">Cloud Migration</span>
+        <span class="project-badge badge-progress">In Progress</span>
+      </div>
+
+      <div class="project-row">
+        <span class="dot dot-blue project-dot-wrap"></span>
+        <span class="project-name">Owner Dashboard</span>
+        <span class="project-badge badge-building">Building</span>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================
+       SECTION 3 + 4: TODO + BRAINSTORM (side by side on desktop)
+  ================================================================ -->
+  <div class="section">
+    <div class="grid-2">
+
+      <!-- Owner To-Do List -->
+      <div>
+        <div class="section-title">Owner To-Do</div>
+        <div class="card">
+
+          <div class="todo-item">
+            <div class="todo-checkbox"></div>
+            <div>
+              <div class="todo-text">File 9 Enterprises LLC</div>
+              <div class="todo-meta">$99 &mdash; ohiosos.gov &mdash; 15 min</div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="todo-checkbox"></div>
+            <div>
+              <div class="todo-text">Approve X9 Twitter account creation</div>
+              <div class="todo-meta">Just say yes &mdash; 9 handles the rest</div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="todo-checkbox"></div>
+            <div>
+              <div class="todo-text">Review AI Underwriter demo</div>
+              <div class="todo-meta">POC coming soon from UNO</div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="todo-checkbox"></div>
+            <div>
+              <div class="todo-text">Review 9enterprises.html briefing</div>
+              <div class="todo-meta">ainflgm.com/9enterprises.html</div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="todo-checkbox"></div>
+            <div>
+              <div class="todo-text">Approve VPS provider</div>
+              <div class="todo-meta">DigitalOcean recommended &mdash; ~$5/mo</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Brainstorm Queue -->
+      <div>
+        <div class="section-title">Brainstorm Queue</div>
+        <div class="card">
+
+          <div class="brainstorm-item">
+            <div class="brainstorm-icon">&#9679;</div>
+            <div class="brainstorm-text">Tecmo Bowl retro mode for AiNFLGM</div>
+          </div>
+
+          <div class="brainstorm-item">
+            <div class="brainstorm-icon">&#9679;</div>
+            <div class="brainstorm-text">TitTees t-shirt concept</div>
+          </div>
+
+          <div class="brainstorm-item">
+            <div class="brainstorm-icon">&#9679;</div>
+            <div class="brainstorm-text">Free Agents marketplace (Phase 3)</div>
+          </div>
+
+          <div class="brainstorm-item">
+            <div class="brainstorm-icon">&#9679;</div>
+            <div class="brainstorm-text">Portfolio management / trading bot</div>
+          </div>
+
+          <div class="brainstorm-item">
+            <div class="brainstorm-icon">&#9679;</div>
+            <div class="brainstorm-text">Prediction market integrations</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================
+       SECTION 5: REVENUE TRACKER
+  ================================================================ -->
+  <div class="section">
+    <div class="section-title">Revenue Tracker</div>
+    <div class="card">
+
+      <div class="revenue-row">
+        <div class="revenue-source">
+          <span class="dot dot-green glow"></span>
+          Buy Me A Coffee
+        </div>
+        <span class="revenue-status rev-active">Active &mdash; $5/mo</span>
+      </div>
+
+      <div class="revenue-row">
+        <div class="revenue-source">
+          <span class="dot dot-gray"></span>
+          Google AdSense
+        </div>
+        <span class="revenue-status rev-pending">Not Yet Applied</span>
+      </div>
+
+      <div class="revenue-row">
+        <div class="revenue-source">
+          <span class="dot dot-blue"></span>
+          DraftKings Affiliate
+        </div>
+        <span class="revenue-status rev-ready">Application Ready</span>
+      </div>
+
+      <div class="revenue-row">
+        <div class="revenue-source">
+          <span class="dot dot-blue"></span>
+          FanDuel Affiliate
+        </div>
+        <span class="revenue-status rev-ready">Application Ready</span>
+      </div>
+
+      <div class="revenue-row">
+        <div class="revenue-source">
+          <span class="dot dot-yellow"></span>
+          AI Underwriter SaaS
+        </div>
+        <span class="revenue-status rev-prerev">Pre-Revenue</span>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ================================================================
+       SECTION 6 + 7: SPRINT LOG + COMMS HEALTH (side by side on desktop)
+  ================================================================ -->
+  <div class="section">
+    <div class="grid-2">
+
+      <!-- Sprint Log -->
+      <div>
+        <div class="section-title">Sprint Log &mdash; Mar 26 Overnight</div>
+        <div class="card">
+          <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">~12:00 AM</div>
+              <div class="timeline-text"><strong>Dashboard scaffolded.</strong> Owner operations board built and deployed.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">~11:30 PM</div>
+              <div class="timeline-text"><strong>Jules routing stub added.</strong> /jules route connected to hub with placeholder UI.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">~10:45 PM</div>
+              <div class="timeline-text"><strong>Kyle brief + Jules template completed.</strong> UNO research sprint delivered.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">~9:30 PM</div>
+              <div class="timeline-text"><strong>SSH access secured.</strong> Rapid Mortgage 13-state licensing added to voice context.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">~8:15 PM</div>
+              <div class="timeline-text"><strong>AdSense analysis + AI Underwriter research.</strong> UNO research sprint deployed.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-partial"></div>
+              <div class="timeline-time">Ongoing</div>
+              <div class="timeline-text"><strong>AiNFLGM data refresh.</strong> Source identified &mdash; OTC March 18 data. Refresh plan drafted.</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Comms Health -->
+      <div>
+        <div class="section-title">Comms Health</div>
+        <div class="comms-grid">
+
+          <div class="comms-channel">
+            <div class="comms-icon" style="background: rgba(34,197,94,0.1);">T</div>
+            <div>
+              <div class="channel-name">Telegram</div>
+              <div class="channel-detail">Primary channel</div>
+            </div>
+            <span class="channel-status ch-online">Online</span>
+          </div>
+
+          <div class="comms-channel">
+            <div class="comms-icon" style="background: rgba(59,130,246,0.1);">iM</div>
+            <div>
+              <div class="channel-name">iMessage</div>
+              <div class="channel-detail">Mac-dependent</div>
+            </div>
+            <span class="channel-status ch-online">Online</span>
+          </div>
+
+          <div class="comms-channel">
+            <div class="comms-icon" style="background: rgba(167,139,250,0.1);">V</div>
+            <div>
+              <div class="channel-name">Voice</div>
+              <div class="channel-detail">Twilio + tunnel</div>
+            </div>
+            <span class="channel-status ch-online">Online</span>
+          </div>
+
+          <div class="comms-channel">
+            <div class="comms-icon" style="background: rgba(245,158,11,0.1);">E</div>
+            <div>
+              <div class="channel-name">Email</div>
+              <div class="channel-detail">2-way active</div>
+            </div>
+            <span class="channel-status ch-online">Online</span>
+          </div>
+
+        </div>
+        <div style="margin-top: 12px;">
+          <div class="card" style="padding: 14px;">
+            <div style="font-size: 11px; color: #555; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Hub Status</div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 12px; color: #888;">comms-hub.mjs</span>
+              <span style="font-size: 10px; font-weight: 700; color: #22c55e; text-transform: uppercase;">Running</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 12px; color: #888;">Cloud Worker</span>
+              <span style="font-size: 10px; font-weight: 700; color: #22c55e; text-transform: uppercase;">Deployed</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 12px; color: #888;">Cloudflare Tunnel</span>
+              <span style="font-size: 10px; font-weight: 700; color: #22c55e; text-transform: uppercase;">Active</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 12px; color: #888;">Terminal Mode</span>
+              <span style="font-size: 10px; font-weight: 700; color: #818cf8; text-transform: uppercase;">Relay</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-text">
+    Last updated by 9 &mdash; <span>March 26, 2026 4:10 AM ET</span>
+  </div>
+  <div class="footer-text" style="margin-top: 6px; font-size: 10px; color: #2a2a2a;">
+    9 Enterprises &mdash; ainflgm.com/dashboard.html
+  </div>
+</div>
+
+</body>
+</html>
