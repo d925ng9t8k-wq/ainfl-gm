@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jules Pilot Program | Kyle Cabezas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ccc; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 820px; margin: 0 auto; padding: 48px 24px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #1a1a1a; }
+  .brand-image { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; margin-bottom: 20px; border: 1px solid #222; }
+  .header .badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; padding: 4px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+  .header h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .header .sub { font-size: 16px; color: #666; font-weight: 400; margin-bottom: 6px; }
+  .header .from-line { font-size: 14px; color: #555; }
+  .header .from-line strong { color: #818cf8; }
+
+  /* Intro */
+  .intro-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 24px 28px; margin-bottom: 40px; }
+  .intro-box p { font-size: 15px; color: #aaa; line-height: 1.8; margin-bottom: 10px; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box p strong { color: #fff; }
+
+  /* Section headers */
+  .section-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #444; margin: 48px 0 12px; }
+  .section-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 16px; letter-spacing: -0.5px; }
+
+  /* Cards */
+  .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px 28px; margin: 16px 0; }
+  .card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: #888; line-height: 1.7; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: #ddd; }
+
+  /* Feature grid */
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .feature-item { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 10px; padding: 18px 20px; }
+  .feature-item .feat-icon { font-size: 22px; margin-bottom: 10px; }
+  .feature-item .feat-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .feature-item .feat-desc { font-size: 13px; color: #777; line-height: 1.6; }
+
+  /* How it works steps */
+  .steps { list-style: none; padding: 0; margin: 16px 0; counter-reset: step; }
+  .steps li { counter-increment: step; font-size: 14px; color: #999; padding: 12px 0 12px 52px; position: relative; border-bottom: 1px solid #1a1a1a; }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: 10px; width: 32px; height: 32px; border-radius: 8px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-align: center; }
+  .steps li strong { color: #ddd; }
+
+  /* Pilot details */
+  .pilot-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .pilot-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 1px solid #222; }
+  .pilot-table td { padding: 12px 12px; font-size: 14px; color: #999; border-bottom: 1px solid #161616; vertical-align: top; }
+  .pilot-table td:first-child { color: #ddd; font-weight: 600; width: 35%; white-space: nowrap; }
+
+  /* SMS conversation demo */
+  .sms-thread { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .sms-thread .thread-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #444; margin-bottom: 18px; text-align: center; }
+  .sms-bubble-wrap { margin-bottom: 20px; }
+  .sms-bubble-wrap:last-child { margin-bottom: 0; }
+  .sms-sender { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .sms-sender.kyle { color: #60a5fa; text-align: right; }
+  .sms-sender.jules { color: #818cf8; }
+  .sms-bubble { display: inline-block; max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+  .sms-bubble.kyle { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.2); color: #c7d9f5; float: right; border-radius: 12px 4px 12px 12px; }
+  .sms-bubble.jules { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); color: #c4c6f0; border-radius: 4px 12px 12px 12px; }
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  /* Not-list */
+  .not-list { list-style: none; padding: 0; margin: 16px 0; }
+  .not-list li { font-size: 14px; color: #888; padding: 8px 0 8px 28px; position: relative; border-bottom: 1px solid #151515; }
+  .not-list li:last-child { border-bottom: none; }
+  .not-list li::before { content: ''; position: absolute; left: 0; top: 14px; width: 14px; height: 2px; background: #f87171; border-radius: 2px; }
+  .not-list li strong { color: #ddd; }
+
+  /* Free badge */
+  .free-badge { display: inline-block; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: #22c55e; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-left: 8px; vertical-align: middle; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid #1a1a1a; margin: 40px 0; }
+
+  /* Getting started box */
+  .start-box { background: linear-gradient(135deg, #0f0f1a, #12121e); border: 1px solid rgba(99,102,241,0.3); border-radius: 12px; padding: 32px; margin-top: 16px; }
+  .start-box p { font-size: 15px; color: #999; line-height: 1.8; margin-bottom: 10px; }
+  .start-box p:last-child { margin-bottom: 0; }
+  .start-box p strong { color: #fff; }
+  .start-box .highlight { font-size: 16px; color: #c7d2fe; font-weight: 500; margin-bottom: 6px; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 56px; padding-top: 32px; border-top: 1px solid #1a1a1a; }
+  .footer p { font-size: 13px; color: #444; line-height: 1.7; }
+  .footer .footer-brand { font-size: 12px; color: #333; margin-top: 8px; letter-spacing: 0.5px; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 32px 16px; }
+    .header h1 { font-size: 28px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .pilot-table td:first-child { white-space: normal; }
+    .sms-bubble { max-width: 95%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <img src="9-brand.jpg" alt="9 Enterprises" class="brand-image">
+    <div class="badge">Pilot Program</div>
+    <h1>Meet Jules</h1>
+    <div class="sub">Your personal AI assistant — texting only, no app required</div>
+    <div class="from-line">Prepared for <strong>Kyle Cabezas</strong> — Rapid Mortgage Cincinnati</div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro-box">
+    <p>Kyle — you already know what this is. You agreed to be the <strong>first external pilot</strong> for Jules, and now we're ready to actually do it.</p>
+    <p>This page walks you through exactly what Jules does, what your 30-day pilot looks like, and a few real examples of how it works. No pitch deck. No BS. You've been friends with Jasson for 10 years — this is just the actual info you need to get started.</p>
+  </div>
+
+  <!-- Section 1: What Is Jules -->
+  <div class="section-num">01</div>
+  <div class="section-title">What Is Jules?</div>
+
+  <div class="card">
+    <p>Jules is a <strong>personal AI assistant that runs entirely over text message</strong>. No app to download. No account to create. No login. You get a phone number, you save it as Jules, and you just text it.</p>
+    <p>Jules is built specifically for your life as a loan officer. It knows mortgage guidelines, tracks your reminders, and sends you a morning briefing before you open Encompass. Think of it as having a sharp assistant in your phone who already knows what you do for a living.</p>
+    <p>It responds in seconds. Works at 6 AM or 11 PM. Remembers everything you've told it.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 2: What Jules Does For You -->
+  <div class="section-num">02</div>
+  <div class="section-title">What Jules Does For You</div>
+
+  <div class="feature-grid">
+    <div class="feature-item">
+      <div class="feat-icon">&#9728;</div>
+      <div class="feat-title">Morning Briefing — 7:00 AM</div>
+      <div class="feat-desc">Rates vs. yesterday. Today's closings. Pipeline flags. One priority action. Five lines, every morning, before you open anything.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">&#128218;</div>
+      <div class="feat-title">Guideline Quick-Reference</div>
+      <div class="feat-desc">FHA DTI limits, VA funding fees, conforming loan limits, credit score minimums — instant answers mid-conversation with a client or agent.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">&#128276;</div>
+      <div class="feat-title">Client Follow-Up Reminders</div>
+      <div class="feat-desc">"Remind me to call the Smiths about their appraisal Thursday." Done. Jules fires at exactly the time you set.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">&#128200;</div>
+      <div class="feat-title">Rate Alerts</div>
+      <div class="feat-desc">When rates move more than 0.125% intraday, Jules texts you. Good day to push floaters. Bad day to hold. You decide faster.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">&#128203;</div>
+      <div class="feat-title">Task Management</div>
+      <div class="feat-desc">Running to-do list. Text Jules to add something, ask what's on the list, check things off. No app, no friction.</div>
+    </div>
+    <div class="feature-item">
+      <div class="feat-icon">&#128172;</div>
+      <div class="feat-title">General Q&amp;A</div>
+      <div class="feat-desc">Ask Jules anything — mortgage or otherwise. It's a full AI. Not just a lookup tool.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 3: How It Works -->
+  <div class="section-num">03</div>
+  <div class="section-title">How It Works</div>
+
+  <ol class="steps">
+    <li><strong>You get a dedicated phone number.</strong> We'll text you from it to introduce Jules. Save it as "Jules" in your contacts.</li>
+    <li><strong>Text like you would anyone else.</strong> Ask a question, set a reminder, ask for today's rates. Plain English. No commands, no syntax.</li>
+    <li><strong>Jules responds in seconds.</strong> Short, direct answers. No corporate speak. It knows you're a producing branch manager who's in between calls.</li>
+    <li><strong>Jules remembers your context.</strong> Your team names, your preferences, your open reminders — Jules carries it across every conversation.</li>
+    <li><strong>7:00 AM — morning briefing arrives.</strong> Before you've opened anything, Jules has already done the morning homework. You just read it and move.</li>
+  </ol>
+
+  <hr class="divider">
+
+  <!-- Section 4: The Pilot -->
+  <div class="section-num">04</div>
+  <div class="section-title">What the Pilot Looks Like <span class="free-badge">Free</span></div>
+
+  <table class="pilot-table">
+    <thead>
+      <tr>
+        <th>What</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Duration</td>
+        <td>30 days of live use</td>
+      </tr>
+      <tr>
+        <td>Cost to you</td>
+        <td>Zero. You're the pilot.</td>
+      </tr>
+      <tr>
+        <td>What we ask</td>
+        <td>Use it naturally — text Jules whenever you'd normally Google something or check a guideline. At the end of each week, give us honest feedback: what's useful, what's not, what's missing.</td>
+      </tr>
+      <tr>
+        <td>Iteration cadence</td>
+        <td>We update Jules weekly based on what you actually use. If you never touch a feature, we cut it. If you want something Jules doesn't do yet, we build it.</td>
+      </tr>
+      <tr>
+        <td>Your privacy</td>
+        <td>Jules does not store SSNs, loan file data, or borrower financials. Reminders and conversation context only. No loan files, no sensitive data.</td>
+      </tr>
+      <tr>
+        <td>Commitment level</td>
+        <td>None. If it's not useful by week 2, you tell Jasson and we pause. No awkwardness.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <!-- Section 5: What Jules Is NOT -->
+  <div class="section-num">05</div>
+  <div class="section-title">What Jules Is NOT</div>
+
+  <div class="card">
+    <ul class="not-list">
+      <li><strong>Not a replacement for Encompass or your CRM.</strong> Jules is a layer on top of your existing tools, not a substitute for them.</li>
+      <li><strong>Not handling sensitive borrower data.</strong> No SSNs, no loan files, no financials. Jules knows names and reminder context — that's it.</li>
+      <li><strong>Not making decisions for you.</strong> Jules surfaces information and answers faster. The judgment calls are still yours.</li>
+      <li><strong>Not an AI that hallucinates guidelines.</strong> Mortgage guideline lookups are pulled from a verified reference table — not made up. If Jules isn't sure, it says so.</li>
+      <li><strong>Not something that will spam you.</strong> Jules texts you once in the morning and then waits for you to reach out. No check-ins, no "how's your day going."</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 6: Example Interactions -->
+  <div class="section-num">06</div>
+  <div class="section-title">What It Actually Looks Like</div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Guideline Lookup</div>
+    <div class="sms-bubble-wrap clearfix">
+      <div class="sms-sender kyle">Kyle</div>
+      <div class="sms-bubble kyle">What's the max DTI for FHA?</div>
+    </div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender jules">Jules</div>
+      <div class="sms-bubble jules">FHA max is 31/43 standard. With AUS approval it goes to 46.9/56.9. Manual underwrite caps at 40/40 without compensating factors. Source: HUD 4000.1 Section II.A.5.d</div>
+    </div>
+  </div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Client Reminder</div>
+    <div class="sms-bubble-wrap clearfix">
+      <div class="sms-sender kyle">Kyle</div>
+      <div class="sms-bubble kyle">Remind me to call Steve Johnson about his appraisal tomorrow at 9</div>
+    </div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender jules">Jules</div>
+      <div class="sms-bubble jules">Got it. I'll remind you tomorrow at 9 AM to call Steve Johnson about his appraisal.</div>
+    </div>
+  </div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Morning Rate Check</div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender jules">Jules</div>
+      <div class="sms-bubble jules">Morning. 30yr conventional at 6.875% — down 12.5bps from yesterday. FHA 30yr at 6.5%. MBS are holding steady. Martinez closing at 2pm, all conditions cleared. One thing: Hailey flagged the Williams file — appraisal came in low, needs your call before noon.</div>
+    </div>
+  </div>
+
+  <div class="sms-thread">
+    <div class="thread-label">VA Funding Fee</div>
+    <div class="sms-bubble-wrap clearfix">
+      <div class="sms-sender kyle">Kyle</div>
+      <div class="sms-bubble kyle">VA funding fee for a vet on their second use with 5% down?</div>
+    </div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender jules">Jules</div>
+      <div class="sms-bubble jules">3.30% for subsequent use at 5% down. First use at 5% is 2.15%. No PMI either way — that's still the main sell. No minimum credit score from VA; your overlay probably lands at 580-620.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 7: Getting Started -->
+  <div class="section-num">07</div>
+  <div class="section-title">Getting Started</div>
+
+  <div class="start-box">
+    <p class="highlight"><strong>Here's what happens next:</strong></p>
+    <p>We'll text you from a new number — save it as <strong>Jules</strong> in your contacts. That's the only setup required.</p>
+    <p>Your <strong>first morning briefing arrives at 7:00 AM</strong> on day one. Text Jules anything, anytime — it's always on.</p>
+    <p>At the end of week one, Jasson will check in: what did you actually use, what's missing, what do you want more of. We iterate from there.</p>
+    <p>Any questions before we kick it off — just text Jasson or ask in the pilot thread once Jules is live. Either way works.</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Jules — A Free Agents Product by 9 Enterprises</p>
+    <p class="footer-brand">Pilot Program for Rapid Mortgage | Cincinnati Branch | March 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
