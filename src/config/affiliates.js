@@ -3,7 +3,19 @@
  *
  * Update these with real affiliate URLs and tracking codes when partnerships are established.
  * Set `active: true` to display the link on the site.
+ *
+ * FTC DISCLOSURE (required under 16 CFR Part 255):
+ * AiNFL GM participates in affiliate programs with sportsbooks and prediction markets.
+ * When a user signs up or makes a deposit through a link on this site, we may receive
+ * a commission. This comes at no additional cost to the user. All affiliate relationships
+ * are disclosed in the site footer and on the /about page as required by the FTC.
  */
+
+/**
+ * Standard FTC disclosure text for use anywhere affiliate links appear.
+ * Include this near any rendered affiliate link on the UI.
+ */
+export const FTC_DISCLOSURE = 'Affiliate link — we may earn a commission if you sign up through this link, at no extra cost to you.';
 
 export const SPORTSBOOK_PARTNERS = [
   {
