@@ -1,28 +1,37 @@
-# Mortgage Guideline AI — Knowledge Base
+# AI Underwriter POC — FHA Guideline Assistant
 
-## Overview
-This directory contains structured mortgage lending guidelines compiled for building an AI-powered underwriting assistant for Rapid Mortgage Company.
+AI Underwriter POC — FHA guideline assistant powered by Claude. Answers mortgage underwriting questions with exact guideline references.
+
+## Usage
+
+```bash
+node mortgage-ai/fha-agent.mjs "What is the minimum credit score for FHA?"
+node mortgage-ai/fha-agent.mjs "What is the minimum down payment for FHA?"
+node mortgage-ai/fha-agent.mjs "How long does a borrower have to wait after a Chapter 7 bankruptcy?"
+```
+
+Run from the project root (`/Users/jassonfishback/Projects/BengalOracle/`). The agent loads the API key from `.env` in the project root.
 
 ## Files
 
-| File | Agency | Size | Coverage |
-|------|--------|------|----------|
-| fannie-mae-guidelines.md | Fannie Mae | 17KB | DTI, credit, property, LTV, gifts, reserves, buydowns, edge cases |
-| fha-guidelines.md | FHA | 10KB | FHA-specific rules vs conventional, MIP, anti-flip, identity of interest |
-| va-usda-guidelines.md | VA + USDA | 22KB | Eligibility, entitlement, funding fee, residual income, USDA income limits |
-| freddie-mac-differences.md | Freddie Mac | 11KB | Side-by-side comparison of Fannie vs Freddie differences |
+| File | Purpose |
+|------|---------|
+| `fha-agent.mjs` | CLI tool — takes a question, returns a guideline answer |
+| `fha-system-prompt.md` | System prompt with embedded FHA guidelines from HUD Handbook 4000.1 |
+| `fha-guidelines.md` | Full FHA knowledge base (source material) |
+| `fannie-mae-guidelines.md` | Fannie Mae guidelines (for comparison context) |
+| `freddie-mac-differences.md` | Freddie Mac vs Fannie differences |
+| `va-usda-guidelines.md` | VA and USDA guidelines |
 
-## Target Use Cases
-1. **Loan officer quick reference** — instant answers to guideline questions
-2. **Underwriter training tool** — scenario-based learning
-3. **Pre-qualification helper** — automated eligibility screening
-4. **Kyle Shea demo** — show practical AI value for Rapid Mortgage operations
+## Model
 
-## Important Notes
-- Guidelines reflect training data through early 2025
-- 2026 conforming loan limits need to be updated when FHFA announces them
-- Individual lender overlays (Rapid Mortgage's own policies) should be layered on top
-- Always verify against current Selling Guides before making lending decisions
+Uses `claude-haiku-4-5-20251001` for speed and cost efficiency.
+
+## Notes
+
+- Guidelines reflect HUD Handbook 4000.1 through early 2025
+- Always verify against current Mortgagee Letters before making lending decisions
+- Individual lender overlays (Rapid Mortgage policies) should be layered on top
 
 ## Next Steps
 - [ ] Build chat interface for guideline queries
