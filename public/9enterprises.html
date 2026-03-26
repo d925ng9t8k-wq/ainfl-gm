@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Enterprises — Owner Briefing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    padding: 80px 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid #222;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #818cf8;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, #818cf8, #6366f1, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 20px;
+    color: #888;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto 8px;
+  }
+
+  .hero-meta {
+    font-size: 13px;
+    color: #555;
+    margin-top: 20px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  section {
+    padding: 60px 0;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  section:last-child { border-bottom: none; }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    margin-top: 32px;
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  p {
+    font-size: 16px;
+    color: #aaa;
+    margin-bottom: 16px;
+  }
+
+  .accent { color: #818cf8; font-weight: 600; }
+  .highlight { color: #fff; }
+
+  .thesis-box {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(99, 102, 241, 0.02));
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .thesis-box p {
+    font-size: 22px;
+    font-weight: 600;
+    color: #c7d2fe;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .structure-tree {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 32px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    color: #8b8b8b;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .structure-tree .parent { color: #fff; font-weight: 700; font-size: 16px; }
+  .structure-tree .core { color: #818cf8; font-weight: 600; }
+  .structure-tree .product { color: #6ee7b7; font-weight: 600; }
+  .structure-tree .desc { color: #666; }
+
+  .product-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 40px;
+    margin: 40px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .product-card.free-agents::before {
+    background: linear-gradient(90deg, #6ee7b7, #34d399);
+  }
+
+  .product-card.ainflgm::before {
+    background: linear-gradient(90deg, #fb923c, #f97316);
+  }
+
+  .product-card.underwriter::before {
+    background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  }
+
+  .product-card .product-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .free-agents .product-tag { background: rgba(110, 231, 183, 0.15); color: #6ee7b7; }
+  .ainflgm .product-tag { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+  .underwriter .product-tag { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+
+  .product-card h2 {
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+
+  .product-card .tagline {
+    font-size: 18px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  .example-box {
+    background: #0d0d0d;
+    border-left: 3px solid #333;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .example-box .question {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .example-box .answer {
+    color: #c7d2fe;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .example-box .source {
+    color: #555;
+    font-size: 12px;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #555;
+    border-bottom: 1px solid #222;
+  }
+
+  td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #aaa;
+    border-bottom: 1px solid #151515;
+  }
+
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .revenue-total td {
+    font-weight: 700;
+    color: #fff;
+    border-top: 2px solid #333;
+    font-size: 15px;
+  }
+
+  .phase {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    align-items: flex-start;
+  }
+
+  .phase-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    margin-top: 2px;
+  }
+
+  .free-agents .phase-num { background: rgba(110, 231, 183, 0.2); color: #6ee7b7; }
+  .ainflgm .phase-num { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
+  .underwriter .phase-num { background: rgba(96, 165, 250, 0.2); color: #60a5fa; }
+
+  .phase-content h4 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .phase-content p {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+  }
+
+  .proving-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin: 32px 0;
+  }
+
+  .proving-item {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .proving-item .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .proving-item:nth-child(1) .label { color: #6ee7b7; }
+  .proving-item:nth-child(2) .label { color: #fb923c; }
+  .proving-item:nth-child(3) .label { color: #60a5fa; }
+
+  .proving-item .question {
+    font-size: 14px;
+    color: #999;
+    font-style: italic;
+  }
+
+  .comp-section {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 32px;
+    margin: 24px 0;
+  }
+
+  .comp-section h4 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .comp-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .badge-direct { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+  .badge-indirect { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .badge-gap { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+
+  .edge-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+
+  .edge-list li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: #aaa;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .edge-list li::before {
+    content: '>';
+    color: #818cf8;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .big-picture {
+    background: linear-gradient(135deg, #111 0%, #1a1a2e 100%);
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 48px;
+    margin: 40px 0;
+    text-align: center;
+  }
+
+  .big-picture h2 {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+
+  .big-picture .trio {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 32px 0;
+  }
+
+  .big-picture .trio-item {
+    text-align: center;
+  }
+
+  .big-picture .trio-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+
+  .big-picture .trio-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .big-picture .trio-item:nth-child(1) .trio-label { color: #6ee7b7; }
+  .big-picture .trio-item:nth-child(2) .trio-label { color: #fb923c; }
+  .big-picture .trio-item:nth-child(3) .trio-label { color: #60a5fa; }
+
+  .closer {
+    font-size: 18px;
+    color: #888;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .closer strong { color: #fff; }
+
+  .footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid #1a1a1a;
+    color: #333;
+    font-size: 13px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .status-live { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+  .status-phase1 { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  .status-ready { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .feature-item {
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .feature-item h4 {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .feature-item p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 60px 24px 40px; }
+    .hero h1 { font-size: 36px; }
+    .hero-sub { font-size: 16px; }
+    .container { padding: 0 24px; }
+    h2 { font-size: 28px; }
+    .proving-grid { grid-template-columns: 1fr; }
+    .big-picture .trio { flex-direction: column; gap: 20px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .product-card { padding: 24px; }
+    section { padding: 40px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Owner Briefing</div>
+  <h1><span>9</span> Enterprises</h1>
+  <p class="hero-sub">Enterprise & Consumer AI Solutions</p>
+  <p class="hero-sub" style="font-size: 15px; color: #555;">Ohio LLC &bull; Founded 2026</p>
+  <p class="hero-meta">Prepared by 9 &bull; March 26, 2026 &bull; For Jasson Fishback, Founder & Owner</p>
+</div>
+
+<div class="container">
+
+  <!-- THESIS -->
+  <section>
+    <h2>The Thesis</h2>
+    <div class="thesis-box">
+      <p>"AI is not a feature. It is a business partner."</p>
+    </div>
+    <p>9 Enterprises is an AI-first holding company. Every product tests a different dimension of one central thesis: a single founder with the right AI partner can build, operate, and scale multiple businesses simultaneously — without the traditional team overhead.</p>
+    <p>We are not adding AI to existing software. We are building businesses where <span class="highlight">AI is the product</span> — where the intelligence layer is load-bearing, not decorative.</p>
+  </section>
+
+  <!-- STRUCTURE -->
+  <section>
+    <h2>Corporate Structure</h2>
+    <div class="structure-tree">
+      <span class="parent">9 ENTERPRISES LLC</span> <span class="desc">(Parent Company — Ohio)</span><br>
+      &nbsp;&nbsp;│<br>
+      &nbsp;&nbsp;├── <span class="core">9</span> <span class="desc">— The Core AI Platform & Operating System</span><br>
+      &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="desc">Multi-channel comms &bull; Voice calls &bull; Agent hierarchy &bull; 24/7 autonomous ops</span><br>
+      &nbsp;&nbsp;│<br>
+      &nbsp;&nbsp;└── <span class="parent">THE FRANCHISE</span> <span class="desc">(Product Portfolio)</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="product">Free Agents</span> <span class="desc">— Sharable AI Agents & Personal Assistants</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="desc">Jules is the 1st iteration</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="product">AiNFLGM.com</span> <span class="desc">— AI NFL Offseason Simulator</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="desc">Live product &bull; 32 teams &bull; Revenue target: $50K/mo</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="product">AI Underwriting Team</span> <span class="desc">— Mortgage Guideline Intelligence</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="desc">RAG-based chatbot &bull; Enterprise SaaS play</span>
+    </div>
+  </section>
+
+  <!-- PROVING GROUND -->
+  <section>
+    <h2>The Proving Ground</h2>
+    <p>Every product in The Franchise is a <span class="highlight">proof of concept inside 9</span> — proving that an AI-first company can build, ship, market, and monetize real products with minimal human intervention. Each one tests a different dimension:</p>
+    <div class="proving-grid">
+      <div class="proving-item">
+        <div class="label">Free Agents</div>
+        <div class="question">Can AI be packaged for non-technical people as a personal tool?</div>
+      </div>
+      <div class="proving-item">
+        <div class="label">AiNFLGM</div>
+        <div class="question">Can AI build a consumer product from zero and generate revenue?</div>
+      </div>
+      <div class="proving-item">
+        <div class="label">AI Underwriter</div>
+        <div class="question">Can AI replace a $200K enterprise software sale?</div>
+      </div>
+    </div>
+    <p>If all three work? The model scales to <span class="highlight">everything</span> — any industry, any vertical, any business that needs AI to execute, not just advise.</p>
+  </section>
+
+  <!-- 9 PLATFORM -->
+  <section>
+    <h2>9 — The Platform</h2>
+    <p><span class="status-badge status-live">Operational 24/7</span></p>
+    <p style="margin-top: 16px;">9 isn't just the AI partner. It's the entire operating infrastructure that powers everything in The Franchise.</p>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <h4>Multi-Channel Comms</h4>
+        <p>Telegram, iMessage, email, voice calls. All channels active and monitored.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Autonomous Operations</h4>
+        <p>OC handles messages when 9 is offline. Backup QB covers when Mac is down.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Voice Capability</h4>
+        <p>Live phone calls with natural voice. Cloudflare tunnel. Twilio failover.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Agent Hierarchy</h4>
+        <p>UNO (Research) and Tee (Engineering) manage sub-agent teams for parallel execution.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Self-Healing</h4>
+        <p>LaunchAgent auto-restart, terminal recovery, API health probing, log rotation.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Cloud Sync</h4>
+        <p>Cloudflare Worker standin. State synced every 60s. Always-on failover.</p>
+      </div>
+    </div>
+    <p style="margin-top: 16px;">This is the engine. Everything else is a vehicle built on top of it.</p>
+  </section>
+
+  <!-- PRODUCT 1: FREE AGENTS -->
+  <div class="product-card free-agents">
+    <span class="product-tag">Product 1</span>
+    <h2>Free Agents</h2>
+    <p class="tagline">Your people deserve their own AI. Give them one.</p>
+
+    <h3>What It Is</h3>
+    <p>Personal AI assistants that work through the channels people already use — iMessage, SMS, Telegram. No apps to download. No accounts to create. No learning curve. Just text your AI and it handles things.</p>
+
+    <h3>Jules — First Iteration</h3>
+    <p>Built for Jamie. A personal assistant that sends morning briefings, manages shopping lists, suggests meals, and handles reminders. All through iMessage. Zero friction.</p>
+    <p>Jules isn't a chatbot. <span class="highlight">Jules is a family member who never forgets, never sleeps, and never drops the ball.</span></p>
+
+    <div class="example-box">
+      <div class="question"><strong>Jamie texts:</strong> "What should I make for dinner? Jude doesn't want pasta again."</div>
+      <div class="answer"><strong>Jules:</strong> "How about chicken tacos? You've got everything — chicken breasts, tortillas, the taco seasoning in the back of the pantry. Takes about 25 minutes. Want me to add anything to the shopping list while we're at it?"</div>
+    </div>
+
+    <h3>Roadmap</h3>
+    <div class="phase">
+      <div class="phase-num">1</div>
+      <div class="phase-content">
+        <h4>Jules for Fishback Household <span class="status-badge status-phase1">In Progress</span></h4>
+        <p>Single deployment, full context on Jamie's preferences, schedule, and family logistics.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">2</div>
+      <div class="phase-content">
+        <h4>Template System</h4>
+        <p>Configurable templates — household, business, trainer, property manager. Operator sets it up in under an hour.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">3</div>
+      <div class="phase-content">
+        <h4>Marketplace</h4>
+        <p>Self-serve onboarding. Browse agents, subscribe, connect phone number. Revenue split between platform and operator.</p>
+      </div>
+    </div>
+
+    <h3>Revenue Model</h3>
+    <p><span class="accent">$5-15/month per active agent.</span> At 1,000 agents at $10/month = $10K/month recurring. Marginal cost per agent is essentially API token spend per conversation.</p>
+
+    <h3>Why It Matters</h3>
+    <p>Every major AI company builds for developers and enterprises. <span class="highlight">Nobody is building AI assistants that a mom, a coach, or a small business owner can actually use.</span> That's 300 million Americans who don't write code but would love a personal AI through their existing phone. Free Agents fills that gap.</p>
+  </div>
+
+  <!-- PRODUCT 2: AiNFLGM -->
+  <div class="product-card ainflgm">
+    <span class="product-tag">Product 2</span>
+    <h2>AiNFLGM.com</h2>
+    <p class="tagline">You're the GM. Make the calls.</p>
+
+    <h3>What It Is</h3>
+    <p>A full NFL offseason simulation where fans step into the GM role. Manage the salary cap. Sign free agents. Make trades. Run the draft. Simulate the season. See if your moves actually work.</p>
+    <p><span class="status-badge status-live">Live at ainflgm.com</span></p>
+
+    <h3>What's Live Right Now</h3>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <h4>Roster Management</h4>
+        <p>Full 53-man roster. Cut, restructure, extend with real cap math.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Salary Cap Tracker</h4>
+        <p>Live cap figures, dead cap, contract year visualization.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Free Agency</h4>
+        <p>Sign FAs with negotiable contracts — years, AAV, cap hit.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Trades</h4>
+        <p>Full trade system with anti-exploit safeguards and AI GMs.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Draft</h4>
+        <p>1-7 round mock draft with PFF-sourced prospects and 30% randomization.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Season Sim</h4>
+        <p>Full season simulation influenced by your offseason decisions.</p>
+      </div>
+      <div class="feature-item">
+        <h4>Polymarket Integration</h4>
+        <p>Real prediction market odds alongside your sim results.</p>
+      </div>
+      <div class="feature-item">
+        <h4>PWA</h4>
+        <p>Progressive Web App — installable, mobile-first, works offline.</p>
+      </div>
+    </div>
+
+    <h3>Revenue Path to $50K/Month</h3>
+    <table>
+      <thead>
+        <tr><th>Channel</th><th>Volume</th><th>Rate</th><th>Monthly</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DraftKings/FanDuel Affiliate</td><td>150 depositing users</td><td>$200 avg CPA</td><td>$30,000</td></tr>
+        <tr><td>Google AdSense</td><td>100K monthly sessions</td><td>$0.15 RPM</td><td>$15,000</td></tr>
+        <tr><td>Premium Tier</td><td>500 subscribers</td><td>$9.99/mo</td><td>$4,995</td></tr>
+        <tr><td>Buy Me A Coffee</td><td>Community</td><td>—</td><td>~$500</td></tr>
+        <tr class="revenue-total"><td><strong>Total</strong></td><td></td><td></td><td><strong>~$50,495</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 13px; color: #555;">150 affiliate conversions from 100K sessions = 0.15% conversion rate. DraftKings benchmarks for engaged sports content are 0.5-2%. The model is conservative.</p>
+
+    <h3>Competitive Position</h3>
+    <p>Mock draft boards are static. Fantasy platforms are team-management, not front-office. Madden requires a console. <span class="highlight">No dedicated, browser-based, AI-powered NFL GM simulation exists at this depth.</span> AiNFLGM.com owns that category.</p>
+  </div>
+
+  <!-- PRODUCT 3: AI UNDERWRITER -->
+  <div class="product-card underwriter">
+    <span class="product-tag">Product 3</span>
+    <h2>AI Underwriting Team</h2>
+    <p class="tagline">900 pages of guidelines. One question. Five seconds.</p>
+
+    <h3>What It Is</h3>
+    <p>A RAG-based AI chatbot that lets mortgage loan officers query agency guidelines in plain English and get accurate answers with exact source citations. No PDF searching. No calling underwriting. No guessing.</p>
+    <p><span class="status-badge status-ready">POC Ready to Build</span></p>
+
+    <div class="example-box">
+      <div class="question"><strong>Loan Officer asks:</strong> "Can I use rental income from a property the borrower just bought to qualify for an FHA loan?"</div>
+      <div class="answer"><strong>AI Underwriter:</strong> Rental income from a recently acquired property is generally not eligible for FHA qualification unless the borrower has a two-year history of managing rental properties documented on their tax returns. Exceptions apply for relocations where the departing residence becomes a rental.</div>
+      <div class="source">Source: HUD Handbook 4000.1, Section II.A.4.d — Rental Income</div>
+    </div>
+    <p>That answer takes a loan officer 15-20 minutes to find manually. The AI does it in five seconds. Multiply by 10 questions/day, 20 LOs, 250 working days. <span class="highlight">That's the ROI conversation.</span></p>
+
+    <h3>The Competitive Gap</h3>
+    <p>Enterprise tools (Tavant, ICE Encompass AI, LoanLogics) start at <span class="accent">$200,000+ implementation</span> with 6-month deployments and dedicated IT requirements. Built for the top 50 lenders by volume.</p>
+    <p><span class="highlight">Mid-size lenders get nothing.</span> Their LOs are still Ctrl+F-ing through 900-page PDFs. That's a daily time drain, a compliance risk, and a training burden that never goes away.</p>
+
+    <h3>Coverage — All 5 Agencies</h3>
+    <table>
+      <thead><tr><th>Agency</th><th>Document</th><th>Pages</th></tr></thead>
+      <tbody>
+        <tr><td>FHA</td><td>HUD Handbook 4000.1</td><td>~900</td></tr>
+        <tr><td>Fannie Mae</td><td>Selling Guide</td><td>~1,200</td></tr>
+        <tr><td>Freddie Mac</td><td>Seller/Servicer Guide</td><td>~1,000</td></tr>
+        <tr><td>VA</td><td>Pamphlet 26-7</td><td>~500</td></tr>
+        <tr><td>USDA</td><td>HB-1-3555</td><td>~400</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size: 13px; color: #555;">All publicly available. All free. Total corpus: ~4,000 pages.</p>
+
+    <h3>Roadmap</h3>
+    <div class="phase">
+      <div class="phase-num">1</div>
+      <div class="phase-content">
+        <h4>FHA POC (2-3 days)</h4>
+        <p>Ingest HUD 4000.1. Build query interface. Demo on a live call.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">2</div>
+      <div class="phase-content">
+        <h4>Full Agency Expansion (2-3 weeks)</h4>
+        <p>All five agencies. Single query interface. Cross-agency comparison.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">3</div>
+      <div class="phase-content">
+        <h4>Voice Integration</h4>
+        <p>LO asks out loud mid-call, gets answer in 5 seconds hands-free. Voice infra already exists.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num">4</div>
+      <div class="phase-content">
+        <h4>Market Expansion</h4>
+        <p>Outbound to regional lenders (5-50 LOs). The ROI pitch closes itself.</p>
+      </div>
+    </div>
+
+    <h3>Revenue Model</h3>
+    <table>
+      <thead><tr><th>Tier</th><th>LO Count</th><th>Monthly Price</th></tr></thead>
+      <tbody>
+        <tr><td>Starter</td><td>Up to 10 LOs</td><td>$500/month</td></tr>
+        <tr><td>Growth</td><td>11-50 LOs</td><td>$1,000/month</td></tr>
+        <tr><td>Team</td><td>51+ LOs</td><td>$2,000/month</td></tr>
+      </tbody>
+    </table>
+    <p>~5,000 independent mortgage companies in the US with 5-100 LOs. At 1% penetration and $750 avg monthly contract = <span class="accent">$37.5M ARR ceiling</span>.</p>
+
+    <h3>Why Rapid Mortgage</h3>
+    <p>Jasson co-owns Rapid. No sales cycle. POC deployed and tested with real LOs in real conditions. Rapid operates in <span class="highlight">13 states</span> — a tool that proves value there has a clear expansion path to every competitor and peer in those states.</p>
+  </div>
+
+  <!-- COMPETITIVE INTEL -->
+  <section>
+    <h2>Competitive Landscape</h2>
+    <p style="font-size: 13px; color: #555; margin-bottom: 24px;">Research by UNO &bull; March 26, 2026</p>
+
+    <div class="comp-section">
+      <h4>Free Agents vs. Market <span class="comp-badge badge-gap">Gap Confirmed</span></h4>
+      <p>Poke raised $15M (General Catalyst) for iMessage AI — but charges $29-292/mo and targets tech-savvy users. Their signup makes you negotiate price with an AI bouncer. Linq raised $20M but is B2B API infrastructure, not consumer.</p>
+      <ul class="edge-list">
+        <li>Nobody does "gift an AI to a non-technical person" — that's unclaimed ground</li>
+        <li>Zero-friction channel delivery (no app, no account, no negotiation)</li>
+        <li>Privacy — all data stays local, no third-party platform</li>
+      </ul>
+    </div>
+
+    <div class="comp-section">
+      <h4>AI Underwriter vs. Guideline Buddy <span class="comp-badge badge-direct">Direct Competitor</span></h4>
+      <p>Guideline Buddy exists at $12/month unlimited. Covers all 6 programs. Auto-updates. This validates the market but sets a price floor.</p>
+      <ul class="edge-list">
+        <li>Voice-capable — Guideline Buddy is text-only. LOs need hands-free mid-call.</li>
+        <li>Lender overlay support — Rapid-specific overlays baked in</li>
+        <li>Internal deployment — no data leaves Rapid's environment</li>
+        <li>Sweet spot: $25-75/user/mo (premium over $12, 100x cheaper than $200K enterprise)</li>
+      </ul>
+    </div>
+
+    <div class="comp-section">
+      <h4>AiNFLGM vs. StickToTheModel <span class="comp-badge badge-indirect">Indirect</span></h4>
+      <p>StickToTheModel is free with 500K+ draft sims. Closest head-to-head. Market is $37.4B globally, NFL = 74.9% of fantasy share.</p>
+      <ul class="edge-list">
+        <li>AI-generated offseason narratives — not just mechanics</li>
+        <li>Season sim tied to GM decisions — they don't have this</li>
+        <li>Polymarket integration — unique angle</li>
+        <li>Mobile-first PWA — they're desktop-optimized</li>
+        <li>Bottleneck is traffic/SEO, not product quality. Reddit posts need to go live.</li>
+      </ul>
+    </div>
+
+    <p style="margin-top: 24px;"><strong class="highlight">Cross-cutting finding:</strong> No competitor is building what 9 does as a <em>system</em>. They're all individual products. The interconnected stack across consumer, entertainment, and enterprise — sharing voice infra, comms layer, and AI model — is the moat.</p>
+  </section>
+
+  <!-- BIG PICTURE -->
+  <div class="big-picture">
+    <h2>The Big Picture</h2>
+    <p class="closer">9 Enterprises isn't three products duct-taped together. It's <strong>one thesis</strong> — AI as a business partner, not a feature — proven three different ways.</p>
+    <div class="trio">
+      <div class="trio-item">
+        <div class="trio-label">Consumer</div>
+        <div class="trio-name">Free Agents</div>
+      </div>
+      <div class="trio-item">
+        <div class="trio-label">Entertainment</div>
+        <div class="trio-name">AiNFL GM</div>
+      </div>
+      <div class="trio-item">
+        <div class="trio-label">Enterprise</div>
+        <div class="trio-name">AI Underwriter</div>
+      </div>
+    </div>
+    <p class="closer">All three are built on the same infrastructure. All three are managed by the same AI team. All three prove that <strong>a single founder with an AI partner can build and ship products that compete with funded startups and enterprise vendors.</strong></p>
+    <p class="closer" style="margin-top: 24px; font-size: 22px;"><strong>That's not a side project. That's a company.</strong></p>
+  </div>
+
+</div>
+
+<div class="footer">
+  9 Enterprises LLC &bull; Ohio &bull; 2026<br>
+  Prepared by 9 &bull; March 26, 2026
+</div>
+
+</body>
+</html>
