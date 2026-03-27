@@ -925,10 +925,11 @@ const healthServer = createServer((req, res) => {
   } else if (req.method === 'POST' && req.url?.startsWith('/terminal/ping')) {
     // Terminal heartbeat — keeps hub in relay mode
     // Reject pings without valid session token (orphan ping loops from dead sessions)
+    // FIX: Also reject when terminalSessionToken is null — means session was cleared by watchdog
     const pingUrl = new URL(req.url, `http://localhost:3457`);
     const token = pingUrl.searchParams.get('token');
-    if (terminalSessionToken && token !== terminalSessionToken) {
-      log(`Rejected orphan ping (token: ${token || 'none'}, expected: ${terminalSessionToken})`);
+    if (!terminalSessionToken || token !== terminalSessionToken) {
+      log(`Rejected orphan ping (token: ${token || 'none'}, expected: ${terminalSessionToken || 'none — no active session'})`);
       res.writeHead(401);
       res.end('invalid session');
       return;
@@ -1100,7 +1101,7 @@ async function telegramPoll() {
                     if (lines.length > 0) {
                       const oldest = JSON.parse(lines[0]);
                       const age = Date.now() - new Date(oldest.timestamp).getTime();
-                      if (age > 120000) { // 2 minutes unread = terminal is alive but not responding
+                      if (age > 60000) { // 1 minute unread = terminal is alive but not responding
                         log(`Terminal alive but NOT responsive — ${lines.length} unread messages, oldest ${Math.round(age/1000)}s. Responding directly.`);
                         terminalResponsive = false;
                       }
@@ -1121,24 +1122,37 @@ async function telegramPoll() {
 
                   if (signalWritten) {
                     log(`Telegram: message queued for terminal (relay mode — no OC ack while terminal active)`);
-                    // RELAY TIMEOUT: If terminal doesn't pick up within 180s,
+
+                    // NUDGE: Send keystrokes to Terminal to force tool calls and trigger the hook.
+                    // Two nudges (10s and 30s) before the 60s autonomous fallback.
+                    for (const delay of [10000, 30000]) {
+                      setTimeout(() => {
+                        try {
+                          if (existsSync('/tmp/9-incoming-message.jsonl')) {
+                            log(`NUDGE: Signal file still unread after ${delay/1000}s — sending keystroke to Terminal`);
+                            execSync(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
+                          }
+                        } catch (e) { log(`NUDGE failed: ${e.message}`); }
+                      }, delay);
+                    }
+
+                    // RELAY TIMEOUT: If terminal doesn't pick up within 60s,
                     // respond autonomously. Prevents messages going into a black hole when
                     // terminal is frozen but PIDs are still alive.
-                    // NOTE: 180s matches the freeze detector threshold (FREEZE_THRESHOLD_MS).
-                    // Previous 60s was too aggressive — OC would jump in while 9 was actively
-                    // thinking/writing between tool calls. Fixed March 26, 2026.
+                    // With the 10s nudge keystroke above, 9 gets 2 chances to pick up
+                    // before the 60s autonomous fallback. Previously 180s — way too long.
                     const relayedText = userText;
                     setTimeout(async () => {
                       try {
                         // Check if the signal file still has unread messages (terminal didn't consume them)
                         const signalContent = readFileSync('/tmp/9-incoming-message.jsonl', 'utf-8').trim();
                         if (signalContent && signalContent.includes(relayedText.slice(0, 50))) {
-                          log(`RELAY TIMEOUT: Terminal did not consume message within 180s — responding autonomously`);
+                          log(`RELAY TIMEOUT: Terminal did not consume message within 60s — responding autonomously`);
                           const reply = await askClaude(relayedText, 'telegram');
                           await sendTelegram('OC: ' + reply);
                         }
                       } catch {}
-                    }, 180000);
+                    }, 60000);
                   } else {
                     // File write failed — respond directly instead of losing the message
                     log('Signal file write failed — falling through to direct response');

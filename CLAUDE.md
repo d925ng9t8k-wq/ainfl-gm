@@ -10,12 +10,17 @@ curl -s http://localhost:3457/health > /dev/null 2>&1
 # If that fails, start the hub:
 # nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown
 
-# 2. Claim terminal control and get session token
-SESSION_TOKEN=$(curl -s -X POST "http://localhost:3457/terminal/claim?pid=$$" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sessionToken',''))" 2>/dev/null)
+# 2. Find Claude Code's actual PID (not the subshell PID) and claim terminal
+# $PPID is Claude Code's process — survives across bash tool calls.
+# Store it so the hub's PID watchdog can detect when Claude Code actually dies.
+CLAUDE_PID=$PPID
+SESSION_TOKEN=$(curl -s -X POST "http://localhost:3457/terminal/claim?pid=$CLAUDE_PID" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sessionToken',''))" 2>/dev/null)
 
-# 3. Start ping loop WITH session token (prevents orphan pings from keeping hub in relay mode)
+# 3. Start ping loop WITH session token — self-terminates when Claude Code dies
+# The loop checks if Claude Code ($CLAUDE_PID) is still alive every iteration.
+# If Claude Code crashes, the loop exits — no more orphan pings keeping relay mode alive.
 kill $(cat /tmp/terminal-ping.pid 2>/dev/null) 2>/dev/null
-(while true; do curl -s -X POST "http://localhost:3457/terminal/ping?token=$SESSION_TOKEN" > /dev/null 2>&1; sleep 60; done) &
+(while kill -0 $CLAUDE_PID 2>/dev/null; do curl -s -X POST "http://localhost:3457/terminal/ping?token=$SESSION_TOKEN" > /dev/null 2>&1; sleep 60; done; echo "Ping loop: Claude PID $CLAUDE_PID gone — exiting") &
 echo $! > /tmp/terminal-ping.pid
 
 # 4. Check inbox for messages received while terminal was down
