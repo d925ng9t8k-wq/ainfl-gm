@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found — AiNFL GM</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(180deg, #000814 0%, #001428 50%, #000814 100%);
+        color: #E2E8F0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+      }
+      .container {
+        max-width: 480px;
+      }
+      .code {
+        font-size: 72px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        background: linear-gradient(135deg, #00F0FF, #80F8FF, #E2E8F0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 20px rgba(0,240,255,0.4));
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+      h1 {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #E2E8F0;
+      }
+      p {
+        color: #94A3B8;
+        font-size: 14px;
+        margin-bottom: 24px;
+        line-height: 1.6;
+      }
+      .btn {
+        display: inline-block;
+        padding: 12px 32px;
+        background: linear-gradient(135deg, #00D4FF 0%, #00A0CC 100%);
+        color: #000;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0,240,255,0.3), 0 0 40px rgba(0,240,255,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(0,240,255,0.5), 0 0 60px rgba(0,240,255,0.2);
+      }
+      .emoji { font-size: 40px; margin-bottom: 16px; }
+    </style>
+    <!-- Redirect to home page after 4 seconds -->
+    <meta http-equiv="refresh" content="4;url=/" />
+    <script>
+      // For GitHub Pages SPA support: preserve the path in sessionStorage
+      // so the React router can pick it up after redirect
+      (function() {
+        var path = window.location.pathname;
+        if (path && path !== '/' && path !== '/index.html') {
+          sessionStorage.setItem('redirect_path', path);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="emoji">&#127944;</div>
+      <div class="code">404</div>
+      <h1>Fumble! Page Not Found</h1>
+      <p>
+        Looks like this play got called back. You'll be redirected to the
+        main page in a few seconds.
+      </p>
+      <a href="/" class="btn">Back to AiNFL GM</a>
+    </div>
+  </body>
+</html>

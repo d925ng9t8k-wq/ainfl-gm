@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import FloatingMenu from './FloatingMenu';
@@ -77,6 +77,19 @@ export default function Layout({ children }) {
   // Use team's primary color as accent, ensuring good contrast against dark backgrounds
   const rawAccent = primaryColor === '#000000' ? (secondaryColor !== '#000000' ? secondaryColor : '#FB4F14') : primaryColor;
   const accentColor = ensureContrast(rawAccent);
+
+  // Initialize AdSense ad units after mount
+  useEffect(() => {
+    try {
+      if (window.adsbygoogle) {
+        // Push for each ad slot on the page
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch (e) {
+      // AdSense not loaded — no-op in dev
+    }
+  }, []);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
@@ -304,7 +317,7 @@ export default function Layout({ children }) {
       {/* Main Content */}
       <main style={{
         flex: 1,
-        padding: '16px 16px 16px 24px',
+        padding: '16px',
         maxWidth: 1200,
         margin: '0 auto',
         width: '100%',
@@ -352,23 +365,22 @@ export default function Layout({ children }) {
               alignSelf: 'flex-start',
             }}
           >
-            {/* AdSense sidebar unit — drop ad code here when approved */}
+            {/* AdSense sidebar unit — responsive skyscraper */}
             <div style={{
               width: 160,
               minHeight: 600,
-              background: 'rgba(15,23,42,0.5)',
+              background: 'rgba(15,23,42,0.3)',
               border: '1px solid rgba(0,240,255,0.08)',
               borderRadius: 6,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#1e293b',
-              fontSize: 10,
-              writingMode: 'vertical-rl',
-              letterSpacing: '0.08em',
               overflow: 'hidden',
             }}>
-              {/* AdSense 160x600 */}
+              <ins className="adsbygoogle"
+                style={{ display: 'block' }}
+                data-ad-client="ca-pub-4928127931521131"
+                data-ad-slot="auto"
+                data-ad-format="vertical"
+                data-full-width-responsive="false"
+              />
             </div>
           </aside>
         </div>
@@ -409,19 +421,23 @@ export default function Layout({ children }) {
           </a>
         </div>
 
-        {/* Ad Slot: Footer Leaderboard (728x90) — drop AdSense ad unit here once approved.
-            Replace the inner div with your <ins class="adsbygoogle"> tag. */}
+        {/* Ad Slot: Footer Leaderboard — AdSense responsive ad */}
         <div id="ad-slot-footer" style={{
           marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
           padding: '0 16px',
         }}>
           <div style={{
-            width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,23,42,0.5)',
-            border: '1px solid rgba(0,240,255,0.08)', borderRadius: 6, display: 'flex',
-            alignItems: 'center', justifyContent: 'center', color: '#334155', fontSize: 10,
+            width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,23,42,0.3)',
+            border: '1px solid rgba(0,240,255,0.08)', borderRadius: 6,
             overflow: 'hidden',
           }}>
-            {/* AdSense 728x90 leaderboard — replace this comment with ad code */}
+            <ins className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-client="ca-pub-4928127931521131"
+              data-ad-slot="auto"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
           </div>
         </div>
 
