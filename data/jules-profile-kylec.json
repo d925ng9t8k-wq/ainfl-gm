@@ -161,7 +161,108 @@
       "geographic_requirement": "rural areas as defined by USDA"
     }
   },
-  "conversation_memory": [],
+  "conversation_memory": [
+    {
+      "role": "user",
+      "content": "test",
+      "ts": 1774621088546
+    },
+    {
+      "role": "assistant",
+      "content": "Hey — just confirming I'm live and ready. What do you need?",
+      "ts": 1774621089363
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "ts": 1774621519054
+    },
+    {
+      "role": "assistant",
+      "content": "Hey. What's up?",
+      "ts": 1774621519607
+    },
+    {
+      "role": "user",
+      "content": "What are current FHA rates",
+      "ts": 1774621713817
+    },
+    {
+      "role": "assistant",
+      "content": "Don't have a live rate feed yet — that's Phase 2. You'll need to give me the current FHA rate and I'll lock it in here. What's it sitting at?",
+      "ts": 1774621714981
+    },
+    {
+      "role": "user",
+      "content": "Why didn’t I get my morning briefing ",
+      "ts": 1774622785286
+    },
+    {
+      "role": "assistant",
+      "content": "Morning briefing is set for 7:00 AM ET. What time is it now where you are? If it's past that and you didn't get it, something misfired — let me know and we can troubleshoot.",
+      "ts": 1774622786888
+    },
+    {
+      "role": "user",
+      "content": "Test",
+      "ts": 1774622966003
+    },
+    {
+      "role": "assistant",
+      "content": "Good. I'm live and locked in. What do you need?",
+      "ts": 1774622966665
+    },
+    {
+      "role": "user",
+      "content": "How am I going to keep these conversations separate? What I see on my end is the conversation with Jasson and this Pilot assistant mixed together.",
+      "ts": 1774623195290
+    },
+    {
+      "role": "assistant",
+      "content": "That's a UX issue on 9's end — you're right to flag it. You should have a separate chat thread for me (Jules) vs. the pilot assistant conversation with Jasson. \n\nRight now it sounds like they're stacked in the same thread, which is confusing and not how it's supposed to work. Hit up your 9 contact and let them know the conversations aren't separated cleanly on your end. They'll need to fix the interface so you've got distinct channels — one for me, one for the pilot.\n\nIn the meantime, just lead your messages to me with something like \"Jules:\" if you need to keep 'em sorted manually. Not ideal, but it'll work.",
+      "ts": 1774623198056
+    },
+    {
+      "role": "user",
+      "content": "Why didnt I get my morning briefing?",
+      "ts": 1774623453973
+    },
+    {
+      "role": "assistant",
+      "content": "Morning briefing is set for 7:00 AM ET. What time is it now? If it's past that and you didn't get it, something misfired on my end — could be a connectivity issue or the schedule didn't trigger. \n\nWhat's your timezone and what time are you seeing right now?",
+      "ts": 1774623455089
+    },
+    {
+      "role": "user",
+      "content": "I am eastern standard time and currently it is 10:58 AM",
+      "ts": 1774623567587
+    },
+    {
+      "role": "assistant",
+      "content": "Got it — you should've gotten the briefing at 7 AM and didn't. That's on me. Let me pull it together now:\n\n**MORNING BRIEFING — 10:58 AM ET**\n\nI don't have live rates on file yet, so I need you to give me the current FHA/Conventional/VA rates so I can brief you properly.\n\nOnce you do, I'll give you:\n- Where rates are vs. yesterday\n- Any closings scheduled today\n- One priority action for your pipeline\n\nWhat are we sitting at?",
+      "ts": 1774623569464
+    },
+    {
+      "role": "user",
+      "content": "Pilot moving forward you will know when I am talking to you because I will start all of my text with the first word being Pilot",
+      "ts": 1774623632044
+    },
+    {
+      "role": "assistant",
+      "content": "Got it. I'll ignore anything that doesn't start with \"Pilot\" — that way we keep our conversations clean and separate from the other assistant.\n\nReady when you are.",
+      "ts": 1774623633212
+    },
+    {
+      "role": "user",
+      "content": "I am sure you can search the web and tell me what the current 30 year conventional mortgage rate is right now do that for me and let me know what the rate is today and then look back two weeks ago and tell me what the rate was on that day",
+      "ts": 1774624890249
+    },
+    {
+      "role": "assistant",
+      "content": "I can't search the web or pull live rate data. I don't have internet access, and even if I did, mortgage rates move intraday and vary by lender, credit profile, and loan type — what Freddie Mac or MBA publishes isn't what you're actually quoting to clients.\n\nYou're the source of truth here. Just text me the current rate when you get a chance (\"rates update: 6.875%\") and I'll lock it in. For historical rates two weeks back, you'd need to check your rate sheet history or ask your wholesale rep — that's their job.\n\nWhat's your rate sitting at right now?",
+      "ts": 1774624893025
+    }
+  ],
   "reminders": [],
   "notes": [],
   "pilot_notes": {
