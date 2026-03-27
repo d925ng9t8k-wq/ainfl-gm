@@ -1,0 +1,1150 @@
+{
+  "metadata": {
+    "runAt": "2026-03-27T04:51:33.271Z",
+    "days": 90,
+    "coins": [
+      "BTC/USD",
+      "ETH/USD"
+    ]
+  },
+  "ema": {
+    "BTC/USD": {
+      "totalCombos": 130,
+      "top10": [
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.03,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 200.36,
+            "totalReturn": 0.18,
+            "totalPnL": 0.36,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 1.06,
+            "avgLoss": -0.58,
+            "maxDrawdown": 0.45,
+            "sharpe": 3.73
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.015,
+            "takeProfit": 0.03,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 200.15,
+            "totalReturn": 0.08,
+            "totalPnL": 0.15,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 1.06,
+            "avgLoss": -0.65,
+            "maxDrawdown": 0.45,
+            "sharpe": 1.58
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.02,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 200.14,
+            "totalReturn": 0.07,
+            "totalPnL": 0.14,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 0.95,
+            "avgLoss": -0.58,
+            "maxDrawdown": 0.45,
+            "sharpe": 1.62
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.025,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 200.14,
+            "totalReturn": 0.07,
+            "totalPnL": 0.14,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 0.95,
+            "avgLoss": -0.58,
+            "maxDrawdown": 0.45,
+            "sharpe": 1.62
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.015,
+            "takeProfit": 0.02,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 199.94,
+            "totalReturn": -0.03,
+            "totalPnL": -0.06,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 0.95,
+            "avgLoss": -0.65,
+            "maxDrawdown": 0.45,
+            "sharpe": -0.59
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.015,
+            "takeProfit": 0.025,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 199.94,
+            "totalReturn": -0.03,
+            "totalPnL": -0.06,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 0.95,
+            "avgLoss": -0.65,
+            "maxDrawdown": 0.45,
+            "sharpe": -0.59
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.02,
+            "takeProfit": 0.03,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 199.88,
+            "totalReturn": -0.06,
+            "totalPnL": -0.12,
+            "totalTrades": 5,
+            "exits": 5,
+            "wins": 2,
+            "losses": 3,
+            "winRate": 40,
+            "avgWin": 1.06,
+            "avgLoss": -0.74,
+            "maxDrawdown": 0.45,
+            "sharpe": -1.05
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.03,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 199.85,
+            "totalReturn": -0.08,
+            "totalPnL": -0.15,
+            "totalTrades": 10,
+            "exits": 10,
+            "wins": 4,
+            "losses": 6,
+            "winRate": 40,
+            "avgWin": 0.7,
+            "avgLoss": -0.5,
+            "maxDrawdown": 0.98,
+            "sharpe": -0.95
+          }
+        },
+        {
+          "params": {
+            "fast": 12,
+            "slow": 50,
+            "stopLoss": 0.01,
+            "takeProfit": 0.02,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 199.78,
+            "totalReturn": -0.11,
+            "totalPnL": -0.22,
+            "totalTrades": 1,
+            "exits": 1,
+            "wins": 0,
+            "losses": 1,
+            "winRate": 0,
+            "avgWin": 0,
+            "avgLoss": -0.22,
+            "maxDrawdown": 0.11,
+            "sharpe": 0
+          }
+        },
+        {
+          "params": {
+            "fast": 12,
+            "slow": 50,
+            "stopLoss": 0.01,
+            "takeProfit": 0.02,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 199.78,
+            "totalReturn": -0.11,
+            "totalPnL": -0.22,
+            "totalTrades": 1,
+            "exits": 1,
+            "wins": 0,
+            "losses": 1,
+            "winRate": 0,
+            "avgWin": 0,
+            "avgLoss": -0.22,
+            "maxDrawdown": 0.11,
+            "sharpe": 0
+          }
+        }
+      ],
+      "baseline": {
+        "params": {
+          "fast": 9,
+          "slow": 21,
+          "stopLoss": 0.015,
+          "takeProfit": 0.025,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 196.94,
+          "totalReturn": -1.53,
+          "totalPnL": -3.06,
+          "totalTrades": 7,
+          "exits": 7,
+          "wins": 2,
+          "losses": 5,
+          "winRate": 28.57,
+          "avgWin": 0.41,
+          "avgLoss": -0.78,
+          "maxDrawdown": 1.8,
+          "sharpe": -30.35
+        }
+      },
+      "profitable": 4
+    },
+    "ETH/USD": {
+      "totalCombos": 130,
+      "top10": [
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.025,
+            "takeProfit": 0.03,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.35,
+            "totalReturn": 1.68,
+            "totalPnL": 3.35,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 6,
+            "losses": 2,
+            "winRate": 75,
+            "avgWin": 0.77,
+            "avgLoss": -0.62,
+            "maxDrawdown": 0.61,
+            "sharpe": 22.26
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.025,
+            "takeProfit": 0.04,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.35,
+            "totalReturn": 1.68,
+            "totalPnL": 3.35,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 6,
+            "losses": 2,
+            "winRate": 75,
+            "avgWin": 0.77,
+            "avgLoss": -0.62,
+            "maxDrawdown": 0.61,
+            "sharpe": 22.26
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.025,
+            "takeProfit": 0.03,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 203.26,
+            "totalReturn": 1.63,
+            "totalPnL": 3.26,
+            "totalTrades": 6,
+            "exits": 6,
+            "wins": 5,
+            "losses": 1,
+            "winRate": 83.33,
+            "avgWin": 0.83,
+            "avgLoss": -0.87,
+            "maxDrawdown": 0.43,
+            "sharpe": 26.14
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.025,
+            "takeProfit": 0.04,
+            "trendFilter": true
+          },
+          "metrics": {
+            "finalCapital": 203.26,
+            "totalReturn": 1.63,
+            "totalPnL": 3.26,
+            "totalTrades": 6,
+            "exits": 6,
+            "wins": 5,
+            "losses": 1,
+            "winRate": 83.33,
+            "avgWin": 0.83,
+            "avgLoss": -0.87,
+            "maxDrawdown": 0.43,
+            "sharpe": 26.14
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.025,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.14,
+            "totalReturn": 1.57,
+            "totalPnL": 3.14,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 5,
+            "losses": 3,
+            "winRate": 62.5,
+            "avgWin": 0.9,
+            "avgLoss": -0.45,
+            "maxDrawdown": 0.44,
+            "sharpe": 21.09
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.03,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.14,
+            "totalReturn": 1.57,
+            "totalPnL": 3.14,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 5,
+            "losses": 3,
+            "winRate": 62.5,
+            "avgWin": 0.9,
+            "avgLoss": -0.45,
+            "maxDrawdown": 0.44,
+            "sharpe": 21.09
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.01,
+            "takeProfit": 0.04,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.14,
+            "totalReturn": 1.57,
+            "totalPnL": 3.14,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 5,
+            "losses": 3,
+            "winRate": 62.5,
+            "avgWin": 0.9,
+            "avgLoss": -0.45,
+            "maxDrawdown": 0.44,
+            "sharpe": 21.09
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.015,
+            "takeProfit": 0.025,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.14,
+            "totalReturn": 1.57,
+            "totalPnL": 3.14,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 5,
+            "losses": 3,
+            "winRate": 62.5,
+            "avgWin": 0.9,
+            "avgLoss": -0.45,
+            "maxDrawdown": 0.44,
+            "sharpe": 21.09
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.015,
+            "takeProfit": 0.03,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.14,
+            "totalReturn": 1.57,
+            "totalPnL": 3.14,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 5,
+            "losses": 3,
+            "winRate": 62.5,
+            "avgWin": 0.9,
+            "avgLoss": -0.45,
+            "maxDrawdown": 0.44,
+            "sharpe": 21.09
+          }
+        },
+        {
+          "params": {
+            "fast": 5,
+            "slow": 20,
+            "stopLoss": 0.015,
+            "takeProfit": 0.04,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.14,
+            "totalReturn": 1.57,
+            "totalPnL": 3.14,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 5,
+            "losses": 3,
+            "winRate": 62.5,
+            "avgWin": 0.9,
+            "avgLoss": -0.45,
+            "maxDrawdown": 0.44,
+            "sharpe": 21.09
+          }
+        }
+      ],
+      "baseline": {
+        "params": {
+          "fast": 9,
+          "slow": 21,
+          "stopLoss": 0.015,
+          "takeProfit": 0.025,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 198.29,
+          "totalReturn": -0.85,
+          "totalPnL": -1.71,
+          "totalTrades": 7,
+          "exits": 7,
+          "wins": 2,
+          "losses": 5,
+          "winRate": 28.57,
+          "avgWin": 1.11,
+          "avgLoss": -0.79,
+          "maxDrawdown": 1.8,
+          "sharpe": -10.04
+        }
+      },
+      "profitable": 99
+    }
+  },
+  "bollinger": {
+    "BTC/USD": {
+      "totalCombos": 216,
+      "top10": [
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.015,
+            "rsiThreshold": 40,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.62,
+            "totalReturn": 1.81,
+            "totalPnL": 3.62,
+            "totalTrades": 8,
+            "exits": 11,
+            "wins": 6,
+            "losses": 5,
+            "winRate": 54.55,
+            "avgWin": 1.31,
+            "avgLoss": -0.84,
+            "maxDrawdown": 1.68,
+            "sharpe": 23.72
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.02,
+            "rsiThreshold": 40,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 203.12,
+            "totalReturn": 1.56,
+            "totalPnL": 3.12,
+            "totalTrades": 8,
+            "exits": 11,
+            "wins": 6,
+            "losses": 5,
+            "winRate": 54.55,
+            "avgWin": 1.3,
+            "avgLoss": -0.94,
+            "maxDrawdown": 1.92,
+            "sharpe": 22.22
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.015,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.015,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.015,
+            "rsiThreshold": 40,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.02,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.02,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.02,
+            "rsiThreshold": 40,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.025,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        },
+        {
+          "params": {
+            "period": 20,
+            "stdDev": 2.5,
+            "stopLoss": 0.025,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 202.64,
+            "totalReturn": 1.32,
+            "totalPnL": 2.64,
+            "totalTrades": 1,
+            "exits": 2,
+            "wins": 2,
+            "losses": 0,
+            "winRate": 100,
+            "avgWin": 1.32,
+            "avgLoss": 0,
+            "maxDrawdown": 0,
+            "sharpe": 42.6
+          }
+        }
+      ],
+      "baseline": {
+        "params": {
+          "period": 20,
+          "stdDev": 2,
+          "stopLoss": 0.02,
+          "rsiThreshold": 35,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 199.8,
+          "totalReturn": -0.1,
+          "totalPnL": -0.2,
+          "totalTrades": 6,
+          "exits": 8,
+          "wins": 3,
+          "losses": 5,
+          "winRate": 37.5,
+          "avgWin": 1.35,
+          "avgLoss": -0.85,
+          "maxDrawdown": 1.92,
+          "sharpe": 9.19
+        }
+      },
+      "profitable": 53
+    },
+    "ETH/USD": {
+      "totalCombos": 216,
+      "top10": [
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.015,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 207.01,
+            "totalReturn": 3.51,
+            "totalPnL": 7.01,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.07,
+            "avgLoss": -0.63,
+            "maxDrawdown": 0.63,
+            "sharpe": 44.03
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.015,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 207.01,
+            "totalReturn": 3.51,
+            "totalPnL": 7.01,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.07,
+            "avgLoss": -0.63,
+            "maxDrawdown": 0.63,
+            "sharpe": 44.03
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.02,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 206.19,
+            "totalReturn": 3.1,
+            "totalPnL": 6.19,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.06,
+            "avgLoss": -1.03,
+            "maxDrawdown": 1.03,
+            "sharpe": 38.99
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.02,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 206.19,
+            "totalReturn": 3.1,
+            "totalPnL": 6.19,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.06,
+            "avgLoss": -1.03,
+            "maxDrawdown": 1.03,
+            "sharpe": 38.99
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.025,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 205.82,
+            "totalReturn": 2.91,
+            "totalPnL": 5.82,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.06,
+            "avgLoss": -1.21,
+            "maxDrawdown": 1.21,
+            "sharpe": 36.98
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.025,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 205.82,
+            "totalReturn": 2.91,
+            "totalPnL": 5.82,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.06,
+            "avgLoss": -1.21,
+            "maxDrawdown": 1.21,
+            "sharpe": 36.98
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.015,
+            "rsiThreshold": 40,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 205.7,
+            "totalReturn": 2.85,
+            "totalPnL": 5.7,
+            "totalTrades": 5,
+            "exits": 7,
+            "wins": 4,
+            "losses": 3,
+            "winRate": 57.14,
+            "avgWin": 2.06,
+            "avgLoss": -0.84,
+            "maxDrawdown": 1.27,
+            "sharpe": 32.7
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.03,
+            "rsiThreshold": 30,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 205.25,
+            "totalReturn": 2.62,
+            "totalPnL": 5.25,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.05,
+            "avgLoss": -1.48,
+            "maxDrawdown": 1.48,
+            "sharpe": 33.95
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.03,
+            "rsiThreshold": 35,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 205.25,
+            "totalReturn": 2.62,
+            "totalPnL": 5.25,
+            "totalTrades": 4,
+            "exits": 6,
+            "wins": 4,
+            "losses": 2,
+            "winRate": 66.67,
+            "avgWin": 2.05,
+            "avgLoss": -1.48,
+            "maxDrawdown": 1.48,
+            "sharpe": 33.95
+          }
+        },
+        {
+          "params": {
+            "period": 25,
+            "stdDev": 2,
+            "stopLoss": 0.02,
+            "rsiThreshold": 40,
+            "trendFilter": false
+          },
+          "metrics": {
+            "finalCapital": 204.88,
+            "totalReturn": 2.44,
+            "totalPnL": 4.88,
+            "totalTrades": 5,
+            "exits": 7,
+            "wins": 4,
+            "losses": 3,
+            "winRate": 57.14,
+            "avgWin": 2.05,
+            "avgLoss": -1.11,
+            "maxDrawdown": 1.66,
+            "sharpe": 29.52
+          }
+        }
+      ],
+      "baseline": {
+        "params": {
+          "period": 20,
+          "stdDev": 2,
+          "stopLoss": 0.02,
+          "rsiThreshold": 35,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 203.49,
+          "totalReturn": 1.75,
+          "totalPnL": 3.49,
+          "totalTrades": 2,
+          "exits": 3,
+          "wins": 2,
+          "losses": 1,
+          "winRate": 66.67,
+          "avgWin": 2.15,
+          "avgLoss": -0.8,
+          "maxDrawdown": 0.4,
+          "sharpe": 40.99
+        }
+      },
+      "profitable": 62
+    }
+  },
+  "bestOverall": {
+    "BTC/USD": {
+      "ema": {
+        "params": {
+          "fast": 5,
+          "slow": 20,
+          "stopLoss": 0.01,
+          "takeProfit": 0.03,
+          "trendFilter": true
+        },
+        "metrics": {
+          "finalCapital": 200.36,
+          "totalReturn": 0.18,
+          "totalPnL": 0.36,
+          "totalTrades": 5,
+          "exits": 5,
+          "wins": 2,
+          "losses": 3,
+          "winRate": 40,
+          "avgWin": 1.06,
+          "avgLoss": -0.58,
+          "maxDrawdown": 0.45,
+          "sharpe": 3.73
+        }
+      },
+      "bollinger": {
+        "params": {
+          "period": 25,
+          "stdDev": 2,
+          "stopLoss": 0.015,
+          "rsiThreshold": 40,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 203.62,
+          "totalReturn": 1.81,
+          "totalPnL": 3.62,
+          "totalTrades": 8,
+          "exits": 11,
+          "wins": 6,
+          "losses": 5,
+          "winRate": 54.55,
+          "avgWin": 1.31,
+          "avgLoss": -0.84,
+          "maxDrawdown": 1.68,
+          "sharpe": 23.72
+        }
+      },
+      "recommendation": "Bollinger"
+    },
+    "ETH/USD": {
+      "ema": {
+        "params": {
+          "fast": 5,
+          "slow": 20,
+          "stopLoss": 0.025,
+          "takeProfit": 0.03,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 203.35,
+          "totalReturn": 1.68,
+          "totalPnL": 3.35,
+          "totalTrades": 8,
+          "exits": 8,
+          "wins": 6,
+          "losses": 2,
+          "winRate": 75,
+          "avgWin": 0.77,
+          "avgLoss": -0.62,
+          "maxDrawdown": 0.61,
+          "sharpe": 22.26
+        }
+      },
+      "bollinger": {
+        "params": {
+          "period": 25,
+          "stdDev": 2,
+          "stopLoss": 0.015,
+          "rsiThreshold": 30,
+          "trendFilter": false
+        },
+        "metrics": {
+          "finalCapital": 207.01,
+          "totalReturn": 3.51,
+          "totalPnL": 7.01,
+          "totalTrades": 4,
+          "exits": 6,
+          "wins": 4,
+          "losses": 2,
+          "winRate": 66.67,
+          "avgWin": 2.07,
+          "avgLoss": -0.63,
+          "maxDrawdown": 0.63,
+          "sharpe": 44.03
+        }
+      },
+      "recommendation": "Bollinger"
+    }
+  }
+}

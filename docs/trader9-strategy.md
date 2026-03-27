@@ -224,6 +224,71 @@ Alpaca supports 56 crypto pairs across BTC, USDT, USDC, and USD bases.
 
 ---
 
+## Optimization Results (March 27, 2026)
+
+Parameter sweep across 130 EMA combos and 216 Bollinger combos per asset (692 total backtests).
+90-day backtest on 4-hour candles. Data: CoinGecko free API.
+
+### Baseline Performance (original params)
+
+| Strategy | Asset | Return | Win Rate | Sharpe |
+|----------|-------|--------|----------|--------|
+| EMA 9/21 | BTC/USD | -1.53% | 28.57% | -30.35 |
+| EMA 9/21 | ETH/USD | -0.85% | 28.57% | n/a |
+| BB 20/2.0 | BTC/USD | -0.10% | 37.50% | 9.19 |
+| BB 20/2.0 | ETH/USD | +1.75% | 66.67% | n/a |
+
+### Optimized Best Parameters
+
+**EMA Strategy:**
+
+| Asset | Fast/Slow | Stop Loss | Take Profit | Trend Filter | Return | Win Rate | Sharpe |
+|-------|-----------|-----------|-------------|--------------|--------|----------|--------|
+| BTC/USD | 5/20 | 1.0% | 3.0% | Yes (50 EMA) | +0.18% | 40% | 3.73 |
+| ETH/USD | 5/20 | 2.5% | 3.0% | No | +1.68% | 75% | 22.26 |
+
+Key EMA findings:
+- 5/20 period combo significantly outperformed 9/21 on both assets
+- Trend filter (50-period EMA) helps BTC but hurts ETH
+- Wider take profits (3-4%) outperform the original 2.5%
+- On BTC, only 4/130 combos were profitable -- EMA momentum is poorly suited to BTC in this bearish/ranging environment
+- On ETH, 99/130 combos were profitable -- ETH shows much stronger momentum characteristics
+
+**Bollinger Band Strategy:**
+
+| Asset | Period | Std Dev | Stop Loss | RSI Threshold | Trend Filter | Return | Win Rate | Sharpe |
+|-------|--------|---------|-----------|---------------|--------------|--------|----------|--------|
+| BTC/USD | 25 | 2.0 | 1.5% | <40 | No | +1.81% | 54.55% | 23.72 |
+| ETH/USD | 25 | 2.0 | 1.5% | <30 | No | +3.51% | 66.67% | 44.03 |
+
+Key Bollinger findings:
+- 25-period BB outperforms 20-period -- longer lookback reduces false signals in ranging markets
+- Tighter stop loss (1.5% vs 2.0%) improves results by cutting losers faster
+- Relaxed RSI threshold (40 for BTC, 30 for ETH) allows more trade opportunities
+- Bollinger dominates EMA on both assets in current market conditions
+- ETH is the strongest performer: +3.51% return, 66.67% win rate, 44.03 Sharpe
+
+### Recommended Parameter Changes
+
+1. **Switch EMA periods from 9/21 to 5/20** -- faster signal with more separation
+2. **Increase EMA take profit from 2.5% to 3.0%** -- let winners run
+3. **Enable trend filter (50 EMA) for BTC EMA trades** -- avoids counter-trend entries
+4. **Switch Bollinger period from 20 to 25** -- reduces noise
+5. **Tighten Bollinger stop loss from 2.0% to 1.5%** -- cut losses faster
+6. **Relax Bollinger RSI entry from <35 to <40 for BTC** -- more entry opportunities
+7. **Prioritize ETH/USD** -- both strategies perform significantly better on ETH
+8. **Prioritize Bollinger over EMA** -- mean reversion dominates in current bearish/ranging conditions
+
+### Asset Allocation Recommendation
+
+Given results, shift capital allocation:
+- **ETH/USD Bollinger**: 40% of capital (highest return, best risk-adjusted)
+- **BTC/USD Bollinger**: 30% of capital (solid, positive return)
+- **ETH/USD EMA**: 20% of capital (strong momentum on ETH)
+- **BTC/USD EMA**: 10% of capital (marginal, keep small)
+
+---
+
 ## Sources
 - [Alpaca Crypto Trading Docs](https://docs.alpaca.markets/docs/crypto-trading)
 - [Alpaca Supported Coin Pairs](https://alpaca.markets/support/what-are-the-supported-coins-pairs)
