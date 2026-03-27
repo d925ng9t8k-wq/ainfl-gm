@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>9enterprises — Command Center</title>
-<!-- PWA -->
-<link rel="manifest" href="/dashboard-manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="9 Dashboard">
+<meta name="apple-mobile-web-app-title" content="9 Enterprises">
 <meta name="theme-color" content="#0f0f1f">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<title>9enterprises — Command Center</title>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%229+Enterprises+Command+Center%22%2C%22short_name%22%3A%229+Enterprises%22%2C%22start_url%22%3A%22.%2Fdashboard.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f0f1f%22%2C%22theme_color%22%3A%22%230f0f1f%22%2C%22orientation%22%3A%22portrait-primary%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABmJLR0QA%2FwD%2FAP%2BgvaeTAAAAeklEQVR4nO3BMQEAAADCoPVP7WsIoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeAMBuAABHgAAAABJRU5ErkJggg%3D%3D%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,6 +50,9 @@ a{color:var(--blue);text-decoration:none;}
 .topbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 24px;
+  padding-top:calc(12px + env(safe-area-inset-top));
+  padding-left:calc(24px + env(safe-area-inset-left));
+  padding-right:calc(24px + env(safe-area-inset-right));
   background:linear-gradient(135deg,#0f0f1f 0%,#16213e 100%);
   border-bottom:1px solid var(--glassBorder);
   position:sticky;top:0;z-index:100;
@@ -569,29 +571,6 @@ a{color:var(--blue);text-decoration:none;}
   .intention-body{padding:0 14px 16px 14px;}
   .intention-text{font-size:13px;}
 }
-
-/* ========== OFFLINE BANNER ========== */
-#offlineBanner{
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
-  background:rgba(20,8,0,0.95);border-top:1px solid rgba(255,45,85,0.4);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  padding:10px 20px;
-  display:none;align-items:center;justify-content:space-between;gap:12px;
-  font-family:var(--font-mono);font-size:12px;color:var(--red);
-}
-#offlineBanner .banner-msg{display:flex;align-items:center;gap:8px;}
-#offlineBanner .banner-dot{
-  width:8px;height:8px;border-radius:50%;background:var(--red);
-  animation:pulse-red 1.5s ease-in-out infinite;flex-shrink:0;
-}
-#reconnectBtn{
-  padding:6px 16px;background:rgba(255,45,85,0.15);border:1px solid rgba(255,45,85,0.4);
-  border-radius:6px;color:var(--red);font-family:var(--font-mono);font-size:11px;
-  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
-  transition:background 0.2s,border-color 0.2s;white-space:nowrap;
-}
-#reconnectBtn:hover{background:rgba(255,45,85,0.28);border-color:rgba(255,45,85,0.7);}
-#reconnectBtn:disabled{opacity:0.5;cursor:not-allowed;}
 </style>
 </head>
 <body>
@@ -608,20 +587,11 @@ a{color:var(--blue);text-decoration:none;}
   <div class="topbar-right">
     <div class="live-clock" id="liveClock">--:--:--</div>
     <div class="status-live" id="systemStatusBadge">
-      <span class="status-dot" id="systemStatusDot"></span>
-      <span id="systemStatusText">CONNECTING...</span>
+      <span class="status-dot" id="systemStatusDot" style="background:var(--gold);animation:none;"></span>
+      <span id="systemStatusText" style="color:var(--gold);">STATIC</span>
     </div>
   </div>
 </header>
-
-<!-- ========== OFFLINE BANNER ========== -->
-<div id="offlineBanner">
-  <div class="banner-msg">
-    <span class="banner-dot"></span>
-    <span id="offlineBannerMsg">Dashboard offline — retrying...</span>
-  </div>
-  <button id="reconnectBtn" onclick="manualReconnect()">RECONNECT</button>
-</div>
 
 <!-- ========== TICKER ========== -->
 <div class="ticker-wrap">
@@ -1860,8 +1830,6 @@ a{color:var(--blue);text-decoration:none;}
 
   const DASHBOARD_API = 'https://9-cloud-standin.789k6rym8v.workers.dev/api/dashboard';
   let lastDashboardData = null;
-  let consecutiveFailures = 0;
-  let refreshTimer = null;
 
   function setStatusDot(dotEl, status) {
     if (!dotEl) return;
@@ -1894,48 +1862,12 @@ a{color:var(--blue);text-decoration:none;}
     return Math.floor(diff / 86400) + 'd ago';
   }
 
-  // Show/hide the offline banner
-  function showOfflineBanner(msg) {
-    const banner = document.getElementById('offlineBanner');
-    const bannerMsg = document.getElementById('offlineBannerMsg');
-    if (!banner) return;
-    if (bannerMsg && msg) bannerMsg.textContent = msg;
-    banner.style.display = 'flex';
-  }
-
-  function hideOfflineBanner() {
-    const banner = document.getElementById('offlineBanner');
-    if (banner) banner.style.display = 'none';
-  }
-
-  // Manual reconnect button handler — exposed to window for onclick
-  window.manualReconnect = function() {
-    const btn = document.getElementById('reconnectBtn');
-    if (btn) { btn.disabled = true; btn.textContent = 'TRYING...'; }
-    consecutiveFailures = 0;
-    refreshDashboard().finally(() => {
-      if (btn) { btn.disabled = false; btn.textContent = 'RECONNECT'; }
-    });
-  };
-
-  // Schedule the next refresh (backoff on repeated failures)
-  function scheduleNextRefresh() {
-    if (refreshTimer) clearTimeout(refreshTimer);
-    // Normal: 30s. After 3 failures: 60s. After 5: 90s. Cap at 90s.
-    const delay = consecutiveFailures < 3 ? 30000
-      : consecutiveFailures < 5 ? 60000
-      : 90000;
-    refreshTimer = setTimeout(refreshDashboard, delay);
-  }
-
   async function refreshDashboard() {
     try {
       const res = await fetch(DASHBOARD_API, { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       lastDashboardData = data;
-      consecutiveFailures = 0;
-      hideOfflineBanner();
 
       // --- Top bar system status ---
       const dot = document.getElementById('systemStatusDot');
@@ -1966,10 +1898,12 @@ a{color:var(--blue);text-decoration:none;}
       setTk('tk-cloud-sync2', syncLabel);
       setTk('tk-mode', data.mode.toUpperCase());
       setTk('tk-mode2', data.mode.toUpperCase());
+      // Uptime from state
       if (data.uptime) {
         setTk('tk-uptime', data.uptime);
         setTk('tk-uptime2', data.uptime);
       }
+      // MRR & API spend — show note if no live data
       if (data.mrr && !data.mrr.note) {
         setTk('tk-mrr', data.mrr);
         setTk('tk-mrr2', data.mrr);
@@ -2020,68 +1954,26 @@ a{color:var(--blue);text-decoration:none;}
       }
 
     } catch (e) {
-      consecutiveFailures++;
-
-      // Top-bar: show offline only while truly unreachable
+      // Live API unavailable — dashboard still works fully in static mode
       const dot = document.getElementById('systemStatusDot');
       const txt = document.getElementById('systemStatusText');
-      if (dot) { dot.style.background = 'var(--red)'; dot.style.animation = 'pulse-red 2s infinite'; }
-      if (txt) { txt.textContent = 'OFFLINE'; txt.style.color = 'var(--red)'; }
-
-      // Bottom banner with context-sensitive message
-      const isDeviceOffline = !navigator.onLine;
-      const msg = isDeviceOffline
-        ? 'No internet connection — will reconnect automatically'
-        : 'Dashboard API unreachable — retrying in ' + (consecutiveFailures < 3 ? '30' : consecutiveFailures < 5 ? '60' : '90') + 's';
-      showOfflineBanner(msg);
-
-      console.warn('Dashboard fetch failed (' + consecutiveFailures + 'x):', e.message);
+      if (dot) { dot.style.background = 'var(--gold)'; dot.style.animation = 'none'; }
+      if (txt) { txt.textContent = 'STATIC'; txt.style.color = 'var(--gold)'; }
+      // Populate ticker with static fallback values
+      const setTk = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setTk('tk-mac-status', 'STATIC'); setTk('tk-mac-status2', 'STATIC');
+      setTk('tk-cloud-sync', 'N/A'); setTk('tk-cloud-sync2', 'N/A');
+      setTk('tk-mode', 'LOCAL'); setTk('tk-mode2', 'LOCAL');
+      setTk('tk-uptime', '--'); setTk('tk-uptime2', '--');
+      // Set comms health indicators to unknown (gold) when API is unavailable
+      ['telegram','imessage','voice','email','hub','cloud'].forEach(svc => {
+        const d = document.getElementById('dot-' + svc);
+        const s = document.getElementById('status-' + svc);
+        if (d) { d.style.background = 'var(--gold)'; d.style.animation = 'none'; }
+        if (s) { s.textContent = 'Unknown'; s.style.color = 'var(--gold)'; }
+      });
+      console.info('Dashboard running in static mode (live API not reachable)');
     }
-
-    scheduleNextRefresh();
-  }
-
-  // ============ ONLINE / OFFLINE EVENTS ============
-
-  // When the browser regains connectivity, attempt an immediate refresh
-  window.addEventListener('online', () => {
-    const bannerMsg = document.getElementById('offlineBannerMsg');
-    if (bannerMsg) bannerMsg.textContent = 'Connection restored — reconnecting...';
-    consecutiveFailures = 0;
-    if (refreshTimer) clearTimeout(refreshTimer);
-    refreshDashboard();
-  });
-
-  // When the browser loses connectivity, immediately show the banner
-  window.addEventListener('offline', () => {
-    const dot = document.getElementById('systemStatusDot');
-    const txt = document.getElementById('systemStatusText');
-    if (dot) { dot.style.background = 'var(--red)'; dot.style.animation = 'pulse-red 2s infinite'; }
-    if (txt) { txt.textContent = 'OFFLINE'; txt.style.color = 'var(--red)'; }
-    showOfflineBanner('No internet connection — will reconnect automatically');
-  });
-
-  // ============ PWA: SERVICE WORKER REGISTRATION ============
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/dashboard-sw.js', { scope: '/' })
-        .then(reg => {
-          console.log('Dashboard SW registered, scope:', reg.scope);
-          // If a new version of the SW is waiting, activate it immediately
-          reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  newWorker.postMessage({ type: 'SKIP_WAITING' });
-                }
-              });
-            }
-          });
-        })
-        .catch(err => console.warn('Dashboard SW registration failed:', err));
-    });
   }
 
   // ============ INIT ============
@@ -2101,13 +1993,9 @@ a{color:var(--blue);text-decoration:none;}
     renderBrainstorm();
     initTerminal();
 
-    // If already offline at load time, show the banner immediately
-    if (!navigator.onLine) {
-      showOfflineBanner('No internet connection — will reconnect automatically');
-    }
-
-    // Live data: fetch on load (scheduleNextRefresh called at end of each fetch)
+    // Live data: fetch on load, then every 30 seconds
     refreshDashboard();
+    setInterval(refreshDashboard, 30000);
   }
 
   if(document.readyState === 'loading'){
@@ -2117,6 +2005,18 @@ a{color:var(--blue);text-decoration:none;}
   }
 
 })();
+</script>
+
+<script>
+// PWA: attempt service worker registration from same-origin SW file if available.
+// On iOS "Add to Home Screen", the apple-mobile-web-app-* meta tags above handle
+// standalone mode. The SW registration here is a progressive enhancement — if the
+// SW file doesn't exist (GitHub Pages), it fails silently and the app still works.
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('./sw.js').catch(function() {
+    // SW file not present — normal on GitHub Pages static deploy. App works without it.
+  });
+}
 </script>
 </body>
 </html>
