@@ -513,9 +513,9 @@ a{color:var(--blue);text-decoration:none;}
   </div>
   <div class="topbar-right">
     <div class="live-clock" id="liveClock">--:--:--</div>
-    <div class="status-live">
-      <span class="status-dot"></span>
-      ALL SYSTEMS LIVE
+    <div class="status-live" id="systemStatusBadge">
+      <span class="status-dot" id="systemStatusDot"></span>
+      <span id="systemStatusText">CONNECTING...</span>
     </div>
   </div>
 </header>
@@ -523,26 +523,26 @@ a{color:var(--blue);text-decoration:none;}
 <!-- ========== TICKER ========== -->
 <div class="ticker-wrap">
   <div class="ticker-track" id="tickerTrack">
-    <div class="ticker-item">PORTFOLIO HEALTH <span class="val">98.2%</span></div>
+    <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status">--</span></div>
     <div class="ticker-item">AGENTS SPAWNED <span class="val-blue">10</span></div>
-    <div class="ticker-item">BUDGET REMAINING <span class="val-gold">$4,280 / $5,000</span></div>
-    <div class="ticker-item">MRR <span class="val">$1,240</span></div>
-    <div class="ticker-item">API CALLS TODAY <span class="val-blue">3,847</span></div>
-    <div class="ticker-item">UPTIME <span class="val">99.97%</span></div>
-    <div class="ticker-item">COMMITS (24H) <span class="val-blue">34</span></div>
+    <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync">--</span></div>
+    <div class="ticker-item">MRR <span class="val" id="tk-mrr">connect Stripe API</span></div>
+    <div class="ticker-item">API SPEND <span class="val-blue" id="tk-api-spend">connect billing API</span></div>
+    <div class="ticker-item">UPTIME <span class="val" id="tk-uptime">--</span></div>
+    <div class="ticker-item">MODE <span class="val-gold" id="tk-mode">--</span></div>
     <div class="ticker-item">SPRINT VELOCITY <span class="val-gold">HIGH</span></div>
-    <div class="ticker-item">CLOUD SYNC <span class="val">LIVE</span></div>
+    <div class="ticker-item">PORTFOLIO <span class="val" id="tk-portfolio">connect API for live data</span></div>
     <div class="ticker-item">REVENUE STREAMS <span class="val-gold">5 ACTIVE</span></div>
     <!-- duplicate for seamless scroll -->
-    <div class="ticker-item">PORTFOLIO HEALTH <span class="val">98.2%</span></div>
+    <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status2">--</span></div>
     <div class="ticker-item">AGENTS SPAWNED <span class="val-blue">10</span></div>
-    <div class="ticker-item">BUDGET REMAINING <span class="val-gold">$4,280 / $5,000</span></div>
-    <div class="ticker-item">MRR <span class="val">$1,240</span></div>
-    <div class="ticker-item">API CALLS TODAY <span class="val-blue">3,847</span></div>
-    <div class="ticker-item">UPTIME <span class="val">99.97%</span></div>
-    <div class="ticker-item">COMMITS (24H) <span class="val-blue">34</span></div>
+    <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync2">--</span></div>
+    <div class="ticker-item">MRR <span class="val" id="tk-mrr2">connect Stripe API</span></div>
+    <div class="ticker-item">API SPEND <span class="val-blue" id="tk-api-spend2">connect billing API</span></div>
+    <div class="ticker-item">UPTIME <span class="val" id="tk-uptime2">--</span></div>
+    <div class="ticker-item">MODE <span class="val-gold" id="tk-mode2">--</span></div>
     <div class="ticker-item">SPRINT VELOCITY <span class="val-gold">HIGH</span></div>
-    <div class="ticker-item">CLOUD SYNC <span class="val">LIVE</span></div>
+    <div class="ticker-item">PORTFOLIO <span class="val" id="tk-portfolio2">connect API for live data</span></div>
     <div class="ticker-item">REVENUE STREAMS <span class="val-gold">5 ACTIVE</span></div>
   </div>
 </div>
@@ -703,14 +703,24 @@ a{color:var(--blue);text-decoration:none;}
         </ul>
       </div>
 
-      <!-- Comms Health -->
+      <!-- Comms Health (live from cloud worker) -->
       <div class="card">
-        <div class="card-title">COMMS HEALTH</div>
-        <ul class="sidebar-list">
-          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> Telegram &mdash; <span style="color:var(--neon);">Online</span></li>
-          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> iMessage &mdash; <span style="color:var(--neon);">Online</span></li>
-          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> Voice &mdash; <span style="color:var(--neon);">Online</span></li>
-          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> Email &mdash; <span style="color:var(--neon);">Online</span></li>
+        <div class="card-title">COMMS HEALTH <span id="comms-sync-indicator" style="font-size:9px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0;text-transform:none;"></span></div>
+        <ul class="sidebar-list" id="commsHealthList">
+          <li><span class="status-dot" id="dot-telegram" style="width:6px;height:6px;"></span> Telegram &mdash; <span id="status-telegram" style="color:var(--muted);">--</span></li>
+          <li><span class="status-dot" id="dot-imessage" style="width:6px;height:6px;"></span> iMessage &mdash; <span id="status-imessage" style="color:var(--muted);">--</span></li>
+          <li><span class="status-dot" id="dot-voice" style="width:6px;height:6px;"></span> Voice &mdash; <span id="status-voice" style="color:var(--muted);">--</span></li>
+          <li><span class="status-dot" id="dot-email" style="width:6px;height:6px;"></span> Email &mdash; <span id="status-email" style="color:var(--muted);">--</span></li>
+          <li><span class="status-dot" id="dot-hub" style="width:6px;height:6px;"></span> Hub &mdash; <span id="status-hub" style="color:var(--muted);">--</span></li>
+          <li><span class="status-dot" id="dot-cloud" style="width:6px;height:6px;"></span> Cloud Worker &mdash; <span id="status-cloud" style="color:var(--muted);">--</span></li>
+        </ul>
+      </div>
+
+      <!-- Recent Messages (live) -->
+      <div class="card">
+        <div class="card-title">RECENT MESSAGES</div>
+        <ul class="sidebar-list" id="recentMessagesList">
+          <li style="color:var(--muted);font-style:italic;">Loading...</li>
         </ul>
       </div>
 
@@ -898,11 +908,11 @@ a{color:var(--blue);text-decoration:none;}
     </div>
   </div>
 
-  <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-align:right;margin:6px 0 16px;letter-spacing:0.5px;">Prices as of last update (~Mar 20, 2026) &mdash; connect API for live data</div>
+  <div style="font-family:var(--font-mono);font-size:10px;color:var(--gold);text-align:right;margin:6px 0 16px;letter-spacing:0.5px;">PLACEHOLDER DATA &mdash; connect brokerage API for live portfolio prices</div>
 
   <div class="stats-row fade-in" style="margin-bottom:28px;">
-    <div class="stat-card"><div class="stat-num" style="font-size:36px;">$1.08M</div><div class="stat-label">Total Portfolio</div></div>
-    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$719K</div><div class="stat-label">Chase Brokerage</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;">$1.08M</div><div class="stat-label">Total Portfolio (placeholder)</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$719K</div><div class="stat-label">Chase Brokerage (placeholder)</div></div>
     <div class="stat-card"><div class="stat-num" style="font-size:36px;">5</div><div class="stat-label">Accounts</div></div>
     <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--neon),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">17</div><div class="stat-label">Positions</div></div>
   </div>
@@ -1688,6 +1698,143 @@ a{color:var(--blue);text-decoration:none;}
     });
   }
 
+  // ============ LIVE DATA FEED ============
+
+  const DASHBOARD_API = 'https://9-cloud-standin.789k6rym8v.workers.dev/api/dashboard';
+  let lastDashboardData = null;
+
+  function setStatusDot(dotEl, status) {
+    if (!dotEl) return;
+    if (status === 'online' || status === 'connected') {
+      dotEl.style.background = 'var(--neon)';
+      dotEl.style.animation = 'pulse-green 2s infinite';
+    } else if (status === 'unknown') {
+      dotEl.style.background = 'var(--gold)';
+      dotEl.style.animation = 'none';
+    } else {
+      dotEl.style.background = 'var(--red)';
+      dotEl.style.animation = 'pulse-red 2s infinite';
+    }
+  }
+
+  function setStatusText(el, status) {
+    if (!el) return;
+    const label = status === 'online' || status === 'connected' ? 'Online' : status === 'unknown' ? 'Unknown' : 'Offline';
+    const color = status === 'online' || status === 'connected' ? 'var(--neon)' : status === 'unknown' ? 'var(--gold)' : 'var(--red)';
+    el.textContent = label;
+    el.style.color = color;
+  }
+
+  function formatTimeAgo(isoStr) {
+    if (!isoStr) return 'never';
+    const diff = Math.round((Date.now() - new Date(isoStr).getTime()) / 1000);
+    if (diff < 60) return diff + 's ago';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
+  async function refreshDashboard() {
+    try {
+      const res = await fetch(DASHBOARD_API, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      lastDashboardData = data;
+
+      // --- Top bar system status ---
+      const dot = document.getElementById('systemStatusDot');
+      const txt = document.getElementById('systemStatusText');
+      if (data.mac.alive) {
+        dot.style.background = 'var(--neon)';
+        dot.style.animation = 'pulse-green 2s ease-in-out infinite';
+        txt.textContent = 'SYSTEM LIVE';
+        txt.style.color = 'var(--neon)';
+      } else {
+        dot.style.background = 'var(--gold)';
+        dot.style.animation = 'pulse-red 2s ease-in-out infinite';
+        txt.textContent = 'CLOUD BACKUP';
+        txt.style.color = 'var(--gold)';
+      }
+
+      // --- Ticker items ---
+      const setTk = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+      setTk('tk-mac-status', data.mac.alive ? 'ONLINE' : 'OFFLINE');
+      setTk('tk-mac-status2', data.mac.alive ? 'ONLINE' : 'OFFLINE');
+      const syncLabel = data.mac.lastSyncAgeSec !== null
+        ? (data.mac.lastSyncAgeSec < 120 ? 'LIVE' : data.mac.lastSyncAgeSec + 's ago')
+        : 'N/A';
+      setTk('tk-cloud-sync', syncLabel);
+      setTk('tk-cloud-sync2', syncLabel);
+      setTk('tk-mode', data.mode.toUpperCase());
+      setTk('tk-mode2', data.mode.toUpperCase());
+      // Uptime from state
+      if (data.uptime) {
+        setTk('tk-uptime', data.uptime);
+        setTk('tk-uptime2', data.uptime);
+      }
+      // MRR & API spend — show note if no live data
+      if (data.mrr && !data.mrr.note) {
+        setTk('tk-mrr', data.mrr);
+        setTk('tk-mrr2', data.mrr);
+      }
+      if (data.apiSpend && !data.apiSpend.note) {
+        setTk('tk-api-spend', data.apiSpend);
+        setTk('tk-api-spend2', data.apiSpend);
+      }
+
+      // --- Comms Health sidebar ---
+      const svc = data.services;
+      setStatusDot(document.getElementById('dot-telegram'), svc.telegram.status);
+      setStatusText(document.getElementById('status-telegram'), svc.telegram.status);
+      setStatusDot(document.getElementById('dot-imessage'), svc.imessage.status);
+      setStatusText(document.getElementById('status-imessage'), svc.imessage.status);
+      setStatusDot(document.getElementById('dot-voice'), svc.voice.status);
+      setStatusText(document.getElementById('status-voice'), svc.voice.status);
+      setStatusDot(document.getElementById('dot-email'), svc.email.status);
+      setStatusText(document.getElementById('status-email'), svc.email.status);
+      setStatusDot(document.getElementById('dot-hub'), svc.commsHub.status);
+      setStatusText(document.getElementById('status-hub'), svc.commsHub.status);
+      setStatusDot(document.getElementById('dot-cloud'), svc.cloudWorker.status);
+      setStatusText(document.getElementById('status-cloud'), svc.cloudWorker.status);
+
+      // Sync timestamp
+      const syncInd = document.getElementById('comms-sync-indicator');
+      if (syncInd) {
+        syncInd.textContent = 'synced ' + formatTimeAgo(data.mac.lastHeartbeat);
+      }
+
+      // --- Recent Messages ---
+      const msgList = document.getElementById('recentMessagesList');
+      if (msgList && data.recentMessages && data.recentMessages.length > 0) {
+        const channelColors = {telegram:'var(--blue)',imessage:'var(--neon)',email:'var(--gold)',voice:'var(--orange)',sms:'var(--purple)'};
+        msgList.innerHTML = data.recentMessages.slice(-8).reverse().map(m => {
+          const arrow = m.direction === 'in' ? '&larr;' : '&rarr;';
+          const color = channelColors[m.channel] || 'var(--muted)';
+          const time = m.timestamp ? formatTimeAgo(m.timestamp) : '';
+          return `<li style="font-size:11px;">
+            <span style="color:${color};font-family:var(--font-mono);font-size:10px;min-width:60px;">${m.channel}</span>
+            <span style="color:var(--muted);">${arrow}</span>
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.text || '(empty)'}</span>
+            ${time ? `<span style="color:var(--dim);font-size:9px;white-space:nowrap;">${time}</span>` : ''}
+          </li>`;
+        }).join('');
+      } else if (msgList) {
+        msgList.innerHTML = '<li style="color:var(--muted);font-style:italic;">No recent messages</li>';
+      }
+
+    } catch (e) {
+      // Show offline state
+      const dot = document.getElementById('systemStatusDot');
+      const txt = document.getElementById('systemStatusText');
+      if (dot) { dot.style.background = 'var(--red)'; dot.style.animation = 'pulse-red 2s infinite'; }
+      if (txt) { txt.textContent = 'OFFLINE'; txt.style.color = 'var(--red)'; }
+      console.warn('Dashboard fetch failed:', e.message);
+    }
+  }
+
   // ============ INIT ============
 
   function init(){
@@ -1704,6 +1851,10 @@ a{color:var(--blue);text-decoration:none;}
     renderLocker();
     renderBrainstorm();
     initTerminal();
+
+    // Live data: fetch on load, then every 30 seconds
+    refreshDashboard();
+    setInterval(refreshDashboard, 30000);
   }
 
   if(document.readyState === 'loading'){

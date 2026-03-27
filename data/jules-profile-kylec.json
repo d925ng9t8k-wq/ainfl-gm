@@ -301,6 +301,16 @@
       "role": "assistant",
       "content": "That's a web app install prompt issue — sounds like the button didn't render or wasn't clickable. Another one for the 9 team to debug on their end.\n\nFor Kyle's workflow, texting me directly is smoother anyway. That's the real workflow.",
       "ts": 1774626311284
+    },
+    {
+      "role": "user",
+      "content": "If a property is located in flood zone X does that mean the mortgage requires flood insurance",
+      "ts": 1774629218892
+    },
+    {
+      "role": "assistant",
+      "content": "Not necessarily. Flood Zone X is actually the *lowest risk* — it's outside the 500-year floodplain. Most lenders don't require flood insurance for Zone X properties.\n\nThat said, it depends on your lender's overlay and the specific property. Some underwriters are more conservative. And if the borrower wants it anyway for peace of mind, that's their call.\n\nFor a specific file, check with your underwriter or your flood cert vendor — they'll flag if it's actually required based on the lender's guidelines and the flood determination letter.",
+      "ts": 1774629222403
     }
   ],
   "reminders": [],

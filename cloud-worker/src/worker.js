@@ -457,6 +457,88 @@ export default {
       }
     }
 
+    // ── Dashboard API — read-only synced state for GitHub Pages dashboard ────
+    if (url.pathname === '/api/dashboard') {
+      // Handle CORS preflight
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400',
+          },
+        });
+      }
+
+      try {
+        const bundle = await env.STATE.get('mac-bundle', 'json');
+        const macAlive = await isMacAlive(env.STATE);
+
+        // Build sanitized dashboard payload — no secrets, no credentials
+        const state = bundle?.state || {};
+        const channels = state.channels || {};
+        const recentMessages = (state.recentMessages || []).slice(-20).map(m => ({
+          channel: m.channel || 'unknown',
+          direction: m.direction || 'unknown',
+          text: (m.text || '').slice(0, 150),
+          timestamp: m.timestamp || null,
+        }));
+
+        // Derive service health from channel status
+        const services = {
+          commsHub: { status: macAlive ? 'online' : 'offline', port: 3457 },
+          voiceServer: { status: channels.voice?.status || (macAlive ? 'unknown' : 'offline'), port: 3456 },
+          cloudWorker: { status: 'online', location: 'edge' },
+          tunnel: { status: channels.tunnel?.status || (macAlive ? 'unknown' : 'offline') },
+          telegram: { status: channels.telegram?.status || (macAlive ? 'unknown' : 'offline') },
+          imessage: { status: channels.imessage?.status || channels.iMessage?.status || (macAlive ? 'unknown' : 'offline') },
+          email: { status: channels.email?.status || (macAlive ? 'unknown' : 'offline') },
+          voice: { status: channels.voice?.status || (macAlive ? 'unknown' : 'offline') },
+        };
+
+        // Agent activity from state (if hub pushes it)
+        const agents = state.agents || null;
+
+        // Uptime and system info
+        const lastHeartbeat = bundle?.heartbeat || null;
+        const lastSyncAge = lastHeartbeat ? Math.round((Date.now() - lastHeartbeat) / 1000) : null;
+
+        const dashboard = {
+          timestamp: new Date().toISOString(),
+          mac: {
+            alive: macAlive,
+            lastHeartbeat: lastHeartbeat ? new Date(lastHeartbeat).toISOString() : null,
+            lastSyncAgeSec: lastSyncAge,
+          },
+          mode: macAlive ? 'relay' : 'autonomous',
+          services,
+          recentMessages,
+          agents,
+          // Fields that need external APIs — clearly marked
+          portfolio: { note: 'Connect brokerage API for live data' },
+          trader9: { note: 'Connect Alpaca API for live P&L' },
+          apiSpend: state.apiSpend || { note: 'Connect Anthropic billing API for live data' },
+          mrr: state.mrr || { note: 'Connect Stripe API for live MRR' },
+          battery: state.battery || null,
+          uptime: state.uptime || null,
+        };
+
+        return Response.json(dashboard, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=15',
+          },
+        });
+      } catch (e) {
+        return Response.json({ error: e.message }, {
+          status: 500,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        });
+      }
+    }
+
     // ── Kyle Shea presentation page ─────────────────────────────────────────
     if (url.pathname === '/kyle') {
       const html = await env.STATE.get('kyle-presentation');
