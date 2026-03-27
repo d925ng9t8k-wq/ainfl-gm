@@ -33,3 +33,11 @@ cloud-worker/.wrangler/
 
 # Playwright MCP browser state
 .playwright-mcp/
+
+# Sensitive personal documents (driver's license, IDs, etc.)
+data/dl-*.jpg
+data/dl-*.png
+data/dl-*.pdf
+
+# Test artifacts
+data/*.tmp
