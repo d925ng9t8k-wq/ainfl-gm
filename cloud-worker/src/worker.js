@@ -210,6 +210,34 @@ export default {
       // Single KV write with everything bundled (free tier = 1,000 puts/day)
       try {
         const body = await request.json();
+
+        // Intentional shutdown: Mac is going down gracefully — take over immediately
+        if (body.intentionalShutdown) {
+          const bundle = {
+            heartbeat: 0, // Forces isMacAlive to return false immediately
+            state: body.state || null,
+          };
+          await env.STATE.put('mac-bundle', JSON.stringify(bundle));
+
+          // Immediately activate Telegram webhook so cloud handles messages
+          const workerUrl = url.origin;
+          await fetch(`${TELEGRAM_API}${env.TELEGRAM_BOT_TOKEN}/setWebhook`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: `${workerUrl}/webhook` }),
+          });
+          await env.STATE.put('webhook-status', 'true');
+          await env.STATE.put('mac-status', 'false');
+
+          await sendTelegram(
+            env.TELEGRAM_BOT_TOKEN,
+            env.CHAT_ID,
+            'Mac shutting down gracefully. Cloud backup active — I\'m here on Telegram.'
+          );
+
+          return Response.json({ status: 'ok', shutdown: true });
+        }
+
         const bundle = {
           heartbeat: Date.now(),
           state: body.state || null,

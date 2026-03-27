@@ -818,6 +818,28 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── POST /imessage-in (relayed from comms-hub iMessage monitor) ──
+  if (req.method === 'POST' && url.pathname === '/imessage-in') {
+    try {
+      const rawBody = await readBody(req);
+      const json = JSON.parse(rawBody);
+      const text = (json.text || '').trim();
+
+      if (!text) {
+        jsonResponse(res, 400, { error: 'empty message' });
+        return;
+      }
+
+      log(`iMessage IN (via relay): "${text.slice(0, 100)}"`);
+      const reply = await handleIncomingMessage(text, json.handle || 'imessage');
+      jsonResponse(res, 200, { reply, ts: new Date().toISOString() });
+    } catch (e) {
+      log(`iMessage relay handler error: ${e.message}`);
+      jsonResponse(res, 500, { error: e.message });
+    }
+    return;
+  }
+
   // ── POST /message (test endpoint — no Twilio needed) ──
   if (req.method === 'POST' && url.pathname === '/message') {
     try {
@@ -923,7 +945,7 @@ server.listen(PORT, () => {
   log(`Claude configured: ${!!ANTHROPIC_KEY}`);
   log(`Weather configured: ${!!OPENWEATHER_KEY}`);
   log(`Recipient: ${RECIPIENT_PHONE || 'NOT SET — add JULES_KYLEC_RECIPIENT_PHONE to .env'}`);
-  log(`Endpoints: GET /health, POST /sms, POST /message, POST /briefing, GET /notes, GET /reminders, GET /weather`);
+  log(`Endpoints: GET /health, POST /sms, POST /imessage-in, POST /message, POST /briefing, GET /notes, GET /reminders, GET /weather`);
 });
 
 server.on('error', (e) => {

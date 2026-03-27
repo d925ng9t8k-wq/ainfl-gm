@@ -20,7 +20,7 @@ SESSION_TOKEN=$(curl -s -X POST "http://localhost:3457/terminal/claim?pid=$CLAUD
 # The loop checks if Claude Code ($CLAUDE_PID) is still alive every iteration.
 # If Claude Code crashes, the loop exits — no more orphan pings keeping relay mode alive.
 kill $(cat /tmp/terminal-ping.pid 2>/dev/null) 2>/dev/null
-(while kill -0 $CLAUDE_PID 2>/dev/null; do curl -s -X POST "http://localhost:3457/terminal/ping?token=$SESSION_TOKEN" > /dev/null 2>&1; sleep 60; done; echo "Ping loop: Claude PID $CLAUDE_PID gone — exiting") &
+(while kill -0 $CLAUDE_PID 2>/dev/null; do curl -s -X POST "http://localhost:3457/terminal/ping?token=$SESSION_TOKEN" > /dev/null 2>&1; sleep 15; done; echo "Ping loop: Claude PID $CLAUDE_PID gone — exiting") &
 echo $! > /tmp/terminal-ping.pid
 
 # 4. Check inbox for messages received while terminal was down
@@ -64,7 +64,7 @@ The PostToolUse hook in ~/.claude/settings.json handles this automatically. It r
 
 **CRITICAL:** Plain stdout from hooks is INVISIBLE to 9. The hook MUST output: `{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"MESSAGE TEXT"}}`
 
-**NEVER go more than 2 minutes without making a tool call.** The hook only fires on tool calls. If you are writing long text responses, break them up with inbox checks. Jasson's messages are the #1 priority — everything else is secondary.
+**NEVER go more than 2 minutes without making a tool call.** The hook only fires on tool calls. If you are writing long text responses, break them up with inbox checks. If a response will take more than 60 seconds to generate, break it into parts with a Read or Bash call between each part. Jasson's messages are the #1 priority — everything else is secondary.
 
 ## After a Mac Reboot
 

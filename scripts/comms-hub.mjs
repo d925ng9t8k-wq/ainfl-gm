@@ -219,7 +219,7 @@ if (terminalSessionToken) {
     clearTerminalState();
   }
 }
-const TERMINAL_TIMEOUT = 120000; // 2 minutes without ping = terminal is gone
+const TERMINAL_TIMEOUT = 45000; // 45 seconds without ping = terminal is gone (was 120s; with 15s pings, 2 missed = 30s + 15s watchdog cycle)
 
 function clearTerminalState() {
   terminalActive = false;
@@ -526,7 +526,7 @@ CRITICAL RULES:
 async function askDoorman(userMessage, channel) {
   return new Promise((resolve) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 512,
       system: DOORMAN_SYSTEM,
       messages: [{ role: 'user', content: userMessage }],
@@ -763,7 +763,7 @@ async function askClaude(userMessage, channel) {
 
   return new Promise((resolve) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 2048,
       system: SYSTEM,
       messages: state.conversationHistory,
@@ -1364,8 +1364,9 @@ async function imessageMonitor() {
 }
 
 // ─── CHANNEL 3: Email Monitor (2-way) ───────────────────────────────────────
-// Tracks email subjects we've already seen to avoid re-processing
-const processedEmailSubjects = new Set();
+// Tracks emails we've already seen — dedup by subject + first 100 chars of body
+// (subject-only dedup silently drops different emails with same subject, e.g. thread replies)
+const processedEmailKeys = new Set();
 
 async function emailMonitor() {
   updateChannelStatus(state, 'email', 'active');
@@ -1386,14 +1387,15 @@ async function emailMonitor() {
           const subject = subjectMatch[1].trim();
           const body = subjectMatch[2].trim();
 
-          // Skip emails we've already processed (dedup by subject)
-          if (processedEmailSubjects.has(subject)) continue;
-          processedEmailSubjects.add(subject);
+          // Skip emails we've already processed (dedup by subject + body prefix)
+          const dedupKey = `${subject}|${body.slice(0, 100)}`;
+          if (processedEmailKeys.has(dedupKey)) continue;
+          processedEmailKeys.add(dedupKey);
 
           // Keep set from growing unbounded
-          if (processedEmailSubjects.size > 100) {
-            const first = processedEmailSubjects.values().next().value;
-            processedEmailSubjects.delete(first);
+          if (processedEmailKeys.size > 200) {
+            const first = processedEmailKeys.values().next().value;
+            processedEmailKeys.delete(first);
           }
 
           // Skip our own outgoing emails (from 9/captain)
@@ -1654,7 +1656,7 @@ let apiAlertSent = false;
 async function probeApiHealth() {
   try {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 5,
       messages: [{ role: 'user', content: 'ok' }],
     });
@@ -2223,7 +2225,7 @@ async function syncToCloud() {
 }
 
 // Sync every 60 seconds
-setInterval(syncToCloud, 300000); // Every 5 min (reduced from 60s to save Cloudflare quota)
+setInterval(syncToCloud, 120000); // Every 2 min (faster cloud failover detection; ~720 KV writes/day, within free tier 1K/day limit)
 // Initial sync on startup (delayed 10s to let everything initialize)
 setTimeout(syncToCloud, 10000);
 
@@ -2234,7 +2236,24 @@ function shutdown(signal) {
   state.channels.imessage.status = 'shutdown';
   state.channels.email.status = 'shutdown';
   saveState(state);
-  process.exit(0);
+
+  // Last gasp: tell cloud we're going down so it takes over immediately
+  if (CLOUD_WORKER_URL) {
+    try {
+      const cloudSecret = process.env.CLOUD_SECRET || '';
+      const headers = { 'Content-Type': 'application/json' };
+      if (cloudSecret) headers['x-cloud-secret'] = cloudSecret;
+      fetch(`${CLOUD_WORKER_URL}/heartbeat`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ state: { channels: state.channels }, intentionalShutdown: true }),
+        signal: AbortSignal.timeout(3000),
+      }).catch(() => {});
+    } catch {}
+  }
+
+  // Give the last-gasp fetch a moment to complete before exiting
+  setTimeout(() => process.exit(0), 500);
 }
 
 process.on('SIGTERM', () => shutdown('SIGTERM'));
