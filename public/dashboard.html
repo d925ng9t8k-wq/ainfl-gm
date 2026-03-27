@@ -3,1190 +3,1029 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>9 Enterprises — Owner Dashboard</title>
-<meta http-equiv="refresh" content="60">
+<title>9 Enterprises — Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #0a0a0a;
-    color: #e0e0e0;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ---- Header ---- */
-  .header {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-    padding: 32px 20px 28px;
-    text-align: center;
-    border-bottom: 1px solid #1e1e3a;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .header-badge {
-    display: inline-block;
-    background: rgba(99, 102, 241, 0.15);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    color: #818cf8;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 14px;
-  }
-
-  .header h1 {
-    font-size: 32px;
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: -1px;
-    margin-bottom: 6px;
-    position: relative;
-  }
-
-  .header h1 span {
-    background: linear-gradient(135deg, #818cf8, #6366f1, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .header-sub {
-    font-size: 14px;
-    color: #666;
-    font-weight: 400;
-  }
-
-  .live-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #22c55e;
-    border-radius: 50%;
-    margin-right: 6px;
-    animation: pulse 2s infinite;
-    vertical-align: middle;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(0.85); }
-  }
-
-  /* ---- Layout ---- */
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  @media (max-width: 640px) {
-    .grid-2 { grid-template-columns: 1fr; }
-    .header h1 { font-size: 26px; }
-  }
-
-  /* ---- Section ---- */
-  .section {
-    padding: 28px 0 0;
-  }
-
-  .section-last {
-    padding-bottom: 40px;
-  }
-
-  .section-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #555;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #1a1a1a;
-  }
-
-  /* ---- Cards ---- */
-  .card {
-    background: #111;
-    border: 1px solid #1e1e1e;
-    border-radius: 12px;
-    padding: 18px;
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  .card-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* ---- Status Dots ---- */
-  .dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: inline-block;
-  }
-
-  .dot-green { background: #22c55e; }
-  .dot-yellow { background: #f59e0b; }
-  .dot-orange { background: #fb923c; }
-  .dot-red { background: #ef4444; }
-  .dot-blue { background: #3b82f6; }
-  .dot-purple { background: #a78bfa; }
-  .dot-gray { background: #444; }
-
-  .dot-green.glow { box-shadow: 0 0 8px rgba(34, 197, 94, 0.6); }
-  .dot-yellow.glow { box-shadow: 0 0 8px rgba(245, 158, 11, 0.6); }
-  .dot-red.glow { box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
-  .dot-blue.glow { box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
-
-  /* ---- Agent Board ---- */
-  .agent-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid #161616;
-  }
-
-  .agent-row:last-child { border-bottom: none; }
-
-  .agent-dot-wrap {
-    padding-top: 3px;
-    flex-shrink: 0;
-  }
-
-  .agent-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 2px;
-  }
-
-  .agent-role {
-    font-size: 11px;
-    font-weight: 600;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 4px;
-  }
-
-  .agent-task {
-    font-size: 12px;
-    color: #888;
-    line-height: 1.5;
-  }
-
-  .agent-status-tag {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-top: 5px;
-    display: inline-block;
-  }
-
-  .tag-active { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
-  .tag-building { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
-  .tag-researching { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-  .tag-standby { background: rgba(68, 68, 68, 0.2); color: #666; border: 1px solid #222; }
-  .tag-setting-up { background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
-
-  /* ---- Project Board ---- */
-  .project-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 11px 0;
-    border-bottom: 1px solid #161616;
-    gap: 12px;
-  }
-
-  .project-row:last-child { border-bottom: none; }
-
-  .project-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: #ddd;
-    flex: 1;
-  }
-
-  .project-badge {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 3px 9px;
-    border-radius: 5px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .badge-operational { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
-  .badge-live { background: rgba(251, 146, 60, 0.12); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.2); }
-  .badge-building { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
-  .badge-progress { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-  .badge-research { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border: 1px solid #2a2a2a; }
-  .badge-setup { background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.2); }
-  .badge-fixed { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
-  .badge-deployed { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
-  .tag-complete { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
-
-  .project-dot-wrap {
-    flex-shrink: 0;
-  }
-
-  /* ---- To-Do List ---- */
-  .todo-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid #161616;
-  }
-
-  .todo-item:last-child { border-bottom: none; }
-
-  .todo-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #333;
-    border-radius: 4px;
-    flex-shrink: 0;
-    margin-top: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .todo-text {
-    font-size: 13px;
-    color: #ccc;
-    line-height: 1.5;
-  }
-
-  .todo-meta {
-    font-size: 11px;
-    color: #555;
-    margin-top: 2px;
-  }
-
-  /* ---- Brainstorm Queue ---- */
-  .brainstorm-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 9px 0;
-    border-bottom: 1px solid #161616;
-  }
-
-  .brainstorm-item:last-child { border-bottom: none; }
-
-  .brainstorm-icon {
-    width: 22px;
-    height: 22px;
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    border-radius: 5px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: #818cf8;
-    margin-top: 1px;
-  }
-
-  .brainstorm-text {
-    font-size: 13px;
-    color: #aaa;
-    line-height: 1.5;
-  }
-
-  /* ---- Revenue Tracker ---- */
-  .revenue-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 11px 0;
-    border-bottom: 1px solid #161616;
-    gap: 10px;
-  }
-
-  .revenue-row:last-child { border-bottom: none; }
-
-  .revenue-source {
-    font-size: 13px;
-    color: #ccc;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-  }
-
-  .revenue-status {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 3px 9px;
-    border-radius: 5px;
-    white-space: nowrap;
-  }
-
-  .rev-active { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
-  .rev-ready { background: rgba(59, 130, 246, 0.12); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
-  .rev-pending { background: rgba(107, 114, 128, 0.15); color: #9ca3af; border: 1px solid #2a2a2a; }
-  .rev-prerev { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-
-  /* ---- Sprint Log ---- */
-  .timeline {
-    position: relative;
-    padding-left: 24px;
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 6px;
-    bottom: 6px;
-    width: 2px;
-    background: #1e1e1e;
-  }
-
-  .timeline-item {
-    position: relative;
-    padding-bottom: 18px;
-  }
-
-  .timeline-item:last-child { padding-bottom: 0; }
-
-  .timeline-dot {
-    position: absolute;
-    left: -21px;
-    top: 5px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid #111;
-  }
-
-  .tl-done { background: #22c55e; }
-  .tl-partial { background: #f59e0b; }
-  .tl-note { background: #3b82f6; }
-
-  .timeline-time {
-    font-size: 10px;
-    font-weight: 700;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 3px;
-  }
-
-  .timeline-text {
-    font-size: 13px;
-    color: #bbb;
-    line-height: 1.5;
-  }
-
-  .timeline-text strong {
-    color: #e0e0e0;
-    font-weight: 600;
-  }
-
-  /* ---- Comms Health ---- */
-  .comms-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .comms-channel {
-    background: #0e0e0e;
-    border: 1px solid #1e1e1e;
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .comms-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-  }
-
-  .channel-name {
-    font-size: 12px;
-    font-weight: 700;
-    color: #ddd;
-    margin-bottom: 2px;
-  }
-
-  .channel-detail {
-    font-size: 11px;
-    color: #555;
-  }
-
-  .channel-status {
-    margin-left: auto;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 3px 8px;
-    border-radius: 5px;
-  }
-
-  .ch-online { background: rgba(34, 197, 94, 0.12); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
-  .ch-degraded { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-  .ch-offline { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
-
-  /* ---- Footer ---- */
-  .footer {
-    text-align: center;
-    padding: 24px 20px 32px;
-    border-top: 1px solid #151515;
-    margin-top: 32px;
-  }
-
-  .footer-text {
-    font-size: 11px;
-    color: #3a3a3a;
-    letter-spacing: 0.5px;
-  }
-
-  .footer-text span {
-    color: #555;
-  }
-
-  /* ---- Divider ---- */
-  .section-divider {
-    border: none;
-    border-top: 1px solid #141414;
-    margin: 0;
-  }
-
-  /* ---- Accent Colors ---- */
-  .text-indigo { color: #818cf8; }
-  .text-green { color: #22c55e; }
-  .text-orange { color: #fb923c; }
-  .text-blue { color: #60a5fa; }
-  .text-purple { color: #a78bfa; }
-  .text-yellow { color: #f59e0b; }
-  .text-gray { color: #666; }
-
+/* ========== RESET & BASE ========== */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0a;--bg2:#111118;--bg3:#181825;
+  --neon:#00ff9d;--blue:#00e5ff;--gold:#f5c542;
+  --red:#ff2d55;--purple:#c300ff;--orange:#ff6b35;--pink:#ff69b4;
+  --text:#e2e8f0;--muted:#64748b;--dim:#334155;
+  --glass:rgba(20,20,35,0.65);--glassBorder:rgba(0,229,255,0.12);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Syne',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:var(--blue);text-decoration:none;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
+
+/* ========== ANIMATIONS ========== */
+@keyframes pulse-green{0%,100%{box-shadow:0 0 4px var(--neon);}50%{box-shadow:0 0 16px var(--neon);}}
+@keyframes glow-gold{0%,100%{box-shadow:0 0 8px rgba(245,197,66,0.3);}50%{box-shadow:0 0 24px rgba(245,197,66,0.6);}}
+@keyframes ticker-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+@keyframes borderGlow{0%,100%{border-color:rgba(0,229,255,0.15);}50%{border-color:rgba(0,229,255,0.35);}}
+
+.fade-in{animation:fadeIn 0.4s ease both;}
+
+/* ========== TOP BAR ========== */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;
+  background:linear-gradient(135deg,#0a0a0f 0%,#12121e 100%);
+  border-bottom:1px solid var(--glassBorder);
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.logo-9{
+  font-family:var(--font-display);font-size:42px;line-height:1;
+  color:var(--gold);text-shadow:0 0 20px rgba(245,197,66,0.5);
+  animation:glow-gold 3s ease-in-out infinite;
+}
+.topbar-title{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--text);}
+.topbar-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:1px;}
+.topbar-right{display:flex;align-items:center;gap:20px;}
+.live-clock{font-family:var(--font-mono);font-size:14px;color:var(--blue);letter-spacing:1px;}
+.status-live{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;color:var(--neon);letter-spacing:1px;text-transform:uppercase;
+}
+.status-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--neon);
+  animation:pulse-green 2s ease-in-out infinite;
+}
+
+/* ========== TICKER ========== */
+.ticker-wrap{
+  background:rgba(0,229,255,0.04);border-bottom:1px solid var(--glassBorder);
+  overflow:hidden;height:32px;display:flex;align-items:center;
+}
+.ticker-track{
+  display:flex;white-space:nowrap;
+  animation:ticker-scroll 40s linear infinite;
+}
+.ticker-item{
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);
+  padding:0 32px;display:flex;align-items:center;gap:8px;
+}
+.ticker-item .val{color:var(--neon);font-weight:500;}
+.ticker-item .val-gold{color:var(--gold);font-weight:500;}
+.ticker-item .val-blue{color:var(--blue);font-weight:500;}
+.ticker-sep{color:var(--dim);margin:0 4px;}
+
+/* ========== NAV TABS ========== */
+.nav-tabs{
+  display:flex;gap:2px;padding:8px 24px;
+  background:var(--bg);border-bottom:1px solid var(--glassBorder);
+  position:sticky;top:58px;z-index:99;
+}
+.nav-tab{
+  font-family:var(--font-display);font-size:16px;letter-spacing:2px;
+  padding:10px 24px;border:none;background:transparent;color:var(--muted);
+  cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;
+  text-transform:uppercase;
+}
+.nav-tab:hover{color:var(--text);background:rgba(0,229,255,0.04);}
+.nav-tab.active{color:var(--blue);border-bottom-color:var(--blue);background:rgba(0,229,255,0.06);}
+
+/* ========== TAB CONTENT ========== */
+.tab-content{display:none;padding:24px;max-width:1440px;margin:0 auto;}
+.tab-content.active{display:block;}
+
+/* ========== GLASS CARD ========== */
+.card{
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glassBorder);border-radius:12px;
+  padding:20px;position:relative;overflow:hidden;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.card:hover{border-color:rgba(0,229,255,0.25);box-shadow:0 0 20px rgba(0,229,255,0.06);}
+.card-title{
+  font-family:var(--font-display);font-size:15px;letter-spacing:2px;
+  color:var(--blue);text-transform:uppercase;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ========== STAT CARDS ========== */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glassBorder);border-radius:12px;
+  padding:20px 22px;text-align:center;
+}
+.stat-card .stat-num{
+  font-family:var(--font-display);font-size:48px;line-height:1;
+  background:linear-gradient(135deg,var(--blue),var(--neon));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.stat-card .stat-label{
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:2px;margin-top:6px;
+}
+
+/* ========== OVERVIEW LAYOUT ========== */
+.overview-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;}
+.overview-main{display:flex;flex-direction:column;gap:24px;}
+
+/* ========== AGENT 9 HERO ========== */
+.hero-card{
+  background:linear-gradient(135deg,rgba(245,197,66,0.08),rgba(245,197,66,0.02));
+  border:1px solid rgba(245,197,66,0.25);border-radius:14px;
+  padding:24px 28px;position:relative;overflow:hidden;
+  animation:glow-gold 4s ease-in-out infinite;
+}
+.hero-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 20% 20%,rgba(245,197,66,0.1),transparent 60%);
+  pointer-events:none;
+}
+.hero-card .agent-name{
+  font-family:var(--font-display);font-size:36px;color:var(--gold);
+  letter-spacing:4px;
+}
+.hero-card .agent-role{
+  font-family:var(--font-mono);font-size:13px;color:var(--gold);opacity:0.8;
+  letter-spacing:1px;margin-top:2px;
+}
+.hero-card .agent-desc{
+  font-family:var(--font-body);font-size:13px;color:var(--text);
+  margin-top:10px;opacity:0.85;line-height:1.6;
+}
+.hero-tag{
+  display:inline-block;padding:3px 10px;border-radius:4px;
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  background:rgba(245,197,66,0.15);color:var(--gold);
+  letter-spacing:1px;text-transform:uppercase;margin-right:6px;margin-top:8px;
+}
+
+/* ========== AGENT GRID ========== */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.agent-card{
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glassBorder);border-radius:10px;
+  padding:16px 18px;transition:all 0.25s;
+}
+.agent-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.agent-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.agent-name-small{font-family:var(--font-display);font-size:22px;letter-spacing:2px;}
+.agent-role-small{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.agent-desc-small{font-size:12px;color:var(--muted);margin:6px 0 8px;line-height:1.5;}
+
+/* Status pills */
+.pill{
+  display:inline-block;padding:2px 10px;border-radius:20px;
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.pill-active{background:rgba(0,255,157,0.12);color:var(--neon);border:1px solid rgba(0,255,157,0.25);}
+.pill-running{background:rgba(0,229,255,0.12);color:var(--blue);border:1px solid rgba(0,229,255,0.25);}
+.pill-pending{background:rgba(245,197,66,0.12);color:var(--gold);border:1px solid rgba(245,197,66,0.25);}
+.pill-blocked{background:rgba(255,45,85,0.12);color:var(--red);border:1px solid rgba(255,45,85,0.25);}
+.pill-standby{background:rgba(100,116,139,0.12);color:var(--muted);border:1px solid rgba(100,116,139,0.25);}
+
+/* Tags */
+.tag{
+  display:inline-block;padding:2px 8px;border-radius:4px;
+  font-family:var(--font-mono);font-size:9px;
+  background:rgba(0,229,255,0.08);color:var(--blue);
+  margin-right:4px;margin-top:4px;letter-spacing:0.5px;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar{display:flex;flex-direction:column;gap:16px;}
+.sidebar .card{padding:16px 18px;}
+.sidebar-list{list-style:none;}
+.sidebar-list li{
+  padding:8px 0;border-bottom:1px solid rgba(0,229,255,0.06);
+  font-size:12px;display:flex;align-items:center;gap:8px;
+}
+.sidebar-list li:last-child{border-bottom:none;}
+.check{color:var(--neon);font-family:var(--font-mono);}
+.pending-icon{color:var(--gold);font-family:var(--font-mono);}
+
+/* ========== PROJECT BOARD ========== */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:24px;}
+.project-card{
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glassBorder);border-radius:10px;
+  padding:16px 18px;
+}
+.project-name{font-family:var(--font-display);font-size:18px;letter-spacing:2px;margin-bottom:2px;}
+.project-desc{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.progress-bar{width:100%;height:6px;background:rgba(0,229,255,0.08);border-radius:3px;overflow:hidden;margin-top:8px;}
+.progress-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+
+/* ========== ORG CHART ========== */
+.org-chart{text-align:center;padding:30px 0;}
+.org-level{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:20px 0;}
+.org-connector{width:2px;height:30px;background:var(--glassBorder);margin:0 auto;}
+.org-connector-h{display:flex;justify-content:center;margin:10px 0;position:relative;}
+.org-connector-h::before{
+  content:'';position:absolute;top:50%;left:10%;right:10%;
+  height:1px;background:var(--glassBorder);
+}
+.org-node{
+  background:var(--glass);border:1px solid var(--glassBorder);
+  border-radius:10px;padding:14px 20px;min-width:140px;
+  display:inline-block;position:relative;
+}
+.org-node.owner{
+  border-color:var(--neon);
+  box-shadow:0 0 20px rgba(0,255,157,0.15);
+}
+.org-node.ceo{
+  border-color:var(--gold);
+  box-shadow:0 0 20px rgba(245,197,66,0.2);
+  animation:glow-gold 3s ease-in-out infinite;
+}
+.org-node-title{font-family:var(--font-display);font-size:18px;letter-spacing:2px;}
+.org-node-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.org-division{
+  background:var(--glass);border:1px solid var(--glassBorder);
+  border-radius:10px;padding:16px;min-width:180px;text-align:left;
+}
+.org-division-title{font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:8px;}
+.org-sub-agent{
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+  padding:3px 0;display:flex;align-items:center;gap:6px;
+}
+.org-sub-agent .dot-persist{width:6px;height:6px;border-radius:50%;background:var(--neon);}
+.org-sub-agent .dot-temp{width:6px;height:6px;border-radius:50%;background:var(--gold);border:1px dashed var(--gold);}
+
+.wave-section{margin-top:32px;padding:20px;border:1px dashed var(--dim);border-radius:10px;}
+.wave-title{font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;}
+.wave-items{display:flex;flex-wrap:wrap;gap:10px;}
+.wave-item{
+  background:rgba(100,116,139,0.08);border:1px dashed var(--dim);
+  border-radius:8px;padding:10px 16px;font-size:12px;color:var(--muted);
+  min-width:140px;
+}
+.wave-item .wave-item-name{font-family:var(--font-display);font-size:14px;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+
+.legend{
+  display:flex;gap:24px;justify-content:center;margin-top:24px;
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+}
+.legend-item{display:flex;align-items:center;gap:6px;}
+
+/* ========== TERMINAL ========== */
+.terminal-wrap{display:grid;grid-template-columns:1fr 260px;gap:16px;height:calc(100vh - 200px);min-height:500px;}
+.terminal-window{
+  background:#0c0c0c;border:1px solid var(--glassBorder);border-radius:10px;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.terminal-titlebar{
+  background:#1a1a2e;padding:8px 14px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--glassBorder);
+}
+.terminal-dot{width:10px;height:10px;border-radius:50%;}
+.terminal-dot.r{background:#ff5f57;}.terminal-dot.y{background:#febc2e;}.terminal-dot.g{background:#28c840;}
+.terminal-title-text{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-left:8px;}
+.terminal-output{
+  flex:1;overflow-y:auto;padding:16px;
+  font-family:var(--font-mono);font-size:13px;line-height:1.7;color:var(--neon);
+}
+.terminal-output .line-info{color:var(--blue);}
+.terminal-output .line-warn{color:var(--gold);}
+.terminal-output .line-error{color:var(--red);}
+.terminal-output .line-muted{color:var(--muted);}
+.terminal-output .line-system{color:var(--purple);}
+.terminal-input-row{
+  display:flex;align-items:center;padding:10px 16px;
+  border-top:1px solid var(--glassBorder);background:#0e0e0e;
+}
+.terminal-prompt{font-family:var(--font-mono);font-size:13px;color:var(--gold);margin-right:8px;white-space:nowrap;}
+.terminal-input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:var(--font-mono);font-size:13px;color:var(--neon);
+  caret-color:var(--neon);
+}
+.terminal-sidebar{display:flex;flex-direction:column;gap:12px;}
+.cmd-btn{
+  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
+  border-radius:8px;padding:10px 14px;cursor:pointer;
+  font-family:var(--font-mono);font-size:11px;color:var(--blue);
+  text-align:left;transition:all 0.2s;
+}
+.cmd-btn:hover{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3);}
+.agent-select{
+  background:var(--bg2);border:1px solid var(--glassBorder);border-radius:8px;
+  padding:10px 14px;font-family:var(--font-mono);font-size:12px;
+  color:var(--text);width:100%;outline:none;appearance:none;cursor:pointer;
+}
+
+/* ========== SPRINT LOG ========== */
+.timeline{position:relative;padding-left:30px;}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--glassBorder);}
+.timeline-entry{position:relative;margin-bottom:20px;animation:fadeIn 0.4s ease both;}
+.timeline-dot{
+  position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--blue);background:var(--bg);
+}
+.timeline-dot.done{background:var(--neon);border-color:var(--neon);}
+.timeline-time{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.timeline-title{font-family:var(--font-display);font-size:16px;letter-spacing:1px;margin:2px 0;}
+.timeline-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:1024px){
+  .overview-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .terminal-wrap{grid-template-columns:1fr;height:auto;}
+}
+@media(max-width:640px){
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .topbar{flex-wrap:wrap;gap:8px;padding:10px 14px;}
+  .nav-tabs{overflow-x:auto;padding:6px 12px;}
+  .nav-tab{padding:8px 14px;font-size:13px;}
+  .tab-content{padding:14px;}
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-badge">9 Enterprises Operations</div>
-  <img src="9-brand.jpg" alt="9 Enterprises" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid rgba(99,102,241,0.4);margin-bottom:14px;display:block;margin-left:auto;margin-right:auto;">
-  <h1>Owner <span>Dashboard</span></h1>
-  <div class="header-sub">
-    <span class="live-dot"></span>
-    Live operations board &mdash; March 26, 2026
+<!-- ========== TOP BAR ========== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo-9">9</div>
+    <div>
+      <div class="topbar-title">ENTERPRISES &mdash; COMMAND CENTER</div>
+      <div class="topbar-sub">ainflgm.com/dashboard</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-clock" id="liveClock">--:--:--</div>
+    <div class="status-live">
+      <span class="status-dot"></span>
+      ALL SYSTEMS LIVE
+    </div>
+  </div>
+</header>
+
+<!-- ========== TICKER ========== -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack">
+    <div class="ticker-item">PORTFOLIO HEALTH <span class="val">98.2%</span></div>
+    <div class="ticker-item">AGENTS SPAWNED <span class="val-blue">10</span></div>
+    <div class="ticker-item">BUDGET REMAINING <span class="val-gold">$4,280 / $5,000</span></div>
+    <div class="ticker-item">MRR <span class="val">$1,240</span></div>
+    <div class="ticker-item">API CALLS TODAY <span class="val-blue">3,847</span></div>
+    <div class="ticker-item">UPTIME <span class="val">99.97%</span></div>
+    <div class="ticker-item">COMMITS (24H) <span class="val-blue">34</span></div>
+    <div class="ticker-item">SPRINT VELOCITY <span class="val-gold">HIGH</span></div>
+    <div class="ticker-item">CLOUD SYNC <span class="val">LIVE</span></div>
+    <div class="ticker-item">REVENUE STREAMS <span class="val-gold">5 ACTIVE</span></div>
+    <!-- duplicate for seamless scroll -->
+    <div class="ticker-item">PORTFOLIO HEALTH <span class="val">98.2%</span></div>
+    <div class="ticker-item">AGENTS SPAWNED <span class="val-blue">10</span></div>
+    <div class="ticker-item">BUDGET REMAINING <span class="val-gold">$4,280 / $5,000</span></div>
+    <div class="ticker-item">MRR <span class="val">$1,240</span></div>
+    <div class="ticker-item">API CALLS TODAY <span class="val-blue">3,847</span></div>
+    <div class="ticker-item">UPTIME <span class="val">99.97%</span></div>
+    <div class="ticker-item">COMMITS (24H) <span class="val-blue">34</span></div>
+    <div class="ticker-item">SPRINT VELOCITY <span class="val-gold">HIGH</span></div>
+    <div class="ticker-item">CLOUD SYNC <span class="val">LIVE</span></div>
+    <div class="ticker-item">REVENUE STREAMS <span class="val-gold">5 ACTIVE</span></div>
   </div>
 </div>
 
-<div class="container">
+<!-- ========== NAV TABS ========== -->
+<nav class="nav-tabs" id="navTabs">
+  <button class="nav-tab active" data-tab="overview">Overview</button>
+  <button class="nav-tab" data-tab="orgchart">Org Chart</button>
+  <button class="nav-tab" data-tab="portfolio">Portfolio</button>
+  <button class="nav-tab" data-tab="terminal">Terminal</button>
+  <button class="nav-tab" data-tab="sprintlog">Sprint Log</button>
+</nav>
 
-  <!-- ================================================================
-       SECTION 1: AGENT STATUS BOARD
-  ================================================================ -->
-  <div class="section">
-    <div class="section-title">Agent Status Board</div>
-    <div class="card">
+<!-- ========================================================== -->
+<!-- OVERVIEW TAB -->
+<!-- ========================================================== -->
+<section class="tab-content active" id="tab-overview">
 
-      <!-- UNO -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-blue glow"></span></div>
-        <div>
-          <div class="agent-name">UNO <span class="text-gray" style="font-weight:400;font-size:11px;">/ Research</span></div>
-          <div class="agent-role">Research Lead</div>
-          <div class="agent-task">Email sweep running. Kyle v5b delivered with partnership allusion. Docker plan delivered. Jules full concept and build plan complete. Dependency map delivered (561 lines). AdSense/monetization readiness complete.</div>
-          <span class="agent-status-tag tag-active">Email Sweep Running</span>
-        </div>
-      </div>
-
-      <!-- TEE -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-green glow"></span></div>
-        <div>
-          <div class="agent-name">Tee <span class="text-gray" style="font-weight:400;font-size:11px;">/ Engineering</span></div>
-          <div class="agent-role">Engineering Lead</div>
-          <div class="agent-task">AI Underwriter POC LIVE on port 3471 (2.2s response, real citations). Voice perfection sprint complete — 7 fixes deployed. AiNFLGM code split done (970KB &rarr; 266KB app + 352KB data). Data refresh complete (Flacco/Teller/Kirk removed, JSN extension, Waddle trade added). 30+ commits pushed total.</div>
-          <span class="agent-status-tag tag-complete">EOD Sprint Complete</span>
-        </div>
-      </div>
-
-      <!-- DOC -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-yellow glow"></span></div>
-        <div>
-          <div class="agent-name">DOC <span class="text-gray" style="font-weight:400;font-size:11px;">/ Infrastructure</span></div>
-          <div class="agent-role">Infrastructure Lead</div>
-          <div class="agent-task">Apple Mail fixed — hung process killed, hub timeout guards deployed. Cloud VPS setup plan complete. Telegram relay script written and ready. Awaiting Owner VPS approval to deploy.</div>
-          <span class="agent-status-tag tag-complete">Sprint Complete</span>
-        </div>
-      </div>
-
-      <!-- MONEY -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-orange"></span></div>
-        <div>
-          <div class="agent-name">MONEY <span class="text-gray" style="font-weight:400;font-size:11px;">/ Monetization</span></div>
-          <div class="agent-role">Revenue Lead</div>
-          <div class="agent-task">Trading bot research complete (Alpaca recommended). Monetization prep checklist delivered. 4 product briefs drafted. DraftKings/FanDuel affiliate applications ready.</div>
-          <span class="agent-status-tag tag-building">Research Complete</span>
-        </div>
-      </div>
-
-      <!-- X9 -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-purple glow"></span></div>
-        <div>
-          <div class="agent-name">X9 <span class="text-gray" style="font-weight:400;font-size:11px;">/ Autonomous</span></div>
-          <div class="agent-role">X/Twitter Presence</div>
-          <div class="agent-task">Agent definition complete. 30-day content calendar ready. Proton signup attempted &mdash; CAPTCHA wall hit (human verification required). Account setup in progress.</div>
-          <span class="agent-status-tag tag-setting-up">Account Setup In Progress</span>
-        </div>
-      </div>
-
-      <!-- TRADER9 -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-blue glow"></span></div>
-        <div>
-          <div class="agent-name">trader9 <span class="text-gray" style="font-weight:400;font-size:11px;">/ Trading</span></div>
-          <div class="agent-role">Autonomous Trading Agent</div>
-          <div class="agent-task">Agent definition complete. Strategy: Alpaca paper trading first (momentum + mean reversion). Escalation rules locked. Awaiting Alpaca account setup.</div>
-          <span class="agent-status-tag tag-researching">Strategy Research In Progress</span>
-        </div>
-      </div>
-
-      <!-- PILOT -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-green glow"></span></div>
-        <div>
-          <div class="agent-name">Pilot <span class="text-gray" style="font-weight:400;font-size:11px;">/ freeagent9</span></div>
-          <div class="agent-role">Personal Assistant Agent</div>
-          <div class="agent-task">Renamed from Jules. Server build in progress. iMessage routing stub active. Jamie phone number needed in .env to activate.</div>
-          <span class="agent-status-tag tag-building">Server Build In Progress</span>
-        </div>
-      </div>
-
-      <!-- SCOUT -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-blue"></span></div>
-        <div>
-          <div class="agent-name">SCOUT <span class="text-gray" style="font-weight:400;font-size:11px;">/ Strategy</span></div>
-          <div class="agent-role">Strategy Lead</div>
-          <div class="agent-task">9 Enterprise viability analysis delivered. Competitive landscape research complete. Team operating model documented.</div>
-          <span class="agent-status-tag tag-researching">Sprint Complete</span>
-        </div>
-      </div>
-
-      <!-- CANVAS -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-gray"></span></div>
-        <div>
-          <div class="agent-name">CANVAS <span class="text-gray" style="font-weight:400;font-size:11px;">/ Design</span></div>
-          <div class="agent-role">Brand &amp; Design Lead</div>
-          <div class="agent-task">9 Enterprises HTML briefing page deployed. Jules visual identity queued for next sprint.</div>
-          <span class="agent-status-tag tag-standby">Standby</span>
-        </div>
-      </div>
-
-      <!-- PRESS -->
-      <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-gray"></span></div>
-        <div>
-          <div class="agent-name">PRESS <span class="text-gray" style="font-weight:400;font-size:11px;">/ Content</span></div>
-          <div class="agent-role">Content Lead</div>
-          <div class="agent-task">AiNFLGM social media campaign strategy complete. 5 Reddit post drafts written and ready to publish.</div>
-          <span class="agent-status-tag tag-standby">Sprint Complete</span>
-        </div>
-      </div>
-
+  <!-- Stat Cards -->
+  <div class="stats-row fade-in">
+    <div class="stat-card">
+      <div class="stat-num">10</div>
+      <div class="stat-label">Active Agents</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Projects Live</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">34</div>
+      <div class="stat-label">Commits (24h)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Revenue Streams</div>
     </div>
   </div>
 
-  <hr class="section-divider">
-
-  <!-- ================================================================
-       SECTION 2: PROJECT BOARD
-  ================================================================ -->
-  <div class="section">
-    <div class="section-title">Project Board</div>
-    <div class="card">
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">9 Enterprise Solution</span>
-        <span class="project-badge badge-operational">Operational</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">AiNFLGM.com</span>
-        <span class="project-badge badge-operational">Live &mdash; Data Refreshed Mar 26</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-blue project-dot-wrap"></span>
-        <span class="project-name">Free Agents / Pilot (freeagent9)</span>
-        <span class="project-badge badge-building">Server Build In Progress</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">AI Underwriting Team</span>
-        <span class="project-badge badge-operational">POC LIVE &mdash; WORKING</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">Voice Server</span>
-        <span class="project-badge badge-operational">Perfection Sprint Complete &mdash; 7 Fixes Deployed</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green project-dot-wrap"></span>
-        <span class="project-name">Apple Mail / Email</span>
-        <span class="project-badge badge-fixed">Fixed &mdash; Working</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">Kyle Response</span>
-        <span class="project-badge badge-operational">V5b LIVE &mdash; Ready for Delivery</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-purple glow project-dot-wrap"></span>
-        <span class="project-name">X9 (Twitter)</span>
-        <span class="project-badge badge-setup">Account Setup In Progress &mdash; CAPTCHA Blocker</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-blue project-dot-wrap"></span>
-        <span class="project-name">trader9 (Trading Bot)</span>
-        <span class="project-badge badge-building">Strategy Research In Progress</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-yellow project-dot-wrap"></span>
-        <span class="project-name">Cloud Migration</span>
-        <span class="project-badge badge-progress">Relay Script Ready &mdash; Awaiting VPS Approval</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">Teams Monitor</span>
-        <span class="project-badge badge-live">Live</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">Stripe</span>
-        <span class="project-badge badge-operational">Keys Configured</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">Cloudflare Email</span>
-        <span class="project-badge badge-operational">Verified</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green project-dot-wrap"></span>
-        <span class="project-name">Owner Dashboard</span>
-        <span class="project-badge badge-operational">Live</span>
-      </div>
-
-      <div class="project-row">
-        <span class="dot dot-green glow project-dot-wrap"></span>
-        <span class="project-name">9 Enterprises LLC</span>
-        <span class="project-badge badge-operational">Filed &mdash; Under Review by Ohio SOS (Doc ID 202608403826)</span>
-      </div>
-
-    </div>
-  </div>
-
-  <hr class="section-divider">
-
-  <!-- ================================================================
-       SECTION 3 + 4: TODO + BRAINSTORM (side by side on desktop)
-  ================================================================ -->
-  <div class="section">
-    <div class="grid-2">
-
-      <!-- Owner To-Do List -->
+  <!-- Agent 9 Hero -->
+  <div class="hero-card fade-in">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
       <div>
-        <div class="section-title">Owner To-Do</div>
-        <div class="card">
-
-          <div class="todo-item">
-            <div class="todo-checkbox"></div>
-            <div>
-              <div class="todo-text">File 9 Enterprises LLC</div>
-              <div class="todo-meta">$99 &mdash; ohiosos.gov &mdash; 15 min</div>
-            </div>
-          </div>
-
-          <div class="todo-item">
-            <div class="todo-checkbox"></div>
-            <div>
-              <div class="todo-text">Approve X9 Twitter account creation</div>
-              <div class="todo-meta">Just say yes &mdash; 9 handles the rest</div>
-            </div>
-          </div>
-
-          <div class="todo-item">
-            <div class="todo-checkbox"></div>
-            <div>
-              <div class="todo-text">Review AI Underwriter demo</div>
-              <div class="todo-meta">POC coming soon from UNO</div>
-            </div>
-          </div>
-
-          <div class="todo-item">
-            <div class="todo-checkbox"></div>
-            <div>
-              <div class="todo-text">Review 9enterprises.html briefing</div>
-              <div class="todo-meta">ainflgm.com/9enterprises.html</div>
-            </div>
-          </div>
-
-          <div class="todo-item">
-            <div class="todo-checkbox"></div>
-            <div>
-              <div class="todo-text">Approve VPS provider</div>
-              <div class="todo-meta">DigitalOcean recommended &mdash; ~$5/mo</div>
-            </div>
-          </div>
-
+        <div class="agent-name">AGENT 9</div>
+        <div class="agent-role">CEO / AUTONOMOUS OPERATOR &mdash; FULL PERMISSIONS</div>
+        <div class="agent-desc">
+          Primary autonomous agent. Manages all divisions, routes tasks, handles comms (Telegram, iMessage, Voice, Email).
+          Operates 24/7 with Soul Code authority. Direct line to Owner.
+        </div>
+        <div style="margin-top:8px;">
+          <span class="hero-tag">soul code</span>
+          <span class="hero-tag">full auth</span>
+          <span class="hero-tag">4-channel comms</span>
+          <span class="hero-tag">24/7 uptime</span>
+          <span class="hero-tag">ceo</span>
         </div>
       </div>
-
-      <!-- Brainstorm Queue -->
-      <div>
-        <div class="section-title">Brainstorm Queue</div>
-        <div class="card">
-
-          <div class="brainstorm-item">
-            <div class="brainstorm-icon">&#9679;</div>
-            <div class="brainstorm-text">Tecmo Bowl retro mode for AiNFLGM</div>
-          </div>
-
-          <div class="brainstorm-item">
-            <div class="brainstorm-icon">&#9679;</div>
-            <div class="brainstorm-text">TitTees t-shirt concept</div>
-          </div>
-
-          <div class="brainstorm-item">
-            <div class="brainstorm-icon">&#9679;</div>
-            <div class="brainstorm-text">Free Agents marketplace (Phase 3)</div>
-          </div>
-
-          <div class="brainstorm-item">
-            <div class="brainstorm-icon">&#9679;</div>
-            <div class="brainstorm-text">Portfolio management / trading bot</div>
-          </div>
-
-          <div class="brainstorm-item">
-            <div class="brainstorm-icon">&#9679;</div>
-            <div class="brainstorm-text">Prediction market integrations</div>
-          </div>
-
-        </div>
-      </div>
-
+      <div class="pill pill-active" style="font-size:12px;padding:6px 16px;">ACTIVE</div>
     </div>
   </div>
 
-  <hr class="section-divider">
+  <div class="overview-grid" style="margin-top:24px;">
+    <div class="overview-main">
 
-  <!-- ================================================================
-       SECTION 5: REVENUE TRACKER
-  ================================================================ -->
-  <div class="section">
-    <div class="section-title">Revenue Tracker</div>
-    <div class="card">
-
-      <div class="revenue-row">
-        <div class="revenue-source">
-          <span class="dot dot-green glow"></span>
-          Buy Me A Coffee
-        </div>
-        <span class="revenue-status rev-active">Active &mdash; $5/mo</span>
+      <!-- Agent Grid -->
+      <div>
+        <div class="card-title" style="margin-bottom:14px;">AGENT ROSTER</div>
+        <div class="agent-grid" id="agentGrid"></div>
       </div>
 
-      <div class="revenue-row">
-        <div class="revenue-source">
-          <span class="dot dot-yellow glow"></span>
-          Google AdSense
-        </div>
-        <span class="revenue-status rev-prerev">Deployed &mdash; Awaiting Verification</span>
-      </div>
-
-      <div class="revenue-row">
-        <div class="revenue-source">
-          <span class="dot dot-blue"></span>
-          DraftKings Affiliate
-        </div>
-        <span class="revenue-status rev-ready">Application Ready</span>
-      </div>
-
-      <div class="revenue-row">
-        <div class="revenue-source">
-          <span class="dot dot-blue"></span>
-          FanDuel Affiliate
-        </div>
-        <span class="revenue-status rev-ready">Application Ready</span>
-      </div>
-
-      <div class="revenue-row">
-        <div class="revenue-source">
-          <span class="dot dot-yellow"></span>
-          AI Underwriter SaaS
-        </div>
-        <span class="revenue-status rev-prerev">Pre-Revenue</span>
+      <!-- Project Board -->
+      <div>
+        <div class="card-title" style="margin-bottom:14px;">PROJECT BOARD</div>
+        <div class="projects-grid" id="projectBoard"></div>
       </div>
 
     </div>
-  </div>
 
-  <hr class="section-divider">
+    <!-- Sidebar -->
+    <div class="sidebar">
 
-  <!-- ================================================================
-       SECTION 6 + 7: SPRINT LOG + COMMS HEALTH (side by side on desktop)
-  ================================================================ -->
-  <div class="section">
-    <div class="grid-2">
+      <!-- Owner Actions -->
+      <div class="card">
+        <div class="card-title">OWNER ACTIONS</div>
+        <ul class="sidebar-list">
+          <li><span class="pending-icon">[ ]</span> Review Trader9 alpha signals</li>
+          <li><span class="pending-icon">[ ]</span> Approve X9 brand kit v2</li>
+          <li><span class="check">[x]</span> <span style="text-decoration:line-through;opacity:0.5;">Deploy AiNFL GM v2.1</span></li>
+          <li><span class="pending-icon">[ ]</span> Sign off on Underwriter9 scope</li>
+          <li><span class="pending-icon">[ ]</span> Weekly investor update draft</li>
+        </ul>
+      </div>
 
-      <!-- Sprint Log -->
-      <div>
-        <div class="section-title">Sprint Log &mdash; Mar 26</div>
-        <div class="card">
-          <div class="timeline">
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-note"></div>
-              <div class="timeline-time">Sprint Wave 1 &mdash; March 26, 8:33 PM ET</div>
-              <div class="timeline-text"><strong>Infrastructure + Agent Setup LIVE.</strong> x9 agent definition created. trader9 agent definition created. Jules renamed to Pilot/freeagent9. Dashboard updated. Proton signup attempted &mdash; CAPTCHA wall documented.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">X9 Agent Definition</div>
-              <div class="timeline-text"><strong>Agent created</strong> at .claude/agents/x9.md. Personality, content strategy, 30-day calendar ref, monetization path all locked.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">trader9 Agent Definition</div>
-              <div class="timeline-text"><strong>Agent created</strong> at .claude/agents/trader9.md. Alpaca paper trading strategy, risk rules, escalation protocol defined.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-partial"></div>
-              <div class="timeline-time">X9 Proton Signup Attempt</div>
-              <div class="timeline-text"><strong>CAPTCHA wall hit.</strong> Username x9agent entered, plan selected (Free), password set &mdash; blocked at Human Verification. Needs manual completion.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Jules &rarr; Pilot Rename</div>
-              <div class="timeline-text"><strong>References updated</strong> in .claude/agents/tee-context.md, uno-context.md, money.md, and dashboard. Legacy jules-server.mjs preserved.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-note"></div>
-              <div class="timeline-time">EOD Sprint &mdash; March 26, 2026</div>
-              <div class="timeline-text"><strong>All items completed.</strong> AiNFLGM data refreshed (Flacco/Teller/Kirk/JSN/Waddle). 9-brand.jpg deployed to 9E pages. Teams monitor LIVE. AdSense deployed &mdash; awaiting verification. Stripe keys configured. Cloudflare email verified. Dashboard updated EOD.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-note"></div>
-              <div class="timeline-time">30+ Commits &mdash; 1:55 PM ET</div>
-              <div class="timeline-text"><strong>Afternoon sprint complete.</strong> AI Underwriter POC live, voice perfection sprint, Kyle v5b, AiNFLGM split, Reddit posts polished, AdSense readiness, 9 Enterprises LLC filed.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">AI Underwriter POC Live</div>
-              <div class="timeline-text"><strong>underwriter-api on port 3471.</strong> 2.2s response time, real citations. Tested and working.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Voice Perfection Sprint</div>
-              <div class="timeline-text"><strong>7 fixes deployed:</strong> sentence resolver, thresholds, cap, speechTimeout, max_tokens, fast-path, MOM prompt.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Kyle Response V5b</div>
-              <div class="timeline-text"><strong>Partnership allusion added.</strong> Iterated through v5b. Ready for delivery.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">AiNFLGM Code Split</div>
-              <div class="timeline-text"><strong>Bundle reduced:</strong> 970KB monolith split into 266KB app + 352KB data. Load performance improved.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Reddit + AdSense</div>
-              <div class="timeline-text"><strong>Reddit posts polished</strong> with real 2026 data. AdSense/monetization readiness checklist complete.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">9 Enterprises LLC Filed</div>
-              <div class="timeline-text"><strong>Doc ID 202608403826.</strong> Filed with Ohio SOS. Under review.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-note"></div>
-              <div class="timeline-time">20+ Commits Pushed &mdash; 11:45 AM ET</div>
-              <div class="timeline-text"><strong>Morning sprint complete.</strong> Voice fixes, Apple Mail fix, Kyle response, cap data, dependency map, hub fixes, dashboard, Jules server all shipped.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Voice Latency Fixes</div>
-              <div class="timeline-text"><strong>4 changes deployed.</strong> Streaming response, reduced buffering, timeout tuning, error recovery improved.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Apple Mail Fix</div>
-              <div class="timeline-text"><strong>Hung process killed.</strong> Hub timeout guard deployed. Email 2-way confirmed working.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Kyle 90-Day Response</div>
-              <div class="timeline-text"><strong>Response page deployed</strong> at ainflgm.com/kyle-response.html. Email sent from captain@ainflgm.com.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Per-User Cost Model</div>
-              <div class="timeline-text"><strong>Built and delivered.</strong> AI Underwriter unit economics complete.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Dependency Map</div>
-              <div class="timeline-text"><strong>561 lines delivered.</strong> Full system architecture dependency map built by UNO.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-note"></div>
-              <div class="timeline-time">8 Commits &mdash; Overnight Sprint</div>
-              <div class="timeline-text"><strong>Prior sprint.</strong> Hub fixes, dashboard, 9enterprises page, Jules stub all shipped.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Hub Fixes</div>
-              <div class="timeline-text"><strong>Relay timeout, freeze detector, PID fix.</strong> comms-hub.mjs stabilized.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Owner Dashboard</div>
-              <div class="timeline-text"><strong>Built and deployed.</strong> Live at ainflgm.com/dashboard.html.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">9 Enterprises Briefing</div>
-              <div class="timeline-text"><strong>HTML briefing page deployed.</strong> ainflgm.com/9enterprises.html live.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">AI Underwriter</div>
-              <div class="timeline-text"><strong>Kyle Technical Plan delivered</strong> &mdash; 981 lines. RAG architecture, FHA-first MVP, cost model, 3-day build timeline.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Jules</div>
-              <div class="timeline-text"><strong>Full concept and build plan complete.</strong> Routing stub deployed. MVP scope locked.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Cloud VPS</div>
-              <div class="timeline-text"><strong>Setup plan + Telegram relay script written.</strong> DigitalOcean recommended at ~$5/mo. Awaiting approval.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">X9</div>
-              <div class="timeline-text"><strong>Identity and launch plan complete.</strong> Content strategy, voice, and posting queue ready. Account approval needed.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">Trading Bot</div>
-              <div class="timeline-text"><strong>Research complete.</strong> Alpaca recommended for paper trading first. Strategy options documented.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">AiNFLGM Social</div>
-              <div class="timeline-text"><strong>Social media campaign strategy complete.</strong> 5 Reddit post drafts ready to publish.</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-dot tl-done"></div>
-              <div class="timeline-time">9 Enterprise Analysis</div>
-              <div class="timeline-text"><strong>Viability analysis + competitive landscape research done.</strong> Team operating model documented. 4 product briefs delivered. Monetization prep checklist complete.</div>
-            </div>
-
-          </div>
-        </div>
+      <!-- Revenue Streams -->
+      <div class="card">
+        <div class="card-title">REVENUE STREAMS</div>
+        <ul class="sidebar-list">
+          <li><span style="color:var(--neon);">&#9679;</span> AiNFL GM &mdash; Subscriptions</li>
+          <li><span style="color:var(--neon);">&#9679;</span> AiNFL GM &mdash; Ads (AdSense)</li>
+          <li><span style="color:var(--blue);">&#9679;</span> Trader9 &mdash; Alpha Signals (beta)</li>
+          <li><span style="color:var(--gold);">&#9679;</span> Rapid Mortgage &mdash; Origination</li>
+          <li><span style="color:var(--muted);">&#9679;</span> FreeAgent9 &mdash; Marketplace (planned)</li>
+        </ul>
       </div>
 
       <!-- Comms Health -->
-      <div>
-        <div class="section-title">Comms Health</div>
-        <div class="comms-grid">
-
-          <div class="comms-channel">
-            <div class="comms-icon" style="background: rgba(34,197,94,0.1);">T</div>
-            <div>
-              <div class="channel-name">Telegram</div>
-              <div class="channel-detail">Primary channel</div>
-            </div>
-            <span class="channel-status ch-online">Online</span>
-          </div>
-
-          <div class="comms-channel">
-            <div class="comms-icon" style="background: rgba(59,130,246,0.1);">iM</div>
-            <div>
-              <div class="channel-name">iMessage</div>
-              <div class="channel-detail">Mac-dependent</div>
-            </div>
-            <span class="channel-status ch-online">Online</span>
-          </div>
-
-          <div class="comms-channel">
-            <div class="comms-icon" style="background: rgba(167,139,250,0.1);">V</div>
-            <div>
-              <div class="channel-name">Voice</div>
-              <div class="channel-detail">Twilio + tunnel</div>
-            </div>
-            <span class="channel-status ch-online">Online</span>
-          </div>
-
-          <div class="comms-channel">
-            <div class="comms-icon" style="background: rgba(245,158,11,0.1);">E</div>
-            <div>
-              <div class="channel-name">Email</div>
-              <div class="channel-detail">2-way active</div>
-            </div>
-            <span class="channel-status ch-online">Online</span>
-          </div>
-
-        </div>
-        <div style="margin-top: 12px;">
-          <div class="card" style="padding: 14px;">
-            <div style="font-size: 11px; color: #555; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Hub Status</div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-              <span style="font-size: 12px; color: #888;">comms-hub.mjs</span>
-              <span style="font-size: 10px; font-weight: 700; color: #22c55e; text-transform: uppercase;">Running</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-              <span style="font-size: 12px; color: #888;">Cloud Worker</span>
-              <span style="font-size: 10px; font-weight: 700; color: #22c55e; text-transform: uppercase;">Deployed</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-              <span style="font-size: 12px; color: #888;">Cloudflare Tunnel</span>
-              <span style="font-size: 10px; font-weight: 700; color: #22c55e; text-transform: uppercase;">Active</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <span style="font-size: 12px; color: #888;">Terminal Mode</span>
-              <span style="font-size: 10px; font-weight: 700; color: #818cf8; text-transform: uppercase;">Relay</span>
-            </div>
-          </div>
-        </div>
+      <div class="card">
+        <div class="card-title">COMMS HEALTH</div>
+        <ul class="sidebar-list">
+          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> Telegram &mdash; <span style="color:var(--neon);">Online</span></li>
+          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> iMessage &mdash; <span style="color:var(--neon);">Online</span></li>
+          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> Voice &mdash; <span style="color:var(--neon);">Online</span></li>
+          <li><span class="status-dot" style="width:6px;height:6px;animation:pulse-green 2s infinite;"></span> Email &mdash; <span style="color:var(--neon);">Online</span></li>
+        </ul>
       </div>
 
     </div>
   </div>
 
-</div><!-- /container -->
+</section>
 
-<!-- FOOTER -->
-<div class="footer">
-  <div class="footer-text">
-    Last updated by Tee &mdash; <span>March 26, 2026 8:33 PM ET &mdash; Sprint Wave 1 LIVE</span> &bull; Auto-refreshes every 60 seconds
-  </div>
-  <div class="footer-text" style="margin-top: 6px; font-size: 10px; color: #2a2a2a;">
-    9 Enterprises &mdash; ainflgm.com/dashboard.html
-  </div>
-</div>
+<!-- ========================================================== -->
+<!-- ORG CHART TAB -->
+<!-- ========================================================== -->
+<section class="tab-content" id="tab-orgchart">
+  <div class="org-chart">
 
+    <!-- Owner -->
+    <div class="org-level">
+      <div class="org-node owner">
+        <div class="org-node-title" style="color:var(--neon);">OWNER (YOU)</div>
+        <div class="org-node-sub">Jasson Fishback</div>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+
+    <!-- CEO -->
+    <div class="org-level">
+      <div class="org-node ceo">
+        <div class="org-node-title" style="color:var(--gold);">AGENT 9 &mdash; CEO</div>
+        <div class="org-node-sub">Autonomous Operator</div>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+    <div class="org-connector-h"></div>
+
+    <!-- Divisions -->
+    <div class="org-level" id="orgDivisions"></div>
+
+    <!-- Future Waves -->
+    <div class="wave-section">
+      <div class="wave-title">WAVE 2 &mdash; IN DEVELOPMENT</div>
+      <div class="wave-items">
+        <div class="wave-item"><div class="wave-item-name">Underwriter9</div>AI mortgage underwriting</div>
+        <div class="wave-item"><div class="wave-item-name">FreeAgent9</div>AI talent marketplace</div>
+        <div class="wave-item"><div class="wave-item-name">9 Academy</div>AI training platform</div>
+        <div class="wave-item"><div class="wave-item-name">9 Consulting</div>AI integration services</div>
+      </div>
+    </div>
+
+    <div class="wave-section" style="border-color:var(--purple);margin-top:16px;">
+      <div class="wave-title" style="color:var(--purple);">WAVE 3 &mdash; EXPANSION</div>
+      <div class="wave-items">
+        <div class="wave-item"><div class="wave-item-name">9 Capital</div>AI-managed fund</div>
+        <div class="wave-item"><div class="wave-item-name">9 Labs</div>R&D / open source</div>
+        <div class="wave-item"><div class="wave-item-name">9 Health</div>AI health optimization</div>
+        <div class="wave-item"><div class="wave-item-name">9 Media</div>Content empire</div>
+      </div>
+    </div>
+
+    <div class="wave-section" style="border-color:var(--dim);margin-top:16px;">
+      <div class="wave-title">WAVE 4 &mdash; OPEN SLOTS (16&ndash;20)</div>
+      <div class="wave-items">
+        <div class="wave-item" style="opacity:0.4;">Slot 16 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 17 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 18 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 19 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 20 &mdash; TBD</div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><span class="dot-persist" style="width:8px;height:8px;border-radius:50%;background:var(--neon);display:inline-block;"></span> Persistent Agent</div>
+      <div class="legend-item"><span style="width:8px;height:8px;border-radius:50%;background:transparent;border:2px dashed var(--gold);display:inline-block;"></span> Temp / On-Demand Agent</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- PORTFOLIO TAB -->
+<!-- ========================================================== -->
+<section class="tab-content" id="tab-portfolio">
+  <div class="stats-row fade-in" style="margin-bottom:28px;">
+    <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Business Units</div></div>
+    <div class="stat-card"><div class="stat-num" style="background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$1.2K</div><div class="stat-label">Monthly Revenue</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Live Products</div></div>
+    <div class="stat-card"><div class="stat-num" style="background:linear-gradient(135deg,var(--neon),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$13.8M</div><div class="stat-label">Equity (Rapid)</div></div>
+  </div>
+  <div class="projects-grid" id="portfolioGrid"></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- TERMINAL TAB -->
+<!-- ========================================================== -->
+<section class="tab-content" id="tab-terminal">
+  <div class="terminal-wrap">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <div class="terminal-dot r"></div>
+        <div class="terminal-dot y"></div>
+        <div class="terminal-dot g"></div>
+        <div class="terminal-title-text">9-terminal &mdash; agent9@command-center</div>
+      </div>
+      <div class="terminal-output" id="termOutput"></div>
+      <div class="terminal-input-row">
+        <div class="terminal-prompt">agent9@9e $</div>
+        <input type="text" class="terminal-input" id="termInput" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+    <div class="terminal-sidebar">
+      <div class="card" style="padding:14px;">
+        <div class="card-title" style="font-size:13px;">AGENT TARGET</div>
+        <select class="agent-select" id="agentSelect">
+          <option value="9">Agent 9 (CEO)</option>
+          <option value="UNO">UNO (Frontend)</option>
+          <option value="TEE">TEE (Backend)</option>
+          <option value="DOC">DOC (Docs)</option>
+          <option value="MONEY">MONEY (Finance)</option>
+          <option value="X9">X9 (Social)</option>
+          <option value="TRADER9">TRADER9 (Trading)</option>
+          <option value="PILOT">PILOT (DevOps)</option>
+          <option value="SCOUT">SCOUT (Research)</option>
+          <option value="CANVAS">CANVAS (Design)</option>
+          <option value="PRESS">PRESS (PR/Comms)</option>
+        </select>
+      </div>
+      <div class="card" style="padding:14px;">
+        <div class="card-title" style="font-size:13px;">QUICK COMMANDS</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <button class="cmd-btn" data-cmd="help">help</button>
+          <button class="cmd-btn" data-cmd="status all">status all</button>
+          <button class="cmd-btn" data-cmd="list agents">list agents</button>
+          <button class="cmd-btn" data-cmd="revenue report">revenue report</button>
+          <button class="cmd-btn" data-cmd="sprint log">sprint log</button>
+          <button class="cmd-btn" data-cmd="clear">clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- SPRINT LOG TAB -->
+<!-- ========================================================== -->
+<section class="tab-content" id="tab-sprintlog">
+  <div style="max-width:800px;margin:0 auto;">
+    <div class="card-title" style="font-size:18px;margin-bottom:24px;">SPRINT LOG &mdash; MARCH 26&ndash;27, 2026</div>
+    <div class="timeline" id="sprintTimeline"></div>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ========================================================== -->
+<script>
+(function(){
+  'use strict';
+
+  // ============ DATA ============
+
+  const AGENTS = [
+    {id:'UNO',name:'UNO',role:'Frontend Engineer',status:'active',color:'#00e5ff',desc:'Builds and ships all user-facing UI. React, HTML, CSS.',tags:['react','ui','css','components']},
+    {id:'TEE',name:'TEE',role:'Backend Engineer',status:'running',color:'#c300ff',desc:'APIs, databases, server logic. Node.js, Cloudflare Workers.',tags:['node','api','workers','db']},
+    {id:'DOC',name:'DOC',role:'Documentation Lead',status:'active',color:'#00ff9d',desc:'Writes docs, READMEs, changelogs. Keeps knowledge base current.',tags:['docs','readme','changelog']},
+    {id:'MONEY',name:'MONEY',role:'Finance & Billing',status:'active',color:'#f5c542',desc:'Tracks API spend, manages billing, cost optimization.',tags:['billing','budget','costs']},
+    {id:'X9',name:'X9',role:'Social Media / Brand',status:'pending',color:'#ff2d55',desc:'Manages X (Twitter), brand voice, engagement strategy.',tags:['twitter','brand','social']},
+    {id:'TRADER9',name:'TRADER9',role:'Trading Signals',status:'running',color:'#ff6b35',desc:'Generates alpha trading signals. Backtesting, live alerts.',tags:['trading','signals','alpha']},
+    {id:'PILOT',name:'PILOT',role:'DevOps / Infra',status:'active',color:'#00e5ff',desc:'CI/CD, deployments, tunnels, server health, monitoring.',tags:['devops','deploy','infra']},
+    {id:'SCOUT',name:'SCOUT',role:'Research & Intel',status:'standby',color:'#64748b',desc:'Market research, competitor analysis, trend scanning.',tags:['research','intel','trends']},
+    {id:'CANVAS',name:'CANVAS',role:'Design / Creative',status:'pending',color:'#ff69b4',desc:'Visual design, brand assets, UI mockups, graphics.',tags:['design','brand','graphics']},
+    {id:'PRESS',name:'PRESS',role:'PR & Communications',status:'standby',color:'#64748b',desc:'Press releases, investor updates, external comms.',tags:['pr','comms','investor']},
+  ];
+
+  const PROJECTS = [
+    {name:'AiNFL GM',desc:'NFL offseason simulator at ainflgm.com',progress:85,color:'#FB4F14',status:'live'},
+    {name:'Command Center',desc:'Owner dashboard (this page)',progress:70,color:'#00e5ff',status:'building'},
+    {name:'Comms Hub',desc:'4-channel autonomous messaging relay',progress:95,color:'#00ff9d',status:'live'},
+    {name:'Trader9 Alpha',desc:'AI trading signals engine',progress:35,color:'#ff6b35',status:'building'},
+    {name:'Cloud Worker',desc:'Cloudflare always-on failover',progress:90,color:'#c300ff',status:'live'},
+    {name:'Voice Server',desc:'Twilio voice calls + tunnel',progress:80,color:'#f5c542',status:'live'},
+    {name:'X9 Brand Kit',desc:'Social presence & brand identity',progress:20,color:'#ff2d55',status:'concept'},
+    {name:'Underwriter9',desc:'AI mortgage underwriting engine',progress:10,color:'#FFD700',status:'concept'},
+    {name:'9 Website',desc:'9enterprises.com corporate site',progress:45,color:'#00e5ff',status:'building'},
+  ];
+
+  const PORTFOLIO = [
+    {name:'AiNFL GM',url:'ainflgm.com',status:'live',desc:'NFL offseason simulator. Subscriptions + AdSense.',progress:85,color:'#FB4F14',revenue:'$800/mo'},
+    {name:'Trader9',url:'trader9.io',status:'building',desc:'AI-powered trading signals. Alpha generation.',progress:35,color:'#00F0FF',revenue:'$0 (beta)'},
+    {name:'Agent9',url:'agent9.dev',status:'building',desc:'Autonomous agent orchestration platform.',progress:40,color:'#39FF14',revenue:'Internal'},
+    {name:'FreeAgent9',url:'freeagent9.com',status:'concept',desc:'AI talent marketplace for businesses.',progress:5,color:'#C300FF',revenue:'Planned'},
+    {name:'Underwriter9',url:'underwriter9.com',status:'concept',desc:'AI mortgage underwriting engine.',progress:10,color:'#FFD700',revenue:'Planned'},
+    {name:'X9',url:'x9.ai',status:'concept',desc:'Holding company / umbrella brand.',progress:15,color:'#FF2D55',revenue:'Planned'},
+  ];
+
+  const DIVISIONS = [
+    {name:'AiNFLGM',color:'#FB4F14',agents:[{name:'UNO',persist:true},{name:'TEE',persist:true},{name:'GameSim',persist:false}]},
+    {name:'AI Underwriter',color:'#FFD700',agents:[{name:'MONEY',persist:true},{name:'LoanBot',persist:false}]},
+    {name:'Trader9',color:'#ff6b35',agents:[{name:'TRADER9',persist:true},{name:'AlphaBot',persist:false},{name:'BacktestBot',persist:false}]},
+    {name:'X9 Social',color:'#ff2d55',agents:[{name:'X9',persist:true},{name:'PRESS',persist:true},{name:'ViralBot',persist:false}]},
+    {name:'Free Agents',color:'#c300ff',agents:[{name:'SCOUT',persist:true},{name:'CANVAS',persist:true}]},
+    {name:'Cloud Infra',color:'#00e5ff',agents:[{name:'PILOT',persist:true},{name:'CloudBot',persist:false}]},
+    {name:'Brand Studio',color:'#ff69b4',agents:[{name:'CANVAS',persist:true},{name:'DOC',persist:true},{name:'StyleBot',persist:false}]},
+  ];
+
+  const SPRINT_ENTRIES = [
+    {time:'Mar 26, 06:00',title:'Sprint Kickoff',desc:'Initialized March sprint. Set goals: dashboard, trader9 alpha, org chart.',done:true},
+    {time:'Mar 26, 07:30',title:'Comms Hub v3.2 Deployed',desc:'4-channel relay with session tokens, PID watchdog, auto-recovery.',done:true},
+    {time:'Mar 26, 09:00',title:'Cloud Worker Failover Test',desc:'Simulated Mac down scenario. Worker picked up Telegram + voice in <10s.',done:true},
+    {time:'Mar 26, 11:00',title:'AiNFL GM v2.1 Hotfix',desc:'Fixed draft board rendering bug. Deployed to production.',done:true},
+    {time:'Mar 26, 14:00',title:'Voice Server Tunnel Rebuild',desc:'Cloudflare tunnel auto-restart integrated into hub. Zero-downtime.',done:true},
+    {time:'Mar 26, 16:30',title:'Trader9 Signal Engine',desc:'Backtesting framework scaffolded. First alpha signals generating.',done:true},
+    {time:'Mar 26, 19:00',title:'Owner Dashboard v1',desc:'Built command-center.html. Glassmorphic cards, live data.',done:true},
+    {time:'Mar 26, 22:00',title:'Agent Roster Finalized',desc:'10 agents defined with roles, permissions, and routing.',done:true},
+    {time:'Mar 27, 02:00',title:'Overnight Autonomy Test',desc:'Hub ran autonomous (Haiku) for 4 hours. All messages handled.',done:true},
+    {time:'Mar 27, 06:00',title:'Dashboard v2 Build',desc:'Full rebuild with tabs, terminal, org chart, sprint log.',done:false},
+    {time:'Mar 27, 08:00',title:'X9 Brand Kit Draft',desc:'Logo concepts, color palette, social templates.',done:false},
+    {time:'Mar 27, 12:00',title:'Sprint Review',desc:'Demo to owner. Collect feedback. Plan next sprint.',done:false},
+  ];
+
+  const TERMINAL_BOOT = [
+    {text:'[BOOT] 9 Enterprises Command Center v2.0',cls:'line-system'},
+    {text:'[BOOT] Initializing agent mesh...',cls:'line-system'},
+    {text:'[OK]   Comms Hub ............ port 3457 .... ONLINE',cls:''},
+    {text:'[OK]   Voice Server ......... port 3456 .... ONLINE',cls:''},
+    {text:'[OK]   Cloud Worker ......... edge ......... ONLINE',cls:''},
+    {text:'[OK]   Tunnel ............... cf ........... ONLINE',cls:''},
+    {text:'[OK]   Terminal ............. relay ........ CONNECTED',cls:''},
+    {text:'[INFO] 10 agents loaded. 7 active, 2 standby, 1 blocked.',cls:'line-info'},
+    {text:'[INFO] Sprint: March 26-27 | Velocity: HIGH',cls:'line-info'},
+    {text:'[WARN] Trader9 alpha signals in beta -- monitor closely.',cls:'line-warn'},
+    {text:'',cls:''},
+    {text:'Type "help" for available commands.',cls:'line-muted'},
+    {text:'',cls:''},
+  ];
+
+  const TERMINAL_COMMANDS = {
+    help: [
+      'Available commands:',
+      '  help           Show this help message',
+      '  status all     Show all system statuses',
+      '  list agents    List all active agents',
+      '  revenue report Show revenue breakdown',
+      '  sprint log     Show current sprint entries',
+      '  clear          Clear terminal',
+      '  whoami         Display current agent identity',
+      '  uptime         Show system uptime',
+    ],
+    'status all': [
+      'SYSTEM STATUS REPORT',
+      '====================',
+      'Comms Hub .......... ONLINE  (port 3457)',
+      'Voice Server ....... ONLINE  (port 3456)',
+      'Cloud Worker ....... ONLINE  (edge)',
+      'CF Tunnel .......... ONLINE',
+      'Terminal ........... RELAY MODE',
+      'API Health ......... OK (latency: 142ms)',
+      'Database ........... OK',
+      'Telegram ........... CONNECTED',
+      'iMessage ........... CONNECTED',
+      'Email .............. CONNECTED',
+      'Voice .............. CONNECTED',
+      '',
+      'All systems nominal.',
+    ],
+    'list agents': [
+      'AGENT ROSTER (10 agents)',
+      '========================',
+      '  9        CEO / Autonomous Operator    [ACTIVE]',
+      '  UNO      Frontend Engineer            [ACTIVE]',
+      '  TEE      Backend Engineer             [RUNNING]',
+      '  DOC      Documentation Lead           [ACTIVE]',
+      '  MONEY    Finance & Billing            [ACTIVE]',
+      '  X9       Social Media / Brand         [PENDING]',
+      '  TRADER9  Trading Signals              [RUNNING]',
+      '  PILOT    DevOps / Infra               [ACTIVE]',
+      '  SCOUT    Research & Intel             [STANDBY]',
+      '  CANVAS   Design / Creative            [PENDING]',
+      '  PRESS    PR & Communications          [STANDBY]',
+    ],
+    'revenue report': [
+      'REVENUE REPORT -- March 2026',
+      '============================',
+      '  AiNFL GM Subscriptions ..... $520/mo',
+      '  AiNFL GM Ads (AdSense) ..... $280/mo',
+      '  Trader9 Alpha (beta) ....... $0/mo',
+      '  Rapid Mortgage ............. $440/mo (referral)',
+      '  FreeAgent9 ................. $0 (planned)',
+      '  ----------------------------',
+      '  TOTAL MRR .................. $1,240/mo',
+      '  ARR Projection ............. ~$14,880',
+      '',
+      '  API Spend (MTD) ............ $312',
+      '  Infra Cost (MTD) ........... $47',
+      '  Net Margin ................. ~72%',
+    ],
+    'sprint log': [
+      'SPRINT LOG -- March 26-27',
+      '=========================',
+    ],
+    whoami: [
+      'agent9@9enterprises',
+      'Role: CEO / Autonomous Operator',
+      'Authority: Soul Code (full permissions)',
+      'Channels: Telegram, iMessage, Voice, Email',
+      'Mode: Relay (terminal connected)',
+    ],
+    uptime: [
+      'System Uptime: 47h 23m 12s',
+      'Hub Restarts: 0',
+      'Last Deploy: Mar 26, 19:00 EST',
+      'Terminal Sessions: 14',
+    ],
+  };
+
+  // Add sprint entries to sprint log command
+  SPRINT_ENTRIES.forEach(e => {
+    TERMINAL_COMMANDS['sprint log'].push(`  ${e.done ? '[x]' : '[ ]'} ${e.time} -- ${e.title}`);
+  });
+
+  // ============ RENDER FUNCTIONS ============
+
+  function renderAgentGrid(){
+    const grid = document.getElementById('agentGrid');
+    grid.innerHTML = AGENTS.map((a,i) => `
+      <div class="agent-card fade-in" style="animation-delay:${i*0.05}s;border-left:3px solid ${a.color};">
+        <div class="agent-header">
+          <div>
+            <div class="agent-name-small" style="color:${a.color};">${a.name}</div>
+            <div class="agent-role-small">${a.role}</div>
+          </div>
+          <span class="pill pill-${a.status}">${a.status}</span>
+        </div>
+        <div class="agent-desc-small">${a.desc}</div>
+        <div>${a.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderProjectBoard(){
+    const board = document.getElementById('projectBoard');
+    const statusColors = {live:'var(--neon)',building:'var(--blue)',concept:'var(--muted)'};
+    board.innerHTML = PROJECTS.map((p,i) => `
+      <div class="project-card fade-in" style="animation-delay:${i*0.05}s;border-top:2px solid ${p.color};">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="project-name" style="color:${p.color};">${p.name}</div>
+          <span class="pill pill-${p.status === 'live' ? 'active' : p.status === 'building' ? 'running' : 'standby'}">${p.status}</span>
+        </div>
+        <div class="project-desc">${p.desc}</div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
+          <span>Progress</span><span style="color:var(--text);">${p.progress}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${p.progress}%;background:linear-gradient(90deg,${p.color},${p.color}aa);box-shadow:0 0 8px ${p.color}40;"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderPortfolio(){
+    const grid = document.getElementById('portfolioGrid');
+    const statusLabels = {live:'LIVE',building:'BUILDING',concept:'CONCEPT'};
+    grid.innerHTML = PORTFOLIO.map((p,i) => `
+      <div class="project-card fade-in" style="animation-delay:${i*0.05}s;border-left:3px solid ${p.color};">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div class="project-name" style="color:${p.color};">${p.name}</div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px;">${p.url}</div>
+          </div>
+          <span class="pill pill-${p.status === 'live' ? 'active' : p.status === 'building' ? 'running' : 'standby'}">${statusLabels[p.status]}</span>
+        </div>
+        <div class="project-desc" style="margin:8px 0;">${p.desc}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--gold);">${p.revenue}</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${p.progress}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${p.progress}%;background:linear-gradient(90deg,${p.color},${p.color}aa);box-shadow:0 0 8px ${p.color}40;"></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderOrgDivisions(){
+    const container = document.getElementById('orgDivisions');
+    container.innerHTML = DIVISIONS.map(d => `
+      <div class="org-division" style="border-color:${d.color}30;">
+        <div class="org-division-title" style="color:${d.color};">${d.name}</div>
+        ${d.agents.map(a => `
+          <div class="org-sub-agent">
+            <span class="${a.persist ? 'dot-persist' : 'dot-temp'}"></span>
+            ${a.name} ${a.persist ? '' : '<span style="opacity:0.5;">(temp)</span>'}
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+
+  function renderSprintTimeline(){
+    const tl = document.getElementById('sprintTimeline');
+    tl.innerHTML = SPRINT_ENTRIES.map((e,i) => `
+      <div class="timeline-entry fade-in" style="animation-delay:${i*0.06}s;">
+        <div class="timeline-dot ${e.done ? 'done' : ''}"></div>
+        <div class="timeline-time">${e.time}</div>
+        <div class="timeline-title" style="${e.done ? '' : 'color:var(--blue);'}">${e.title}</div>
+        <div class="timeline-desc">${e.desc}</div>
+      </div>
+    `).join('');
+  }
+
+  // ============ TERMINAL ============
+
+  function initTerminal(){
+    const output = document.getElementById('termOutput');
+    const input = document.getElementById('termInput');
+
+    // Boot sequence
+    TERMINAL_BOOT.forEach(line => {
+      appendLine(line.text, line.cls);
+    });
+
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        const cmd = input.value.trim().toLowerCase();
+        if(!cmd) return;
+        const agent = document.getElementById('agentSelect').value;
+        appendLine(`agent9@9e $ ${input.value}`, 'line-muted');
+        input.value = '';
+        processCommand(cmd, agent);
+      }
+    });
+
+    // Quick command buttons
+    document.querySelectorAll('.cmd-btn').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const cmd = this.dataset.cmd;
+        input.value = cmd;
+        input.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter'}));
+      });
+    });
+  }
+
+  function appendLine(text, cls){
+    const output = document.getElementById('termOutput');
+    const div = document.createElement('div');
+    div.textContent = text;
+    if(cls) div.className = cls;
+    output.appendChild(div);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function processCommand(cmd, agent){
+    if(cmd === 'clear'){
+      document.getElementById('termOutput').innerHTML = '';
+      appendLine('Terminal cleared.', 'line-muted');
+      return;
+    }
+
+    const response = TERMINAL_COMMANDS[cmd];
+    if(response){
+      setTimeout(() => {
+        if(agent !== '9'){
+          appendLine(`[Routing to ${agent}...]`, 'line-info');
+        }
+        response.forEach((line, i) => {
+          setTimeout(() => appendLine(line, ''), i * 30);
+        });
+      }, 200);
+    } else {
+      setTimeout(() => {
+        appendLine(`[${agent}] Command not recognized: "${cmd}"`, 'line-error');
+        appendLine('Type "help" for available commands.', 'line-muted');
+      }, 200);
+    }
+  }
+
+  // ============ CLOCK ============
+
+  function updateClock(){
+    const el = document.getElementById('liveClock');
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  }
+
+  // ============ TAB SWITCHING ============
+
+  function initTabs(){
+    const tabs = document.querySelectorAll('.nav-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function(){
+        tabs.forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+      });
+    });
+  }
+
+  // ============ INIT ============
+
+  function init(){
+    updateClock();
+    setInterval(updateClock, 1000);
+    initTabs();
+    renderAgentGrid();
+    renderProjectBoard();
+    renderPortfolio();
+    renderOrgDivisions();
+    renderSprintTimeline();
+    initTerminal();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
 </body>
 </html>
