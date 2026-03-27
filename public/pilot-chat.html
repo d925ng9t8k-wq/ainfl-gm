@@ -116,6 +116,65 @@ body{
   transition:all 0.2s;
 }
 .btn-clear:active{border-color:var(--accent);color:var(--accent);}
+.btn-help{
+  background:none;border:1px solid var(--dim);border-radius:50%;
+  color:var(--muted);font-family:var(--font-head);font-size:16px;font-weight:700;
+  width:32px;height:32px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.btn-help:active{border-color:var(--accent);color:var(--accent);}
+
+/* ===== CAPABILITIES MODAL ===== */
+.cap-overlay{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.cap-overlay.visible{opacity:1;pointer-events:all;}
+.cap-panel{
+  width:100%;max-width:480px;max-height:80vh;
+  background:var(--bg2);border:1px solid var(--glassBorder);
+  border-radius:20px 20px 0 0;
+  padding:20px 16px;padding-bottom:calc(20px + var(--safe-bottom));
+  transform:translateY(100%);transition:transform 0.3s ease;
+  overflow-y:auto;
+}
+.cap-overlay.visible .cap-panel{transform:translateY(0);}
+.cap-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.cap-title{
+  font-family:var(--font-head);font-size:18px;font-weight:700;
+  letter-spacing:2px;color:var(--text);
+}
+.cap-close{
+  background:none;border:none;color:var(--muted);font-size:22px;
+  cursor:pointer;padding:4px 8px;line-height:1;
+}
+.cap-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.cap-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 14px;border-radius:12px;
+  background:rgba(255,255,255,0.03);border:1px solid transparent;
+  cursor:pointer;transition:all 0.15s;
+}
+.cap-item:active,.cap-item:hover{
+  background:rgba(255,102,0,0.08);border-color:rgba(255,102,0,0.2);
+}
+.cap-icon{
+  font-size:20px;flex-shrink:0;width:28px;text-align:center;line-height:1.4;
+}
+.cap-text{display:flex;flex-direction:column;gap:2px;}
+.cap-name{font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);letter-spacing:0.5px;}
+.cap-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.4;}
+.cap-badge{
+  display:inline-block;font-family:var(--font-mono);font-size:9px;
+  color:var(--dim);border:1px solid var(--dim);border-radius:4px;
+  padding:1px 6px;margin-top:2px;letter-spacing:0.5px;
+}
 
 /* ===== MESSAGES ===== */
 .chat-messages{
@@ -278,6 +337,76 @@ body{
         <span id="statusText">ONLINE</span>
       </div>
       <button class="btn-clear" id="btnClear">CLEAR</button>
+      <button class="btn-help" id="btnHelp">?</button>
+    </div>
+  </div>
+
+  <!-- Capabilities Modal -->
+  <div class="cap-overlay" id="capOverlay">
+    <div class="cap-panel">
+      <div class="cap-header">
+        <div class="cap-title">WHAT CAN I DO?</div>
+        <button class="cap-close" id="capClose">&times;</button>
+      </div>
+      <ul class="cap-list">
+        <li class="cap-item" data-prompt="What are the current FHA loan limits and minimum credit score requirements?">
+          <div class="cap-icon">&#128218;</div>
+          <div class="cap-text">
+            <div class="cap-name">Mortgage Guideline Q&A</div>
+            <div class="cap-desc">FHA, VA, Conventional, and Jumbo guidelines at your fingertips</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="Compare today's 30-year fixed rates for conventional vs FHA for a 720 FICO borrower.">
+          <div class="cap-icon">&#128200;</div>
+          <div class="cap-text">
+            <div class="cap-name">Rate Lookups & Comparisons</div>
+            <div class="cap-desc">Get current rates and side-by-side product comparisons</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="Remind me to follow up with my client John Smith next Tuesday at 10am.">
+          <div class="cap-icon">&#128276;</div>
+          <div class="cap-text">
+            <div class="cap-name">Client Reminders & Scheduling</div>
+            <div class="cap-desc">Set follow-up reminders and manage your daily schedule</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="Take a note: Client Jane Doe prefers email communication and is looking at $400k purchase in Mason.">
+          <div class="cap-icon">&#128221;</div>
+          <div class="cap-text">
+            <div class="cap-name">Note-Taking</div>
+            <div class="cap-desc">Save client notes, loan details, and important info on the fly</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="Give me my morning briefing — pipeline status, rate changes, and follow-ups due today.">
+          <div class="cap-icon">&#9728;&#65039;</div>
+          <div class="cap-text">
+            <div class="cap-name">Morning Briefings</div>
+            <div class="cap-desc">Daily summary of your pipeline, rates, and action items</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="Run a loan scenario: $350k purchase, 5% down, 700 FICO, conventional 30-year fixed. What's the monthly payment with taxes and insurance?">
+          <div class="cap-icon">&#129518;</div>
+          <div class="cap-text">
+            <div class="cap-name">Loan Scenario Analysis</div>
+            <div class="cap-desc">Run full payment breakdowns and compare loan options instantly</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="What's happening in the mortgage market today? Any Fed news or rate movement?">
+          <div class="cap-icon">&#128240;</div>
+          <div class="cap-text">
+            <div class="cap-name">Market Updates</div>
+            <div class="cap-desc">Latest mortgage market news, Fed updates, and rate trends</div>
+          </div>
+        </li>
+        <li class="cap-item" data-prompt="">
+          <div class="cap-icon">&#127829;</div>
+          <div class="cap-text">
+            <div class="cap-name">Food Ordering</div>
+            <div class="cap-desc">Order lunch or coffee delivered to the office</div>
+            <span class="cap-badge">COMING SOON</span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -554,6 +683,30 @@ function checkA2HS() {
 a2hsClose.addEventListener('click', () => {
   a2hsBanner.classList.remove('visible');
   localStorage.setItem(A2HS_KEY, 'true');
+});
+
+// ===== CAPABILITIES MODAL =====
+const capOverlay = document.getElementById('capOverlay');
+const btnHelp = document.getElementById('btnHelp');
+const capClose = document.getElementById('capClose');
+
+btnHelp.addEventListener('click', () => capOverlay.classList.add('visible'));
+capClose.addEventListener('click', () => capOverlay.classList.remove('visible'));
+capOverlay.addEventListener('click', (e) => {
+  if (e.target === capOverlay) capOverlay.classList.remove('visible');
+});
+
+document.querySelectorAll('.cap-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const prompt = item.dataset.prompt;
+    if (prompt) {
+      chatInput.value = prompt;
+      autoResizeInput();
+      updateSendBtn();
+      chatInput.focus();
+    }
+    capOverlay.classList.remove('visible');
+  });
 });
 
 // ===== SERVICE WORKER =====
