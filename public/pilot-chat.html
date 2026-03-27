@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pilot">
+<meta name="theme-color" content="#0f0f1f">
+<title>Pilot | 9 Enterprises</title>
+<link rel="manifest" href="/pilot-manifest.json">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0f0f1f;--bg2:#16213e;--bg3:#1a2744;
+  --accent:#FF6600;--neon:#64ffda;--blue:#00e5ff;
+  --text:#f0f0f0;--muted:#8892b0;--dim:#334155;
+  --glass:rgba(22,33,62,0.65);--glassBorder:rgba(0,229,255,0.12);
+  --font-head:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
+}
+html,body{height:100%;overflow:hidden;}
+body{
+  font-family:var(--font-body);background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+}
+
+/* ===== PIN SCREEN ===== */
+.pin-screen{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:32px;
+  transition:opacity 0.4s, transform 0.4s;
+}
+.pin-screen.hidden{opacity:0;pointer-events:none;transform:scale(1.05);}
+.pin-logo{
+  font-family:var(--font-head);font-size:64px;font-weight:800;
+  background:linear-gradient(135deg,#FF6600,#ff8844);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(255,102,0,0.4));
+}
+.pin-title{font-family:var(--font-head);font-size:18px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.pin-dots{display:flex;gap:16px;margin:8px 0;}
+.pin-dot{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid var(--dim);background:transparent;
+  transition:all 0.2s;
+}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px rgba(255,102,0,0.5);}
+.pin-dot.error{border-color:#ff2d55;background:#ff2d55;animation:shake 0.4s;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:12px;margin-top:8px;}
+.pin-btn{
+  width:72px;height:72px;border-radius:50%;
+  border:1px solid var(--dim);background:rgba(22,33,62,0.4);
+  color:var(--text);font-family:var(--font-body);font-size:28px;font-weight:500;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.pin-btn:active{background:rgba(255,102,0,0.15);border-color:var(--accent);transform:scale(0.93);}
+.pin-btn.pin-del{font-size:14px;color:var(--muted);letter-spacing:1px;}
+.pin-btn.pin-empty{visibility:hidden;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}50%{transform:translateX(-4px);}}
+
+/* ===== CHAT LAYOUT ===== */
+.chat-app{
+  display:flex;flex-direction:column;height:100dvh;height:100vh;
+  opacity:0;pointer-events:none;transition:opacity 0.4s;
+}
+.chat-app.visible{opacity:1;pointer-events:all;}
+
+/* ===== HEADER ===== */
+.chat-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;padding-top:calc(12px + var(--safe-top));
+  background:linear-gradient(135deg,#0f0f1f 0%,#16213e 100%);
+  border-bottom:1px solid var(--glassBorder);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  flex-shrink:0;
+}
+.header-left{display:flex;align-items:center;gap:12px;}
+.header-logo{
+  font-family:var(--font-head);font-size:32px;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,#FF6600,#ff8844);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 16px rgba(255,102,0,0.4));
+}
+.header-info{display:flex;flex-direction:column;gap:2px;}
+.header-title{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.header-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.status-badge{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:10px;color:var(--neon);
+  letter-spacing:1px;text-transform:uppercase;
+}
+.status-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--neon);
+  animation:pulse-green 2s ease-in-out infinite;
+}
+.status-dot.offline{background:#ff2d55;animation:none;}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 4px var(--neon);}50%{box-shadow:0 0 14px var(--neon);}}
+.btn-clear{
+  background:none;border:1px solid var(--dim);border-radius:8px;
+  color:var(--muted);font-family:var(--font-mono);font-size:10px;
+  padding:5px 10px;cursor:pointer;letter-spacing:1px;
+  transition:all 0.2s;
+}
+.btn-clear:active{border-color:var(--accent);color:var(--accent);}
+
+/* ===== MESSAGES ===== */
+.chat-messages{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:16px;padding-bottom:8px;
+  display:flex;flex-direction:column;gap:12px;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
+.chat-messages::-webkit-scrollbar{width:3px;}
+.chat-messages::-webkit-scrollbar-track{background:transparent;}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
+
+.msg{
+  display:flex;flex-direction:column;max-width:85%;
+  animation:msgIn 0.3s ease both;
+}
+.msg.user{align-self:flex-end;align-items:flex-end;}
+.msg.pilot{align-self:flex-start;align-items:flex-start;}
+@keyframes msgIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.msg-bubble{
+  padding:12px 16px;border-radius:18px;
+  font-size:15px;line-height:1.55;
+  word-wrap:break-word;overflow-wrap:break-word;
+}
+.msg.user .msg-bubble{
+  background:linear-gradient(135deg,#FF6600,#e85d00);
+  color:#fff;border-bottom-right-radius:6px;
+}
+.msg.pilot .msg-bubble{
+  background:var(--bg2);
+  border:1px solid var(--glassBorder);
+  color:var(--text);border-bottom-left-radius:6px;
+}
+.msg-time{
+  font-family:var(--font-mono);font-size:9px;color:var(--dim);
+  margin-top:4px;padding:0 4px;
+}
+
+/* ===== TYPING INDICATOR ===== */
+.typing{display:none;align-self:flex-start;padding:4px 0;}
+.typing.visible{display:flex;}
+.typing-inner{
+  display:flex;align-items:center;gap:5px;
+  background:var(--bg2);border:1px solid var(--glassBorder);
+  border-radius:18px;border-bottom-left-radius:6px;
+  padding:14px 20px;
+}
+.typing-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--muted);
+  animation:typingBounce 1.4s infinite;
+}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:0.4;}30%{transform:translateY(-6px);opacity:1;}}
+
+/* ===== INPUT AREA ===== */
+.chat-input-area{
+  padding:8px 12px;
+  padding-bottom:calc(8px + var(--safe-bottom));
+  background:linear-gradient(180deg,transparent 0%,rgba(15,15,31,0.95) 20%);
+  border-top:1px solid var(--glassBorder);
+  flex-shrink:0;
+}
+.chat-input-wrap{
+  display:flex;align-items:flex-end;gap:8px;
+  background:var(--bg2);border:1px solid var(--glassBorder);
+  border-radius:24px;padding:6px 6px 6px 16px;
+  transition:border-color 0.2s;
+}
+.chat-input-wrap:focus-within{border-color:rgba(255,102,0,0.4);}
+.chat-input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-family:var(--font-body);font-size:16px;
+  resize:none;max-height:120px;line-height:1.4;
+  padding:6px 0;
+}
+.chat-input::placeholder{color:var(--dim);}
+.btn-send{
+  width:40px;height:40px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#FF6600,#e85d00);
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.15s;
+  opacity:0.5;pointer-events:none;
+}
+.btn-send.active{opacity:1;pointer-events:all;}
+.btn-send:active{transform:scale(0.9);}
+.btn-send svg{width:18px;height:18px;}
+
+/* ===== A2HS BANNER ===== */
+.a2hs-banner{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--bg2);border-top:1px solid var(--glassBorder);
+  padding:16px 20px;padding-bottom:calc(16px + var(--safe-bottom));
+  z-index:500;
+  animation:slideUp 0.4s ease;
+}
+.a2hs-banner.visible{display:block;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.a2hs-content{display:flex;align-items:center;gap:12px;}
+.a2hs-icon{font-size:28px;flex-shrink:0;}
+.a2hs-text{flex:1;}
+.a2hs-text strong{font-size:14px;color:var(--text);}
+.a2hs-text p{font-size:12px;color:var(--muted);margin-top:2px;}
+.a2hs-close{
+  background:none;border:1px solid var(--dim);border-radius:8px;
+  color:var(--muted);font-size:11px;padding:6px 12px;cursor:pointer;
+  font-family:var(--font-mono);
+}
+
+/* ===== SCROLLBAR & MISC ===== */
+::selection{background:rgba(255,102,0,0.3);}
+</style>
+</head>
+<body>
+
+<!-- PIN SCREEN -->
+<div class="pin-screen" id="pinScreen">
+  <div class="pin-logo">9</div>
+  <div class="pin-title">Enter PIN</div>
+  <div class="pin-dots" id="pinDots">
+    <div class="pin-dot"></div>
+    <div class="pin-dot"></div>
+    <div class="pin-dot"></div>
+    <div class="pin-dot"></div>
+  </div>
+  <div class="pin-pad">
+    <button class="pin-btn" data-num="1">1</button>
+    <button class="pin-btn" data-num="2">2</button>
+    <button class="pin-btn" data-num="3">3</button>
+    <button class="pin-btn" data-num="4">4</button>
+    <button class="pin-btn" data-num="5">5</button>
+    <button class="pin-btn" data-num="6">6</button>
+    <button class="pin-btn" data-num="7">7</button>
+    <button class="pin-btn" data-num="8">8</button>
+    <button class="pin-btn" data-num="9">9</button>
+    <button class="pin-btn pin-empty"></button>
+    <button class="pin-btn" data-num="0">0</button>
+    <button class="pin-btn pin-del" data-action="del">DEL</button>
+  </div>
+</div>
+
+<!-- CHAT APP -->
+<div class="chat-app" id="chatApp">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="header-left">
+      <div class="header-logo">9</div>
+      <div class="header-info">
+        <div class="header-title">PILOT</div>
+        <div class="header-sub">9 ENTERPRISES</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-badge">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">ONLINE</span>
+      </div>
+      <button class="btn-clear" id="btnClear">CLEAR</button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages" id="chatMessages"></div>
+
+  <!-- Typing Indicator -->
+  <div class="typing" id="typingIndicator">
+    <div class="typing-inner">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <div class="chat-input-wrap">
+      <textarea class="chat-input" id="chatInput" rows="1" placeholder="Message your Pilot..." enterkeyhint="send"></textarea>
+      <button class="btn-send" id="btnSend">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- A2HS Banner -->
+<div class="a2hs-banner" id="a2hsBanner">
+  <div class="a2hs-content">
+    <div class="a2hs-icon">&#9889;</div>
+    <div class="a2hs-text">
+      <strong>Add Pilot to Home Screen</strong>
+      <p>Tap <strong>Share</strong> then <strong>"Add to Home Screen"</strong> for the full experience.</p>
+    </div>
+    <button class="a2hs-close" id="a2hsClose">GOT IT</button>
+  </div>
+</div>
+
+<script>
+// ===== CONFIG =====
+const PILOT_API = window.location.hostname === 'localhost'
+  ? 'http://localhost:3472'
+  : 'https://TUNNEL_URL_HERE';
+
+const CORRECT_PIN = '9999';
+const STORAGE_KEY = 'pilot_chat_history';
+const PIN_KEY = 'pilot_pin_verified';
+const A2HS_KEY = 'pilot_a2hs_dismissed';
+
+// ===== DOM =====
+const pinScreen = document.getElementById('pinScreen');
+const pinDots = document.getElementById('pinDots').children;
+const chatApp = document.getElementById('chatApp');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const btnSend = document.getElementById('btnSend');
+const btnClear = document.getElementById('btnClear');
+const typingIndicator = document.getElementById('typingIndicator');
+const statusDot = document.getElementById('statusDot');
+const statusText = document.getElementById('statusText');
+const a2hsBanner = document.getElementById('a2hsBanner');
+const a2hsClose = document.getElementById('a2hsClose');
+
+let pinEntry = '';
+let messages = [];
+let isSending = false;
+
+// ===== PIN =====
+function checkPin() {
+  if (localStorage.getItem(PIN_KEY) === 'true') {
+    pinScreen.classList.add('hidden');
+    chatApp.classList.add('visible');
+    initChat();
+    return;
+  }
+}
+
+function handlePinInput(num) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += num;
+  updatePinDots();
+  if (pinEntry.length === 4) {
+    setTimeout(() => {
+      if (pinEntry === CORRECT_PIN) {
+        localStorage.setItem(PIN_KEY, 'true');
+        pinScreen.classList.add('hidden');
+        chatApp.classList.add('visible');
+        initChat();
+      } else {
+        Array.from(pinDots).forEach(d => d.classList.add('error'));
+        setTimeout(() => {
+          pinEntry = '';
+          Array.from(pinDots).forEach(d => { d.classList.remove('error'); d.classList.remove('filled'); });
+        }, 500);
+      }
+    }, 200);
+  }
+}
+
+function handlePinDelete() {
+  if (pinEntry.length > 0) {
+    pinEntry = pinEntry.slice(0, -1);
+    updatePinDots();
+  }
+}
+
+function updatePinDots() {
+  Array.from(pinDots).forEach((dot, i) => {
+    dot.classList.toggle('filled', i < pinEntry.length);
+  });
+}
+
+document.querySelectorAll('.pin-btn[data-num]').forEach(btn => {
+  btn.addEventListener('click', () => handlePinInput(btn.dataset.num));
+});
+document.querySelector('.pin-btn[data-action="del"]').addEventListener('click', handlePinDelete);
+
+// ===== CHAT =====
+function initChat() {
+  loadMessages();
+  if (messages.length === 0) {
+    addMessage('pilot', "Welcome to Pilot. I'm your AI assistant from 9 Enterprises.\n\nI can help you with:\n\u2022 Drafting emails and follow-ups\n\u2022 Loan scenario analysis\n\u2022 Rate comparisons and calculations\n\u2022 Client communication templates\n\u2022 Market updates and insights\n\nHow can I help you today?");
+  }
+  renderMessages();
+  scrollToBottom();
+  checkA2HS();
+  checkServerStatus();
+}
+
+function loadMessages() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) messages = JSON.parse(stored);
+  } catch(e) { messages = []; }
+}
+
+function saveMessages() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  } catch(e) {}
+}
+
+function addMessage(role, text) {
+  messages.push({ role, text, time: Date.now() });
+  saveMessages();
+}
+
+function renderMessages() {
+  chatMessages.innerHTML = '';
+  messages.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'msg ' + m.role;
+    const timeStr = new Date(m.time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    div.innerHTML = `<div class="msg-bubble">${escapeHtml(m.text)}</div><div class="msg-time">${timeStr}</div>`;
+    chatMessages.appendChild(div);
+  });
+}
+
+function appendMessage(role, text) {
+  addMessage(role, text);
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const timeStr = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${timeStr}</div>`;
+  chatMessages.appendChild(div);
+  scrollToBottom();
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollToBottom() {
+  requestAnimationFrame(() => {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+}
+
+function showTyping() {
+  typingIndicator.classList.add('visible');
+  chatMessages.appendChild(typingIndicator);
+  scrollToBottom();
+}
+
+function hideTyping() {
+  typingIndicator.classList.remove('visible');
+}
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text || isSending) return;
+
+  isSending = true;
+  chatInput.value = '';
+  autoResizeInput();
+  updateSendBtn();
+  appendMessage('user', text);
+  showTyping();
+
+  try {
+    const res = await fetch(PILOT_API + '/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+    const data = await res.json();
+    hideTyping();
+    appendMessage('pilot', data.reply || 'No response received.');
+    setStatus(true);
+  } catch (err) {
+    hideTyping();
+    appendMessage('pilot', 'Connection error. The Pilot server may be offline. Please try again in a moment.');
+    setStatus(false);
+  }
+  isSending = false;
+}
+
+function setStatus(online) {
+  statusDot.classList.toggle('offline', !online);
+  statusText.textContent = online ? 'ONLINE' : 'OFFLINE';
+}
+
+async function checkServerStatus() {
+  try {
+    const res = await fetch(PILOT_API + '/health', { method: 'GET', signal: AbortSignal.timeout(5000) });
+    setStatus(res.ok);
+  } catch(e) {
+    // Don't set offline on initial check — server might not have /health
+  }
+}
+
+// ===== INPUT HANDLING =====
+function autoResizeInput() {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+}
+
+function updateSendBtn() {
+  btnSend.classList.toggle('active', chatInput.value.trim().length > 0);
+}
+
+chatInput.addEventListener('input', () => { autoResizeInput(); updateSendBtn(); });
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+btnSend.addEventListener('click', sendMessage);
+
+btnClear.addEventListener('click', () => {
+  if (confirm('Clear all messages?')) {
+    messages = [];
+    saveMessages();
+    chatMessages.innerHTML = '';
+    addMessage('pilot', "Chat cleared. How can I help you?");
+    renderMessages();
+    scrollToBottom();
+  }
+});
+
+// ===== A2HS (Add to Home Screen) =====
+function checkA2HS() {
+  const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  const dismissed = localStorage.getItem(A2HS_KEY);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  if (isIOS && !isStandalone && !dismissed) {
+    setTimeout(() => { a2hsBanner.classList.add('visible'); }, 3000);
+  }
+}
+
+a2hsClose.addEventListener('click', () => {
+  a2hsBanner.classList.remove('visible');
+  localStorage.setItem(A2HS_KEY, 'true');
+});
+
+// ===== SERVICE WORKER =====
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/pilot-sw.js').catch(() => {});
+}
+
+// ===== INIT =====
+checkPin();
+</script>
+</body>
+</html>
