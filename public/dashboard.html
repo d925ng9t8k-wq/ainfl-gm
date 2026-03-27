@@ -598,26 +598,26 @@ a{color:var(--blue);text-decoration:none;}
 <div class="ticker-wrap">
   <div class="ticker-track" id="tickerTrack">
     <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status">--</span></div>
-    <div class="ticker-item">AGENTS SPAWNED <span class="val-blue">10</span></div>
+    <div class="ticker-item">AGENTS ACTIVE <span class="val-blue">8</span></div>
     <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync">--</span></div>
     <div class="ticker-item">MRR <span class="val" id="tk-mrr">connect Stripe API</span></div>
     <div class="ticker-item">API SPEND <span class="val-blue" id="tk-api-spend">connect billing API</span></div>
     <div class="ticker-item">UPTIME <span class="val" id="tk-uptime">--</span></div>
     <div class="ticker-item">MODE <span class="val-gold" id="tk-mode">--</span></div>
-    <div class="ticker-item">SPRINT VELOCITY <span class="val-gold">HIGH</span></div>
-    <div class="ticker-item">PORTFOLIO <span class="val" id="tk-portfolio">connect API for live data</span></div>
-    <div class="ticker-item">REVENUE STREAMS <span class="val-gold">5 ACTIVE</span></div>
+    <div class="ticker-item">SPRINT COMMITS <span class="val-gold">40+</span></div>
+    <div class="ticker-item">EIN <span class="val-gold">41-5160635</span></div>
+    <div class="ticker-item">TRADER9 <span class="val">3 SESSIONS TRAINED</span></div>
     <!-- duplicate for seamless scroll -->
     <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status2">--</span></div>
-    <div class="ticker-item">AGENTS SPAWNED <span class="val-blue">10</span></div>
+    <div class="ticker-item">AGENTS ACTIVE <span class="val-blue">8</span></div>
     <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync2">--</span></div>
     <div class="ticker-item">MRR <span class="val" id="tk-mrr2">connect Stripe API</span></div>
     <div class="ticker-item">API SPEND <span class="val-blue" id="tk-api-spend2">connect billing API</span></div>
     <div class="ticker-item">UPTIME <span class="val" id="tk-uptime2">--</span></div>
     <div class="ticker-item">MODE <span class="val-gold" id="tk-mode2">--</span></div>
-    <div class="ticker-item">SPRINT VELOCITY <span class="val-gold">HIGH</span></div>
-    <div class="ticker-item">PORTFOLIO <span class="val" id="tk-portfolio2">connect API for live data</span></div>
-    <div class="ticker-item">REVENUE STREAMS <span class="val-gold">5 ACTIVE</span></div>
+    <div class="ticker-item">SPRINT COMMITS <span class="val-gold">40+</span></div>
+    <div class="ticker-item">EIN <span class="val-gold">41-5160635</span></div>
+    <div class="ticker-item">TRADER9 <span class="val">3 SESSIONS TRAINED</span></div>
   </div>
 </div>
 
@@ -682,19 +682,19 @@ a{color:var(--blue);text-decoration:none;}
   <!-- Stat Cards -->
   <div class="stats-row fade-in">
     <div class="stat-card">
-      <div class="stat-num">10</div>
+      <div class="stat-num">8</div>
       <div class="stat-label">Active Agents</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num">7</div>
+      <div class="stat-num">5</div>
       <div class="stat-label">Projects Live</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num">34</div>
-      <div class="stat-label">Commits (24h)</div>
+      <div class="stat-num">40+</div>
+      <div class="stat-label">Sprint Commits</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num">5</div>
+      <div class="stat-num">3</div>
       <div class="stat-label">Revenue Streams</div>
     </div>
   </div>
@@ -1270,17 +1270,15 @@ a{color:var(--blue);text-decoration:none;}
       <div class="card" style="padding:14px;">
         <div class="card-title" style="font-size:13px;">AGENT TARGET</div>
         <select class="agent-select" id="agentSelect">
-          <option value="9">Agent 9 (CEO)</option>
-          <option value="UNO">UNO (Frontend)</option>
-          <option value="TEE">TEE (Backend)</option>
-          <option value="DOC">DOC (Docs)</option>
-          <option value="MONEY">MONEY (Finance)</option>
-          <option value="X9">X9 (Social)</option>
+          <option value="9">Agent 9 (QB/Orchestrator)</option>
+          <option value="UNO">UNO (Research Lead)</option>
+          <option value="TEE">TEE (Engineering Lead)</option>
+          <option value="MONEY">MONEY (Revenue Lead)</option>
+          <option value="PRESS">PRESS (Content Lead)</option>
+          <option value="SCOUT">SCOUT (Market Strategy)</option>
+          <option value="CANVAS">CANVAS (Design & Brand)</option>
+          <option value="DOC">DOC (Infrastructure)</option>
           <option value="TRADER9">TRADER9 (Trading)</option>
-          <option value="PILOT">PILOT (DevOps)</option>
-          <option value="SCOUT">SCOUT (Research)</option>
-          <option value="CANVAS">CANVAS (Design)</option>
-          <option value="PRESS">PRESS (PR/Comms)</option>
         </select>
       </div>
       <div class="card" style="padding:14px;">
@@ -1318,16 +1316,14 @@ a{color:var(--blue);text-decoration:none;}
   // ============ DATA ============
 
   const AGENTS = [
-    {id:'UNO',name:'UNO',role:'Frontend Engineer',status:'active',color:'#00e5ff',desc:'Builds and ships all user-facing UI. React, HTML, CSS.',tags:['react','ui','css','components']},
-    {id:'TEE',name:'TEE',role:'Backend Engineer',status:'running',color:'#c300ff',desc:'APIs, databases, server logic. Node.js, Cloudflare Workers.',tags:['node','api','workers','db']},
-    {id:'DOC',name:'DOC',role:'Documentation Lead',status:'active',color:'#64ffda',desc:'Writes docs, READMEs, changelogs. Keeps knowledge base current.',tags:['docs','readme','changelog']},
-    {id:'MONEY',name:'MONEY',role:'Finance & Billing',status:'active',color:'#FF6600',desc:'Tracks API spend, manages billing, cost optimization.',tags:['billing','budget','costs']},
-    {id:'X9',name:'X9',role:'Social Media / Brand',status:'pending',color:'#ff2d55',desc:'Manages X (Twitter), brand voice, engagement strategy.',tags:['twitter','brand','social']},
-    {id:'TRADER9',name:'TRADER9',role:'Trading Signals',status:'running',color:'#e87722',desc:'Generates alpha trading signals. Backtesting, live alerts.',tags:['trading','signals','alpha']},
-    {id:'PILOT',name:'PILOT',role:'DevOps / Infra',status:'active',color:'#00e5ff',desc:'CI/CD, deployments, tunnels, server health, monitoring.',tags:['devops','deploy','infra']},
-    {id:'SCOUT',name:'SCOUT',role:'Research & Intel',status:'standby',color:'#8892b0',desc:'Market research, competitor analysis, trend scanning.',tags:['research','intel','trends']},
-    {id:'CANVAS',name:'CANVAS',role:'Design / Creative',status:'pending',color:'#ff69b4',desc:'Visual design, brand assets, UI mockups, graphics.',tags:['design','brand','graphics']},
-    {id:'PRESS',name:'PRESS',role:'PR & Communications',status:'standby',color:'#8892b0',desc:'Press releases, investor updates, external comms.',tags:['pr','comms','investor']},
+    {id:'UNO',name:'UNO',role:'Research Team Lead',status:'active',color:'#00e5ff',desc:'Deep research, competitive intel, market analysis. Manages research sub-agents.',tags:['research','intel','analysis']},
+    {id:'TEE',name:'TEE',role:'Engineering Team Lead',status:'active',color:'#c300ff',desc:'Writes and ships code. JS/Node.js, testing, deployments, browser automation.',tags:['node','code','deploy','testing']},
+    {id:'MONEY',name:'MONEY',role:'Revenue Lead',status:'active',color:'#FF6600',desc:'Tracks API spend, manages billing, revenue strategy, cost optimization.',tags:['billing','revenue','budget']},
+    {id:'PRESS',name:'PRESS',role:'Content Lead',status:'active',color:'#8892b0',desc:'Content strategy, PR, press releases, social copy, investor updates.',tags:['content','pr','comms']},
+    {id:'SCOUT',name:'SCOUT',role:'Market Strategy',status:'active',color:'#64ffda',desc:'Market research, competitor analysis, trend scanning, opportunity identification.',tags:['market','strategy','trends']},
+    {id:'CANVAS',name:'CANVAS',role:'Design & Brand',status:'active',color:'#ff69b4',desc:'Visual design, brand assets, UI mockups, graphics, brand identity.',tags:['design','brand','graphics']},
+    {id:'DOC',name:'DOC',role:'Infrastructure Lead',status:'active',color:'#e87722',desc:'System health, docs, READMEs, changelogs, infrastructure monitoring.',tags:['infra','docs','health']},
+    {id:'TRADER9',name:'TRADER9',role:'Trading Signals',status:'running',color:'#FFD700',desc:'Generates alpha trading signals. Backtesting, live alerts. 3 sessions trained.',tags:['trading','signals','alpha']},
   ];
 
   const PROJECTS = [
@@ -1352,56 +1348,49 @@ a{color:var(--blue);text-decoration:none;}
   ];
 
   const DIVISIONS = [
-    {name:'AiNFLGM',color:'#FB4F14',agents:[{name:'UNO',persist:true},{name:'TEE',persist:true},{name:'GameSim',persist:false}]},
-    {name:'AI Underwriter',color:'#FFD700',agents:[{name:'MONEY',persist:true},{name:'LoanBot',persist:false}]},
-    {name:'Trader9',color:'#e87722',agents:[{name:'TRADER9',persist:true},{name:'AlphaBot',persist:false},{name:'BacktestBot',persist:false}]},
-    {name:'X9 Social',color:'#ff2d55',agents:[{name:'X9',persist:true},{name:'PRESS',persist:true},{name:'ViralBot',persist:false}]},
-    {name:'Free Agents',color:'#c300ff',agents:[{name:'SCOUT',persist:true},{name:'CANVAS',persist:true}]},
-    {name:'Cloud Infra',color:'#00e5ff',agents:[{name:'PILOT',persist:true},{name:'CloudBot',persist:false}]},
-    {name:'Brand Studio',color:'#ff69b4',agents:[{name:'CANVAS',persist:true},{name:'DOC',persist:true},{name:'StyleBot',persist:false}]},
+    {name:'Front Office',color:'#00e5ff',agents:[{name:'UNO — Research Lead',persist:true},{name:'TEE — Engineering Lead',persist:true},{name:'MONEY — Revenue Lead',persist:true},{name:'PRESS — Content Lead',persist:true},{name:'SCOUT — Market Strategy',persist:true},{name:'CANVAS — Design & Brand',persist:true},{name:'DOC — Infrastructure',persist:true}]},
+    {name:'AiNFLGM',color:'#FB4F14',agents:[{name:'TEE',persist:true},{name:'UNO',persist:true},{name:'GameSim',persist:false}]},
+    {name:'Trader9',color:'#FFD700',agents:[{name:'TRADER9',persist:true},{name:'AlphaBot',persist:false},{name:'BacktestBot',persist:false}]},
+    {name:'Cloud Infra',color:'#c300ff',agents:[{name:'DOC',persist:true},{name:'CloudBot',persist:false}]},
+    {name:'Brand & Content',color:'#ff69b4',agents:[{name:'CANVAS',persist:true},{name:'PRESS',persist:true},{name:'SCOUT',persist:true}]},
   ];
 
   const VENDORS = [
-    {name:'Anthropic',service:'Claude API (Opus/Haiku)',cost:'$250',status:'online',plan:'Pay-as-you-go'},
-    {name:'Cloudflare',service:'Worker + Tunnel',cost:'$5',status:'online',plan:'Pro'},
-    {name:'GitHub',service:'Pages + Repos',cost:'$0',status:'online',plan:'Free'},
-    {name:'Twilio',service:'Voice / SMS',cost:'$25',status:'online',plan:'Pay-as-you-go'},
-    {name:'Alpaca',service:'Trading API',cost:'$0',status:'setup',plan:'Paper Trading (Free)'},
-    {name:'ElevenLabs',service:'Text-to-Speech',cost:'$5',status:'online',plan:'Starter'},
-    {name:'Google',service:'AdSense + Analytics',cost:'$0',status:'online',plan:'Free (revenue generating)'},
-    {name:'Stripe',service:'Payments',cost:'$0',status:'online',plan:'Standard (2.9% + 30c per txn)'},
+    {name:'Anthropic',service:'Claude Max 20x subscription + API usage',cost:'$200+',status:'online',plan:'Max 20x ($200/mo fixed + extra usage)'},
+    {name:'Twilio',service:'Voice / SMS',cost:'$20',status:'online',plan:'Pay-as-you-go (~$20/mo est)'},
+    {name:'ElevenLabs',service:'Text-to-Speech / Voice Synthesis',cost:'$0',status:'online',plan:'~$1000 total spent — monitoring usage'},
+    {name:'Cloudflare',service:'Workers (free tier) + Tunnel',cost:'$0',status:'online',plan:'Free tier + tunnel'},
+    {name:'GitHub',service:'Pages + Repos',cost:'$0',status:'online',plan:'Free (GitHub Pages)'},
+    {name:'DigitalOcean',service:'VPS / Cloud Hosting',cost:'$6',status:'setup',plan:'Pending — email verification at x9agent@proton.me'},
+    {name:'Stripe',service:'Payments',cost:'$0',status:'setup',plan:'Exists (emailfishback@gmail.com) — not yet integrated'},
+    {name:'Alpaca',service:'Trading API',cost:'$0',status:'setup',plan:'KYC selfie pending — Owner action required'},
+    {name:'Google',service:'AdSense + Analytics',cost:'$0',status:'setup',plan:'AdSense application pending — Owner action required'},
   ];
 
   const TASKS = {
-    'AiNFLGM': [
-      {desc:'Deploy v2.1 hotfix for draft board rendering',status:'done',ownerAction:false},
-      {desc:'Set up Google AdSense ad units on game pages',status:'done',ownerAction:false},
-      {desc:'Configure Stripe subscription tiers',status:'in-progress',ownerAction:false},
-      {desc:'Review subscription pricing model',status:'blocked',ownerAction:true},
+    'OWNER ACTIONS REQUIRED': [
+      {desc:'Alpaca KYC selfie — snap & upload at alpaca.markets (30 seconds)',status:'blocked',ownerAction:true},
+      {desc:'Google AdSense application — create at adsense.google.com',status:'blocked',ownerAction:true},
+      {desc:'Reddit account creation — needs CAPTCHA solver or manual signup',status:'blocked',ownerAction:true},
+      {desc:'X.com account creation — platform issues blocking auto-create',status:'blocked',ownerAction:true},
     ],
-    'trader9': [
-      {desc:'Complete Alpaca KYC verification',status:'blocked',ownerAction:true},
-      {desc:'ETH Bollinger backtest engine',status:'done',ownerAction:false},
-      {desc:'BTC EMA strategy optimization',status:'in-progress',ownerAction:false},
-      {desc:'Wire trading bot to paper account',status:'blocked',ownerAction:false},
+    'In Progress': [
+      {desc:'A2P 10DLC registration — EIN 41-5160635 ready, submit to Twilio',status:'in-progress',ownerAction:false},
+      {desc:'DigitalOcean email verification — check x9agent@proton.me for verify link',status:'in-progress',ownerAction:false},
+      {desc:'Cloud worker deploy — needs Cloudflare API token with Workers:Edit scope',status:'in-progress',ownerAction:false},
+      {desc:'Dashboard live data connections — cloud worker /api/dashboard endpoint not built',status:'in-progress',ownerAction:false},
+      {desc:'Stripe subscription integration for freeagent9',status:'in-progress',ownerAction:false},
+      {desc:'9enterprises.com domain registration',status:'in-progress',ownerAction:false},
     ],
-    'x9': [
-      {desc:'Resolve X account CAPTCHA / phone verification',status:'blocked',ownerAction:true},
-      {desc:'Create Reddit account for brand presence',status:'blocked',ownerAction:true},
-      {desc:'Design brand kit v2 (colors, logo, templates)',status:'in-progress',ownerAction:false},
-      {desc:'Draft first 10 tweets for launch',status:'pending',ownerAction:false},
-    ],
-    'Comms Hub': [
-      {desc:'Session token PID watchdog',status:'done',ownerAction:false},
-      {desc:'Cloud worker failover test',status:'done',ownerAction:false},
-      {desc:'Voice server tunnel auto-restart',status:'done',ownerAction:false},
-      {desc:'Email 2-way relay tuning',status:'in-progress',ownerAction:false},
-    ],
-    'Infrastructure': [
-      {desc:'Set up domain DNS for 9enterprises.com',status:'in-progress',ownerAction:false},
-      {desc:'Configure SSL certs for all subdomains',status:'pending',ownerAction:false},
-      {desc:'LaunchAgent reliability testing',status:'done',ownerAction:false},
-      {desc:'Approve monthly infra budget increase',status:'blocked',ownerAction:true},
+    'Completed': [
+      {desc:'EIN obtained: 41-5160635 (9 Enterprises LLC)',status:'done',ownerAction:false},
+      {desc:'Kyle C pilot LIVE — loan officer AI assistant deployed',status:'done',ownerAction:false},
+      {desc:'Email channel LIVE — Gmail SMTP 2-way relay operational',status:'done',ownerAction:false},
+      {desc:'trader9 fully trained — 3 sessions: strategies, risk engine, backtesting, microstructure',status:'done',ownerAction:false},
+      {desc:'freeagent9 landing page + business plan complete',status:'done',ownerAction:false},
+      {desc:'Universal sweep — 10 reliability fixes shipped',status:'done',ownerAction:false},
+      {desc:'40+ sprint commits across all projects',status:'done',ownerAction:false},
+      {desc:'All 7 protocols burned to memory (Soul Code v5)',status:'done',ownerAction:false},
     ],
   };
 
@@ -1428,14 +1417,16 @@ a{color:var(--blue);text-decoration:none;}
   ];
 
   const BRAINSTORM = [
-    {name:'agent9 Real Estate',desc:'AI-powered real estate analysis, comps, and deal sourcing for investors.',cost:'$500/mo',revenue:'$5K-20K/mo',status:'concept',color:'#64ffda'},
-    {name:'Lead Gen Engine',desc:'Automated lead generation funnels for mortgage, real estate, and SaaS.',cost:'$200/mo',revenue:'$3K-10K/mo',status:'researching',color:'#00e5ff'},
+    {name:'Remote Self-Heal',desc:'When terminal drops, 9-cloud SSHes into the Mac autonomously and fixes itself. No Owner involvement. Voice call triggers the repair. The unlock for true 24/7 autonomy.',cost:'$5-10/mo (VPS)',revenue:'Core Infrastructure',status:'researching',color:'#64ffda'},
+    {name:'Remote Exec Layer',desc:'Voice calls where 9 can actually execute terminal commands, not just talk. Cloud instance bridges to Mac via SSH — diagnose, fix, restart services, all during a voice session.',cost:'$0 (uses existing VPS)',revenue:'Core Infrastructure',status:'concept',color:'#00e5ff'},
+    {name:'agent9 Real Estate',desc:'AI-powered real estate analysis, comps, and deal sourcing for investors.',cost:'$500/mo',revenue:'$5K-20K/mo',status:'concept',color:'#FB4F14'},
+    {name:'Lead Gen Engine',desc:'Automated lead generation funnels for mortgage, real estate, and SaaS.',cost:'$200/mo',revenue:'$3K-10K/mo',status:'researching',color:'#e87722'},
     {name:'Newsletter Empire',desc:'AI-written niche newsletters with affiliate monetization at scale.',cost:'$50/mo',revenue:'$1K-5K/mo',status:'concept',color:'#FF6600'},
-    {name:'AI Content Farm',desc:'Automated content creation for SEO, social, and video across verticals.',cost:'$300/mo',revenue:'$2K-8K/mo',status:'concept',color:'#e87722'},
-    {name:'Ecom / POD',desc:'Print-on-demand store with AI-generated designs and automated fulfillment.',cost:'$100/mo',revenue:'$1K-5K/mo',status:'concept',color:'#ff69b4'},
-    {name:'Micro SaaS',desc:'Small, focused SaaS tools (calculators, dashboards, automations).',cost:'$50/mo',revenue:'$500-3K/mo',status:'researching',color:'#c300ff'},
+    {name:'AI Content Farm',desc:'Automated content creation for SEO, social, and video across verticals.',cost:'$300/mo',revenue:'$2K-8K/mo',status:'concept',color:'#ff69b4'},
+    {name:'Ecom / POD',desc:'Print-on-demand store with AI-generated designs and automated fulfillment.',cost:'$100/mo',revenue:'$1K-5K/mo',status:'concept',color:'#c300ff'},
+    {name:'Micro SaaS',desc:'Small, focused SaaS tools (calculators, dashboards, automations).',cost:'$50/mo',revenue:'$500-3K/mo',status:'researching',color:'#FFD700'},
     {name:'AI Recruiting',desc:'Automated talent matching and outreach for tech/AI roles.',cost:'$200/mo',revenue:'$5K-15K/mo',status:'concept',color:'#ff2d55'},
-    {name:'DFY Agency',desc:'Done-for-you AI integration services for businesses. Consulting + implementation.',cost:'$0',revenue:'$10K-50K/mo',status:'concept',color:'#FFD700'},
+    {name:'DFY Agency',desc:'Done-for-you AI integration services for businesses. Consulting + implementation.',cost:'$0',revenue:'$10K-50K/mo',status:'concept',color:'#8892b0'},
     {name:'Prediction Markets',desc:'AI-powered prediction market analysis and automated betting strategies.',cost:'$100/mo',revenue:'Variable',status:'concept',color:'#00e5ff'},
   ];
 
@@ -1500,19 +1491,17 @@ a{color:var(--blue);text-decoration:none;}
       'All systems nominal.',
     ],
     'list agents': [
-      'AGENT ROSTER (10 agents)',
-      '========================',
-      '  9        CEO / Autonomous Operator    [ACTIVE]',
-      '  UNO      Frontend Engineer            [ACTIVE]',
-      '  TEE      Backend Engineer             [RUNNING]',
-      '  DOC      Documentation Lead           [ACTIVE]',
-      '  MONEY    Finance & Billing            [ACTIVE]',
-      '  X9       Social Media / Brand         [PENDING]',
+      'AGENT ROSTER (Front Office)',
+      '============================',
+      '  9        QB / Orchestrator            [ACTIVE]',
+      '  UNO      Research Team Lead           [ACTIVE]',
+      '  TEE      Engineering Team Lead        [ACTIVE]',
+      '  MONEY    Revenue Lead                 [ACTIVE]',
+      '  PRESS    Content Lead                 [ACTIVE]',
+      '  SCOUT    Market Strategy              [ACTIVE]',
+      '  CANVAS   Design & Brand               [ACTIVE]',
+      '  DOC      Infrastructure Lead          [ACTIVE]',
       '  TRADER9  Trading Signals              [RUNNING]',
-      '  PILOT    DevOps / Infra               [ACTIVE]',
-      '  SCOUT    Research & Intel             [STANDBY]',
-      '  CANVAS   Design / Creative            [PENDING]',
-      '  PRESS    PR & Communications          [STANDBY]',
     ],
     'revenue report': [
       'REVENUE REPORT -- March 2026',
