@@ -53,6 +53,21 @@ const JASSON_PHONE  = process.env.JASSON_PHONE || '+15134031829';
 const JAMIE_PHONE   = process.env.JAMIE_PHONE || ''; // Jamie Bryant — Jules routing. Set JAMIE_PHONE in .env.
 const JASSON_EMAIL  = 'emailfishback@gmail.com';
 const CAPTAIN_EMAIL = 'captain@ainflgm.com';
+const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || '';
+
+// ─── Gmail SMTP Transporter (replaces broken osascript/Apple Mail) ──────────
+let gmailTransporter = null;
+if (GMAIL_APP_PASSWORD) {
+  gmailTransporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: JASSON_EMAIL,
+      pass: GMAIL_APP_PASSWORD,
+    },
+  });
+}
 
 mkdirSync(`${PROJECT}/logs`, { recursive: true });
 
@@ -669,18 +684,21 @@ function checkNewIMessages() {
   }
 }
 
-// ─── Email Send ──────────────────────────────────────────────────────────────
-function sendEmail(subject, body) {
+// ─── Email Send (Gmail SMTP via nodemailer) ─────────────────────────────────
+async function sendEmail(subject, body) {
+  if (!gmailTransporter) {
+    log('Email send skipped: GMAIL_APP_PASSWORD not set in .env');
+    addChannelError(state, 'email', 'GMAIL_APP_PASSWORD not configured');
+    saveState(state);
+    return false;
+  }
   try {
-    const script = `tell application "Mail"
-  set newMsg to make new outgoing message with properties {subject:"${subject.replace(/"/g, '\\"')}", content:"${body.replace(/"/g, '\\"')}", visible:false}
-  tell newMsg
-    make new to recipient at end of to recipients with properties {address:"${JASSON_EMAIL}"}
-    set sender to "${CAPTAIN_EMAIL}"
-  end tell
-  send newMsg
-end tell`;
-    execSync(`osascript -e '${script.replace(/'/g, "'\\''")}'`, { timeout: 20000 });
+    await gmailTransporter.sendMail({
+      from: `"9" <${JASSON_EMAIL}>`,
+      to: JASSON_EMAIL,
+      subject,
+      text: body,
+    });
     log(`Email sent: ${subject}`);
     addMessage(state, 'email', 'out', `[${subject}] ${body.slice(0, 200)}`);
     updateChannelStatus(state, 'email', 'active');
@@ -695,46 +713,15 @@ end tell`;
 }
 
 // ─── Email Read ──────────────────────────────────────────────────────────────
+// TODO: Email reading requires Gmail API OAuth2 (GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET,
+// GMAIL_REFRESH_TOKEN) or IMAP access. For now, email reading is disabled.
+// Inbound messages come via Telegram (primary) and iMessage.
 let lastEmailCheck = Date.now();
 
 function checkNewEmails() {
-  try {
-    // Check last 5 messages, grab more content (first 3 paragraphs)
-    const script = `tell application "Mail"
-  check for new mail
-  delay 2
-  set output to ""
-  set inboxMsgs to messages of inbox
-  set msgCount to count of inboxMsgs
-  set startAt to msgCount - 4
-  if startAt < 1 then set startAt to 1
-  repeat with i from startAt to msgCount
-    set m to item i of inboxMsgs
-    set fromAddr to sender of m
-    set subj to subject of m
-    set msgContent to content of m
-    if fromAddr contains "emailfishback" or fromAddr contains "jassonfishback" then
-      set bodyText to ""
-      set paraCount to count of paragraphs of msgContent
-      if paraCount > 3 then set paraCount to 3
-      repeat with p from 1 to paraCount
-        set bodyText to bodyText & paragraph p of msgContent & " "
-      end repeat
-      set output to output & "SUBJECT:" & subj & "|BODY:" & bodyText & linefeed
-    end if
-  end repeat
-  return output
-end tell`;
-    const result = execSync(`osascript -e '${script.replace(/'/g, "'\\''")}'`, { encoding: 'utf-8', timeout: 15000 }).trim();
-    if (result) {
-      log(`Email check found: ${result.slice(0, 200)}`);
-      return result;
-    }
-    return null;
-  } catch (e) {
-    if (!e.message.includes('timeout')) log(`Email check error: ${e.message}`);
-    return null;
-  }
+  // Email read via osascript/Apple Mail removed — was broken (AppleEvent -1712).
+  // To re-enable: set up Gmail API OAuth2 or IMAP with nodemailer companion.
+  return null;
 }
 
 // ─── Claude API ──────────────────────────────────────────────────────────────
