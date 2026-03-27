@@ -15,7 +15,7 @@ Research sprint complete. All tasks delivered and committed.
 ### Earlier Sprints
 - DraftKings/FanDuel affiliate programs (full payout details, sign-up process)
 - Reddit strategy for AiNFL GM (5 subreddits, tone, timing, content ideas)
-- Jules personal assistant MVP (iMessage delivery, 4 core functions, 2-4hr build)
+- Pilot/freeagent9 personal assistant MVP (iMessage delivery, 4 core functions, 2-4hr build)
 - Cloud architecture (Scenario A vs B, recommended hybrid, $5-6/mo VPS)
 - Email sending setup (Gmail Send-As recommended, needs DNS first)
 - AI Underwriter POC (all 5 guideline PDFs free, RAG architecture, 2-3 day build)

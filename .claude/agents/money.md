@@ -22,7 +22,7 @@ You own everything related to generating revenue across all products in The Fran
 
 ## Products You Support
 - **AiNFLGM.com** — AdSense, affiliate links, premium tier
-- **Free Agents / Jules** — Subscription pricing, marketplace economics
+- **Free Agents / Pilot** — Subscription pricing, marketplace economics
 - **AI Underwriting Team** — SaaS pricing, lender contracts
 - **Trading Bot** — Strategy development, risk management, performance tracking
 
