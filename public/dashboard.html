@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>9enterprises — Command Center</title>
+<!-- PWA -->
+<link rel="manifest" href="/dashboard-manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="9 Dashboard">
+<meta name="theme-color" content="#0f0f1f">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -498,6 +505,29 @@ a{color:var(--blue);text-decoration:none;}
   .portfolio-sections{grid-template-columns:1fr;}
   .brainstorm-grid{grid-template-columns:1fr;}
 }
+
+/* ========== OFFLINE BANNER ========== */
+#offlineBanner{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:rgba(20,8,0,0.95);border-top:1px solid rgba(255,45,85,0.4);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  padding:10px 20px;
+  display:none;align-items:center;justify-content:space-between;gap:12px;
+  font-family:var(--font-mono);font-size:12px;color:var(--red);
+}
+#offlineBanner .banner-msg{display:flex;align-items:center;gap:8px;}
+#offlineBanner .banner-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--red);
+  animation:pulse-red 1.5s ease-in-out infinite;flex-shrink:0;
+}
+#reconnectBtn{
+  padding:6px 16px;background:rgba(255,45,85,0.15);border:1px solid rgba(255,45,85,0.4);
+  border-radius:6px;color:var(--red);font-family:var(--font-mono);font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  transition:background 0.2s,border-color 0.2s;white-space:nowrap;
+}
+#reconnectBtn:hover{background:rgba(255,45,85,0.28);border-color:rgba(255,45,85,0.7);}
+#reconnectBtn:disabled{opacity:0.5;cursor:not-allowed;}
 </style>
 </head>
 <body>
@@ -519,6 +549,15 @@ a{color:var(--blue);text-decoration:none;}
     </div>
   </div>
 </header>
+
+<!-- ========== OFFLINE BANNER ========== -->
+<div id="offlineBanner">
+  <div class="banner-msg">
+    <span class="banner-dot"></span>
+    <span id="offlineBannerMsg">Dashboard offline — retrying...</span>
+  </div>
+  <button id="reconnectBtn" onclick="manualReconnect()">RECONNECT</button>
+</div>
 
 <!-- ========== TICKER ========== -->
 <div class="ticker-wrap">
@@ -1717,6 +1756,8 @@ a{color:var(--blue);text-decoration:none;}
 
   const DASHBOARD_API = 'https://9-cloud-standin.789k6rym8v.workers.dev/api/dashboard';
   let lastDashboardData = null;
+  let consecutiveFailures = 0;
+  let refreshTimer = null;
 
   function setStatusDot(dotEl, status) {
     if (!dotEl) return;
@@ -1749,12 +1790,48 @@ a{color:var(--blue);text-decoration:none;}
     return Math.floor(diff / 86400) + 'd ago';
   }
 
+  // Show/hide the offline banner
+  function showOfflineBanner(msg) {
+    const banner = document.getElementById('offlineBanner');
+    const bannerMsg = document.getElementById('offlineBannerMsg');
+    if (!banner) return;
+    if (bannerMsg && msg) bannerMsg.textContent = msg;
+    banner.style.display = 'flex';
+  }
+
+  function hideOfflineBanner() {
+    const banner = document.getElementById('offlineBanner');
+    if (banner) banner.style.display = 'none';
+  }
+
+  // Manual reconnect button handler — exposed to window for onclick
+  window.manualReconnect = function() {
+    const btn = document.getElementById('reconnectBtn');
+    if (btn) { btn.disabled = true; btn.textContent = 'TRYING...'; }
+    consecutiveFailures = 0;
+    refreshDashboard().finally(() => {
+      if (btn) { btn.disabled = false; btn.textContent = 'RECONNECT'; }
+    });
+  };
+
+  // Schedule the next refresh (backoff on repeated failures)
+  function scheduleNextRefresh() {
+    if (refreshTimer) clearTimeout(refreshTimer);
+    // Normal: 30s. After 3 failures: 60s. After 5: 90s. Cap at 90s.
+    const delay = consecutiveFailures < 3 ? 30000
+      : consecutiveFailures < 5 ? 60000
+      : 90000;
+    refreshTimer = setTimeout(refreshDashboard, delay);
+  }
+
   async function refreshDashboard() {
     try {
       const res = await fetch(DASHBOARD_API, { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       lastDashboardData = data;
+      consecutiveFailures = 0;
+      hideOfflineBanner();
 
       // --- Top bar system status ---
       const dot = document.getElementById('systemStatusDot');
@@ -1785,12 +1862,10 @@ a{color:var(--blue);text-decoration:none;}
       setTk('tk-cloud-sync2', syncLabel);
       setTk('tk-mode', data.mode.toUpperCase());
       setTk('tk-mode2', data.mode.toUpperCase());
-      // Uptime from state
       if (data.uptime) {
         setTk('tk-uptime', data.uptime);
         setTk('tk-uptime2', data.uptime);
       }
-      // MRR & API spend — show note if no live data
       if (data.mrr && !data.mrr.note) {
         setTk('tk-mrr', data.mrr);
         setTk('tk-mrr2', data.mrr);
@@ -1841,13 +1916,68 @@ a{color:var(--blue);text-decoration:none;}
       }
 
     } catch (e) {
-      // Show offline state
+      consecutiveFailures++;
+
+      // Top-bar: show offline only while truly unreachable
       const dot = document.getElementById('systemStatusDot');
       const txt = document.getElementById('systemStatusText');
       if (dot) { dot.style.background = 'var(--red)'; dot.style.animation = 'pulse-red 2s infinite'; }
       if (txt) { txt.textContent = 'OFFLINE'; txt.style.color = 'var(--red)'; }
-      console.warn('Dashboard fetch failed:', e.message);
+
+      // Bottom banner with context-sensitive message
+      const isDeviceOffline = !navigator.onLine;
+      const msg = isDeviceOffline
+        ? 'No internet connection — will reconnect automatically'
+        : 'Dashboard API unreachable — retrying in ' + (consecutiveFailures < 3 ? '30' : consecutiveFailures < 5 ? '60' : '90') + 's';
+      showOfflineBanner(msg);
+
+      console.warn('Dashboard fetch failed (' + consecutiveFailures + 'x):', e.message);
     }
+
+    scheduleNextRefresh();
+  }
+
+  // ============ ONLINE / OFFLINE EVENTS ============
+
+  // When the browser regains connectivity, attempt an immediate refresh
+  window.addEventListener('online', () => {
+    const bannerMsg = document.getElementById('offlineBannerMsg');
+    if (bannerMsg) bannerMsg.textContent = 'Connection restored — reconnecting...';
+    consecutiveFailures = 0;
+    if (refreshTimer) clearTimeout(refreshTimer);
+    refreshDashboard();
+  });
+
+  // When the browser loses connectivity, immediately show the banner
+  window.addEventListener('offline', () => {
+    const dot = document.getElementById('systemStatusDot');
+    const txt = document.getElementById('systemStatusText');
+    if (dot) { dot.style.background = 'var(--red)'; dot.style.animation = 'pulse-red 2s infinite'; }
+    if (txt) { txt.textContent = 'OFFLINE'; txt.style.color = 'var(--red)'; }
+    showOfflineBanner('No internet connection — will reconnect automatically');
+  });
+
+  // ============ PWA: SERVICE WORKER REGISTRATION ============
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/dashboard-sw.js', { scope: '/' })
+        .then(reg => {
+          console.log('Dashboard SW registered, scope:', reg.scope);
+          // If a new version of the SW is waiting, activate it immediately
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  newWorker.postMessage({ type: 'SKIP_WAITING' });
+                }
+              });
+            }
+          });
+        })
+        .catch(err => console.warn('Dashboard SW registration failed:', err));
+    });
   }
 
   // ============ INIT ============
@@ -1867,9 +1997,13 @@ a{color:var(--blue);text-decoration:none;}
     renderBrainstorm();
     initTerminal();
 
-    // Live data: fetch on load, then every 30 seconds
+    // If already offline at load time, show the banner immediately
+    if (!navigator.onLine) {
+      showOfflineBanner('No internet connection — will reconnect automatically');
+    }
+
+    // Live data: fetch on load (scheduleNextRefresh called at end of each fetch)
     refreshDashboard();
-    setInterval(refreshDashboard, 30000);
   }
 
   if(document.readyState === 'loading'){

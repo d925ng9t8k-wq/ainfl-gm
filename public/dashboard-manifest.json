@@ -1,0 +1,20 @@
+{
+  "name": "9 Enterprises — Command Center",
+  "short_name": "9 Dashboard",
+  "description": "Owner dashboard for 9 Enterprises — live agent status, comms health, project board",
+  "theme_color": "#0f0f1f",
+  "background_color": "#0f0f1f",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/dashboard.html",
+  "scope": "/",
+  "id": "/dashboard.html",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
