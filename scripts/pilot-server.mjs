@@ -32,9 +32,19 @@ const PROFILE_PATH    = new URL('../data/jules-profile-kylec.json', import.meta.
 const CLAUDE_HAIKU  = "claude-haiku-4-5-20251001";
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 
+const VERSION = "1.1.0";
+const MAX_BODY_SIZE = 64 * 1024; // 64KB max request body
+const CINCINNATI_LAT = 39.1031;
+const CINCINNATI_LON = -84.5120;
+
 // ─── Performance: reusable HTTPS agents ──────────────────────────────────────
 const anthropicAgent = new https.Agent({ keepAlive: true, maxSockets: 5 });
 const twilioAgent    = new https.Agent({ keepAlive: true, maxSockets: 3 });
+
+// ─── Track server start time and request count ──────────────────────────────
+const startedAt = new Date().toISOString();
+let requestCount = 0;
+let messageCount = 0;
 
 // ─── Profile helpers ─────────────────────────────────────────────────────────
 function loadProfile() {
@@ -156,6 +166,7 @@ ACTIVE CAPABILITIES:
 - Morning briefing at 7:00 AM ET — rates, closings, one priority action
 - Guideline lookups: FHA/Conventional/VA/USDA DTI, credit scores, fees, limits
 - Client follow-up reminders ("remind me to call the Garcias at 3pm")
+- Note-taking ("note: Garcia appraisal came in at 340k")
 - Script help — talk through a conversation with a borrower, referral partner, or agent
 - Social media ghostwriting — punchy posts about rates, market updates, tips
 - General mortgage Q&A
@@ -239,14 +250,33 @@ function handleGuidelineIntent(intent, profile) {
 // ─── Rate update intent detection ─────────────────────────────────────────────
 function detectRateUpdate(text) {
   const m = text.match(/rates?\s+update[:\s]+(\d+\.?\d*)\s*%?/i);
-  if (m) return parseFloat(m[1]);
+  if (m) {
+    const rate = parseFloat(m[1]);
+    // Validate rate is in a reasonable mortgage rate range (1% - 15%)
+    if (rate >= 1.0 && rate <= 15.0) return rate;
+    return null;
+  }
   return null;
 }
 
 // ─── Reminder intent detection ─────────────────────────────────────────────────
 function detectReminderIntent(text) {
-  const m = text.match(/remind\s+me\s+(?:at\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s+)?(?:to\s+)?(.+)/i);
-  if (m) return { time: m[1] || null, task: m[2].trim() };
+  // Pattern 1: "remind me at TIME to TASK"
+  const m1 = text.match(/remind\s+me\s+(?:at\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s+)?(?:to\s+)?(.+)/i);
+  if (m1) return { time: m1[1] || null, task: m1[2].trim() };
+
+  // Pattern 2: "remind me to TASK at TIME" (time at end)
+  const m2 = text.match(/remind\s+me\s+to\s+(.+?)\s+at\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s*$/i);
+  if (m2) return { time: m2[2], task: m2[1].trim() };
+
+  return null;
+}
+
+// ─── Note-taking intent detection ────────────────────────────────────────────
+function detectNoteIntent(text) {
+  // "note: ..." or "save note: ..." or "jot down ..."
+  const m = text.match(/^(?:note|save\s+note|jot\s+down|remember(?:\s+that)?)[:\s]+(.+)/i);
+  if (m) return m[1].trim();
   return null;
 }
 
@@ -272,6 +302,9 @@ function scheduleReminder(task, timeStr, profile) {
     return false;
   }
 
+  // Validate hours/minutes
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return false;
+
   const target = new Date(now);
   target.setHours(hours, minutes, 0, 0);
   if (target <= now) target.setDate(target.getDate() + 1);
@@ -283,7 +316,7 @@ function scheduleReminder(task, timeStr, profile) {
 
   setTimeout(async () => {
     log(`Firing reminder: ${task}`);
-    await sendSms(`Hey — just a reminder: ${task}`);
+    await sendSms(`Hey — just a reminder: ${task}`).catch(e => log(`Reminder SMS failed: ${e.message}`));
     try {
       const p = loadProfile();
       p.reminders = p.reminders.filter(r => r.scheduledFor !== reminder.scheduledFor);
@@ -296,6 +329,9 @@ function scheduleReminder(task, timeStr, profile) {
 
 // ─── Claude API call ─────────────────────────────────────────────────────────
 async function askClaude(systemPrompt, userMessage, model = CLAUDE_HAIKU) {
+  if (!ANTHROPIC_KEY) {
+    throw new Error('ANTHROPIC_API_KEY not configured');
+  }
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       model,
@@ -316,6 +352,7 @@ async function askClaude(systemPrompt, userMessage, model = CLAUDE_HAIKU) {
           'anthropic-version': '2023-06-01',
           'Content-Length': Buffer.byteLength(body),
         },
+        timeout: 30000,
       },
       (res) => {
         let data = '';
@@ -323,8 +360,12 @@ async function askClaude(systemPrompt, userMessage, model = CLAUDE_HAIKU) {
         res.on('end', () => {
           try {
             const json = JSON.parse(data);
+            if (json.error) {
+              reject(new Error(`Claude API error: ${json.error.message || JSON.stringify(json.error)}`));
+              return;
+            }
             const text = json.content?.[0]?.text || '';
-            if (!text) reject(new Error(`Claude returned no text: ${data}`));
+            if (!text) reject(new Error(`Claude returned no text: ${data.slice(0, 200)}`));
             else resolve(text.trim());
           } catch (e) {
             reject(new Error(`Claude parse error: ${e.message}`));
@@ -332,6 +373,10 @@ async function askClaude(systemPrompt, userMessage, model = CLAUDE_HAIKU) {
         });
       }
     );
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Claude API request timed out (30s)'));
+    });
     req.on('error', reject);
     req.write(body);
     req.end();
@@ -359,6 +404,7 @@ async function sendSms(message, to = RECIPIENT_PHONE) {
           'Authorization': `Basic ${auth}`,
           'Content-Length': Buffer.byteLength(body),
         },
+        timeout: 15000,
       },
       (res) => {
         let data = '';
@@ -379,8 +425,52 @@ async function sendSms(message, to = RECIPIENT_PHONE) {
         });
       }
     );
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Twilio request timed out (15s)'));
+    });
     req.on('error', reject);
     req.write(body);
+    req.end();
+  });
+}
+
+// ─── Fetch weather for Cincinnati ────────────────────────────────────────────
+async function fetchWeather() {
+  if (!OPENWEATHER_KEY) return null;
+  return new Promise((resolve) => {
+    const req = https.request(
+      {
+        hostname: 'api.openweathermap.org',
+        path: `/data/2.5/weather?lat=${CINCINNATI_LAT}&lon=${CINCINNATI_LON}&appid=${OPENWEATHER_KEY}&units=imperial`,
+        method: 'GET',
+        timeout: 10000,
+      },
+      (res) => {
+        let data = '';
+        res.on('data', chunk => (data += chunk));
+        res.on('end', () => {
+          try {
+            const json = JSON.parse(data);
+            if (json.main) {
+              resolve({
+                temp: Math.round(json.main.temp),
+                feels_like: Math.round(json.main.feels_like),
+                description: json.weather?.[0]?.description || 'unknown',
+                high: Math.round(json.main.temp_max),
+                low: Math.round(json.main.temp_min),
+              });
+            } else {
+              resolve(null);
+            }
+          } catch {
+            resolve(null);
+          }
+        });
+      }
+    );
+    req.on('timeout', () => { req.destroy(); resolve(null); });
+    req.on('error', () => resolve(null));
     req.end();
   });
 }
@@ -403,17 +493,27 @@ async function sendMorningBriefing() {
     ? `Notes: ${profile.notes.join(' | ')}`
     : '';
 
+  // Fetch weather if available
+  let weatherStr = '';
+  const weather = await fetchWeather();
+  if (weather) {
+    weatherStr = `Weather in Cincinnati: ${weather.temp}F (${weather.description}), high ${weather.high}F / low ${weather.low}F.`;
+  }
+
   const prompt = `Generate a brief, punchy morning briefing text for Kyle — Producing Branch Manager at Rapid Mortgage.
 
 Rate context: ${lastRate}
 Reminders: ${reminders}
 ${notes ? `Notes: ${notes}` : ''}
+${weatherStr ? `Weather: ${weatherStr}` : ''}
+Today's date: ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' })}
 
 Format rules:
 - 5 lines max. No bullet points. No header. No "Good morning Kyle!" opener — just get into it.
 - Talk like a buddy who works in finance and did the homework before Kyle was awake.
 - End with one clear action item or priority, framed as a nudge not a command.
 - If no rate is on file, mention that he can send today's rate via text and Jules will log it.
+- If weather is provided, mention it in one short phrase (not a full sentence) — Kyle might be driving between showings.
 - Casual and direct. No corporate tone.
 
 Example style:
@@ -447,9 +547,13 @@ function scheduleMorningBriefing(profile) {
     const nextDate = new Date(Date.now() + delay);
     log(`Morning briefing scheduled for ${nextDate.toLocaleString('en-US', { timeZone: 'America/New_York' })} ET`);
     setTimeout(async () => {
-      const p = loadProfile();
-      if (p?.preferences?.morning_briefing_enabled !== false) {
-        await sendMorningBriefing();
+      try {
+        const p = loadProfile();
+        if (p?.preferences?.morning_briefing_enabled !== false) {
+          await sendMorningBriefing();
+        }
+      } catch (e) {
+        log(`Morning briefing scheduler error: ${e.message}`);
       }
       arm();
     }, delay);
@@ -470,7 +574,7 @@ function restoreReminders(profile) {
       const delayMs = fireAt - now;
       setTimeout(async () => {
         log(`Firing restored reminder: ${reminder.task}`);
-        await sendSms(`Hey — just a reminder: ${reminder.task}`);
+        await sendSms(`Hey — just a reminder: ${reminder.task}`).catch(e => log(`Reminder SMS failed: ${e.message}`));
         try {
           const p = loadProfile();
           p.reminders = p.reminders.filter(r => r.scheduledFor !== reminder.scheduledFor);
@@ -503,6 +607,7 @@ function updateMemory(profile, role, content) {
 // ─── Main message handler ─────────────────────────────────────────────────────
 async function handleIncomingMessage(body, from) {
   log(`Incoming from ${from}: ${body}`);
+  messageCount++;
   const profile = loadProfile();
   if (!profile) return 'Jules is having a moment — try again in a sec.';
 
@@ -512,6 +617,7 @@ async function handleIncomingMessage(body, from) {
     const prev = profile.mortgage_context?.last_known_rate;
     if (!profile.mortgage_context) profile.mortgage_context = {};
     profile.mortgage_context.last_known_rate = newRate;
+    profile.mortgage_context.last_rate_update = new Date().toISOString();
     saveProfile(profile);
     const delta = prev ? ` (was ${prev}%)` : '';
     const response = `Got it — logging 30yr conventional at ${newRate}%${delta}.`;
@@ -520,7 +626,23 @@ async function handleIncomingMessage(body, from) {
     return response;
   }
 
-  // 2. Guideline shortcut (no Claude burn needed)
+  // 2. Note-taking shortcut
+  const noteContent = detectNoteIntent(body);
+  if (noteContent) {
+    profile.notes = profile.notes || [];
+    profile.notes.push(noteContent);
+    // Keep notes manageable — max 50
+    if (profile.notes.length > 50) {
+      profile.notes = profile.notes.slice(-50);
+    }
+    saveProfile(profile);
+    const response = `Noted: "${noteContent}"`;
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    return response;
+  }
+
+  // 3. Guideline shortcut (no Claude burn needed)
   const guidelineIntent = detectGuidelineIntent(body);
   if (guidelineIntent) {
     const answer = handleGuidelineIntent(guidelineIntent, profile);
@@ -531,7 +653,7 @@ async function handleIncomingMessage(body, from) {
     }
   }
 
-  // 3. Reminder shortcut
+  // 4. Reminder shortcut
   const reminderIntent = detectReminderIntent(body);
   if (reminderIntent && reminderIntent.time) {
     const target = scheduleReminder(reminderIntent.task, reminderIntent.time, profile);
@@ -546,7 +668,28 @@ async function handleIncomingMessage(body, from) {
     }
   }
 
-  // 4. Route to Claude
+  // 5. Clear notes shortcut
+  if (/^clear\s+notes?\s*$/i.test(body.trim())) {
+    profile.notes = [];
+    saveProfile(profile);
+    const response = 'Notes cleared.';
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    return response;
+  }
+
+  // 6. List reminders shortcut
+  if (/^(?:list\s+)?reminders?\s*$/i.test(body.trim()) || /^what(?:'s| are)\s+(?:my\s+)?reminders/i.test(body.trim())) {
+    const rems = profile.reminders || [];
+    const response = rems.length
+      ? `You have ${rems.length} reminder${rems.length > 1 ? 's' : ''}: ${rems.map(r => `"${r.task}" at ${r.time}`).join(', ')}.`
+      : 'No reminders set right now.';
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    return response;
+  }
+
+  // 7. Route to Claude
   updateMemory(profile, 'user', body);
   const freshProfile = loadProfile();
   const systemPrompt = buildSystemPrompt(freshProfile);
@@ -561,21 +704,49 @@ async function handleIncomingMessage(body, from) {
   }
 }
 
+// ─── Read request body with size limit ──────────────────────────────────────
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    let size = 0;
+    req.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_BODY_SIZE) {
+        req.destroy();
+        reject(new Error('Request body too large'));
+        return;
+      }
+      data += chunk;
+    });
+    req.on('end', () => resolve(data));
+    req.on('error', reject);
+  });
+}
+
+// ─── JSON response helper ───────────────────────────────────────────────────
+function jsonResponse(res, statusCode, data) {
+  res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(data));
+}
+
 // ─── HTTP server ──────────────────────────────────────────────────────────────
 const server = http.createServer(async (req, res) => {
+  requestCount++;
   const url = new URL(req.url, `http://localhost:${PORT}`);
 
   // ── GET /health ──
   if (req.method === 'GET' && url.pathname === '/health') {
     const profile = loadProfile();
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
+    jsonResponse(res, 200, {
       status: 'ok',
       service: 'pilot-server',
       instance: 'kylec',
-      version: '1.0.0',
+      version: VERSION,
       port: PORT,
       uptime: process.uptime(),
+      startedAt,
+      requestCount,
+      messageCount,
       configured: {
         twilio: !!(TWILIO_SID && TWILIO_AUTH && TWILIO_FROM),
         recipient: !!RECIPIENT_PHONE,
@@ -584,57 +755,133 @@ const server = http.createServer(async (req, res) => {
       },
       profile_loaded: !!profile,
       pending_reminders: profile?.reminders?.length ?? 0,
+      notes_count: profile?.notes?.length ?? 0,
       morning_briefing_enabled: profile?.preferences?.morning_briefing_enabled ?? true,
       morning_briefing_time: profile?.preferences?.morning_briefing_time ?? '07:00',
       last_known_rate: profile?.mortgage_context?.last_known_rate ?? null,
-    }));
+      last_rate_update: profile?.mortgage_context?.last_rate_update ?? null,
+      memory_entries: profile?.conversation_memory?.length ?? 0,
+    });
     return;
   }
 
   // ── POST /sms (Twilio webhook) ──
   if (req.method === 'POST' && url.pathname === '/sms') {
-    let rawBody = '';
-    req.on('data', chunk => (rawBody += chunk));
-    req.on('end', async () => {
-      try {
-        const params     = parseFormBody(rawBody);
-        const inboundBody = params.Body || '';
-        const from        = params.From || 'unknown';
+    try {
+      const rawBody = await readBody(req);
+      const params     = parseFormBody(rawBody);
+      const inboundBody = params.Body || '';
+      const from        = params.From || 'unknown';
 
-        if (!inboundBody.trim()) {
-          res.writeHead(200, { 'Content-Type': 'text/xml' });
-          res.end('<Response></Response>');
-          return;
-        }
-
-        const reply = await handleIncomingMessage(inboundBody, from);
-
-        const escaped = reply
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+      if (!inboundBody.trim()) {
         res.writeHead(200, { 'Content-Type': 'text/xml' });
-        res.end(`<Response><Message>${escaped}</Message></Response>`);
-      } catch (e) {
-        log(`SMS handler error: ${e.message}`);
-        res.writeHead(200, { 'Content-Type': 'text/xml' });
-        res.end('<Response><Message>Something went sideways. Try again in a sec.</Message></Response>');
+        res.end('<Response></Response>');
+        return;
       }
-    });
+
+      const reply = await handleIncomingMessage(inboundBody, from);
+
+      const escaped = reply
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end(`<Response><Message>${escaped}</Message></Response>`);
+    } catch (e) {
+      log(`SMS handler error: ${e.message}`);
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end('<Response><Message>Something went sideways. Try again in a sec.</Message></Response>');
+    }
+    return;
+  }
+
+  // ── POST /message (test endpoint — no Twilio needed) ──
+  if (req.method === 'POST' && url.pathname === '/message') {
+    try {
+      const rawBody = await readBody(req);
+      const json = JSON.parse(rawBody);
+      const text = json.message || json.body || json.text || '';
+      const from = json.from || 'test';
+
+      if (!text.trim()) {
+        jsonResponse(res, 400, { error: 'Missing message field' });
+        return;
+      }
+
+      const reply = await handleIncomingMessage(text, from);
+      jsonResponse(res, 200, { reply, from, ts: new Date().toISOString() });
+    } catch (e) {
+      log(`Message handler error: ${e.message}`);
+      jsonResponse(res, 500, { error: e.message });
+    }
     return;
   }
 
   // ── POST /briefing (manual trigger) ──
   if (req.method === 'POST' && url.pathname === '/briefing') {
-    res.writeHead(202, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ queued: true }));
+    jsonResponse(res, 202, { queued: true });
     sendMorningBriefing().catch(e => log(`Manual briefing error: ${e.message}`));
     return;
   }
 
+  // ── GET /notes ──
+  if (req.method === 'GET' && url.pathname === '/notes') {
+    const profile = loadProfile();
+    jsonResponse(res, 200, {
+      notes: profile?.notes || [],
+      count: profile?.notes?.length || 0,
+    });
+    return;
+  }
+
+  // ── GET /reminders ──
+  if (req.method === 'GET' && url.pathname === '/reminders') {
+    const profile = loadProfile();
+    jsonResponse(res, 200, {
+      reminders: profile?.reminders || [],
+      count: profile?.reminders?.length || 0,
+    });
+    return;
+  }
+
+  // ── GET /weather ──
+  if (req.method === 'GET' && url.pathname === '/weather') {
+    const weather = await fetchWeather();
+    if (weather) {
+      jsonResponse(res, 200, { location: 'Cincinnati, OH', ...weather });
+    } else {
+      jsonResponse(res, 503, { error: 'Weather unavailable — OPENWEATHER_API_KEY not set or API error' });
+    }
+    return;
+  }
+
   // ── 404 ──
-  res.writeHead(404, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ error: 'Not found' }));
+  jsonResponse(res, 404, { error: 'Not found' });
+});
+
+// ─── Graceful shutdown ───────────────────────────────────────────────────────
+function shutdown(signal) {
+  log(`Received ${signal} — shutting down gracefully...`);
+  server.close(() => {
+    log('HTTP server closed.');
+    anthropicAgent.destroy();
+    twilioAgent.destroy();
+    log('Pilot server stopped.');
+    process.exit(0);
+  });
+  // Force exit after 5 seconds if graceful close hangs
+  setTimeout(() => {
+    log('WARN: Forced shutdown after 5s timeout');
+    process.exit(1);
+  }, 5000);
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT',  () => shutdown('SIGINT'));
+
+// ─── Unhandled rejection catcher ────────────────────────────────────────────
+process.on('unhandledRejection', (reason) => {
+  log(`WARN: Unhandled rejection: ${reason?.message || reason}`);
 });
 
 // ─── Boot ────────────────────────────────────────────────────────────────────
@@ -648,13 +895,19 @@ restoreReminders(profile);
 scheduleMorningBriefing(profile);
 
 server.listen(PORT, () => {
-  log(`Pilot server (Kyle Cabezas) running on port ${PORT}`);
+  log(`Pilot server v${VERSION} (Kyle Cabezas) running on port ${PORT}`);
   log(`Twilio configured: ${!!(TWILIO_SID && TWILIO_AUTH && TWILIO_FROM)}`);
   log(`Claude configured: ${!!ANTHROPIC_KEY}`);
+  log(`Weather configured: ${!!OPENWEATHER_KEY}`);
   log(`Recipient: ${RECIPIENT_PHONE || 'NOT SET — add JULES_KYLEC_RECIPIENT_PHONE to .env'}`);
+  log(`Endpoints: GET /health, POST /sms, POST /message, POST /briefing, GET /notes, GET /reminders, GET /weather`);
 });
 
 server.on('error', (e) => {
-  console.error(`[pilot] Server error: ${e.message}`);
+  if (e.code === 'EADDRINUSE') {
+    console.error(`[pilot] Port ${PORT} already in use. Is another instance running?`);
+  } else {
+    console.error(`[pilot] Server error: ${e.message}`);
+  }
   process.exit(1);
 });

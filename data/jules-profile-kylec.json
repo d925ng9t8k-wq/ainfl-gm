@@ -24,7 +24,11 @@
   },
   "team": {
     "loan_partner": "Hailey Edwards",
-    "branch_loan_officers": ["Jebb Lyons", "Justin Phillips", "Adam Brewer"],
+    "branch_loan_officers": [
+      "Jebb Lyons",
+      "Justin Phillips",
+      "Adam Brewer"
+    ],
     "processing_manager": "Tracy Sturgill"
   },
   "preferences": {
@@ -37,11 +41,27 @@
     "use_first_name_only": true
   },
   "mortgage_context": {
-    "loan_products": ["Conventional", "FHA", "VA", "USDA Rural Development"],
+    "loan_products": [
+      "Conventional",
+      "FHA",
+      "VA",
+      "USDA Rural Development"
+    ],
     "los_platform": "Encompass (assumed — industry standard for Rapid Mortgage size)",
     "crm": "unknown — check with Kyle",
-    "markets_served": ["Ohio", "Michigan", "Indiana", "Kentucky", "and 9 additional states per Rapid licensing"],
-    "review_platforms": ["Google", "Zillow", "Experience.com", "Birdeye"],
+    "markets_served": [
+      "Ohio",
+      "Michigan",
+      "Indiana",
+      "Kentucky",
+      "and 9 additional states per Rapid licensing"
+    ],
+    "review_platforms": [
+      "Google",
+      "Zillow",
+      "Experience.com",
+      "Birdeye"
+    ],
     "review_count": 22,
     "review_rating": "5.0 stars — perfect record",
     "specialty": "First-time buyers, FHA, closing under pressure (known for 17-day FHA close)"
