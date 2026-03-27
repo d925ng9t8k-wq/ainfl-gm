@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "runAt": "2026-03-27T04:51:33.271Z",
+    "runAt": "2026-03-27T13:03:32.372Z",
     "days": 90,
     "coins": [
       "BTC/USD",
@@ -1044,7 +1044,7 @@
           "sharpe": 40.99
         }
       },
-      "profitable": 62
+      "profitable": 58
     }
   },
   "bestOverall": {
