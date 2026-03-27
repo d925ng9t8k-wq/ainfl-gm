@@ -1,23 +1,14 @@
 {
   "metadata": {
-<<<<<<< Updated upstream
-    "coin": "bitcoin",
-    "symbol": "BTC/USD",
-=======
     "coin": "ethereum",
     "symbol": "ETH/USD",
->>>>>>> Stashed changes
     "days": 30,
     "candles": 180,
     "dataRange": {
       "from": "2026-02-25T16:00:00.000Z",
       "to": "2026-03-27T12:00:00.000Z"
     },
-<<<<<<< Updated upstream
-    "runAt": "2026-03-27T13:03:49.260Z",
-=======
     "runAt": "2026-03-27T13:04:10.244Z",
->>>>>>> Stashed changes
     "notes": [
       "CoinGecko OHLC does not include volume data; volume filter is bypassed in EMA strategy.",
       "Candle granularity: 4-hour for 30-90 day lookback.",
@@ -28,23 +19,6 @@
     "ema": {
       "metrics": {
         "strategy": "EMA 9/21 Crossover",
-<<<<<<< Updated upstream
-        "symbol": "BTC/USD",
-        "period": "30 days",
-        "startCapital": 200,
-        "finalCapital": 199.49,
-        "totalReturn": -0.26,
-        "totalPnL": -0.51,
-        "totalTrades": 1,
-        "completedExits": 1,
-        "wins": 0,
-        "losses": 1,
-        "winRate": 0,
-        "avgWin": 0,
-        "avgLoss": -0.51,
-        "maxDrawdown": 0.26,
-        "sharpeRatio": 0
-=======
         "symbol": "ETH/USD",
         "period": "30 days",
         "startCapital": 200,
@@ -60,20 +34,12 @@
         "avgLoss": -0.59,
         "maxDrawdown": 0.29,
         "sharpeRatio": 20.12
->>>>>>> Stashed changes
       },
       "trades": [
         {
           "strategy": "EMA",
           "side": "buy",
           "reason": "ema_crossover",
-<<<<<<< Updated upstream
-          "entryPrice": 70506,
-          "notional": 30,
-          "stopLoss": 69448.41,
-          "takeProfit": 72268.65,
-          "date": "2026-03-24T04:00:00.000Z"
-=======
           "entryPrice": 2055.44,
           "notional": 30,
           "stopLoss": 2024.6084,
@@ -99,18 +65,10 @@
           "stopLoss": 1997.2943500000001,
           "takeProfit": 2078.4027499999997,
           "date": "2026-03-10T04:00:00.000Z"
->>>>>>> Stashed changes
         },
         {
           "strategy": "EMA",
           "side": "sell",
-<<<<<<< Updated upstream
-          "reason": "stop_loss",
-          "entryPrice": 70506,
-          "exitPrice": 69297,
-          "notional": 30,
-          "pnl": -0.5144243043145263,
-=======
           "reason": "rsi_overbought",
           "entryPrice": 2027.71,
           "exitPrice": 2064.38,
@@ -136,7 +94,6 @@
           "exitPrice": 2114.75,
           "notional": 30.26463954528954,
           "pnl": -0.5906041609304543,
->>>>>>> Stashed changes
           "date": "2026-03-24T20:00:00.000Z"
         }
       ]
@@ -144,23 +101,6 @@
     "bollinger": {
       "metrics": {
         "strategy": "Bollinger Band Mean Reversion",
-<<<<<<< Updated upstream
-        "symbol": "BTC/USD",
-        "period": "30 days",
-        "startCapital": 200,
-        "finalCapital": 200.31,
-        "totalReturn": 0.16,
-        "totalPnL": 0.31,
-        "totalTrades": 1,
-        "completedExits": 2,
-        "wins": 1,
-        "losses": 1,
-        "winRate": 50,
-        "avgWin": 0.66,
-        "avgLoss": -0.35,
-        "maxDrawdown": 0.17,
-        "sharpeRatio": 10.23
-=======
         "symbol": "ETH/USD",
         "period": "30 days",
         "startCapital": 200,
@@ -176,50 +116,25 @@
         "avgLoss": -1.54,
         "maxDrawdown": 0.77,
         "sharpeRatio": 0
->>>>>>> Stashed changes
       },
       "trades": [
         {
           "strategy": "BB",
           "side": "buy",
           "reason": "lower_band_oversold",
-<<<<<<< Updated upstream
-          "entryPrice": 67849,
-          "notional": 40,
-          "stopLoss": 66492.02,
-          "date": "2026-03-23T00:00:00.000Z"
-        },
-        {
-          "strategy": "BB",
-          "side": "sell_partial",
-          "reason": "middle_band",
-          "entryPrice": 67849,
-          "exitPrice": 70091,
-          "notional": 20,
-          "pnl": 0.660879305516662,
-          "date": "2026-03-23T12:00:00.000Z"
-=======
           "entryPrice": 2069.46,
           "notional": 40,
           "stopLoss": 2028.0708,
           "date": "2026-03-26T16:00:00.000Z"
->>>>>>> Stashed changes
         },
         {
           "strategy": "BB",
           "side": "sell",
           "reason": "stop_loss_band_breach",
-<<<<<<< Updated upstream
-          "entryPrice": 67849,
-          "exitPrice": 66666,
-          "notional": 20,
-          "pnl": -0.3487155300741352,
-=======
           "entryPrice": 2069.46,
           "exitPrice": 1990.01,
           "notional": 40,
           "pnl": -1.5356663090854628,
->>>>>>> Stashed changes
           "date": "2026-03-27T12:00:00.000Z"
         }
       ]
