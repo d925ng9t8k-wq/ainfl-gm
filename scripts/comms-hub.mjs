@@ -50,6 +50,8 @@ const IMSG_DB       = `${process.env.HOME}/Library/Messages/chat.db`;
 
 const JASSON_PHONE  = process.env.JASSON_PHONE || '+15134031829';
 const JAMIE_PHONE   = process.env.JAMIE_PHONE || ''; // Jamie Bryant — Jules routing. Set JAMIE_PHONE in .env.
+const KYLEC_PHONE   = process.env.JULES_KYLEC_RECIPIENT_PHONE || '+15132255681'; // Kyle Cabezas — pilot routing
+const PILOT_SERVER_URL = 'http://localhost:3472'; // pilot-server.mjs
 const JASSON_EMAIL  = 'emailfishback@gmail.com';
 const CAPTAIN_EMAIL = 'captain@ainflgm.com';
 
@@ -629,12 +631,23 @@ function initImsgRowId() {
 
 function checkNewIMessages() {
   try {
+    // Build handle filter dynamically based on configured phones
+    const handleFilters = ["h.id LIKE '%5134031829%'", "h.id LIKE '%jassonfishback%'"];
+    if (KYLEC_PHONE) {
+      const kylecDigits = KYLEC_PHONE.replace(/\D/g, '').slice(-10);
+      handleFilters.push(`h.id LIKE '%${kylecDigits}%'`);
+    }
+    if (JAMIE_PHONE) {
+      const jamieDigits = JAMIE_PHONE.replace(/\D/g, '').slice(-10);
+      handleFilters.push(`h.id LIKE '%${jamieDigits}%'`);
+    }
+
     const query = `SELECT m.ROWID, m.text, m.is_from_me, h.id as handle_id
       FROM message m
       LEFT JOIN handle h ON m.handle_id = h.ROWID
       WHERE m.ROWID > ${lastImsgRowId}
         AND m.is_from_me = 0
-        AND (h.id LIKE '%5134031829%' OR h.id LIKE '%jassonfishback%')
+        AND (${handleFilters.join(' OR ')})
       ORDER BY m.ROWID ASC;`;
     const result = execSync(`sqlite3 "${IMSG_DB}" "${query}"`, { encoding: 'utf-8' }).trim();
     if (!result) return [];
@@ -1221,6 +1234,44 @@ async function handleJulesMessage(msg) {
   log('Jules handler not yet implemented');
 }
 
+// ─── Pilot Relay — Routes Kyle C's "Pilot" iMessages to the pilot server ────
+function sendIMessageToKyle(message) {
+  try {
+    const escaped = message.replace(/"/g, '\\"').replace(/'/g, "'\\''");
+    execSync(`osascript -e 'tell application "Messages" to send "${escaped}" to buddy "${KYLEC_PHONE}" of service "iMessage"'`, { timeout: 10000 });
+    log(`Pilot relay: iMessage sent to Kyle: "${message.slice(0, 100)}"`);
+    return true;
+  } catch (e) {
+    log(`Pilot relay: iMessage send to Kyle failed — ${e.message}`);
+    return false;
+  }
+}
+
+async function relayToPilot(text, handle) {
+  try {
+    const res = await fetch(`${PILOT_SERVER_URL}/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+      signal: AbortSignal.timeout(15000),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      const reply = data.reply || data.response || data.message || '';
+      log(`Pilot relay: got response from pilot server (${reply.length} chars)`);
+
+      if (reply) {
+        sendIMessageToKyle(`[Pilot] ${reply}`);
+      }
+    } else {
+      log(`Pilot relay: pilot server returned ${res.status}`);
+    }
+  } catch (e) {
+    log(`Pilot relay error: ${e.message}`);
+  }
+}
+
 // ─── CHANNEL 2: iMessage Monitor ─────────────────────────────────────────────
 async function imessageMonitor() {
   const canRead = initImsgRowId();
@@ -1244,6 +1295,17 @@ async function imessageMonitor() {
           log(`Jules message received — routing to Jules handler`);
           await handleJulesMessage(msg);
           continue; // Jules handles this — don't process as a 9/OC message
+        }
+
+        // ── Pilot routing: if sender is Kyle C and message starts with "Pilot", relay to pilot server ──
+        if (KYLEC_PHONE && msg.handle && msg.handle.includes(KYLEC_PHONE.replace(/\D/g, '').slice(-10))) {
+          if (/^pilot/i.test(msg.text)) {
+            log(`Pilot message from Kyle: "${msg.text.slice(0, 100)}"`);
+            await relayToPilot(msg.text, msg.handle);
+          } else {
+            log(`Kyle C iMessage ignored (no "Pilot" prefix): "${msg.text.slice(0, 60)}"`);
+          }
+          continue; // Kyle's messages don't go through 9/OC processing
         }
 
         log(`iMessage IN: "${msg.text}"`);
