@@ -2,13 +2,13 @@
   "metadata": {
     "coin": "ethereum",
     "symbol": "ETH/USD",
-    "days": 30,
-    "candles": 180,
+    "days": 90,
+    "candles": 541,
     "dataRange": {
-      "from": "2026-02-25T16:00:00.000Z",
-      "to": "2026-03-27T12:00:00.000Z"
+      "from": "2025-12-27T16:00:00.000Z",
+      "to": "2026-03-27T16:00:00.000Z"
     },
-    "runAt": "2026-03-27T13:04:10.244Z",
+    "runAt": "2026-03-27T17:45:12.405Z",
     "notes": [
       "CoinGecko OHLC does not include volume data; volume filter is bypassed in EMA strategy.",
       "Candle granularity: 4-hour for 30-90 day lookback.",
@@ -20,81 +20,161 @@
       "metrics": {
         "strategy": "EMA 9/21 Crossover",
         "symbol": "ETH/USD",
-        "period": "30 days",
+        "period": "90 days",
         "startCapital": 200,
-        "finalCapital": 201.17,
-        "totalReturn": 0.59,
-        "totalPnL": 1.17,
-        "totalTrades": 3,
-        "completedExits": 3,
+        "finalCapital": 198.29,
+        "totalReturn": -0.85,
+        "totalPnL": -1.71,
+        "totalTrades": 7,
+        "completedExits": 7,
         "wins": 2,
-        "losses": 1,
-        "winRate": 66.67,
-        "avgWin": 0.88,
-        "avgLoss": -0.59,
-        "maxDrawdown": 0.29,
-        "sharpeRatio": 20.12
+        "losses": 5,
+        "winRate": 28.57,
+        "avgWin": 1.11,
+        "avgLoss": -0.79,
+        "maxDrawdown": 1.8,
+        "sharpeRatio": -10.04
       },
       "trades": [
         {
           "strategy": "EMA",
           "side": "buy",
           "reason": "ema_crossover",
-          "entryPrice": 2055.44,
+          "entryPrice": 3129.777296600298,
           "notional": 30,
-          "stopLoss": 2024.6084,
-          "takeProfit": 2106.826,
-          "date": "2026-03-04T12:00:00.000Z"
+          "stopLoss": 3082.8306371512936,
+          "takeProfit": 3208.0217290153055,
+          "date": "2026-01-13T08:00:00.000Z"
         },
         {
           "strategy": "EMA",
           "side": "sell",
           "reason": "take_profit",
-          "entryPrice": 2055.44,
-          "exitPrice": 2138.92,
+          "entryPrice": 3129.777296600298,
+          "exitPrice": 3330.1019109696003,
           "notional": 30,
-          "pnl": 1.2184252520141674,
-          "date": "2026-03-04T16:00:00.000Z"
+          "pnl": 1.9201808504416944,
+          "date": "2026-01-13T20:00:00.000Z"
         },
         {
           "strategy": "EMA",
           "side": "buy",
           "reason": "ema_crossover",
-          "entryPrice": 2027.71,
-          "notional": 30.182763787802124,
-          "stopLoss": 1997.2943500000001,
-          "takeProfit": 2078.4027499999997,
-          "date": "2026-03-10T04:00:00.000Z"
+          "entryPrice": 3016.3660575021154,
+          "notional": 30.288027127566252,
+          "stopLoss": 2971.1205666395836,
+          "takeProfit": 3091.775208939668,
+          "date": "2026-01-27T20:00:00.000Z"
         },
         {
           "strategy": "EMA",
           "side": "sell",
           "reason": "rsi_overbought",
-          "entryPrice": 2027.71,
-          "exitPrice": 2064.38,
-          "notional": 30.182763787802124,
-          "pnl": 0.5458383832494321,
-          "date": "2026-03-10T12:00:00.000Z"
+          "entryPrice": 3016.3660575021154,
+          "exitPrice": 3006.420625524287,
+          "notional": 30.288027127566252,
+          "pnl": -0.09986437580764941,
+          "date": "2026-01-28T00:00:00.000Z"
         },
         {
           "strategy": "EMA",
           "side": "buy",
           "reason": "ema_crossover",
-          "entryPrice": 2156.84,
-          "notional": 30.26463954528954,
-          "stopLoss": 2124.4874,
-          "takeProfit": 2210.761,
+          "entryPrice": 2113.464137085613,
+          "notional": 30.273047471195106,
+          "stopLoss": 2081.762175029329,
+          "takeProfit": 2166.3007405127532,
+          "date": "2026-02-09T20:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "sell",
+          "reason": "stop_loss",
+          "entryPrice": 2113.464137085613,
+          "exitPrice": 2006.6907924323239,
+          "notional": 30.273047471195106,
+          "pnl": -1.5294106366075326,
+          "date": "2026-02-10T04:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "buy",
+          "reason": "ema_crossover",
+          "entryPrice": 1987.7164133801566,
+          "notional": 30.043635875703973,
+          "stopLoss": 1957.9006671794543,
+          "takeProfit": 2037.4093237146603,
+          "date": "2026-02-21T12:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "sell",
+          "reason": "stop_loss",
+          "entryPrice": 1987.7164133801566,
+          "exitPrice": 1949.5322375376452,
+          "notional": 30.043635875703973,
+          "pnl": -0.5771404147513378,
+          "date": "2026-02-22T12:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "buy",
+          "reason": "ema_crossover",
+          "entryPrice": 1999.0888151575637,
+          "notional": 29.95706481349127,
+          "stopLoss": 1969.1024829302003,
+          "takeProfit": 2049.0660355365026,
+          "date": "2026-03-01T04:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "sell",
+          "reason": "stop_loss",
+          "entryPrice": 1999.0888151575637,
+          "exitPrice": 1923.0581714968055,
+          "notional": 29.95706481349127,
+          "pnl": -1.1393465376260796,
+          "date": "2026-03-01T20:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "buy",
+          "reason": "ema_crossover",
+          "entryPrice": 2041.9620336639148,
+          "notional": 29.786162832847364,
+          "stopLoss": 2011.332603158956,
+          "takeProfit": 2093.0110845055124,
+          "date": "2026-03-10T00:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "sell",
+          "reason": "rsi_overbought",
+          "entryPrice": 2041.9620336639148,
+          "exitPrice": 2062.6383638388043,
+          "notional": 29.786162832847364,
+          "pnl": 0.30160626261493884,
+          "date": "2026-03-10T08:00:00.000Z"
+        },
+        {
+          "strategy": "EMA",
+          "side": "buy",
+          "reason": "ema_crossover",
+          "entryPrice": 2160.4983284834707,
+          "notional": 29.831403772239604,
+          "stopLoss": 2128.0908535562185,
+          "takeProfit": 2214.5107866955573,
           "date": "2026-03-24T08:00:00.000Z"
         },
         {
           "strategy": "EMA",
           "side": "sell",
           "reason": "stop_loss",
-          "entryPrice": 2156.84,
-          "exitPrice": 2114.75,
-          "notional": 30.26463954528954,
-          "pnl": -0.5906041609304543,
-          "date": "2026-03-24T20:00:00.000Z"
+          "entryPrice": 2160.4983284834707,
+          "exitPrice": 2118.099873236951,
+          "notional": 29.831403772239604,
+          "pnl": -0.5854230114891891,
+          "date": "2026-03-24T16:00:00.000Z"
         }
       ]
     },
@@ -102,43 +182,72 @@
       "metrics": {
         "strategy": "Bollinger Band Mean Reversion",
         "symbol": "ETH/USD",
-        "period": "30 days",
+        "period": "90 days",
         "startCapital": 200,
-        "finalCapital": 198.46,
-        "totalReturn": -0.77,
-        "totalPnL": -1.54,
-        "totalTrades": 1,
-        "completedExits": 1,
-        "wins": 0,
+        "finalCapital": 203.49,
+        "totalReturn": 1.75,
+        "totalPnL": 3.49,
+        "totalTrades": 2,
+        "completedExits": 3,
+        "wins": 2,
         "losses": 1,
-        "winRate": 0,
-        "avgWin": 0,
-        "avgLoss": -1.54,
-        "maxDrawdown": 0.77,
-        "sharpeRatio": 0
+        "winRate": 66.67,
+        "avgWin": 2.15,
+        "avgLoss": -0.8,
+        "maxDrawdown": 0.4,
+        "sharpeRatio": 40.99
       },
       "trades": [
         {
           "strategy": "BB",
           "side": "buy",
           "reason": "lower_band_oversold",
-          "entryPrice": 2069.46,
+          "entryPrice": 2417.5518942824906,
           "notional": 40,
-          "stopLoss": 2028.0708,
-          "date": "2026-03-26T16:00:00.000Z"
+          "stopLoss": 2369.2008563968407,
+          "date": "2026-01-31T20:00:00.000Z"
         },
         {
           "strategy": "BB",
           "side": "sell",
-          "reason": "stop_loss_band_breach",
-          "entryPrice": 2069.46,
-          "exitPrice": 1990.01,
+          "reason": "stop_loss",
+          "entryPrice": 2417.5518942824906,
+          "exitPrice": 2369.0920741653736,
           "notional": 40,
-          "pnl": -1.5356663090854628,
-          "date": "2026-03-27T12:00:00.000Z"
+          "pnl": -0.8017998741904898,
+          "date": "2026-02-01T12:00:00.000Z"
+        },
+        {
+          "strategy": "BB",
+          "side": "buy",
+          "reason": "lower_band_oversold",
+          "entryPrice": 1875.3426340658875,
+          "notional": 39.839640025161906,
+          "stopLoss": 1837.8357813845698,
+          "date": "2026-02-05T20:00:00.000Z"
+        },
+        {
+          "strategy": "BB",
+          "side": "sell_partial",
+          "reason": "middle_band",
+          "entryPrice": 1875.3426340658875,
+          "exitPrice": 2095.087702966738,
+          "notional": 19.919820012580953,
+          "pnl": 2.334123984408576,
+          "date": "2026-02-07T16:00:00.000Z"
+        },
+        {
+          "strategy": "BB",
+          "side": "sell",
+          "reason": "upper_band",
+          "entryPrice": 1875.3426340658875,
+          "exitPrice": 2059.792323691696,
+          "notional": 19.919820012580953,
+          "pnl": 1.9592177727845728,
+          "date": "2026-02-13T16:00:00.000Z"
         }
       ]
     }
   },
-  "recommendation": "EMA 9/21 Crossover"
+  "recommendation": "Bollinger Band Mean Reversion"
 }

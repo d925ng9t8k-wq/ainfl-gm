@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "runAt": "2026-03-27T13:03:32.372Z",
+    "runAt": "2026-03-27T17:45:19.975Z",
     "days": 90,
     "coins": [
       "BTC/USD",
@@ -198,47 +198,47 @@
         {
           "params": {
             "fast": 12,
-            "slow": 50,
+            "slow": 26,
             "stopLoss": 0.01,
-            "takeProfit": 0.02,
+            "takeProfit": 0.025,
             "trendFilter": false
           },
           "metrics": {
-            "finalCapital": 199.78,
+            "finalCapital": 199.77,
             "totalReturn": -0.11,
-            "totalPnL": -0.22,
-            "totalTrades": 1,
-            "exits": 1,
-            "wins": 0,
-            "losses": 1,
-            "winRate": 0,
-            "avgWin": 0,
-            "avgLoss": -0.22,
-            "maxDrawdown": 0.11,
-            "sharpe": 0
+            "totalPnL": -0.23,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 2,
+            "losses": 6,
+            "winRate": 25,
+            "avgWin": 1.05,
+            "avgLoss": -0.39,
+            "maxDrawdown": 0.94,
+            "sharpe": -1.82
           }
         },
         {
           "params": {
             "fast": 12,
-            "slow": 50,
+            "slow": 26,
             "stopLoss": 0.01,
-            "takeProfit": 0.02,
-            "trendFilter": true
+            "takeProfit": 0.03,
+            "trendFilter": false
           },
           "metrics": {
-            "finalCapital": 199.78,
+            "finalCapital": 199.77,
             "totalReturn": -0.11,
-            "totalPnL": -0.22,
-            "totalTrades": 1,
-            "exits": 1,
-            "wins": 0,
-            "losses": 1,
-            "winRate": 0,
-            "avgWin": 0,
-            "avgLoss": -0.22,
-            "maxDrawdown": 0.11,
-            "sharpe": 0
+            "totalPnL": -0.23,
+            "totalTrades": 8,
+            "exits": 8,
+            "wins": 2,
+            "losses": 6,
+            "winRate": 25,
+            "avgWin": 1.05,
+            "avgLoss": -0.39,
+            "maxDrawdown": 0.94,
+            "sharpe": -1.82
           }
         }
       ],
