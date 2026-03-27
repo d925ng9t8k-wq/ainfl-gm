@@ -422,7 +422,7 @@ export default function MarketsPage() {
         </div>
       )}
 
-      {/* Sportsbook Section */}
+      {/* Sportsbook Section — Affiliate Links */}
       <div style={{
         background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(10, 18, 37, 0.95))',
         border: '1px solid rgba(0, 240, 255, 0.1)',
@@ -441,10 +441,11 @@ export default function MarketsPage() {
           Think you know which teams will win? Take your analysis from the simulator to the sportsbooks.
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          {/* TODO: Replace URLs with actual affiliate tracking links once approved */}
           {[
-            { name: 'DraftKings', url: 'https://www.draftkings.com', color: '#53D337' },
-            { name: 'FanDuel', url: 'https://www.fanduel.com', color: '#1493FF' },
-            { name: 'PrizePicks', url: 'https://www.prizepicks.com', color: '#7C3AED' },
+            { name: 'Bet on DraftKings', url: 'https://www.draftkings.com/?ref=AINFLGM_AFFILIATE', color: '#53D337' },
+            { name: 'Bet on FanDuel', url: 'https://www.fanduel.com/?ref=AINFLGM_AFFILIATE', color: '#1493FF' },
+            { name: 'Bet on PrizePicks', url: 'https://www.prizepicks.com/?ref=AINFLGM_AFFILIATE', color: '#7C3AED' },
           ].map(book => (
             <a key={book.name} href={book.url} target="_blank" rel="noopener noreferrer" style={{
               padding: '8px 18px', borderRadius: 6, fontSize: 13, fontWeight: 700,
@@ -458,6 +459,63 @@ export default function MarketsPage() {
               {book.name} →
             </a>
           ))}
+        </div>
+        <p style={{ color: '#64748b', fontSize: 11, marginTop: 12, marginBottom: 0, fontFamily: "'Inter', sans-serif" }}>
+          Must be 21+. T&Cs apply. Gambling problem? Call 1-800-GAMBLER.
+        </p>
+      </div>
+
+      {/* Responsible Gambling Disclosure */}
+      <div style={{
+        background: 'rgba(15, 23, 42, 0.9)',
+        border: '1px solid rgba(250, 204, 21, 0.25)',
+        borderRadius: 10,
+        padding: '16px 20px',
+        marginTop: 20,
+      }}>
+        <div style={{
+          color: '#facc15',
+          fontSize: 13,
+          fontWeight: 700,
+          fontFamily: "'Oswald', sans-serif",
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase',
+          marginBottom: 8,
+        }}>
+          Responsible Gambling
+        </div>
+        <p style={{
+          color: '#94A3B8',
+          fontSize: 12,
+          lineHeight: 1.7,
+          margin: '0 0 8px',
+          fontFamily: "'Inter', system-ui, sans-serif",
+        }}>
+          Gambling problem? Call <strong style={{ color: '#E2E8F0' }}>1-800-GAMBLER</strong> (1-800-426-2537).
+          If you or someone you know has a gambling problem and wants help, call the
+          Council on Compulsive Gambling at 1-800-GAMBLER. Must be 21+ and present in a
+          state where sports betting is legal to place wagers. Please gamble responsibly.
+        </p>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 12,
+          fontSize: 11,
+          color: '#64748b',
+          fontFamily: "'Inter', system-ui, sans-serif",
+        }}>
+          <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer"
+            style={{ color: '#94A3B8', textDecoration: 'underline' }}>
+            National Council on Problem Gambling
+          </a>
+          <a href="https://www.fanduel.com/responsible-gaming" target="_blank" rel="noopener noreferrer"
+            style={{ color: '#94A3B8', textDecoration: 'underline' }}>
+            FanDuel Responsible Gaming
+          </a>
+          <a href="https://www.draftkings.com/about/responsible-gaming" target="_blank" rel="noopener noreferrer"
+            style={{ color: '#94A3B8', textDecoration: 'underline' }}>
+            DraftKings Responsible Gaming
+          </a>
         </div>
       </div>
 
