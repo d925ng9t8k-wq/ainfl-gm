@@ -1537,6 +1537,50 @@ setInterval(async () => {
   log(`Heartbeat #${state.heartbeatCount} ${terminalActive ? '(suppressed — terminal active)' : 'sent'}`);
 }, 30 * 60 * 1000);
 
+// ─── Battery Monitor ────────────────────────────────────────────────────────
+// Checks every 60s. Alerts at 30%, 25%, 20%, 15%, 10%, 5%. Panic at 5%.
+let batteryAlertsSent = new Set();
+let lastBatteryCharging = null;
+
+setInterval(() => {
+  try {
+    const raw = execSync('pmset -g batt', { timeout: 5000 }).toString();
+    const pctMatch = raw.match(/(\d+)%/);
+    const charging = raw.includes('charging') && !raw.includes('discharging');
+    if (!pctMatch) return;
+    const pct = parseInt(pctMatch[1]);
+
+    // Reset alerts when charging detected
+    if (charging && !lastBatteryCharging) {
+      batteryAlertsSent.clear();
+      log(`Battery: ${pct}% charging — alerts reset`);
+    }
+    lastBatteryCharging = charging;
+
+    if (charging) return; // No alerts while charging
+
+    const thresholds = [30, 25, 20, 15, 10, 5];
+    for (const t of thresholds) {
+      if (pct <= t && !batteryAlertsSent.has(t)) {
+        batteryAlertsSent.add(t);
+        const msg = t <= 5
+          ? `🔴 BATTERY CRITICAL: ${pct}%! PLUG IN IMMEDIATELY! Everything will shut down soon!`
+          : t <= 10
+          ? `🟠 BATTERY LOW: ${pct}%! Plug in soon.`
+          : `🟡 Battery: ${pct}% — not charging.`;
+        log(`Battery alert: ${pct}% (threshold ${t}%)`);
+        sendTelegram(msg).catch(() => {});
+        if (t <= 5) {
+          // Panic — all channels
+          sendIMessage(`BATTERY CRITICAL: ${pct}%! Plug in the MacBook NOW!`);
+          sendEmail('9 ALERT — Battery Critical', `MacBook battery at ${pct}%. Everything will shut down if not plugged in immediately.`);
+        }
+      }
+    }
+  } catch {}
+}, 60000);
+
+
 // ─── Channel Health Check (every 5 minutes) ─────────────────────────────────
 setInterval(checkChannelHealth, 5 * 60 * 1000);
 
