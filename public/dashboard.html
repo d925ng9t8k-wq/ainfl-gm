@@ -506,6 +506,70 @@ a{color:var(--blue);text-decoration:none;}
   .brainstorm-grid{grid-template-columns:1fr;}
 }
 
+/* ========== GUIDING INTENTION ========== */
+.intention-wrap{
+  background:linear-gradient(135deg,rgba(22,33,62,0.9) 0%,rgba(26,39,68,0.95) 100%);
+  border-top:2px solid var(--gold);
+  border-bottom:1px solid var(--glassBorder);
+  padding:0;
+  position:relative;
+}
+.intention-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;
+  cursor:pointer;
+  user-select:none;
+}
+.intention-label{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:17px;letter-spacing:2px;
+  color:var(--gold);
+}
+.intention-icon{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 8px rgba(255,102,0,0.6);
+}
+.intention-toggle{
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:1px;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;
+}
+.intention-toggle:hover{color:var(--gold);}
+.intention-toggle .chevron{
+  display:inline-block;transition:transform 0.25s ease;font-size:10px;
+}
+.intention-wrap.collapsed .intention-toggle .chevron{transform:rotate(-90deg);}
+.intention-body{
+  padding:0 24px 20px 24px;
+  overflow:hidden;
+  transition:max-height 0.35s ease, opacity 0.3s ease;
+  max-height:600px;
+  opacity:1;
+}
+.intention-wrap.collapsed .intention-body{
+  max-height:0;
+  opacity:0;
+  padding-bottom:0;
+}
+.intention-divider{
+  height:1px;background:linear-gradient(90deg,var(--gold),transparent);
+  margin-bottom:18px;opacity:0.3;
+}
+.intention-text{
+  font-family:var(--font-body);font-size:14px;line-height:1.8;color:var(--text);
+  max-width:900px;
+}
+.intention-text strong{
+  color:var(--gold);font-weight:600;
+}
+.intention-text p{margin-bottom:10px;}
+.intention-text p:last-child{margin-bottom:0;}
+@media(max-width:640px){
+  .intention-header{padding:10px 14px;}
+  .intention-body{padding:0 14px 16px 14px;}
+  .intention-text{font-size:13px;}
+}
+
 /* ========== OFFLINE BANNER ========== */
 #offlineBanner{
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
@@ -598,6 +662,46 @@ a{color:var(--blue);text-decoration:none;}
   <button class="nav-tab" data-tab="terminal">Terminal</button>
   <button class="nav-tab" data-tab="sprintlog">Sprint Log</button>
 </nav>
+
+<!-- ========== GUIDING INTENTION ========== -->
+<div class="intention-wrap" id="intentionWrap">
+  <div class="intention-header" onclick="toggleIntention()">
+    <div class="intention-label">
+      <span class="intention-icon"></span>
+      GUIDING INTENTION
+    </div>
+    <div class="intention-toggle">
+      <span>COLLAPSE</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="intention-body" id="intentionBody">
+    <div class="intention-divider"></div>
+    <div class="intention-text">
+      <p><strong>My core intention for 9 Enterprises:</strong></p>
+      <p>Build and scale a diversified portfolio of <strong>15&ndash;20 autonomous AI-powered businesses</strong> that together generate <strong>$1M+ in annual recurring revenue</strong> (with strong path to $5&ndash;10M combined enterprise value). Each business must be built from day one to be <strong>clean, documented, and fully sellable</strong> &mdash; with transparent P&amp;Ls, repeatable processes, transferable systems, and minimal founder dependency.</p>
+      <p>Main Agent 9 owns 100% of execution and operations, using resources within budget and appropriate protocols. I focus exclusively on <strong>high-level vision, key relationships, and final approvals.</strong></p>
+      <p><strong>Revenue is king</strong> &mdash; prioritize high-margin, compounding models with agreed upon guardrails to protect capital at every step. Speed matters, but never at the expense of quality, compliance, or long-term durability. The franchise is the brand: everything operates under the unified 9enterprises umbrella, with the upgraded visual dashboard (including org chart, real-time ticker, and live terminal) as the single source of truth.</p>
+      <p>Every decision must advance secure, sustainable growth toward the endgame of <strong>family financial peace and independence.</strong></p>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var w=document.getElementById('intentionWrap');
+  var t=w?w.querySelector('.intention-toggle span:first-child'):null;
+  if(localStorage.getItem('intention-collapsed')==='1'&&w){
+    w.classList.add('collapsed');
+    if(t)t.textContent='EXPAND';
+  }
+  window.toggleIntention=function(){
+    if(!w)return;
+    var collapsed=w.classList.toggle('collapsed');
+    if(t)t.textContent=collapsed?'EXPAND':'COLLAPSE';
+    localStorage.setItem('intention-collapsed',collapsed?'1':'0');
+  };
+})();
+</script>
 
 <!-- ========================================================== -->
 <!-- OVERVIEW TAB -->
