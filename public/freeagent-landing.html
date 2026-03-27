@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreeAgent9 — Your AI Business Partner | 9 Enterprises</title>
+<meta name="description" content="AI assistant for mortgage loan officers, real estate agents, and insurance agents. Morning briefings, guideline Q&A, rate alerts, client reminders — delivered via text. No app required.">
+<meta property="og:title" content="FreeAgent9 — AI That Works Where You Do">
+<meta property="og:description" content="Your personal AI assistant, delivered by text. Morning briefings, guideline answers, rate alerts, client reminders. $29/mo.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0f0f1f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0f0f1f;--bg2:#16213e;--bg3:#1a2744;
+  --neon:#64ffda;--blue:#00e5ff;--accent:#FF6600;
+  --red:#ff2d55;--purple:#c300ff;
+  --text:#f0f0f0;--muted:#8892b0;--dim:#334155;
+  --glass:rgba(22,33,62,0.65);--glassBorder:rgba(0,229,255,0.12);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-head:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:var(--blue);text-decoration:none;}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
+
+/* Animations */
+@keyframes pulse-green{0%,100%{box-shadow:0 0 4px var(--neon);}50%{box-shadow:0 0 16px var(--neon);}}
+@keyframes glow-orange{0%,100%{filter:drop-shadow(0 0 15px rgba(255,102,0,0.4));}50%{filter:drop-shadow(0 0 30px rgba(255,102,0,0.7));}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes typing{0%{width:0;}100%{width:100%;}}
+@keyframes blink-caret{50%{border-color:transparent;}}
+@keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
+@keyframes gradientShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+.fade-up{opacity:0;animation:fadeUp 0.6s ease forwards;}
+.delay-1{animation-delay:0.1s;}
+.delay-2{animation-delay:0.2s;}
+.delay-3{animation-delay:0.3s;}
+.delay-4{animation-delay:0.4s;}
+.delay-5{animation-delay:0.5s;}
+
+/* ===== NAV ===== */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 32px;
+  background:rgba(15,15,31,0.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--glassBorder);
+  position:fixed;top:0;left:0;right:0;z-index:100;
+}
+.nav-brand{display:flex;align-items:center;gap:12px;}
+.nav-logo{
+  font-family:var(--font-display);font-size:36px;line-height:1;
+  background:linear-gradient(135deg,#FF6600,#ff8844);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:glow-orange 3s ease-in-out infinite;
+}
+.nav-name{font-family:var(--font-head);font-size:18px;font-weight:700;letter-spacing:1px;}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{font-size:14px;color:var(--muted);font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{
+  background:linear-gradient(135deg,#FF6600,#ff8844);color:#fff;
+  padding:8px 20px;border-radius:8px;font-weight:600;font-size:14px;
+  border:none;cursor:pointer;transition:opacity 0.2s;
+}
+.nav-cta:hover{opacity:0.85;}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:120px 32px 80px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 40%,rgba(255,102,0,0.06) 0%,transparent 50%),
+             radial-gradient(circle at 70% 60%,rgba(0,229,255,0.04) 0%,transparent 50%);
+  pointer-events:none;
+}
+.hero-inner{max-width:900px;text-align:center;position:relative;z-index:1;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(100,255,218,0.08);border:1px solid rgba(100,255,218,0.2);
+  color:var(--neon);padding:6px 16px;border-radius:20px;
+  font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:24px;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--neon);animation:pulse-green 2s infinite;}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(48px,8vw,96px);
+  letter-spacing:3px;line-height:1;margin-bottom:24px;
+  background:linear-gradient(135deg,var(--text) 0%,var(--muted) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,#FF6600,#ff8844);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-sub{
+  font-size:clamp(16px,2.5vw,22px);color:var(--muted);max-width:640px;margin:0 auto 40px;
+  line-height:1.6;font-weight:400;
+}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{
+  background:linear-gradient(135deg,#FF6600,#ff8844);color:#fff;
+  padding:14px 36px;border-radius:10px;font-weight:700;font-size:16px;
+  border:none;cursor:pointer;transition:all 0.2s;
+  box-shadow:0 4px 24px rgba(255,102,0,0.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,102,0,0.4);}
+.btn-secondary{
+  background:transparent;color:var(--text);
+  padding:14px 36px;border-radius:10px;font-weight:600;font-size:16px;
+  border:1px solid var(--dim);cursor:pointer;transition:all 0.2s;
+}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ===== PHONE MOCKUP ===== */
+.phone-demo{
+  max-width:360px;margin:60px auto 0;
+  background:var(--bg2);border:1px solid var(--glassBorder);border-radius:24px;
+  overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.5);
+  animation:float 4s ease-in-out infinite;
+}
+.phone-header{
+  padding:12px 16px;background:rgba(0,0,0,0.3);
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--glassBorder);
+}
+.phone-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#FF6600,#ff8844);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:16px;color:#fff;
+}
+.phone-contact{font-size:13px;font-weight:600;color:var(--text);}
+.phone-contact span{font-size:11px;color:var(--neon);display:block;font-weight:400;}
+.phone-body{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:260px;}
+.msg{
+  max-width:85%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;
+}
+.msg-in{
+  background:rgba(100,255,218,0.08);border:1px solid rgba(100,255,218,0.15);
+  color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;
+}
+.msg-out{
+  background:rgba(255,102,0,0.15);border:1px solid rgba(255,102,0,0.2);
+  color:var(--text);align-self:flex-end;border-bottom-right-radius:4px;
+}
+.msg-time{font-size:10px;color:var(--dim);margin-top:4px;}
+
+/* ===== SECTION BASE ===== */
+section{padding:100px 32px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-label{
+  font-family:var(--font-mono);font-size:12px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;
+}
+.section-title{
+  font-family:var(--font-display);font-size:clamp(32px,5vw,56px);
+  letter-spacing:2px;line-height:1.1;margin-bottom:20px;
+}
+.section-desc{font-size:16px;color:var(--muted);max-width:640px;line-height:1.7;}
+
+/* ===== FEATURES ===== */
+.features-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;margin-top:48px;
+}
+.feature-card{
+  background:var(--glass);border:1px solid var(--glassBorder);border-radius:16px;
+  padding:32px 28px;transition:all 0.3s;position:relative;overflow:hidden;
+}
+.feature-card:hover{border-color:rgba(0,229,255,0.3);transform:translateY(-4px);}
+.feature-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.feature-card:hover::before{opacity:1;}
+.feature-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:20px;
+}
+.feature-icon.orange{background:rgba(255,102,0,0.12);border:1px solid rgba(255,102,0,0.25);}
+.feature-icon.cyan{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);}
+.feature-icon.green{background:rgba(100,255,218,0.08);border:1px solid rgba(100,255,218,0.2);}
+.feature-icon.purple{background:rgba(195,0,255,0.08);border:1px solid rgba(195,0,255,0.2);}
+.feature-card h3{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:10px;}
+.feature-card p{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* ===== HOW IT WORKS ===== */
+.steps{display:flex;flex-direction:column;gap:48px;margin-top:48px;position:relative;}
+.steps::before{
+  content:'';position:absolute;left:23px;top:48px;bottom:48px;width:2px;
+  background:linear-gradient(180deg,var(--accent),var(--blue),var(--neon));
+  opacity:0.3;
+}
+.step{display:flex;gap:24px;align-items:flex-start;}
+.step-num{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  background:var(--bg2);border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:22px;color:var(--accent);
+  position:relative;z-index:1;
+}
+.step-content h3{font-family:var(--font-head);font-size:20px;font-weight:700;margin-bottom:8px;}
+.step-content p{font-size:14px;color:var(--muted);line-height:1.7;max-width:560px;}
+
+/* ===== PRICING ===== */
+.pricing-section{background:linear-gradient(180deg,var(--bg) 0%,rgba(22,33,62,0.3) 50%,var(--bg) 100%);}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:32px;margin-top:48px;max-width:800px;}
+.price-card{
+  background:var(--glass);border:1px solid var(--glassBorder);border-radius:20px;
+  padding:40px 32px;position:relative;overflow:hidden;transition:all 0.3s;
+}
+.price-card:hover{transform:translateY(-4px);}
+.price-card.featured{border-color:rgba(255,102,0,0.4);}
+.price-card.featured::before{
+  content:'MOST POPULAR';position:absolute;top:16px;right:-32px;
+  background:linear-gradient(135deg,#FF6600,#ff8844);color:#fff;
+  font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:4px 40px;transform:rotate(45deg);
+}
+.price-tier{font-family:var(--font-mono);font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.price-amount{font-family:var(--font-display);font-size:64px;letter-spacing:2px;line-height:1;}
+.price-amount span{font-size:18px;color:var(--muted);letter-spacing:0;}
+.price-desc{font-size:14px;color:var(--muted);margin:12px 0 28px;line-height:1.6;}
+.price-features{list-style:none;margin-bottom:32px;}
+.price-features li{
+  font-size:14px;color:var(--text);padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex;align-items:center;gap:10px;
+}
+.price-features li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--neon);flex-shrink:0;}
+.price-btn{
+  display:block;width:100%;padding:14px;border-radius:10px;
+  font-weight:700;font-size:15px;text-align:center;cursor:pointer;
+  border:none;transition:all 0.2s;
+}
+.price-btn.primary{
+  background:linear-gradient(135deg,#FF6600,#ff8844);color:#fff;
+  box-shadow:0 4px 20px rgba(255,102,0,0.3);
+}
+.price-btn.primary:hover{box-shadow:0 8px 32px rgba(255,102,0,0.4);transform:translateY(-1px);}
+.price-btn.secondary{
+  background:transparent;color:var(--text);border:1px solid var(--dim);
+}
+.price-btn.secondary:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ===== TESTIMONIAL ===== */
+.testimonial-card{
+  max-width:700px;margin:48px auto 0;
+  background:var(--glass);border:1px solid var(--glassBorder);border-radius:20px;
+  padding:40px 36px;text-align:center;
+}
+.testimonial-card .quote{
+  font-size:18px;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:20px;
+}
+.testimonial-card .attribution{font-family:var(--font-mono);font-size:13px;color:var(--accent);}
+.testimonial-card .role{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:700px;margin:48px auto 0;}
+.faq-item{border-bottom:1px solid rgba(255,255,255,0.06);padding:20px 0;}
+.faq-q{
+  font-family:var(--font-head);font-size:16px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  transition:color 0.2s;
+}
+.faq-q:hover{color:var(--blue);}
+.faq-q .toggle{font-size:20px;color:var(--dim);transition:transform 0.3s;}
+.faq-item.open .faq-q .toggle{transform:rotate(45deg);color:var(--accent);}
+.faq-a{
+  font-size:14px;color:var(--muted);line-height:1.7;
+  max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;
+}
+.faq-item.open .faq-a{max-height:300px;padding-top:12px;}
+
+/* ===== CTA SECTION ===== */
+.cta-section{text-align:center;position:relative;}
+.cta-section::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,102,0,0.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cta-section h2{
+  font-family:var(--font-display);font-size:clamp(36px,6vw,72px);
+  letter-spacing:3px;line-height:1;margin-bottom:16px;position:relative;z-index:1;
+}
+.cta-section p{font-size:16px;color:var(--muted);margin-bottom:32px;position:relative;z-index:1;}
+
+/* ===== FOOTER ===== */
+.footer{
+  padding:40px 32px;border-top:1px solid var(--glassBorder);
+  text-align:center;
+}
+.footer p{font-size:12px;color:var(--dim);}
+.footer a{color:var(--muted);}
+.footer a:hover{color:var(--text);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .nav{padding:12px 16px;}
+  .nav-links a:not(.nav-cta){display:none;}
+  .hero{padding:100px 20px 60px;}
+  section{padding:60px 20px;}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto;}
+  .steps::before{display:none;}
+  .phone-demo{max-width:300px;margin-top:40px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">9</div>
+    <span class="nav-name">FreeAgent9</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#get-started" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge fade-up"><span class="dot"></span> Now in pilot</div>
+    <h1 class="fade-up delay-1">YOUR AI <span>BUSINESS PARTNER</span><br>DELIVERED BY TEXT</h1>
+    <p class="hero-sub fade-up delay-2">
+      FreeAgent9 is a personal AI assistant for mortgage LOs, real estate agents, and insurance producers. Morning briefings, guideline answers, rate alerts, client reminders &mdash; all via iMessage or SMS. No app. No login. Just text.
+    </p>
+    <div class="hero-ctas fade-up delay-3">
+      <a href="#pricing" class="btn-primary">See Pricing</a>
+      <a href="#how-it-works" class="btn-secondary">How It Works</a>
+    </div>
+
+    <!-- Phone mockup -->
+    <div class="phone-demo fade-up delay-4">
+      <div class="phone-header">
+        <div class="phone-avatar">9</div>
+        <div class="phone-contact">FreeAgent9<span>Online now</span></div>
+      </div>
+      <div class="phone-body">
+        <div class="msg msg-in">
+          Morning. 30yr conventional opened at 6.75% &mdash; down 0.125 from yesterday. MBS holding. Martinez closing at 2pm, all conditions cleared. One thing: appraisal came in low on Williams &mdash; call before noon.
+          <div class="msg-time">7:01 AM</div>
+        </div>
+        <div class="msg msg-out">
+          What's the FHA DTI limit with comp factors?
+          <div class="msg-time">9:14 AM</div>
+        </div>
+        <div class="msg msg-in">
+          50% back-end with compensating factors. Without them it's 43/57. Need me to pull the full matrix?
+          <div class="msg-time">9:14 AM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-inner">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">EVERYTHING YOU NEED.<br>NOTHING YOU DON'T.</h2>
+    <p class="section-desc">Built for professionals who live on their phone. Every feature is designed for speed &mdash; ask a question, get an answer. No menus, no dashboards, no learning curve.</p>
+
+    <div class="features-grid">
+      <div class="feature-card fade-up">
+        <div class="feature-icon orange">&#9728;</div>
+        <h3>Morning Briefing</h3>
+        <p>Wake up to a concise text: today's rates vs. yesterday, your closings, pipeline flags, and the one thing that needs your attention first. Delivered at 7 AM sharp.</p>
+      </div>
+      <div class="feature-card fade-up delay-1">
+        <div class="feature-icon cyan">&#9889;</div>
+        <h3>Guideline Q&A</h3>
+        <p>FHA DTI limits? VA funding fees? Conforming loan limits? Ask in plain English, get accurate answers with citations in seconds. Faster than searching the selling guide.</p>
+      </div>
+      <div class="feature-card fade-up delay-2">
+        <div class="feature-icon green">&#128200;</div>
+        <h3>Rate Alerts</h3>
+        <p>Get notified when rates move more than 0.125% intraday. Know when to lock, when to float, and what to tell your borrowers &mdash; without watching MBS all day.</p>
+      </div>
+      <div class="feature-card fade-up delay-3">
+        <div class="feature-icon purple">&#128276;</div>
+        <h3>Client Reminders</h3>
+        <p>"Remind me to call the Garcias about their appraisal at 3pm." Done. Never let a follow-up slip through the cracks again. Manages 40+ active files effortlessly.</p>
+      </div>
+      <div class="feature-card fade-up delay-4">
+        <div class="feature-icon orange">&#128172;</div>
+        <h3>Script Sparring</h3>
+        <p>Rehearse objection handling, rate lock conversations, and realtor pitches with an AI that knows mortgage. Sharpen your scripts between calls.</p>
+      </div>
+      <div class="feature-card fade-up delay-5">
+        <div class="feature-icon cyan">&#128221;</div>
+        <h3>Social Ghostwriter</h3>
+        <p>Need a LinkedIn post about a milestone closing? A market update for your referral partners? Just tell your agent what to write. On-brand, ready to post.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" style="background:linear-gradient(180deg,var(--bg) 0%,rgba(22,33,62,0.2) 100%);">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">LIVE IN 24 HOURS.<br>ZERO SETUP REQUIRED.</h2>
+    <p class="section-desc">You text a number. The AI knows your industry, your workflow, and your preferences. That is the entire product.</p>
+
+    <div class="steps">
+      <div class="step fade-up">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Sign Up</h3>
+          <p>Pick your plan, tell us your role and what you need. Takes 5 minutes. We handle the rest &mdash; no IT department required.</p>
+        </div>
+      </div>
+      <div class="step fade-up delay-1">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Get Your Number</h3>
+          <p>Within 24 hours, you receive a dedicated phone number. Save it as a contact. Your AI assistant is ready to text.</p>
+        </div>
+      </div>
+      <div class="step fade-up delay-2">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Customize</h3>
+          <p>Tell your agent your schedule, your rate source, your team members, your preferences. It learns and adapts. The more you use it, the more useful it gets.</p>
+        </div>
+      </div>
+      <div class="step fade-up delay-3">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Just Text</h3>
+          <p>Morning briefings arrive automatically. Everything else, just ask. Guidelines, reminders, social posts, rate checks &mdash; all via text. No app to open. No password to remember.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section>
+  <div class="section-inner" style="text-align:center;">
+    <div class="section-label">Early Feedback</div>
+    <h2 class="section-title">BUILT WITH REAL USERS</h2>
+
+    <div class="testimonial-card fade-up">
+      <div class="quote">"I asked it an FHA guideline question at 9 PM on a Sunday while I was at my kid's baseball game. Had the answer in 3 seconds. That alone is worth the subscription."</div>
+      <div class="attribution">Kyle C.</div>
+      <div class="role">Producing Branch Manager &mdash; Pilot User</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-section">
+  <div class="section-inner">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">SIMPLE. TRANSPARENT.<br>CANCEL ANYTIME.</h2>
+    <p class="section-desc">No contracts. No hidden fees. No annual commitment. Start with Starter, upgrade when you are ready.</p>
+
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="price-card fade-up">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">$29<span>/mo</span></div>
+        <div class="price-desc">Everything a solo producer needs to save an hour a day.</div>
+        <ul class="price-features">
+          <li>Morning briefing (daily)</li>
+          <li>Guideline Q&A (unlimited)</li>
+          <li>Client reminders (up to 25 active)</li>
+          <li>Rate alerts (threshold-based)</li>
+          <li>SMS delivery</li>
+          <li>Web chat dashboard</li>
+        </ul>
+        <a href="#get-started" class="price-btn secondary">Start Free Trial</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="price-card featured fade-up delay-1">
+        <div class="price-tier">Pro</div>
+        <div class="price-amount">$99<span>/mo</span></div>
+        <div class="price-desc">For top producers and branch managers who run teams.</div>
+        <ul class="price-features">
+          <li>Everything in Starter</li>
+          <li>Unlimited reminders</li>
+          <li>Script sparring partner</li>
+          <li>Social media ghostwriter</li>
+          <li>Referral partner wingman</li>
+          <li>Branch performance snapshots</li>
+          <li>Priority support</li>
+          <li>iMessage + SMS delivery</li>
+        </ul>
+        <a href="#get-started" class="price-btn primary">Start Free Trial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">QUESTIONS? ANSWERS.</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Do I need to install an app?<span class="toggle">+</span></div>
+        <div class="faq-a">No. FreeAgent9 works through regular text messages (SMS/iMessage). You also get access to a web chat dashboard, but the core experience is texting a phone number.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How accurate are the guideline answers?<span class="toggle">+</span></div>
+        <div class="faq-a">Our guideline knowledge base is built from official sources: FHA Handbook, Fannie Mae Selling Guide, Freddie Mac guides, VA Lender's Handbook, and USDA Rural Development guidelines. Answers include citations so you can verify. That said, always confirm with your underwriter on edge cases.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is my data secure?<span class="toggle">+</span></div>
+        <div class="faq-a">We never store borrower PII (Social Security numbers, account numbers, etc.). Conversations are encrypted in transit and at rest. We do not sell or share your data. Your agent's memory is isolated &mdash; no other user can access it.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I use this for my whole branch/team?<span class="toggle">+</span></div>
+        <div class="faq-a">Yes. Each team member gets their own dedicated number and personalized agent. Volume pricing is available for teams of 5+. Contact us for details.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What if I work in real estate or insurance, not mortgage?<span class="toggle">+</span></div>
+        <div class="faq-a">FreeAgent9 is built for any sales-driven professional who lives on their phone. We customize the knowledge base, morning briefing, and features for your industry. Mortgage is our first vertical, with real estate and insurance coming next.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How long is the free trial?<span class="toggle">+</span></div>
+        <div class="faq-a">14 days, full access, no credit card required. If you do not love it, just stop texting. No cancellation hoops to jump through.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Where does the rate data come from?<span class="toggle">+</span></div>
+        <div class="faq-a">Rate data is sourced from public market feeds and MBS tracking services. For Starter users, you can also text your agent your own rate sheet data for the most precise alerts. Pro users get integrated real-time rate feeds.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="get-started" class="cta-section">
+  <div class="section-inner">
+    <h2 class="fade-up">STOP SEARCHING.<br><span style="background:linear-gradient(135deg,#FF6600,#ff8844);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">START TEXTING.</span></h2>
+    <p class="fade-up delay-1">14-day free trial. No credit card. Cancel anytime.</p>
+    <div class="hero-ctas fade-up delay-2">
+      <a href="mailto:jasson@9enterprises.ai?subject=FreeAgent9%20Trial%20Request&body=I%27m%20interested%20in%20trying%20FreeAgent9.%20My%20name%20is%20____%20and%20I%20work%20as%20a%20____." class="btn-primary">Request Early Access</a>
+    </div>
+    <p style="font-size:12px;color:var(--dim);margin-top:16px;" class="fade-up delay-3">Currently onboarding by invitation. Spots are limited.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p style="margin-bottom:8px;">
+    <a href="/9enterprises.html">9 Enterprises</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/about.html">About</a>
+  </p>
+  <p>FreeAgent9 is a product of 9 Enterprises LLC. Built in Cincinnati.</p>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Intersection Observer for fade-up animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
