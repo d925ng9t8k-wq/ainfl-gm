@@ -5,10 +5,10 @@
     "days": 90,
     "candles": 541,
     "dataRange": {
-      "from": "2025-12-27T00:00:00.000Z",
-      "to": "2026-03-27T00:00:00.000Z"
+      "from": "2025-12-27T04:00:00.000Z",
+      "to": "2026-03-27T04:00:00.000Z"
     },
-    "runAt": "2026-03-27T03:23:04.760Z",
+    "runAt": "2026-03-27T04:48:53.496Z",
     "notes": [
       "CoinGecko OHLC does not include volume data; volume filter is bypassed in EMA strategy.",
       "Candle granularity: 4-hour for 30-90 day lookback.",
