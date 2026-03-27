@@ -597,12 +597,34 @@
 
       <!-- X9 -->
       <div class="agent-row">
-        <div class="agent-dot-wrap"><span class="dot dot-purple"></span></div>
+        <div class="agent-dot-wrap"><span class="dot dot-purple glow"></span></div>
         <div>
           <div class="agent-name">X9 <span class="text-gray" style="font-weight:400;font-size:11px;">/ Autonomous</span></div>
           <div class="agent-role">X/Twitter Presence</div>
-          <div class="agent-task">Identity and launch plan complete. Content queue and posting strategy ready. Account creation pending Owner approval.</div>
-          <span class="agent-status-tag tag-setting-up">Awaiting Account Approval</span>
+          <div class="agent-task">Agent definition complete. 30-day content calendar ready. Proton signup attempted &mdash; CAPTCHA wall hit (human verification required). Account setup in progress.</div>
+          <span class="agent-status-tag tag-setting-up">Account Setup In Progress</span>
+        </div>
+      </div>
+
+      <!-- TRADER9 -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-blue glow"></span></div>
+        <div>
+          <div class="agent-name">trader9 <span class="text-gray" style="font-weight:400;font-size:11px;">/ Trading</span></div>
+          <div class="agent-role">Autonomous Trading Agent</div>
+          <div class="agent-task">Agent definition complete. Strategy: Alpaca paper trading first (momentum + mean reversion). Escalation rules locked. Awaiting Alpaca account setup.</div>
+          <span class="agent-status-tag tag-researching">Strategy Research In Progress</span>
+        </div>
+      </div>
+
+      <!-- PILOT -->
+      <div class="agent-row">
+        <div class="agent-dot-wrap"><span class="dot dot-green glow"></span></div>
+        <div>
+          <div class="agent-name">Pilot <span class="text-gray" style="font-weight:400;font-size:11px;">/ freeagent9</span></div>
+          <div class="agent-role">Personal Assistant Agent</div>
+          <div class="agent-task">Renamed from Jules. Server build in progress. iMessage routing stub active. Jamie phone number needed in .env to activate.</div>
+          <span class="agent-status-tag tag-building">Server Build In Progress</span>
         </div>
       </div>
 
@@ -665,8 +687,8 @@
 
       <div class="project-row">
         <span class="dot dot-blue project-dot-wrap"></span>
-        <span class="project-name">Free Agents / Jules</span>
-        <span class="project-badge badge-progress">Concept Complete &mdash; Build Ready</span>
+        <span class="project-name">Free Agents / Pilot (freeagent9)</span>
+        <span class="project-badge badge-building">Server Build In Progress</span>
       </div>
 
       <div class="project-row">
@@ -694,15 +716,15 @@
       </div>
 
       <div class="project-row">
-        <span class="dot dot-purple project-dot-wrap"></span>
+        <span class="dot dot-purple glow project-dot-wrap"></span>
         <span class="project-name">X9 (Twitter)</span>
-        <span class="project-badge badge-setup">Plan Complete &mdash; Awaiting Account Approval</span>
+        <span class="project-badge badge-setup">Account Setup In Progress &mdash; CAPTCHA Blocker</span>
       </div>
 
       <div class="project-row">
-        <span class="dot dot-gray project-dot-wrap"></span>
-        <span class="project-name">Trading Bot</span>
-        <span class="project-badge badge-research">Research Complete &mdash; Alpaca Recommended</span>
+        <span class="dot dot-blue project-dot-wrap"></span>
+        <span class="project-name">trader9 (Trading Bot)</span>
+        <span class="project-badge badge-building">Strategy Research In Progress</span>
       </div>
 
       <div class="project-row">
@@ -901,6 +923,36 @@
         <div class="section-title">Sprint Log &mdash; Mar 26</div>
         <div class="card">
           <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-note"></div>
+              <div class="timeline-time">Sprint Wave 1 &mdash; March 26, 8:33 PM ET</div>
+              <div class="timeline-text"><strong>Infrastructure + Agent Setup LIVE.</strong> x9 agent definition created. trader9 agent definition created. Jules renamed to Pilot/freeagent9. Dashboard updated. Proton signup attempted &mdash; CAPTCHA wall documented.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">X9 Agent Definition</div>
+              <div class="timeline-text"><strong>Agent created</strong> at .claude/agents/x9.md. Personality, content strategy, 30-day calendar ref, monetization path all locked.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">trader9 Agent Definition</div>
+              <div class="timeline-text"><strong>Agent created</strong> at .claude/agents/trader9.md. Alpaca paper trading strategy, risk rules, escalation protocol defined.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-partial"></div>
+              <div class="timeline-time">X9 Proton Signup Attempt</div>
+              <div class="timeline-text"><strong>CAPTCHA wall hit.</strong> Username x9agent entered, plan selected (Free), password set &mdash; blocked at Human Verification. Needs manual completion.</div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot tl-done"></div>
+              <div class="timeline-time">Jules &rarr; Pilot Rename</div>
+              <div class="timeline-text"><strong>References updated</strong> in .claude/agents/tee-context.md, uno-context.md, money.md, and dashboard. Legacy jules-server.mjs preserved.</div>
+            </div>
 
             <div class="timeline-item">
               <div class="timeline-dot tl-note"></div>
@@ -1129,7 +1181,7 @@
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-text">
-    Last updated by Tee &mdash; <span>March 26, 2026 EOD</span> &bull; Auto-refreshes every 60 seconds
+    Last updated by Tee &mdash; <span>March 26, 2026 8:33 PM ET &mdash; Sprint Wave 1 LIVE</span> &bull; Auto-refreshes every 60 seconds
   </div>
   <div class="footer-text" style="margin-top: 6px; font-size: 10px; color: #2a2a2a;">
     9 Enterprises &mdash; ainflgm.com/dashboard.html
