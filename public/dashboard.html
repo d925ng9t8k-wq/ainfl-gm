@@ -626,29 +626,50 @@ a{color:var(--blue);text-decoration:none;}
       <div class="burn-rate-card fade-in">
         <div class="card-title" style="font-size:18px;">BURN RATE</div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-          <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Daily Budget: $100</span>
-          <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Sprint Budget: $300</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Estimated Daily: ~$12&ndash;17</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Monthly Cap: ~$500</span>
         </div>
         <div class="burn-gauge">
-          <div class="burn-gauge-fill green" id="burnGaugeFill" style="width:62%;"></div>
+          <div class="burn-gauge-fill green" id="burnGaugeFill" style="width:15%;"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
           <span>$0</span>
-          <span id="burnLabel" style="color:var(--neon);">$62 spent today (62%)</span>
+          <span id="burnLabel" style="color:var(--neon);">~$15 estimated today (15% of $100 cap)</span>
           <span>$100</span>
         </div>
+
+        <!-- Subscription vs API breakdown -->
+        <div style="margin-top:16px;padding:14px;background:rgba(255,255,255,0.03);border-radius:8px;">
+          <div style="font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--blue);margin-bottom:10px;">COST BREAKDOWN</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,229,255,0.06);">
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);">Claude Max Subscription</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">$200/mo = $6.67/day</span>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--neon);letter-spacing:1px;">FIXED (PAID)</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,229,255,0.06);">
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);">API Burn (hub, agents)</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">~$5&ndash;10/day</span>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--gold);letter-spacing:1px;">VARIABLE</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 0;">
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--gold);font-weight:500;">Total Actual</span>
+            <span style="font-family:var(--font-mono);font-size:14px;color:var(--gold);font-weight:500;">~$12&ndash;17/day</span>
+            <span></span>
+          </div>
+        </div>
+
         <div class="burn-stats">
           <div class="burn-stat">
-            <div class="burn-stat-num" style="color:var(--neon);">$62</div>
-            <div class="burn-stat-label">Today's Spend</div>
+            <div class="burn-stat-num" style="color:var(--neon);">~$15</div>
+            <div class="burn-stat-label">Today's Est.</div>
           </div>
           <div class="burn-stat">
-            <div class="burn-stat-num" style="color:var(--blue);">$78</div>
+            <div class="burn-stat-num" style="color:var(--blue);">~$14</div>
             <div class="burn-stat-label">Daily Average</div>
           </div>
           <div class="burn-stat">
-            <div class="burn-stat-num" style="color:var(--gold);">$218</div>
-            <div class="burn-stat-label">Sprint Total</div>
+            <div class="burn-stat-num" style="color:var(--gold);">~$430</div>
+            <div class="burn-stat-label">Monthly Est.</div>
           </div>
         </div>
       </div>
@@ -839,59 +860,238 @@ a{color:var(--blue);text-decoration:none;}
   <!-- Holdings Ticker -->
   <div class="portfolio-holdings-ticker">
     <div class="holdings-track" id="holdingsTrack">
-      <div class="holdings-item">BTC <span class="up">+2.14%</span></div>
-      <div class="holdings-item">ETH <span class="up">+3.51%</span></div>
-      <div class="holdings-item">SPY <span class="up">+0.43%</span></div>
-      <div class="holdings-item">AAPL <span class="down">-0.72%</span></div>
-      <div class="holdings-item">NVDA <span class="up">+1.88%</span></div>
-      <div class="holdings-item">TSLA <span class="down">-1.23%</span></div>
-      <div class="holdings-item">SOL <span class="up">+4.67%</span></div>
-      <div class="holdings-item">MSFT <span class="up">+0.31%</span></div>
-      <!-- duplicate -->
-      <div class="holdings-item">BTC <span class="up">+2.14%</span></div>
-      <div class="holdings-item">ETH <span class="up">+3.51%</span></div>
-      <div class="holdings-item">SPY <span class="up">+0.43%</span></div>
-      <div class="holdings-item">AAPL <span class="down">-0.72%</span></div>
-      <div class="holdings-item">NVDA <span class="up">+1.88%</span></div>
-      <div class="holdings-item">TSLA <span class="down">-1.23%</span></div>
-      <div class="holdings-item">SOL <span class="up">+4.67%</span></div>
-      <div class="holdings-item">MSFT <span class="up">+0.31%</span></div>
+      <div class="holdings-item">IBIT</div>
+      <div class="holdings-item">TSLA</div>
+      <div class="holdings-item">JPMPD</div>
+      <div class="holdings-item">IAU</div>
+      <div class="holdings-item">SLV</div>
+      <div class="holdings-item">CPER</div>
+      <div class="holdings-item">NVDA</div>
+      <div class="holdings-item">ORCL</div>
+      <div class="holdings-item">INTC</div>
+      <div class="holdings-item">PLTR</div>
+      <div class="holdings-item">QCOM</div>
+      <div class="holdings-item">CSCO</div>
+      <div class="holdings-item">AMZN</div>
+      <div class="holdings-item">GOOG</div>
+      <div class="holdings-item">META</div>
+      <div class="holdings-item">AAPL</div>
+      <div class="holdings-item">BTC</div>
+      <!-- duplicate for seamless scroll -->
+      <div class="holdings-item">IBIT</div>
+      <div class="holdings-item">TSLA</div>
+      <div class="holdings-item">JPMPD</div>
+      <div class="holdings-item">IAU</div>
+      <div class="holdings-item">SLV</div>
+      <div class="holdings-item">CPER</div>
+      <div class="holdings-item">NVDA</div>
+      <div class="holdings-item">ORCL</div>
+      <div class="holdings-item">INTC</div>
+      <div class="holdings-item">PLTR</div>
+      <div class="holdings-item">QCOM</div>
+      <div class="holdings-item">CSCO</div>
+      <div class="holdings-item">AMZN</div>
+      <div class="holdings-item">GOOG</div>
+      <div class="holdings-item">META</div>
+      <div class="holdings-item">AAPL</div>
+      <div class="holdings-item">BTC</div>
     </div>
   </div>
+
+  <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-align:right;margin:6px 0 16px;letter-spacing:0.5px;">Prices as of last update (~Mar 20, 2026) &mdash; connect API for live data</div>
 
   <div class="stats-row fade-in" style="margin-bottom:28px;">
-    <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Business Units</div></div>
-    <div class="stat-card"><div class="stat-num" style="background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$1.2K</div><div class="stat-label">Monthly Revenue</div></div>
-    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Live Products</div></div>
-    <div class="stat-card"><div class="stat-num" style="background:linear-gradient(135deg,var(--neon),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$13.8M</div><div class="stat-label">Equity (Rapid)</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;">$1.08M</div><div class="stat-label">Total Portfolio</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$719K</div><div class="stat-label">Chase Brokerage</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;">5</div><div class="stat-label">Accounts</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--neon),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">17</div><div class="stat-label">Positions</div></div>
   </div>
 
+  <!-- Account Cards -->
   <div class="portfolio-sections">
-    <!-- Owner Portfolio -->
+
+    <!-- Chase Brokerage -->
     <div class="card">
-      <div class="card-title" style="font-size:16px;">OWNER PORTFOLIO</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:8px;">Jasson Fishback - Personal Holdings</div>
+      <div class="card-title" style="font-size:16px;">CHASE BROKERAGE</div>
+      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$718,726</div>
       <ul class="sidebar-list">
-        <li><span style="color:var(--neon);">&#9679;</span> Rapid Mortgage &mdash; <span style="color:var(--neon);">$13.8M equity</span></li>
-        <li><span style="color:var(--gold);">&#9679;</span> 9enterprises &mdash; <span style="color:var(--gold);">100% ownership</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> Personal Brokerage &mdash; <span style="color:var(--muted);">Connect to view</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> Crypto Holdings &mdash; <span style="color:var(--muted);">Connect to view</span></li>
-        <li><span style="color:var(--muted);">&#9679;</span> Real Estate &mdash; <span style="color:var(--muted);">Connect to view</span></li>
+        <li><span style="color:var(--gold);">&#9679;</span> IBIT &mdash; <span style="color:var(--muted);">iShares Bitcoin Trust</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> TSLA &mdash; <span style="color:var(--muted);">Tesla</span></li>
+        <li><span style="color:var(--neon);">&#9679;</span> JPMPD &mdash; <span style="color:var(--muted);">JPMorgan Preferred</span></li>
+        <li><span style="color:var(--gold);">&#9679;</span> IAU &mdash; <span style="color:var(--muted);">iShares Gold Trust</span></li>
+        <li><span style="color:var(--muted);">&#9679;</span> SLV &mdash; <span style="color:var(--muted);">iShares Silver Trust</span></li>
+        <li><span style="color:var(--muted);">&#9679;</span> CPER &mdash; <span style="color:var(--muted);">Copper ETF</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> NVDA &mdash; <span style="color:var(--muted);">NVIDIA</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> ORCL &mdash; <span style="color:var(--muted);">Oracle</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> INTC &mdash; <span style="color:var(--muted);">Intel</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> PLTR &mdash; <span style="color:var(--muted);">Palantir</span></li>
       </ul>
-      <div class="chart-placeholder">Connect portfolio API for live chart</div>
     </div>
 
-    <!-- trader9 Portfolio -->
+    <!-- Chase Roth IRA -->
     <div class="card">
-      <div class="card-title" style="font-size:16px;">TRADER9 PORTFOLIO</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:8px;">Backtest Results &amp; Live Signals</div>
+      <div class="card-title" style="font-size:16px;">CHASE ROTH IRA</div>
+      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$12,290</div>
       <ul class="sidebar-list">
-        <li><span style="color:var(--neon);">&#9679;</span> ETH Bollinger Strategy &mdash; <span style="color:var(--neon);">+3.51%</span></li>
-        <li><span style="color:var(--red);">&#9679;</span> BTC EMA Strategy &mdash; <span style="color:var(--red);">-1.53%</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> SOL Momentum &mdash; <span style="color:var(--blue);">+0.87% (paper)</span></li>
-        <li><span style="color:var(--muted);">&#9679;</span> Multi-asset Alpha &mdash; <span style="color:var(--muted);">Backtesting...</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> QCOM &mdash; <span style="color:var(--muted);">Qualcomm</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> CSCO &mdash; <span style="color:var(--muted);">Cisco</span></li>
       </ul>
-      <div class="chart-placeholder">Side-by-side comparison chart (coming soon)</div>
+    </div>
+
+    <!-- Wells Fargo SEP IRA -->
+    <div class="card">
+      <div class="card-title" style="font-size:16px;">WELLS FARGO SEP IRA</div>
+      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$26,629</div>
+      <ul class="sidebar-list">
+        <li><span style="color:var(--blue);">&#9679;</span> AMZN &mdash; <span style="color:var(--muted);">Amazon</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> GOOG &mdash; <span style="color:var(--muted);">Alphabet</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> META &mdash; <span style="color:var(--muted);">Meta Platforms</span></li>
+        <li><span style="color:var(--blue);">&#9679;</span> AAPL &mdash; <span style="color:var(--muted);">Apple</span></li>
+      </ul>
+    </div>
+
+    <!-- Fidelity 401K -->
+    <div class="card">
+      <div class="card-title" style="font-size:16px;">FIDELITY 401K</div>
+      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$281,375</div>
+      <ul class="sidebar-list">
+        <li><span style="color:var(--neon);">&#9679;</span> Fidelity Freedom Index 2040 &mdash; <span style="color:var(--muted);">Target Date Fund</span></li>
+      </ul>
+    </div>
+
+    <!-- Coinbase -->
+    <div class="card">
+      <div class="card-title" style="font-size:16px;">COINBASE</div>
+      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$36,314</div>
+      <ul class="sidebar-list">
+        <li><span style="color:var(--gold);">&#9679;</span> BTC &mdash; <span style="color:var(--muted);">Bitcoin</span></li>
+      </ul>
+    </div>
+
+    <!-- Total Summary -->
+    <div class="card" style="border-color:rgba(255,102,0,0.3);background:linear-gradient(135deg,rgba(255,102,0,0.06),rgba(255,102,0,0.02));">
+      <div class="card-title" style="font-size:16px;color:var(--gold);">TOTAL PORTFOLIO</div>
+      <div style="font-family:var(--font-display);font-size:42px;color:var(--gold);letter-spacing:2px;">$1,075,333</div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Snapshot as of ~March 20, 2026</div>
+      <div style="margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
+        Chase Brokerage: $718,726 | Roth IRA: $12,290 | SEP IRA: $26,629 | 401K: $281,375 | Coinbase: $36,314
+      </div>
+    </div>
+
+  </div>
+
+  <!-- P&L Per Project -->
+  <div style="margin-top:32px;">
+    <div class="card-title" style="font-size:18px;margin-bottom:16px;">P&amp;L PER PROJECT</div>
+    <div class="card" style="overflow-x:auto;">
+      <table class="vendor-table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Revenue</th>
+            <th>Cost</th>
+            <th>P&amp;L (Monthly)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">AiNFLGM</td>
+            <td style="color:var(--neon);">$5/mo (BMAC)</td>
+            <td>$0 (GitHub Pages free)</td>
+            <td style="color:var(--neon);">+$5</td>
+            <td><span class="pill pill-active">LIVE</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">trader9</td>
+            <td style="color:var(--muted);">$0</td>
+            <td>~$2/day (monitoring)</td>
+            <td style="color:var(--red);">-$60/mo</td>
+            <td><span class="pill pill-running">BUILDING</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">x9</td>
+            <td style="color:var(--muted);">$0</td>
+            <td>$0 (not launched)</td>
+            <td style="color:var(--muted);">$0</td>
+            <td><span class="pill pill-standby">CONCEPT</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">freeagent9</td>
+            <td style="color:var(--muted);">$0</td>
+            <td>$0 (pilot)</td>
+            <td style="color:var(--muted);">$0</td>
+            <td><span class="pill pill-standby">PILOT</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">underwriter9</td>
+            <td style="color:var(--muted);">$0</td>
+            <td>$0 (POC)</td>
+            <td style="color:var(--muted);">$0</td>
+            <td><span class="pill pill-standby">POC</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">Infrastructure</td>
+            <td style="color:var(--muted);">$0</td>
+            <td>~$15/mo (Twilio, domains)</td>
+            <td style="color:var(--red);">-$15</td>
+            <td><span class="pill pill-active">ACTIVE</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;">
+        <span style="color:var(--muted);">Net Monthly P&amp;L:</span>
+        <span style="color:var(--red);font-weight:500;">-$70/mo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Directory -->
+  <div style="margin-top:32px;">
+    <div class="card-title" style="font-size:18px;margin-bottom:16px;">COMPANY DIRECTORY</div>
+    <div class="card">
+      <table class="vendor-table">
+        <thead>
+          <tr>
+            <th>Entity / Resource</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">9 Enterprises LLC</td>
+            <td>Ohio SOS Doc 202608403826</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">AiNFLGM</td>
+            <td><a href="https://ainflgm.com" target="_blank">ainflgm.com</a></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">Dashboard</td>
+            <td><a href="https://ainflgm.com/dashboard.html" target="_blank">ainflgm.com/dashboard.html</a></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">Cloud Worker</td>
+            <td><a href="https://9-cloud-standin.789k6rym8v.workers.dev" target="_blank">9-cloud-standin.789k6rym8v.workers.dev</a></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">GitHub</td>
+            <td><a href="https://github.com/d925ng9t8k-wq/ainfl-gm" target="_blank">github.com/d925ng9t8k-wq/ainfl-gm</a></td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">Contact (Primary)</td>
+            <td>emailfishback@gmail.com</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">Contact (9e)</td>
+            <td>captain@ainflgm.com</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;color:var(--gold);">Telegram Bot</td>
+            <td>@ainflgm_bot</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
