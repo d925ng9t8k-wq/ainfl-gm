@@ -766,32 +766,55 @@ const server = http.createServer(async (req, res) => {
   }
 
   // ── POST /sms (Twilio webhook) ──
+  // Respond immediately with empty TwiML, then send reply async via Twilio API.
+  // This avoids Twilio's 15-second webhook timeout when Claude API is slow.
   if (req.method === 'POST' && url.pathname === '/sms') {
-    try {
-      const rawBody = await readBody(req);
-      const params     = parseFormBody(rawBody);
-      const inboundBody = params.Body || '';
-      const from        = params.From || 'unknown';
+    const rawBody = await readBody(req);
+    const params     = parseFormBody(rawBody);
+    const inboundBody = params.Body || '';
+    const from        = params.From || 'unknown';
 
-      if (!inboundBody.trim()) {
-        res.writeHead(200, { 'Content-Type': 'text/xml' });
-        res.end('<Response></Response>');
-        return;
+    // Respond to Twilio immediately (empty response = no inline reply)
+    res.writeHead(200, { 'Content-Type': 'text/xml' });
+    res.end('<Response></Response>');
+
+    if (!inboundBody.trim()) return;
+
+    // Process async — send reply via Twilio API
+    (async () => {
+      try {
+        const reply = await handleIncomingMessage(inboundBody, from);
+        // Send reply via Twilio REST API
+        const sid = process.env.TWILIO_ACCOUNT_SID;
+        const auth = process.env.TWILIO_AUTH_TOKEN;
+        const fromNum = TWILIO_FROM;
+        if (!sid || !auth || !fromNum) { log('Cannot send SMS reply — missing Twilio creds'); return; }
+        const msgData = `To=${encodeURIComponent(from)}&From=${encodeURIComponent(fromNum)}&Body=${encodeURIComponent(reply)}`;
+        const options = {
+          hostname: 'api.twilio.com',
+          path: `/2010-04-01/Accounts/${sid}/Messages.json`,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + Buffer.from(`${sid}:${auth}`).toString('base64'),
+          },
+          agent: twilioAgent,
+        };
+        const smsReq = https.request(options, (smsRes) => {
+          let body = '';
+          smsRes.on('data', c => body += c);
+          smsRes.on('end', () => {
+            try { const d = JSON.parse(body); log(`SMS reply sent to ${from}: ${d.status || 'unknown'}`); }
+            catch { log(`SMS reply response: ${body.slice(0, 200)}`); }
+          });
+        });
+        smsReq.on('error', (e) => log(`SMS reply error: ${e.message}`));
+        smsReq.write(msgData);
+        smsReq.end();
+      } catch (e) {
+        log(`SMS async handler error: ${e.message}`);
       }
-
-      const reply = await handleIncomingMessage(inboundBody, from);
-
-      const escaped = reply
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-      res.writeHead(200, { 'Content-Type': 'text/xml' });
-      res.end(`<Response><Message>${escaped}</Message></Response>`);
-    } catch (e) {
-      log(`SMS handler error: ${e.message}`);
-      res.writeHead(200, { 'Content-Type': 'text/xml' });
-      res.end('<Response><Message>Something went sideways. Try again in a sec.</Message></Response>');
-    }
+    })();
     return;
   }
 
