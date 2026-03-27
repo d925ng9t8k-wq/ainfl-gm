@@ -10,6 +10,7 @@
   <url><loc>https://ainflgm.com/season</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/markets</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://ainflgm.com/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
 
   <!-- All 32 NFL team pages -->
   <url><loc>https://ainflgm.com/cardinals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
