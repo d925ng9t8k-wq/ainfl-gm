@@ -311,6 +311,16 @@
       "role": "assistant",
       "content": "Not necessarily. Flood Zone X is actually the *lowest risk* — it's outside the 500-year floodplain. Most lenders don't require flood insurance for Zone X properties.\n\nThat said, it depends on your lender's overlay and the specific property. Some underwriters are more conservative. And if the borrower wants it anyway for peace of mind, that's their call.\n\nFor a specific file, check with your underwriter or your flood cert vendor — they'll flag if it's actually required based on the lender's guidelines and the flood determination letter.",
       "ts": 1774629222403
+    },
+    {
+      "role": "user",
+      "content": "stress test",
+      "ts": 1774631813346
+    },
+    {
+      "role": "assistant",
+      "content": "Got it — stress test acknowledged.\n\nSystems nominal. Ready for real work whenever Kyle texts.\n\n(And yeah, web chat UI needs fixing. 9 knows.)",
+      "ts": 1774631814766
     }
   ],
   "reminders": [],
