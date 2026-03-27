@@ -762,6 +762,31 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // Pilot message proxy — forwards web chat messages to pilot server on port 3472
+  // Supports CORS for cross-origin requests from ainflgm.com/pilot-chat.html
+  if (req.method === "OPTIONS" && (url.pathname === "/message" || url.pathname === "/pilot-message")) {
+    res.writeHead(200, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" });
+    res.end();
+    return;
+  }
+  if (req.method === "POST" && (url.pathname === "/message" || url.pathname === "/pilot-message")) {
+    let body = "";
+    req.on("data", c => body += c);
+    req.on("end", async () => {
+      try {
+        const proxyReq = http.request({ hostname: "127.0.0.1", port: 3472, path: "/message", method: "POST", headers: { "Content-Type": "application/json" } }, (proxyRes) => {
+          let proxyBody = "";
+          proxyRes.on("data", c => proxyBody += c);
+          proxyRes.on("end", () => { res.writeHead(proxyRes.statusCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }); res.end(proxyBody); });
+        });
+        proxyReq.on("error", () => { res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }); res.end(JSON.stringify({reply: "Pilot is restarting. Try again in a moment."})); });
+        proxyReq.write(body);
+        proxyReq.end();
+      } catch { res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }); res.end(JSON.stringify({reply: "Error routing to pilot."})); }
+    });
+    return;
+  }
+
   // SMS proxy — forwards incoming Twilio SMS to pilot server on port 3472
   if (req.method === "POST" && url.pathname === "/sms") {
     let body = "";
