@@ -762,6 +762,25 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // SMS proxy — forwards incoming Twilio SMS to pilot server on port 3472
+  if (req.method === "POST" && url.pathname === "/sms") {
+    let body = "";
+    req.on("data", c => body += c);
+    req.on("end", async () => {
+      try {
+        const proxyReq = http.request({ hostname: "127.0.0.1", port: 3472, path: "/sms", method: "POST", headers: { "Content-Type": req.headers["content-type"] || "application/x-www-form-urlencoded" } }, (proxyRes) => {
+          let proxyBody = "";
+          proxyRes.on("data", c => proxyBody += c);
+          proxyRes.on("end", () => { res.writeHead(proxyRes.statusCode, { "Content-Type": "text/xml" }); res.end(proxyBody); });
+        });
+        proxyReq.on("error", () => { res.writeHead(200, { "Content-Type": "text/xml" }); res.end("<Response><Message>Pilot is restarting. Try again in a minute.</Message></Response>"); });
+        proxyReq.write(body);
+        proxyReq.end();
+      } catch { res.writeHead(200, { "Content-Type": "text/xml" }); res.end("<Response><Message>Error routing to pilot.</Message></Response>"); }
+    });
+    return;
+  }
+
   // Telegram webhook — receives pushed messages instantly
   if (req.method === "POST" && url.pathname === "/telegram-webhook") {
     let body = "";
