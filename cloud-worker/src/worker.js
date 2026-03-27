@@ -153,7 +153,7 @@ async function isMacAlive(kv) {
     const bundle = await kv.get('mac-bundle', 'json');
     if (!bundle?.heartbeat) return false;
     const elapsed = Date.now() - bundle.heartbeat;
-    return elapsed < 600000; // 10 minutes (syncs every 5 min, so 2 missed = dead)
+    return elapsed < 300000; // 5 minutes (syncs every 2 min, so 2 missed = dead)
   } catch {
     return false;
   }
@@ -457,7 +457,7 @@ export default {
     }
 
     const elapsed = Date.now() - bundle.heartbeat;
-    const macAlive = elapsed < 600000; // 10 minutes (syncs every 5 min)
+    const macAlive = elapsed < 300000; // 5 minutes (syncs every 2 min)
 
     if (!macAlive && wasAlive === 'true') {
       await env.STATE.put('mac-status', 'false');

@@ -16,6 +16,7 @@ import https from 'https';
 import path from 'path';
 import { createServer } from 'http';
 import net from 'net';
+import nodemailer from 'nodemailer';
 
 // ─── Port Guard (check FIRST, before loading anything) ──────────────────────
 // Prevents LaunchAgent restart spam from burning Cloudflare quota
@@ -308,28 +309,31 @@ setInterval(() => {
 }, 30000);
 
 // ─── Freeze Detector ─────────────────────────────────────────────────────────
-// Reads /tmp/9-last-tool-call (written by check-messages.sh hook after every tool call).
-// If terminal is active but no tool call in 3+ minutes, 9 is likely frozen.
-// Sends ONE alert per freeze event. Only resets when a NEW tool call is detected
-// (timestamp in file advances), NOT on pings or inbox polls.
+// Session-aware rebuild (March 26, 2026).
+// Only monitors within an active session. Resets cleanly on session boundaries.
 let freezeAlertSent = false;
-let freezeAlertForTimestamp = 0; // Track which tool-call timestamp we alerted on
+let freezeAlertForTimestamp = 0;
+let freezeSessionToken = null; // Track which session we're monitoring
 const FREEZE_THRESHOLD_MS = 180000; // 3 minutes
 const LAST_TOOL_CALL_FILE = '/tmp/9-last-tool-call';
 
-// DISABLED March 26, 2026 — freeze detector was spamming Telegram with false warnings.
-// The reset logic (timestamp advance resets flag → new stale period → fires again) created
-// a repeating alert loop between sessions. Disabling entirely until DOC agent can rebuild
-// it properly with session-aware state. The ping timeout + PID watchdog above are sufficient
-// to detect a truly dead terminal.
-//
-// To re-enable: uncomment the setInterval block below and fix the reset logic.
-/*
 setInterval(() => {
+  // ── Guard 1: No terminal = nothing to monitor. Reset state cleanly.
   if (!terminalActive) {
     freezeAlertSent = false;
     freezeAlertForTimestamp = 0;
+    freezeSessionToken = null;
     return;
+  }
+
+  // ── Guard 2: Session boundary detection.
+  // If session token changed, this is a new session. Reset everything.
+  if (terminalSessionToken !== freezeSessionToken) {
+    freezeAlertSent = false;
+    freezeAlertForTimestamp = 0;
+    freezeSessionToken = terminalSessionToken;
+    log('Freeze detector: new session detected — reset state');
+    return; // Give the new session a full threshold window before monitoring
   }
 
   try {
@@ -337,6 +341,16 @@ setInterval(() => {
     const lastCallTs = parseInt(raw) * 1000;
     if (!lastCallTs || isNaN(lastCallTs)) return;
 
+    // ── Guard 3: Ignore tool calls from before this session started.
+    // terminalLastPing is set on /terminal/claim — use it as session start proxy.
+    // If the tool call timestamp predates the current session, skip it entirely.
+    const sessionStartApprox = terminalLastPing - 120000; // 2 min grace
+    if (lastCallTs < sessionStartApprox && !freezeAlertSent) {
+      // Stale timestamp from a previous session — not a freeze
+      return;
+    }
+
+    // Tool call advanced since last alert — 9 is alive, clear the flag
     if (freezeAlertSent && lastCallTs > freezeAlertForTimestamp) {
       freezeAlertSent = false;
       freezeAlertForTimestamp = 0;
@@ -363,7 +377,6 @@ setInterval(() => {
     }
   } catch {}
 }, 30000);
-*/
 
 // ─── Terminal Auto-Opener ────────────────────────────────────────────────────
 const TERMINAL_SIGNAL = '/tmp/9-open-terminal';
