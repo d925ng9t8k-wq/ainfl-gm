@@ -9,9 +9,12 @@ INCOMING="/tmp/9-incoming-message.jsonl"
 date +%s > /tmp/9-last-tool-call 2>/dev/null
 
 # First: check signal file (written by monitoring daemon)
+# FIX: use atomic mv instead of cat+rm to prevent race condition (messages written between read and delete are lost)
 if [ -f "$INCOMING" ] && [ -s "$INCOMING" ]; then
-  messages=$(cat "$INCOMING")
-  rm -f "$INCOMING"
+  TMPFILE="/tmp/9-incoming-processing-$$.jsonl"
+  mv "$INCOMING" "$TMPFILE" 2>/dev/null || exit 0
+  messages=$(cat "$TMPFILE")
+  rm -f "$TMPFILE"
 
   # Use python to properly JSON-escape the message content
   context=$(python3 -c "
