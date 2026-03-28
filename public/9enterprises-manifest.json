@@ -1,0 +1,24 @@
+{
+  "name": "9 Enterprises",
+  "short_name": "9enterprises",
+  "description": "The world's first autonomous AI business partner. Not a chatbot. Not a tool. A partner.",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "start_url": "./9enterprises.html",
+  "scope": "/",
+  "id": "/9enterprises.html",
+  "icons": [
+    {
+      "src": "9-brand.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "9-brand.jpg",
+      "sizes": "any",
+      "type": "image/jpeg"
+    }
+  ]
+}

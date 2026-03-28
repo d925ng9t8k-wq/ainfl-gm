@@ -14,13 +14,14 @@
 <meta name="description" content="9enterprises — The world's first autonomous AI business partner. Not a chatbot. Not a tool. A partner that builds, trades, creates, and operates businesses alongside you.">
 <meta property="og:title" content="9enterprises — The World's First Autonomous AI Business Partner">
 <meta property="og:description" content="Not a chatbot. Not a tool. A partner that builds, trades, creates, and operates businesses alongside you. 24/7. Autonomous. Elite.">
-<meta property="og:image" content="/og-preview.jpg">
+<meta property="og:image" content="/9-brand.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://9enterprises.com">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="9enterprises — Autonomous AI Business Partner">
 <meta name="twitter:description" content="Not a chatbot. A partner. 24/7 autonomous operation across 6 companies.">
-<link rel="manifest" href="/dashboard-manifest.json">
+<meta name="twitter:image" content="/9-brand.jpg">
+<link rel="manifest" href="/9enterprises-manifest.json">
 <title>9enterprises — The World's First Autonomous AI Business Partner</title>
 <style>
 /* ─── Reset & Base ─────────────────────────────────────────────────────── */
@@ -1646,6 +1647,9 @@ footer {
   </div>
 </section>
 
+<!-- Share button for PWA home screen -->
+<button id="share-btn" aria-label="Share" style="display:none;position:fixed;bottom:24px;right:24px;z-index:200;width:52px;height:52px;border-radius:50%;border:none;background:var(--purple);color:#fff;font-size:22px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(251,79,20,0.4);transition:transform 0.15s,box-shadow 0.15s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">&#x1F4E4;</button>
+
 <!-- ─── FOOTER ────────────────────────────────────────────────────────────── -->
 <footer>
   <div class="container">
@@ -1820,6 +1824,24 @@ footer {
       nav.style.background = 'rgba(5,5,8,0.75)';
     }
   }, { passive: true });
+})();
+
+/* ── Share button (Web Share API for PWA home screen) ─────────────────── */
+(function() {
+  const btn = document.getElementById('share-btn');
+  if (!btn) return;
+  if (navigator.share) {
+    btn.style.display = 'flex';
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.share({
+          title: '9 Enterprises — Autonomous AI Business Partner',
+          text: 'Not a chatbot. A partner. Check this out.',
+          url: window.location.href
+        });
+      } catch (e) { /* user cancelled */ }
+    });
+  }
 })();
 </script>
 </body>
