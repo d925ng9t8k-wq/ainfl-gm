@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* =====================================================
+   9 Enterprises Command Hub — Global Styles
+   Dark theme. Cyan / purple accent system.
+   ===================================================== */
+
+:root {
+  --bg-base:       #0a0a0f;
+  --bg-surface:    #111118;
+  --bg-elevated:   #1a1a24;
+  --border:        #2a2a38;
+  --text-primary:  #f0f0ff;
+  --text-secondary:#8888aa;
+  --accent-cyan:   #00e5ff;
+  --accent-purple: #a855f7;
+  --accent-amber:  #f59e0b;
+  --accent-red:    #ef4444;
+  --accent-green:  #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  min-height: 100dvh;
+  margin: 0;
+}
+
+/* Scrollbar — slim, dark */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* Focus ring using accent cyan */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* Utility: glowing cyan text */
+.glow-cyan {
+  text-shadow: 0 0 12px var(--accent-cyan);
+}
+
+/* Utility: surface card */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Status dot helpers */
+.dot-green  { background: var(--accent-green);  }
+.dot-amber  { background: var(--accent-amber);  }
+.dot-red    { background: var(--accent-red);    }
+.dot-purple { background: var(--accent-purple); }
+.dot-cyan   { background: var(--accent-cyan);   }
