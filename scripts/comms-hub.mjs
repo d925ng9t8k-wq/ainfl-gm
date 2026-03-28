@@ -328,10 +328,17 @@ setInterval(() => {
 // ─── Freeze Detector ─────────────────────────────────────────────────────────
 // Session-aware rebuild (March 26, 2026).
 // Only monitors within an active session. Resets cleanly on session boundaries.
+// Escalating tiers (March 27, 2026):
+//   Tier 1 (3 min): Alert + keystroke nudge
+//   Tier 2 (6 min): SIGTERM frozen Claude PID + Telegram alert
+//   Tier 3 (7 min): SIGKILL if still alive + write /tmp/9-open-terminal signal
 let freezeAlertSent = false;
 let freezeAlertForTimestamp = 0;
 let freezeSessionToken = null; // Track which session we're monitoring
-const FREEZE_THRESHOLD_MS = 180000; // 3 minutes
+let freezeTier = 0;            // Escalation tier (0=none, 1=nudge sent, 2=SIGTERM sent, 3=SIGKILL sent)
+const FREEZE_THRESHOLD_MS = 180000; // Tier 1: 3 minutes
+const FREEZE_TIER2_MS     = 360000; // Tier 2: 6 minutes
+const FREEZE_TIER3_MS     = 420000; // Tier 3: 7 minutes
 const LAST_TOOL_CALL_FILE = '/tmp/9-last-tool-call';
 
 setInterval(() => {
@@ -340,6 +347,7 @@ setInterval(() => {
     freezeAlertSent = false;
     freezeAlertForTimestamp = 0;
     freezeSessionToken = null;
+    freezeTier = 0;
     return;
   }
 
@@ -349,6 +357,7 @@ setInterval(() => {
     freezeAlertSent = false;
     freezeAlertForTimestamp = 0;
     freezeSessionToken = terminalSessionToken;
+    freezeTier = 0;
     log('Freeze detector: new session detected — reset state');
     return; // Give the new session a full threshold window before monitoring
   }
@@ -367,18 +376,21 @@ setInterval(() => {
       return;
     }
 
-    // Tool call advanced since last alert — 9 is alive, clear the flag
+    // Tool call advanced since last alert — 9 is alive, clear all escalation state
     if (freezeAlertSent && lastCallTs > freezeAlertForTimestamp) {
       freezeAlertSent = false;
       freezeAlertForTimestamp = 0;
+      freezeTier = 0;
       log('Freeze detector: tool call detected — 9 is active, alert cleared');
       return;
     }
 
     const age = Date.now() - lastCallTs;
+
+    // ── Tier 1 (3 min): Alert + keystroke nudge
     if (age > FREEZE_THRESHOLD_MS && !freezeAlertSent) {
       const ageMin = Math.round(age / 60000);
-      log(`FREEZE DETECTOR: No tool call in ${ageMin}+ minutes — terminal may be frozen`);
+      log(`FREEZE DETECTOR Tier 1: No tool call in ${ageMin}+ minutes — terminal may be frozen`);
 
       sendTelegram(`9: WARNING — Terminal may be frozen. No tool call in ${ageMin}+ minutes. Attempting to unblock.`).catch(() => {});
 
@@ -391,6 +403,62 @@ setInterval(() => {
 
       freezeAlertSent = true;
       freezeAlertForTimestamp = lastCallTs;
+      freezeTier = 1;
+    }
+
+    // ── Tier 2 (6 min): SIGTERM the frozen Claude PID
+    if (age > FREEZE_TIER2_MS && freezeTier === 1) {
+      const ageMin = Math.round(age / 60000);
+      log(`FREEZE DETECTOR Tier 2: No tool call in ${ageMin}+ minutes — sending SIGTERM to PID ${terminalPid}`);
+
+      sendTelegram('OC: Terminal frozen 6+ min — killing and restarting automatically.').catch(() => {});
+
+      if (terminalPid) {
+        try {
+          process.kill(terminalPid, 'SIGTERM');
+          log(`Freeze detector Tier 2: SIGTERM sent to PID ${terminalPid}`);
+        } catch (e) {
+          log(`Freeze detector Tier 2: SIGTERM failed — ${e.message}`);
+        }
+      } else {
+        log('Freeze detector Tier 2: no terminalPid stored — cannot SIGTERM');
+      }
+
+      freezeTier = 2;
+    }
+
+    // ── Tier 3 (7 min): SIGKILL if still alive + write open-terminal signal
+    if (age > FREEZE_TIER3_MS && freezeTier === 2) {
+      const ageMin = Math.round(age / 60000);
+      log(`FREEZE DETECTOR Tier 3: No tool call in ${ageMin}+ minutes — sending SIGKILL to PID ${terminalPid}`);
+
+      if (terminalPid) {
+        let pidStillAlive = false;
+        try { process.kill(terminalPid, 0); pidStillAlive = true; } catch {}
+
+        if (pidStillAlive) {
+          try {
+            process.kill(terminalPid, 'SIGKILL');
+            log(`Freeze detector Tier 3: SIGKILL sent to PID ${terminalPid}`);
+          } catch (e) {
+            log(`Freeze detector Tier 3: SIGKILL failed — ${e.message}`);
+          }
+        } else {
+          log(`Freeze detector Tier 3: PID ${terminalPid} already dead after SIGTERM — proceeding to reopen`);
+        }
+      } else {
+        log('Freeze detector Tier 3: no terminalPid stored — cannot SIGKILL');
+      }
+
+      // Clear terminal state — the ping loop will self-terminate once PID is dead
+      clearTerminalState();
+
+      // Write open-terminal signal — force=true bypasses the "Claude PIDs alive" skip
+      requestTerminal('Freeze detector Tier 3 — SIGKILL recovery', true);
+
+      freezeTier = 3;
+      freezeAlertSent = false; // Allow fresh detection in new session
+      freezeAlertForTimestamp = 0;
     }
   } catch {}
 }, 30000);
@@ -399,7 +467,7 @@ setInterval(() => {
 const TERMINAL_SIGNAL = '/tmp/9-open-terminal';
 let lastTerminalRequest = 0;
 
-function requestTerminal(reason) {
+function requestTerminal(reason, force = false) {
   // Don't spam — max once per 45 seconds (tight enough for retries, safe from spam)
   if (Date.now() - lastTerminalRequest < 45000) return;
   lastTerminalRequest = Date.now();
@@ -407,18 +475,23 @@ function requestTerminal(reason) {
   // FIX #2 (revised March 25): Don't open new terminals if Claude is running AND responsive.
   // Old logic checked PIDs only — zombie/frozen Claude processes blocked reopening.
   // New logic: if Claude PIDs exist BUT terminal hasn't pinged in 2+ minutes, those are zombies. Kill and reopen.
-  try {
-    const running = execSync('pgrep -a claude 2>/dev/null || true', { encoding: 'utf-8', timeout: 3000 }).trim();
-    if (running) {
-      const timeSinceLastPing = Date.now() - terminalLastPing;
-      if (timeSinceLastPing < TERMINAL_TIMEOUT) {
-        log(`Terminal open SKIPPED — Claude process running AND responsive (last ping ${Math.round(timeSinceLastPing/1000)}s ago). Reason was: ${reason}`);
-        return;
+  // force=true (used after SIGKILL) bypasses the "Claude PIDs alive" skip entirely.
+  if (!force) {
+    try {
+      const running = execSync('pgrep -a claude 2>/dev/null || true', { encoding: 'utf-8', timeout: 3000 }).trim();
+      if (running) {
+        const timeSinceLastPing = Date.now() - terminalLastPing;
+        if (timeSinceLastPing < TERMINAL_TIMEOUT) {
+          log(`Terminal open SKIPPED — Claude process running AND responsive (last ping ${Math.round(timeSinceLastPing/1000)}s ago). Reason was: ${reason}`);
+          return;
+        }
+        // Claude PIDs exist but no recent ping — zombie processes. Log and proceed with reopen.
+        log(`Terminal open PROCEEDING — Claude PIDs exist (${running.replace(/\n/g, ', ')}) but NO PING in ${Math.round(timeSinceLastPing/1000)}s. Likely frozen/zombie. Reason: ${reason}`);
       }
-      // Claude PIDs exist but no recent ping — zombie processes. Log and proceed with reopen.
-      log(`Terminal open PROCEEDING — Claude PIDs exist (${running.replace(/\n/g, ', ')}) but NO PING in ${Math.round(timeSinceLastPing/1000)}s. Likely frozen/zombie. Reason: ${reason}`);
-    }
-  } catch {}
+    } catch {}
+  } else {
+    log(`Terminal open FORCED — bypassing Claude PID check (post-SIGKILL recovery). Reason: ${reason}`);
+  }
 
   try {
     writeFileSync(TERMINAL_SIGNAL, reason);
