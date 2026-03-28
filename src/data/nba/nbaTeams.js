@@ -1,0 +1,36 @@
+// NBA Teams — 2025-26 season
+// Cap figures: $154.647M salary cap / $187.895M luxury tax / $195.945M first apron / $207.824M second apron
+// Approximate cap space based on Spotrac/HoopsHype data (March 2026)
+
+export const nbaTeams = [
+  { id: 1, name: 'Hawks', city: 'Atlanta', abbreviation: 'ATL', primaryColor: '#E03A3E', secondaryColor: '#C1D32F', conference: 'East', division: 'Southeast', capSpace: 18.2 },
+  { id: 2, name: 'Celtics', city: 'Boston', abbreviation: 'BOS', primaryColor: '#007A33', secondaryColor: '#BA9653', conference: 'East', division: 'Atlantic', capSpace: -41.2 },
+  { id: 3, name: 'Nets', city: 'Brooklyn', abbreviation: 'BKN', primaryColor: '#000000', secondaryColor: '#FFFFFF', conference: 'East', division: 'Atlantic', capSpace: 52.1 },
+  { id: 4, name: 'Hornets', city: 'Charlotte', abbreviation: 'CHA', primaryColor: '#1D1160', secondaryColor: '#00788C', conference: 'East', division: 'Southeast', capSpace: 24.8 },
+  { id: 5, name: 'Bulls', city: 'Chicago', abbreviation: 'CHI', primaryColor: '#CE1141', secondaryColor: '#000000', conference: 'East', division: 'Central', capSpace: 8.3 },
+  { id: 6, name: 'Cavaliers', city: 'Cleveland', abbreviation: 'CLE', primaryColor: '#860038', secondaryColor: '#041E42', conference: 'East', division: 'Central', capSpace: -22.4 },
+  { id: 7, name: 'Mavericks', city: 'Dallas', abbreviation: 'DAL', primaryColor: '#00538C', secondaryColor: '#002B5E', conference: 'West', division: 'Southwest', capSpace: -5.8 },
+  { id: 8, name: 'Nuggets', city: 'Denver', abbreviation: 'DEN', primaryColor: '#0E2240', secondaryColor: '#FEC524', conference: 'West', division: 'Northwest', capSpace: -18.6 },
+  { id: 9, name: 'Pistons', city: 'Detroit', abbreviation: 'DET', primaryColor: '#C8102E', secondaryColor: '#006BB6', conference: 'East', division: 'Central', capSpace: 31.4 },
+  { id: 10, name: 'Warriors', city: 'Golden State', abbreviation: 'GSW', primaryColor: '#1D428A', secondaryColor: '#FFC72C', conference: 'West', division: 'Pacific', capSpace: -28.9 },
+  { id: 11, name: 'Rockets', city: 'Houston', abbreviation: 'HOU', primaryColor: '#CE1141', secondaryColor: '#000000', conference: 'West', division: 'Southwest', capSpace: 12.7 },
+  { id: 12, name: 'Pacers', city: 'Indiana', abbreviation: 'IND', primaryColor: '#002D62', secondaryColor: '#FDBB30', conference: 'East', division: 'Central', capSpace: -8.1 },
+  { id: 13, name: 'Clippers', city: 'Los Angeles', abbreviation: 'LAC', primaryColor: '#C8102E', secondaryColor: '#1D428A', conference: 'West', division: 'Pacific', capSpace: -12.3 },
+  { id: 14, name: 'Lakers', city: 'Los Angeles', abbreviation: 'LAL', primaryColor: '#552583', secondaryColor: '#FDB927', conference: 'West', division: 'Pacific', capSpace: -19.4 },
+  { id: 15, name: 'Grizzlies', city: 'Memphis', abbreviation: 'MEM', primaryColor: '#5D76A9', secondaryColor: '#12173F', conference: 'West', division: 'Southwest', capSpace: -2.1 },
+  { id: 16, name: 'Heat', city: 'Miami', abbreviation: 'MIA', primaryColor: '#98002E', secondaryColor: '#F9A01B', conference: 'East', division: 'Southeast', capSpace: -14.7 },
+  { id: 17, name: 'Bucks', city: 'Milwaukee', abbreviation: 'MIL', primaryColor: '#00471B', secondaryColor: '#EEE1C6', conference: 'East', division: 'Central', capSpace: -24.1 },
+  { id: 18, name: 'Timberwolves', city: 'Minnesota', abbreviation: 'MIN', primaryColor: '#0C2340', secondaryColor: '#236192', conference: 'West', division: 'Northwest', capSpace: -31.8 },
+  { id: 19, name: 'Pelicans', city: 'New Orleans', abbreviation: 'NOP', primaryColor: '#0C2340', secondaryColor: '#C8102E', conference: 'West', division: 'Southwest', capSpace: 22.3 },
+  { id: 20, name: 'Knicks', city: 'New York', abbreviation: 'NYK', primaryColor: '#006BB6', secondaryColor: '#F58426', conference: 'East', division: 'Atlantic', capSpace: -35.2 },
+  { id: 21, name: 'Thunder', city: 'Oklahoma City', abbreviation: 'OKC', primaryColor: '#007AC1', secondaryColor: '#EF3B24', conference: 'West', division: 'Northwest', capSpace: -8.9 },
+  { id: 22, name: 'Magic', city: 'Orlando', abbreviation: 'ORL', primaryColor: '#0077C0', secondaryColor: '#C4CED4', conference: 'East', division: 'Southeast', capSpace: 14.6 },
+  { id: 23, name: '76ers', city: 'Philadelphia', abbreviation: 'PHI', primaryColor: '#006BB6', secondaryColor: '#ED174C', conference: 'East', division: 'Atlantic', capSpace: 7.2 },
+  { id: 24, name: 'Suns', city: 'Phoenix', abbreviation: 'PHX', primaryColor: '#1D1160', secondaryColor: '#E56020', conference: 'West', division: 'Pacific', capSpace: -11.3 },
+  { id: 25, name: 'Trail Blazers', city: 'Portland', abbreviation: 'POR', primaryColor: '#E03A3E', secondaryColor: '#000000', conference: 'West', division: 'Northwest', capSpace: 38.9 },
+  { id: 26, name: 'Kings', city: 'Sacramento', abbreviation: 'SAC', primaryColor: '#5A2D81', secondaryColor: '#63727A', conference: 'West', division: 'Pacific', capSpace: -4.6 },
+  { id: 27, name: 'Spurs', city: 'San Antonio', abbreviation: 'SAS', primaryColor: '#C4CED4', secondaryColor: '#000000', conference: 'West', division: 'Southwest', capSpace: 44.3 },
+  { id: 28, name: 'Raptors', city: 'Toronto', abbreviation: 'TOR', primaryColor: '#CE1141', secondaryColor: '#000000', conference: 'East', division: 'Atlantic', capSpace: 28.7 },
+  { id: 29, name: 'Jazz', city: 'Utah', abbreviation: 'UTA', primaryColor: '#002B5C', secondaryColor: '#00471B', conference: 'West', division: 'Northwest', capSpace: 47.1 },
+  { id: 30, name: 'Wizards', city: 'Washington', abbreviation: 'WAS', primaryColor: '#002B5C', secondaryColor: '#E31837', conference: 'East', division: 'Southeast', capSpace: 41.6 },
+];

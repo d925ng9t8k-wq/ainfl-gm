@@ -14,6 +14,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import AboutPage from './pages/AboutPage';
 import OwnerDashboardPage from './pages/OwnerDashboardPage';
 import MLBApp from './MLBApp';
+import NBAApp from './NBAApp';
 
 // Team slug to abbreviation mapping
 const TEAM_SLUGS = {
@@ -108,10 +109,12 @@ function NFLApp() {
   );
 }
 
-// Root router — splits NFL vs MLB at the top level
+// Root router — splits NFL vs NBA vs MLB at the top level
 export default function App() {
   return (
     <Routes>
+      {/* NBA routes — completely isolated from NFL state/layout */}
+      <Route path="/nba/*" element={<NBAApp />} />
       {/* MLB routes — completely isolated from NFL state/layout */}
       <Route path="/mlb/*" element={<MLBApp />} />
       {/* NFL routes — everything else */}

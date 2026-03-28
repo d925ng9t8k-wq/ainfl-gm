@@ -18,6 +18,12 @@ export default defineConfig({
           if (id.includes('src/data/allRosters')) {
             return 'data-rosters';
           }
+          if (id.includes('src/data/nba/nbaRosters')) {
+            return 'data-nba-rosters';
+          }
+          if (id.includes('src/data/nba/')) {
+            return 'data-nba-static';
+          }
           if (id.includes('src/data/')) {
             return 'data-static';
           }
