@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050508">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AiGM">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<meta name="description" content="AiGM — Be the GM. The AI general manager simulator for every major sport. NFL, NBA, MLB. Build your roster. Make the trades. Win the championship.">
+<meta property="og:title" content="AiGM — Be the GM">
+<meta property="og:description" content="The AI general manager simulator for every major sport. NFL, NBA, MLB. Build your roster. Make the trades. Win the championship.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aigm.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AiGM — Be the GM">
+<meta name="twitter:description" content="AI GM simulator. NFL live. NBA and MLB coming soon.">
+<link rel="manifest" href="/manifest.json">
+<title>AiGM — Be the GM</title>
+<style>
+/* ─── Reset & Base ──────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #050508;
+  --bg-2:       #0a0a12;
+  --bg-3:       #0f0f1a;
+  --bg-card:    #0d0d18;
+  --border:     rgba(255,255,255,0.07);
+  --border-hi:  rgba(255,255,255,0.12);
+  --purple:     #8a63ff;
+  --purple-2:   #6b46ff;
+  --purple-3:   #a78bfa;
+  --nfl-green:  #00c853;
+  --nba-orange: #f77f00;
+  --mlb-red:    #d62828;
+  --text:       #e2e2ef;
+  --text-dim:   #888899;
+  --text-mute:  #444455;
+  --white:      #ffffff;
+  --radius:     16px;
+  --radius-sm:  10px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--text-mute); border-radius: 3px; }
+
+/* ─── Animations ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+@keyframes scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(400%); }
+}
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.03; }
+  50%       { opacity: 0.06; }
+}
+
+.fade-up { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+
+/* ─── Layout ─────────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── Nav ────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(5,5,8,0.8);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo .ai { color: var(--purple); }
+
+.nav-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.nav-right { display: flex; align-items: center; gap: 16px; }
+
+.nav-cta {
+  display: inline-block;
+  background: var(--purple);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: var(--purple-2); transform: translateY(-1px); }
+
+/* ─── Hero ───────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Grid background */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(138,99,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(138,99,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Scan line */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(138,99,255,0.4), transparent);
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Radial glow */
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(ellipse at center, rgba(138,99,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--purple-3);
+  margin-bottom: 24px;
+  padding: 6px 16px;
+  border: 1px solid rgba(138,99,255,0.3);
+  border-radius: 20px;
+  background: rgba(138,99,255,0.08);
+}
+
+.hero h1 {
+  font-size: clamp(52px, 10vw, 96px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1.0;
+  margin-bottom: 8px;
+}
+
+.hero h1 .ai { color: var(--purple); }
+
+.hero-tagline {
+  font-size: clamp(20px, 3.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+}
+
+/* ─── Sport Selector ─────────────────────────────────────────── */
+.sport-selector {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.sport-tab {
+  padding: 10px 28px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.sport-tab.nfl { border-color: rgba(0,200,83,0.3); }
+.sport-tab.nfl:hover,
+.sport-tab.nfl.active { background: rgba(0,200,83,0.12); color: var(--nfl-green); border-color: var(--nfl-green); }
+
+.sport-tab.nba { border-color: rgba(247,127,0,0.3); }
+.sport-tab.nba:hover { background: rgba(247,127,0,0.12); color: var(--nba-orange); border-color: var(--nba-orange); }
+
+.sport-tab.mlb { border-color: rgba(214,40,40,0.3); }
+.sport-tab.mlb:hover { background: rgba(214,40,40,0.12); color: var(--mlb-red); border-color: var(--mlb-red); }
+
+.live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--nfl-green);
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: pulse 1.8s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+/* ─── Sport Cards ────────────────────────────────────────────── */
+.cards-section {
+  padding: 80px 0;
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--purple-3);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 56px;
+  line-height: 1.15;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.sport-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.2s;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+.sport-card:hover { transform: translateY(-4px); }
+
+/* Sport-specific top accents */
+.sport-card.nfl { border-top: 3px solid var(--nfl-green); }
+.sport-card.nfl:hover { border-color: var(--nfl-green); }
+
+.sport-card.nba { border-top: 3px solid var(--nba-orange); }
+.sport-card.nba:hover { border-color: var(--nba-orange); }
+
+.sport-card.mlb { border-top: 3px solid var(--mlb-red); }
+.sport-card.mlb:hover { border-color: var(--mlb-red); }
+
+/* Background glow per card */
+.sport-card.nfl::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 180px; height: 180px;
+  background: radial-gradient(ellipse, rgba(0,200,83,0.08), transparent 70%);
+  pointer-events: none;
+}
+.sport-card.nba::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 180px; height: 180px;
+  background: radial-gradient(ellipse, rgba(247,127,0,0.08), transparent 70%);
+  pointer-events: none;
+}
+.sport-card.mlb::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 180px; height: 180px;
+  background: radial-gradient(ellipse, rgba(214,40,40,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.card-icon {
+  font-size: 44px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1;
+}
+
+.card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.status-live {
+  background: rgba(0,200,83,0.12);
+  color: var(--nfl-green);
+  border: 1px solid rgba(0,200,83,0.3);
+}
+
+.status-soon {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-mute);
+  border: 1px solid var(--border);
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.card-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.card-features li {
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feat-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.nfl .feat-dot { background: var(--nfl-green); }
+.nba .feat-dot { background: var(--nba-orange); }
+.mlb .feat-dot { background: var(--mlb-red); }
+
+.card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.sport-card.nfl .card-action { color: var(--nfl-green); border-color: rgba(0,200,83,0.35); }
+.sport-card.nfl .card-action:hover { background: rgba(0,200,83,0.1); border-color: var(--nfl-green); }
+
+.sport-card.nba .card-action { color: var(--nba-orange); border-color: rgba(247,127,0,0.35); }
+.sport-card.nba .card-action:hover { background: rgba(247,127,0,0.1); border-color: var(--nba-orange); }
+
+.sport-card.mlb .card-action { color: var(--mlb-red); border-color: rgba(214,40,40,0.35); }
+.sport-card.mlb .card-action:hover { background: rgba(214,40,40,0.1); border-color: var(--mlb-red); }
+
+/* ─── Stats / Why Strip ──────────────────────────────────────── */
+.stats-section { padding: 80px 0; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.stat-item {
+  background: var(--bg-card);
+  padding: 36px 28px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-number span { color: var(--purple); }
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ─── AI Features Section ────────────────────────────────────── */
+.features-section { padding: 80px 0; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.feature-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 28px 24px;
+  transition: border-color 0.2s;
+}
+.feature-item:hover { border-color: rgba(138,99,255,0.4); }
+
+.feature-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feature-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.feature-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ─── AdSense Placeholder ────────────────────────────────────── */
+.ad-strip {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.ad-placeholder {
+  display: inline-block;
+  background: var(--bg-2);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px 40px;
+  color: var(--text-mute);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  min-width: 320px;
+}
+
+/* ─── CTA Section ────────────────────────────────────────────── */
+.cta-section {
+  padding: 100px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(138,99,255,0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-section h2 {
+  font-size: clamp(30px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 16px;
+  line-height: 1.15;
+  position: relative;
+}
+
+.cta-section p {
+  font-size: 17px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--purple);
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 32px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: var(--purple-2); transform: translateY(-2px); }
+
+.btn-ghost {
+  display: inline-block;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 32px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--border-hi); color: var(--white); }
+
+/* ─── Footer ─────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 24px;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.footer-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-brand .logo {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.footer-brand .logo .ai { color: var(--purple); }
+.footer-brand p {
+  font-size: 13px;
+  color: var(--text-mute);
+  max-width: 260px;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.footer-col h4 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--white); }
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.6;
+}
+
+.footer-disclosure {
+  font-size: 11px;
+  color: var(--text-mute);
+  max-width: 500px;
+  line-height: 1.6;
+  text-align: right;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .footer-top { flex-direction: column; }
+  .footer-disclosure { text-align: left; }
+  .nav-badge { display: none; }
+  .hero h1 { font-size: 58px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────────────── -->
+<nav>
+  <a href="/aigm.html" class="nav-logo"><span class="ai">Ai</span>GM</a>
+  <div class="nav-right">
+    <span class="nav-badge">All Sports</span>
+    <a href="https://ainflgm.com" class="nav-cta">Play AiNFL GM</a>
+  </div>
+</nav>
+
+<!-- ─── Hero ──────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow fade-up">AI General Manager Simulator</span>
+    <h1 class="fade-up delay-1"><span class="ai">Ai</span>GM</h1>
+    <p class="hero-tagline fade-up delay-2">Be the GM.</p>
+    <p class="hero-sub fade-up delay-3">Build your roster. Make the trades. Manage the cap. Simulate the season. Every major sport. One AI-powered platform.</p>
+
+    <div class="sport-selector fade-up delay-4">
+      <a href="https://ainflgm.com" class="sport-tab nfl active">
+        <span class="live-dot"></span>NFL — Live Now
+      </a>
+      <a href="/ainba.html" class="sport-tab nba">NBA — Coming Soon</a>
+      <a href="/aimlb.html" class="sport-tab mlb">MLB — Coming Soon</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Ad Strip ──────────────────────────────────────────────── -->
+<div class="ad-strip">
+  <div class="container">
+    <!-- AdSense unit — replace with actual ad code -->
+    <div class="ad-placeholder">Advertisement</div>
+  </div>
+</div>
+
+<!-- ─── Sport Cards ───────────────────────────────────────────── -->
+<section class="cards-section">
+  <div class="container">
+    <p class="section-label">Choose Your Sport</p>
+    <h2 class="section-title">Pick Your League. Run Your Franchise.</h2>
+
+    <div class="cards-grid">
+
+      <!-- NFL Card -->
+      <a href="https://ainflgm.com" class="sport-card nfl fade-up">
+        <span class="card-icon">🏈</span>
+        <span class="card-status status-live">
+          <span class="live-dot"></span> Live Now
+        </span>
+        <h3 class="card-title">AiNFL GM</h3>
+        <p class="card-desc">Take control of any NFL franchise. Manage your 53-man roster, navigate the salary cap, make blockbuster trades, and run the draft.</p>
+        <ul class="card-features">
+          <li><span class="feat-dot"></span>Full 32-team roster management</li>
+          <li><span class="feat-dot"></span>Live salary cap tracker</li>
+          <li><span class="feat-dot"></span>Trade machine + draft sim</li>
+          <li><span class="feat-dot"></span>Free agency + franchise tags</li>
+          <li><span class="feat-dot"></span>AI-powered suggestions</li>
+        </ul>
+        <span class="card-action">Play Now &rarr;</span>
+      </a>
+
+      <!-- NBA Card -->
+      <a href="/ainba.html" class="sport-card nba fade-up delay-1">
+        <span class="card-icon">🏀</span>
+        <span class="card-status status-soon">Coming Soon</span>
+        <h3 class="card-title">AiNBA GM</h3>
+        <p class="card-desc">Build your dynasty in the Association. Navigate max contracts, Bird rights, the two-apron system, and draft lottery strategy.</p>
+        <ul class="card-features">
+          <li><span class="feat-dot"></span>30-team roster management</li>
+          <li><span class="feat-dot"></span>Luxury tax + apron tracker</li>
+          <li><span class="feat-dot"></span>Max contract negotiation</li>
+          <li><span class="feat-dot"></span>Draft lottery simulator</li>
+          <li><span class="feat-dot"></span>Bird rights + trade exceptions</li>
+        </ul>
+        <span class="card-action">Join Waitlist &rarr;</span>
+      </a>
+
+      <!-- MLB Card -->
+      <a href="/aimlb.html" class="sport-card mlb fade-up delay-2">
+        <span class="card-icon">⚾</span>
+        <span class="card-status status-soon">Coming Soon</span>
+        <h3 class="card-title">AiMLB GM</h3>
+        <p class="card-desc">Win the pennant from the front office. Manage payroll vs the luxury tax, navigate arbitration, work the trade deadline, and build a contender.</p>
+        <ul class="card-features">
+          <li><span class="feat-dot"></span>Full 40-man roster management</li>
+          <li><span class="feat-dot"></span>Luxury tax tracker</li>
+          <li><span class="feat-dot"></span>Arbitration + free agency</li>
+          <li><span class="feat-dot"></span>Trade deadline simulator</li>
+          <li><span class="feat-dot"></span>Rule 5 draft + minor leagues</li>
+        </ul>
+        <span class="card-action">Join Waitlist &rarr;</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── Stats Strip ────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">3<span>+</span></div>
+        <div class="stat-label">Sports covered across<br>NFL, NBA, MLB</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">92<span>+</span></div>
+        <div class="stat-label">Teams to manage<br>across all leagues</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number"><span>#</span>1</div>
+        <div class="stat-label">AI GM simulator<br>built for real fans</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100<span>%</span></div>
+        <div class="stat-label">Free to play —<br>no signup required</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AI Features ───────────────────────────────────────────── -->
+<section class="features-section" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <p class="section-label" style="text-align:center;">Why AiGM</p>
+    <h2 class="section-title">Built for the Fan Who Thinks Like a GM</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">🤖</span>
+        <div class="feature-title">AI-Powered Suggestions</div>
+        <p class="feature-desc">Real-time recommendations on roster moves, cap decisions, and trade targets based on your team's needs.</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">📊</span>
+        <div class="feature-title">Real Cap Numbers</div>
+        <p class="feature-desc">Actual contracts, real salary data. Not made-up numbers. Make decisions with the same information real GMs use.</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🔁</span>
+        <div class="feature-title">Trade Machine</div>
+        <p class="feature-desc">Propose any deal. The engine validates it against league rules, salary matching, and team needs instantly.</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🏆</span>
+        <div class="feature-title">Season Simulator</div>
+        <p class="feature-desc">See how your roster changes play out over a full season. Playoff seeding, injuries, breakouts — all simulated.</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">💾</span>
+        <div class="feature-title">Save Your Scenarios</div>
+        <p class="feature-desc">Save multiple roster builds and compare them side by side. Never lose a brilliant trade idea again.</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">📱</span>
+        <div class="feature-title">Mobile First</div>
+        <p class="feature-desc">Built for phones. Manage your roster from the couch, the game, or anywhere. No app download required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Start with the NFL.<br>More leagues dropping soon.</h2>
+    <p>AiNFL GM is live and free. NBA and MLB are in development — get on the list.</p>
+    <div class="cta-buttons">
+      <a href="https://ainflgm.com" class="btn-primary">Play AiNFL GM Free</a>
+      <a href="/ainba.html" class="btn-ghost">NBA Waitlist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span class="ai">Ai</span>GM</div>
+        <p>The AI general manager simulator for every major sport. Built by <a href="https://9enterprises.com" style="color:var(--purple-3);text-decoration:none;">9enterprises</a>.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Sports</h4>
+          <a href="https://ainflgm.com">AiNFL GM</a>
+          <a href="/ainba.html">AiNBA GM</a>
+          <a href="/aimlb.html">AiMLB GM</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="https://9enterprises.com">9enterprises</a>
+          <a href="/about.html">About</a>
+          <a href="/privacy.html">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; 2026 9enterprises LLC. All rights reserved.<br>
+        AiGM is an independent simulation product and is not affiliated with, endorsed by, or sponsored by the NFL, NBA, MLB, or any professional sports league.
+      </p>
+      <p class="footer-disclosure">
+        <strong>Affiliate Disclosure:</strong> AiGM may contain links to third-party sportsbook and DFS platforms. We may earn a commission if you sign up through our links. This does not affect our editorial content. Please gamble responsibly. 21+.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Intersection Observer for fade-up animations
+document.addEventListener('DOMContentLoaded', () => {
+  const els = document.querySelectorAll('.fade-up');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animationPlayState = 'running';
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => {
+    el.style.animationPlayState = 'paused';
+    obs.observe(el);
+  });
+});
+</script>
+
+</body>
+</html>
