@@ -68,15 +68,18 @@
       }
       .emoji { font-size: 40px; margin-bottom: 16px; }
     </style>
-    <!-- Redirect to home page after 4 seconds -->
-    <meta http-equiv="refresh" content="4;url=/" />
     <script>
-      // For GitHub Pages SPA support: preserve the path in sessionStorage
-      // so the React router can pick it up after redirect
+      // GitHub Pages SPA redirect — instant, no 404 flash
+      // Preserves /nba, /mlb, and all other SPA routes
       (function() {
         var path = window.location.pathname;
         if (path && path !== '/' && path !== '/index.html') {
-          sessionStorage.setItem('redirect_path', path);
+          // Redirect to root with path encoded in query string
+          // index.html script picks this up and restores the route
+          window.location.replace(
+            window.location.origin + '/?p=' +
+            encodeURIComponent(path + window.location.search + window.location.hash)
+          );
         }
       })();
     </script>
