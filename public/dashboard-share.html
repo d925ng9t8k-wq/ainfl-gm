@@ -8,1459 +8,353 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="9enterprises">
 <link rel="apple-touch-icon" sizes="180x180" href="9-brand.jpg">
-<meta name="theme-color" content="#0f0f1f">
-<title>9enterprises — Command Center</title>
-<link rel="manifest" href="dashboard-manifest.json">
+<meta name="theme-color" content="#0a0a14">
+<meta name="description" content="9 Enterprises — The Franchise. 7 companies. AI-native startup portfolio.">
+<title>9enterprises — Company Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ========== RESET & BASE ========== */
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#0f0f1f;--bg2:#16213e;--bg3:#1a2744;
-  --neon:#64ffda;--blue:#00e5ff;--gold:#FF6600;
-  --red:#ff2d55;--purple:#c300ff;--orange:#e87722;--pink:#ff69b4;
-  --text:#f0f0f0;--muted:#8892b0;--dim:#334155;
-  --glass:rgba(22,33,62,0.65);--glassBorder:rgba(0,229,255,0.12);
+  --bg:#0a0a14;--bg2:#0f0f1f;--bg3:#141428;--bg4:#1a1a30;
+  --neon:#64ffda;--cyan:#00e5ff;--gold:#FF6600;--orange:#e87722;
+  --red:#ff2d55;--purple:#b060ff;--pink:#ff50c8;--yellow:#ffd700;
+  --text:#e8e8f0;--muted:#8892b0;--dim:#2a2a44;
+  --glass:rgba(15,15,31,0.72);--glassBorder:rgba(0,229,255,0.10);
+  --glassBorderHover:rgba(0,229,255,0.22);
   --font-display:'Bebas Neue',sans-serif;
-  --font-body:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
   --font-mono:'DM Mono',monospace;
+  --r:12px;--r-sm:8px;--r-lg:16px;
 }
 html{scroll-behavior:smooth;}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-a{color:var(--blue);text-decoration:none;}
-::-webkit-scrollbar{width:6px;height:6px;}
+a{color:var(--cyan);text-decoration:none;}
+::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:var(--bg2);}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
-
-/* ========== ANIMATIONS ========== */
-@keyframes pulse-green{0%,100%{box-shadow:0 0 4px var(--neon);}50%{box-shadow:0 0 16px var(--neon);}}
-@keyframes glow-orange{0%,100%{box-shadow:0 0 8px rgba(255,102,0,0.3);}50%{box-shadow:0 0 24px rgba(255,102,0,0.6);}}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(0,229,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+body::after{content:'';position:fixed;top:0;left:0;width:100%;height:3px;background:linear-gradient(transparent,rgba(0,229,255,0.04),transparent);z-index:9999;pointer-events:none;animation:scanline 8s linear infinite;}
+@keyframes pulse-orange{0%,100%{box-shadow:0 0 6px rgba(255,102,0,0.3);}50%{box-shadow:0 0 16px rgba(255,102,0,0.7);}}
 @keyframes ticker-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-@keyframes pulse-red{0%,100%{box-shadow:0 0 4px rgba(255,45,85,0.4);}50%{box-shadow:0 0 18px rgba(255,45,85,0.8);}}
-.fade-in{animation:fadeIn 0.4s ease both;}
-
-/* ========== TOP BAR ========== */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 24px;
-  padding-top:calc(12px + env(safe-area-inset-top));
-  padding-left:calc(24px + env(safe-area-inset-left));
-  padding-right:calc(24px + env(safe-area-inset-right));
-  background:linear-gradient(135deg,#0f0f1f 0%,#16213e 100%);
-  border-bottom:1px solid var(--glassBorder);
-  position:sticky;top:0;z-index:100;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-}
-.topbar-left{display:flex;align-items:center;gap:14px;}
-.logo-9{
-  font-family:var(--font-display);font-size:42px;line-height:1;
-  background:linear-gradient(135deg,#FF6600,#ff8844);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  filter:drop-shadow(0 0 20px rgba(255,102,0,0.5));
-  animation:glow-orange 3s ease-in-out infinite;
-}
-.topbar-title{font-family:var(--font-display);font-size:22px;letter-spacing:3px;color:var(--text);}
-.topbar-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:1px;}
-.topbar-right{display:flex;align-items:center;gap:20px;}
-.live-clock{font-family:var(--font-mono);font-size:14px;color:var(--blue);letter-spacing:1px;}
-.status-live{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--font-mono);font-size:11px;color:var(--neon);letter-spacing:1px;text-transform:uppercase;
-}
-.status-dot{
-  width:8px;height:8px;border-radius:50%;background:var(--neon);
-  animation:pulse-green 2s ease-in-out infinite;
-}
-
-/* ========== TICKER ========== */
-.ticker-wrap{
-  background:rgba(0,229,255,0.04);border-bottom:1px solid var(--glassBorder);
-  overflow:hidden;height:32px;display:flex;align-items:center;
-}
-.ticker-track{
-  display:flex;white-space:nowrap;
-  animation:ticker-scroll 40s linear infinite;
-}
-.ticker-item{
-  font-family:var(--font-mono);font-size:12px;color:var(--muted);
-  padding:0 32px;display:flex;align-items:center;gap:8px;
-}
-.ticker-item .val{color:var(--neon);font-weight:500;}
-.ticker-item .val-gold{color:var(--gold);font-weight:500;}
-.ticker-item .val-blue{color:var(--blue);font-weight:500;}
-.ticker-sep{color:var(--dim);margin:0 4px;}
-
-/* ========== NAV TABS ========== */
-.nav-tabs{
-  display:flex;gap:2px;padding:8px 24px;
-  background:var(--bg);border-bottom:1px solid var(--glassBorder);
-  position:sticky;top:58px;z-index:99;
-  overflow-x:auto;
-}
-.nav-tab{
-  font-family:var(--font-display);font-size:16px;letter-spacing:2px;
-  padding:10px 24px;border:none;background:transparent;color:var(--muted);
-  cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;
-  text-transform:uppercase;white-space:nowrap;
-}
-.nav-tab:hover{color:var(--text);background:rgba(0,229,255,0.04);}
-.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(255,102,0,0.06);}
-
-/* ========== TAB CONTENT ========== */
-.tab-content{display:none;padding:24px;max-width:1440px;margin:0 auto;}
-.tab-content.active{display:block;}
-
-/* ========== GLASS CARD ========== */
-.card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:12px;
-  padding:20px;position:relative;overflow:hidden;
-  transition:border-color 0.3s,box-shadow 0.3s;
-}
-.card:hover{border-color:rgba(0,229,255,0.25);box-shadow:0 0 20px rgba(0,229,255,0.06);}
-.card-title{
-  font-family:var(--font-display);font-size:15px;letter-spacing:2px;
-  color:var(--blue);text-transform:uppercase;margin-bottom:14px;
-  display:flex;align-items:center;gap:8px;
-}
-
-/* ========== STAT CARDS ========== */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
-.stat-card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:12px;
-  padding:20px 22px;text-align:center;
-}
-.stat-card .stat-num{
-  font-family:var(--font-display);font-size:48px;line-height:1;
-  background:linear-gradient(135deg,var(--gold),var(--orange));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.stat-card .stat-label{
-  font-family:var(--font-mono);font-size:11px;color:var(--muted);
-  text-transform:uppercase;letter-spacing:2px;margin-top:6px;
-}
-
-/* Status pills */
-.pill{
-  display:inline-block;padding:2px 10px;border-radius:20px;
-  font-family:var(--font-mono);font-size:10px;font-weight:500;
-  letter-spacing:1px;text-transform:uppercase;
-}
-.pill-active{background:rgba(100,255,218,0.12);color:var(--neon);border:1px solid rgba(100,255,218,0.25);}
-.pill-running{background:rgba(0,229,255,0.12);color:var(--blue);border:1px solid rgba(0,229,255,0.25);}
-.pill-pending{background:rgba(255,102,0,0.12);color:var(--gold);border:1px solid rgba(255,102,0,0.25);}
-.pill-blocked{background:rgba(255,45,85,0.12);color:var(--red);border:1px solid rgba(255,45,85,0.25);}
-.pill-standby{background:rgba(100,116,139,0.12);color:var(--muted);border:1px solid rgba(100,116,139,0.25);}
-.pill-done{background:rgba(100,255,218,0.12);color:var(--neon);border:1px solid rgba(100,255,218,0.25);}
-.pill-in-progress{background:rgba(0,229,255,0.12);color:var(--blue);border:1px solid rgba(0,229,255,0.25);}
-.pill-concept{background:rgba(136,146,176,0.12);color:var(--muted);border:1px solid rgba(136,146,176,0.25);}
-.pill-researching{background:rgba(255,102,0,0.12);color:var(--gold);border:1px solid rgba(255,102,0,0.25);}
-.pill-building{background:rgba(0,229,255,0.12);color:var(--blue);border:1px solid rgba(0,229,255,0.25);}
-.pill-greenlit{background:rgba(100,255,218,0.15);color:var(--neon);border:1px solid rgba(100,255,218,0.35);}
-.pill-parked{background:rgba(136,146,176,0.12);color:var(--muted);border:1px solid rgba(136,146,176,0.25);}
-.pill-killed{background:rgba(255,45,85,0.12);color:var(--red);border:1px solid rgba(255,45,85,0.25);}
-.pill-hopper{background:rgba(195,0,255,0.12);color:var(--purple);border:1px solid rgba(195,0,255,0.25);}
-
-/* Tags */
-.tag{
-  display:inline-block;padding:2px 8px;border-radius:4px;
-  font-family:var(--font-mono);font-size:9px;
-  background:rgba(0,229,255,0.08);color:var(--blue);
-  margin-right:4px;margin-top:4px;letter-spacing:0.5px;
-}
-
-/* ========== GUIDING INTENTION ========== */
-.intention-wrap{
-  background:linear-gradient(135deg,rgba(22,33,62,0.9) 0%,rgba(26,39,68,0.95) 100%);
-  border-top:2px solid var(--gold);
-  border-bottom:1px solid var(--glassBorder);
-  padding:0;position:relative;
-}
-.intention-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 24px;cursor:pointer;user-select:none;
-}
-.intention-label{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--font-display);font-size:17px;letter-spacing:2px;color:var(--gold);
-}
-.intention-icon{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(255,102,0,0.6);}
-.intention-toggle{
-  font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:1px;
-  display:flex;align-items:center;gap:6px;transition:color 0.2s;
-}
-.intention-toggle:hover{color:var(--gold);}
-.intention-toggle .chevron{display:inline-block;transition:transform 0.25s ease;font-size:10px;}
-.intention-wrap.collapsed .intention-toggle .chevron{transform:rotate(-90deg);}
-.intention-body{
-  padding:0 24px 20px 24px;overflow:hidden;
-  transition:max-height 0.35s ease,opacity 0.3s ease;
-  max-height:600px;opacity:1;
-}
-.intention-wrap.collapsed .intention-body{max-height:0;opacity:0;padding-bottom:0;}
-.intention-divider{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:18px;opacity:0.3;}
-.intention-text{font-family:var(--font-body);font-size:14px;line-height:1.8;color:var(--text);max-width:900px;}
-.intention-text strong{color:var(--gold);font-weight:600;}
-.intention-text p{margin-bottom:10px;}
-.intention-text p:last-child{margin-bottom:0;}
-
-/* ========== THE HOPPER ========== */
-.hopper-wrap{
-  background:linear-gradient(135deg,rgba(195,0,255,0.06),rgba(22,33,62,0.8));
-  border-bottom:1px solid rgba(195,0,255,0.2);
-  padding:0;
-}
-.hopper-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 24px;cursor:pointer;user-select:none;
-}
-.hopper-label{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--font-display);font-size:17px;letter-spacing:2px;color:var(--purple);
-}
-.hopper-icon{width:8px;height:8px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px rgba(195,0,255,0.6);}
-.hopper-count{
-  font-family:var(--font-mono);font-size:11px;color:var(--muted);
-  background:rgba(195,0,255,0.1);border:1px solid rgba(195,0,255,0.2);
-  border-radius:20px;padding:2px 10px;letter-spacing:1px;
-}
-.hopper-toggle{
-  font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:1px;
-  display:flex;align-items:center;gap:6px;
-}
-.hopper-toggle .chevron{display:inline-block;transition:transform 0.25s ease;font-size:10px;}
-.hopper-wrap.collapsed .hopper-toggle .chevron{transform:rotate(-90deg);}
-.hopper-body{
-  padding:0 24px 20px 24px;overflow:hidden;
-  transition:max-height 0.35s ease,opacity 0.3s ease;
-  max-height:800px;opacity:1;
-}
-.hopper-wrap.collapsed .hopper-body{max-height:0;opacity:0;padding-bottom:0;}
-.hopper-table-wrap{overflow-x:auto;}
-.hopper-table{width:100%;border-collapse:collapse;}
-.hopper-table th{
-  font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--purple);
-  text-align:left;padding:8px 12px;border-bottom:1px solid rgba(195,0,255,0.2);
-  text-transform:uppercase;
-}
-.hopper-table td{
-  font-family:var(--font-mono);font-size:12px;color:var(--text);
-  padding:10px 12px;border-bottom:1px solid rgba(195,0,255,0.06);vertical-align:top;
-}
-.hopper-table tr:hover td{background:rgba(195,0,255,0.04);}
-.hopper-type{
-  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;
-  padding:2px 8px;border-radius:4px;white-space:nowrap;
-}
-.hopper-type.business{background:rgba(255,102,0,0.1);color:var(--gold);}
-.hopper-type.task{background:rgba(0,229,255,0.1);color:var(--blue);}
-.hopper-type.mod{background:rgba(100,255,218,0.1);color:var(--neon);}
-.hopper-name{font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
-.hopper-desc{font-size:11px;color:var(--muted);line-height:1.4;}
-
-/* ========== COMPANY SILOS ========== */
-.silos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px;margin-top:0;}
-.silo-card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:14px;
-  padding:20px;transition:border-color 0.3s,box-shadow 0.3s;
-  display:flex;flex-direction:column;gap:14px;
-}
-.silo-card:hover{box-shadow:0 0 24px rgba(0,229,255,0.07);}
-.silo-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-.silo-name{font-family:var(--font-display);font-size:26px;letter-spacing:3px;}
-.silo-url{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:2px;}
-.silo-divider{height:1px;background:var(--glassBorder);}
-.silo-pl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.silo-pl-item{text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px;}
-.silo-pl-num{font-family:var(--font-display);font-size:20px;line-height:1;}
-.silo-pl-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
-.silo-roadmap{display:flex;flex-direction:column;gap:6px;}
-.silo-roadmap-title{font-family:var(--font-mono);font-size:10px;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.silo-milestone{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--font-mono);font-size:11px;color:var(--muted);
-  padding:5px 8px;background:rgba(255,255,255,0.02);border-radius:6px;
-}
-.silo-milestone-num{
-  width:18px;height:18px;border-radius:50%;
-  background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:9px;color:var(--blue);flex-shrink:0;
-}
-.silo-gauge-wrap{margin-top:2px;}
-.silo-gauge-label{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:4px;}
-.silo-gauge{width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
-.silo-gauge-fill{height:100%;border-radius:3px;}
-.silo-team{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
-.silo-team span{color:var(--blue);}
-.silo-links{display:flex;gap:8px;flex-wrap:wrap;}
-.silo-link{
-  font-family:var(--font-mono);font-size:10px;letter-spacing:0.5px;
-  padding:3px 10px;border-radius:4px;
-  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.12);
-  color:var(--blue);transition:all 0.2s;
-}
-.silo-link:hover{background:rgba(0,229,255,0.12);color:var(--blue);}
-
-/* ========== SIDEBAR ========== */
-.sidebar{display:flex;flex-direction:column;gap:16px;}
-.sidebar .card{padding:16px 18px;}
-.sidebar-list{list-style:none;}
-.sidebar-list li{
-  padding:8px 0;border-bottom:1px solid rgba(0,229,255,0.06);
-  font-size:12px;display:flex;align-items:center;gap:8px;
-}
-.sidebar-list li:last-child{border-bottom:none;}
-.check{color:var(--neon);font-family:var(--font-mono);}
-.pending-icon{color:var(--gold);font-family:var(--font-mono);}
-
-/* ========== OVERVIEW LAYOUT ========== */
-.overview-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:24px;}
-.overview-main{display:flex;flex-direction:column;gap:24px;}
-
-/* ========== AGENT GRID ========== */
-.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
-.agent-card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:10px;
-  padding:16px 18px;transition:all 0.25s;
-}
-.agent-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
-.agent-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.agent-name-small{font-family:var(--font-display);font-size:22px;letter-spacing:2px;}
-.agent-role-small{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.agent-desc-small{font-size:12px;color:var(--muted);margin:6px 0 8px;line-height:1.5;}
-
-/* ========== ORG CHART ========== */
-.org-chart{text-align:center;padding:30px 0;}
-.org-level{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:20px 0;}
-.org-connector{width:2px;height:30px;background:var(--glassBorder);margin:0 auto;}
-.org-connector-h{display:flex;justify-content:center;margin:10px 0;position:relative;}
-.org-connector-h::before{content:'';position:absolute;top:50%;left:10%;right:10%;height:1px;background:var(--glassBorder);}
-.org-node{
-  background:var(--glass);border:1px solid var(--glassBorder);
-  border-radius:10px;padding:14px 20px;min-width:140px;
-  display:inline-block;position:relative;
-}
-.org-node.owner{border-color:var(--neon);box-shadow:0 0 20px rgba(100,255,218,0.15);}
-.org-node.ceo{border-color:var(--gold);box-shadow:0 0 20px rgba(255,102,0,0.2);animation:glow-orange 3s ease-in-out infinite;}
-.org-node-title{font-family:var(--font-display);font-size:18px;letter-spacing:2px;}
-.org-node-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
-.org-agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;max-width:1200px;margin:0 auto;}
-.org-agent-node{
-  background:var(--glass);border:1px solid var(--glassBorder);
-  border-radius:10px;padding:14px 16px;text-align:left;
-}
-.org-agent-name{font-family:var(--font-display);font-size:20px;letter-spacing:2px;margin-bottom:2px;}
-.org-agent-role{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;}
-.wave-section{margin-top:32px;padding:20px;border:1px dashed var(--dim);border-radius:10px;}
-.wave-title{font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;}
-.wave-items{display:flex;flex-wrap:wrap;gap:10px;}
-.wave-item{
-  background:rgba(100,116,139,0.08);border:1px dashed var(--dim);
-  border-radius:8px;padding:10px 16px;font-size:12px;color:var(--muted);min-width:140px;
-}
-.wave-item .wave-item-name{font-family:var(--font-display);font-size:14px;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
-
-/* ========== TERMINAL ========== */
-.terminal-wrap{display:grid;grid-template-columns:1fr 260px;gap:16px;height:calc(100vh - 200px);min-height:500px;}
-.terminal-window{
-  background:#0c0c0c;border:1px solid var(--glassBorder);border-radius:10px;
-  display:flex;flex-direction:column;overflow:hidden;
-}
-.terminal-titlebar{
-  background:#1a1a2e;padding:8px 14px;display:flex;align-items:center;gap:8px;
-  border-bottom:1px solid var(--glassBorder);
-}
-.terminal-dot{width:10px;height:10px;border-radius:50%;}
-.terminal-dot.r{background:#ff5f57;}.terminal-dot.y{background:#febc2e;}.terminal-dot.g{background:#28c840;}
-.terminal-title-text{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-left:8px;}
-.terminal-output{
-  flex:1;overflow-y:auto;padding:16px;
-  font-family:var(--font-mono);font-size:13px;line-height:1.7;color:var(--neon);
-}
-.terminal-output .line-info{color:var(--blue);}
-.terminal-output .line-warn{color:var(--gold);}
-.terminal-output .line-error{color:var(--red);}
-.terminal-output .line-muted{color:var(--muted);}
-.terminal-output .line-system{color:var(--purple);}
-.terminal-input-row{
-  display:flex;align-items:center;padding:10px 16px;
-  border-top:1px solid var(--glassBorder);background:#0e0e0e;
-}
-.terminal-prompt{font-family:var(--font-mono);font-size:13px;color:var(--gold);margin-right:8px;white-space:nowrap;}
-.terminal-input{
-  flex:1;background:transparent;border:none;outline:none;
-  font-family:var(--font-mono);font-size:13px;color:var(--neon);caret-color:var(--neon);
-}
-.terminal-sidebar{display:flex;flex-direction:column;gap:12px;}
-.cmd-btn{
-  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
-  border-radius:8px;padding:10px 14px;cursor:pointer;
-  font-family:var(--font-mono);font-size:11px;color:var(--blue);
-  text-align:left;transition:all 0.2s;
-}
-.cmd-btn:hover{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3);}
-.agent-select{
-  background:var(--bg2);border:1px solid var(--glassBorder);border-radius:8px;
-  padding:10px 14px;font-family:var(--font-mono);font-size:12px;
-  color:var(--text);width:100%;outline:none;appearance:none;cursor:pointer;
-}
-
-/* ========== SPRINT LOG ========== */
-.timeline{position:relative;padding-left:30px;}
-.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--glassBorder);}
-.timeline-entry{position:relative;margin-bottom:20px;animation:fadeIn 0.4s ease both;}
-.timeline-dot{position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid var(--blue);background:var(--bg);}
-.timeline-dot.done{background:var(--neon);border-color:var(--neon);}
-.timeline-time{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
-.timeline-title{font-family:var(--font-display);font-size:16px;letter-spacing:1px;margin:2px 0;}
-.timeline-desc{font-size:12px;color:var(--muted);line-height:1.5;}
-
-/* ========== BURN RATE ========== */
-.burn-gauge{width:100%;height:24px;background:rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;position:relative;margin:12px 0 8px;}
-.burn-gauge-fill{height:100%;border-radius:12px;transition:width 0.8s ease;}
-.burn-gauge-fill.green{background:linear-gradient(90deg,#1a8a5e,var(--neon));box-shadow:0 0 12px rgba(100,255,218,0.3);}
-.burn-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
-.burn-stat{text-align:center;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;}
-.burn-stat-num{font-family:var(--font-display);font-size:28px;line-height:1;}
-.burn-stat-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
-
-/* ========== VENDOR TABLE ========== */
-.vendor-table{width:100%;border-collapse:collapse;margin-top:12px;}
-.vendor-table th{
-  font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--gold);
-  text-align:left;padding:10px 14px;border-bottom:1px solid var(--glassBorder);text-transform:uppercase;
-}
-.vendor-table td{
-  font-family:var(--font-mono);font-size:12px;color:var(--text);
-  padding:10px 14px;border-bottom:1px solid rgba(0,229,255,0.05);
-}
-.vendor-table tr:hover td{background:rgba(0,229,255,0.03);}
-.vendor-status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
-.vendor-status-dot.online{background:var(--neon);}
-.vendor-status-dot.setup{background:var(--gold);}
-
-/* ========== TASK LIST ========== */
-.task-group{margin-bottom:24px;}
-.task-group-title{font-family:var(--font-display);font-size:20px;letter-spacing:2px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--glassBorder);}
-.task-item{
-  display:flex;align-items:center;gap:12px;
-  padding:10px 14px;border-radius:8px;margin-bottom:6px;
-  background:rgba(255,255,255,0.02);transition:background 0.2s;
-}
-.task-item:hover{background:rgba(255,255,255,0.04);}
-.task-item.needs-action{border:1px solid rgba(255,45,85,0.3);animation:pulse-red 2.5s ease-in-out infinite;}
-.task-status-icon{font-family:var(--font-mono);font-size:14px;flex-shrink:0;}
-.task-desc{flex:1;font-size:13px;}
-.task-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;flex-shrink:0;}
-.task-badge.owner-action{background:rgba(255,45,85,0.15);color:var(--red);border:1px solid rgba(255,45,85,0.3);}
-
-/* ========== PORTFOLIO PRIVATE ========== */
-.portfolio-private{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:300px;text-align:center;gap:16px;
-}
-.portfolio-private-icon{
-  font-family:var(--font-display);font-size:64px;letter-spacing:4px;
-  background:linear-gradient(135deg,rgba(100,116,139,0.4),rgba(100,116,139,0.2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.portfolio-private-label{
-  font-family:var(--font-display);font-size:24px;letter-spacing:4px;color:var(--muted);
-}
-.portfolio-private-sub{
-  font-family:var(--font-mono);font-size:12px;color:var(--dim);letter-spacing:1px;
-}
-
-/* ========== LEGEND ========== */
-.legend{display:flex;gap:24px;justify-content:center;margin-top:24px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
-.legend-item{display:flex;align-items:center;gap:6px;}
-
-/* ========== RESPONSIVE ========== */
-@media(max-width:1024px){
-  .overview-grid{grid-template-columns:1fr;}
-  .stats-row{grid-template-columns:repeat(2,1fr);}
-  .terminal-wrap{grid-template-columns:1fr;height:auto;}
-  .silos-grid{grid-template-columns:1fr;}
-}
-@media(max-width:640px){
-  .stats-row{grid-template-columns:1fr 1fr;}
-  .topbar{flex-wrap:wrap;gap:8px;padding:10px 14px;}
-  .nav-tabs{overflow-x:auto;padding:6px 12px;}
-  .nav-tab{padding:8px 14px;font-size:13px;}
-  .tab-content{padding:14px;}
-  .silo-pl{grid-template-columns:repeat(3,1fr);}
-  .intention-header{padding:10px 14px;}
-  .intention-body{padding:0 14px 16px 14px;}
-  .hopper-header{padding:10px 14px;}
-  .hopper-body{padding:0 14px 16px 14px;}
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes scanline{0%{transform:translateY(-100%);}100%{transform:translateY(100vh);}}
+.fade-up{animation:fadeUp 0.5s ease both;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(10,10,20,0.95);border-bottom:1px solid var(--glassBorder);position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.logo-9{font-family:var(--font-display);font-size:44px;line-height:1;background:linear-gradient(135deg,#ff6600,#ff9944);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 16px rgba(255,102,0,0.6));animation:pulse-orange 3s ease-in-out infinite;}
+.topbar-brand{display:flex;flex-direction:column;}
+.topbar-title{font-family:var(--font-display);font-size:20px;letter-spacing:4px;color:var(--text);}
+.topbar-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1.5px;}
+.share-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;padding:4px 10px;border-radius:20px;text-transform:uppercase;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);}
+@media(max-width:640px){.topbar-title{font-size:16px;letter-spacing:2px;}.topbar-sub{display:none;}}
+.ticker-wrap{background:rgba(0,229,255,0.03);border-bottom:1px solid var(--glassBorder);overflow:hidden;height:28px;display:flex;align-items:center;}
+.ticker-track{display:flex;white-space:nowrap;animation:ticker-scroll 50s linear infinite;}
+.ticker-item{font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:0 28px;display:flex;align-items:center;gap:8px;}
+.ti-neon{color:var(--neon);}.ti-cyan{color:var(--cyan);}.ti-gold{color:var(--gold);}.ti-purple{color:var(--purple);}
+.ticker-sep{color:var(--dim);padding:0 4px;}
+.main{padding:24px 20px 60px;max-width:1200px;margin:0 auto;}
+@media(max-width:640px){.main{padding:14px 12px 40px;}}
+.hero{text-align:center;padding:40px 20px 30px;border-bottom:1px solid var(--glassBorder);margin-bottom:30px;}
+.hero-label{font-family:var(--font-mono);font-size:11px;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:var(--font-display);font-size:56px;letter-spacing:6px;line-height:1.1;background:linear-gradient(135deg,#ff6600,#ff9944);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,102,0,0.3));}
+.hero-sub{font-family:var(--font-body);font-size:15px;color:var(--muted);max-width:600px;margin:14px auto 0;line-height:1.7;}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:40px;margin-top:28px;flex-wrap:wrap;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-family:var(--font-display);font-size:42px;line-height:1;}
+.hero-stat-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:5px;}
+@media(max-width:480px){.hero-title{font-size:38px;}.hero-stats{gap:24px;}.hero-stat-num{font-size:30px;}}
+.section-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.section-title{font-family:var(--font-display);font-size:18px;letter-spacing:3px;color:var(--cyan);}
+.section-line{flex:1;height:1px;background:var(--glassBorder);}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;}
+.pill-live{background:rgba(100,255,218,0.1);color:var(--neon);border:1px solid rgba(100,255,218,0.25);}
+.pill-pilot{background:rgba(0,229,255,0.1);color:var(--cyan);border:1px solid rgba(0,229,255,0.25);}
+.pill-planned{background:rgba(255,102,0,0.1);color:var(--gold);border:1px solid rgba(255,102,0,0.25);}
+.pill-concept{background:rgba(136,146,176,0.1);color:var(--muted);border:1px solid rgba(136,146,176,0.25);}
+.pill-paper{background:rgba(176,96,255,0.1);color:var(--purple);border:1px solid rgba(176,96,255,0.25);}
+.pill-poc{background:rgba(255,215,0,0.1);color:var(--yellow);border:1px solid rgba(255,215,0,0.25);}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+.co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+@media(max-width:640px){.co-grid{grid-template-columns:1fr;}}
+.co-card{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glassBorder);border-radius:var(--r-lg);padding:18px;display:flex;flex-direction:column;gap:14px;transition:border-color 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;}
+.co-card::after{content:'';position:absolute;inset:0;border-radius:var(--r-lg);background:radial-gradient(ellipse at top left,var(--co-glow,rgba(0,229,255,0.03)) 0%,transparent 60%);pointer-events:none;}
+.co-card:hover{box-shadow:0 0 28px var(--co-glow,rgba(0,229,255,0.06));}
+.co-aigm{--co-glow:rgba(0,229,255,0.08);border-top:2px solid var(--cyan);}
+.co-freeagent9{--co-glow:rgba(100,255,218,0.08);border-top:2px solid var(--neon);}
+.co-trader9{--co-glow:rgba(176,96,255,0.08);border-top:2px solid var(--purple);}
+.co-x9{--co-glow:rgba(255,80,200,0.08);border-top:2px solid var(--pink);}
+.co-agent9{--co-glow:rgba(255,102,0,0.08);border-top:2px solid var(--gold);}
+.co-underwriter{--co-glow:rgba(255,215,0,0.08);border-top:2px solid var(--yellow);}
+.co-drop{--co-glow:rgba(255,45,85,0.08);border-top:2px solid var(--red);}
+.co-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.co-name{font-family:var(--font-display);font-size:28px;letter-spacing:3px;line-height:1;}
+.co-tagline{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:3px;}
+.co-desc{font-family:var(--font-body);font-size:12px;color:var(--muted);line-height:1.7;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:var(--r-sm);padding:8px 10px;}
+.co-divider{height:1px;background:var(--glassBorder);}
+.co-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;}
+.co-metric{padding:8px 10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:var(--r-sm);}
+.co-metric-val{font-family:var(--font-display);font-size:18px;line-height:1;}
+.co-metric-label{font-family:var(--font-mono);font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+.roadmap{display:flex;flex-direction:column;gap:5px;}
+.rm-title{font-family:var(--font-mono);font-size:10px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.ms{display:flex;align-items:center;gap:8px;padding:5px 8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:6px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.ms-n{width:16px;height:16px;border-radius:50%;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.18);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--cyan);flex-shrink:0;font-weight:600;}
+.ms-done .ms-n{background:rgba(100,255,218,0.12);border-color:rgba(100,255,218,0.3);color:var(--neon);}
+.ms-done{color:var(--neon);}
+.ms-d{font-size:9px;color:var(--dim);white-space:nowrap;margin-left:auto;}
+.products{display:flex;flex-direction:column;gap:5px;}
+.prod{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:var(--r-sm);}
+.prod-name{font-family:var(--font-mono);font-size:11px;color:var(--text);}
+.neon-div{height:1px;background:linear-gradient(90deg,transparent,var(--glassBorderHover),transparent);margin:24px 0;}
+.footer{text-align:center;padding:30px 20px;font-family:var(--font-mono);font-size:10px;color:var(--dim);letter-spacing:1px;}
+.footer a{color:var(--muted);}
 </style>
 </head>
 <body>
 
-<!-- ========== TOP BAR ========== -->
 <header class="topbar">
   <div class="topbar-left">
     <div class="logo-9">9</div>
-    <div>
-      <div class="topbar-title">enterprises &mdash; COMMAND CENTER</div>
-      <div class="topbar-sub" id="topbar-date">v4 &mdash; loading date...</div>
+    <div class="topbar-brand">
+      <div class="topbar-title">ENTERPRISES</div>
+      <div class="topbar-sub">THE FRANCHISE &mdash; 7 COMPANIES</div>
     </div>
   </div>
-  <div class="topbar-right">
-    <div class="live-clock" id="liveClock">--:--:--</div>
-    <div class="status-live" id="systemStatusBadge">
-      <span class="status-dot" id="systemStatusDot" style="background:var(--gold);animation:none;"></span>
-      <span id="systemStatusText" style="color:var(--gold);">STATIC</span>
-    </div>
+  <div>
+    <div class="share-badge">Public View</div>
   </div>
 </header>
 
-<!-- ========== TICKER ========== -->
 <div class="ticker-wrap">
   <div class="ticker-track">
-    <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status">--</span></div>
-    <div class="ticker-item">AGENTS ACTIVE <span class="val-blue">8</span></div>
-    <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync">--</span></div>
-    <div class="ticker-item">MRR <span class="val">pre-revenue</span></div>
-    <div class="ticker-item">SPRINT COMMITS <span class="val-gold">40+</span></div>
-    <div class="ticker-item">UPTIME <span class="val" id="tk-uptime">--</span></div>
-    <div class="ticker-item">MODE <span class="val-gold" id="tk-mode">--</span></div>
-    <div class="ticker-item">HOPPER ITEMS <span class="val" style="color:var(--purple);">5 IN QUEUE</span></div>
-    <div class="ticker-item">COMPANY SILOS <span class="val-blue">6 ACTIVE</span></div>
-    <div class="ticker-item">TRADER9 <span class="val">3 SESSIONS TRAINED</span></div>
-    <!-- duplicate for seamless scroll -->
-    <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status2">--</span></div>
-    <div class="ticker-item">AGENTS ACTIVE <span class="val-blue">8</span></div>
-    <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync2">--</span></div>
-    <div class="ticker-item">MRR <span class="val">pre-revenue</span></div>
-    <div class="ticker-item">SPRINT COMMITS <span class="val-gold">40+</span></div>
-    <div class="ticker-item">UPTIME <span class="val" id="tk-uptime2">--</span></div>
-    <div class="ticker-item">MODE <span class="val-gold" id="tk-mode2">--</span></div>
-    <div class="ticker-item">HOPPER ITEMS <span class="val" style="color:var(--purple);">5 IN QUEUE</span></div>
-    <div class="ticker-item">COMPANY SILOS <span class="val-blue">6 ACTIVE</span></div>
-    <div class="ticker-item">TRADER9 <span class="val">3 SESSIONS TRAINED</span></div>
+    <span class="ticker-item">AiGM <span class="ti-cyan">LIVE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">freeagent9 <span class="ti-neon">PILOT</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">trader9 <span class="ti-purple">PAPER MODE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">x9 <span class="ti-gold">LAUNCHING</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">agent9 <span class="ti-gold">AI REAL ESTATE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">AI Underwriter <span class="ti-gold">POC ACTIVE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">7 COMPANIES <span class="ti-cyan">ONE HOLDING CO</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">AiGM <span class="ti-cyan">LIVE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">freeagent9 <span class="ti-neon">PILOT</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">trader9 <span class="ti-purple">PAPER MODE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">x9 <span class="ti-gold">LAUNCHING</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">agent9 <span class="ti-gold">AI REAL ESTATE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">AI Underwriter <span class="ti-gold">POC ACTIVE</span><span class="ticker-sep">//</span></span>
+    <span class="ticker-item">7 COMPANIES <span class="ti-cyan">ONE HOLDING CO</span><span class="ticker-sep">//</span></span>
   </div>
 </div>
 
-<!-- ========== NAV TABS ========== -->
-<nav class="nav-tabs" id="navTabs">
-  <button class="nav-tab active" data-tab="overview">Overview</button>
-  <button class="nav-tab" data-tab="silos">Company Silos</button>
-  <button class="nav-tab" data-tab="tasks">Tasks</button>
-  <button class="nav-tab" data-tab="vendors">Vendors</button>
-  <button class="nav-tab" data-tab="orgchart">Org Chart</button>
-  <button class="nav-tab" data-tab="portfolio">Portfolio</button>
-  <button class="nav-tab" data-tab="terminal">Terminal</button>
-  <button class="nav-tab" data-tab="sprintlog">Sprint Log</button>
-</nav>
+<div class="main">
 
-<!-- ========== GUIDING INTENTION ========== -->
-<div class="intention-wrap" id="intentionWrap">
-  <div class="intention-header" onclick="toggleIntention()">
-    <div class="intention-label">
-      <span class="intention-icon"></span>
-      GUIDING INTENTION
-    </div>
-    <div class="intention-toggle">
-      <span>COLLAPSE</span>
-      <span class="chevron">&#9660;</span>
+  <div class="hero fade-up">
+    <div class="hero-label">9 Enterprises LLC &mdash; The Franchise</div>
+    <div class="hero-title">THE FRANCHISE</div>
+    <div class="hero-sub">Seven AI-native companies under one holding company. SaaS subscription model — one core platform, modular add-ons. Built end-to-end with AI.</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--gold);">7</div>
+        <div class="hero-stat-label">Companies</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--neon);">1</div>
+        <div class="hero-stat-label">Live Products</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--cyan);">3</div>
+        <div class="hero-stat-label">Pilot / POC</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num" style="color:var(--purple);">3</div>
+        <div class="hero-stat-label">In Planning</div>
+      </div>
     </div>
   </div>
-  <div class="intention-body" id="intentionBody">
-    <div class="intention-divider"></div>
-    <div class="intention-text">
-      <p><strong>Core intention for 9 Enterprises:</strong></p>
-      <p>Build and scale a diversified portfolio of <strong>15&ndash;20 autonomous AI-powered businesses</strong> that together generate <strong>$1M+ in annual recurring revenue</strong> (with strong path to $5&ndash;10M combined enterprise value). Each business must be built from day one to be <strong>clean, documented, and fully sellable</strong> &mdash; with transparent P&amp;Ls, repeatable processes, transferable systems, and minimal founder dependency.</p>
-      <p>Main Agent 9 owns 100% of execution and operations, using resources within budget and appropriate protocols. The owner focuses exclusively on <strong>high-level vision, key relationships, and final approvals.</strong></p>
-      <p><strong>Revenue is king</strong> &mdash; prioritize high-margin, compounding models. Speed matters, but never at the expense of quality, compliance, or long-term durability. Every decision must advance secure, sustainable growth.</p>
+
+  <div class="section-head">
+    <div class="section-title">The Companies</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="co-grid">
+
+    <div class="co-card co-aigm fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--cyan);">AiGM</div>
+          <div class="co-tagline">AI Sports GM Simulator</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <span class="pill pill-live"><span class="pill-dot"></span>Live</span>
+          <a href="https://ainflgm.com" target="_blank" style="font-family:var(--font-mono);font-size:9px;color:var(--cyan);">ainflgm.com &#x2197;</a>
+        </div>
+      </div>
+      <div class="co-desc">You are the GM. Build rosters, make trades, dominate the league. NFL live now. NBA and MLB greenlit and in development.</div>
+      <div class="products">
+        <div class="prod"><span class="prod-name">AiNFLGM</span><span class="pill pill-live" style="font-size:8px;padding:1px 7px;"><span class="pill-dot"></span>Live</span></div>
+        <div class="prod"><span class="prod-name">AiNBA GM</span><span class="pill pill-planned" style="font-size:8px;padding:1px 7px;"><span class="pill-dot"></span>Greenlit</span></div>
+        <div class="prod"><span class="prod-name">AiMLB GM</span><span class="pill pill-planned" style="font-size:8px;padding:1px 7px;"><span class="pill-dot"></span>Greenlit</span></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Roadmap</div>
+        <div class="ms ms-done"><div class="ms-n">&#x2713;</div><span>AiNFLGM launched</span></div>
+        <div class="ms"><div class="ms-n">1</div><span>Monetization via AdSense</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">2</div><span>AiNBA GM development</span><div class="ms-d">May</div></div>
+        <div class="ms"><div class="ms-n">3</div><span>Affiliate integration</span><div class="ms-d">Jun</div></div>
+      </div>
+    </div>
+
+    <div class="co-card co-freeagent9 fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--neon);">freeagent9</div>
+          <div class="co-tagline">Personal AI Assistants</div>
+        </div>
+        <span class="pill pill-pilot"><span class="pill-dot"></span>Pilot</span>
+      </div>
+      <div class="co-desc">AI built for your personal life. Concierge services — food ordering, appointments, reservations. Modular add-on to the core 9enterprises platform.</div>
+      <div class="co-metrics">
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--neon);">1</div><div class="co-metric-label">Active Pilots</div></div>
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--cyan);">2</div><div class="co-metric-label">Features Greenlit</div></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Roadmap</div>
+        <div class="ms ms-done"><div class="ms-n">&#x2713;</div><span>Pilot activated</span></div>
+        <div class="ms"><div class="ms-n">1</div><span>Food ordering concierge</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">2</div><span>Appointments live</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">3</div><span>Subscription pricing</span><div class="ms-d">Jun</div></div>
+      </div>
+    </div>
+
+    <div class="co-card co-trader9 fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--purple);">trader9</div>
+          <div class="co-tagline">Algorithmic Trading — 24/7</div>
+        </div>
+        <span class="pill pill-paper"><span class="pill-dot"></span>Paper Mode</span>
+      </div>
+      <div class="co-desc">Automated trading strategies running around the clock. Validating in paper mode. Live deployment and subscription add-on path both confirmed.</div>
+      <div class="co-metrics">
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--purple);">ETH</div><div class="co-metric-label">Primary Asset</div></div>
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--cyan);">24/7</div><div class="co-metric-label">Run Schedule</div></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Roadmap</div>
+        <div class="ms ms-done"><div class="ms-n">&#x2713;</div><span>Strategy built + backtested</span></div>
+        <div class="ms"><div class="ms-n">1</div><span>Paper mode validation</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">2</div><span>Live trading begins</span><div class="ms-d">May</div></div>
+        <div class="ms"><div class="ms-n">3</div><span>Productized as add-on</span><div class="ms-d">Jun</div></div>
+      </div>
+    </div>
+
+    <div class="co-card co-x9 fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--pink);">x9</div>
+          <div class="co-tagline">Social + Content Amplifier</div>
+        </div>
+        <span class="pill pill-planned"><span class="pill-dot"></span>Launching</span>
+      </div>
+      <div class="co-desc">Content strategy and social media for the entire Franchise. Revenue multiplier across all 7 companies. Fully automated by 9. Launching immediately.</div>
+      <div class="co-metrics">
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--pink);">7</div><div class="co-metric-label">Products to Amplify</div></div>
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--gold);">NOW</div><div class="co-metric-label">Priority</div></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Roadmap</div>
+        <div class="ms"><div class="ms-n">1</div><span>Content strategy + channels</span><div class="ms-d">Mar</div></div>
+        <div class="ms"><div class="ms-n">2</div><span>Social accounts launched</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">3</div><span>Content pipeline automated</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">4</div><span>AiGM cross-promotion</span><div class="ms-d">May</div></div>
+      </div>
+    </div>
+
+    <div class="co-card co-agent9 fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--gold);">agent9</div>
+          <div class="co-tagline">AI Real Estate</div>
+        </div>
+        <span class="pill pill-planned"><span class="pill-dot"></span>Planning</span>
+      </div>
+      <div class="co-desc">Buy and sell homes without realtors. AI manages the entire transaction. Independent entity — also a modular subscription add-on.</div>
+      <div class="co-metrics">
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--gold);">AI</div><div class="co-metric-label">Transaction Method</div></div>
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--cyan);">Add-On</div><div class="co-metric-label">Revenue Path</div></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Roadmap</div>
+        <div class="ms"><div class="ms-n">1</div><span>Action plan + MVP scope</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">2</div><span>Market + legal research</span><div class="ms-d">May</div></div>
+        <div class="ms"><div class="ms-n">3</div><span>Build begins</span><div class="ms-d">Jun</div></div>
+      </div>
+    </div>
+
+    <div class="co-card co-underwriter fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--yellow);font-size:20px;letter-spacing:2px;">AI Underwriter</div>
+          <div class="co-tagline">Mortgage Guideline AI</div>
+        </div>
+        <span class="pill pill-poc"><span class="pill-dot"></span>POC</span>
+      </div>
+      <div class="co-desc">AI that knows every mortgage guideline — FHA, VA, USDA, Conventional. RAG on agency PDFs. Live demo to client within 30 days.</div>
+      <div class="co-metrics">
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--yellow);">FHA</div><div class="co-metric-label">MVP Focus</div></div>
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--neon);">2-3d</div><div class="co-metric-label">Est. Build</div></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Roadmap</div>
+        <div class="ms ms-done"><div class="ms-n">&#x2713;</div><span>Research complete</span></div>
+        <div class="ms"><div class="ms-n">1</div><span>FHA MVP build</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">2</div><span>Client demo</span><div class="ms-d">Apr</div></div>
+        <div class="ms"><div class="ms-n">3</div><span>Full coverage + pricing</span><div class="ms-d">May</div></div>
+      </div>
+    </div>
+
+    <div class="co-card co-drop fade-up">
+      <div class="co-header">
+        <div>
+          <div class="co-name" style="color:var(--red);font-size:20px;letter-spacing:2px;">Dropshipping</div>
+          <div class="co-tagline">Standalone Company &mdash; Name TBD</div>
+        </div>
+        <span class="pill pill-concept"><span class="pill-dot"></span>Coming Soon</span>
+      </div>
+      <div class="co-desc">AI-managed e-commerce from day one. Standalone company under 9enterprises. Founder plan in progress. Name and category TBD.</div>
+      <div class="co-metrics">
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--muted);">TBD</div><div class="co-metric-label">Category</div></div>
+        <div class="co-metric"><div class="co-metric-val" style="color:var(--muted);">TBD</div><div class="co-metric-label">Name</div></div>
+      </div>
+      <div class="roadmap">
+        <div class="rm-title">Next Steps</div>
+        <div class="ms"><div class="ms-n">1</div><span>Founder plan + naming</span></div>
+        <div class="ms"><div class="ms-n">2</div><span>Category + supplier research</span></div>
+        <div class="ms"><div class="ms-n">3</div><span>Storefront launch</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="neon-div"></div>
+
+  <div style="background:linear-gradient(135deg,rgba(255,102,0,0.06),rgba(10,10,20,0.95));border:1px solid rgba(255,102,0,0.15);border-left:2px solid var(--gold);border-radius:var(--r);padding:20px 24px;text-align:center;">
+    <div style="font-family:var(--font-display);font-size:22px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;">THE MODEL</div>
+    <div style="font-family:var(--font-body);font-size:14px;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.8;">
+      One core 9enterprises subscription. Modular add-ons — freeagent9, trader9, agent9. Revenue across all seven companies compounds into a scalable, sellable portfolio.
     </div>
   </div>
+
 </div>
 
-<!-- ========== THE HOPPER ========== -->
-<div class="hopper-wrap" id="hopperWrap">
-  <div class="hopper-header" onclick="toggleHopper()">
-    <div class="hopper-label">
-      <span class="hopper-icon"></span>
-      THE HOPPER
-      <span class="hopper-count">5 IN QUEUE</span>
-    </div>
-    <div class="hopper-toggle">
-      <span>COLLAPSE</span>
-      <span class="chevron">&#9660;</span>
-    </div>
-  </div>
-  <div class="hopper-body" id="hopperBody">
-    <div class="hopper-table-wrap">
-      <table class="hopper-table">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Date Added</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="hopperTableBody"></tbody>
-      </table>
-    </div>
-  </div>
+<div class="footer">
+  &copy; 2026 9 Enterprises LLC &mdash; All rights reserved &mdash;
+  <a href="https://ainflgm.com">ainflgm.com</a>
 </div>
-
-<!-- ========================================================== -->
-<!-- OVERVIEW TAB -->
-<!-- ========================================================== -->
-<section class="tab-content active" id="tab-overview">
-
-  <!-- Stat Cards -->
-  <div class="stats-row fade-in">
-    <div class="stat-card">
-      <div class="stat-num">8</div>
-      <div class="stat-label">Active Agents</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">6</div>
-      <div class="stat-label">Company Silos</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">5</div>
-      <div class="stat-label">Hopper Items</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">40+</div>
-      <div class="stat-label">Sprint Commits</div>
-    </div>
-  </div>
-
-  <div class="overview-grid">
-    <div class="overview-main">
-
-      <!-- Agent 9 Hero -->
-      <div class="card fade-in" style="background:linear-gradient(135deg,rgba(255,102,0,0.08),rgba(255,102,0,0.02));border:1px solid rgba(255,102,0,0.25);animation:glow-orange 4s ease-in-out infinite;">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div>
-            <div style="font-family:var(--font-display);font-size:36px;background:linear-gradient(135deg,#FF6600,#ff8844);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:4px;">AGENT 9</div>
-            <div style="font-family:var(--font-mono);font-size:13px;color:var(--gold);opacity:0.8;letter-spacing:1px;margin-top:2px;">CEO / AUTONOMOUS OPERATOR &mdash; FULL PERMISSIONS</div>
-            <div style="font-size:13px;color:var(--text);margin-top:10px;opacity:0.85;line-height:1.6;">
-              Primary autonomous agent. Manages all 6 company silos, routes tasks to 8 specialist agents, handles comms (Telegram, iMessage, Voice, Email). Operates 24/7 with Soul Code authority.
-            </div>
-            <div style="margin-top:8px;">
-              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-right:6px;">soul code</span>
-              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-right:6px;">full auth</span>
-              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-right:6px;">4-channel comms</span>
-              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;">24/7 uptime</span>
-            </div>
-          </div>
-          <div class="pill pill-active" style="font-size:12px;padding:6px 16px;">ACTIVE</div>
-        </div>
-      </div>
-
-      <!-- Agent Roster -->
-      <div>
-        <div class="card-title" style="margin-bottom:14px;">AGENT ROSTER</div>
-        <div class="agent-grid" id="agentGrid"></div>
-      </div>
-
-      <!-- Burn Rate -->
-      <div class="card fade-in">
-        <div class="card-title" style="font-size:18px;">BURN RATE</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
-          <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Estimated Daily: ~$12&ndash;17</span>
-          <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Monthly Cap: ~$500</span>
-        </div>
-        <div class="burn-gauge">
-          <div class="burn-gauge-fill green" style="width:15%;"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
-          <span>$0</span>
-          <span style="color:var(--neon);">~$15 estimated today (15% of $100 cap)</span>
-          <span>$100</span>
-        </div>
-        <div class="burn-stats">
-          <div class="burn-stat"><div class="burn-stat-num" style="color:var(--neon);">~$15</div><div class="burn-stat-label">Today's Est.</div></div>
-          <div class="burn-stat"><div class="burn-stat-num" style="color:var(--blue);">~$14</div><div class="burn-stat-label">Daily Average</div></div>
-          <div class="burn-stat"><div class="burn-stat-num" style="color:var(--gold);">~$430</div><div class="burn-stat-label">Monthly Est.</div></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-
-      <!-- Comms Health -->
-      <div class="card">
-        <div class="card-title">COMMS HEALTH <span id="comms-sync-indicator" style="font-size:9px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0;text-transform:none;"></span></div>
-        <ul class="sidebar-list" id="commsHealthList">
-          <li><span class="status-dot" id="dot-telegram" style="width:6px;height:6px;"></span> Telegram &mdash; <span id="status-telegram" style="color:var(--muted);">--</span></li>
-          <li><span class="status-dot" id="dot-imessage" style="width:6px;height:6px;"></span> iMessage &mdash; <span id="status-imessage" style="color:var(--muted);">--</span></li>
-          <li><span class="status-dot" id="dot-voice" style="width:6px;height:6px;"></span> Voice &mdash; <span id="status-voice" style="color:var(--muted);">--</span></li>
-          <li><span class="status-dot" id="dot-email" style="width:6px;height:6px;"></span> Email &mdash; <span id="status-email" style="color:var(--muted);">--</span></li>
-          <li><span class="status-dot" id="dot-hub" style="width:6px;height:6px;"></span> Hub &mdash; <span id="status-hub" style="color:var(--muted);">--</span></li>
-          <li><span class="status-dot" id="dot-cloud" style="width:6px;height:6px;"></span> Cloud Worker &mdash; <span id="status-cloud" style="color:var(--muted);">--</span></li>
-        </ul>
-      </div>
-
-      <!-- Revenue Streams -->
-      <div class="card">
-        <div class="card-title">REVENUE PIPELINE</div>
-        <ul class="sidebar-list">
-          <li><span style="color:var(--muted);">&#9679;</span> AiNFLGM &mdash; AdSense (pending)</li>
-          <li><span style="color:var(--muted);">&#9679;</span> freeagent9 &mdash; Subscriptions (pilot)</li>
-          <li><span style="color:var(--muted);">&#9679;</span> trader9 &mdash; Alpha signals (building)</li>
-          <li><span style="color:var(--muted);">&#9679;</span> AI Underwriter &mdash; SaaS (concept)</li>
-          <li><span style="color:var(--gold);">&#9679;</span> Rapid Mortgage &mdash; Origination (active)</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-
-</section>
-
-<!-- ========================================================== -->
-<!-- COMPANY SILOS TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-silos">
-  <div style="margin-bottom:20px;">
-    <div class="card-title" style="font-size:20px;">COMPANY SILOS &mdash; 9 ENTERPRISES PORTFOLIO</div>
-    <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Each silo is an independent business unit with its own P&amp;L, roadmap, and team.</div>
-  </div>
-  <div class="silos-grid" id="silosGrid"></div>
-</section>
-
-<!-- ========================================================== -->
-<!-- TASKS TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-tasks">
-  <div class="card-title" style="font-size:18px;margin-bottom:20px;">OPEN TASKS &mdash; ALL SILOS</div>
-  <div id="taskList"></div>
-</section>
-
-<!-- ========================================================== -->
-<!-- VENDORS TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-vendors">
-  <div class="card-title" style="font-size:18px;margin-bottom:20px;">VENDOR LIST &mdash; SERVICES &amp; COSTS</div>
-  <div class="card" style="overflow-x:auto;">
-    <table class="vendor-table">
-      <thead>
-        <tr>
-          <th>Vendor</th>
-          <th>Service</th>
-          <th>Monthly Cost</th>
-          <th>Company</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="vendorTableBody"></tbody>
-    </table>
-  </div>
-  <div style="margin-top:16px;font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:right;">
-    Total estimated monthly: <span id="vendorTotal" style="color:var(--gold);font-weight:500;">--</span>
-  </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- ORG CHART TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-orgchart">
-  <div class="org-chart">
-
-    <div class="org-level">
-      <div class="org-node owner">
-        <div class="org-node-title" style="color:var(--neon);">OWNER</div>
-        <div class="org-node-sub">9 Enterprises</div>
-      </div>
-    </div>
-    <div class="org-connector"></div>
-
-    <div class="org-level">
-      <div class="org-node ceo">
-        <div class="org-node-title" style="color:var(--gold);">9 &mdash; MAIN AGENT</div>
-        <div class="org-node-sub">QB / Autonomous Operator</div>
-      </div>
-    </div>
-    <div class="org-connector"></div>
-    <div class="org-connector-h"></div>
-
-    <div class="org-agents-grid" id="orgAgentsGrid"></div>
-
-    <div class="wave-section" style="margin-top:40px;">
-      <div class="wave-title">WAVE 2 &mdash; IN DEVELOPMENT</div>
-      <div class="wave-items">
-        <div class="wave-item"><div class="wave-item-name">AI Underwriter</div>Mortgage guideline AI</div>
-        <div class="wave-item"><div class="wave-item-name">agent9</div>AI real estate</div>
-        <div class="wave-item"><div class="wave-item-name">9 Academy</div>AI training platform</div>
-      </div>
-    </div>
-
-    <div class="wave-section" style="border-color:var(--purple);margin-top:16px;">
-      <div class="wave-title" style="color:var(--purple);">WAVE 3 &mdash; EXPANSION</div>
-      <div class="wave-items">
-        <div class="wave-item"><div class="wave-item-name">9 Capital</div>AI-managed fund</div>
-        <div class="wave-item"><div class="wave-item-name">9 Labs</div>R&amp;D / open source</div>
-        <div class="wave-item"><div class="wave-item-name">9 Media</div>Content empire</div>
-        <div class="wave-item"><div class="wave-item-name">9 Health</div>AI health optimization</div>
-      </div>
-    </div>
-
-    <div class="wave-section" style="border-color:var(--dim);margin-top:16px;">
-      <div class="wave-title">WAVE 4 &mdash; OPEN SLOTS (16&ndash;20)</div>
-      <div class="wave-items">
-        <div class="wave-item" style="opacity:0.4;">Slot 16 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 17 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 18 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 19 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 20 &mdash; TBD</div>
-      </div>
-    </div>
-
-    <div class="legend">
-      <div class="legend-item"><span style="width:8px;height:8px;border-radius:50%;background:var(--neon);display:inline-block;"></span> Persistent Agent</div>
-      <div class="legend-item"><span style="width:8px;height:8px;border-radius:50%;background:transparent;border:2px dashed var(--gold);display:inline-block;"></span> On-Demand Agent</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- PORTFOLIO TAB (PRIVATE) -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-portfolio">
-  <div class="card" style="margin-top:8px;">
-    <div class="portfolio-private">
-      <div class="portfolio-private-icon">[PRIVATE]</div>
-      <div class="portfolio-private-label">PORTFOLIO</div>
-      <div class="portfolio-private-sub">Personal financial data is not included in this shareable view.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- TERMINAL TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-terminal">
-  <div class="terminal-wrap">
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <div class="terminal-dot r"></div>
-        <div class="terminal-dot y"></div>
-        <div class="terminal-dot g"></div>
-        <div class="terminal-title-text">9-terminal &mdash; agent9@command-center-v4</div>
-      </div>
-      <div class="terminal-output" id="termOutput"></div>
-      <div class="terminal-input-row">
-        <div class="terminal-prompt">agent9@9e $</div>
-        <input type="text" class="terminal-input" id="termInput" placeholder="Type a command..." autocomplete="off" spellcheck="false">
-      </div>
-    </div>
-    <div class="terminal-sidebar">
-      <div class="card" style="padding:14px;">
-        <div class="card-title" style="font-size:13px;">AGENT TARGET</div>
-        <select class="agent-select" id="agentSelect">
-          <option value="9">9 (QB/Orchestrator)</option>
-          <option value="UNO">UNO (Research Lead)</option>
-          <option value="TEE">TEE (Engineering Lead)</option>
-          <option value="MONEY">MONEY (Revenue Lead)</option>
-          <option value="PRESS">PRESS (Content Lead)</option>
-          <option value="SCOUT">SCOUT (Market Strategy)</option>
-          <option value="CANVAS">CANVAS (Design &amp; Brand)</option>
-          <option value="DOC">DOC (Infrastructure)</option>
-          <option value="TRADER9">TRADER9 (Trading)</option>
-        </select>
-      </div>
-      <div class="card" style="padding:14px;">
-        <div class="card-title" style="font-size:13px;">QUICK COMMANDS</div>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <button class="cmd-btn" data-cmd="help">help</button>
-          <button class="cmd-btn" data-cmd="status all">status all</button>
-          <button class="cmd-btn" data-cmd="list agents">list agents</button>
-          <button class="cmd-btn" data-cmd="silos">list silos</button>
-          <button class="cmd-btn" data-cmd="sprint log">sprint log</button>
-          <button class="cmd-btn" data-cmd="clear">clear</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- SPRINT LOG TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-sprintlog">
-  <div style="max-width:800px;margin:0 auto;">
-    <div class="card-title" style="font-size:18px;margin-bottom:24px;">SPRINT LOG &mdash; MARCH 26&ndash;27, 2026</div>
-    <div class="timeline" id="sprintTimeline"></div>
-  </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- JAVASCRIPT -->
-<!-- ========================================================== -->
-<script>
-(function(){
-'use strict';
-
-// ============ DATA ============
-
-const HOPPER_ITEMS = [
-  {type:'business',name:'9enterprises Subscription Bundle',desc:'freeagent9 + trader9 as bundled features of subscription tiers under the 9enterprises umbrella',date:'Mar 27, 2026',status:'hopper'},
-  {type:'business',name:'Dropshipping Business',desc:'Explore dropshipping as a new venture -- low-overhead ecom play',date:'Mar 27, 2026',status:'hopper'},
-  {type:'business',name:'Food Ordering Integration',desc:'Uber Eats / DoorDash ordering for users via 9 assistant layer',date:'Mar 27, 2026',status:'hopper'},
-  {type:'business',name:'Appointments & Reservations',desc:'Restaurant, golf, movie bookings -- concierge booking layer for users',date:'Mar 27, 2026',status:'hopper'},
-  {type:'task',name:'Remote Self-Healing',desc:'SSH from cloud for autonomous terminal recovery -- no Owner involvement required',date:'Mar 27, 2026',status:'hopper'},
-];
-
-const SILOS = [
-  {
-    id:'ainflgm',
-    name:'AiNFLGM',
-    color:'#FB4F14',
-    status:'active',
-    url:'ainflgm.com',
-    revenue:'$0',
-    expenses:'~$15/mo',
-    net:'-$15',
-    netColor:'var(--red)',
-    milestones:['AdSense approval','100 daily users','Affiliate revenue live'],
-    gaugeVal:12,
-    gaugeCap:100,
-    team:'TEE, UNO, PRESS',
-    links:[{label:'Website',url:'https://ainflgm.com'},{label:'Dashboard',url:'https://ainflgm.com/dashboard.html'}],
-  },
-  {
-    id:'freeagent9',
-    name:'freeagent9',
-    color:'#00e5ff',
-    status:'active',
-    url:'ainflgm.com/freeagent-landing.html',
-    revenue:'$0',
-    expenses:'~$20/mo',
-    net:'-$20',
-    netColor:'var(--red)',
-    milestones:['A2P registration complete','Stripe integration live','5 pilot users onboarded'],
-    gaugeVal:20,
-    gaugeCap:100,
-    team:'TEE, MONEY, CANVAS',
-    links:[{label:'Landing Page',url:'https://ainflgm.com/freeagent-landing.html'}],
-  },
-  {
-    id:'trader9',
-    name:'trader9',
-    color:'#FFD700',
-    status:'building',
-    url:'trader9.io',
-    revenue:'$0',
-    expenses:'~$0',
-    net:'$0',
-    netColor:'var(--muted)',
-    milestones:['Alpaca KYC complete','Paper trading launch','First real trade executed'],
-    gaugeVal:30,
-    gaugeCap:100,
-    team:'TRADER9, TEE, MONEY',
-    links:[],
-  },
-  {
-    id:'agent9',
-    name:'agent9',
-    color:'#64ffda',
-    status:'concept',
-    url:'agent9.dev',
-    revenue:'$0',
-    expenses:'$0',
-    net:'$0',
-    netColor:'var(--muted)',
-    milestones:['Market research complete','MVP design finalized','Pilot launch'],
-    gaugeVal:5,
-    gaugeCap:100,
-    team:'UNO, SCOUT',
-    links:[],
-  },
-  {
-    id:'aiunderwriter',
-    name:'AI Underwriter',
-    color:'#c300ff',
-    status:'concept',
-    url:'',
-    revenue:'$0',
-    expenses:'$0',
-    net:'$0',
-    netColor:'var(--muted)',
-    milestones:['RAG architecture build','FHA guidelines pilot','Rapid Mortgage demo'],
-    gaugeVal:8,
-    gaugeCap:100,
-    team:'TEE, UNO, DOC',
-    links:[],
-  },
-  {
-    id:'x9',
-    name:'x9',
-    color:'#ff2d55',
-    status:'building',
-    url:'',
-    revenue:'$0',
-    expenses:'$0',
-    net:'$0',
-    netColor:'var(--muted)',
-    milestones:['X account live','Reddit account live','Daily posting cadence'],
-    gaugeVal:10,
-    gaugeCap:100,
-    team:'PRESS, CANVAS, SCOUT',
-    links:[],
-  },
-];
-
-const AGENTS = [
-  {id:'UNO',name:'UNO',role:'Research Team Lead',status:'active',color:'#00e5ff',desc:'Deep research, competitive intel, market analysis. Manages research sub-agents.',tags:['research','intel','analysis']},
-  {id:'TEE',name:'TEE',role:'Engineering Team Lead',status:'active',color:'#c300ff',desc:'Writes and ships code. JS/Node.js, testing, deployments, browser automation.',tags:['node','code','deploy']},
-  {id:'MONEY',name:'MONEY',role:'Revenue Lead',status:'active',color:'#FF6600',desc:'Tracks API spend, manages billing, revenue strategy, cost optimization.',tags:['billing','revenue','budget']},
-  {id:'PRESS',name:'PRESS',role:'Content Lead',status:'active',color:'#8892b0',desc:'Content strategy, PR, press releases, social copy, investor updates.',tags:['content','pr','comms']},
-  {id:'SCOUT',name:'SCOUT',role:'Market Strategy',status:'active',color:'#64ffda',desc:'Market research, competitor analysis, trend scanning, opportunity identification.',tags:['market','strategy','trends']},
-  {id:'CANVAS',name:'CANVAS',role:'Design & Brand',status:'active',color:'#ff69b4',desc:'Visual design, brand assets, UI mockups, graphics, brand identity.',tags:['design','brand','graphics']},
-  {id:'DOC',name:'DOC',role:'Infrastructure Lead',status:'active',color:'#e87722',desc:'System health, docs, READMEs, changelogs, infrastructure monitoring.',tags:['infra','docs','health']},
-  {id:'TRADER9',name:'TRADER9',role:'Trading Signals',status:'running',color:'#FFD700',desc:'Generates alpha trading signals. Backtesting, live alerts. 3 sessions trained.',tags:['trading','signals','alpha']},
-];
-
-const VENDORS = [
-  {name:'Anthropic',service:'Claude Max 20x subscription + API',cost:'$200+',company:'9 Enterprises',status:'online'},
-  {name:'Twilio',service:'Voice / SMS / A2P',cost:'$20',company:'freeagent9',status:'online'},
-  {name:'ElevenLabs',service:'Text-to-Speech',cost:'$0',company:'9 Enterprises',status:'online'},
-  {name:'Cloudflare',service:'Workers + Tunnel',cost:'$0',company:'9 Enterprises',status:'online'},
-  {name:'GitHub',service:'Pages + Repos',cost:'$0',company:'AiNFLGM',status:'online'},
-  {name:'DigitalOcean',service:'VPS / Cloud Hosting',cost:'$6',company:'9 Enterprises',status:'setup'},
-  {name:'Stripe',service:'Payments',cost:'$0',company:'freeagent9',status:'setup'},
-  {name:'Alpaca',service:'Trading API',cost:'$0',company:'trader9',status:'setup'},
-  {name:'Google',service:'AdSense + Analytics',cost:'$0',company:'AiNFLGM',status:'setup'},
-];
-
-const TASKS = {
-  'Agent Actions In Progress': [
-    {desc:'A2P 10DLC registration -- submitting to Twilio',status:'in-progress',owner:'9',ownerAction:false},
-    {desc:'Stripe subscription integration for freeagent9',status:'in-progress',owner:'9',ownerAction:false},
-    {desc:'Dashboard v4 live data connections',status:'in-progress',owner:'9',ownerAction:false},
-    {desc:'9enterprises.com domain registration',status:'in-progress',owner:'9',ownerAction:false},
-  ],
-  'Completed': [
-    {desc:'9 Enterprises LLC registered',status:'done',owner:'9',ownerAction:false},
-    {desc:'Kyle C pilot LIVE -- loan officer AI assistant deployed',status:'done',owner:'9',ownerAction:false},
-    {desc:'Email channel LIVE -- Gmail SMTP 2-way relay operational',status:'done',owner:'9',ownerAction:false},
-    {desc:'trader9 fully trained -- 3 sessions completed',status:'done',owner:'9',ownerAction:false},
-    {desc:'freeagent9 landing page + business plan complete',status:'done',owner:'9',ownerAction:false},
-    {desc:'Dashboard v4 built and deployed',status:'done',owner:'9',ownerAction:false},
-    {desc:'40+ sprint commits across all projects',status:'done',owner:'9',ownerAction:false},
-    {desc:'Soul Code v5 finalized and burned to memory',status:'done',owner:'9',ownerAction:false},
-  ],
-};
-
-const SPRINT_ENTRIES = [
-  {time:'Mar 26, 06:00',title:'Sprint Kickoff',desc:'Initialized March sprint. Set goals: dashboard, trader9, org chart.',done:true},
-  {time:'Mar 26, 07:30',title:'Comms Hub v3.2 Deployed',desc:'4-channel relay with session tokens, PID watchdog, auto-recovery.',done:true},
-  {time:'Mar 26, 09:00',title:'Cloud Worker Failover Test',desc:'Simulated Mac down scenario. Worker picked up in <10s.',done:true},
-  {time:'Mar 26, 11:00',title:'AiNFL GM v2.1 Hotfix',desc:'Fixed draft board rendering bug. Deployed to production.',done:true},
-  {time:'Mar 26, 14:00',title:'Voice Server Tunnel Rebuild',desc:'Cloudflare tunnel auto-restart integrated into hub.',done:true},
-  {time:'Mar 26, 16:30',title:'Trader9 Signal Engine',desc:'Backtesting framework scaffolded. First alpha signals generating.',done:true},
-  {time:'Mar 26, 19:00',title:'Owner Dashboard v3',desc:'Built command-center.html with glassmorphic design, live data.',done:true},
-  {time:'Mar 26, 22:00',title:'Agent Roster Finalized',desc:'8 agents defined with roles, permissions, and routing.',done:true},
-  {time:'Mar 27, 02:00',title:'Overnight Autonomy Test',desc:'Hub ran autonomous (Haiku) for 4 hours. All messages handled.',done:true},
-  {time:'Mar 27, 06:00',title:'Dashboard v4 Build',desc:'Major restructure: Hopper, Company Silos, full org chart.',done:true},
-  {time:'Mar 27, 08:00',title:'X9 Brand Kit Draft',desc:'Logo concepts, color palette, social templates.',done:false},
-  {time:'Mar 27, 12:00',title:'Sprint Review',desc:'Demo. Collect feedback. Plan next sprint.',done:false},
-];
-
-const TERMINAL_BOOT = [
-  {text:'[BOOT] 9enterprises Command Center v4.0',cls:'line-system'},
-  {text:'[BOOT] Initializing agent mesh...',cls:'line-system'},
-  {text:'[OK]   Comms Hub ............ port 3457 .... ONLINE',cls:''},
-  {text:'[OK]   Voice Server ......... port 3456 .... ONLINE',cls:''},
-  {text:'[OK]   Cloud Worker ......... edge ......... ONLINE',cls:''},
-  {text:'[OK]   Tunnel ............... cf ........... ONLINE',cls:''},
-  {text:'[OK]   Terminal ............. relay ........ CONNECTED',cls:''},
-  {text:'[INFO] 8 agents loaded. 7 active, 1 running.',cls:'line-info'},
-  {text:'[INFO] 6 company silos tracked.',cls:'line-info'},
-  {text:'[INFO] Hopper: 5 items in queue.',cls:'line-info'},
-  {text:'[WARN] Trader9 alpha signals in beta -- monitor closely.',cls:'line-warn'},
-  {text:'',cls:''},
-  {text:'Type "help" for available commands.',cls:'line-muted'},
-  {text:'',cls:''},
-];
-
-const TERMINAL_COMMANDS = {
-  help: ['Available commands:','  help         Show this help','  status all   System statuses','  list agents  All agents','  silos        Company silos','  sprint log   Sprint entries','  clear        Clear terminal','  whoami       Agent identity'],
-  'status all': ['SYSTEM STATUS REPORT','====================','Comms Hub .......... ONLINE  (port 3457)','Voice Server ....... ONLINE  (port 3456)','Cloud Worker ....... ONLINE  (edge)','CF Tunnel .......... ONLINE','Terminal ........... RELAY MODE','API Health ......... OK','Telegram ........... CONNECTED','iMessage ........... CONNECTED','Email .............. CONNECTED','Voice .............. CONNECTED','','All systems nominal.'],
-  'list agents': ['AGENT ROSTER','============','  9        QB / Orchestrator      [ACTIVE]','  UNO      Research Lead          [ACTIVE]','  TEE      Engineering Lead       [ACTIVE]','  MONEY    Revenue Lead           [ACTIVE]','  PRESS    Content Lead           [ACTIVE]','  SCOUT    Market Strategy        [ACTIVE]','  CANVAS   Design & Brand         [ACTIVE]','  DOC      Infrastructure Lead    [ACTIVE]','  TRADER9  Trading Signals        [RUNNING]'],
-  silos: ['COMPANY SILOS','=============','  AiNFLGM       Active    ainflgm.com','  freeagent9    Active    (pilot)','  trader9       Building  (paper trading)','  agent9        Concept   (AI real estate)','  AI Underwriter Concept  (mortgage AI)','  x9            Building  (social media)'],
-  whoami: ['agent9@9enterprises','Role: CEO / Autonomous Operator','Authority: Soul Code v5 (full permissions)','Channels: Telegram, iMessage, Voice, Email','Mode: Relay (terminal connected)'],
-};
-
-SPRINT_ENTRIES.forEach(e => {
-  if(!TERMINAL_COMMANDS['sprint log']) TERMINAL_COMMANDS['sprint log'] = ['SPRINT LOG','=========='];
-  TERMINAL_COMMANDS['sprint log'].push('  '+(e.done?'[x]':'[ ]')+' '+e.time+' -- '+e.title);
-});
-
-// ============ RENDER: HOPPER ============
-
-function renderHopper(){
-  const tbody = document.getElementById('hopperTableBody');
-  tbody.innerHTML = HOPPER_ITEMS.map(item => {
-    const typeClass = item.type === 'business' ? 'business' : item.type === 'task' ? 'task' : 'mod';
-    const typeLabel = item.type === 'business' ? 'Business Concept' : item.type === 'task' ? 'Task' : 'Modification';
-    return '<tr>'
-      +'<td><span class="hopper-type '+typeClass+'">'+typeLabel+'</span></td>'
-      +'<td><div class="hopper-name">'+item.name+'</div></td>'
-      +'<td><div class="hopper-desc">'+item.desc+'</div></td>'
-      +'<td style="color:var(--muted);white-space:nowrap;">'+item.date+'</td>'
-      +'<td><span class="pill pill-hopper">'+item.status+'</span></td>'
-      +'</tr>';
-  }).join('');
-}
-
-// ============ RENDER: SILOS ============
-
-function renderSilos(){
-  const grid = document.getElementById('silosGrid');
-  const pillMap = {active:'pill-active',building:'pill-building',concept:'pill-concept'};
-  grid.innerHTML = SILOS.map((s,i) => {
-    const gaugePercent = Math.min(100, Math.round((s.gaugeVal / s.gaugeCap) * 100));
-    const urlHtml = s.url ? '<div class="silo-url">'+s.url+'</div>' : '';
-    const linksHtml = s.links.length ? '<div class="silo-links">'+s.links.map(l=>'<a href="'+l.url+'" target="_blank" class="silo-link">'+l.label+'</a>').join('')+'</div>' : '';
-    return '<div class="silo-card fade-in" style="animation-delay:'+i*0.07+'s;border-top:3px solid '+s.color+';">'
-      +'<div class="silo-header"><div><div class="silo-name" style="color:'+s.color+';">'+s.name+'</div>'+urlHtml+'</div>'
-      +'<span class="pill '+(pillMap[s.status]||'pill-concept')+'">'+s.status+'</span></div>'
-      +'<div class="silo-divider"></div>'
-      +'<div class="silo-pl">'
-        +'<div class="silo-pl-item"><div class="silo-pl-num" style="color:var(--neon);">'+s.revenue+'</div><div class="silo-pl-label">Revenue</div></div>'
-        +'<div class="silo-pl-item"><div class="silo-pl-num" style="color:var(--red);">'+s.expenses+'</div><div class="silo-pl-label">Expenses</div></div>'
-        +'<div class="silo-pl-item"><div class="silo-pl-num" style="color:'+s.netColor+';">'+s.net+'</div><div class="silo-pl-label">Net/Mo</div></div>'
-      +'</div>'
-      +'<div class="silo-divider"></div>'
-      +'<div class="silo-roadmap"><div class="silo-roadmap-title">90-Day Roadmap</div>'
-        +s.milestones.map((m,mi)=>'<div class="silo-milestone"><span class="silo-milestone-num">'+(mi+1)+'</span><span>'+m+'</span></div>').join('')
-      +'</div>'
-      +'<div class="silo-gauge-wrap"><div class="silo-gauge-label"><span>Run Rate</span><span style="color:var(--blue);">'+gaugePercent+'% of budget used</span></div>'
-        +'<div class="silo-gauge"><div class="silo-gauge-fill" style="width:'+gaugePercent+'%;background:linear-gradient(90deg,'+s.color+'88,'+s.color+');"></div></div>'
-      +'</div>'
-      +'<div class="silo-team">Team: <span>'+s.team+'</span></div>'
-      +linksHtml
-      +'</div>';
-  }).join('');
-}
-
-// ============ RENDER: AGENTS ============
-
-function renderAgentGrid(){
-  const grid = document.getElementById('agentGrid');
-  grid.innerHTML = AGENTS.map((a,i) =>
-    '<div class="agent-card fade-in" style="animation-delay:'+i*0.05+'s;border-left:3px solid '+a.color+';">'
-    +'<div class="agent-header"><div>'
-    +'<div class="agent-name-small" style="color:'+a.color+';">'+a.name+'</div>'
-    +'<div class="agent-role-small">'+a.role+'</div>'
-    +'</div><span class="pill pill-'+a.status+'">'+a.status+'</span></div>'
-    +'<div class="agent-desc-small">'+a.desc+'</div>'
-    +'<div>'+a.tags.map(t=>'<span class="tag">'+t+'</span>').join('')+'</div>'
-    +'</div>'
-  ).join('');
-}
-
-// ============ RENDER: ORG CHART AGENTS ============
-
-function renderOrgAgents(){
-  const grid = document.getElementById('orgAgentsGrid');
-  grid.innerHTML = AGENTS.map(a =>
-    '<div class="org-agent-node" style="border-color:'+a.color+'30;border-top:2px solid '+a.color+';">'
-    +'<div class="org-agent-name" style="color:'+a.color+';">'+a.name+'</div>'
-    +'<div class="org-agent-role">'+a.role+'</div>'
-    +'</div>'
-  ).join('');
-}
-
-// ============ RENDER: VENDORS ============
-
-function renderVendors(){
-  const tbody = document.getElementById('vendorTableBody');
-  let total = 0;
-  tbody.innerHTML = VENDORS.map(v => {
-    const cost = parseFloat(v.cost.replace('$','').replace('+','')) || 0;
-    total += cost;
-    return '<tr>'
-      +'<td style="font-weight:500;color:var(--gold);">'+v.name+'</td>'
-      +'<td>'+v.service+'</td>'
-      +'<td style="color:'+(cost>0?'var(--text)':'var(--neon)')+';">'+v.cost+'</td>'
-      +'<td style="color:var(--muted);">'+v.company+'</td>'
-      +'<td><span class="vendor-status-dot '+v.status+'"></span>'+(v.status==='online'?'Active':'Setup')+'</td>'
-      +'</tr>';
-  }).join('');
-  document.getElementById('vendorTotal').textContent = '$'+total+'+/mo';
-}
-
-// ============ RENDER: TASKS ============
-
-function renderTasks(){
-  const container = document.getElementById('taskList');
-  const statusIcons = {done:'[x]','in-progress':'[~]',blocked:'[!]',pending:'[ ]'};
-  const statusColors = {done:'var(--neon)','in-progress':'var(--blue)',blocked:'var(--red)',pending:'var(--muted)'};
-  container.innerHTML = Object.entries(TASKS).map(([group,tasks]) =>
-    '<div class="task-group">'
-    +'<div class="task-group-title" style="color:var(--gold);">'+group+'</div>'
-    +tasks.map(t=>
-      '<div class="task-item'+(t.ownerAction?' needs-action':'')+'">'
-      +'<span class="task-status-icon" style="color:'+statusColors[t.status]+';">'+statusIcons[t.status]+'</span>'
-      +'<span class="task-desc">'+t.desc+'</span>'
-      +'<span style="font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-right:4px;">'+t.owner+'</span>'
-      +'<span class="pill pill-'+(t.status==='done'?'done':t.status==='in-progress'?'in-progress':t.status==='blocked'?'blocked':'standby')+'">'+t.status+'</span>'
-      +(t.ownerAction?'<span class="task-badge owner-action">NEEDS OWNER</span>':'')
-      +'</div>'
-    ).join('')
-    +'</div>'
-  ).join('');
-}
-
-// ============ RENDER: SPRINT ============
-
-function renderSprintTimeline(){
-  const tl = document.getElementById('sprintTimeline');
-  tl.innerHTML = SPRINT_ENTRIES.map((e,i) =>
-    '<div class="timeline-entry fade-in" style="animation-delay:'+i*0.06+'s;">'
-    +'<div class="timeline-dot '+(e.done?'done':'')+'"></div>'
-    +'<div class="timeline-time">'+e.time+'</div>'
-    +'<div class="timeline-title" style="'+(e.done?'':'color:var(--blue);')+'">'+e.title+'</div>'
-    +'<div class="timeline-desc">'+e.desc+'</div>'
-    +'</div>'
-  ).join('');
-}
-
-// ============ TERMINAL ============
-
-function initTerminal(){
-  const output = document.getElementById('termOutput');
-  const input = document.getElementById('termInput');
-  TERMINAL_BOOT.forEach(line=>{
-    const div=document.createElement('div');
-    div.textContent=line.text;
-    if(line.cls)div.className=line.cls;
-    output.appendChild(div);
-  });
-  output.scrollTop=output.scrollHeight;
-  input.addEventListener('keydown',function(e){
-    if(e.key==='Enter'){
-      const cmd=input.value.trim().toLowerCase();
-      if(!cmd)return;
-      const agent=document.getElementById('agentSelect').value;
-      appendLine('agent9@9e $ '+input.value,'line-muted');
-      input.value='';
-      if(cmd==='clear'){document.getElementById('termOutput').innerHTML='';appendLine('Terminal cleared.','line-muted');return;}
-      const response=TERMINAL_COMMANDS[cmd];
-      if(response){
-        setTimeout(()=>{
-          if(agent!=='9')appendLine('[Routing to '+agent+'...]','line-info');
-          response.forEach((line,i)=>{setTimeout(()=>appendLine(line,''),i*30);});
-        },200);
-      } else {
-        setTimeout(()=>{
-          appendLine('['+agent+'] Command not recognized: "'+cmd+'"','line-error');
-          appendLine('Type "help" for available commands.','line-muted');
-        },200);
-      }
-    }
-  });
-  document.querySelectorAll('.cmd-btn').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      input.value=this.dataset.cmd;
-      input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}));
-    });
-  });
-}
-
-function appendLine(text,cls){
-  const output=document.getElementById('termOutput');
-  const div=document.createElement('div');
-  div.textContent=text;
-  if(cls)div.className=cls;
-  output.appendChild(div);
-  output.scrollTop=output.scrollHeight;
-}
-
-// ============ CLOCK & DATE ============
-
-function updateClock(){
-  const el=document.getElementById('liveClock');
-  const now=new Date();
-  el.textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-}
-
-function setTopbarDate(){
-  const el=document.getElementById('topbar-date');
-  const now=new Date();
-  const opts={weekday:'short',year:'numeric',month:'short',day:'numeric'};
-  el.textContent='v4 -- '+now.toLocaleDateString('en-US',opts);
-}
-
-// ============ TAB SWITCHING ============
-
-function initTabs(){
-  const tabs=document.querySelectorAll('.nav-tab');
-  tabs.forEach(tab=>{
-    tab.addEventListener('click',function(){
-      tabs.forEach(t=>t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById('tab-'+this.dataset.tab).classList.add('active');
-    });
-  });
-}
-
-// ============ COLLAPSIBLES ============
-
-(function(){
-  var w=document.getElementById('intentionWrap');
-  var t=w?w.querySelector('.intention-toggle span:first-child'):null;
-  if(localStorage.getItem('intention-collapsed')==='1'&&w){w.classList.add('collapsed');if(t)t.textContent='EXPAND';}
-  window.toggleIntention=function(){
-    if(!w)return;
-    var c=w.classList.toggle('collapsed');
-    if(t)t.textContent=c?'EXPAND':'COLLAPSE';
-    localStorage.setItem('intention-collapsed',c?'1':'0');
-  };
-})();
-
-(function(){
-  var w=document.getElementById('hopperWrap');
-  var t=w?w.querySelector('.hopper-toggle span:first-child'):null;
-  if(localStorage.getItem('hopper-collapsed')==='1'&&w){w.classList.add('collapsed');if(t)t.textContent='EXPAND';}
-  window.toggleHopper=function(){
-    if(!w)return;
-    var c=w.classList.toggle('collapsed');
-    if(t)t.textContent=c?'EXPAND':'COLLAPSE';
-    localStorage.setItem('hopper-collapsed',c?'1':'0');
-  };
-})();
-
-// ============ LIVE DATA FEED ============
-
-const DASHBOARD_API='https://9-cloud-standin.789k6rym8v.workers.dev/api/dashboard';
-
-function setStatusDot(dotEl,status){
-  if(!dotEl)return;
-  if(status==='online'||status==='connected'){dotEl.style.background='var(--neon)';dotEl.style.animation='pulse-green 2s infinite';}
-  else if(status==='unknown'){dotEl.style.background='var(--gold)';dotEl.style.animation='none';}
-  else{dotEl.style.background='var(--red)';dotEl.style.animation='pulse-red 2s infinite';}
-}
-
-function setStatusText(el,status){
-  if(!el)return;
-  const label=status==='online'||status==='connected'?'Online':status==='unknown'?'Unknown':'Offline';
-  const color=status==='online'||status==='connected'?'var(--neon)':status==='unknown'?'var(--gold)':'var(--red)';
-  el.textContent=label;el.style.color=color;
-}
-
-function formatTimeAgo(isoStr){
-  if(!isoStr)return 'never';
-  const diff=Math.round((Date.now()-new Date(isoStr).getTime())/1000);
-  if(diff<60)return diff+'s ago';
-  if(diff<3600)return Math.floor(diff/60)+'m ago';
-  if(diff<86400)return Math.floor(diff/3600)+'h ago';
-  return Math.floor(diff/86400)+'d ago';
-}
-
-async function refreshDashboard(){
-  try{
-    const res=await fetch(DASHBOARD_API,{cache:'no-store'});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    const dot=document.getElementById('systemStatusDot');
-    const txt=document.getElementById('systemStatusText');
-    if(data.mac.alive){
-      dot.style.background='var(--neon)';dot.style.animation='pulse-green 2s ease-in-out infinite';
-      txt.textContent='SYSTEM LIVE';txt.style.color='var(--neon)';
-    } else {
-      dot.style.background='var(--gold)';dot.style.animation='pulse-red 2s ease-in-out infinite';
-      txt.textContent='CLOUD BACKUP';txt.style.color='var(--gold)';
-    }
-    const setTk=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-    setTk('tk-mac-status',data.mac.alive?'ONLINE':'OFFLINE');
-    setTk('tk-mac-status2',data.mac.alive?'ONLINE':'OFFLINE');
-    const syncLabel=data.mac.lastSyncAgeSec!==null?(data.mac.lastSyncAgeSec<120?'LIVE':data.mac.lastSyncAgeSec+'s ago'):'N/A';
-    setTk('tk-cloud-sync',syncLabel);setTk('tk-cloud-sync2',syncLabel);
-    setTk('tk-mode',data.mode.toUpperCase());setTk('tk-mode2',data.mode.toUpperCase());
-    if(data.uptime){setTk('tk-uptime',data.uptime);setTk('tk-uptime2',data.uptime);}
-    const svc=data.services;
-    setStatusDot(document.getElementById('dot-telegram'),svc.telegram.status);
-    setStatusText(document.getElementById('status-telegram'),svc.telegram.status);
-    setStatusDot(document.getElementById('dot-imessage'),svc.imessage.status);
-    setStatusText(document.getElementById('status-imessage'),svc.imessage.status);
-    setStatusDot(document.getElementById('dot-voice'),svc.voice.status);
-    setStatusText(document.getElementById('status-voice'),svc.voice.status);
-    setStatusDot(document.getElementById('dot-email'),svc.email.status);
-    setStatusText(document.getElementById('status-email'),svc.email.status);
-    setStatusDot(document.getElementById('dot-hub'),svc.commsHub.status);
-    setStatusText(document.getElementById('status-hub'),svc.commsHub.status);
-    setStatusDot(document.getElementById('dot-cloud'),svc.cloudWorker.status);
-    setStatusText(document.getElementById('status-cloud'),svc.cloudWorker.status);
-    const syncInd=document.getElementById('comms-sync-indicator');
-    if(syncInd)syncInd.textContent='synced '+formatTimeAgo(data.mac.lastHeartbeat);
-  }catch(e){
-    const dot=document.getElementById('systemStatusDot');
-    const txt=document.getElementById('systemStatusText');
-    if(dot){dot.style.background='var(--gold)';dot.style.animation='none';}
-    if(txt){txt.textContent='STATIC';txt.style.color='var(--gold)';}
-    const setTk=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-    setTk('tk-mac-status','STATIC');setTk('tk-mac-status2','STATIC');
-    setTk('tk-cloud-sync','N/A');setTk('tk-cloud-sync2','N/A');
-    setTk('tk-mode','LOCAL');setTk('tk-mode2','LOCAL');
-    ['telegram','imessage','voice','email','hub','cloud'].forEach(svc=>{
-      const d=document.getElementById('dot-'+svc);
-      const s=document.getElementById('status-'+svc);
-      if(d){d.style.background='var(--gold)';d.style.animation='none';}
-      if(s){s.textContent='Unknown';s.style.color='var(--gold)';}
-    });
-  }
-}
-
-// ============ INIT ============
-
-function init(){
-  setTopbarDate();
-  updateClock();
-  setInterval(updateClock,1000);
-  initTabs();
-  renderHopper();
-  renderSilos();
-  renderAgentGrid();
-  renderOrgAgents();
-  renderVendors();
-  renderTasks();
-  renderSprintTimeline();
-  initTerminal();
-  refreshDashboard();
-  setInterval(refreshDashboard,30000);
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',init);
-} else {
-  init();
-}
-
-})();
-</script>
 
 <script>
-if('serviceWorker' in navigator && location.protocol==='https:'){
-  navigator.serviceWorker.register('./sw.js').catch(function(){});
-}
+window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); });
 </script>
 </body>
 </html>

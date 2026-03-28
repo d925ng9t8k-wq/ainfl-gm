@@ -276,6 +276,10 @@ body{
   animation:slideUp 0.4s ease;
 }
 .a2hs-banner.visible{display:block;}
+/* Push input area up when banner is visible so nothing gets covered */
+body.a2hs-open .chat-input-area{
+  padding-bottom:calc(80px + var(--safe-bottom));
+}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .a2hs-content{display:flex;align-items:center;gap:12px;}
 .a2hs-icon{font-size:28px;flex-shrink:0;}
@@ -439,9 +443,10 @@ body{
     <div class="a2hs-icon">&#9889;</div>
     <div class="a2hs-text">
       <strong>Add Pilot to Home Screen</strong>
-      <p>Tap the <strong>Share icon &#x2B06;&#xFE0F;</strong> at the bottom of Safari, then tap <strong>"Add to Home Screen"</strong></p>
+      <p id="a2hsIOSHint" style="display:none;font-size:12px;color:var(--muted);margin-top:2px;">Tap the <strong>Share icon</strong> at the bottom of Safari, then tap <strong>"Add to Home Screen"</strong></p>
     </div>
-    <button class="a2hs-close" id="a2hsClose" style="background:#FF6600;color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:bold;font-size:14px;cursor:pointer;">GOT IT</button>
+    <button id="a2hsInstall" style="display:none;background:#FF6600;color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:bold;font-size:14px;cursor:pointer;flex-shrink:0;">INSTALL</button>
+    <button class="a2hs-close" id="a2hsClose">DISMISS</button>
   </div>
 </div>
 
@@ -670,18 +675,65 @@ btnClear.addEventListener('click', () => {
 });
 
 // ===== A2HS (Add to Home Screen) =====
+let deferredInstallPrompt = null;
+
+// Capture Chrome/Android native install prompt before it fires
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  // Show banner if not dismissed and not already installed
+  if (!localStorage.getItem(A2HS_KEY) && !window.matchMedia('(display-mode: standalone)').matches) {
+    setTimeout(() => showA2HSBanner(), 3000);
+  }
+});
+
+function showA2HSBanner() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const installBtn = document.getElementById('a2hsInstall');
+  if (isIOS) {
+    // iOS Safari: show manual instruction
+    installBtn.style.display = 'none';
+    document.getElementById('a2hsIOSHint').style.display = 'block';
+  } else {
+    // Chrome/Android: show install button
+    installBtn.style.display = 'inline-block';
+    document.getElementById('a2hsIOSHint').style.display = 'none';
+  }
+  a2hsBanner.classList.add('visible');
+  document.body.classList.add('a2hs-open');
+}
+
 function checkA2HS() {
   const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
   const dismissed = localStorage.getItem(A2HS_KEY);
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  if (isIOS && !isStandalone && !dismissed) {
-    setTimeout(() => { a2hsBanner.classList.add('visible'); }, 3000);
+  if (!isStandalone && !dismissed) {
+    if (isIOS) {
+      // iOS: show immediately after delay (no beforeinstallprompt on iOS)
+      setTimeout(() => showA2HSBanner(), 3000);
+    }
+    // Android/Chrome: handled by beforeinstallprompt listener above
   }
 }
 
+// Install button — triggers native Chrome prompt
+document.getElementById('a2hsInstall').addEventListener('click', async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    if (outcome === 'accepted') {
+      a2hsBanner.classList.remove('visible');
+      document.body.classList.remove('a2hs-open');
+      localStorage.setItem(A2HS_KEY, 'true');
+    }
+  }
+});
+
 a2hsClose.addEventListener('click', () => {
   a2hsBanner.classList.remove('visible');
+  document.body.classList.remove('a2hs-open');
   localStorage.setItem(A2HS_KEY, 'true');
 });
 
