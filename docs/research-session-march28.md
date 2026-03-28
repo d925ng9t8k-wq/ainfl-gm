@@ -130,3 +130,40 @@
 5. **Implement /clear discipline** — between distinct tasks to prevent context bloat
 6. **Add outcome-based pricing option** — for freeagent9 (pay per task completed)
 7. **Build scheduled agents** — daily briefing, Kyle C check-in, data refresh
+
+---
+
+## Topic 6: MCP Servers for Business Automation
+
+### MUST-INSTALL MCP Servers:
+
+1. **Cloudflare MCP** — `https://mcp.cloudflare.com/mcp` — 2,500+ API endpoints via OAuth. DNS, Workers, R2, potentially domain registration. Uses OAuth so NO CAPTCHA problems.
+
+2. **Alpaca MCP** — `uvx alpaca-mcp-server` — 60+ trading tools. Execute trades, check portfolios, get market data. Directly enables trader9.
+
+3. **Twilio MCP** — SMS, phone management. Could replace our manual Twilio integration for Pilot.
+
+4. **Stripe MCP** — Payment processing. Essential for subscription monetization.
+
+### Data APIs for Simulators:
+- BALLDONTLIE: Free tier, stats + odds (no salary data)
+- Spotrac: Best salary data but requires scraping
+- SportsDataIO: Free discovery tier for previous season
+- Sportradar: MLB salary data API
+
+### Key Insight:
+MCP servers consume tokens just by being available. Only enable what you're actively using. Use /context to audit.
+
+---
+
+## Summary of Tools Added to Toolbox
+
+| Tool | Purpose | Status |
+|------|---------|--------|
+| SeleniumBase UC Mode | Bypass Cloudflare Turnstile | INSTALLED |
+| Cloudflare MCP Server | Full CF API access via OAuth | TO INSTALL |
+| Alpaca MCP Server | Trading from Claude | TO INSTALL |
+| Twilio MCP Server | SMS automation | TO INSTALL |
+| Stripe MCP Server | Payment management | TO INSTALL |
+| YouTube transcript reader | Watch videos via text | INSTALLED |
+| cliclick | Precise mouse control | INSTALLED |
