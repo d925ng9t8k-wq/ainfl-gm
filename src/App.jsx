@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { GameProvider, useGame } from './context/GameContext';
 import Layout from './components/Layout';
 import RosterPage from './pages/RosterPage';
@@ -13,6 +13,7 @@ import MarketsPage from './pages/MarketsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import AboutPage from './pages/AboutPage';
 import OwnerDashboardPage from './pages/OwnerDashboardPage';
+import MLBApp from './MLBApp';
 
 // Team slug to abbreviation mapping
 const TEAM_SLUGS = {
@@ -79,7 +80,8 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default function App() {
+// NFL app (wrapped in GameProvider + NFL Layout)
+function NFLApp() {
   return (
     <GameProvider>
       <ErrorBoundary>
@@ -103,5 +105,17 @@ export default function App() {
         </Layout>
       </ErrorBoundary>
     </GameProvider>
+  );
+}
+
+// Root router — splits NFL vs MLB at the top level
+export default function App() {
+  return (
+    <Routes>
+      {/* MLB routes — completely isolated from NFL state/layout */}
+      <Route path="/mlb/*" element={<MLBApp />} />
+      {/* NFL routes — everything else */}
+      <Route path="/*" element={<NFLApp />} />
+    </Routes>
   );
 }
