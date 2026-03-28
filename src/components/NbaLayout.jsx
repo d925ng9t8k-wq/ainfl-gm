@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useNbaGame } from '../context/NbaGameContext';
 import NbaScenarioManager from './NbaScenarioManager';
 
@@ -76,14 +76,48 @@ export default function NbaLayout({ children }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
 
-      {/* Top Nav */}
-      <header style={{
-        background: 'linear-gradient(135deg, #000814 0%, #0A1628 50%, #000814 100%)',
-        borderBottom: '1px solid rgba(255,160,0,0.3)',
-        boxShadow: '0 1px 20px rgba(255,160,0,0.15), 0 2px 20px rgba(0,0,0,0.5)',
-        padding: '0 16px',
+      {/* Sport Selector Bar */}
+      <div style={{
+        background: '#0a0a0a',
+        borderBottom: '1px solid rgba(251,79,20,0.2)',
+        padding: '6px 16px',
         position: 'sticky',
         top: 0,
+        zIndex: 101,
+        display: 'flex',
+        justifyContent: 'center',
+        gap: 4,
+      }}>
+        {[
+          { label: 'NFL', to: '/', active: false },
+          { label: 'NBA', to: '/nba', active: true },
+          { label: 'MLB', to: '/mlb', active: false },
+        ].map(s => (
+          <Link key={s.label} to={s.to} style={{
+            padding: '4px 16px',
+            borderRadius: 4,
+            fontSize: 11,
+            fontWeight: 800,
+            fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+            background: s.active ? '#FB4F14' : 'transparent',
+            color: s.active ? '#fff' : 'rgba(251,79,20,0.5)',
+            border: s.active ? '1px solid #FB4F14' : '1px solid rgba(251,79,20,0.2)',
+            transition: 'all 0.15s ease',
+          }}>{s.label}</Link>
+        ))}
+      </div>
+
+      {/* Top Nav */}
+      <header style={{
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)',
+        borderBottom: '1px solid rgba(251,79,20,0.3)',
+        boxShadow: '0 1px 20px rgba(251,79,20,0.12), 0 2px 20px rgba(0,0,0,0.5)',
+        padding: '0 16px',
+        position: 'sticky',
+        top: 33,
         zIndex: 100,
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
@@ -106,11 +140,11 @@ export default function NbaLayout({ children }) {
                   fontWeight: 900, fontSize: 20,
                   fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
                   letterSpacing: '0.04em',
-                  background: 'linear-gradient(135deg, #FFA500 0%, #FFD700 40%, #E2E8F0 100%)',
+                  background: 'linear-gradient(135deg, #FB4F14 0%, #FF8C5A 40%, #E2E8F0 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
-                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(255,160,0,0.5))',
+                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(251,79,20,0.5))',
                 }}>AiNBA</span>
                 <span style={{
                   fontWeight: 900, fontSize: 20,
@@ -121,7 +155,7 @@ export default function NbaLayout({ children }) {
                 }}>GM</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 1 }}>
-                <span style={{ color: 'rgba(255,160,0,0.5)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</span>
+                <span style={{ color: 'rgba(251,79,20,0.6)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#39FF14', boxShadow: '0 0 8px rgba(57,255,20,0.5)', animation: 'neonPulse 2s ease-in-out infinite' }} />
                   <span style={{ color: 'rgba(57,255,20,0.6)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase' }}>ONLINE</span>
@@ -129,7 +163,7 @@ export default function NbaLayout({ children }) {
               </div>
             </div>
 
-            <div style={{ width: 1, height: 36, marginRight: 2, background: 'linear-gradient(180deg, transparent 0%, rgba(255,160,0,0.3) 20%, rgba(255,160,0,0.15) 80%, transparent 100%)', borderRadius: 1 }} />
+            <div style={{ width: 1, height: 36, marginRight: 2, background: 'linear-gradient(180deg, transparent 0%, rgba(251,79,20,0.4) 20%, rgba(251,79,20,0.2) 80%, transparent 100%)', borderRadius: 1 }} />
 
             {/* Basketball icon */}
             <div style={{
@@ -157,8 +191,8 @@ export default function NbaLayout({ children }) {
                   value={currentTeamAbbr}
                   onChange={e => selectTeam(e.target.value)}
                   style={{
-                    background: 'rgba(30,41,59,0.9)', color: accentColor,
-                    border: '1px solid rgba(255,160,0,0.15)', borderRadius: 6,
+                    background: 'rgba(26,26,26,0.9)', color: accentColor,
+                    border: '1px solid rgba(251,79,20,0.15)', borderRadius: 6,
                     padding: '2px 6px', fontWeight: 800, fontSize: 14,
                     cursor: 'pointer', lineHeight: 1.2, maxWidth: 180,
                     backdropFilter: 'blur(4px)',
@@ -190,7 +224,7 @@ export default function NbaLayout({ children }) {
             <div className="cap-progress-bar" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <div style={{
                 width: 'clamp(80px, 25vw, 200px)', height: 7,
-                background: 'rgba(255,160,0,0.08)', borderRadius: 4, overflow: 'hidden',
+                background: 'rgba(251,79,20,0.08)', borderRadius: 4, overflow: 'hidden',
                 boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.4)',
               }}>
                 <div style={{
@@ -199,9 +233,9 @@ export default function NbaLayout({ children }) {
                     ? 'linear-gradient(90deg, #FF6B00, #FF9500)'
                     : taxPct > 85
                       ? 'linear-gradient(90deg, #facc15, #fbbf24)'
-                      : 'linear-gradient(90deg, #FFA500, #FFD700)',
+                      : 'linear-gradient(90deg, #FB4F14, #FF7A45)',
                   borderRadius: 4, transition: 'width 0.3s ease',
-                  boxShadow: '0 0 8px rgba(255,160,0,0.3)',
+                  boxShadow: '0 0 8px rgba(251,79,20,0.3)',
                 }} />
               </div>
               <span style={{ color: '#94A3B8', fontSize: 11 }}>{taxPct.toFixed(0)}%</span>
@@ -214,13 +248,13 @@ export default function NbaLayout({ children }) {
       <div className="hero-banner" style={{
         position: 'relative', width: '100%', maxWidth: 1200, margin: '0 auto',
         height: 200, overflow: 'hidden',
-        borderBottom: '2px solid rgba(255,160,0,0.25)',
+        borderBottom: '2px solid rgba(251,79,20,0.25)',
         borderRadius: '0 0 12px 12px',
-        background: 'linear-gradient(135deg, #000814 0%, #0A1628 50%, #1a0a00 100%)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a0800 50%, #0a0a0a 100%)',
       }}>
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse at 30% 50%, rgba(255,107,0,0.2) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at 30% 50%, rgba(251,79,20,0.18) 0%, transparent 70%)',
         }} />
         <div style={{
           position: 'relative', height: '100%', maxWidth: 1200, margin: '0 auto',
@@ -231,7 +265,7 @@ export default function NbaLayout({ children }) {
               fontSize: 'clamp(20px, 4vw, 32px)', fontWeight: 900,
               fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
               letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff',
-              textShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 30px rgba(255,160,0,0.3)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 30px rgba(251,79,20,0.3)',
             }}>
               Be The GM
             </div>
@@ -245,13 +279,13 @@ export default function NbaLayout({ children }) {
             <div style={{
               display: 'flex', gap: 16, justifyContent: 'center', marginTop: 10, flexWrap: 'wrap',
             }}>
-              <div style={{ fontSize: 11, color: '#FFA500', background: 'rgba(255,165,0,0.1)', border: '1px solid rgba(255,165,0,0.2)', borderRadius: 4, padding: '3px 8px' }}>
+              <div style={{ fontSize: 11, color: '#FB4F14', background: 'rgba(251,79,20,0.1)', border: '1px solid rgba(251,79,20,0.25)', borderRadius: 4, padding: '3px 8px' }}>
                 Salary Cap: $154.6M
               </div>
-              <div style={{ fontSize: 11, color: '#FF6B35', background: 'rgba(255,107,53,0.1)', border: '1px solid rgba(255,107,53,0.2)', borderRadius: 4, padding: '3px 8px' }}>
+              <div style={{ fontSize: 11, color: '#FF7A45', background: 'rgba(255,122,69,0.1)', border: '1px solid rgba(255,122,69,0.25)', borderRadius: 4, padding: '3px 8px' }}>
                 Luxury Tax: $187.9M
               </div>
-              <div style={{ fontSize: 11, color: '#FF3B00', background: 'rgba(255,59,0,0.1)', border: '1px solid rgba(255,59,0,0.2)', borderRadius: 4, padding: '3px 8px' }}>
+              <div style={{ fontSize: 11, color: '#FFB07A', background: 'rgba(255,176,122,0.08)', border: '1px solid rgba(255,176,122,0.2)', borderRadius: 4, padding: '3px 8px' }}>
                 First Apron: $195.9M
               </div>
             </div>
@@ -272,7 +306,7 @@ export default function NbaLayout({ children }) {
           }}>
             <div style={{
               width: 160, minHeight: 600,
-              background: 'rgba(15,23,42,0.3)', border: '1px solid rgba(255,160,0,0.08)',
+              background: 'rgba(15,15,15,0.5)', border: '1px solid rgba(251,79,20,0.08)',
               borderRadius: 6, overflow: 'hidden',
             }}>
               <ins className="adsbygoogle" style={{ display: 'block' }}
@@ -284,7 +318,7 @@ export default function NbaLayout({ children }) {
 
         {/* Footer ad + share */}
         <div style={{ marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1, padding: '0 16px' }}>
-          <div style={{ width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,23,42,0.3)', border: '1px solid rgba(255,160,0,0.08)', borderRadius: 6, overflow: 'hidden' }}>
+          <div style={{ width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,15,15,0.5)', border: '1px solid rgba(251,79,20,0.08)', borderRadius: 6, overflow: 'hidden' }}>
             <ins className="adsbygoogle" style={{ display: 'block' }}
               data-ad-client="ca-pub-4928127931521131" data-ad-slot="auto"
               data-ad-format="auto" data-full-width-responsive="true" />
@@ -307,9 +341,9 @@ export default function NbaLayout({ children }) {
 
       {/* Bottom Tab Nav */}
       <nav style={{
-        background: 'linear-gradient(135deg, #000814 0%, #0A1628 100%)',
-        borderTop: '1px solid rgba(255,160,0,0.3)',
-        boxShadow: '0 -1px 20px rgba(255,160,0,0.15), 0 -2px 20px rgba(0,0,0,0.5)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #111111 100%)',
+        borderTop: '1px solid rgba(251,79,20,0.3)',
+        boxShadow: '0 -1px 20px rgba(251,79,20,0.12), 0 -2px 20px rgba(0,0,0,0.5)',
         position: 'sticky', bottom: 0, zIndex: 100,
         backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', overflow: 'hidden',
       }}>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useGame } from '../context/GameContext';
 import FloatingMenu from './FloatingMenu';
 import ScenarioManager from './ScenarioManager';
@@ -94,14 +94,48 @@ export default function Layout({ children }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
 
-      {/* Top Nav */}
-      <header style={{
-        background: 'linear-gradient(135deg, #000814 0%, #0A1628 50%, #000814 100%)',
-        borderBottom: '1px solid rgba(0,240,255,0.3)',
-        boxShadow: '0 1px 20px rgba(0,240,255,0.15), 0 2px 20px rgba(0,0,0,0.5)',
-        padding: '0 16px',
+      {/* Sport Selector Bar */}
+      <div style={{
+        background: '#0a0a0a',
+        borderBottom: '1px solid rgba(251,79,20,0.2)',
+        padding: '6px 16px',
         position: 'sticky',
         top: 0,
+        zIndex: 101,
+        display: 'flex',
+        justifyContent: 'center',
+        gap: 4,
+      }}>
+        {[
+          { label: 'NFL', to: '/', active: true },
+          { label: 'NBA', to: '/nba', active: false },
+          { label: 'MLB', to: '/mlb', active: false },
+        ].map(s => (
+          <Link key={s.label} to={s.to} style={{
+            padding: '4px 16px',
+            borderRadius: 4,
+            fontSize: 11,
+            fontWeight: 800,
+            fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+            background: s.active ? '#FB4F14' : 'transparent',
+            color: s.active ? '#fff' : 'rgba(251,79,20,0.5)',
+            border: s.active ? '1px solid #FB4F14' : '1px solid rgba(251,79,20,0.2)',
+            transition: 'all 0.15s ease',
+          }}>{s.label}</Link>
+        ))}
+      </div>
+
+      {/* Top Nav */}
+      <header style={{
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%)',
+        borderBottom: '1px solid rgba(251,79,20,0.3)',
+        boxShadow: '0 1px 20px rgba(251,79,20,0.12), 0 2px 20px rgba(0,0,0,0.5)',
+        padding: '0 16px',
+        position: 'sticky',
+        top: 33,
         zIndex: 100,
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
@@ -148,12 +182,12 @@ export default function Layout({ children }) {
                   fontSize: 20,
                   fontFamily: "'Oswald', 'Inter', system-ui, sans-serif",
                   letterSpacing: '0.04em',
-                  background: 'linear-gradient(135deg, #00F0FF 0%, #80F8FF 40%, #E2E8F0 100%)',
+                  background: 'linear-gradient(135deg, #FB4F14 0%, #FF8C5A 40%, #E2E8F0 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                   textShadow: 'none',
-                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(0,240,255,0.5))',
+                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(251,79,20,0.5))',
                 }}>AiNFL</span>
                 <span style={{
                   fontWeight: 900,
@@ -167,7 +201,7 @@ export default function Layout({ children }) {
                 }}>GM</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 1 }}>
-                <span style={{ color: 'rgba(0,240,255,0.4)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', position: 'relative', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</span>
+                <span style={{ color: 'rgba(251,79,20,0.6)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', position: 'relative', fontFamily: "'Oswald', 'Inter', system-ui, sans-serif" }}>AI-Powered</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#39FF14', boxShadow: '0 0 8px rgba(57,255,20,0.5)', animation: 'neonPulse 2s ease-in-out infinite' }} />
                   <span style={{ color: 'rgba(57,255,20,0.6)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase' }}>ONLINE</span>
@@ -179,7 +213,7 @@ export default function Layout({ children }) {
               width: 1,
               height: 36,
               marginRight: 2,
-              background: 'linear-gradient(180deg, transparent 0%, rgba(0,240,255,0.3) 20%, rgba(0,240,255,0.15) 80%, transparent 100%)',
+              background: 'linear-gradient(180deg, transparent 0%, rgba(251,79,20,0.4) 20%, rgba(251,79,20,0.2) 80%, transparent 100%)',
               borderRadius: 1,
             }} />
             <div style={{
@@ -189,8 +223,8 @@ export default function Layout({ children }) {
               backgroundImage: 'url(/robot-small.jpg)',
               backgroundSize: 'cover',
               backgroundPosition: 'center 20%',
-              border: '2px solid rgba(0,240,255,0.5)',
-              boxShadow: '0 0 12px rgba(0,240,255,0.3)',
+              border: '2px solid rgba(251,79,20,0.5)',
+              boxShadow: '0 0 12px rgba(251,79,20,0.3)',
               flexShrink: 0,
             }} />
             <div>
@@ -199,9 +233,9 @@ export default function Layout({ children }) {
                   value={currentTeamAbbr}
                   onChange={e => selectTeam(e.target.value)}
                   style={{
-                    background: 'rgba(30,41,59,0.9)',
+                    background: 'rgba(26,26,26,0.9)',
                     color: accentColor,
-                    border: '1px solid rgba(0,240,255,0.15)',
+                    border: '1px solid rgba(251,79,20,0.15)',
                     borderRadius: 6,
                     padding: '2px 6px',
                     fontWeight: 800,
@@ -229,7 +263,7 @@ export default function Layout({ children }) {
               <div style={{
                 width: 'clamp(80px, 25vw, 200px)',
                 height: 7,
-                background: 'rgba(0,240,255,0.06)',
+                background: 'rgba(251,79,20,0.08)',
                 borderRadius: 4,
                 overflow: 'hidden',
                 boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.4)',
@@ -241,10 +275,10 @@ export default function Layout({ children }) {
                     ? 'linear-gradient(90deg, #FF2D55, #ff5577)'
                     : capPct > 85
                       ? 'linear-gradient(90deg, #facc15, #fbbf24)'
-                      : 'linear-gradient(90deg, #00D4FF, #00A0CC)',
+                      : 'linear-gradient(90deg, #FB4F14, #FF7A45)',
                   borderRadius: 4,
                   transition: 'width 0.3s ease',
-                  boxShadow: isOverCap ? '0 0 8px rgba(255,45,85,0.4)' : '0 0 8px rgba(0,240,255,0.3)',
+                  boxShadow: isOverCap ? '0 0 8px rgba(255,45,85,0.4)' : '0 0 8px rgba(251,79,20,0.3)',
                 }} />
               </div>
               <span style={{ color: '#94A3B8', fontSize: 11 }}>{capPct.toFixed(0)}%</span>
@@ -261,7 +295,7 @@ export default function Layout({ children }) {
         margin: '0 auto',
         height: 280,
         overflow: 'hidden',
-        borderBottom: '2px solid rgba(0,240,255,0.25)',
+        borderBottom: '2px solid rgba(251,79,20,0.25)',
         borderRadius: '0 0 12px 12px',
       }}>
         <div style={{
@@ -296,7 +330,7 @@ export default function Layout({ children }) {
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               color: '#fff',
-              textShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 30px rgba(0,240,255,0.3)',
+              textShadow: '0 2px 8px rgba(0,0,0,0.9), 0 0 30px rgba(251,79,20,0.3)',
             }}>
               Be The GM
             </div>
@@ -370,7 +404,7 @@ export default function Layout({ children }) {
               width: 160,
               minHeight: 600,
               background: 'rgba(15,23,42,0.3)',
-              border: '1px solid rgba(0,240,255,0.08)',
+              border: '1px solid rgba(251,79,20,0.08)',
               borderRadius: 6,
               overflow: 'hidden',
             }}>
@@ -428,7 +462,7 @@ export default function Layout({ children }) {
         }}>
           <div style={{
             width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,23,42,0.3)',
-            border: '1px solid rgba(0,240,255,0.08)', borderRadius: 6,
+            border: '1px solid rgba(251,79,20,0.08)', borderRadius: 6,
             overflow: 'hidden',
           }}>
             <ins className="adsbygoogle"
@@ -483,9 +517,9 @@ export default function Layout({ children }) {
 
       {/* Bottom Tab Nav */}
       <nav style={{
-        background: 'linear-gradient(135deg, #000814 0%, #0A1628 100%)',
-        borderTop: '1px solid rgba(0,240,255,0.3)',
-        boxShadow: '0 -1px 20px rgba(0,240,255,0.15), 0 -2px 20px rgba(0,0,0,0.5)',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #111111 100%)',
+        borderTop: '1px solid rgba(251,79,20,0.3)',
+        boxShadow: '0 -1px 20px rgba(251,79,20,0.12), 0 -2px 20px rgba(0,0,0,0.5)',
         position: 'sticky',
         bottom: 0,
         zIndex: 100,
