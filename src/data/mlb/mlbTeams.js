@@ -20,7 +20,7 @@ export const mlbTeams = [
   { id: 17, name: 'Twins',      city: 'Minnesota',     abbreviation: 'MIN', primaryColor: '#002B5C', secondaryColor: '#D31145', division: 'AL Central' },
   { id: 18, name: 'Mets',       city: 'New York',      abbreviation: 'NYM', primaryColor: '#002D72', secondaryColor: '#FF5910', division: 'NL East' },
   { id: 19, name: 'Yankees',    city: 'New York',      abbreviation: 'NYY', primaryColor: '#003087', secondaryColor: '#C4CED4', division: 'AL East' },
-  { id: 20, name: 'Athletics',  city: 'Oakland',       abbreviation: 'OAK', primaryColor: '#003831', secondaryColor: '#EFB21E', division: 'AL West' },
+  { id: 20, name: 'Athletics',  city: 'Sacramento',    abbreviation: 'OAK', primaryColor: '#003831', secondaryColor: '#EFB21E', division: 'AL West' },
   { id: 21, name: 'Phillies',   city: 'Philadelphia',  abbreviation: 'PHI', primaryColor: '#E81828', secondaryColor: '#002D72', division: 'NL East' },
   { id: 22, name: 'Pirates',    city: 'Pittsburgh',    abbreviation: 'PIT', primaryColor: '#27251F', secondaryColor: '#FDB827', division: 'NL Central' },
   { id: 23, name: 'Padres',     city: 'San Diego',     abbreviation: 'SD',  primaryColor: '#2F241D', secondaryColor: '#FFC425', division: 'NL West' },
@@ -60,7 +60,7 @@ export const CBT_PENALTIES = {
     repeat: 0.12,
   },
   thirdThreshold: {
-    firstTime: 0.42,
-    repeat: 0.75,
+    firstTime: 0.425,
+    repeat: 0.45,
   },
 };

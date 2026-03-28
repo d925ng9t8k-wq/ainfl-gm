@@ -13,7 +13,7 @@ export const nbaRosters = {
       { name: 'De\'Andre Hunter', position: 'SF', age: 27, capHit: 22.0, contractYears: 4, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 81, traits: ['Two-Way', 'Versatile', 'Defender'] },
       { name: 'Clint Capela', position: 'C', age: 31, capHit: 10.2, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 78, traits: ['Rebounder', 'Rim Protector', 'Lob Threat'] },
       { name: 'Bogdan Bogdanovic', position: 'SG', age: 33, capHit: 20.0, contractYears: 4, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 79, traits: ['Shooter', 'Clutch', 'Off Ball'] },
-      { name: 'Dyson Daniels', position: 'SG', age: 22, capHit: 6.2, contractYears: 4, yearsRemaining: 2, contractType: 'rookie', birdRights: false, rating: 77, traits: ['Defender', 'Transition', 'Length'] },
+      { name: 'Dyson Daniels', position: 'SG', age: 22, capHit: 25.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 80, traits: ['Defender', 'Transition', 'Length'] },
       { name: 'Onyeka Okongwu', position: 'C', age: 24, capHit: 15.5, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 80, traits: ['Motor', 'Two-Way', 'Rim Runner'] },
       { name: 'Larry Nance Jr.', position: 'PF', age: 32, capHit: 11.0, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 74, traits: ['Hustle', 'Versatile', 'Defender'] },
       { name: 'Garrison Mathews', position: 'SG', age: 28, capHit: 3.5, contractYears: 2, yearsRemaining: 0, contractType: 'vet-min', birdRights: true, rating: 70, traits: ['Shooter', 'Spot Up', '3-and-D'] },
@@ -73,10 +73,11 @@ export const nbaRosters = {
     capSummary: { totalCap: 154.65, capSpace: 8.3, luxuryTax: 187.90 },
     players: [
       { name: 'DeMar DeRozan', position: 'SF', age: 36, capHit: 28.0, contractYears: 4, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 83, traits: ['Mid-Range Artist', 'Clutch', 'Veteran'] },
-      { name: 'Zach LaVine', position: 'SG', age: 30, capHit: 43.9, contractYears: 5, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 85, traits: ['Scorer', 'Athlete', 'Showtime'] },
       { name: 'Nikola Vucevic', position: 'C', age: 35, capHit: 20.0, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 78, traits: ['All-Around Big', 'Post Scorer', 'Rebounder'] },
       { name: 'Coby White', position: 'PG', age: 25, capHit: 19.0, contractYears: 4, yearsRemaining: 3, contractType: 'mid', birdRights: true, rating: 79, traits: ['Scorer', 'Playmaker', 'Shooter'] },
       { name: 'Patrick Williams', position: 'SF', age: 24, capHit: 21.5, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 77, traits: ['Two-Way', 'Versatile', 'Star Potential'] },
+      { name: 'Kevin Huerter', position: 'SG', age: 26, capHit: 16.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 77, traits: ['Shooter', 'Off-Ball', 'Tall Guard'] },
+      { name: 'Tre Jones', position: 'PG', age: 25, capHit: 13.0, contractYears: 3, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 76, traits: ['Playmaker', 'Defender', 'IQ'] },
       { name: 'Ayo Dosunmu', position: 'SG', age: 25, capHit: 7.0, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 74, traits: ['Two-Way', 'IQ', 'Competing'] },
       { name: 'Torrey Craig', position: 'SF', age: 34, capHit: 3.2, contractYears: 1, yearsRemaining: 0, contractType: 'vet-min', birdRights: true, rating: 68, traits: ['Defender', '3-and-D', 'Veteran'] },
       { name: 'Andre Drummond', position: 'C', age: 32, capHit: 3.5, contractYears: 1, yearsRemaining: 0, contractType: 'vet-min', birdRights: true, rating: 70, traits: ['Rebounder', 'Physical', 'Backup'] },
@@ -104,6 +105,7 @@ export const nbaRosters = {
     players: [
       { name: 'Luka Doncic', position: 'PG', age: 27, capHit: 49.2, contractYears: 5, yearsRemaining: 3, contractType: 'supermax', birdRights: true, rating: 98, traits: ['All-Time Great', 'Playmaker', 'Scorer'] },
       { name: 'Kyrie Irving', position: 'PG', age: 34, capHit: 39.6, contractYears: 3, yearsRemaining: 1, contractType: 'max', birdRights: true, rating: 88, traits: ['Scorer', 'Creator', 'Ball Handler'] },
+      { name: 'Klay Thompson', position: 'SG', age: 35, capHit: 16.7, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 80, traits: ['Shooter', 'Legend', 'Veteran'] },
       { name: 'P.J. Washington', position: 'PF', age: 27, capHit: 17.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 80, traits: ['Two-Way', 'Versatile', 'Defender'] },
       { name: 'Daniel Gafford', position: 'C', age: 26, capHit: 21.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 80, traits: ['Rim Runner', 'Lob Threat', 'Rim Protector'] },
       { name: 'Dereck Lively II', position: 'C', age: 21, capHit: 7.0, contractYears: 4, yearsRemaining: 2, contractType: 'rookie', birdRights: false, rating: 77, traits: ['Rim Protector', 'Length', 'Developing'] },
@@ -117,7 +119,7 @@ export const nbaRosters = {
   DEN: {
     capSummary: { totalCap: 154.65, capSpace: -18.6, luxuryTax: 187.90 },
     players: [
-      { name: 'Nikola Jokic', position: 'C', age: 30, capHit: 51.4, contractYears: 4, yearsRemaining: 2, contractType: 'supermax', birdRights: true, rating: 99, traits: ['All-Time Great', 'Playmaker', 'Scorer'] },
+      { name: 'Nikola Jokic', position: 'C', age: 30, capHit: 55.2, contractYears: 4, yearsRemaining: 2, contractType: 'supermax', birdRights: true, rating: 99, traits: ['All-Time Great', 'Playmaker', 'Scorer'] },
       { name: 'Jamal Murray', position: 'PG', age: 28, capHit: 36.1, contractYears: 5, yearsRemaining: 3, contractType: 'max', birdRights: true, rating: 90, traits: ['Scorer', 'Playmaker', 'Clutch'] },
       { name: 'Michael Porter Jr.', position: 'SF', age: 27, capHit: 33.8, contractYears: 5, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 85, traits: ['Scorer', 'Shooter', 'Length'] },
       { name: 'Aaron Gordon', position: 'PF', age: 30, capHit: 21.6, contractYears: 4, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 82, traits: ['Two-Way', 'Defender', 'Athlete'] },
@@ -147,9 +149,9 @@ export const nbaRosters = {
   GSW: {
     capSummary: { totalCap: 154.65, capSpace: -28.9, luxuryTax: 187.90 },
     players: [
-      { name: 'Stephen Curry', position: 'PG', age: 37, capHit: 55.8, contractYears: 3, yearsRemaining: 1, contractType: 'supermax', birdRights: true, rating: 95, traits: ['Greatest Shooter Ever', 'Playmaker', 'Legend'] },
+      { name: 'Stephen Curry', position: 'PG', age: 37, capHit: 59.6, contractYears: 3, yearsRemaining: 1, contractType: 'supermax', birdRights: true, rating: 95, traits: ['Greatest Shooter Ever', 'Playmaker', 'Legend'] },
+      { name: 'Jimmy Butler', position: 'SF', age: 36, capHit: 60.5, contractYears: 4, yearsRemaining: 3, contractType: 'supermax', birdRights: true, rating: 87, traits: ['Closer', 'Two-Way', 'Leader'] },
       { name: 'Draymond Green', position: 'PF', age: 35, capHit: 22.3, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 82, traits: ['IQ', 'Defender', 'Facilitator'] },
-      { name: 'Klay Thompson', position: 'SG', age: 35, capHit: 22.0, contractYears: 3, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 80, traits: ['Shooter', 'Legend', 'Veteran'] },
       { name: 'Brandin Podziemski', position: 'SG', age: 22, capHit: 5.0, contractYears: 4, yearsRemaining: 2, contractType: 'rookie', birdRights: false, rating: 76, traits: ['Playmaker', 'Shooter', 'Developing'] },
       { name: 'Jonathan Kuminga', position: 'PF', age: 22, capHit: 29.0, contractYears: 4, yearsRemaining: 3, contractType: 'mid', birdRights: true, rating: 83, traits: ['Athletic', 'Scorer', 'Star Potential'] },
       { name: 'Moses Moody', position: 'SG', age: 23, capHit: 5.5, contractYears: 3, yearsRemaining: 1, contractType: 'rookie', birdRights: false, rating: 73, traits: ['3-and-D', 'Developing', 'Two-Way'] },
@@ -193,7 +195,6 @@ export const nbaRosters = {
     capSummary: { totalCap: 154.65, capSpace: -12.3, luxuryTax: 187.90 },
     players: [
       { name: 'Kawhi Leonard', position: 'SF', age: 34, capHit: 48.8, contractYears: 3, yearsRemaining: 1, contractType: 'supermax', birdRights: true, rating: 88, traits: ['Two-Way', 'Scorer', 'Closer'] },
-      { name: 'Paul George', position: 'SF', age: 35, capHit: 31.0, contractYears: 4, yearsRemaining: 3, contractType: 'max', birdRights: true, rating: 82, traits: ['Scorer', 'Two-Way', 'Veteran'] },
       { name: 'James Harden', position: 'PG', age: 36, capHit: 35.6, contractYears: 2, yearsRemaining: 0, contractType: 'max', birdRights: true, rating: 83, traits: ['Elite Scorer', 'Playmaker', 'Veteran'] },
       { name: 'Ivica Zubac', position: 'C', age: 28, capHit: 15.0, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 79, traits: ['Rim Runner', 'Defender', 'Rebounder'] },
       { name: 'Norman Powell', position: 'SG', age: 32, capHit: 18.6, contractYears: 5, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 79, traits: ['Scorer', 'Shooter', 'Versatile'] },
@@ -207,7 +208,7 @@ export const nbaRosters = {
   LAL: {
     capSummary: { totalCap: 154.65, capSpace: -19.4, luxuryTax: 187.90 },
     players: [
-      { name: 'LeBron James', position: 'SF', age: 40, capHit: 51.4, contractYears: 2, yearsRemaining: 1, contractType: 'max', birdRights: true, rating: 89, traits: ['All-Time GOAT', 'Playmaker', 'Veteran'] },
+      { name: 'LeBron James', position: 'SF', age: 40, capHit: 52.6, contractYears: 2, yearsRemaining: 1, contractType: 'max', birdRights: true, rating: 89, traits: ['All-Time GOAT', 'Playmaker', 'Veteran'] },
       { name: 'Anthony Davis', position: 'C', age: 32, capHit: 43.2, contractYears: 3, yearsRemaining: 1, contractType: 'max', birdRights: true, rating: 93, traits: ['Two-Way Titan', 'Rim Protector', 'Scorer'] },
       { name: 'D\'Angelo Russell', position: 'PG', age: 29, capHit: 18.0, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 80, traits: ['Scorer', 'Playmaker', 'Shooter'] },
       { name: 'Austin Reaves', position: 'SG', age: 27, capHit: 12.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 80, traits: ['Clutch', 'Hustle', 'IQ'] },
@@ -239,7 +240,6 @@ export const nbaRosters = {
     players: [
       { name: 'Bam Adebayo', position: 'C', age: 28, capHit: 32.6, contractYears: 5, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 92, traits: ['Two-Way', 'Versatile', 'Leader'] },
       { name: 'Tyler Herro', position: 'SG', age: 26, capHit: 32.6, contractYears: 5, yearsRemaining: 3, contractType: 'max', birdRights: true, rating: 86, traits: ['Scorer', 'Playmaker', 'Clutch'] },
-      { name: 'Jimmy Butler', position: 'SF', age: 36, capHit: 48.8, contractYears: 4, yearsRemaining: 1, contractType: 'supermax', birdRights: true, rating: 87, traits: ['Closer', 'Two-Way', 'Leader'] },
       { name: 'Kyle Lowry', position: 'PG', age: 40, capHit: 20.0, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 68, traits: ['Veteran', 'IQ', 'Leader'] },
       { name: 'Terry Rozier', position: 'SG', age: 32, capHit: 26.5, contractYears: 5, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 82, traits: ['Scorer', 'Creator', 'Clutch'] },
       { name: 'Haywood Highsmith', position: 'SF', age: 28, capHit: 10.0, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 74, traits: ['3-and-D', 'Defender', 'Hustle'] },
@@ -252,7 +252,7 @@ export const nbaRosters = {
   MIL: {
     capSummary: { totalCap: 154.65, capSpace: -24.1, luxuryTax: 187.90 },
     players: [
-      { name: 'Giannis Antetokounmpo', position: 'PF', age: 31, capHit: 48.8, contractYears: 4, yearsRemaining: 2, contractType: 'supermax', birdRights: true, rating: 97, traits: ['All-Time Force', 'Two-Way', 'Dominant'] },
+      { name: 'Giannis Antetokounmpo', position: 'PF', age: 31, capHit: 54.1, contractYears: 4, yearsRemaining: 2, contractType: 'supermax', birdRights: true, rating: 97, traits: ['All-Time Force', 'Two-Way', 'Dominant'] },
       { name: 'Damian Lillard', position: 'PG', age: 35, capHit: 48.8, contractYears: 4, yearsRemaining: 2, contractType: 'supermax', birdRights: true, rating: 89, traits: ['Elite Scorer', 'Clutch', 'Range'] },
       { name: 'Brook Lopez', position: 'C', age: 37, capHit: 22.1, contractYears: 3, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 80, traits: ['Rim Protector', 'Shooter', 'Veteran'] },
       { name: 'Khris Middleton', position: 'SF', age: 34, capHit: 38.1, contractYears: 5, yearsRemaining: 0, contractType: 'max', birdRights: true, rating: 79, traits: ['Scorer', 'Clutch', 'Two-Way'] },
@@ -288,7 +288,6 @@ export const nbaRosters = {
       { name: 'Jose Alvarado', position: 'PG', age: 27, capHit: 12.0, contractYears: 3, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 76, traits: ['Defender', 'Hustle', 'Pest'] },
       { name: 'Herb Jones', position: 'SF', age: 26, capHit: 13.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 77, traits: ['Elite Defender', 'Two-Way', 'Hustle'] },
       { name: 'Jonas Valanciunas', position: 'C', age: 33, capHit: 14.0, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 76, traits: ['Post Scorer', 'Rebounder', 'Physical'] },
-      { name: 'Dyson Daniels', position: 'SG', age: 22, capHit: 5.5, contractYears: 3, yearsRemaining: 1, contractType: 'rookie', birdRights: false, rating: 75, traits: ['Defender', 'Developing', 'Two-Way'] },
       { name: 'Trey Murphy III', position: 'SF', age: 25, capHit: 18.0, contractYears: 4, yearsRemaining: 3, contractType: 'mid', birdRights: true, rating: 79, traits: ['Shooter', 'Length', 'Versatile'] },
       { name: 'Naji Marshall', position: 'SF', age: 26, capHit: 5.0, contractYears: 2, yearsRemaining: 0, contractType: 'vet-min', birdRights: false, rating: 71, traits: ['Versatile', 'Defense', 'Hustle'] },
     ]
@@ -344,7 +343,7 @@ export const nbaRosters = {
     players: [
       { name: 'Joel Embiid', position: 'C', age: 31, capHit: 51.4, contractYears: 4, yearsRemaining: 2, contractType: 'supermax', birdRights: true, rating: 95, traits: ['Dominant Big', 'Scorer', 'Two-Way'] },
       { name: 'Tyrese Maxey', position: 'PG', age: 24, capHit: 35.0, contractYears: 5, yearsRemaining: 4, contractType: 'max', birdRights: true, rating: 90, traits: ['Scorer', 'Explosive', 'Playmaker'] },
-      { name: 'Paul George', position: 'SF', age: 35, capHit: 31.6, contractYears: 4, yearsRemaining: 3, contractType: 'max', birdRights: true, rating: 82, traits: ['Scorer', 'Two-Way', 'Veteran'] },
+      { name: 'Paul George', position: 'SF', age: 35, capHit: 51.7, contractYears: 4, yearsRemaining: 3, contractType: 'max', birdRights: true, rating: 82, traits: ['Scorer', 'Two-Way', 'Veteran'] },
       { name: 'Tobias Harris', position: 'PF', age: 32, capHit: 39.5, contractYears: 5, yearsRemaining: 0, contractType: 'max', birdRights: true, rating: 79, traits: ['Scorer', 'Versatile', 'Steady'] },
       { name: 'Kelly Oubre Jr.', position: 'SF', age: 29, capHit: 13.0, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 76, traits: ['Scorer', 'Versatile', 'Defender'] },
       { name: 'De\'Anthony Melton', position: 'SG', age: 27, capHit: 9.0, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 75, traits: ['Defender', 'Two-Way', 'Hustle'] },
@@ -387,10 +386,9 @@ export const nbaRosters = {
   SAC: {
     capSummary: { totalCap: 154.65, capSpace: -4.6, luxuryTax: 187.90 },
     players: [
-      { name: 'De\'Aaron Fox', position: 'PG', age: 28, capHit: 33.8, contractYears: 4, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 88, traits: ['Explosive', 'Scorer', 'Playmaker'] },
+      { name: 'Zach LaVine', position: 'SG', age: 30, capHit: 46.5, contractYears: 5, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 85, traits: ['Scorer', 'Athlete', 'Showtime'] },
       { name: 'Domantas Sabonis', position: 'C', age: 29, capHit: 27.2, contractYears: 4, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 87, traits: ['Triple-Double Machine', 'Playmaker', 'Rebounder'] },
       { name: 'Malik Monk', position: 'SG', age: 27, capHit: 19.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 80, traits: ['Scorer', 'Playmaker', 'Clutch'] },
-      { name: 'Kevin Huerter', position: 'SG', age: 26, capHit: 16.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 77, traits: ['Shooter', 'Off-Ball', 'Tall Guard'] },
       { name: 'Harrison Barnes', position: 'SF', age: 33, capHit: 18.0, contractYears: 2, yearsRemaining: 0, contractType: 'mid', birdRights: true, rating: 76, traits: ['Veteran', 'Scorer', 'Clutch'] },
       { name: 'Trey Lyles', position: 'PF', age: 29, capHit: 9.0, contractYears: 3, yearsRemaining: 1, contractType: 'mid', birdRights: true, rating: 73, traits: ['Shooter', 'Versatile', 'Post'] },
       { name: 'Keegan Murray', position: 'SF', age: 24, capHit: 9.5, contractYears: 4, yearsRemaining: 2, contractType: 'rookie', birdRights: false, rating: 77, traits: ['Shooter', 'Two-Way', 'Developing'] },
@@ -402,10 +400,10 @@ export const nbaRosters = {
   SAS: {
     capSummary: { totalCap: 154.65, capSpace: 44.3, luxuryTax: 187.90 },
     players: [
-      { name: 'Victor Wembanyama', position: 'C', age: 21, capHit: 12.5, contractYears: 4, yearsRemaining: 2, contractType: 'rookie', birdRights: false, rating: 94, traits: ['Generational Talent', 'Two-Way', 'Unique'] },
+      { name: 'Victor Wembanyama', position: 'C', age: 21, capHit: 13.4, contractYears: 4, yearsRemaining: 2, contractType: 'rookie', birdRights: false, rating: 94, traits: ['Generational Talent', 'Two-Way', 'Unique'] },
+      { name: 'De\'Aaron Fox', position: 'PG', age: 28, capHit: 33.8, contractYears: 4, yearsRemaining: 2, contractType: 'max', birdRights: true, rating: 88, traits: ['Explosive', 'Scorer', 'Playmaker'] },
       { name: 'Devin Vassell', position: 'SG', age: 25, capHit: 21.0, contractYears: 5, yearsRemaining: 3, contractType: 'mid', birdRights: true, rating: 81, traits: ['Scorer', 'Shooter', 'Two-Way'] },
       { name: 'Keldon Johnson', position: 'SF', age: 25, capHit: 18.0, contractYears: 4, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 78, traits: ['Energy', 'Scorer', 'Athletic'] },
-      { name: 'Tre Jones', position: 'PG', age: 25, capHit: 13.0, contractYears: 3, yearsRemaining: 2, contractType: 'mid', birdRights: true, rating: 76, traits: ['Playmaker', 'Defender', 'IQ'] },
       { name: 'Charles Bassey', position: 'C', age: 24, capHit: 5.5, contractYears: 2, yearsRemaining: 0, contractType: 'vet-min', birdRights: false, rating: 70, traits: ['Rim Runner', 'Energy', 'Developing'] },
       { name: 'Malaki Branham', position: 'SG', age: 22, capHit: 4.5, contractYears: 3, yearsRemaining: 1, contractType: 'rookie', birdRights: false, rating: 71, traits: ['Scorer', 'Developing', 'Athletic'] },
       { name: 'Doug McDermott', position: 'SF', age: 33, capHit: 3.2, contractYears: 1, yearsRemaining: 0, contractType: 'vet-min', birdRights: true, rating: 70, traits: ['Shooter', 'Veteran', 'Spot Up'] },
