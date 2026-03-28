@@ -1,0 +1,38 @@
+{
+  "calibrationFactor": null,
+  "sampleSize": 0,
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Dashboard v4 build",
+      "category": "dashboard",
+      "estimatedMinutes": null,
+      "startTimestamp": "2026-03-28T04:43:00Z",
+      "completionTimestamp": null,
+      "actualMinutes": null,
+      "ratio": null
+    },
+    {
+      "id": 2,
+      "name": "Kyle architecture report update",
+      "category": "content",
+      "estimatedMinutes": null,
+      "startTimestamp": "2026-03-28T05:48:00Z",
+      "completionTimestamp": null,
+      "actualMinutes": null,
+      "ratio": null
+    },
+    {
+      "id": 3,
+      "name": "ETA calibration tracker build",
+      "category": "infrastructure",
+      "estimatedMinutes": null,
+      "startTimestamp": "2026-03-28T06:04:00Z",
+      "completionTimestamp": null,
+      "actualMinutes": null,
+      "ratio": null
+    }
+  ],
+  "categoryFactors": {},
+  "lastCalibrated": null
+}
