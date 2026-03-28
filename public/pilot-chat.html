@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Pilot">
 <meta name="theme-color" content="#0f0f1f">
-<title>Pilot | 9 Enterprises</title>
+<title>Pilot | 9 Enterprises — Demo</title>
 <link rel="manifest" href="/pilot-manifest.json">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
@@ -21,7 +21,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#0f0f1f;--bg2:#16213e;--bg3:#1a2744;
-  --accent:#FF6600;--neon:#64ffda;--blue:#00e5ff;
+  --accent:#FF6600;--neon:#64ffda;--blue:#00e5ff;--purple:#b060ff;
   --text:#f0f0f0;--muted:#8892b0;--dim:#334155;
   --glass:rgba(22,33,62,0.65);--glassBorder:rgba(0,229,255,0.12);
   --font-head:'Syne',sans-serif;
@@ -31,55 +31,34 @@
   --safe-top:env(safe-area-inset-top,0px);
 }
 html,body{height:100%;overflow:hidden;}
-body{
-  font-family:var(--font-body);background:var(--bg);color:var(--text);
-  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
-}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
 
-/* ===== PIN SCREEN ===== */
-.pin-screen{
-  position:fixed;inset:0;z-index:1000;
-  background:var(--bg);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:32px;
-  transition:opacity 0.4s, transform 0.4s;
+/* ===== DEMO BANNER ===== */
+.demo-banner{
+  position:relative;z-index:500;
+  background:linear-gradient(135deg,rgba(176,96,255,0.2),rgba(100,255,218,0.05));
+  border-bottom:2px solid rgba(176,96,255,0.5);
+  padding:8px 16px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  flex-shrink:0;
 }
-.pin-screen.hidden{opacity:0;pointer-events:none;transform:scale(1.05);}
-.pin-logo{
-  font-family:var(--font-head);font-size:64px;font-weight:800;
-  background:linear-gradient(135deg,#FF6600,#ff8844);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 30px rgba(255,102,0,0.4));
+.demo-banner-badge{
+  background:rgba(176,96,255,0.2);border:1px solid rgba(176,96,255,0.45);
+  border-radius:16px;padding:2px 10px;
+  font-family:var(--font-mono);font-size:9px;color:var(--purple);
+  letter-spacing:2px;text-transform:uppercase;flex-shrink:0;
 }
-.pin-title{font-family:var(--font-head);font-size:18px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
-.pin-dots{display:flex;gap:16px;margin:8px 0;}
-.pin-dot{
-  width:16px;height:16px;border-radius:50%;
-  border:2px solid var(--dim);background:transparent;
-  transition:all 0.2s;
+.demo-banner-text{
+  font-family:var(--font-mono);font-size:10px;color:var(--purple);
+  letter-spacing:0.5px;text-align:center;
 }
-.pin-dot.filled{background:var(--accent);border-color:var(--accent);box-shadow:0 0 12px rgba(255,102,0,0.5);}
-.pin-dot.error{border-color:#ff2d55;background:#ff2d55;animation:shake 0.4s;}
-.pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:12px;margin-top:8px;}
-.pin-btn{
-  width:72px;height:72px;border-radius:50%;
-  border:1px solid var(--dim);background:rgba(22,33,62,0.4);
-  color:var(--text);font-family:var(--font-body);font-size:28px;font-weight:500;
-  cursor:pointer;transition:all 0.15s;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;
-}
-.pin-btn:active{background:rgba(255,102,0,0.15);border-color:var(--accent);transform:scale(0.93);}
-.pin-btn.pin-del{font-size:14px;color:var(--muted);letter-spacing:1px;}
-.pin-btn.pin-empty{visibility:hidden;}
-@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}50%{transform:translateX(-4px);}}
+@media(max-width:480px){.demo-banner-text{font-size:9px;}.demo-banner-badge:last-child{display:none;}}
 
 /* ===== CHAT LAYOUT ===== */
 .chat-app{
-  display:flex;flex-direction:column;height:100dvh;height:100vh;
-  opacity:0;pointer-events:none;transition:opacity 0.4s;
+  display:flex;flex-direction:column;
+  height:calc(100dvh - 0px);height:calc(100vh - 0px);
 }
-.chat-app.visible{opacity:1;pointer-events:all;}
 
 /* ===== HEADER ===== */
 .chat-header{
@@ -101,199 +80,74 @@ body{
 .header-title{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:2px;color:var(--text);}
 .header-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;}
 .header-right{display:flex;align-items:center;gap:12px;}
-.status-badge{
-  display:flex;align-items:center;gap:6px;
-  font-family:var(--font-mono);font-size:10px;color:var(--neon);
-  letter-spacing:1px;text-transform:uppercase;
-}
-.status-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--neon);
-  animation:pulse-green 2s ease-in-out infinite;
-}
-.status-dot.offline{background:#ff2d55;animation:none;}
+.status-badge{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--neon);letter-spacing:1px;text-transform:uppercase;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--neon);animation:pulse-green 2s ease-in-out infinite;}
 @keyframes pulse-green{0%,100%{box-shadow:0 0 4px var(--neon);}50%{box-shadow:0 0 14px var(--neon);}}
-.btn-clear{
-  background:none;border:1px solid var(--dim);border-radius:8px;
-  color:var(--muted);font-family:var(--font-mono);font-size:10px;
-  padding:5px 10px;cursor:pointer;letter-spacing:1px;
-  transition:all 0.2s;
-}
-.btn-clear:active{border-color:var(--accent);color:var(--accent);}
-.btn-help{
-  background:none;border:1px solid var(--dim);border-radius:50%;
-  color:var(--muted);font-family:var(--font-head);font-size:16px;font-weight:700;
-  width:32px;height:32px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all 0.2s;
-}
+.btn-help{background:none;border:1px solid var(--dim);border-radius:50%;color:var(--muted);font-family:var(--font-head);font-size:16px;font-weight:700;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
 .btn-help:active{border-color:var(--accent);color:var(--accent);}
 
 /* ===== CAPABILITIES MODAL ===== */
-.cap-overlay{
-  position:fixed;inset:0;z-index:900;
-  background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  display:flex;align-items:flex-end;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 0.25s;
-}
+.cap-overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
 .cap-overlay.visible{opacity:1;pointer-events:all;}
-.cap-panel{
-  width:100%;max-width:480px;max-height:80vh;
-  background:var(--bg2);border:1px solid var(--glassBorder);
-  border-radius:20px 20px 0 0;
-  padding:20px 16px;padding-bottom:calc(20px + var(--safe-bottom));
-  transform:translateY(100%);transition:transform 0.3s ease;
-  overflow-y:auto;
-}
+.cap-panel{width:100%;max-width:480px;max-height:80vh;background:var(--bg2);border:1px solid var(--glassBorder);border-radius:20px 20px 0 0;padding:20px 16px;padding-bottom:calc(20px + var(--safe-bottom));transform:translateY(100%);transition:transform 0.3s ease;overflow-y:auto;}
 .cap-overlay.visible .cap-panel{transform:translateY(0);}
-.cap-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
-}
-.cap-title{
-  font-family:var(--font-head);font-size:18px;font-weight:700;
-  letter-spacing:2px;color:var(--text);
-}
-.cap-close{
-  background:none;border:none;color:var(--muted);font-size:22px;
-  cursor:pointer;padding:4px 8px;line-height:1;
-}
+.cap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cap-title{font-family:var(--font-head);font-size:18px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.cap-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;}
 .cap-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
-.cap-item{
-  display:flex;align-items:flex-start;gap:12px;
-  padding:12px 14px;border-radius:12px;
-  background:rgba(255,255,255,0.03);border:1px solid transparent;
-  cursor:pointer;transition:all 0.15s;
-}
-.cap-item:active,.cap-item:hover{
-  background:rgba(255,102,0,0.08);border-color:rgba(255,102,0,0.2);
-}
-.cap-icon{
-  font-size:20px;flex-shrink:0;width:28px;text-align:center;line-height:1.4;
-}
+.cap-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid transparent;cursor:pointer;transition:all 0.15s;}
+.cap-item:active,.cap-item:hover{background:rgba(255,102,0,0.08);border-color:rgba(255,102,0,0.2);}
+.cap-icon{font-size:20px;flex-shrink:0;width:28px;text-align:center;line-height:1.4;}
 .cap-text{display:flex;flex-direction:column;gap:2px;}
 .cap-name{font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);letter-spacing:0.5px;}
 .cap-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.4;}
-.cap-badge{
-  display:inline-block;font-family:var(--font-mono);font-size:9px;
-  color:var(--dim);border:1px solid var(--dim);border-radius:4px;
-  padding:1px 6px;margin-top:2px;letter-spacing:0.5px;
-}
+.cap-badge{display:inline-block;font-family:var(--font-mono);font-size:9px;color:var(--dim);border:1px solid var(--dim);border-radius:4px;padding:1px 6px;margin-top:2px;letter-spacing:0.5px;}
 
 /* ===== MESSAGES ===== */
-.chat-messages{
-  flex:1;overflow-y:auto;overflow-x:hidden;
-  padding:16px;padding-bottom:8px;
-  display:flex;flex-direction:column;gap:12px;
-  scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;
-}
+.chat-messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;padding-bottom:8px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
 .chat-messages::-webkit-scrollbar{width:3px;}
 .chat-messages::-webkit-scrollbar-track{background:transparent;}
 .chat-messages::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
-
-.msg{
-  display:flex;flex-direction:column;max-width:85%;
-  animation:msgIn 0.3s ease both;
-}
+.msg{display:flex;flex-direction:column;max-width:85%;animation:msgIn 0.3s ease both;}
 .msg.user{align-self:flex-end;align-items:flex-end;}
 .msg.pilot{align-self:flex-start;align-items:flex-start;}
 @keyframes msgIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-
-.msg-bubble{
-  padding:12px 16px;border-radius:18px;
-  font-size:15px;line-height:1.55;
-  word-wrap:break-word;overflow-wrap:break-word;
-}
-.msg.user .msg-bubble{
-  background:linear-gradient(135deg,#FF6600,#e85d00);
-  color:#fff;border-bottom-right-radius:6px;
-}
-.msg.pilot .msg-bubble{
-  background:var(--bg2);
-  border:1px solid var(--glassBorder);
-  color:var(--text);border-bottom-left-radius:6px;
-}
-.msg-time{
-  font-family:var(--font-mono);font-size:9px;color:var(--dim);
-  margin-top:4px;padding:0 4px;
-}
+.msg-bubble{padding:12px 16px;border-radius:18px;font-size:15px;line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.msg.user .msg-bubble{background:linear-gradient(135deg,#FF6600,#e85d00);color:#fff;border-bottom-right-radius:6px;}
+.msg.pilot .msg-bubble{background:var(--bg2);border:1px solid var(--glassBorder);color:var(--text);border-bottom-left-radius:6px;}
+.msg-time{font-family:var(--font-mono);font-size:9px;color:var(--dim);margin-top:4px;padding:0 4px;}
 
 /* ===== TYPING INDICATOR ===== */
 .typing{display:none;align-self:flex-start;padding:4px 0;}
 .typing.visible{display:flex;}
-.typing-inner{
-  display:flex;align-items:center;gap:5px;
-  background:var(--bg2);border:1px solid var(--glassBorder);
-  border-radius:18px;border-bottom-left-radius:6px;
-  padding:14px 20px;
-}
-.typing-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--muted);
-  animation:typingBounce 1.4s infinite;
-}
+.typing-inner{display:flex;align-items:center;gap:5px;background:var(--bg2);border:1px solid var(--glassBorder);border-radius:18px;border-bottom-left-radius:6px;padding:14px 20px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:typingBounce 1.4s infinite;}
 .typing-dot:nth-child(2){animation-delay:0.2s;}
 .typing-dot:nth-child(3){animation-delay:0.4s;}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:0.4;}30%{transform:translateY(-6px);opacity:1;}}
 
 /* ===== INPUT AREA ===== */
-.chat-input-area{
-  padding:12px 12px;
-  padding-bottom:calc(16px + var(--safe-bottom));
-  background:var(--bg);
-  border-top:1px solid var(--glassBorder);
-  flex-shrink:0;
-}
-.chat-input-wrap{
-  display:flex;align-items:flex-end;gap:8px;
-  background:var(--bg2);border:1px solid var(--glassBorder);
-  border-radius:24px;padding:6px 6px 6px 16px;
-  transition:border-color 0.2s;
-}
+.chat-input-area{padding:12px 12px;padding-bottom:calc(16px + var(--safe-bottom));background:var(--bg);border-top:1px solid var(--glassBorder);flex-shrink:0;}
+.chat-input-wrap{display:flex;align-items:flex-end;gap:8px;background:var(--bg2);border:1px solid var(--glassBorder);border-radius:24px;padding:6px 6px 6px 16px;transition:border-color 0.2s;}
 .chat-input-wrap:focus-within{border-color:rgba(255,102,0,0.4);}
-.chat-input{
-  flex:1;background:none;border:none;outline:none;
-  color:var(--text);font-family:var(--font-body);font-size:16px;
-  resize:none;max-height:120px;line-height:1.4;
-  padding:6px 0;
-}
+.chat-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:16px;resize:none;max-height:120px;line-height:1.4;padding:6px 0;}
 .chat-input::placeholder{color:var(--dim);}
-.btn-send{
-  width:40px;height:40px;border-radius:50%;border:none;
-  background:linear-gradient(135deg,#FF6600,#e85d00);
-  color:#fff;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all 0.15s;
-  opacity:0.5;pointer-events:none;
-}
+.btn-send{width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,#FF6600,#e85d00);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;opacity:0.5;pointer-events:none;}
 .btn-send.active{opacity:1;pointer-events:all;}
 .btn-send:active{transform:scale(0.9);}
 .btn-send svg{width:18px;height:18px;}
 
-/* ===== A2HS BANNER ===== */
-.a2hs-banner{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;
-  background:var(--bg2);border-top:1px solid var(--glassBorder);
-  padding:16px 20px;padding-bottom:calc(16px + var(--safe-bottom));
-  z-index:500;
-  animation:slideUp 0.4s ease;
+/* ===== DEMO SUGGESTIONS ===== */
+.demo-suggestions{padding:8px 16px 0;display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.demo-suggestions::-webkit-scrollbar{display:none;}
+.suggestion-chip{
+  flex-shrink:0;
+  background:rgba(255,102,0,0.08);border:1px solid rgba(255,102,0,0.2);
+  border-radius:20px;padding:6px 14px;
+  font-family:var(--font-mono);font-size:11px;color:var(--accent);
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
 }
-.a2hs-banner.visible{display:block;}
-/* Push input area up when banner is visible so nothing gets covered */
-body.a2hs-open .chat-input-area{
-  padding-bottom:calc(80px + var(--safe-bottom));
-}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.a2hs-content{display:flex;align-items:center;gap:12px;}
-.a2hs-icon{font-size:28px;flex-shrink:0;}
-.a2hs-text{flex:1;}
-.a2hs-text strong{font-size:14px;color:var(--text);}
-.a2hs-text p{font-size:12px;color:var(--muted);margin-top:2px;}
-.a2hs-close{
-  background:none;border:1px solid var(--dim);border-radius:8px;
-  color:var(--muted);font-size:11px;padding:6px 12px;cursor:pointer;
-  font-family:var(--font-mono);
-}
+.suggestion-chip:active,.suggestion-chip:hover{background:rgba(255,102,0,0.18);border-color:rgba(255,102,0,0.4);}
 
 /* ===== SCROLLBAR & MISC ===== */
 ::selection{background:rgba(255,102,0,0.3);}
@@ -301,34 +155,15 @@ body.a2hs-open .chat-input-area{
 </head>
 <body>
 
-<!-- PIN SCREEN -->
-<div class="pin-screen" id="pinScreen">
-  <div class="pin-logo">9</div>
-  <div class="pin-title">Enter PIN</div>
-  <div class="pin-dots" id="pinDots">
-    <div class="pin-dot"></div>
-    <div class="pin-dot"></div>
-    <div class="pin-dot"></div>
-    <div class="pin-dot"></div>
-  </div>
-  <div class="pin-pad">
-    <button class="pin-btn" data-num="1">1</button>
-    <button class="pin-btn" data-num="2">2</button>
-    <button class="pin-btn" data-num="3">3</button>
-    <button class="pin-btn" data-num="4">4</button>
-    <button class="pin-btn" data-num="5">5</button>
-    <button class="pin-btn" data-num="6">6</button>
-    <button class="pin-btn" data-num="7">7</button>
-    <button class="pin-btn" data-num="8">8</button>
-    <button class="pin-btn" data-num="9">9</button>
-    <button class="pin-btn pin-empty"></button>
-    <button class="pin-btn" data-num="0">0</button>
-    <button class="pin-btn pin-del" data-action="del">DEL</button>
-  </div>
-</div>
-
-<!-- CHAT APP -->
 <div class="chat-app" id="chatApp">
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <div class="demo-banner-badge">DEMO</div>
+    <div class="demo-banner-text">Interactive preview &mdash; sample conversations showing what Pilot can do</div>
+    <div class="demo-banner-badge">DEMO</div>
+  </div>
+
   <!-- Header -->
   <div class="chat-header">
     <div class="header-left">
@@ -340,10 +175,9 @@ body.a2hs-open .chat-input-area{
     </div>
     <div class="header-right">
       <div class="status-badge">
-        <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">ONLINE</span>
+        <div class="status-dot"></div>
+        <span>DEMO</span>
       </div>
-      <button class="btn-clear" id="btnClear">CLEAR</button>
       <button class="btn-help" id="btnHelp">?</button>
     </div>
   </div>
@@ -356,62 +190,33 @@ body.a2hs-open .chat-input-area{
         <button class="cap-close" id="capClose">&times;</button>
       </div>
       <ul class="cap-list">
-        <li class="cap-item" data-prompt="What are the current FHA loan limits and minimum credit score requirements?">
-          <div class="cap-icon">&#128218;</div>
-          <div class="cap-text">
-            <div class="cap-name">Mortgage Guideline Q&A</div>
-            <div class="cap-desc">FHA, VA, Conventional, and Jumbo guidelines at your fingertips</div>
-          </div>
-        </li>
-        <li class="cap-item" data-prompt="Compare today's 30-year fixed rates for conventional vs FHA for a 720 FICO borrower.">
-          <div class="cap-icon">&#128200;</div>
-          <div class="cap-text">
-            <div class="cap-name">Rate Lookups & Comparisons</div>
-            <div class="cap-desc">Get current rates and side-by-side product comparisons</div>
-          </div>
-        </li>
-        <li class="cap-item" data-prompt="Remind me to follow up with my client John Smith next Tuesday at 10am.">
-          <div class="cap-icon">&#128276;</div>
-          <div class="cap-text">
-            <div class="cap-name">Client Reminders & Scheduling</div>
-            <div class="cap-desc">Set follow-up reminders and manage your daily schedule</div>
-          </div>
-        </li>
-        <li class="cap-item" data-prompt="Take a note: Client Jane Doe prefers email communication and is looking at $400k purchase in Mason.">
-          <div class="cap-icon">&#128221;</div>
-          <div class="cap-text">
-            <div class="cap-name">Note-Taking</div>
-            <div class="cap-desc">Save client notes, loan details, and important info on the fly</div>
-          </div>
-        </li>
         <li class="cap-item" data-prompt="Give me my morning briefing — pipeline status, rate changes, and follow-ups due today.">
           <div class="cap-icon">&#9728;&#65039;</div>
-          <div class="cap-text">
-            <div class="cap-name">Morning Briefings</div>
-            <div class="cap-desc">Daily summary of your pipeline, rates, and action items</div>
-          </div>
+          <div class="cap-text"><div class="cap-name">Morning Briefings</div><div class="cap-desc">Daily summary of your pipeline, rates, and action items</div></div>
         </li>
-        <li class="cap-item" data-prompt="Run a loan scenario: $350k purchase, 5% down, 700 FICO, conventional 30-year fixed. What's the monthly payment with taxes and insurance?">
+        <li class="cap-item" data-prompt="What are current 30-year conventional rates for a 740 FICO borrower?">
+          <div class="cap-icon">&#128200;</div>
+          <div class="cap-text"><div class="cap-name">Rate Lookups</div><div class="cap-desc">Current rates and side-by-side product comparisons</div></div>
+        </li>
+        <li class="cap-item" data-prompt="What are the FHA loan limits and minimum credit score requirements?">
+          <div class="cap-icon">&#128218;</div>
+          <div class="cap-text"><div class="cap-name">Mortgage Guideline Q&A</div><div class="cap-desc">FHA, VA, Conventional, and Jumbo guidelines at your fingertips</div></div>
+        </li>
+        <li class="cap-item" data-prompt="What are the flood zone requirements for Zone X properties?">
+          <div class="cap-icon">&#127968;</div>
+          <div class="cap-text"><div class="cap-name">Property &amp; Flood Guidelines</div><div class="cap-desc">Flood zone, appraisal, and property eligibility rules</div></div>
+        </li>
+        <li class="cap-item" data-prompt="Schedule a showing for 123 Main St, Anytown OH for Saturday at 2pm.">
+          <div class="cap-icon">&#128276;</div>
+          <div class="cap-text"><div class="cap-name">Scheduling &amp; Reminders</div><div class="cap-desc">Set follow-up reminders and manage your daily schedule</div></div>
+        </li>
+        <li class="cap-item" data-prompt="Run a loan scenario: $350k purchase, 5% down, 700 FICO, conventional 30-year fixed. What's the monthly payment?">
           <div class="cap-icon">&#129518;</div>
-          <div class="cap-text">
-            <div class="cap-name">Loan Scenario Analysis</div>
-            <div class="cap-desc">Run full payment breakdowns and compare loan options instantly</div>
-          </div>
-        </li>
-        <li class="cap-item" data-prompt="What's happening in the mortgage market today? Any Fed news or rate movement?">
-          <div class="cap-icon">&#128240;</div>
-          <div class="cap-text">
-            <div class="cap-name">Market Updates</div>
-            <div class="cap-desc">Latest mortgage market news, Fed updates, and rate trends</div>
-          </div>
+          <div class="cap-text"><div class="cap-name">Loan Scenario Analysis</div><div class="cap-desc">Full payment breakdowns and compare loan options instantly</div></div>
         </li>
         <li class="cap-item" data-prompt="">
           <div class="cap-icon">&#127829;</div>
-          <div class="cap-text">
-            <div class="cap-name">Food Ordering</div>
-            <div class="cap-desc">Order lunch or coffee delivered to the office</div>
-            <span class="cap-badge">COMING SOON</span>
-          </div>
+          <div class="cap-text"><div class="cap-name">Food Ordering</div><div class="cap-desc">Order lunch or coffee delivered to the office</div><span class="cap-badge">COMING SOON</span></div>
         </li>
       </ul>
     </div>
@@ -429,169 +234,81 @@ body.a2hs-open .chat-input-area{
     </div>
   </div>
 
+  <!-- Demo Suggestion Chips -->
+  <div class="demo-suggestions" id="demoSuggestions">
+    <div class="suggestion-chip" data-msg="Good morning! Give me my daily briefing.">Morning Briefing</div>
+    <div class="suggestion-chip" data-msg="What are current 30yr conventional rates?">Rate Lookup</div>
+    <div class="suggestion-chip" data-msg="What are flood zone requirements for Zone X?">Flood Zone Rules</div>
+    <div class="suggestion-chip" data-msg="Schedule a showing for 123 Main St on Saturday at 2pm.">Schedule Showing</div>
+    <div class="suggestion-chip" data-msg="Run a loan scenario: $350k purchase, 5% down, 700 FICO, 30yr fixed.">Loan Scenario</div>
+  </div>
+
   <!-- Input -->
   <div class="chat-input-area">
     <div class="chat-input-wrap">
-      <textarea class="chat-input" id="chatInput" rows="1" placeholder="Message your Pilot..." enterkeyhint="send"></textarea>
-      <button class="btn-send" id="btnSend">
+      <textarea class="chat-input" id="chatInput" rows="1" placeholder="Try a question or tap a suggestion above..." enterkeyhint="send"></textarea>
+      <button class="btn-send active" id="btnSend">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
   </div>
 </div>
 
-<!-- A2HS Banner -->
-<div class="a2hs-banner" id="a2hsBanner">
-  <div class="a2hs-content">
-    <div class="a2hs-icon">&#9889;</div>
-    <div class="a2hs-text">
-      <strong>Add Pilot to Home Screen</strong>
-      <p id="a2hsIOSHint" style="display:none;font-size:12px;color:var(--muted);margin-top:2px;">Tap the <strong>Share icon</strong> at the bottom of Safari, then tap <strong>"Add to Home Screen"</strong></p>
-    </div>
-    <button id="a2hsInstall" style="display:none;background:#FF6600;color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:bold;font-size:14px;cursor:pointer;flex-shrink:0;">INSTALL</button>
-    <button class="a2hs-close" id="a2hsClose">DISMISS</button>
-  </div>
-</div>
-
 <script>
-// ===== CONFIG =====
-const PILOT_API = window.location.hostname === 'localhost'
-  ? 'http://localhost:3472'
-  : 'https://stockings-pounds-helps-johnson.trycloudflare.com';
+// ===== DEMO RESPONSES =====
+const demoResponses = {
+  morning: {
+    trigger: /morning|briefing|daily|good morning/i,
+    reply: `Good morning! Here's your daily briefing for ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}:\n\n📊 Pipeline Summary\n• 8 active loans in process\n• 3 pending appraisal\n• 2 clear to close this week\n• 1 awaiting borrower docs\n\n📈 Rate Watch\n• 30yr Conventional: 6.75% (unchanged)\n• 30yr FHA: 6.50% (down 0.125% from yesterday)\n• 15yr Fixed: 6.125%\n• Markets trending stable ahead of Fed minutes\n\n📋 Follow-ups Due Today\n• Johnson file — call re: missing W2 (10am)\n• Martinez pre-approval — expires Friday\n• Smith appraisal — check status with AMC\n\nAnything specific you want to dig into?`
+  },
+  rates: {
+    trigger: /rate|30.?yr|conventional|fha rate|interest/i,
+    reply: `Current Rate Snapshot (as of today):\n\n30-Year Conventional\n• 720+ FICO: 6.75% / 6.82% APR\n• 680-719 FICO: 6.875% / 6.94% APR\n• Rate lock: 30/45/60 day available\n\n30-Year FHA\n• 620+ FICO: 6.50% / 7.28% APR (includes MIP)\n• Note: Upfront MIP 1.75%, monthly 0.85%\n\n15-Year Fixed\n• 720+ FICO: 6.125% / 6.24% APR\n\nVA / USDA\n• VA 30yr: 6.25% (no PMI, no down payment)\n• USDA: 6.375% (income/area eligible only)\n\nRates change daily. Lock before 3pm ET for same-day lock. Want a comparison for a specific borrower scenario?`
+  },
+  flood: {
+    trigger: /flood|zone x|zone a|flood zone|floodplain/i,
+    reply: `Flood Zone Requirements — Quick Reference:\n\nZone X (Minimal Risk)\n• No flood insurance required by lender\n• Property is outside the 100-year floodplain\n• Borrower may purchase optional coverage\n• No FEMA elevation certificate needed\n\nZone AE / A (High Risk)\n• Flood insurance REQUIRED for federally-backed loans\n• Must be maintained for life of loan\n• FEMA elevation certificate often required\n• Coverage must equal lesser of: loan balance, structure value, or $250,000 max NFIP\n\nZone VE (Coastal High Hazard)\n• Same requirements as AE, stricter construction standards\n• Standard NFIP policies may have exclusions\n\nCommon Pitfalls:\n• Map changes can reclassify a property mid-process\n• Condo master policies may not cover individual units\n• Private flood insurance now acceptable on conv loans\n\nNeed me to pull the FEMA map for a specific address?`
+  },
+  schedule: {
+    trigger: /schedule|showing|appointment|meeting|calendar/i,
+    reply: `Got it — scheduling noted.\n\nShowing confirmed:\n• Property: 123 Main St\n• Date: This Saturday\n• Time: 2:00 PM\n• Duration: 1 hour blocked\n\nI've added this to your calendar and set a reminder for:\n• 24 hours before (Friday 2pm)\n• 1 hour before (Saturday 1pm)\n\nDo you want me to:\n• Send a confirmation text to the client?\n• Add driving directions?\n• Block prep time before the showing?\n\nJust say the word.`
+  },
+  scenario: {
+    trigger: /scenario|350k|loan.*scenario|payment|monthly|calculate|FICO/i,
+    reply: `Loan Scenario Analysis:\n\nPurchase Details\n• Price: $350,000\n• Down Payment: 5% ($17,500)\n• Loan Amount: $332,500\n• FICO: 700\n• Program: Conventional 30-Year Fixed\n• Rate: 6.875% (est. for 700 FICO)\n\nMonthly Payment Breakdown\n• Principal & Interest: $2,183\n• PMI (0.65%): $180\n• Property Taxes (est. 1.2%): $350\n• Homeowner's Insurance (est.): $120\n• Total PITI + PMI: ~$2,833/mo\n\nCash to Close (est.)\n• Down payment: $17,500\n• Closing costs (est. 2.5%): $8,313\n• Prepaid items (est.): $3,200\n• Total: ~$29,000\n\nNote: PMI drops when LTV reaches 80% (~$59K in equity).\n\nWant me to run this same scenario as FHA to compare?`
+  },
+  default: [
+    `I can help with that. Let me pull up the relevant guidelines for you.\n\nFor your question on mortgage guidelines, the key factors depend on loan type:\n• Conventional (Fannie/Freddie): Standard DTI 45%, up to 50% with compensating factors\n• FHA: Max DTI 57% with strong residual income\n• VA: No hard DTI cap, but lender overlay often 55%\n\nWhat specific scenario are you working with? I can give you a more precise answer with borrower details.`,
+    `Great question. Here's what the guidelines say:\n\nUnder current Fannie Mae guidelines (SEL 2023-07), the requirements are:\n• Minimum 620 FICO for manual underwrite\n• 640 FICO for DU Approve/Eligible\n• Documentation requirements: 2yr employment history, 30-day paystubs, 2yr W2s\n\nNote: Freddie Mac LP has slightly different overlays on this. Want me to compare both?`,
+    `On it. Based on current market conditions and the information you've provided, here's my analysis:\n\nKey findings:\n• This falls within standard guideline parameters\n• No compensating factors needed at these ratios\n• Recommend locking rate today given current market direction\n\nIs there anything specific about this file you'd like me to research further?`
+  ]
+};
 
-const CORRECT_PIN = '9999';
-const STORAGE_KEY = 'pilot_chat_history';
-const PIN_KEY = 'pilot_pin_verified';
-const A2HS_KEY = 'pilot_a2hs_dismissed';
-
-// ===== DOM =====
-const pinScreen = document.getElementById('pinScreen');
-const pinDots = document.getElementById('pinDots').children;
-const chatApp = document.getElementById('chatApp');
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const btnSend = document.getElementById('btnSend');
-const btnClear = document.getElementById('btnClear');
 const typingIndicator = document.getElementById('typingIndicator');
-const statusDot = document.getElementById('statusDot');
-const statusText = document.getElementById('statusText');
-const a2hsBanner = document.getElementById('a2hsBanner');
-const a2hsClose = document.getElementById('a2hsClose');
 
-let pinEntry = '';
-let messages = [];
-let isSending = false;
+let msgCount = 0;
 
-// ===== PIN =====
-function checkPin() {
-  if (localStorage.getItem(PIN_KEY) === 'true') {
-    pinScreen.classList.add('hidden');
-    chatApp.classList.add('visible');
-    initChat();
-    return;
-  }
+function formatTime() {
+  return new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
 }
 
-function handlePinInput(num) {
-  if (pinEntry.length >= 4) return;
-  pinEntry += num;
-  updatePinDots();
-  if (pinEntry.length === 4) {
-    setTimeout(() => {
-      if (pinEntry === CORRECT_PIN) {
-        localStorage.setItem(PIN_KEY, 'true');
-        pinScreen.classList.add('hidden');
-        chatApp.classList.add('visible');
-        initChat();
-      } else {
-        Array.from(pinDots).forEach(d => d.classList.add('error'));
-        setTimeout(() => {
-          pinEntry = '';
-          Array.from(pinDots).forEach(d => { d.classList.remove('error'); d.classList.remove('filled'); });
-        }, 500);
-      }
-    }, 200);
-  }
-}
-
-function handlePinDelete() {
-  if (pinEntry.length > 0) {
-    pinEntry = pinEntry.slice(0, -1);
-    updatePinDots();
-  }
-}
-
-function updatePinDots() {
-  Array.from(pinDots).forEach((dot, i) => {
-    dot.classList.toggle('filled', i < pinEntry.length);
-  });
-}
-
-document.querySelectorAll('.pin-btn[data-num]').forEach(btn => {
-  btn.addEventListener('click', () => handlePinInput(btn.dataset.num));
-});
-document.querySelector('.pin-btn[data-action="del"]').addEventListener('click', handlePinDelete);
-
-// ===== CHAT =====
-function initChat() {
-  loadMessages();
-  if (messages.length === 0) {
-    addMessage('pilot', "Welcome to Pilot. I'm your AI assistant from 9 Enterprises.\n\nI can help you with:\n\u2022 Drafting emails and follow-ups\n\u2022 Loan scenario analysis\n\u2022 Rate comparisons and calculations\n\u2022 Client communication templates\n\u2022 Market updates and insights\n\nHow can I help you today?");
-  }
-  renderMessages();
-  scrollToBottom();
-  checkA2HS();
-  checkServerStatus();
-}
-
-function loadMessages() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) messages = JSON.parse(stored);
-  } catch(e) { messages = []; }
-}
-
-function saveMessages() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-  } catch(e) {}
-}
-
-function addMessage(role, text) {
-  messages.push({ role, text, time: Date.now() });
-  saveMessages();
-}
-
-function renderMessages() {
-  chatMessages.innerHTML = '';
-  messages.forEach(m => {
-    const div = document.createElement('div');
-    div.className = 'msg ' + m.role;
-    const timeStr = new Date(m.time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    div.innerHTML = `<div class="msg-bubble">${escapeHtml(m.text)}</div><div class="msg-time">${timeStr}</div>`;
-    chatMessages.appendChild(div);
-  });
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
 function appendMessage(role, text) {
-  addMessage(role, text);
   const div = document.createElement('div');
   div.className = 'msg ' + role;
-  const timeStr = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${timeStr}</div>`;
+  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${formatTime()}</div>`;
   chatMessages.appendChild(div);
   scrollToBottom();
 }
 
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\n/g,'<br>');
-}
-
 function scrollToBottom() {
-  requestAnimationFrame(() => {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  });
+  requestAnimationFrame(() => { chatMessages.scrollTop = chatMessages.scrollHeight; });
 }
 
 function showTyping() {
@@ -604,173 +321,83 @@ function hideTyping() {
   typingIndicator.classList.remove('visible');
 }
 
-async function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text || isSending) return;
+function getResponse(text) {
+  if (demoResponses.morning.trigger.test(text)) return demoResponses.morning.reply;
+  if (demoResponses.rates.trigger.test(text)) return demoResponses.rates.reply;
+  if (demoResponses.flood.trigger.test(text)) return demoResponses.flood.reply;
+  if (demoResponses.schedule.trigger.test(text)) return demoResponses.schedule.reply;
+  if (demoResponses.scenario.trigger.test(text)) return demoResponses.scenario.reply;
+  return demoResponses.default[msgCount % demoResponses.default.length];
+}
 
-  isSending = true;
+function sendMessage(text) {
+  const msg = (text || chatInput.value).trim();
+  if (!msg) return;
   chatInput.value = '';
   autoResizeInput();
   updateSendBtn();
-  appendMessage('user', text);
+  appendMessage('user', msg);
+  msgCount++;
+
   showTyping();
-
-  try {
-    const res = await fetch(PILOT_API + '/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
-    });
-    const data = await res.json();
+  const delay = 1000 + Math.random() * 800;
+  setTimeout(() => {
     hideTyping();
-    appendMessage('pilot', data.reply || 'No response received.');
-    setStatus(true);
-  } catch (err) {
-    hideTyping();
-    appendMessage('pilot', 'Connection error. The Pilot server may be offline. Please try again in a moment.');
-    setStatus(false);
-  }
-  isSending = false;
+    appendMessage('pilot', getResponse(msg));
+  }, delay);
 }
 
-function setStatus(online) {
-  statusDot.classList.toggle('offline', !online);
-  statusText.textContent = online ? 'ONLINE' : 'OFFLINE';
-}
-
-async function checkServerStatus() {
-  try {
-    const res = await fetch(PILOT_API + '/health', { method: 'GET', signal: AbortSignal.timeout(5000) });
-    setStatus(res.ok);
-  } catch(e) {
-    // Don't set offline on initial check — server might not have /health
-  }
-}
-
-// ===== INPUT HANDLING =====
 function autoResizeInput() {
   chatInput.style.height = 'auto';
   chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
 }
 
 function updateSendBtn() {
-  btnSend.classList.toggle('active', chatInput.value.trim().length > 0);
+  btnSend.classList.toggle('active', chatInput.value.trim().length > 0 || true);
 }
 
 chatInput.addEventListener('input', () => { autoResizeInput(); updateSendBtn(); });
 chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
-btnSend.addEventListener('click', sendMessage);
+btnSend.addEventListener('click', () => sendMessage());
 
-btnClear.addEventListener('click', () => {
-  if (confirm('Clear all messages?')) {
-    messages = [];
-    saveMessages();
-    chatMessages.innerHTML = '';
-    addMessage('pilot', "Chat cleared. How can I help you?");
-    renderMessages();
-    scrollToBottom();
-  }
+// Suggestion chips
+document.querySelectorAll('.suggestion-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    sendMessage(chip.dataset.msg);
+  });
 });
 
-// ===== A2HS (Add to Home Screen) =====
-let deferredInstallPrompt = null;
-
-// Capture Chrome/Android native install prompt before it fires
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredInstallPrompt = e;
-  // Show banner if not dismissed and not already installed
-  if (!localStorage.getItem(A2HS_KEY) && !window.matchMedia('(display-mode: standalone)').matches) {
-    setTimeout(() => showA2HSBanner(), 3000);
-  }
-});
-
-function showA2HSBanner() {
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const installBtn = document.getElementById('a2hsInstall');
-  if (isIOS) {
-    // iOS Safari: show manual instruction
-    installBtn.style.display = 'none';
-    document.getElementById('a2hsIOSHint').style.display = 'block';
-  } else {
-    // Chrome/Android: show install button
-    installBtn.style.display = 'inline-block';
-    document.getElementById('a2hsIOSHint').style.display = 'none';
-  }
-  a2hsBanner.classList.add('visible');
-  document.body.classList.add('a2hs-open');
-}
-
-function checkA2HS() {
-  const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-  const dismissed = localStorage.getItem(A2HS_KEY);
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-  if (!isStandalone && !dismissed) {
-    if (isIOS) {
-      // iOS: show immediately after delay (no beforeinstallprompt on iOS)
-      setTimeout(() => showA2HSBanner(), 3000);
-    }
-    // Android/Chrome: handled by beforeinstallprompt listener above
-  }
-}
-
-// Install button — triggers native Chrome prompt
-document.getElementById('a2hsInstall').addEventListener('click', async () => {
-  if (deferredInstallPrompt) {
-    deferredInstallPrompt.prompt();
-    const { outcome } = await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-    if (outcome === 'accepted') {
-      a2hsBanner.classList.remove('visible');
-      document.body.classList.remove('a2hs-open');
-      localStorage.setItem(A2HS_KEY, 'true');
-    }
-  }
-});
-
-a2hsClose.addEventListener('click', () => {
-  a2hsBanner.classList.remove('visible');
-  document.body.classList.remove('a2hs-open');
-  localStorage.setItem(A2HS_KEY, 'true');
-});
-
-// ===== CAPABILITIES MODAL =====
+// Capabilities modal
 const capOverlay = document.getElementById('capOverlay');
 const btnHelp = document.getElementById('btnHelp');
 const capClose = document.getElementById('capClose');
-
 btnHelp.addEventListener('click', () => capOverlay.classList.add('visible'));
 capClose.addEventListener('click', () => capOverlay.classList.remove('visible'));
-capOverlay.addEventListener('click', (e) => {
-  if (e.target === capOverlay) capOverlay.classList.remove('visible');
-});
-
+capOverlay.addEventListener('click', (e) => { if (e.target === capOverlay) capOverlay.classList.remove('visible'); });
 document.querySelectorAll('.cap-item').forEach(item => {
   item.addEventListener('click', () => {
     const prompt = item.dataset.prompt;
-    if (prompt) {
-      chatInput.value = prompt;
-      autoResizeInput();
-      updateSendBtn();
-      chatInput.focus();
-    }
+    if (prompt) { chatInput.value = prompt; autoResizeInput(); updateSendBtn(); chatInput.focus(); }
     capOverlay.classList.remove('visible');
   });
 });
 
-// ===== SERVICE WORKER =====
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/pilot-sw.js').catch(() => {});
+// Initial welcome message sequence
+function initDemo() {
+  appendMessage('pilot', `Good morning! I'm Pilot — your AI assistant from 9 Enterprises.\n\nI help mortgage professionals move faster. Tap a suggestion below or ask me anything:`);
+
+  setTimeout(() => {
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      appendMessage('pilot', `A few things I can do right now:\n\n• Morning briefings with pipeline + rates\n• Guideline Q&A (FHA, VA, Conventional, Jumbo)\n• Flood zone and property eligibility rules\n• Loan scenario analysis and payment calculations\n• Schedule showings and set follow-up reminders\n\nThis is a demo — try the suggestions above or type any mortgage question. I'll show you what a real response looks like.`);
+    }, 1400);
+  }, 800);
 }
 
-// ===== INIT =====
-checkPin();
+initDemo();
 </script>
 </body>
 </html>
