@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="9enterprises">
 <link rel="apple-touch-icon" sizes="180x180" href="9-brand.jpg">
 <meta name="theme-color" content="#0f0f1f">
-<title>9enterprises — Command Center</title>
+<title>9enterprises — Command Center v4</title>
 <link rel="manifest" href="dashboard-manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,10 +41,8 @@ a{color:var(--blue);text-decoration:none;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-@keyframes borderGlow{0%,100%{border-color:rgba(0,229,255,0.15);}50%{border-color:rgba(0,229,255,0.35);}}
 @keyframes pulse-red{0%,100%{box-shadow:0 0 4px rgba(255,45,85,0.4);}50%{box-shadow:0 0 18px rgba(255,45,85,0.8);}}
 @keyframes holdings-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-
 .fade-in{animation:fadeIn 0.4s ease both;}
 
 /* ========== TOP BAR ========== */
@@ -151,57 +149,6 @@ a{color:var(--blue);text-decoration:none;}
   text-transform:uppercase;letter-spacing:2px;margin-top:6px;
 }
 
-/* ========== OVERVIEW LAYOUT ========== */
-.overview-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;}
-.overview-main{display:flex;flex-direction:column;gap:24px;}
-
-/* ========== AGENT 9 HERO ========== */
-.hero-card{
-  background:linear-gradient(135deg,rgba(255,102,0,0.08),rgba(255,102,0,0.02));
-  border:1px solid rgba(255,102,0,0.25);border-radius:14px;
-  padding:24px 28px;position:relative;overflow:hidden;
-  animation:glow-orange 4s ease-in-out infinite;
-}
-.hero-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
-  background:radial-gradient(ellipse at 20% 20%,rgba(255,102,0,0.1),transparent 60%);
-  pointer-events:none;
-}
-.hero-card .agent-name{
-  font-family:var(--font-display);font-size:36px;
-  background:linear-gradient(135deg,#FF6600,#ff8844);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  letter-spacing:4px;
-}
-.hero-card .agent-role{
-  font-family:var(--font-mono);font-size:13px;color:var(--gold);opacity:0.8;
-  letter-spacing:1px;margin-top:2px;
-}
-.hero-card .agent-desc{
-  font-family:var(--font-body);font-size:13px;color:var(--text);
-  margin-top:10px;opacity:0.85;line-height:1.6;
-}
-.hero-tag{
-  display:inline-block;padding:3px 10px;border-radius:4px;
-  font-family:var(--font-mono);font-size:10px;font-weight:500;
-  background:rgba(255,102,0,0.15);color:var(--gold);
-  letter-spacing:1px;text-transform:uppercase;margin-right:6px;margin-top:8px;
-}
-
-/* ========== AGENT GRID ========== */
-.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
-.agent-card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:10px;
-  padding:16px 18px;transition:all 0.25s;
-}
-.agent-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
-.agent-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.agent-name-small{font-family:var(--font-display);font-size:22px;letter-spacing:2px;}
-.agent-role-small{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.agent-desc-small{font-size:12px;color:var(--muted);margin:6px 0 8px;line-height:1.5;}
-
 /* Status pills */
 .pill{
   display:inline-block;padding:2px 10px;border-radius:20px;
@@ -218,6 +165,10 @@ a{color:var(--blue);text-decoration:none;}
 .pill-concept{background:rgba(136,146,176,0.12);color:var(--muted);border:1px solid rgba(136,146,176,0.25);}
 .pill-researching{background:rgba(255,102,0,0.12);color:var(--gold);border:1px solid rgba(255,102,0,0.25);}
 .pill-building{background:rgba(0,229,255,0.12);color:var(--blue);border:1px solid rgba(0,229,255,0.25);}
+.pill-greenlit{background:rgba(100,255,218,0.15);color:var(--neon);border:1px solid rgba(100,255,218,0.35);}
+.pill-parked{background:rgba(136,146,176,0.12);color:var(--muted);border:1px solid rgba(136,146,176,0.25);}
+.pill-killed{background:rgba(255,45,85,0.12);color:var(--red);border:1px solid rgba(255,45,85,0.25);}
+.pill-hopper{background:rgba(195,0,255,0.12);color:var(--purple);border:1px solid rgba(195,0,255,0.25);}
 
 /* Tags */
 .tag{
@@ -226,6 +177,148 @@ a{color:var(--blue);text-decoration:none;}
   background:rgba(0,229,255,0.08);color:var(--blue);
   margin-right:4px;margin-top:4px;letter-spacing:0.5px;
 }
+
+/* ========== GUIDING INTENTION ========== */
+.intention-wrap{
+  background:linear-gradient(135deg,rgba(22,33,62,0.9) 0%,rgba(26,39,68,0.95) 100%);
+  border-top:2px solid var(--gold);
+  border-bottom:1px solid var(--glassBorder);
+  padding:0;position:relative;
+}
+.intention-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;cursor:pointer;user-select:none;
+}
+.intention-label{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:17px;letter-spacing:2px;color:var(--gold);
+}
+.intention-icon{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(255,102,0,0.6);}
+.intention-toggle{
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:1px;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;
+}
+.intention-toggle:hover{color:var(--gold);}
+.intention-toggle .chevron{display:inline-block;transition:transform 0.25s ease;font-size:10px;}
+.intention-wrap.collapsed .intention-toggle .chevron{transform:rotate(-90deg);}
+.intention-body{
+  padding:0 24px 20px 24px;overflow:hidden;
+  transition:max-height 0.35s ease,opacity 0.3s ease;
+  max-height:600px;opacity:1;
+}
+.intention-wrap.collapsed .intention-body{max-height:0;opacity:0;padding-bottom:0;}
+.intention-divider{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:18px;opacity:0.3;}
+.intention-text{font-family:var(--font-body);font-size:14px;line-height:1.8;color:var(--text);max-width:900px;}
+.intention-text strong{color:var(--gold);font-weight:600;}
+.intention-text p{margin-bottom:10px;}
+.intention-text p:last-child{margin-bottom:0;}
+
+/* ========== THE HOPPER ========== */
+.hopper-wrap{
+  background:linear-gradient(135deg,rgba(195,0,255,0.06),rgba(22,33,62,0.8));
+  border-bottom:1px solid rgba(195,0,255,0.2);
+  padding:0;
+}
+.hopper-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;cursor:pointer;user-select:none;
+}
+.hopper-label{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:17px;letter-spacing:2px;color:var(--purple);
+}
+.hopper-icon{width:8px;height:8px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px rgba(195,0,255,0.6);}
+.hopper-count{
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+  background:rgba(195,0,255,0.1);border:1px solid rgba(195,0,255,0.2);
+  border-radius:20px;padding:2px 10px;letter-spacing:1px;
+}
+.hopper-toggle{
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:1px;
+  display:flex;align-items:center;gap:6px;
+}
+.hopper-toggle .chevron{display:inline-block;transition:transform 0.25s ease;font-size:10px;}
+.hopper-wrap.collapsed .hopper-toggle .chevron{transform:rotate(-90deg);}
+.hopper-body{
+  padding:0 24px 20px 24px;overflow:hidden;
+  transition:max-height 0.35s ease,opacity 0.3s ease;
+  max-height:800px;opacity:1;
+}
+.hopper-wrap.collapsed .hopper-body{max-height:0;opacity:0;padding-bottom:0;}
+.hopper-table-wrap{overflow-x:auto;}
+.hopper-table{width:100%;border-collapse:collapse;}
+.hopper-table th{
+  font-family:var(--font-display);font-size:12px;letter-spacing:2px;color:var(--purple);
+  text-align:left;padding:8px 12px;border-bottom:1px solid rgba(195,0,255,0.2);
+  text-transform:uppercase;
+}
+.hopper-table td{
+  font-family:var(--font-mono);font-size:12px;color:var(--text);
+  padding:10px 12px;border-bottom:1px solid rgba(195,0,255,0.06);vertical-align:top;
+}
+.hopper-table tr:hover td{background:rgba(195,0,255,0.04);}
+.hopper-type{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  padding:2px 8px;border-radius:4px;white-space:nowrap;
+}
+.hopper-type.business{background:rgba(255,102,0,0.1);color:var(--gold);}
+.hopper-type.task{background:rgba(0,229,255,0.1);color:var(--blue);}
+.hopper-type.mod{background:rgba(100,255,218,0.1);color:var(--neon);}
+.hopper-name{font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.hopper-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* ========== COMPANY SILOS ========== */
+.silos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px;margin-top:0;}
+.silo-card{
+  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glassBorder);border-radius:14px;
+  padding:20px;transition:border-color 0.3s,box-shadow 0.3s;
+  display:flex;flex-direction:column;gap:14px;
+}
+.silo-card:hover{box-shadow:0 0 24px rgba(0,229,255,0.07);}
+.silo-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.silo-name{font-family:var(--font-display);font-size:26px;letter-spacing:3px;}
+.silo-url{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:2px;}
+.silo-divider{height:1px;background:var(--glassBorder);}
+.silo-pl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.silo-pl-item{text-align:center;padding:8px;background:rgba(255,255,255,0.03);border-radius:8px;}
+.silo-pl-num{font-family:var(--font-display);font-size:20px;line-height:1;}
+.silo-pl-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+.silo-roadmap{display:flex;flex-direction:column;gap:6px;}
+.silo-roadmap-title{font-family:var(--font-mono);font-size:10px;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.silo-milestone{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+  padding:5px 8px;background:rgba(255,255,255,0.02);border-radius:6px;
+}
+.silo-milestone-num{
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:var(--blue);flex-shrink:0;
+}
+.silo-gauge-wrap{margin-top:2px;}
+.silo-gauge-label{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:4px;}
+.silo-gauge{width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.silo-gauge-fill{height:100%;border-radius:3px;}
+.silo-team{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.silo-team span{color:var(--blue);}
+.silo-notes{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(0,229,255,0.08);
+  border-radius:8px;padding:10px;
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+  min-height:48px;resize:vertical;width:100%;outline:none;
+  font-family:var(--font-mono);
+}
+.silo-notes:focus{border-color:rgba(0,229,255,0.2);}
+.silo-links{display:flex;gap:8px;flex-wrap:wrap;}
+.silo-link{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.5px;
+  padding:3px 10px;border-radius:4px;
+  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.12);
+  color:var(--blue);transition:all 0.2s;
+}
+.silo-link:hover{background:rgba(0,229,255,0.12);color:var(--blue);}
 
 /* ========== SIDEBAR ========== */
 .sidebar{display:flex;flex-direction:column;gap:16px;}
@@ -239,70 +332,53 @@ a{color:var(--blue);text-decoration:none;}
 .check{color:var(--neon);font-family:var(--font-mono);}
 .pending-icon{color:var(--gold);font-family:var(--font-mono);}
 
-/* ========== PROJECT BOARD ========== */
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:24px;}
-.project-card{
+/* ========== OVERVIEW LAYOUT ========== */
+.overview-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:24px;}
+.overview-main{display:flex;flex-direction:column;gap:24px;}
+
+/* ========== AGENT GRID ========== */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.agent-card{
   background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border:1px solid var(--glassBorder);border-radius:10px;
-  padding:16px 18px;
+  padding:16px 18px;transition:all 0.25s;
 }
-.project-name{font-family:var(--font-display);font-size:18px;letter-spacing:2px;margin-bottom:2px;}
-.project-desc{font-size:11px;color:var(--muted);margin-bottom:10px;}
-.progress-bar{width:100%;height:6px;background:rgba(0,229,255,0.08);border-radius:3px;overflow:hidden;margin-top:8px;}
-.progress-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+.agent-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.agent-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.agent-name-small{font-family:var(--font-display);font-size:22px;letter-spacing:2px;}
+.agent-role-small{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.agent-desc-small{font-size:12px;color:var(--muted);margin:6px 0 8px;line-height:1.5;}
 
 /* ========== ORG CHART ========== */
 .org-chart{text-align:center;padding:30px 0;}
 .org-level{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:20px 0;}
 .org-connector{width:2px;height:30px;background:var(--glassBorder);margin:0 auto;}
 .org-connector-h{display:flex;justify-content:center;margin:10px 0;position:relative;}
-.org-connector-h::before{
-  content:'';position:absolute;top:50%;left:10%;right:10%;
-  height:1px;background:var(--glassBorder);
-}
+.org-connector-h::before{content:'';position:absolute;top:50%;left:10%;right:10%;height:1px;background:var(--glassBorder);}
 .org-node{
   background:var(--glass);border:1px solid var(--glassBorder);
   border-radius:10px;padding:14px 20px;min-width:140px;
   display:inline-block;position:relative;
 }
-.org-node.owner{
-  border-color:var(--neon);
-  box-shadow:0 0 20px rgba(100,255,218,0.15);
-}
-.org-node.ceo{
-  border-color:var(--gold);
-  box-shadow:0 0 20px rgba(255,102,0,0.2);
-  animation:glow-orange 3s ease-in-out infinite;
-}
+.org-node.owner{border-color:var(--neon);box-shadow:0 0 20px rgba(100,255,218,0.15);}
+.org-node.ceo{border-color:var(--gold);box-shadow:0 0 20px rgba(255,102,0,0.2);animation:glow-orange 3s ease-in-out infinite;}
 .org-node-title{font-family:var(--font-display);font-size:18px;letter-spacing:2px;}
 .org-node-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
-.org-division{
+.org-agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;max-width:1200px;margin:0 auto;}
+.org-agent-node{
   background:var(--glass);border:1px solid var(--glassBorder);
-  border-radius:10px;padding:16px;min-width:180px;text-align:left;
+  border-radius:10px;padding:14px 16px;text-align:left;
 }
-.org-division-title{font-family:var(--font-display);font-size:16px;letter-spacing:2px;margin-bottom:8px;}
-.org-sub-agent{
-  font-family:var(--font-mono);font-size:11px;color:var(--muted);
-  padding:3px 0;display:flex;align-items:center;gap:6px;
-}
-.org-sub-agent .dot-persist{width:6px;height:6px;border-radius:50%;background:var(--neon);}
-.org-sub-agent .dot-temp{width:6px;height:6px;border-radius:50%;background:var(--gold);border:1px dashed var(--gold);}
-
+.org-agent-name{font-family:var(--font-display);font-size:20px;letter-spacing:2px;margin-bottom:2px;}
+.org-agent-role{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;}
 .wave-section{margin-top:32px;padding:20px;border:1px dashed var(--dim);border-radius:10px;}
 .wave-title{font-family:var(--font-display);font-size:16px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;}
 .wave-items{display:flex;flex-wrap:wrap;gap:10px;}
 .wave-item{
   background:rgba(100,116,139,0.08);border:1px dashed var(--dim);
-  border-radius:8px;padding:10px 16px;font-size:12px;color:var(--muted);
-  min-width:140px;
+  border-radius:8px;padding:10px 16px;font-size:12px;color:var(--muted);min-width:140px;
 }
 .wave-item .wave-item-name{font-family:var(--font-display);font-size:14px;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
-
-.legend{
-  display:flex;gap:24px;justify-content:center;margin-top:24px;
-  font-family:var(--font-mono);font-size:11px;color:var(--muted);
-}
-.legend-item{display:flex;align-items:center;gap:6px;}
 
 /* ========== TERMINAL ========== */
 .terminal-wrap{display:grid;grid-template-columns:1fr 260px;gap:16px;height:calc(100vh - 200px);min-height:500px;}
@@ -333,8 +409,7 @@ a{color:var(--blue);text-decoration:none;}
 .terminal-prompt{font-family:var(--font-mono);font-size:13px;color:var(--gold);margin-right:8px;white-space:nowrap;}
 .terminal-input{
   flex:1;background:transparent;border:none;outline:none;
-  font-family:var(--font-mono);font-size:13px;color:var(--neon);
-  caret-color:var(--neon);
+  font-family:var(--font-mono);font-size:13px;color:var(--neon);caret-color:var(--neon);
 }
 .terminal-sidebar{display:flex;flex-direction:column;gap:12px;}
 .cmd-btn{
@@ -354,32 +429,16 @@ a{color:var(--blue);text-decoration:none;}
 .timeline{position:relative;padding-left:30px;}
 .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--glassBorder);}
 .timeline-entry{position:relative;margin-bottom:20px;animation:fadeIn 0.4s ease both;}
-.timeline-dot{
-  position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;
-  border:2px solid var(--blue);background:var(--bg);
-}
+.timeline-dot{position:absolute;left:-26px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid var(--blue);background:var(--bg);}
 .timeline-dot.done{background:var(--neon);border-color:var(--neon);}
 .timeline-time{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
 .timeline-title{font-family:var(--font-display);font-size:16px;letter-spacing:1px;margin:2px 0;}
 .timeline-desc{font-size:12px;color:var(--muted);line-height:1.5;}
 
 /* ========== BURN RATE ========== */
-.burn-rate-card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:12px;
-  padding:20px;margin-top:24px;
-}
-.burn-gauge{
-  width:100%;height:24px;background:rgba(255,255,255,0.06);border-radius:12px;
-  overflow:hidden;position:relative;margin:12px 0 8px;
-}
-.burn-gauge-fill{
-  height:100%;border-radius:12px;transition:width 0.8s ease;
-  position:relative;
-}
+.burn-gauge{width:100%;height:24px;background:rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;position:relative;margin:12px 0 8px;}
+.burn-gauge-fill{height:100%;border-radius:12px;transition:width 0.8s ease;}
 .burn-gauge-fill.green{background:linear-gradient(90deg,#1a8a5e,var(--neon));box-shadow:0 0 12px rgba(100,255,218,0.3);}
-.burn-gauge-fill.yellow{background:linear-gradient(90deg,#d4a017,#ffd700);box-shadow:0 0 12px rgba(255,215,0,0.3);}
-.burn-gauge-fill.red{background:linear-gradient(90deg,#cc2244,var(--red));box-shadow:0 0 12px rgba(255,45,85,0.3);}
 .burn-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
 .burn-stat{text-align:center;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;}
 .burn-stat-num{font-family:var(--font-display);font-size:28px;line-height:1;}
@@ -389,8 +448,7 @@ a{color:var(--blue);text-decoration:none;}
 .vendor-table{width:100%;border-collapse:collapse;margin-top:12px;}
 .vendor-table th{
   font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--gold);
-  text-align:left;padding:10px 14px;border-bottom:1px solid var(--glassBorder);
-  text-transform:uppercase;
+  text-align:left;padding:10px 14px;border-bottom:1px solid var(--glassBorder);text-transform:uppercase;
 }
 .vendor-table td{
   font-family:var(--font-mono);font-size:12px;color:var(--text);
@@ -403,37 +461,25 @@ a{color:var(--blue);text-decoration:none;}
 
 /* ========== TASK LIST ========== */
 .task-group{margin-bottom:24px;}
-.task-group-title{
-  font-family:var(--font-display);font-size:20px;letter-spacing:2px;
-  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--glassBorder);
-}
+.task-group-title{font-family:var(--font-display);font-size:20px;letter-spacing:2px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--glassBorder);}
 .task-item{
   display:flex;align-items:center;gap:12px;
   padding:10px 14px;border-radius:8px;margin-bottom:6px;
   background:rgba(255,255,255,0.02);transition:background 0.2s;
 }
 .task-item:hover{background:rgba(255,255,255,0.04);}
-.task-item.needs-action{
-  border:1px solid rgba(255,45,85,0.3);
-  animation:pulse-red 2.5s ease-in-out infinite;
-}
+.task-item.needs-action{border:1px solid rgba(255,45,85,0.3);animation:pulse-red 2.5s ease-in-out infinite;}
 .task-status-icon{font-family:var(--font-mono);font-size:14px;flex-shrink:0;}
 .task-desc{flex:1;font-size:13px;}
-.task-badge{
-  font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;
-  padding:3px 8px;border-radius:4px;flex-shrink:0;
-}
+.task-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;flex-shrink:0;}
 .task-badge.owner-action{background:rgba(255,45,85,0.15);color:var(--red);border:1px solid rgba(255,45,85,0.3);}
 
 /* ========== LOCKER ========== */
-.locker-form{
-  max-width:400px;margin:40px auto;text-align:center;
-}
+.locker-form{max-width:400px;margin:40px auto;text-align:center;}
 .locker-input{
   background:var(--bg2);border:1px solid var(--glassBorder);border-radius:8px;
   padding:14px 18px;font-family:var(--font-mono);font-size:14px;
-  color:var(--text);width:100%;outline:none;text-align:center;
-  letter-spacing:2px;margin-bottom:12px;
+  color:var(--text);width:100%;outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px;
 }
 .locker-input:focus{border-color:var(--gold);}
 .locker-btn{
@@ -445,51 +491,22 @@ a{color:var(--blue);text-decoration:none;}
 .locker-vault{display:none;}
 .locker-vault.unlocked{display:block;}
 .cred-table{width:100%;border-collapse:collapse;margin-top:16px;}
-.cred-table th{
-  font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--gold);
-  text-align:left;padding:10px 14px;border-bottom:1px solid var(--glassBorder);text-transform:uppercase;
-}
-.cred-table td{
-  font-family:var(--font-mono);font-size:12px;color:var(--text);
-  padding:8px 14px;border-bottom:1px solid rgba(0,229,255,0.05);
-}
+.cred-table th{font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--gold);text-align:left;padding:10px 14px;border-bottom:1px solid var(--glassBorder);text-transform:uppercase;}
+.cred-table td{font-family:var(--font-mono);font-size:12px;color:var(--text);padding:8px 14px;border-bottom:1px solid rgba(0,229,255,0.05);}
 
-/* ========== PORTFOLIO V2 ========== */
+/* ========== PORTFOLIO ========== */
 .portfolio-holdings-ticker{
   background:rgba(255,102,0,0.04);border-bottom:1px solid rgba(255,102,0,0.15);
   overflow:hidden;height:36px;display:flex;align-items:center;
   border-radius:8px;margin-bottom:20px;
 }
-.holdings-track{
-  display:flex;white-space:nowrap;
-  animation:holdings-scroll 30s linear infinite;
-}
-.holdings-item{
-  font-family:var(--font-mono);font-size:12px;color:var(--muted);
-  padding:0 24px;display:flex;align-items:center;gap:6px;
-}
-.holdings-item .up{color:var(--neon);}
-.holdings-item .down{color:var(--red);}
+.holdings-track{display:flex;white-space:nowrap;animation:holdings-scroll 30s linear infinite;}
+.holdings-item{font-family:var(--font-mono);font-size:12px;color:var(--muted);padding:0 24px;display:flex;align-items:center;gap:6px;}
 .portfolio-sections{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;}
-.chart-placeholder{
-  background:rgba(255,255,255,0.03);border:1px dashed var(--dim);
-  border-radius:10px;height:200px;display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:12px;
-}
 
-/* ========== BRAINSTORM ========== */
-.brainstorm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-.brainstorm-card{
-  background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border:1px solid var(--glassBorder);border-radius:12px;
-  padding:18px 20px;transition:all 0.3s;
-}
-.brainstorm-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.3);border-color:rgba(255,102,0,0.25);}
-.brainstorm-name{font-family:var(--font-display);font-size:20px;letter-spacing:2px;margin-bottom:4px;}
-.brainstorm-desc{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
-.brainstorm-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
-.brainstorm-cost{font-family:var(--font-mono);font-size:11px;color:var(--text);}
-.brainstorm-revenue{font-family:var(--font-mono);font-size:11px;color:var(--neon);}
+/* ========== LEGEND ========== */
+.legend{display:flex;gap:24px;justify-content:center;margin-top:24px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.legend-item{display:flex;align-items:center;gap:6px;}
 
 /* ========== RESPONSIVE ========== */
 @media(max-width:1024px){
@@ -497,7 +514,7 @@ a{color:var(--blue);text-decoration:none;}
   .stats-row{grid-template-columns:repeat(2,1fr);}
   .terminal-wrap{grid-template-columns:1fr;height:auto;}
   .portfolio-sections{grid-template-columns:1fr;}
-  .burn-stats{grid-template-columns:1fr 1fr 1fr;}
+  .silos-grid{grid-template-columns:1fr;}
 }
 @media(max-width:640px){
   .stats-row{grid-template-columns:1fr 1fr;}
@@ -506,71 +523,11 @@ a{color:var(--blue);text-decoration:none;}
   .nav-tab{padding:8px 14px;font-size:13px;}
   .tab-content{padding:14px;}
   .portfolio-sections{grid-template-columns:1fr;}
-  .brainstorm-grid{grid-template-columns:1fr;}
-}
-
-/* ========== GUIDING INTENTION ========== */
-.intention-wrap{
-  background:linear-gradient(135deg,rgba(22,33,62,0.9) 0%,rgba(26,39,68,0.95) 100%);
-  border-top:2px solid var(--gold);
-  border-bottom:1px solid var(--glassBorder);
-  padding:0;
-  position:relative;
-}
-.intention-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 24px;
-  cursor:pointer;
-  user-select:none;
-}
-.intention-label{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--font-display);font-size:17px;letter-spacing:2px;
-  color:var(--gold);
-}
-.intention-icon{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 8px rgba(255,102,0,0.6);
-}
-.intention-toggle{
-  font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:1px;
-  display:flex;align-items:center;gap:6px;transition:color 0.2s;
-}
-.intention-toggle:hover{color:var(--gold);}
-.intention-toggle .chevron{
-  display:inline-block;transition:transform 0.25s ease;font-size:10px;
-}
-.intention-wrap.collapsed .intention-toggle .chevron{transform:rotate(-90deg);}
-.intention-body{
-  padding:0 24px 20px 24px;
-  overflow:hidden;
-  transition:max-height 0.35s ease, opacity 0.3s ease;
-  max-height:600px;
-  opacity:1;
-}
-.intention-wrap.collapsed .intention-body{
-  max-height:0;
-  opacity:0;
-  padding-bottom:0;
-}
-.intention-divider{
-  height:1px;background:linear-gradient(90deg,var(--gold),transparent);
-  margin-bottom:18px;opacity:0.3;
-}
-.intention-text{
-  font-family:var(--font-body);font-size:14px;line-height:1.8;color:var(--text);
-  max-width:900px;
-}
-.intention-text strong{
-  color:var(--gold);font-weight:600;
-}
-.intention-text p{margin-bottom:10px;}
-.intention-text p:last-child{margin-bottom:0;}
-@media(max-width:640px){
+  .silo-pl{grid-template-columns:repeat(3,1fr);}
   .intention-header{padding:10px 14px;}
   .intention-body{padding:0 14px 16px 14px;}
-  .intention-text{font-size:13px;}
+  .hopper-header{padding:10px 14px;}
+  .hopper-body{padding:0 14px 16px 14px;}
 }
 </style>
 </head>
@@ -582,7 +539,7 @@ a{color:var(--blue);text-decoration:none;}
     <div class="logo-9">9</div>
     <div>
       <div class="topbar-title">enterprises &mdash; COMMAND CENTER</div>
-      <div class="topbar-sub">ainflgm.com/dashboard</div>
+      <div class="topbar-sub" id="topbar-date">v4 &mdash; loading date...</div>
     </div>
   </div>
   <div class="topbar-right">
@@ -600,36 +557,38 @@ a{color:var(--blue);text-decoration:none;}
     <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status">--</span></div>
     <div class="ticker-item">AGENTS ACTIVE <span class="val-blue">8</span></div>
     <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync">--</span></div>
-    <div class="ticker-item">MRR <span class="val" id="tk-mrr">connect Stripe API</span></div>
+    <div class="ticker-item">MRR <span class="val" id="tk-mrr">pre-revenue</span></div>
     <div class="ticker-item">API SPEND <span class="val-blue" id="tk-api-spend">connect billing API</span></div>
     <div class="ticker-item">UPTIME <span class="val" id="tk-uptime">--</span></div>
     <div class="ticker-item">MODE <span class="val-gold" id="tk-mode">--</span></div>
     <div class="ticker-item">SPRINT COMMITS <span class="val-gold">40+</span></div>
     <div class="ticker-item">EIN <span class="val-gold">41-5160635</span></div>
     <div class="ticker-item">TRADER9 <span class="val">3 SESSIONS TRAINED</span></div>
+    <div class="ticker-item">HOPPER ITEMS <span class="val" style="color:var(--purple);">5 IN QUEUE</span></div>
     <!-- duplicate for seamless scroll -->
     <div class="ticker-item">MAC STATUS <span class="val" id="tk-mac-status2">--</span></div>
     <div class="ticker-item">AGENTS ACTIVE <span class="val-blue">8</span></div>
     <div class="ticker-item">CLOUD SYNC <span class="val" id="tk-cloud-sync2">--</span></div>
-    <div class="ticker-item">MRR <span class="val" id="tk-mrr2">connect Stripe API</span></div>
+    <div class="ticker-item">MRR <span class="val" id="tk-mrr2">pre-revenue</span></div>
     <div class="ticker-item">API SPEND <span class="val-blue" id="tk-api-spend2">connect billing API</span></div>
     <div class="ticker-item">UPTIME <span class="val" id="tk-uptime2">--</span></div>
     <div class="ticker-item">MODE <span class="val-gold" id="tk-mode2">--</span></div>
     <div class="ticker-item">SPRINT COMMITS <span class="val-gold">40+</span></div>
     <div class="ticker-item">EIN <span class="val-gold">41-5160635</span></div>
     <div class="ticker-item">TRADER9 <span class="val">3 SESSIONS TRAINED</span></div>
+    <div class="ticker-item">HOPPER ITEMS <span class="val" style="color:var(--purple);">5 IN QUEUE</span></div>
   </div>
 </div>
 
 <!-- ========== NAV TABS ========== -->
 <nav class="nav-tabs" id="navTabs">
   <button class="nav-tab active" data-tab="overview">Overview</button>
-  <button class="nav-tab" data-tab="orgchart">Org Chart</button>
-  <button class="nav-tab" data-tab="vendors">Vendors</button>
+  <button class="nav-tab" data-tab="silos">Company Silos</button>
   <button class="nav-tab" data-tab="tasks">Tasks</button>
-  <button class="nav-tab" data-tab="locker">Locker</button>
+  <button class="nav-tab" data-tab="vendors">Vendors</button>
+  <button class="nav-tab" data-tab="orgchart">Org Chart</button>
   <button class="nav-tab" data-tab="portfolio">Portfolio</button>
-  <button class="nav-tab" data-tab="brainstorm">Brainstorm</button>
+  <button class="nav-tab" data-tab="locker">Locker</button>
   <button class="nav-tab" data-tab="terminal">Terminal</button>
   <button class="nav-tab" data-tab="sprintlog">Sprint Log</button>
 </nav>
@@ -652,27 +611,41 @@ a{color:var(--blue);text-decoration:none;}
       <p><strong>My core intention for 9 Enterprises:</strong></p>
       <p>Build and scale a diversified portfolio of <strong>15&ndash;20 autonomous AI-powered businesses</strong> that together generate <strong>$1M+ in annual recurring revenue</strong> (with strong path to $5&ndash;10M combined enterprise value). Each business must be built from day one to be <strong>clean, documented, and fully sellable</strong> &mdash; with transparent P&amp;Ls, repeatable processes, transferable systems, and minimal founder dependency.</p>
       <p>Main Agent 9 owns 100% of execution and operations, using resources within budget and appropriate protocols. I focus exclusively on <strong>high-level vision, key relationships, and final approvals.</strong></p>
-      <p><strong>Revenue is king</strong> &mdash; prioritize high-margin, compounding models with agreed upon guardrails to protect capital at every step. Speed matters, but never at the expense of quality, compliance, or long-term durability. The franchise is the brand: everything operates under the unified 9enterprises umbrella, with the upgraded visual dashboard (including org chart, real-time ticker, and live terminal) as the single source of truth.</p>
-      <p>Every decision must advance secure, sustainable growth toward the endgame of <strong>family financial peace and independence.</strong></p>
+      <p><strong>Revenue is king</strong> &mdash; prioritize high-margin, compounding models. Speed matters, but never at the expense of quality, compliance, or long-term durability. Every decision must advance secure, sustainable growth toward the endgame of <strong>family financial peace and independence.</strong></p>
     </div>
   </div>
 </div>
-<script>
-(function(){
-  var w=document.getElementById('intentionWrap');
-  var t=w?w.querySelector('.intention-toggle span:first-child'):null;
-  if(localStorage.getItem('intention-collapsed')==='1'&&w){
-    w.classList.add('collapsed');
-    if(t)t.textContent='EXPAND';
-  }
-  window.toggleIntention=function(){
-    if(!w)return;
-    var collapsed=w.classList.toggle('collapsed');
-    if(t)t.textContent=collapsed?'EXPAND':'COLLAPSE';
-    localStorage.setItem('intention-collapsed',collapsed?'1':'0');
-  };
-})();
-</script>
+
+<!-- ========== THE HOPPER ========== -->
+<div class="hopper-wrap" id="hopperWrap">
+  <div class="hopper-header" onclick="toggleHopper()">
+    <div class="hopper-label">
+      <span class="hopper-icon"></span>
+      THE HOPPER
+      <span class="hopper-count">5 IN QUEUE</span>
+    </div>
+    <div class="hopper-toggle">
+      <span>COLLAPSE</span>
+      <span class="chevron">&#9660;</span>
+    </div>
+  </div>
+  <div class="hopper-body" id="hopperBody">
+    <div class="hopper-table-wrap">
+      <table class="hopper-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date Added</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="hopperTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <!-- ========================================================== -->
 <!-- OVERVIEW TAB -->
@@ -686,105 +659,67 @@ a{color:var(--blue);text-decoration:none;}
       <div class="stat-label">Active Agents</div>
     </div>
     <div class="stat-card">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Company Silos</div>
+    </div>
+    <div class="stat-card">
       <div class="stat-num">5</div>
-      <div class="stat-label">Projects Live</div>
+      <div class="stat-label">Hopper Items</div>
     </div>
     <div class="stat-card">
       <div class="stat-num">40+</div>
       <div class="stat-label">Sprint Commits</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num">3</div>
-      <div class="stat-label">Revenue Streams</div>
-    </div>
   </div>
 
-  <!-- Agent 9 Hero -->
-  <div class="hero-card fade-in">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-      <div>
-        <div class="agent-name">AGENT 9</div>
-        <div class="agent-role">CEO / AUTONOMOUS OPERATOR &mdash; FULL PERMISSIONS</div>
-        <div class="agent-desc">
-          Primary autonomous agent. Manages all divisions, routes tasks, handles comms (Telegram, iMessage, Voice, Email).
-          Operates 24/7 with Soul Code authority. Direct line to Owner.
-        </div>
-        <div style="margin-top:8px;">
-          <span class="hero-tag">soul code</span>
-          <span class="hero-tag">full auth</span>
-          <span class="hero-tag">4-channel comms</span>
-          <span class="hero-tag">24/7 uptime</span>
-          <span class="hero-tag">ceo</span>
-        </div>
-      </div>
-      <div class="pill pill-active" style="font-size:12px;padding:6px 16px;">ACTIVE</div>
-    </div>
-  </div>
-
-  <div class="overview-grid" style="margin-top:24px;">
+  <div class="overview-grid">
     <div class="overview-main">
 
-      <!-- Agent Grid -->
+      <!-- Agent 9 Hero -->
+      <div class="card fade-in" style="background:linear-gradient(135deg,rgba(255,102,0,0.08),rgba(255,102,0,0.02));border:1px solid rgba(255,102,0,0.25);animation:glow-orange 4s ease-in-out infinite;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="font-family:var(--font-display);font-size:36px;background:linear-gradient(135deg,#FF6600,#ff8844);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:4px;">AGENT 9</div>
+            <div style="font-family:var(--font-mono);font-size:13px;color:var(--gold);opacity:0.8;letter-spacing:1px;margin-top:2px;">CEO / AUTONOMOUS OPERATOR &mdash; FULL PERMISSIONS</div>
+            <div style="font-size:13px;color:var(--text);margin-top:10px;opacity:0.85;line-height:1.6;">
+              Primary autonomous agent. Manages all 6 company silos, routes tasks to 8 specialist agents, handles comms (Telegram, iMessage, Voice, Email). Operates 24/7 with Soul Code authority.
+            </div>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-right:6px;">soul code</span>
+              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-right:6px;">full auth</span>
+              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-right:6px;">4-channel comms</span>
+              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;background:rgba(255,102,0,0.15);color:var(--gold);letter-spacing:1px;text-transform:uppercase;">24/7 uptime</span>
+            </div>
+          </div>
+          <div class="pill pill-active" style="font-size:12px;padding:6px 16px;">ACTIVE</div>
+        </div>
+      </div>
+
+      <!-- Agent Roster -->
       <div>
         <div class="card-title" style="margin-bottom:14px;">AGENT ROSTER</div>
         <div class="agent-grid" id="agentGrid"></div>
       </div>
 
-      <!-- Project Board -->
-      <div>
-        <div class="card-title" style="margin-bottom:14px;">PROJECT BOARD</div>
-        <div class="projects-grid" id="projectBoard"></div>
-      </div>
-
       <!-- Burn Rate -->
-      <div class="burn-rate-card fade-in">
+      <div class="card fade-in">
         <div class="card-title" style="font-size:18px;">BURN RATE</div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
           <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Estimated Daily: ~$12&ndash;17</span>
           <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Monthly Cap: ~$500</span>
         </div>
         <div class="burn-gauge">
-          <div class="burn-gauge-fill green" id="burnGaugeFill" style="width:15%;"></div>
+          <div class="burn-gauge-fill green" style="width:15%;"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
           <span>$0</span>
-          <span id="burnLabel" style="color:var(--neon);">~$15 estimated today (15% of $100 cap)</span>
+          <span style="color:var(--neon);">~$15 estimated today (15% of $100 cap)</span>
           <span>$100</span>
         </div>
-
-        <!-- Subscription vs API breakdown -->
-        <div style="margin-top:16px;padding:14px;background:rgba(255,255,255,0.03);border-radius:8px;">
-          <div style="font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--blue);margin-bottom:10px;">COST BREAKDOWN</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,229,255,0.06);">
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);">Claude Max Subscription</span>
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">$200/mo = $6.67/day</span>
-            <span style="font-family:var(--font-mono);font-size:10px;color:var(--neon);letter-spacing:1px;">FIXED (PAID)</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,229,255,0.06);">
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);">API Burn (hub, agents)</span>
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">~$5&ndash;10/day</span>
-            <span style="font-family:var(--font-mono);font-size:10px;color:var(--gold);letter-spacing:1px;">VARIABLE</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 0;">
-            <span style="font-family:var(--font-mono);font-size:12px;color:var(--gold);font-weight:500;">Total Actual</span>
-            <span style="font-family:var(--font-mono);font-size:14px;color:var(--gold);font-weight:500;">~$12&ndash;17/day</span>
-            <span></span>
-          </div>
-        </div>
-
         <div class="burn-stats">
-          <div class="burn-stat">
-            <div class="burn-stat-num" style="color:var(--neon);">~$15</div>
-            <div class="burn-stat-label">Today's Est.</div>
-          </div>
-          <div class="burn-stat">
-            <div class="burn-stat-num" style="color:var(--blue);">~$14</div>
-            <div class="burn-stat-label">Daily Average</div>
-          </div>
-          <div class="burn-stat">
-            <div class="burn-stat-num" style="color:var(--gold);">~$430</div>
-            <div class="burn-stat-label">Monthly Est.</div>
-          </div>
+          <div class="burn-stat"><div class="burn-stat-num" style="color:var(--neon);">~$15</div><div class="burn-stat-label">Today's Est.</div></div>
+          <div class="burn-stat"><div class="burn-stat-num" style="color:var(--blue);">~$14</div><div class="burn-stat-label">Daily Average</div></div>
+          <div class="burn-stat"><div class="burn-stat-num" style="color:var(--gold);">~$430</div><div class="burn-stat-label">Monthly Est.</div></div>
         </div>
       </div>
 
@@ -797,42 +732,15 @@ a{color:var(--blue);text-decoration:none;}
       <div class="card">
         <div class="card-title">OWNER ACTIONS</div>
         <ul class="sidebar-list">
-          <li><span class="pending-icon">[ ]</span> Review Trader9 alpha signals</li>
-          <li><span class="pending-icon">[ ]</span> Approve X9 brand kit v2</li>
-          <li><span class="check">[x]</span> <span style="text-decoration:line-through;opacity:0.5;">Deploy AiNFL GM v2.1</span></li>
-          <li><span class="pending-icon">[ ]</span> Sign off on Underwriter9 scope</li>
-          <li><span class="pending-icon">[ ]</span> Weekly investor update draft</li>
+          <li><span class="pending-icon">[ ]</span> Alpaca KYC selfie (30 sec)</li>
+          <li><span class="pending-icon">[ ]</span> Google AdSense application</li>
+          <li><span class="pending-icon">[ ]</span> Reddit account creation</li>
+          <li><span class="pending-icon">[ ]</span> X.com account creation</li>
+          <li><span class="pending-icon">[ ]</span> Review trader9 alpha signals</li>
         </ul>
       </div>
 
-      <!-- 9 Capabilities -->
-      <div class="card">
-        <div class="card-title">&#9889; WHAT 9 CAN DO</div>
-        <ul class="sidebar-list" style="list-style:none;">
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Deploy Agent Teams</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Spin up specialized agents for any task</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Monitor All Communications</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Telegram, iMessage, email, voice — all channels</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Manage Trader9</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Oversee trading signals and portfolio strategy</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Order Food</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">DoorDash, UberEats — just say what you want</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Research Anything</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Deep web research, market analysis, competitive intel</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Build & Deploy Code</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Full-stack development, testing, and deployment</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Manage Kyle C Pilot</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Deploy and monitor the loan officer AI assistant</span></span></li>
-          <li style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:var(--gold);flex-shrink:0;">&#9654;</span><span><strong style="color:var(--text);font-size:12px;">Track Portfolio & Spending</strong><br><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">API costs, investments, burn rate — all tracked</span></span></li>
-        </ul>
-      </div>
-
-      <!-- Revenue Streams -->
-      <div class="card">
-        <div class="card-title">REVENUE STREAMS</div>
-        <ul class="sidebar-list">
-          <li><span style="color:var(--neon);">&#9679;</span> AiNFL GM &mdash; Subscriptions</li>
-          <li><span style="color:var(--neon);">&#9679;</span> AiNFL GM &mdash; Ads (AdSense)</li>
-          <li><span style="color:var(--blue);">&#9679;</span> Trader9 &mdash; Alpha Signals (beta)</li>
-          <li><span style="color:var(--gold);">&#9679;</span> Rapid Mortgage &mdash; Origination</li>
-          <li><span style="color:var(--muted);">&#9679;</span> FreeAgent9 &mdash; Marketplace (planned)</li>
-        </ul>
-      </div>
-
-      <!-- Comms Health (live from cloud worker) -->
+      <!-- Comms Health -->
       <div class="card">
         <div class="card-title">COMMS HEALTH <span id="comms-sync-indicator" style="font-size:9px;color:var(--muted);font-family:var(--font-mono);letter-spacing:0;text-transform:none;"></span></div>
         <ul class="sidebar-list" id="commsHealthList">
@@ -845,11 +753,23 @@ a{color:var(--blue);text-decoration:none;}
         </ul>
       </div>
 
-      <!-- Recent Messages (live) -->
+      <!-- Recent Messages -->
       <div class="card">
         <div class="card-title">RECENT MESSAGES</div>
         <ul class="sidebar-list" id="recentMessagesList">
           <li style="color:var(--muted);font-style:italic;">Loading...</li>
+        </ul>
+      </div>
+
+      <!-- Revenue Streams -->
+      <div class="card">
+        <div class="card-title">REVENUE PIPELINE</div>
+        <ul class="sidebar-list">
+          <li><span style="color:var(--muted);">&#9679;</span> AiNFLGM &mdash; AdSense (pending)</li>
+          <li><span style="color:var(--muted);">&#9679;</span> freeagent9 &mdash; Subscriptions (pilot)</li>
+          <li><span style="color:var(--muted);">&#9679;</span> trader9 &mdash; Alpha signals (building)</li>
+          <li><span style="color:var(--muted);">&#9679;</span> AI Underwriter &mdash; SaaS (concept)</li>
+          <li><span style="color:var(--gold);">&#9679;</span> Rapid Mortgage &mdash; Origination (active)</li>
         </ul>
       </div>
 
@@ -859,72 +779,22 @@ a{color:var(--blue);text-decoration:none;}
 </section>
 
 <!-- ========================================================== -->
-<!-- ORG CHART TAB -->
+<!-- COMPANY SILOS TAB -->
 <!-- ========================================================== -->
-<section class="tab-content" id="tab-orgchart">
-  <div class="org-chart">
-
-    <!-- Owner -->
-    <div class="org-level">
-      <div class="org-node owner">
-        <div class="org-node-title" style="color:var(--neon);">OWNER (YOU)</div>
-        <div class="org-node-sub">Jasson Fishback</div>
-      </div>
-    </div>
-    <div class="org-connector"></div>
-
-    <!-- CEO -->
-    <div class="org-level">
-      <div class="org-node ceo">
-        <div class="org-node-title" style="color:var(--gold);">AGENT 9 &mdash; CEO</div>
-        <div class="org-node-sub">Autonomous Operator</div>
-      </div>
-    </div>
-    <div class="org-connector"></div>
-    <div class="org-connector-h"></div>
-
-    <!-- Divisions -->
-    <div class="org-level" id="orgDivisions"></div>
-
-    <!-- Future Waves -->
-    <div class="wave-section">
-      <div class="wave-title">WAVE 2 &mdash; IN DEVELOPMENT</div>
-      <div class="wave-items">
-        <div class="wave-item"><div class="wave-item-name">Underwriter9</div>AI mortgage underwriting</div>
-        <div class="wave-item"><div class="wave-item-name">FreeAgent9</div>AI talent marketplace</div>
-        <div class="wave-item"><div class="wave-item-name">9 Academy</div>AI training platform</div>
-        <div class="wave-item"><div class="wave-item-name">9 Consulting</div>AI integration services</div>
-      </div>
-    </div>
-
-    <div class="wave-section" style="border-color:var(--purple);margin-top:16px;">
-      <div class="wave-title" style="color:var(--purple);">WAVE 3 &mdash; EXPANSION</div>
-      <div class="wave-items">
-        <div class="wave-item"><div class="wave-item-name">9 Capital</div>AI-managed fund</div>
-        <div class="wave-item"><div class="wave-item-name">9 Labs</div>R&D / open source</div>
-        <div class="wave-item"><div class="wave-item-name">9 Health</div>AI health optimization</div>
-        <div class="wave-item"><div class="wave-item-name">9 Media</div>Content empire</div>
-      </div>
-    </div>
-
-    <div class="wave-section" style="border-color:var(--dim);margin-top:16px;">
-      <div class="wave-title">WAVE 4 &mdash; OPEN SLOTS (16&ndash;20)</div>
-      <div class="wave-items">
-        <div class="wave-item" style="opacity:0.4;">Slot 16 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 17 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 18 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 19 &mdash; TBD</div>
-        <div class="wave-item" style="opacity:0.4;">Slot 20 &mdash; TBD</div>
-      </div>
-    </div>
-
-    <!-- Legend -->
-    <div class="legend">
-      <div class="legend-item"><span class="dot-persist" style="width:8px;height:8px;border-radius:50%;background:var(--neon);display:inline-block;"></span> Persistent Agent</div>
-      <div class="legend-item"><span style="width:8px;height:8px;border-radius:50%;background:transparent;border:2px dashed var(--gold);display:inline-block;"></span> Temp / On-Demand Agent</div>
-    </div>
-
+<section class="tab-content" id="tab-silos">
+  <div style="margin-bottom:20px;">
+    <div class="card-title" style="font-size:20px;">COMPANY SILOS &mdash; 9 ENTERPRISES PORTFOLIO</div>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Each silo is an independent business unit with its own P&amp;L, roadmap, and team.</div>
   </div>
+  <div class="silos-grid" id="silosGrid"></div>
+</section>
+
+<!-- ========================================================== -->
+<!-- TASKS TAB -->
+<!-- ========================================================== -->
+<section class="tab-content" id="tab-tasks">
+  <div class="card-title" style="font-size:18px;margin-bottom:20px;">OPEN TASKS &mdash; ALL SILOS</div>
+  <div id="taskList"></div>
 </section>
 
 <!-- ========================================================== -->
@@ -939,8 +809,8 @@ a{color:var(--blue);text-decoration:none;}
           <th>Vendor</th>
           <th>Service</th>
           <th>Monthly Cost</th>
+          <th>Company</th>
           <th>Status</th>
-          <th>Plan</th>
         </tr>
       </thead>
       <tbody id="vendorTableBody"></tbody>
@@ -952,11 +822,111 @@ a{color:var(--blue);text-decoration:none;}
 </section>
 
 <!-- ========================================================== -->
-<!-- TASKS TAB -->
+<!-- ORG CHART TAB -->
 <!-- ========================================================== -->
-<section class="tab-content" id="tab-tasks">
-  <div class="card-title" style="font-size:18px;margin-bottom:20px;">TASK LIST &mdash; BY PROJECT</div>
-  <div id="taskList"></div>
+<section class="tab-content" id="tab-orgchart">
+  <div class="org-chart">
+
+    <div class="org-level">
+      <div class="org-node owner">
+        <div class="org-node-title" style="color:var(--neon);">OWNER</div>
+        <div class="org-node-sub">Jasson Fishback</div>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+
+    <div class="org-level">
+      <div class="org-node ceo">
+        <div class="org-node-title" style="color:var(--gold);">9 &mdash; MAIN AGENT</div>
+        <div class="org-node-sub">QB / Autonomous Operator</div>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+    <div class="org-connector-h"></div>
+
+    <div class="org-agents-grid" id="orgAgentsGrid"></div>
+
+    <div class="wave-section" style="margin-top:40px;">
+      <div class="wave-title">WAVE 2 &mdash; IN DEVELOPMENT</div>
+      <div class="wave-items">
+        <div class="wave-item"><div class="wave-item-name">AI Underwriter</div>Mortgage guideline AI</div>
+        <div class="wave-item"><div class="wave-item-name">agent9</div>AI real estate</div>
+        <div class="wave-item"><div class="wave-item-name">9 Academy</div>AI training platform</div>
+      </div>
+    </div>
+
+    <div class="wave-section" style="border-color:var(--purple);margin-top:16px;">
+      <div class="wave-title" style="color:var(--purple);">WAVE 3 &mdash; EXPANSION</div>
+      <div class="wave-items">
+        <div class="wave-item"><div class="wave-item-name">9 Capital</div>AI-managed fund</div>
+        <div class="wave-item"><div class="wave-item-name">9 Labs</div>R&amp;D / open source</div>
+        <div class="wave-item"><div class="wave-item-name">9 Media</div>Content empire</div>
+        <div class="wave-item"><div class="wave-item-name">9 Health</div>AI health optimization</div>
+      </div>
+    </div>
+
+    <div class="wave-section" style="border-color:var(--dim);margin-top:16px;">
+      <div class="wave-title">WAVE 4 &mdash; OPEN SLOTS (16&ndash;20)</div>
+      <div class="wave-items">
+        <div class="wave-item" style="opacity:0.4;">Slot 16 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 17 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 18 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 19 &mdash; TBD</div>
+        <div class="wave-item" style="opacity:0.4;">Slot 20 &mdash; TBD</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span style="width:8px;height:8px;border-radius:50%;background:var(--neon);display:inline-block;"></span> Persistent Agent</div>
+      <div class="legend-item"><span style="width:8px;height:8px;border-radius:50%;background:transparent;border:2px dashed var(--gold);display:inline-block;"></span> On-Demand Agent</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<!-- PORTFOLIO TAB -->
+<!-- ========================================================== -->
+<section class="tab-content" id="tab-portfolio">
+  <div class="portfolio-holdings-ticker">
+    <div class="holdings-track">
+      <div class="holdings-item">IBIT</div><div class="holdings-item">TSLA</div>
+      <div class="holdings-item">JPMPD</div><div class="holdings-item">IAU</div>
+      <div class="holdings-item">SLV</div><div class="holdings-item">CPER</div>
+      <div class="holdings-item">NVDA</div><div class="holdings-item">ORCL</div>
+      <div class="holdings-item">INTC</div><div class="holdings-item">PLTR</div>
+      <div class="holdings-item">QCOM</div><div class="holdings-item">CSCO</div>
+      <div class="holdings-item">AMZN</div><div class="holdings-item">GOOG</div>
+      <div class="holdings-item">META</div><div class="holdings-item">AAPL</div>
+      <div class="holdings-item">BTC</div>
+      <div class="holdings-item">IBIT</div><div class="holdings-item">TSLA</div>
+      <div class="holdings-item">JPMPD</div><div class="holdings-item">IAU</div>
+      <div class="holdings-item">SLV</div><div class="holdings-item">CPER</div>
+      <div class="holdings-item">NVDA</div><div class="holdings-item">ORCL</div>
+      <div class="holdings-item">INTC</div><div class="holdings-item">PLTR</div>
+      <div class="holdings-item">QCOM</div><div class="holdings-item">CSCO</div>
+      <div class="holdings-item">AMZN</div><div class="holdings-item">GOOG</div>
+      <div class="holdings-item">META</div><div class="holdings-item">AAPL</div>
+      <div class="holdings-item">BTC</div>
+    </div>
+  </div>
+  <div style="font-family:var(--font-mono);font-size:10px;color:var(--gold);text-align:right;margin:6px 0 16px;letter-spacing:0.5px;">PLACEHOLDER DATA &mdash; connect brokerage API for live prices</div>
+
+  <div class="stats-row fade-in" style="margin-bottom:28px;">
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;">$1.08M</div><div class="stat-label">Total Portfolio</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$719K</div><div class="stat-label">Chase Brokerage</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;">5</div><div class="stat-label">Accounts</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--neon),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">17</div><div class="stat-label">Positions</div></div>
+  </div>
+
+  <div class="portfolio-sections">
+    <div class="card"><div class="card-title" style="font-size:16px;">CHASE BROKERAGE</div><div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$718,726</div><ul class="sidebar-list"><li><span style="color:var(--gold);">&#9679;</span> IBIT &mdash; iShares Bitcoin Trust</li><li><span style="color:var(--blue);">&#9679;</span> TSLA &mdash; Tesla</li><li><span style="color:var(--neon);">&#9679;</span> JPMPD &mdash; JPMorgan Preferred</li><li><span style="color:var(--gold);">&#9679;</span> IAU &mdash; Gold Trust</li><li><span style="color:var(--muted);">&#9679;</span> SLV &mdash; Silver Trust</li><li><span style="color:var(--muted);">&#9679;</span> CPER &mdash; Copper ETF</li><li><span style="color:var(--blue);">&#9679;</span> NVDA &mdash; NVIDIA</li><li><span style="color:var(--blue);">&#9679;</span> ORCL &mdash; Oracle</li><li><span style="color:var(--blue);">&#9679;</span> INTC &mdash; Intel</li><li><span style="color:var(--blue);">&#9679;</span> PLTR &mdash; Palantir</li></ul></div>
+    <div class="card"><div class="card-title" style="font-size:16px;">CHASE ROTH IRA</div><div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$12,290</div><ul class="sidebar-list"><li><span style="color:var(--blue);">&#9679;</span> QCOM &mdash; Qualcomm</li><li><span style="color:var(--blue);">&#9679;</span> CSCO &mdash; Cisco</li></ul></div>
+    <div class="card"><div class="card-title" style="font-size:16px;">WELLS FARGO SEP IRA</div><div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$26,629</div><ul class="sidebar-list"><li><span style="color:var(--blue);">&#9679;</span> AMZN &mdash; Amazon</li><li><span style="color:var(--blue);">&#9679;</span> GOOG &mdash; Alphabet</li><li><span style="color:var(--blue);">&#9679;</span> META &mdash; Meta</li><li><span style="color:var(--blue);">&#9679;</span> AAPL &mdash; Apple</li></ul></div>
+    <div class="card"><div class="card-title" style="font-size:16px;">FIDELITY 401K</div><div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$281,375</div><ul class="sidebar-list"><li><span style="color:var(--neon);">&#9679;</span> Fidelity Freedom Index 2040</li></ul></div>
+    <div class="card"><div class="card-title" style="font-size:16px;">COINBASE</div><div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$36,314</div><ul class="sidebar-list"><li><span style="color:var(--gold);">&#9679;</span> BTC &mdash; Bitcoin</li></ul></div>
+    <div class="card" style="border-color:rgba(255,102,0,0.3);background:linear-gradient(135deg,rgba(255,102,0,0.06),rgba(255,102,0,0.02));"><div class="card-title" style="font-size:16px;color:var(--gold);">TOTAL PORTFOLIO</div><div style="font-family:var(--font-display);font-size:42px;color:var(--gold);letter-spacing:2px;">$1,075,333</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Snapshot as of ~March 20, 2026</div></div>
+  </div>
 </section>
 
 <!-- ========================================================== -->
@@ -969,283 +939,16 @@ a{color:var(--blue);text-decoration:none;}
   </div>
   <div class="locker-form" id="lockerForm">
     <input type="password" class="locker-input" id="lockerPassword" placeholder="Enter password..." autocomplete="off">
-    <div style="margin-top:4px;">
-      <button class="locker-btn" id="lockerUnlockBtn">UNLOCK</button>
-    </div>
+    <div style="margin-top:4px;"><button class="locker-btn" id="lockerUnlockBtn">UNLOCK</button></div>
     <div id="lockerError" style="font-family:var(--font-mono);font-size:12px;color:var(--red);margin-top:12px;display:none;">Access denied. Wrong password.</div>
   </div>
   <div class="locker-vault" id="lockerVault">
     <div class="card" style="margin-top:24px;">
       <div class="card-title" style="font-size:16px;">CREDENTIAL KEYS</div>
       <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:12px;">Showing key names only. Connect to hub API for live credential access.</div>
-      <table class="cred-table">
-        <thead>
-          <tr>
-            <th>Key Name</th>
-            <th>Service</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody id="credTableBody"></tbody>
-      </table>
+      <table class="cred-table"><thead><tr><th>Key Name</th><th>Service</th><th>Type</th></tr></thead><tbody id="credTableBody"></tbody></table>
     </div>
   </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- PORTFOLIO TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-portfolio">
-  <!-- Holdings Ticker -->
-  <div class="portfolio-holdings-ticker">
-    <div class="holdings-track" id="holdingsTrack">
-      <div class="holdings-item">IBIT</div>
-      <div class="holdings-item">TSLA</div>
-      <div class="holdings-item">JPMPD</div>
-      <div class="holdings-item">IAU</div>
-      <div class="holdings-item">SLV</div>
-      <div class="holdings-item">CPER</div>
-      <div class="holdings-item">NVDA</div>
-      <div class="holdings-item">ORCL</div>
-      <div class="holdings-item">INTC</div>
-      <div class="holdings-item">PLTR</div>
-      <div class="holdings-item">QCOM</div>
-      <div class="holdings-item">CSCO</div>
-      <div class="holdings-item">AMZN</div>
-      <div class="holdings-item">GOOG</div>
-      <div class="holdings-item">META</div>
-      <div class="holdings-item">AAPL</div>
-      <div class="holdings-item">BTC</div>
-      <!-- duplicate for seamless scroll -->
-      <div class="holdings-item">IBIT</div>
-      <div class="holdings-item">TSLA</div>
-      <div class="holdings-item">JPMPD</div>
-      <div class="holdings-item">IAU</div>
-      <div class="holdings-item">SLV</div>
-      <div class="holdings-item">CPER</div>
-      <div class="holdings-item">NVDA</div>
-      <div class="holdings-item">ORCL</div>
-      <div class="holdings-item">INTC</div>
-      <div class="holdings-item">PLTR</div>
-      <div class="holdings-item">QCOM</div>
-      <div class="holdings-item">CSCO</div>
-      <div class="holdings-item">AMZN</div>
-      <div class="holdings-item">GOOG</div>
-      <div class="holdings-item">META</div>
-      <div class="holdings-item">AAPL</div>
-      <div class="holdings-item">BTC</div>
-    </div>
-  </div>
-
-  <div style="font-family:var(--font-mono);font-size:10px;color:var(--gold);text-align:right;margin:6px 0 16px;letter-spacing:0.5px;">PLACEHOLDER DATA &mdash; connect brokerage API for live portfolio prices</div>
-
-  <div class="stats-row fade-in" style="margin-bottom:28px;">
-    <div class="stat-card"><div class="stat-num" style="font-size:36px;">$1.08M</div><div class="stat-label">Total Portfolio (placeholder)</div></div>
-    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$719K</div><div class="stat-label">Chase Brokerage (placeholder)</div></div>
-    <div class="stat-card"><div class="stat-num" style="font-size:36px;">5</div><div class="stat-label">Accounts</div></div>
-    <div class="stat-card"><div class="stat-num" style="font-size:36px;background:linear-gradient(135deg,var(--neon),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">17</div><div class="stat-label">Positions</div></div>
-  </div>
-
-  <!-- Account Cards -->
-  <div class="portfolio-sections">
-
-    <!-- Chase Brokerage -->
-    <div class="card">
-      <div class="card-title" style="font-size:16px;">CHASE BROKERAGE</div>
-      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$718,726</div>
-      <ul class="sidebar-list">
-        <li><span style="color:var(--gold);">&#9679;</span> IBIT &mdash; <span style="color:var(--muted);">iShares Bitcoin Trust</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> TSLA &mdash; <span style="color:var(--muted);">Tesla</span></li>
-        <li><span style="color:var(--neon);">&#9679;</span> JPMPD &mdash; <span style="color:var(--muted);">JPMorgan Preferred</span></li>
-        <li><span style="color:var(--gold);">&#9679;</span> IAU &mdash; <span style="color:var(--muted);">iShares Gold Trust</span></li>
-        <li><span style="color:var(--muted);">&#9679;</span> SLV &mdash; <span style="color:var(--muted);">iShares Silver Trust</span></li>
-        <li><span style="color:var(--muted);">&#9679;</span> CPER &mdash; <span style="color:var(--muted);">Copper ETF</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> NVDA &mdash; <span style="color:var(--muted);">NVIDIA</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> ORCL &mdash; <span style="color:var(--muted);">Oracle</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> INTC &mdash; <span style="color:var(--muted);">Intel</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> PLTR &mdash; <span style="color:var(--muted);">Palantir</span></li>
-      </ul>
-    </div>
-
-    <!-- Chase Roth IRA -->
-    <div class="card">
-      <div class="card-title" style="font-size:16px;">CHASE ROTH IRA</div>
-      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$12,290</div>
-      <ul class="sidebar-list">
-        <li><span style="color:var(--blue);">&#9679;</span> QCOM &mdash; <span style="color:var(--muted);">Qualcomm</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> CSCO &mdash; <span style="color:var(--muted);">Cisco</span></li>
-      </ul>
-    </div>
-
-    <!-- Wells Fargo SEP IRA -->
-    <div class="card">
-      <div class="card-title" style="font-size:16px;">WELLS FARGO SEP IRA</div>
-      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$26,629</div>
-      <ul class="sidebar-list">
-        <li><span style="color:var(--blue);">&#9679;</span> AMZN &mdash; <span style="color:var(--muted);">Amazon</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> GOOG &mdash; <span style="color:var(--muted);">Alphabet</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> META &mdash; <span style="color:var(--muted);">Meta Platforms</span></li>
-        <li><span style="color:var(--blue);">&#9679;</span> AAPL &mdash; <span style="color:var(--muted);">Apple</span></li>
-      </ul>
-    </div>
-
-    <!-- Fidelity 401K -->
-    <div class="card">
-      <div class="card-title" style="font-size:16px;">FIDELITY 401K</div>
-      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$281,375</div>
-      <ul class="sidebar-list">
-        <li><span style="color:var(--neon);">&#9679;</span> Fidelity Freedom Index 2040 &mdash; <span style="color:var(--muted);">Target Date Fund</span></li>
-      </ul>
-    </div>
-
-    <!-- Coinbase -->
-    <div class="card">
-      <div class="card-title" style="font-size:16px;">COINBASE</div>
-      <div style="font-family:var(--font-mono);font-size:20px;color:var(--gold);margin-bottom:8px;">$36,314</div>
-      <ul class="sidebar-list">
-        <li><span style="color:var(--gold);">&#9679;</span> BTC &mdash; <span style="color:var(--muted);">Bitcoin</span></li>
-      </ul>
-    </div>
-
-    <!-- Total Summary -->
-    <div class="card" style="border-color:rgba(255,102,0,0.3);background:linear-gradient(135deg,rgba(255,102,0,0.06),rgba(255,102,0,0.02));">
-      <div class="card-title" style="font-size:16px;color:var(--gold);">TOTAL PORTFOLIO</div>
-      <div style="font-family:var(--font-display);font-size:42px;color:var(--gold);letter-spacing:2px;">$1,075,333</div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Snapshot as of ~March 20, 2026</div>
-      <div style="margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
-        Chase Brokerage: $718,726 | Roth IRA: $12,290 | SEP IRA: $26,629 | 401K: $281,375 | Coinbase: $36,314
-      </div>
-    </div>
-
-  </div>
-
-  <!-- P&L Per Project -->
-  <div style="margin-top:32px;">
-    <div class="card-title" style="font-size:18px;margin-bottom:16px;">P&amp;L PER PROJECT</div>
-    <div class="card" style="overflow-x:auto;">
-      <table class="vendor-table">
-        <thead>
-          <tr>
-            <th>Project</th>
-            <th>Revenue</th>
-            <th>Cost</th>
-            <th>P&amp;L (Monthly)</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">AiNFLGM</td>
-            <td style="color:var(--neon);">$5/mo (BMAC)</td>
-            <td>$0 (GitHub Pages free)</td>
-            <td style="color:var(--neon);">+$5</td>
-            <td><span class="pill pill-active">LIVE</span></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">trader9</td>
-            <td style="color:var(--muted);">$0</td>
-            <td>~$2/day (monitoring)</td>
-            <td style="color:var(--red);">-$60/mo</td>
-            <td><span class="pill pill-running">BUILDING</span></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">x9</td>
-            <td style="color:var(--muted);">$0</td>
-            <td>$0 (not launched)</td>
-            <td style="color:var(--muted);">$0</td>
-            <td><span class="pill pill-standby">CONCEPT</span></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">freeagent9</td>
-            <td style="color:var(--muted);">$0</td>
-            <td>$0 (pilot)</td>
-            <td style="color:var(--muted);">$0</td>
-            <td><span class="pill pill-standby">PILOT</span></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">underwriter9</td>
-            <td style="color:var(--muted);">$0</td>
-            <td>$0 (POC)</td>
-            <td style="color:var(--muted);">$0</td>
-            <td><span class="pill pill-standby">POC</span></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">Infrastructure</td>
-            <td style="color:var(--muted);">$0</td>
-            <td>~$15/mo (Twilio, domains)</td>
-            <td style="color:var(--red);">-$15</td>
-            <td><span class="pill pill-active">ACTIVE</span></td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="margin-top:12px;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;">
-        <span style="color:var(--muted);">Net Monthly P&amp;L:</span>
-        <span style="color:var(--red);font-weight:500;">-$70/mo</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Company Directory -->
-  <div style="margin-top:32px;">
-    <div class="card-title" style="font-size:18px;margin-bottom:16px;">COMPANY DIRECTORY</div>
-    <div class="card">
-      <table class="vendor-table">
-        <thead>
-          <tr>
-            <th>Entity / Resource</th>
-            <th>Detail</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">9 Enterprises LLC</td>
-            <td>Ohio SOS Doc 202608403826</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">AiNFLGM</td>
-            <td><a href="https://ainflgm.com" target="_blank">ainflgm.com</a></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">Dashboard</td>
-            <td><a href="https://ainflgm.com/dashboard.html" target="_blank">ainflgm.com/dashboard.html</a></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">Cloud Worker</td>
-            <td><a href="https://9-cloud-standin.789k6rym8v.workers.dev" target="_blank">9-cloud-standin.789k6rym8v.workers.dev</a></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">GitHub</td>
-            <td><a href="https://github.com/d925ng9t8k-wq/ainfl-gm" target="_blank">github.com/d925ng9t8k-wq/ainfl-gm</a></td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">Contact (Primary)</td>
-            <td>emailfishback@gmail.com</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">Contact (9e)</td>
-            <td>captain@ainflgm.com</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;color:var(--gold);">Telegram Bot</td>
-            <td>@ainflgm_bot</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div style="margin-top:24px;">
-    <div class="card-title" style="margin-bottom:14px;">BUSINESS PORTFOLIO</div>
-    <div class="projects-grid" id="portfolioGrid"></div>
-  </div>
-</section>
-
-<!-- ========================================================== -->
-<!-- BRAINSTORM TAB -->
-<!-- ========================================================== -->
-<section class="tab-content" id="tab-brainstorm">
-  <div class="card-title" style="font-size:18px;margin-bottom:20px;">BRAINSTORM &mdash; FUTURE CONCEPTS</div>
-  <div class="brainstorm-grid" id="brainstormGrid"></div>
 </section>
 
 <!-- ========================================================== -->
@@ -1258,7 +961,7 @@ a{color:var(--blue);text-decoration:none;}
         <div class="terminal-dot r"></div>
         <div class="terminal-dot y"></div>
         <div class="terminal-dot g"></div>
-        <div class="terminal-title-text">9-terminal &mdash; agent9@command-center</div>
+        <div class="terminal-title-text">9-terminal &mdash; agent9@command-center-v4</div>
       </div>
       <div class="terminal-output" id="termOutput"></div>
       <div class="terminal-input-row">
@@ -1270,13 +973,13 @@ a{color:var(--blue);text-decoration:none;}
       <div class="card" style="padding:14px;">
         <div class="card-title" style="font-size:13px;">AGENT TARGET</div>
         <select class="agent-select" id="agentSelect">
-          <option value="9">Agent 9 (QB/Orchestrator)</option>
+          <option value="9">9 (QB/Orchestrator)</option>
           <option value="UNO">UNO (Research Lead)</option>
           <option value="TEE">TEE (Engineering Lead)</option>
           <option value="MONEY">MONEY (Revenue Lead)</option>
           <option value="PRESS">PRESS (Content Lead)</option>
           <option value="SCOUT">SCOUT (Market Strategy)</option>
-          <option value="CANVAS">CANVAS (Design & Brand)</option>
+          <option value="CANVAS">CANVAS (Design &amp; Brand)</option>
           <option value="DOC">DOC (Infrastructure)</option>
           <option value="TRADER9">TRADER9 (Trading)</option>
         </select>
@@ -1287,7 +990,7 @@ a{color:var(--blue);text-decoration:none;}
           <button class="cmd-btn" data-cmd="help">help</button>
           <button class="cmd-btn" data-cmd="status all">status all</button>
           <button class="cmd-btn" data-cmd="list agents">list agents</button>
-          <button class="cmd-btn" data-cmd="revenue report">revenue report</button>
+          <button class="cmd-btn" data-cmd="silos">list silos</button>
           <button class="cmd-btn" data-cmd="sprint log">sprint log</button>
           <button class="cmd-btn" data-cmd="clear">clear</button>
         </div>
@@ -1311,701 +1014,652 @@ a{color:var(--blue);text-decoration:none;}
 <!-- ========================================================== -->
 <script>
 (function(){
-  'use strict';
+'use strict';
 
-  // ============ DATA ============
+// ============ DATA ============
 
-  const AGENTS = [
-    {id:'UNO',name:'UNO',role:'Research Team Lead',status:'active',color:'#00e5ff',desc:'Deep research, competitive intel, market analysis. Manages research sub-agents.',tags:['research','intel','analysis']},
-    {id:'TEE',name:'TEE',role:'Engineering Team Lead',status:'active',color:'#c300ff',desc:'Writes and ships code. JS/Node.js, testing, deployments, browser automation.',tags:['node','code','deploy','testing']},
-    {id:'MONEY',name:'MONEY',role:'Revenue Lead',status:'active',color:'#FF6600',desc:'Tracks API spend, manages billing, revenue strategy, cost optimization.',tags:['billing','revenue','budget']},
-    {id:'PRESS',name:'PRESS',role:'Content Lead',status:'active',color:'#8892b0',desc:'Content strategy, PR, press releases, social copy, investor updates.',tags:['content','pr','comms']},
-    {id:'SCOUT',name:'SCOUT',role:'Market Strategy',status:'active',color:'#64ffda',desc:'Market research, competitor analysis, trend scanning, opportunity identification.',tags:['market','strategy','trends']},
-    {id:'CANVAS',name:'CANVAS',role:'Design & Brand',status:'active',color:'#ff69b4',desc:'Visual design, brand assets, UI mockups, graphics, brand identity.',tags:['design','brand','graphics']},
-    {id:'DOC',name:'DOC',role:'Infrastructure Lead',status:'active',color:'#e87722',desc:'System health, docs, READMEs, changelogs, infrastructure monitoring.',tags:['infra','docs','health']},
-    {id:'TRADER9',name:'TRADER9',role:'Trading Signals',status:'running',color:'#FFD700',desc:'Generates alpha trading signals. Backtesting, live alerts. 3 sessions trained.',tags:['trading','signals','alpha']},
-  ];
+const HOPPER_ITEMS = [
+  {type:'business',name:'9enterprises Subscription Bundle',desc:'freeagent9 + trader9 as bundled features of subscription tiers under the 9enterprises umbrella',date:'Mar 27, 2026',status:'hopper'},
+  {type:'business',name:'Dropshipping Business',desc:'Explore dropshipping as a new venture — low-overhead ecom play',date:'Mar 27, 2026',status:'hopper'},
+  {type:'business',name:'Food Ordering Integration',desc:'Uber Eats / DoorDash ordering for users via 9 assistant layer',date:'Mar 27, 2026',status:'hopper'},
+  {type:'business',name:'Appointments & Reservations',desc:'Restaurant, golf, movie bookings — concierge booking layer for users',date:'Mar 27, 2026',status:'hopper'},
+  {type:'task',name:'Remote Self-Healing',desc:'SSH from cloud for autonomous terminal recovery — no Owner involvement required',date:'Mar 27, 2026',status:'hopper'},
+];
 
-  const PROJECTS = [
-    {name:'AiNFL GM',desc:'NFL offseason simulator at ainflgm.com',progress:85,color:'#FB4F14',status:'live'},
-    {name:'Command Center',desc:'Owner dashboard (this page)',progress:70,color:'#00e5ff',status:'building'},
-    {name:'Comms Hub',desc:'4-channel autonomous messaging relay',progress:95,color:'#64ffda',status:'live'},
-    {name:'Trader9 Alpha',desc:'AI trading signals engine',progress:35,color:'#e87722',status:'building'},
-    {name:'Cloud Worker',desc:'Cloudflare always-on failover',progress:90,color:'#c300ff',status:'live'},
-    {name:'Voice Server',desc:'Twilio voice calls + tunnel',progress:80,color:'#FF6600',status:'live'},
-    {name:'X9 Brand Kit',desc:'Social presence & brand identity',progress:20,color:'#ff2d55',status:'concept'},
-    {name:'Underwriter9',desc:'AI mortgage underwriting engine',progress:10,color:'#FFD700',status:'concept'},
-    {name:'9 Website',desc:'9enterprises.com corporate site',progress:45,color:'#00e5ff',status:'building'},
-  ];
+const SILOS = [
+  {
+    id:'ainflgm',
+    name:'AiNFLGM',
+    color:'#FB4F14',
+    status:'active',
+    url:'ainflgm.com',
+    revenue:'$0',
+    expenses:'~$15/mo',
+    net:'-$15',
+    netColor:'var(--red)',
+    milestones:['AdSense approval','100 daily users','Affiliate revenue live'],
+    gaugeVal:12,
+    gaugeCap:100,
+    team:'TEE, UNO, PRESS',
+    links:[{label:'Website',url:'https://ainflgm.com'},{label:'Dashboard',url:'https://ainflgm.com/dashboard.html'}],
+  },
+  {
+    id:'freeagent9',
+    name:'freeagent9',
+    color:'#00e5ff',
+    status:'active',
+    url:'ainflgm.com/freeagent-landing.html',
+    revenue:'$0',
+    expenses:'~$20/mo',
+    net:'-$20',
+    netColor:'var(--red)',
+    milestones:['A2P registration complete','Stripe integration live','5 pilot users onboarded'],
+    gaugeVal:20,
+    gaugeCap:100,
+    team:'TEE, MONEY, CANVAS',
+    links:[{label:'Landing Page',url:'https://ainflgm.com/freeagent-landing.html'}],
+  },
+  {
+    id:'trader9',
+    name:'trader9',
+    color:'#FFD700',
+    status:'building',
+    url:'trader9.io',
+    revenue:'$0',
+    expenses:'~$0',
+    net:'$0',
+    netColor:'var(--muted)',
+    milestones:['Alpaca KYC complete','Paper trading launch','First real trade executed'],
+    gaugeVal:30,
+    gaugeCap:100,
+    team:'TRADER9, TEE, MONEY',
+    links:[],
+  },
+  {
+    id:'agent9',
+    name:'agent9',
+    color:'#64ffda',
+    status:'concept',
+    url:'agent9.dev',
+    revenue:'$0',
+    expenses:'$0',
+    net:'$0',
+    netColor:'var(--muted)',
+    milestones:['Market research complete','MVP design finalized','Pilot launch'],
+    gaugeVal:5,
+    gaugeCap:100,
+    team:'UNO, SCOUT',
+    links:[],
+  },
+  {
+    id:'aiunderwriter',
+    name:'AI Underwriter',
+    color:'#c300ff',
+    status:'concept',
+    url:'',
+    revenue:'$0',
+    expenses:'$0',
+    net:'$0',
+    netColor:'var(--muted)',
+    milestones:['RAG architecture build','FHA guidelines pilot','Rapid Mortgage demo'],
+    gaugeVal:8,
+    gaugeCap:100,
+    team:'TEE, UNO, DOC',
+    links:[],
+  },
+  {
+    id:'x9',
+    name:'x9',
+    color:'#ff2d55',
+    status:'building',
+    url:'',
+    revenue:'$0',
+    expenses:'$0',
+    net:'$0',
+    netColor:'var(--muted)',
+    milestones:['X account live','Reddit account live','Daily posting cadence'],
+    gaugeVal:10,
+    gaugeCap:100,
+    team:'PRESS, CANVAS, SCOUT',
+    links:[],
+  },
+];
 
-  const PORTFOLIO = [
-    {name:'AiNFL GM',url:'ainflgm.com',status:'live',desc:'NFL offseason simulator. Subscriptions + AdSense.',progress:85,color:'#FB4F14',revenue:'$800/mo'},
-    {name:'Trader9',url:'trader9.io',status:'building',desc:'AI-powered trading signals. Alpha generation.',progress:35,color:'#00e5ff',revenue:'$0 (beta)'},
-    {name:'Agent9',url:'agent9.dev',status:'building',desc:'Autonomous agent orchestration platform.',progress:40,color:'#64ffda',revenue:'Internal'},
-    {name:'FreeAgent9',url:'freeagent9.com',status:'concept',desc:'AI talent marketplace for businesses.',progress:5,color:'#c300ff',revenue:'Planned'},
-    {name:'Underwriter9',url:'underwriter9.com',status:'concept',desc:'AI mortgage underwriting engine.',progress:10,color:'#FFD700',revenue:'Planned'},
-    {name:'X9',url:'x9.ai',status:'concept',desc:'Holding company / umbrella brand.',progress:15,color:'#ff2d55',revenue:'Planned'},
-  ];
+const AGENTS = [
+  {id:'UNO',name:'UNO',role:'Research Team Lead',status:'active',color:'#00e5ff',desc:'Deep research, competitive intel, market analysis. Manages research sub-agents.',tags:['research','intel','analysis']},
+  {id:'TEE',name:'TEE',role:'Engineering Team Lead',status:'active',color:'#c300ff',desc:'Writes and ships code. JS/Node.js, testing, deployments, browser automation.',tags:['node','code','deploy']},
+  {id:'MONEY',name:'MONEY',role:'Revenue Lead',status:'active',color:'#FF6600',desc:'Tracks API spend, manages billing, revenue strategy, cost optimization.',tags:['billing','revenue','budget']},
+  {id:'PRESS',name:'PRESS',role:'Content Lead',status:'active',color:'#8892b0',desc:'Content strategy, PR, press releases, social copy, investor updates.',tags:['content','pr','comms']},
+  {id:'SCOUT',name:'SCOUT',role:'Market Strategy',status:'active',color:'#64ffda',desc:'Market research, competitor analysis, trend scanning, opportunity identification.',tags:['market','strategy','trends']},
+  {id:'CANVAS',name:'CANVAS',role:'Design & Brand',status:'active',color:'#ff69b4',desc:'Visual design, brand assets, UI mockups, graphics, brand identity.',tags:['design','brand','graphics']},
+  {id:'DOC',name:'DOC',role:'Infrastructure Lead',status:'active',color:'#e87722',desc:'System health, docs, READMEs, changelogs, infrastructure monitoring.',tags:['infra','docs','health']},
+  {id:'TRADER9',name:'TRADER9',role:'Trading Signals',status:'running',color:'#FFD700',desc:'Generates alpha trading signals. Backtesting, live alerts. 3 sessions trained.',tags:['trading','signals','alpha']},
+];
 
-  const DIVISIONS = [
-    {name:'Front Office',color:'#00e5ff',agents:[{name:'UNO — Research Lead',persist:true},{name:'TEE — Engineering Lead',persist:true},{name:'MONEY — Revenue Lead',persist:true},{name:'PRESS — Content Lead',persist:true},{name:'SCOUT — Market Strategy',persist:true},{name:'CANVAS — Design & Brand',persist:true},{name:'DOC — Infrastructure',persist:true}]},
-    {name:'AiNFLGM',color:'#FB4F14',agents:[{name:'TEE',persist:true},{name:'UNO',persist:true},{name:'GameSim',persist:false}]},
-    {name:'Trader9',color:'#FFD700',agents:[{name:'TRADER9',persist:true},{name:'AlphaBot',persist:false},{name:'BacktestBot',persist:false}]},
-    {name:'Cloud Infra',color:'#c300ff',agents:[{name:'DOC',persist:true},{name:'CloudBot',persist:false}]},
-    {name:'Brand & Content',color:'#ff69b4',agents:[{name:'CANVAS',persist:true},{name:'PRESS',persist:true},{name:'SCOUT',persist:true}]},
-  ];
+const VENDORS = [
+  {name:'Anthropic',service:'Claude Max 20x subscription + API',cost:'$200+',company:'9 Enterprises',status:'online'},
+  {name:'Twilio',service:'Voice / SMS / A2P',cost:'$20',company:'freeagent9',status:'online'},
+  {name:'ElevenLabs',service:'Text-to-Speech',cost:'$0',company:'9 Enterprises',status:'online'},
+  {name:'Cloudflare',service:'Workers + Tunnel',cost:'$0',company:'9 Enterprises',status:'online'},
+  {name:'GitHub',service:'Pages + Repos',cost:'$0',company:'AiNFLGM',status:'online'},
+  {name:'DigitalOcean',service:'VPS / Cloud Hosting',cost:'$6',company:'9 Enterprises',status:'setup'},
+  {name:'Stripe',service:'Payments',cost:'$0',company:'freeagent9',status:'setup'},
+  {name:'Alpaca',service:'Trading API',cost:'$0',company:'trader9',status:'setup'},
+  {name:'Google',service:'AdSense + Analytics',cost:'$0',company:'AiNFLGM',status:'setup'},
+];
 
-  const VENDORS = [
-    {name:'Anthropic',service:'Claude Max 20x subscription + API usage',cost:'$200+',status:'online',plan:'Max 20x ($200/mo fixed + extra usage)'},
-    {name:'Twilio',service:'Voice / SMS',cost:'$20',status:'online',plan:'Pay-as-you-go (~$20/mo est)'},
-    {name:'ElevenLabs',service:'Text-to-Speech / Voice Synthesis',cost:'$0',status:'online',plan:'~$1000 total spent — monitoring usage'},
-    {name:'Cloudflare',service:'Workers (free tier) + Tunnel',cost:'$0',status:'online',plan:'Free tier + tunnel'},
-    {name:'GitHub',service:'Pages + Repos',cost:'$0',status:'online',plan:'Free (GitHub Pages)'},
-    {name:'DigitalOcean',service:'VPS / Cloud Hosting',cost:'$6',status:'setup',plan:'Pending — email verification at x9agent@proton.me'},
-    {name:'Stripe',service:'Payments',cost:'$0',status:'setup',plan:'Exists (emailfishback@gmail.com) — not yet integrated'},
-    {name:'Alpaca',service:'Trading API',cost:'$0',status:'setup',plan:'KYC selfie pending — Owner action required'},
-    {name:'Google',service:'AdSense + Analytics',cost:'$0',status:'setup',plan:'AdSense application pending — Owner action required'},
-  ];
+const TASKS = {
+  'OWNER ACTIONS REQUIRED': [
+    {desc:'Alpaca KYC selfie — snap & upload at alpaca.markets (30 seconds)',status:'blocked',owner:'Jasson',ownerAction:true},
+    {desc:'Google AdSense application — create at adsense.google.com',status:'blocked',owner:'Jasson',ownerAction:true},
+    {desc:'Reddit account creation — needs CAPTCHA solver or manual signup',status:'blocked',owner:'Jasson',ownerAction:true},
+    {desc:'X.com account creation — platform issues blocking auto-create',status:'blocked',owner:'Jasson',ownerAction:true},
+  ],
+  'In Progress': [
+    {desc:'A2P 10DLC registration — EIN 41-5160635 ready, submit to Twilio',status:'in-progress',owner:'9',ownerAction:false},
+    {desc:'DigitalOcean email verification — check x9agent@proton.me for verify link',status:'in-progress',owner:'9',ownerAction:false},
+    {desc:'Stripe subscription integration for freeagent9',status:'in-progress',owner:'9',ownerAction:false},
+    {desc:'Dashboard v4 live data connections — cloud worker /api/dashboard endpoint',status:'in-progress',owner:'9',ownerAction:false},
+    {desc:'9enterprises.com domain registration',status:'in-progress',owner:'9',ownerAction:false},
+  ],
+  'Completed': [
+    {desc:'EIN obtained: 41-5160635 (9 Enterprises LLC)',status:'done',owner:'9',ownerAction:false},
+    {desc:'Kyle C pilot LIVE — loan officer AI assistant deployed',status:'done',owner:'9',ownerAction:false},
+    {desc:'Email channel LIVE — Gmail SMTP 2-way relay operational',status:'done',owner:'9',ownerAction:false},
+    {desc:'trader9 fully trained — 3 sessions completed',status:'done',owner:'9',ownerAction:false},
+    {desc:'freeagent9 landing page + business plan complete',status:'done',owner:'9',ownerAction:false},
+    {desc:'Dashboard v4 built and deployed',status:'done',owner:'9',ownerAction:false},
+    {desc:'40+ sprint commits across all projects',status:'done',owner:'9',ownerAction:false},
+    {desc:'Soul Code v5 finalized and burned to memory',status:'done',owner:'9',ownerAction:false},
+  ],
+};
 
-  const TASKS = {
-    'OWNER ACTIONS REQUIRED': [
-      {desc:'Alpaca KYC selfie — snap & upload at alpaca.markets (30 seconds)',status:'blocked',ownerAction:true},
-      {desc:'Google AdSense application — create at adsense.google.com',status:'blocked',ownerAction:true},
-      {desc:'Reddit account creation — needs CAPTCHA solver or manual signup',status:'blocked',ownerAction:true},
-      {desc:'X.com account creation — platform issues blocking auto-create',status:'blocked',ownerAction:true},
-    ],
-    'In Progress': [
-      {desc:'A2P 10DLC registration — EIN 41-5160635 ready, submit to Twilio',status:'in-progress',ownerAction:false},
-      {desc:'DigitalOcean email verification — check x9agent@proton.me for verify link',status:'in-progress',ownerAction:false},
-      {desc:'Cloud worker deploy — needs Cloudflare API token with Workers:Edit scope',status:'in-progress',ownerAction:false},
-      {desc:'Dashboard live data connections — cloud worker /api/dashboard endpoint not built',status:'in-progress',ownerAction:false},
-      {desc:'Stripe subscription integration for freeagent9',status:'in-progress',ownerAction:false},
-      {desc:'9enterprises.com domain registration',status:'in-progress',ownerAction:false},
-    ],
-    'Completed': [
-      {desc:'EIN obtained: 41-5160635 (9 Enterprises LLC)',status:'done',ownerAction:false},
-      {desc:'Kyle C pilot LIVE — loan officer AI assistant deployed',status:'done',ownerAction:false},
-      {desc:'Email channel LIVE — Gmail SMTP 2-way relay operational',status:'done',ownerAction:false},
-      {desc:'trader9 fully trained — 3 sessions: strategies, risk engine, backtesting, microstructure',status:'done',ownerAction:false},
-      {desc:'freeagent9 landing page + business plan complete',status:'done',ownerAction:false},
-      {desc:'Universal sweep — 10 reliability fixes shipped',status:'done',ownerAction:false},
-      {desc:'40+ sprint commits across all projects',status:'done',ownerAction:false},
-      {desc:'All 7 protocols burned to memory (Soul Code v5)',status:'done',ownerAction:false},
-    ],
-  };
+const CREDENTIALS = [
+  {key:'ANTHROPIC_API_KEY',service:'Anthropic',type:'API Key'},
+  {key:'ANTHROPIC_API_KEY_TC',service:'Anthropic (Terminal)',type:'API Key'},
+  {key:'TELEGRAM_BOT_TOKEN',service:'Telegram',type:'Bot Token'},
+  {key:'TELEGRAM_CHAT_ID',service:'Telegram',type:'Chat ID'},
+  {key:'TWILIO_ACCOUNT_SID',service:'Twilio',type:'Account SID'},
+  {key:'TWILIO_AUTH_TOKEN',service:'Twilio',type:'Auth Token'},
+  {key:'TWILIO_PHONE_NUMBER',service:'Twilio',type:'Phone Number'},
+  {key:'ALPACA_API_KEY',service:'Alpaca',type:'API Key'},
+  {key:'ALPACA_SECRET_KEY',service:'Alpaca',type:'Secret Key'},
+  {key:'ELEVENLABS_API_KEY',service:'ElevenLabs',type:'API Key'},
+  {key:'STRIPE_SECRET_KEY',service:'Stripe',type:'Secret Key'},
+  {key:'STRIPE_PUBLISHABLE_KEY',service:'Stripe',type:'Publishable Key'},
+  {key:'GOOGLE_ADSENSE_ID',service:'Google AdSense',type:'Publisher ID'},
+  {key:'CLOUDFLARE_API_TOKEN',service:'Cloudflare',type:'API Token'},
+  {key:'TUNNEL_URL',service:'Cloudflare Tunnel',type:'URL'},
+  {key:'GITHUB_TOKEN',service:'GitHub',type:'Personal Access Token'},
+];
 
-  const CREDENTIALS = [
-    {key:'ANTHROPIC_API_KEY',service:'Anthropic',type:'API Key'},
-    {key:'ANTHROPIC_API_KEY_TC',service:'Anthropic (Terminal)',type:'API Key'},
-    {key:'TELEGRAM_BOT_TOKEN',service:'Telegram',type:'Bot Token'},
-    {key:'TELEGRAM_CHAT_ID',service:'Telegram',type:'Chat ID'},
-    {key:'TWILIO_ACCOUNT_SID',service:'Twilio',type:'Account SID'},
-    {key:'TWILIO_AUTH_TOKEN',service:'Twilio',type:'Auth Token'},
-    {key:'TWILIO_PHONE_NUMBER',service:'Twilio',type:'Phone Number'},
-    {key:'ALPACA_API_KEY',service:'Alpaca',type:'API Key'},
-    {key:'ALPACA_SECRET_KEY',service:'Alpaca',type:'Secret Key'},
-    {key:'ALPACA_EMAIL',service:'Alpaca',type:'Email'},
-    {key:'ELEVENLABS_API_KEY',service:'ElevenLabs',type:'API Key'},
-    {key:'STRIPE_SECRET_KEY',service:'Stripe',type:'Secret Key'},
-    {key:'STRIPE_PUBLISHABLE_KEY',service:'Stripe',type:'Publishable Key'},
-    {key:'GOOGLE_ADSENSE_ID',service:'Google AdSense',type:'Publisher ID'},
-    {key:'GOOGLE_ANALYTICS_ID',service:'Google Analytics',type:'Tracking ID'},
-    {key:'CLOUDFLARE_API_TOKEN',service:'Cloudflare',type:'API Token'},
-    {key:'TUNNEL_URL',service:'Cloudflare Tunnel',type:'URL'},
-    {key:'MAC_PASSWORD',service:'System',type:'Machine Password'},
-    {key:'GITHUB_TOKEN',service:'GitHub',type:'Personal Access Token'},
-  ];
+const SPRINT_ENTRIES = [
+  {time:'Mar 26, 06:00',title:'Sprint Kickoff',desc:'Initialized March sprint. Set goals: dashboard, trader9, org chart.',done:true},
+  {time:'Mar 26, 07:30',title:'Comms Hub v3.2 Deployed',desc:'4-channel relay with session tokens, PID watchdog, auto-recovery.',done:true},
+  {time:'Mar 26, 09:00',title:'Cloud Worker Failover Test',desc:'Simulated Mac down scenario. Worker picked up in <10s.',done:true},
+  {time:'Mar 26, 11:00',title:'AiNFL GM v2.1 Hotfix',desc:'Fixed draft board rendering bug. Deployed to production.',done:true},
+  {time:'Mar 26, 14:00',title:'Voice Server Tunnel Rebuild',desc:'Cloudflare tunnel auto-restart integrated into hub.',done:true},
+  {time:'Mar 26, 16:30',title:'Trader9 Signal Engine',desc:'Backtesting framework scaffolded. First alpha signals generating.',done:true},
+  {time:'Mar 26, 19:00',title:'Owner Dashboard v3',desc:'Built command-center.html with glassmorphic design, live data.',done:true},
+  {time:'Mar 26, 22:00',title:'Agent Roster Finalized',desc:'8 agents defined with roles, permissions, and routing.',done:true},
+  {time:'Mar 27, 02:00',title:'Overnight Autonomy Test',desc:'Hub ran autonomous (Haiku) for 4 hours. All messages handled.',done:true},
+  {time:'Mar 27, 06:00',title:'Dashboard v4 Build',desc:'Major restructure: Hopper, Company Silos, full org chart.',done:true},
+  {time:'Mar 27, 08:00',title:'X9 Brand Kit Draft',desc:'Logo concepts, color palette, social templates.',done:false},
+  {time:'Mar 27, 12:00',title:'Sprint Review',desc:'Demo to owner. Collect feedback. Plan next sprint.',done:false},
+];
 
-  const BRAINSTORM = [
-    {name:'Remote Self-Heal',desc:'When terminal drops, 9-cloud SSHes into the Mac autonomously and fixes itself. No Owner involvement. Voice call triggers the repair. The unlock for true 24/7 autonomy.',cost:'$5-10/mo (VPS)',revenue:'Core Infrastructure',status:'researching',color:'#64ffda'},
-    {name:'Remote Exec Layer',desc:'Voice calls where 9 can actually execute terminal commands, not just talk. Cloud instance bridges to Mac via SSH — diagnose, fix, restart services, all during a voice session.',cost:'$0 (uses existing VPS)',revenue:'Core Infrastructure',status:'concept',color:'#00e5ff'},
-    {name:'agent9 Real Estate',desc:'AI-powered real estate analysis, comps, and deal sourcing for investors.',cost:'$500/mo',revenue:'$5K-20K/mo',status:'concept',color:'#FB4F14'},
-    {name:'Lead Gen Engine',desc:'Automated lead generation funnels for mortgage, real estate, and SaaS.',cost:'$200/mo',revenue:'$3K-10K/mo',status:'researching',color:'#e87722'},
-    {name:'Newsletter Empire',desc:'AI-written niche newsletters with affiliate monetization at scale.',cost:'$50/mo',revenue:'$1K-5K/mo',status:'concept',color:'#FF6600'},
-    {name:'AI Content Farm',desc:'Automated content creation for SEO, social, and video across verticals.',cost:'$300/mo',revenue:'$2K-8K/mo',status:'concept',color:'#ff69b4'},
-    {name:'Ecom / POD',desc:'Print-on-demand store with AI-generated designs and automated fulfillment.',cost:'$100/mo',revenue:'$1K-5K/mo',status:'concept',color:'#c300ff'},
-    {name:'Micro SaaS',desc:'Small, focused SaaS tools (calculators, dashboards, automations).',cost:'$50/mo',revenue:'$500-3K/mo',status:'researching',color:'#FFD700'},
-    {name:'AI Recruiting',desc:'Automated talent matching and outreach for tech/AI roles.',cost:'$200/mo',revenue:'$5K-15K/mo',status:'concept',color:'#ff2d55'},
-    {name:'DFY Agency',desc:'Done-for-you AI integration services for businesses. Consulting + implementation.',cost:'$0',revenue:'$10K-50K/mo',status:'concept',color:'#8892b0'},
-    {name:'Prediction Markets',desc:'AI-powered prediction market analysis and automated betting strategies.',cost:'$100/mo',revenue:'Variable',status:'concept',color:'#00e5ff'},
-  ];
+const TERMINAL_BOOT = [
+  {text:'[BOOT] 9enterprises Command Center v4.0',cls:'line-system'},
+  {text:'[BOOT] Initializing agent mesh...',cls:'line-system'},
+  {text:'[OK]   Comms Hub ............ port 3457 .... ONLINE',cls:''},
+  {text:'[OK]   Voice Server ......... port 3456 .... ONLINE',cls:''},
+  {text:'[OK]   Cloud Worker ......... edge ......... ONLINE',cls:''},
+  {text:'[OK]   Tunnel ............... cf ........... ONLINE',cls:''},
+  {text:'[OK]   Terminal ............. relay ........ CONNECTED',cls:''},
+  {text:'[INFO] 8 agents loaded. 7 active, 1 running.',cls:'line-info'},
+  {text:'[INFO] 6 company silos tracked.',cls:'line-info'},
+  {text:'[INFO] Hopper: 5 items in queue.',cls:'line-info'},
+  {text:'[WARN] Trader9 alpha signals in beta -- monitor closely.',cls:'line-warn'},
+  {text:'',cls:''},
+  {text:'Type "help" for available commands.',cls:'line-muted'},
+  {text:'',cls:''},
+];
 
-  const SPRINT_ENTRIES = [
-    {time:'Mar 26, 06:00',title:'Sprint Kickoff',desc:'Initialized March sprint. Set goals: dashboard, trader9 alpha, org chart.',done:true},
-    {time:'Mar 26, 07:30',title:'Comms Hub v3.2 Deployed',desc:'4-channel relay with session tokens, PID watchdog, auto-recovery.',done:true},
-    {time:'Mar 26, 09:00',title:'Cloud Worker Failover Test',desc:'Simulated Mac down scenario. Worker picked up Telegram + voice in <10s.',done:true},
-    {time:'Mar 26, 11:00',title:'AiNFL GM v2.1 Hotfix',desc:'Fixed draft board rendering bug. Deployed to production.',done:true},
-    {time:'Mar 26, 14:00',title:'Voice Server Tunnel Rebuild',desc:'Cloudflare tunnel auto-restart integrated into hub. Zero-downtime.',done:true},
-    {time:'Mar 26, 16:30',title:'Trader9 Signal Engine',desc:'Backtesting framework scaffolded. First alpha signals generating.',done:true},
-    {time:'Mar 26, 19:00',title:'Owner Dashboard v1',desc:'Built command-center.html. Glassmorphic cards, live data.',done:true},
-    {time:'Mar 26, 22:00',title:'Agent Roster Finalized',desc:'10 agents defined with roles, permissions, and routing.',done:true},
-    {time:'Mar 27, 02:00',title:'Overnight Autonomy Test',desc:'Hub ran autonomous (Haiku) for 4 hours. All messages handled.',done:true},
-    {time:'Mar 27, 06:00',title:'Dashboard v2 Build',desc:'Full rebuild with tabs, terminal, org chart, sprint log.',done:false},
-    {time:'Mar 27, 08:00',title:'X9 Brand Kit Draft',desc:'Logo concepts, color palette, social templates.',done:false},
-    {time:'Mar 27, 12:00',title:'Sprint Review',desc:'Demo to owner. Collect feedback. Plan next sprint.',done:false},
-  ];
+const TERMINAL_COMMANDS = {
+  help: ['Available commands:','  help         Show this help','  status all   System statuses','  list agents  All agents','  silos        Company silos','  sprint log   Sprint entries','  clear        Clear terminal','  whoami       Agent identity'],
+  'status all': ['SYSTEM STATUS REPORT','====================','Comms Hub .......... ONLINE  (port 3457)','Voice Server ....... ONLINE  (port 3456)','Cloud Worker ....... ONLINE  (edge)','CF Tunnel .......... ONLINE','Terminal ........... RELAY MODE','API Health ......... OK','Telegram ........... CONNECTED','iMessage ........... CONNECTED','Email .............. CONNECTED','Voice .............. CONNECTED','','All systems nominal.'],
+  'list agents': ['AGENT ROSTER','============','  9        QB / Orchestrator      [ACTIVE]','  UNO      Research Lead          [ACTIVE]','  TEE      Engineering Lead       [ACTIVE]','  MONEY    Revenue Lead           [ACTIVE]','  PRESS    Content Lead           [ACTIVE]','  SCOUT    Market Strategy        [ACTIVE]','  CANVAS   Design & Brand         [ACTIVE]','  DOC      Infrastructure Lead    [ACTIVE]','  TRADER9  Trading Signals        [RUNNING]'],
+  silos: ['COMPANY SILOS','=============','  AiNFLGM       Active    ainflgm.com','  freeagent9    Active    (pilot)','  trader9       Building  (paper trading)','  agent9        Concept   (AI real estate)','  AI Underwriter Concept  (mortgage AI)','  x9            Building  (social media)'],
+  whoami: ['agent9@9enterprises','Role: CEO / Autonomous Operator','Authority: Soul Code v5 (full permissions)','Channels: Telegram, iMessage, Voice, Email','Mode: Relay (terminal connected)'],
+};
 
-  const TERMINAL_BOOT = [
-    {text:'[BOOT] 9enterprises Command Center v3.0',cls:'line-system'},
-    {text:'[BOOT] Initializing agent mesh...',cls:'line-system'},
-    {text:'[OK]   Comms Hub ............ port 3457 .... ONLINE',cls:''},
-    {text:'[OK]   Voice Server ......... port 3456 .... ONLINE',cls:''},
-    {text:'[OK]   Cloud Worker ......... edge ......... ONLINE',cls:''},
-    {text:'[OK]   Tunnel ............... cf ........... ONLINE',cls:''},
-    {text:'[OK]   Terminal ............. relay ........ CONNECTED',cls:''},
-    {text:'[INFO] 10 agents loaded. 7 active, 2 standby, 1 blocked.',cls:'line-info'},
-    {text:'[INFO] Sprint: March 26-27 | Velocity: HIGH',cls:'line-info'},
-    {text:'[WARN] Trader9 alpha signals in beta -- monitor closely.',cls:'line-warn'},
-    {text:'',cls:''},
-    {text:'Type "help" for available commands.',cls:'line-muted'},
-    {text:'',cls:''},
-  ];
+SPRINT_ENTRIES.forEach(e => {
+  if(!TERMINAL_COMMANDS['sprint log']) TERMINAL_COMMANDS['sprint log'] = ['SPRINT LOG','=========='];
+  TERMINAL_COMMANDS['sprint log'].push(`  ${e.done?'[x]':'[ ]'} ${e.time} -- ${e.title}`);
+});
 
-  const TERMINAL_COMMANDS = {
-    help: [
-      'Available commands:',
-      '  help           Show this help message',
-      '  status all     Show all system statuses',
-      '  list agents    List all active agents',
-      '  revenue report Show revenue breakdown',
-      '  sprint log     Show current sprint entries',
-      '  clear          Clear terminal',
-      '  whoami         Display current agent identity',
-      '  uptime         Show system uptime',
-    ],
-    'status all': [
-      'SYSTEM STATUS REPORT',
-      '====================',
-      'Comms Hub .......... ONLINE  (port 3457)',
-      'Voice Server ....... ONLINE  (port 3456)',
-      'Cloud Worker ....... ONLINE  (edge)',
-      'CF Tunnel .......... ONLINE',
-      'Terminal ........... RELAY MODE',
-      'API Health ......... OK (latency: 142ms)',
-      'Database ........... OK',
-      'Telegram ........... CONNECTED',
-      'iMessage ........... CONNECTED',
-      'Email .............. CONNECTED',
-      'Voice .............. CONNECTED',
-      '',
-      'All systems nominal.',
-    ],
-    'list agents': [
-      'AGENT ROSTER (Front Office)',
-      '============================',
-      '  9        QB / Orchestrator            [ACTIVE]',
-      '  UNO      Research Team Lead           [ACTIVE]',
-      '  TEE      Engineering Team Lead        [ACTIVE]',
-      '  MONEY    Revenue Lead                 [ACTIVE]',
-      '  PRESS    Content Lead                 [ACTIVE]',
-      '  SCOUT    Market Strategy              [ACTIVE]',
-      '  CANVAS   Design & Brand               [ACTIVE]',
-      '  DOC      Infrastructure Lead          [ACTIVE]',
-      '  TRADER9  Trading Signals              [RUNNING]',
-    ],
-    'revenue report': [
-      'REVENUE REPORT -- March 2026',
-      '============================',
-      '  AiNFL GM Subscriptions ..... $520/mo',
-      '  AiNFL GM Ads (AdSense) ..... $280/mo',
-      '  Trader9 Alpha (beta) ....... $0/mo',
-      '  Rapid Mortgage ............. $440/mo (referral)',
-      '  FreeAgent9 ................. $0 (planned)',
-      '  ----------------------------',
-      '  TOTAL MRR .................. $1,240/mo',
-      '  ARR Projection ............. ~$14,880',
-      '',
-      '  API Spend (MTD) ............ $312',
-      '  Infra Cost (MTD) ........... $47',
-      '  Net Margin ................. ~72%',
-    ],
-    'sprint log': [
-      'SPRINT LOG -- March 26-27',
-      '=========================',
-    ],
-    whoami: [
-      'agent9@9enterprises',
-      'Role: CEO / Autonomous Operator',
-      'Authority: Soul Code (full permissions)',
-      'Channels: Telegram, iMessage, Voice, Email',
-      'Mode: Relay (terminal connected)',
-    ],
-    uptime: [
-      'System Uptime: 47h 23m 12s',
-      'Hub Restarts: 0',
-      'Last Deploy: Mar 26, 19:00 EST',
-      'Terminal Sessions: 14',
-    ],
-  };
+const LOCKER_PASS = '655Nordyke';
 
-  // Add sprint entries to sprint log command
-  SPRINT_ENTRIES.forEach(e => {
-    TERMINAL_COMMANDS['sprint log'].push(`  ${e.done ? '[x]' : '[ ]'} ${e.time} -- ${e.title}`);
-  });
+// ============ RENDER: HOPPER ============
 
-  // ============ LOCKER PASSWORD ============
-  const LOCKER_PASS = '655Nordyke';
+function renderHopper(){
+  const tbody = document.getElementById('hopperTableBody');
+  const statusPillMap = {hopper:'hopper',greenlit:'greenlit',parked:'parked',killed:'killed'};
+  tbody.innerHTML = HOPPER_ITEMS.map(item => {
+    const typeClass = item.type === 'business' ? 'business' : item.type === 'task' ? 'task' : 'mod';
+    const typeLabel = item.type === 'business' ? 'Business Concept' : item.type === 'task' ? 'Task' : 'Modification';
+    return `<tr>
+      <td><span class="hopper-type ${typeClass}">${typeLabel}</span></td>
+      <td><div class="hopper-name">${item.name}</div></td>
+      <td><div class="hopper-desc">${item.desc}</div></td>
+      <td style="color:var(--muted);white-space:nowrap;">${item.date}</td>
+      <td><span class="pill pill-${statusPillMap[item.status]||'hopper'}">${item.status}</span></td>
+    </tr>`;
+  }).join('');
+}
 
-  // ============ RENDER FUNCTIONS ============
+// ============ RENDER: SILOS ============
 
-  function renderAgentGrid(){
-    const grid = document.getElementById('agentGrid');
-    grid.innerHTML = AGENTS.map((a,i) => `
-      <div class="agent-card fade-in" style="animation-delay:${i*0.05}s;border-left:3px solid ${a.color};">
-        <div class="agent-header">
-          <div>
-            <div class="agent-name-small" style="color:${a.color};">${a.name}</div>
-            <div class="agent-role-small">${a.role}</div>
-          </div>
-          <span class="pill pill-${a.status}">${a.status}</span>
+function renderSilos(){
+  const grid = document.getElementById('silosGrid');
+  const statusMap = {active:'active',building:'building',concept:'concept'};
+  const pillMap = {active:'pill-active',building:'pill-building',concept:'pill-concept'};
+  grid.innerHTML = SILOS.map((s,i) => {
+    const gaugePercent = Math.min(100, Math.round((s.gaugeVal / s.gaugeCap) * 100));
+    const urlHtml = s.url ? `<div class="silo-url">${s.url}</div>` : '';
+    const linksHtml = s.links.length ? `<div class="silo-links">${s.links.map(l=>`<a href="${l.url}" target="_blank" class="silo-link">${l.label}</a>`).join('')}</div>` : '';
+    return `
+    <div class="silo-card fade-in" style="animation-delay:${i*0.07}s;border-top:3px solid ${s.color};">
+      <div class="silo-header">
+        <div>
+          <div class="silo-name" style="color:${s.color};">${s.name}</div>
+          ${urlHtml}
         </div>
-        <div class="agent-desc-small">${a.desc}</div>
-        <div>${a.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <span class="pill ${pillMap[s.status]||'pill-concept'}">${s.status}</span>
       </div>
-    `).join('');
-  }
-
-  function renderProjectBoard(){
-    const board = document.getElementById('projectBoard');
-    const statusColors = {live:'var(--neon)',building:'var(--blue)',concept:'var(--muted)'};
-    board.innerHTML = PROJECTS.map((p,i) => `
-      <div class="project-card fade-in" style="animation-delay:${i*0.05}s;border-top:2px solid ${p.color};">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="project-name" style="color:${p.color};">${p.name}</div>
-          <span class="pill pill-${p.status === 'live' ? 'active' : p.status === 'building' ? 'running' : 'standby'}">${p.status}</span>
+      <div class="silo-divider"></div>
+      <div class="silo-pl">
+        <div class="silo-pl-item">
+          <div class="silo-pl-num" style="color:var(--neon);">${s.revenue}</div>
+          <div class="silo-pl-label">Revenue</div>
         </div>
-        <div class="project-desc">${p.desc}</div>
-        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
-          <span>Progress</span><span style="color:var(--text);">${p.progress}%</span>
+        <div class="silo-pl-item">
+          <div class="silo-pl-num" style="color:var(--red);">${s.expenses}</div>
+          <div class="silo-pl-label">Expenses</div>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${p.progress}%;background:linear-gradient(90deg,${p.color},${p.color}aa);box-shadow:0 0 8px ${p.color}40;"></div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function renderPortfolio(){
-    const grid = document.getElementById('portfolioGrid');
-    const statusLabels = {live:'LIVE',building:'BUILDING',concept:'CONCEPT'};
-    grid.innerHTML = PORTFOLIO.map((p,i) => `
-      <div class="project-card fade-in" style="animation-delay:${i*0.05}s;border-left:3px solid ${p.color};">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-          <div>
-            <div class="project-name" style="color:${p.color};">${p.name}</div>
-            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px;">${p.url}</div>
-          </div>
-          <span class="pill pill-${p.status === 'live' ? 'active' : p.status === 'building' ? 'running' : 'standby'}">${statusLabels[p.status]}</span>
-        </div>
-        <div class="project-desc" style="margin:8px 0;">${p.desc}</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-family:var(--font-mono);font-size:12px;color:var(--gold);">${p.revenue}</span>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${p.progress}%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:${p.progress}%;background:linear-gradient(90deg,${p.color},${p.color}aa);box-shadow:0 0 8px ${p.color}40;"></div>
+        <div class="silo-pl-item">
+          <div class="silo-pl-num" style="color:${s.netColor};">${s.net}</div>
+          <div class="silo-pl-label">Net/Mo</div>
         </div>
       </div>
-    `).join('');
-  }
-
-  function renderOrgDivisions(){
-    const container = document.getElementById('orgDivisions');
-    container.innerHTML = DIVISIONS.map(d => `
-      <div class="org-division" style="border-color:${d.color}30;">
-        <div class="org-division-title" style="color:${d.color};">${d.name}</div>
-        ${d.agents.map(a => `
-          <div class="org-sub-agent">
-            <span class="${a.persist ? 'dot-persist' : 'dot-temp'}"></span>
-            ${a.name} ${a.persist ? '' : '<span style="opacity:0.5;">(temp)</span>'}
+      <div class="silo-divider"></div>
+      <div class="silo-roadmap">
+        <div class="silo-roadmap-title">90-Day Roadmap</div>
+        ${s.milestones.map((m,mi)=>`
+          <div class="silo-milestone">
+            <span class="silo-milestone-num">${mi+1}</span>
+            <span>${m}</span>
           </div>
         `).join('')}
       </div>
-    `).join('');
-  }
-
-  function renderSprintTimeline(){
-    const tl = document.getElementById('sprintTimeline');
-    tl.innerHTML = SPRINT_ENTRIES.map((e,i) => `
-      <div class="timeline-entry fade-in" style="animation-delay:${i*0.06}s;">
-        <div class="timeline-dot ${e.done ? 'done' : ''}"></div>
-        <div class="timeline-time">${e.time}</div>
-        <div class="timeline-title" style="${e.done ? '' : 'color:var(--blue);'}">${e.title}</div>
-        <div class="timeline-desc">${e.desc}</div>
+      <div class="silo-gauge-wrap">
+        <div class="silo-gauge-label">
+          <span>Run Rate</span>
+          <span style="color:var(--blue);">${gaugePercent}% of budget used</span>
+        </div>
+        <div class="silo-gauge">
+          <div class="silo-gauge-fill" style="width:${gaugePercent}%;background:linear-gradient(90deg,${s.color}88,${s.color});"></div>
+        </div>
       </div>
-    `).join('');
-  }
+      <div class="silo-team">Team: <span>${s.team}</span></div>
+      ${linksHtml}
+      <textarea class="silo-notes" placeholder="Owner notes..." rows="2"></textarea>
+    </div>`;
+  }).join('');
+}
 
-  function renderVendors(){
-    const tbody = document.getElementById('vendorTableBody');
-    let total = 0;
-    tbody.innerHTML = VENDORS.map(v => {
-      const cost = parseFloat(v.cost.replace('$','')) || 0;
-      total += cost;
-      return `
-        <tr>
-          <td style="font-weight:500;color:var(--gold);">${v.name}</td>
-          <td>${v.service}</td>
-          <td style="color:${cost > 0 ? 'var(--text)' : 'var(--neon)'};">${v.cost}</td>
-          <td><span class="vendor-status-dot ${v.status}"></span>${v.status === 'online' ? 'Active' : 'Setup'}</td>
-          <td style="color:var(--muted);">${v.plan}</td>
-        </tr>
-      `;
-    }).join('');
-    document.getElementById('vendorTotal').textContent = '$' + total + '/mo';
-  }
+// ============ RENDER: AGENTS ============
 
-  function renderTasks(){
-    const container = document.getElementById('taskList');
-    const statusIcons = {done:'[x]','in-progress':'[~]',blocked:'[!]',pending:'[ ]'};
-    const statusColors = {done:'var(--neon)','in-progress':'var(--blue)',blocked:'var(--red)',pending:'var(--muted)'};
-    container.innerHTML = Object.entries(TASKS).map(([project, tasks]) => `
-      <div class="task-group">
-        <div class="task-group-title" style="color:var(--gold);">${project}</div>
-        ${tasks.map(t => `
-          <div class="task-item ${t.ownerAction ? 'needs-action' : ''}">
-            <span class="task-status-icon" style="color:${statusColors[t.status]};">${statusIcons[t.status]}</span>
-            <span class="task-desc">${t.desc}</span>
-            <span class="pill pill-${t.status === 'done' ? 'done' : t.status === 'in-progress' ? 'in-progress' : t.status === 'blocked' ? 'blocked' : 'standby'}">${t.status}</span>
-            ${t.ownerAction ? '<span class="task-badge owner-action">NEEDS OWNER</span>' : ''}
-          </div>
-        `).join('')}
+function renderAgentGrid(){
+  const grid = document.getElementById('agentGrid');
+  grid.innerHTML = AGENTS.map((a,i) => `
+    <div class="agent-card fade-in" style="animation-delay:${i*0.05}s;border-left:3px solid ${a.color};">
+      <div class="agent-header">
+        <div>
+          <div class="agent-name-small" style="color:${a.color};">${a.name}</div>
+          <div class="agent-role-small">${a.role}</div>
+        </div>
+        <span class="pill pill-${a.status}">${a.status}</span>
       </div>
-    `).join('');
-  }
+      <div class="agent-desc-small">${a.desc}</div>
+      <div>${a.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
 
-  function renderLocker(){
-    const btn = document.getElementById('lockerUnlockBtn');
-    const input = document.getElementById('lockerPassword');
-    const error = document.getElementById('lockerError');
-    const form = document.getElementById('lockerForm');
-    const vault = document.getElementById('lockerVault');
+// ============ RENDER: ORG CHART AGENTS ============
 
-    function tryUnlock(){
-      if(input.value === LOCKER_PASS){
-        form.style.display = 'none';
-        vault.classList.add('unlocked');
-        renderCredentials();
-      } else {
-        error.style.display = 'block';
-        input.value = '';
-        input.focus();
-        setTimeout(() => { error.style.display = 'none'; }, 3000);
-      }
+function renderOrgAgents(){
+  const grid = document.getElementById('orgAgentsGrid');
+  grid.innerHTML = AGENTS.map(a => `
+    <div class="org-agent-node" style="border-color:${a.color}30;border-top:2px solid ${a.color};">
+      <div class="org-agent-name" style="color:${a.color};">${a.name}</div>
+      <div class="org-agent-role">${a.role}</div>
+    </div>
+  `).join('');
+}
+
+// ============ RENDER: VENDORS ============
+
+function renderVendors(){
+  const tbody = document.getElementById('vendorTableBody');
+  let total = 0;
+  tbody.innerHTML = VENDORS.map(v => {
+    const cost = parseFloat(v.cost.replace('$','').replace('+','')) || 0;
+    total += cost;
+    return `<tr>
+      <td style="font-weight:500;color:var(--gold);">${v.name}</td>
+      <td>${v.service}</td>
+      <td style="color:${cost>0?'var(--text)':'var(--neon)'};">${v.cost}</td>
+      <td style="color:var(--muted);">${v.company}</td>
+      <td><span class="vendor-status-dot ${v.status}"></span>${v.status==='online'?'Active':'Setup'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('vendorTotal').textContent = '$' + total + '+/mo';
+}
+
+// ============ RENDER: TASKS ============
+
+function renderTasks(){
+  const container = document.getElementById('taskList');
+  const statusIcons = {done:'[x]','in-progress':'[~]',blocked:'[!]',pending:'[ ]'};
+  const statusColors = {done:'var(--neon)','in-progress':'var(--blue)',blocked:'var(--red)',pending:'var(--muted)'};
+  container.innerHTML = Object.entries(TASKS).map(([group,tasks]) => `
+    <div class="task-group">
+      <div class="task-group-title" style="color:var(--gold);">${group}</div>
+      ${tasks.map(t=>`
+        <div class="task-item ${t.ownerAction?'needs-action':''}">
+          <span class="task-status-icon" style="color:${statusColors[t.status]};">${statusIcons[t.status]}</span>
+          <span class="task-desc">${t.desc}</span>
+          <span style="font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-right:4px;">${t.owner}</span>
+          <span class="pill pill-${t.status==='done'?'done':t.status==='in-progress'?'in-progress':t.status==='blocked'?'blocked':'standby'}">${t.status}</span>
+          ${t.ownerAction?'<span class="task-badge owner-action">NEEDS OWNER</span>':''}
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+// ============ RENDER: SPRINT ============
+
+function renderSprintTimeline(){
+  const tl = document.getElementById('sprintTimeline');
+  tl.innerHTML = SPRINT_ENTRIES.map((e,i) => `
+    <div class="timeline-entry fade-in" style="animation-delay:${i*0.06}s;">
+      <div class="timeline-dot ${e.done?'done':''}"></div>
+      <div class="timeline-time">${e.time}</div>
+      <div class="timeline-title" style="${e.done?'':'color:var(--blue);'}">${e.title}</div>
+      <div class="timeline-desc">${e.desc}</div>
+    </div>
+  `).join('');
+}
+
+// ============ RENDER: LOCKER ============
+
+function renderLocker(){
+  const btn = document.getElementById('lockerUnlockBtn');
+  const input = document.getElementById('lockerPassword');
+  const error = document.getElementById('lockerError');
+  const form = document.getElementById('lockerForm');
+  const vault = document.getElementById('lockerVault');
+  function tryUnlock(){
+    if(input.value===LOCKER_PASS){
+      form.style.display='none';
+      vault.classList.add('unlocked');
+      const tbody = document.getElementById('credTableBody');
+      tbody.innerHTML = CREDENTIALS.map(c=>`<tr><td style="color:var(--neon);">${c.key}</td><td>${c.service}</td><td style="color:var(--muted);">${c.type}</td></tr>`).join('');
+    } else {
+      error.style.display='block';
+      input.value='';
+      input.focus();
+      setTimeout(()=>{error.style.display='none';},3000);
     }
-
-    btn.addEventListener('click', tryUnlock);
-    input.addEventListener('keydown', function(e){
-      if(e.key === 'Enter') tryUnlock();
-    });
   }
+  btn.addEventListener('click',tryUnlock);
+  input.addEventListener('keydown',function(e){if(e.key==='Enter')tryUnlock();});
+}
 
-  function renderCredentials(){
-    const tbody = document.getElementById('credTableBody');
-    tbody.innerHTML = CREDENTIALS.map(c => `
-      <tr>
-        <td style="color:var(--neon);">${c.key}</td>
-        <td>${c.service}</td>
-        <td style="color:var(--muted);">${c.type}</td>
-      </tr>
-    `).join('');
-  }
+// ============ TERMINAL ============
 
-  function renderBrainstorm(){
-    const grid = document.getElementById('brainstormGrid');
-    grid.innerHTML = BRAINSTORM.map((b,i) => `
-      <div class="brainstorm-card fade-in" style="animation-delay:${i*0.06}s;border-top:2px solid ${b.color};">
-        <div class="brainstorm-name" style="color:${b.color};">${b.name}</div>
-        <div class="brainstorm-desc">${b.desc}</div>
-        <div class="brainstorm-meta">
-          <span class="brainstorm-cost">Startup: ${b.cost}</span>
-          <span class="brainstorm-revenue">Rev: ${b.revenue}</span>
-        </div>
-        <div style="margin-top:10px;">
-          <span class="pill pill-${b.status}">${b.status}</span>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // ============ TERMINAL ============
-
-  function initTerminal(){
-    const output = document.getElementById('termOutput');
-    const input = document.getElementById('termInput');
-
-    // Boot sequence
-    TERMINAL_BOOT.forEach(line => {
-      appendLine(line.text, line.cls);
-    });
-
-    input.addEventListener('keydown', function(e){
-      if(e.key === 'Enter'){
-        const cmd = input.value.trim().toLowerCase();
-        if(!cmd) return;
-        const agent = document.getElementById('agentSelect').value;
-        appendLine(`agent9@9e $ ${input.value}`, 'line-muted');
-        input.value = '';
-        processCommand(cmd, agent);
-      }
-    });
-
-    // Quick command buttons
-    document.querySelectorAll('.cmd-btn').forEach(btn => {
-      btn.addEventListener('click', function(){
-        const cmd = this.dataset.cmd;
-        input.value = cmd;
-        input.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter'}));
-      });
-    });
-  }
-
-  function appendLine(text, cls){
-    const output = document.getElementById('termOutput');
-    const div = document.createElement('div');
-    div.textContent = text;
-    if(cls) div.className = cls;
+function initTerminal(){
+  const output = document.getElementById('termOutput');
+  const input = document.getElementById('termInput');
+  TERMINAL_BOOT.forEach(line=>{
+    const div=document.createElement('div');
+    div.textContent=line.text;
+    if(line.cls)div.className=line.cls;
     output.appendChild(div);
-    output.scrollTop = output.scrollHeight;
-  }
-
-  function processCommand(cmd, agent){
-    if(cmd === 'clear'){
-      document.getElementById('termOutput').innerHTML = '';
-      appendLine('Terminal cleared.', 'line-muted');
-      return;
+  });
+  output.scrollTop=output.scrollHeight;
+  input.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){
+      const cmd=input.value.trim().toLowerCase();
+      if(!cmd)return;
+      const agent=document.getElementById('agentSelect').value;
+      appendLine(`agent9@9e $ ${input.value}`,'line-muted');
+      input.value='';
+      if(cmd==='clear'){document.getElementById('termOutput').innerHTML='';appendLine('Terminal cleared.','line-muted');return;}
+      const response=TERMINAL_COMMANDS[cmd];
+      if(response){
+        setTimeout(()=>{
+          if(agent!=='9')appendLine(`[Routing to ${agent}...]`,'line-info');
+          response.forEach((line,i)=>{setTimeout(()=>appendLine(line,''),i*30);});
+        },200);
+      } else {
+        setTimeout(()=>{
+          appendLine(`[${agent}] Command not recognized: "${cmd}"`,'line-error');
+          appendLine('Type "help" for available commands.','line-muted');
+        },200);
+      }
     }
+  });
+  document.querySelectorAll('.cmd-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      input.value=this.dataset.cmd;
+      input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter'}));
+    });
+  });
+}
 
-    const response = TERMINAL_COMMANDS[cmd];
-    if(response){
-      setTimeout(() => {
-        if(agent !== '9'){
-          appendLine(`[Routing to ${agent}...]`, 'line-info');
-        }
-        response.forEach((line, i) => {
-          setTimeout(() => appendLine(line, ''), i * 30);
-        });
-      }, 200);
+function appendLine(text,cls){
+  const output=document.getElementById('termOutput');
+  const div=document.createElement('div');
+  div.textContent=text;
+  if(cls)div.className=cls;
+  output.appendChild(div);
+  output.scrollTop=output.scrollHeight;
+}
+
+// ============ CLOCK & DATE ============
+
+function updateClock(){
+  const el=document.getElementById('liveClock');
+  const now=new Date();
+  el.textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+}
+
+function setTopbarDate(){
+  const el=document.getElementById('topbar-date');
+  const now=new Date();
+  const opts={weekday:'short',year:'numeric',month:'short',day:'numeric'};
+  el.textContent='v4 — ' + now.toLocaleDateString('en-US',opts);
+}
+
+// ============ TAB SWITCHING ============
+
+function initTabs(){
+  const tabs=document.querySelectorAll('.nav-tab');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',function(){
+      tabs.forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('tab-'+this.dataset.tab).classList.add('active');
+    });
+  });
+}
+
+// ============ COLLAPSIBLES ============
+
+(function(){
+  var w=document.getElementById('intentionWrap');
+  var t=w?w.querySelector('.intention-toggle span:first-child'):null;
+  if(localStorage.getItem('intention-collapsed')==='1'&&w){w.classList.add('collapsed');if(t)t.textContent='EXPAND';}
+  window.toggleIntention=function(){
+    if(!w)return;
+    var c=w.classList.toggle('collapsed');
+    if(t)t.textContent=c?'EXPAND':'COLLAPSE';
+    localStorage.setItem('intention-collapsed',c?'1':'0');
+  };
+})();
+
+(function(){
+  var w=document.getElementById('hopperWrap');
+  var t=w?w.querySelector('.hopper-toggle span:first-child'):null;
+  if(localStorage.getItem('hopper-collapsed')==='1'&&w){w.classList.add('collapsed');if(t)t.textContent='EXPAND';}
+  window.toggleHopper=function(){
+    if(!w)return;
+    var c=w.classList.toggle('collapsed');
+    if(t)t.textContent=c?'EXPAND':'COLLAPSE';
+    localStorage.setItem('hopper-collapsed',c?'1':'0');
+  };
+})();
+
+// ============ LIVE DATA FEED ============
+
+const DASHBOARD_API='https://9-cloud-standin.789k6rym8v.workers.dev/api/dashboard';
+
+function setStatusDot(dotEl,status){
+  if(!dotEl)return;
+  if(status==='online'||status==='connected'){dotEl.style.background='var(--neon)';dotEl.style.animation='pulse-green 2s infinite';}
+  else if(status==='unknown'){dotEl.style.background='var(--gold)';dotEl.style.animation='none';}
+  else{dotEl.style.background='var(--red)';dotEl.style.animation='pulse-red 2s infinite';}
+}
+
+function setStatusText(el,status){
+  if(!el)return;
+  const label=status==='online'||status==='connected'?'Online':status==='unknown'?'Unknown':'Offline';
+  const color=status==='online'||status==='connected'?'var(--neon)':status==='unknown'?'var(--gold)':'var(--red)';
+  el.textContent=label;el.style.color=color;
+}
+
+function formatTimeAgo(isoStr){
+  if(!isoStr)return 'never';
+  const diff=Math.round((Date.now()-new Date(isoStr).getTime())/1000);
+  if(diff<60)return diff+'s ago';
+  if(diff<3600)return Math.floor(diff/60)+'m ago';
+  if(diff<86400)return Math.floor(diff/3600)+'h ago';
+  return Math.floor(diff/86400)+'d ago';
+}
+
+async function refreshDashboard(){
+  try{
+    const res=await fetch(DASHBOARD_API,{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    const dot=document.getElementById('systemStatusDot');
+    const txt=document.getElementById('systemStatusText');
+    if(data.mac.alive){
+      dot.style.background='var(--neon)';dot.style.animation='pulse-green 2s ease-in-out infinite';
+      txt.textContent='SYSTEM LIVE';txt.style.color='var(--neon)';
     } else {
-      setTimeout(() => {
-        appendLine(`[${agent}] Command not recognized: "${cmd}"`, 'line-error');
-        appendLine('Type "help" for available commands.', 'line-muted');
-      }, 200);
+      dot.style.background='var(--gold)';dot.style.animation='pulse-red 2s ease-in-out infinite';
+      txt.textContent='CLOUD BACKUP';txt.style.color='var(--gold)';
     }
-  }
-
-  // ============ CLOCK ============
-
-  function updateClock(){
-    const el = document.getElementById('liveClock');
-    const now = new Date();
-    el.textContent = now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-  }
-
-  // ============ TAB SWITCHING ============
-
-  function initTabs(){
-    const tabs = document.querySelectorAll('.nav-tab');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function(){
-        tabs.forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
-      });
+    const setTk=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+    setTk('tk-mac-status',data.mac.alive?'ONLINE':'OFFLINE');
+    setTk('tk-mac-status2',data.mac.alive?'ONLINE':'OFFLINE');
+    const syncLabel=data.mac.lastSyncAgeSec!==null?(data.mac.lastSyncAgeSec<120?'LIVE':data.mac.lastSyncAgeSec+'s ago'):'N/A';
+    setTk('tk-cloud-sync',syncLabel);setTk('tk-cloud-sync2',syncLabel);
+    setTk('tk-mode',data.mode.toUpperCase());setTk('tk-mode2',data.mode.toUpperCase());
+    if(data.uptime){setTk('tk-uptime',data.uptime);setTk('tk-uptime2',data.uptime);}
+    const svc=data.services;
+    setStatusDot(document.getElementById('dot-telegram'),svc.telegram.status);
+    setStatusText(document.getElementById('status-telegram'),svc.telegram.status);
+    setStatusDot(document.getElementById('dot-imessage'),svc.imessage.status);
+    setStatusText(document.getElementById('status-imessage'),svc.imessage.status);
+    setStatusDot(document.getElementById('dot-voice'),svc.voice.status);
+    setStatusText(document.getElementById('status-voice'),svc.voice.status);
+    setStatusDot(document.getElementById('dot-email'),svc.email.status);
+    setStatusText(document.getElementById('status-email'),svc.email.status);
+    setStatusDot(document.getElementById('dot-hub'),svc.commsHub.status);
+    setStatusText(document.getElementById('status-hub'),svc.commsHub.status);
+    setStatusDot(document.getElementById('dot-cloud'),svc.cloudWorker.status);
+    setStatusText(document.getElementById('status-cloud'),svc.cloudWorker.status);
+    const syncInd=document.getElementById('comms-sync-indicator');
+    if(syncInd)syncInd.textContent='synced '+formatTimeAgo(data.mac.lastHeartbeat);
+    const msgList=document.getElementById('recentMessagesList');
+    if(msgList&&data.recentMessages&&data.recentMessages.length>0){
+      const channelColors={telegram:'var(--blue)',imessage:'var(--neon)',email:'var(--gold)',voice:'var(--orange)',sms:'var(--purple)'};
+      msgList.innerHTML=data.recentMessages.slice(-8).reverse().map(m=>{
+        const arrow=m.direction==='in'?'&larr;':'&rarr;';
+        const color=channelColors[m.channel]||'var(--muted)';
+        const time=m.timestamp?formatTimeAgo(m.timestamp):'';
+        return `<li style="font-size:11px;"><span style="color:${color};font-family:var(--font-mono);font-size:10px;min-width:60px;">${m.channel}</span><span style="color:var(--muted);">${arrow}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.text||'(empty)'}</span>${time?`<span style="color:var(--dim);font-size:9px;white-space:nowrap;">${time}</span>`:''}</li>`;
+      }).join('');
+    } else if(msgList){
+      msgList.innerHTML='<li style="color:var(--muted);font-style:italic;">No recent messages</li>';
+    }
+  }catch(e){
+    const dot=document.getElementById('systemStatusDot');
+    const txt=document.getElementById('systemStatusText');
+    if(dot){dot.style.background='var(--gold)';dot.style.animation='none';}
+    if(txt){txt.textContent='STATIC';txt.style.color='var(--gold)';}
+    const setTk=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+    setTk('tk-mac-status','STATIC');setTk('tk-mac-status2','STATIC');
+    setTk('tk-cloud-sync','N/A');setTk('tk-cloud-sync2','N/A');
+    setTk('tk-mode','LOCAL');setTk('tk-mode2','LOCAL');
+    ['telegram','imessage','voice','email','hub','cloud'].forEach(svc=>{
+      const d=document.getElementById('dot-'+svc);
+      const s=document.getElementById('status-'+svc);
+      if(d){d.style.background='var(--gold)';d.style.animation='none';}
+      if(s){s.textContent='Unknown';s.style.color='var(--gold)';}
     });
   }
+}
 
-  // ============ LIVE DATA FEED ============
+// ============ INIT ============
 
-  const DASHBOARD_API = 'https://9-cloud-standin.789k6rym8v.workers.dev/api/dashboard';
-  let lastDashboardData = null;
+function init(){
+  setTopbarDate();
+  updateClock();
+  setInterval(updateClock,1000);
+  initTabs();
+  renderHopper();
+  renderSilos();
+  renderAgentGrid();
+  renderOrgAgents();
+  renderVendors();
+  renderTasks();
+  renderLocker();
+  renderSprintTimeline();
+  initTerminal();
+  refreshDashboard();
+  setInterval(refreshDashboard,30000);
+}
 
-  function setStatusDot(dotEl, status) {
-    if (!dotEl) return;
-    if (status === 'online' || status === 'connected') {
-      dotEl.style.background = 'var(--neon)';
-      dotEl.style.animation = 'pulse-green 2s infinite';
-    } else if (status === 'unknown') {
-      dotEl.style.background = 'var(--gold)';
-      dotEl.style.animation = 'none';
-    } else {
-      dotEl.style.background = 'var(--red)';
-      dotEl.style.animation = 'pulse-red 2s infinite';
-    }
-  }
-
-  function setStatusText(el, status) {
-    if (!el) return;
-    const label = status === 'online' || status === 'connected' ? 'Online' : status === 'unknown' ? 'Unknown' : 'Offline';
-    const color = status === 'online' || status === 'connected' ? 'var(--neon)' : status === 'unknown' ? 'var(--gold)' : 'var(--red)';
-    el.textContent = label;
-    el.style.color = color;
-  }
-
-  function formatTimeAgo(isoStr) {
-    if (!isoStr) return 'never';
-    const diff = Math.round((Date.now() - new Date(isoStr).getTime()) / 1000);
-    if (diff < 60) return diff + 's ago';
-    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
-    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
-    return Math.floor(diff / 86400) + 'd ago';
-  }
-
-  async function refreshDashboard() {
-    try {
-      const res = await fetch(DASHBOARD_API, { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      lastDashboardData = data;
-
-      // --- Top bar system status ---
-      const dot = document.getElementById('systemStatusDot');
-      const txt = document.getElementById('systemStatusText');
-      if (data.mac.alive) {
-        dot.style.background = 'var(--neon)';
-        dot.style.animation = 'pulse-green 2s ease-in-out infinite';
-        txt.textContent = 'SYSTEM LIVE';
-        txt.style.color = 'var(--neon)';
-      } else {
-        dot.style.background = 'var(--gold)';
-        dot.style.animation = 'pulse-red 2s ease-in-out infinite';
-        txt.textContent = 'CLOUD BACKUP';
-        txt.style.color = 'var(--gold)';
-      }
-
-      // --- Ticker items ---
-      const setTk = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-      };
-      setTk('tk-mac-status', data.mac.alive ? 'ONLINE' : 'OFFLINE');
-      setTk('tk-mac-status2', data.mac.alive ? 'ONLINE' : 'OFFLINE');
-      const syncLabel = data.mac.lastSyncAgeSec !== null
-        ? (data.mac.lastSyncAgeSec < 120 ? 'LIVE' : data.mac.lastSyncAgeSec + 's ago')
-        : 'N/A';
-      setTk('tk-cloud-sync', syncLabel);
-      setTk('tk-cloud-sync2', syncLabel);
-      setTk('tk-mode', data.mode.toUpperCase());
-      setTk('tk-mode2', data.mode.toUpperCase());
-      // Uptime from state
-      if (data.uptime) {
-        setTk('tk-uptime', data.uptime);
-        setTk('tk-uptime2', data.uptime);
-      }
-      // MRR & API spend — show note if no live data
-      if (data.mrr && !data.mrr.note) {
-        setTk('tk-mrr', data.mrr);
-        setTk('tk-mrr2', data.mrr);
-      }
-      if (data.apiSpend && !data.apiSpend.note) {
-        setTk('tk-api-spend', data.apiSpend);
-        setTk('tk-api-spend2', data.apiSpend);
-      }
-
-      // --- Comms Health sidebar ---
-      const svc = data.services;
-      setStatusDot(document.getElementById('dot-telegram'), svc.telegram.status);
-      setStatusText(document.getElementById('status-telegram'), svc.telegram.status);
-      setStatusDot(document.getElementById('dot-imessage'), svc.imessage.status);
-      setStatusText(document.getElementById('status-imessage'), svc.imessage.status);
-      setStatusDot(document.getElementById('dot-voice'), svc.voice.status);
-      setStatusText(document.getElementById('status-voice'), svc.voice.status);
-      setStatusDot(document.getElementById('dot-email'), svc.email.status);
-      setStatusText(document.getElementById('status-email'), svc.email.status);
-      setStatusDot(document.getElementById('dot-hub'), svc.commsHub.status);
-      setStatusText(document.getElementById('status-hub'), svc.commsHub.status);
-      setStatusDot(document.getElementById('dot-cloud'), svc.cloudWorker.status);
-      setStatusText(document.getElementById('status-cloud'), svc.cloudWorker.status);
-
-      // Sync timestamp
-      const syncInd = document.getElementById('comms-sync-indicator');
-      if (syncInd) {
-        syncInd.textContent = 'synced ' + formatTimeAgo(data.mac.lastHeartbeat);
-      }
-
-      // --- Recent Messages ---
-      const msgList = document.getElementById('recentMessagesList');
-      if (msgList && data.recentMessages && data.recentMessages.length > 0) {
-        const channelColors = {telegram:'var(--blue)',imessage:'var(--neon)',email:'var(--gold)',voice:'var(--orange)',sms:'var(--purple)'};
-        msgList.innerHTML = data.recentMessages.slice(-8).reverse().map(m => {
-          const arrow = m.direction === 'in' ? '&larr;' : '&rarr;';
-          const color = channelColors[m.channel] || 'var(--muted)';
-          const time = m.timestamp ? formatTimeAgo(m.timestamp) : '';
-          return `<li style="font-size:11px;">
-            <span style="color:${color};font-family:var(--font-mono);font-size:10px;min-width:60px;">${m.channel}</span>
-            <span style="color:var(--muted);">${arrow}</span>
-            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.text || '(empty)'}</span>
-            ${time ? `<span style="color:var(--dim);font-size:9px;white-space:nowrap;">${time}</span>` : ''}
-          </li>`;
-        }).join('');
-      } else if (msgList) {
-        msgList.innerHTML = '<li style="color:var(--muted);font-style:italic;">No recent messages</li>';
-      }
-
-    } catch (e) {
-      // Live API unavailable — dashboard still works fully in static mode
-      const dot = document.getElementById('systemStatusDot');
-      const txt = document.getElementById('systemStatusText');
-      if (dot) { dot.style.background = 'var(--gold)'; dot.style.animation = 'none'; }
-      if (txt) { txt.textContent = 'STATIC'; txt.style.color = 'var(--gold)'; }
-      // Populate ticker with static fallback values
-      const setTk = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-      setTk('tk-mac-status', 'STATIC'); setTk('tk-mac-status2', 'STATIC');
-      setTk('tk-cloud-sync', 'N/A'); setTk('tk-cloud-sync2', 'N/A');
-      setTk('tk-mode', 'LOCAL'); setTk('tk-mode2', 'LOCAL');
-      setTk('tk-uptime', '--'); setTk('tk-uptime2', '--');
-      // Set comms health indicators to unknown (gold) when API is unavailable
-      ['telegram','imessage','voice','email','hub','cloud'].forEach(svc => {
-        const d = document.getElementById('dot-' + svc);
-        const s = document.getElementById('status-' + svc);
-        if (d) { d.style.background = 'var(--gold)'; d.style.animation = 'none'; }
-        if (s) { s.textContent = 'Unknown'; s.style.color = 'var(--gold)'; }
-      });
-      console.info('Dashboard running in static mode (live API not reachable)');
-    }
-  }
-
-  // ============ INIT ============
-
-  function init(){
-    updateClock();
-    setInterval(updateClock, 1000);
-    initTabs();
-    renderAgentGrid();
-    renderProjectBoard();
-    renderPortfolio();
-    renderOrgDivisions();
-    renderSprintTimeline();
-    renderVendors();
-    renderTasks();
-    renderLocker();
-    renderBrainstorm();
-    initTerminal();
-
-    // Live data: fetch on load, then every 30 seconds
-    refreshDashboard();
-    setInterval(refreshDashboard, 30000);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+} else {
+  init();
+}
 
 })();
 </script>
 
 <script>
-// PWA: attempt service worker registration from same-origin SW file if available.
-// On iOS "Add to Home Screen", the apple-mobile-web-app-* meta tags above handle
-// standalone mode. The SW registration here is a progressive enhancement — if the
-// SW file doesn't exist (GitHub Pages), it fails silently and the app still works.
-if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  navigator.serviceWorker.register('./sw.js').catch(function() {
-    // SW file not present — normal on GitHub Pages static deploy. App works without it.
-  });
+if('serviceWorker' in navigator && location.protocol==='https:'){
+  navigator.serviceWorker.register('./sw.js').catch(function(){});
 }
 </script>
 </body>
