@@ -1,32 +1,33 @@
 // NBA Free Agents — 2026 offseason
 // Mix of unrestricted (UFA) and restricted (RFA) free agents
 // askingAAV = player's likely asking price ($M/yr)
+// NOTE: Players who have signed contracts are removed from this pool.
+// Chet Holmgren — signed max extension with OKC
+// Josh Giddey — signed 4yr $100M with CHI
+// Pascal Siakam — signed 4yr $189M max with IND
+// Myles Turner — signed 4yr $109M with MIL
+// Kyle Lowry — re-signed with PHI
+// C.J. McCollum — traded to WAS (under contract)
+// Khris Middleton — traded to WAS (under contract)
+// Josh Green — signed with CHA (under contract)
 
 export const nbaFreeAgents = [
   // Premier UFAs
-  { id: 'fa-nba-5', name: 'Khris Middleton', position: 'SF', age: 35, rating: 77, askingAAV: 18.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Scorer', 'Clutch', 'Veteran'] },
   { id: 'fa-nba-7', name: 'Tobias Harris', position: 'PF', age: 32, rating: 78, askingAAV: 20.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Scorer', 'Versatile', 'Steady'] },
-  { id: 'fa-nba-8', name: 'C.J. McCollum', position: 'SG', age: 35, rating: 78, askingAAV: 18.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Scorer', 'Playmaker', 'Veteran'] },
   { id: 'fa-nba-9', name: 'Clint Capela', position: 'C', age: 32, rating: 77, askingAAV: 12.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Rebounder', 'Rim Protector', 'Lob Threat'] },
 
   // Quality Mid-Tier UFAs
   { id: 'fa-nba-11', name: 'Brook Lopez', position: 'C', age: 38, rating: 77, askingAAV: 14.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Rim Protector', 'Shooter', 'Veteran'] },
-  { id: 'fa-nba-12', name: 'Myles Turner', position: 'C', age: 30, rating: 82, askingAAV: 22.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Rim Protector', 'Shooter', 'Two-Way'] },
-  { id: 'fa-nba-13', name: 'Pascal Siakam', position: 'PF', age: 31, rating: 86, askingAAV: 36.0, contractType: 'max', birdRights: false, freeAgentType: 'UFA', traits: ['Versatile', 'Scorer', 'Two-Way'] },
   { id: 'fa-nba-15', name: 'D\'Angelo Russell', position: 'PG', age: 30, rating: 79, askingAAV: 18.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Scorer', 'Playmaker', 'Shooter'] },
-  { id: 'fa-nba-16', name: 'Kyle Lowry', position: 'PG', age: 40, rating: 67, askingAAV: 5.0, contractType: 'vet-min', birdRights: false, freeAgentType: 'UFA', traits: ['Veteran', 'IQ', 'Leader'] },
   { id: 'fa-nba-17', name: 'Malcolm Brogdon', position: 'PG', age: 34, rating: 76, askingAAV: 15.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['IQ', 'Veteran', 'Playmaker'] },
   { id: 'fa-nba-18', name: 'Fred VanVleet', position: 'PG', age: 32, rating: 78, askingAAV: 22.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Playmaker', 'Defender', 'Leader'] },
   { id: 'fa-nba-19', name: 'Jordan Clarkson', position: 'SG', age: 33, rating: 77, askingAAV: 16.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Scorer', 'Sixth Man', 'Clutch'] },
   { id: 'fa-nba-20', name: 'Jakob Poeltl', position: 'C', age: 31, rating: 79, askingAAV: 18.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Two-Way', 'Screen Setter', 'Rim Protector'] },
   { id: 'fa-nba-21', name: 'Nikola Vucevic', position: 'C', age: 35, rating: 76, askingAAV: 14.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Post Scorer', 'Rebounder', 'Veteran'] },
   { id: 'fa-nba-22', name: 'De\'Andre Hunter', position: 'SF', age: 28, rating: 80, askingAAV: 22.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Two-Way', 'Versatile', 'Defender'] },
-  { id: 'fa-nba-23', name: 'Josh Green', position: 'SG', age: 25, rating: 74, askingAAV: 14.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Two-Way', 'Athletic', 'Developing'] },
   { id: 'fa-nba-24', name: 'Harrison Barnes', position: 'SF', age: 34, rating: 74, askingAAV: 13.0, contractType: 'mid', birdRights: false, freeAgentType: 'UFA', traits: ['Veteran', 'Scorer', 'Clutch'] },
 
   // Restricted Free Agents (younger players)
-  { id: 'fa-nba-25', name: 'Chet Holmgren', position: 'C', age: 23, rating: 88, askingAAV: 33.0, contractType: 'max', birdRights: false, freeAgentType: 'RFA', traits: ['Two-Way Big', 'Rim Protector', 'Shooter'] },
-  { id: 'fa-nba-26', name: 'Josh Giddey', position: 'PG', age: 23, rating: 78, askingAAV: 22.0, contractType: 'mid', birdRights: false, freeAgentType: 'RFA', traits: ['Playmaker', 'Versatile', 'Developing'] },
   { id: 'fa-nba-27', name: 'GG Jackson', position: 'PF', age: 21, rating: 74, askingAAV: 12.0, contractType: 'mid', birdRights: false, freeAgentType: 'RFA', traits: ['Star Potential', 'Athletic', 'Developing'] },
   { id: 'fa-nba-28', name: 'Jabari Smith Jr.', position: 'PF', age: 23, rating: 79, askingAAV: 20.0, contractType: 'mid', birdRights: false, freeAgentType: 'RFA', traits: ['Versatile', 'Developing', 'Two-Way'] },
 

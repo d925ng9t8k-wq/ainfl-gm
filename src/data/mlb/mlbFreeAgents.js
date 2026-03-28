@@ -1,10 +1,21 @@
 // MLB Free Agents — 2025-26 offseason pool
 // salary = expected AAV on next deal (market estimate)
 // serviceTime: 6+ = FA eligible
+// NOTE: Players confirmed signed are removed from this pool:
+// Randy Arozarena — on SEA (traded from TB July 2024)
+// Teoscar Hernandez — re-signed with LAD (3yr $66M, Jan 2025)
+// Paul Goldschmidt — signed with NYY (1yr $12.5M)
+// William Contreras — re-signed with MIL ($9.4M arb deal)
+// Josh Hader — signed with HOU (on roster, $95M deal)
+// Carlos Estevez — on LAA roster (under contract)
+// Ryan Pressly — on HOU roster (walk year)
+// Jose Leclerc — on TEX roster (walk year)
+// Jordan Romano — on TOR roster (walk year)
+// Jeff Hoffman — on PHI roster (under contract)
 
 export const mlbFreeAgents = [
   // ─── ELITE STARTERS ─────────────────────────────────────────────────────────
-  { id:'FA-SP-1', name:'Jack Flaherty',        position:'SP', age:29, salary:15.0, contractYears:2, serviceTime:7,  rating:80, notes:'Tigers walk year' },
+  { id:'FA-SP-1', name:'Jack Flaherty',        position:'SP', age:29, salary:15.0, contractYears:2, serviceTime:7,  rating:80, notes:'DET walk year' },
   { id:'FA-SP-2', name:'Kevin Gausman',        position:'SP', age:34, salary:20.0, contractYears:2, serviceTime:11, rating:85, notes:'TOR walk year' },
   { id:'FA-SP-3', name:'Chris Bassitt',        position:'SP', age:36, salary:15.0, contractYears:1, serviceTime:10, rating:78, notes:'TOR walk year — innings-eater' },
   { id:'FA-SP-4', name:'Sonny Gray',           position:'SP', age:35, salary:12.0, contractYears:1, serviceTime:12, rating:80, notes:'STL walk year' },
@@ -22,25 +33,17 @@ export const mlbFreeAgents = [
   { id:'FA-SP-14',name:'Frankie Montas',       position:'SP', age:32, salary:10.0, contractYears:1, serviceTime:7,  rating:73, notes:'CIN bounce-back candidate' },
 
   // ─── CLOSERS / ELITE RELIEVERS ───────────────────────────────────────────────
-  { id:'FA-RP-1', name:'Josh Hader',           position:'RP', age:31, salary:22.0, contractYears:3, serviceTime:8,  rating:88, notes:'Elite closer, HOU' },
-  { id:'FA-RP-2', name:'Kenley Jansen',        position:'RP', age:37, salary:7.0,  contractYears:1, serviceTime:14, rating:75, notes:'BOS — proven closer' },
-  { id:'FA-RP-3', name:'Carlos Estevez',       position:'RP', age:31, salary:9.0,  contractYears:1, serviceTime:8,  rating:75, notes:'LAA closer' },
-  { id:'FA-RP-4', name:'Ryan Pressly',         position:'RP', age:36, salary:11.0, contractYears:1, serviceTime:11, rating:75, notes:'HOU — veteran closer' },
-  { id:'FA-RP-5', name:'Jose Leclerc',         position:'RP', age:31, salary:7.0,  contractYears:1, serviceTime:8,  rating:77, notes:'TEX closer' },
-  { id:'FA-RP-6', name:'Jordan Romano',        position:'RP', age:31, salary:7.0,  contractYears:1, serviceTime:5,  rating:77, notes:'TOR closer' },
-  { id:'FA-RP-7', name:'Jason Adam',           position:'RP', age:32, salary:4.0,  contractYears:1, serviceTime:6,  rating:76, notes:'TB setup ace' },
-  { id:'FA-RP-8', name:'Will Smith',           position:'RP', age:36, salary:7.0,  contractYears:1, serviceTime:11, rating:72, notes:'TEX veteran LHP' },
+  { id:'FA-RP-2', name:'Kenley Jansen',        position:'RP', age:37, salary:7.0,  contractYears:1, serviceTime:14, rating:75, notes:'BOS walk year — proven closer' },
+  { id:'FA-RP-7', name:'Jason Adam',           position:'RP', age:32, salary:4.0,  contractYears:1, serviceTime:6,  rating:76, notes:'TB — setup ace walk year' },
+  { id:'FA-RP-8', name:'Will Smith',           position:'RP', age:36, salary:7.0,  contractYears:1, serviceTime:11, rating:72, notes:'TEX veteran LHP walk year' },
   { id:'FA-RP-9', name:'A.J. Puk',             position:'RP', age:30, salary:4.0,  contractYears:2, serviceTime:5,  rating:73, notes:'MIA lefty specialist / closer' },
-  { id:'FA-RP-10',name:'Jeff Hoffman',         position:'RP', age:32, salary:8.0,  contractYears:1, serviceTime:8,  rating:78, notes:'PHI — proven closer' },
 
   // ─── CATCHERS ────────────────────────────────────────────────────────────────
-  { id:'FA-C-1',  name:'William Contreras',   position:'C',  age:27, salary:14.0, contractYears:4, serviceTime:4,  rating:82, notes:'MIL — top free agent catcher' },
   { id:'FA-C-2',  name:'Travis d\'Arnaud',    position:'C',  age:36, salary:6.0,  contractYears:1, serviceTime:12, rating:74, notes:'Veteran backstop' },
   { id:'FA-C-3',  name:'Danny Jansen',        position:'C',  age:30, salary:8.0,  contractYears:2, serviceTime:6,  rating:76, notes:'Solid two-way catcher' },
 
   // ─── FIRST BASEMEN ───────────────────────────────────────────────────────────
   { id:'FA-1B-1', name:'Anthony Rizzo',       position:'1B', age:36, salary:8.0,  contractYears:1, serviceTime:14, rating:74, notes:'Veteran bat, cancer history' },
-  { id:'FA-1B-2', name:'Paul Goldschmidt',   position:'1B', age:37, salary:12.0, contractYears:1, serviceTime:14, rating:77, notes:'Still productive HOF candidate' },
   { id:'FA-1B-3', name:'Joey Votto',          position:'1B', age:41, salary:3.0,  contractYears:1, serviceTime:18, rating:65, notes:'Legend — part-time / mentor' },
 
   // ─── SECOND BASEMEN ─────────────────────────────────────────────────────────
@@ -52,12 +55,10 @@ export const mlbFreeAgents = [
   { id:'FA-SS-1', name:'Jose Caballero',      position:'SS', age:28, salary:4.0,  contractYears:2, serviceTime:4,  rating:70, notes:'TB — speed/defense profile' },
 
   // ─── THIRD BASEMEN ───────────────────────────────────────────────────────────
-  { id:'FA-3B-1', name:'Justin Turner',       position:'3B', age:40, salary:3.0,  contractYears:1, serviceTime:17, rating:70, notes:'Veteran, can DH' },
+  { id:'FA-3B-1', name:'Justin Turner',       position:'3B', age:40, salary:3.0,  contractYears:1, serviceTime:17, rating:70, notes:'TOR/veteran, can DH' },
 
   // ─── OUTFIELDERS ─────────────────────────────────────────────────────────────
-  { id:'FA-OF-1', name:'Randy Arozarena',    position:'LF', age:30, salary:18.0, contractYears:3, serviceTime:4,  rating:80, notes:'Breakout FA' },
   { id:'FA-OF-2', name:'Michael Conforto',   position:'LF', age:32, salary:14.0, contractYears:1, serviceTime:8,  rating:75, notes:'SF walk year' },
-  { id:'FA-OF-3', name:'Teoscar Hernandez', position:'RF', age:32, salary:18.0, contractYears:2, serviceTime:8,  rating:83, notes:'LAD/SEA walk year' },
   { id:'FA-OF-4', name:'Tyler O\'Neill',     position:'LF', age:29, salary:9.0,  contractYears:2, serviceTime:7,  rating:77, notes:'BOS — power bat' },
   { id:'FA-OF-5', name:'Starling Marte',     position:'RF', age:36, salary:8.0,  contractYears:1, serviceTime:13, rating:73, notes:'NYM veteran' },
   { id:'FA-OF-6', name:'Jake Fraley',        position:'RF', age:30, salary:5.0,  contractYears:1, serviceTime:5,  rating:72, notes:'CIN — solid platoon' },

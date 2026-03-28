@@ -17,7 +17,7 @@ export const mlbRosters = {
       { id:'ARI-1',  name:'Corbin Carroll',     position:'LF', age:21, salary:0.7,  contractYears:5, serviceTime:1.5, status:'active', rating:82, notes:'Pre-arb superstar', roster40:true },
       { id:'ARI-2',  name:'Ketel Marte',        position:'2B', age:31, salary:24.0, contractYears:3, serviceTime:8,   status:'active', rating:88, notes:'$76M extension', roster40:true },
       { id:'ARI-3',  name:'Lourdes Gurriel Jr.',position:'RF', age:31, salary:11.0, contractYears:2, serviceTime:7,   status:'active', rating:77, notes:'', roster40:true },
-      { id:'ARI-4',  name:'Paul Goldschmidt',   position:'1B', age:37, salary:26.0, contractYears:1, serviceTime:14,  status:'active', rating:78, notes:'Final year', roster40:true },
+      { id:'ARI-4',  name:'Pavin Smith',          position:'1B', age:28, salary:0.7,  contractYears:3, serviceTime:3,   status:'active', rating:71, notes:'Arb eligible depth', roster40:true },
       { id:'ARI-5',  name:'Christian Walker',   position:'1B', age:33, salary:20.0, contractYears:3, serviceTime:9,   status:'active', rating:80, notes:'', roster40:true },
       { id:'ARI-6',  name:'Geraldo Perdomo',    position:'SS', age:25, salary:0.7,  contractYears:4, serviceTime:3.1, status:'active', rating:74, notes:'Pre-arb', roster40:true },
       { id:'ARI-7',  name:'Eugenio Suarez',     position:'3B', age:33, salary:15.0, contractYears:1, serviceTime:10,  status:'active', rating:76, notes:'', roster40:true },
@@ -326,7 +326,7 @@ export const mlbRosters = {
   MIA: {
     payroll: 70.0,
     players: [
-      { id:'MIA-1',  name:'Jazz Chisholm Jr.',    position:'CF', age:27, salary:7.0,  contractYears:3, serviceTime:4,   status:'active', rating:82, notes:'Extension', roster40:true },
+      { id:'MIA-1',  name:'Victor Mesa Jr.',      position:'CF', age:26, salary:0.7,  contractYears:4, serviceTime:2,   status:'active', rating:70, notes:'Pre-arb depth OF', roster40:true },
       { id:'MIA-2',  name:'Luis Arraez',          position:'2B', age:28, salary:18.0, contractYears:4, serviceTime:6,   status:'active', rating:85, notes:'Batting title machine', roster40:true },
       { id:'MIA-3',  name:'Jesus Sanchez',        position:'RF', age:27, salary:0.7,  contractYears:4, serviceTime:3,   status:'active', rating:74, notes:'Arb eligible', roster40:true },
       { id:'MIA-4',  name:'Jake Burger',          position:'3B', age:28, salary:3.5,  contractYears:2, serviceTime:4,   status:'active', rating:76, notes:'', roster40:true },
@@ -422,6 +422,7 @@ export const mlbRosters = {
       { id:'NYY-5',  name:'Gleyber Torres',       position:'2B', age:28, salary:15.0, contractYears:1, serviceTime:7,   status:'active', rating:80, notes:'Walk year', roster40:true },
       { id:'NYY-6',  name:'Jazz Chisholm Jr.',    position:'3B', age:27, salary:7.0,  contractYears:3, serviceTime:4,   status:'active', rating:82, notes:'Traded from MIA', roster40:true },
       { id:'NYY-7',  name:'Cody Bellinger',       position:'1B', age:29, salary:18.0, contractYears:1, serviceTime:8,   status:'active', rating:81, notes:'Re-signed', roster40:true },
+      { id:'NYY-16', name:'Paul Goldschmidt',    position:'DH', age:37, salary:12.5, contractYears:1, serviceTime:14,  status:'active', rating:77, notes:'1yr $12.5M — signed from STL', roster40:true },
       { id:'NYY-8',  name:'Jose Trevino',         position:'C',  age:32, salary:5.8,  contractYears:2, serviceTime:5,   status:'active', rating:72, notes:'', roster40:true },
       { id:'NYY-9',  name:'Gerrit Cole',          position:'SP', age:34, salary:36.0, contractYears:4, serviceTime:11,  status:'il', rating:92, notes:'TJ surgery', roster40:true },
       { id:'NYY-10', name:'Carlos Rodon',         position:'SP', age:32, salary:26.0, contractYears:4, serviceTime:9,   status:'active', rating:83, notes:'$162M deal', roster40:true },
@@ -553,7 +554,7 @@ export const mlbRosters = {
       { id:'SEA-4',  name:'Jose Caballero',       position:'2B', age:29, salary:0.7,  contractYears:3, serviceTime:2.5, status:'active', rating:72, notes:'', roster40:true },
       { id:'SEA-5',  name:'J.P. Crawford',        position:'SS', age:30, salary:10.0, contractYears:2, serviceTime:7,   status:'active', rating:76, notes:'', roster40:true },
       { id:'SEA-6',  name:'Mitch Haniger',        position:'RF', age:34, salary:13.5, contractYears:1, serviceTime:8,   status:'active', rating:74, notes:'Injury history', roster40:true },
-      { id:'SEA-7',  name:'Teoscar Hernandez',   position:'LF', age:32, salary:23.0, contractYears:2, serviceTime:8,   status:'active', rating:84, notes:'', roster40:true },
+      { id:'SEA-7',  name:'Randy Arozarena',     position:'LF', age:30, salary:18.2, contractYears:1, serviceTime:5,   status:'active', rating:83, notes:'Traded from TB — arb deal', roster40:true },
       { id:'SEA-8',  name:'Dylan Moore',          position:'3B', age:32, salary:3.0,  contractYears:1, serviceTime:6,   status:'active', rating:68, notes:'Utility', roster40:true },
       { id:'SEA-9',  name:'Luis Castillo',        position:'SP', age:32, salary:22.75, contractYears:3, serviceTime:8,  status:'active', rating:88, notes:'Extension', roster40:true },
       { id:'SEA-10', name:'Logan Gilbert',        position:'SP', age:27, salary:8.0,  contractYears:5, serviceTime:3,   status:'active', rating:85, notes:'Extension', roster40:true },
@@ -569,7 +570,7 @@ export const mlbRosters = {
   STL: {
     payroll: 147.0,
     players: [
-      { id:'STL-1',  name:'Paul Goldschmidt',    position:'1B', age:37, salary:25.3, contractYears:1, serviceTime:14,  status:'active', rating:79, notes:'Final year', roster40:true },
+      { id:'STL-1',  name:'Ivan Herrera',         position:'C',  age:25, salary:0.7,  contractYears:5, serviceTime:2,   status:'active', rating:72, notes:'Pre-arb backup catcher', roster40:true },
       { id:'STL-2',  name:'Nolan Arenado',       position:'3B', age:34, salary:35.0, contractYears:2, serviceTime:12,  status:'active', rating:86, notes:'$260M deal remaining', roster40:true },
       { id:'STL-3',  name:'Willson Contreras',   position:'C',  age:33, salary:17.5, contractYears:2, serviceTime:9,   status:'active', rating:80, notes:'$87.5M deal', roster40:true },
       { id:'STL-4',  name:'Lars Nootbaar',       position:'RF', age:27, salary:0.7,  contractYears:4, serviceTime:3,   status:'active', rating:78, notes:'Arb eligible', roster40:true },
