@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Enterprises — System Architecture v3.0</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #0a0a0a;
+  --bg-2:      #111111;
+  --bg-3:      #1a1a1a;
+  --bg-4:      #222222;
+  --border:    rgba(255,255,255,0.06);
+  --orange:    #FB4F14;
+  --orange-dim: rgba(251,79,20,0.15);
+  --orange-border: rgba(251,79,20,0.3);
+  --text:      #e2e2e2;
+  --text-dim:  #999;
+  --text-mute: #555;
+  --white:     #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header .badge {
+  display: inline-block;
+  background: var(--orange-dim);
+  border: 1px solid var(--orange-border);
+  color: var(--orange);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+
+.header .sub {
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.header .meta-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.header .meta-row span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header .meta-row .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  display: inline-block;
+}
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.nav a {
+  display: inline-block;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.nav a:hover {
+  border-color: var(--orange-border);
+  color: var(--orange);
+}
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.section {
+  margin-bottom: 56px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+.section h2 {
+  font-size: clamp(18px, 4vw, 26px);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 28px 0 12px;
+}
+
+.section p {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+/* ── Code blocks ─────────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.code-block pre {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  background: var(--bg-3);
+  color: var(--text-dim);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  vertical-align: top;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+tbody tr:hover td { background: var(--bg-2); }
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 16px 0;
+}
+
+.card.orange-accent {
+  border-color: var(--orange-border);
+}
+
+.card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.card .card-meta {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+
+.card p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card li {
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 3px 0 3px 16px;
+  position: relative;
+}
+
+.card li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--orange);
+  opacity: 0.5;
+}
+
+/* ── Layer diagram ───────────────────────────────────────────────────────── */
+.layer-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 16px 0;
+}
+
+.layer {
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.layer-4 { background: rgba(251,79,20,0.12); border: 1px solid rgba(251,79,20,0.25); }
+.layer-3 { background: rgba(251,79,20,0.08); border: 1px solid rgba(251,79,20,0.18); }
+.layer-2 { background: rgba(251,79,20,0.05); border: 1px solid rgba(251,79,20,0.12); }
+.layer-1 { background: var(--bg-2); border: 1px solid var(--border); }
+
+.layer-num {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--orange);
+  min-width: 60px;
+  padding-top: 2px;
+}
+
+.layer-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.layer-content p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* ── Business unit cards ─────────────────────────────────────────────────── */
+.biz-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .biz-grid { grid-template-columns: 1fr; }
+}
+
+.biz-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.biz-card:hover {
+  border-color: var(--orange-border);
+}
+
+.biz-card .biz-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.biz-card .biz-status {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.status-live { background: rgba(34,197,94,0.15); color: #22c55e; }
+.status-active { background: rgba(251,79,20,0.15); color: var(--orange); }
+.status-pending { background: rgba(234,179,8,0.15); color: #eab308; }
+.status-concept { background: rgba(99,102,241,0.15); color: #818cf8; }
+.status-building { background: rgba(14,165,233,0.15); color: #38bdf8; }
+
+.biz-card p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* ── Gap badges ──────────────────────────────────────────────────────────── */
+.gap-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.gap-row:last-child { border-bottom: none; }
+
+.gap-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.25);
+  color: #f87171;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gap-text h5 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 3px;
+}
+
+.gap-text p {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+/* ── Highlight box ───────────────────────────────────────────────────────── */
+.highlight-box {
+  background: var(--orange-dim);
+  border: 1px solid var(--orange-border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+
+.highlight-box p {
+  font-size: 14px;
+  color: var(--text);
+  margin: 0;
+}
+
+.highlight-box strong { color: var(--orange); }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.footer a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <div class="header">
+    <div class="badge">Architecture v3.0</div>
+    <h1>9 Enterprises — System Architecture</h1>
+    <p class="sub">Holding company infrastructure, business units, agent roster, and operational model</p>
+    <div class="meta-row">
+      <span><span class="dot"></span> Version 3.0 — March 28, 2026</span>
+      <span><span class="dot"></span> 7 Active Companies</span>
+      <span><span class="dot"></span> 11 Live URLs</span>
+      <span><span class="dot"></span> $257/mo operating cost</span>
+    </div>
+  </div>
+
+  <!-- ── Quick nav ──────────────────────────────────────────────────────── -->
+  <div class="nav">
+    <a href="#architecture">Architecture</a>
+    <a href="#org">Org Structure</a>
+    <a href="#businesses">Business Units</a>
+    <a href="#hub">Hub-and-Spoke</a>
+    <a href="#revenue">Revenue</a>
+    <a href="#infrastructure">Infrastructure</a>
+    <a href="#gaps">Known Gaps</a>
+    <a href="#agents">Agent Roster</a>
+    <a href="#naming">Naming</a>
+  </div>
+
+  <!-- ── What Changed in v3 ─────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="highlight-box">
+      <p><strong>What changed in v3.0 (March 28 State of the Union):</strong> AiGM umbrella live with 3 simulators. 9enterprises.com and agent9.com deployed. Command Hub scaffolded (Next.js + Supabase). Freeze watchdog installed — MacBook self-heals without owner intervention. freeagent9 pilot active (Kyle Cabezas, 40+ memory entries). Brand unified to orange/black across all holdings. Org structure locked — 7 confirmed Companies.</p>
+    </div>
+  </div>
+
+  <!-- ── 1. Architecture ────────────────────────────────────────────────── -->
+  <div class="section" id="architecture">
+    <div class="section-label">Section 1</div>
+    <h2>System Architecture</h2>
+
+    <h3>Layer Model</h3>
+    <div class="layer-grid">
+      <div class="layer layer-4">
+        <div class="layer-num">Layer 4</div>
+        <div class="layer-content">
+          <h4>The Owner — Jasson Fishback</h4>
+          <p>Strategic direction. Final authority. Communicates via Telegram, Voice, iMessage, Email. Non-technical operator.</p>
+        </div>
+      </div>
+      <div class="layer layer-3">
+        <div class="layer-num">Layer 3</div>
+        <div class="layer-content">
+          <h4>9 — AI Partner / Orchestrator</h4>
+          <p>Claude Sonnet 4.6 (Sonnet default, Opus for critical work) in Claude Code terminal. Orchestrator. Credential vault (The Locker). Spawns and monitors all agents. QB model — never goes dark.</p>
+        </div>
+      </div>
+      <div class="layer layer-2">
+        <div class="layer-num">Layer 2</div>
+        <div class="layer-content">
+          <h4>Front Office — Sub-agents</h4>
+          <p>UNO (#1 Research Lead) + Tee (#2 Engineering Lead) + Specialist agents (SCOUT, MONEY, DOC, CANVAS, PRESS, X9) + Autonomous agents (trader9, pilot). No direct credential access. No Owner communication. All output reviewed by 9.</p>
+        </div>
+      </div>
+      <div class="layer layer-1">
+        <div class="layer-num">Layer 1</div>
+        <div class="layer-content">
+          <h4>Infrastructure</h4>
+          <p>OC (comms daemon, port 3457) | Headset (voice, port 3456) | Backup QB (Cloudflare Worker) | Training Staff (recovery) | LaunchAgents (auto-restart) | cloudflared (tunnel) | Freeze Watchdog (new March 28)</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Always-Running Processes</h3>
+    <div class="code-block"><pre>ALWAYS RUNNING (survives terminal death):
+|
++-- OC: comms-hub.mjs (port 3457)
+|   +-- Telegram poller (2-5s long polling, 30s timeout)
+|   +-- iMessage monitor (reads ~/Library/Messages/chat.db via FDA)
+|   +-- Email monitor (Mail.app via osascript)
+|   +-- 30s proactive terminal watchdog (PID check)
+|   +-- API health probe (every 10 min, alerts on all channels on failure)
+|   +-- Efficiency sweep (every 2h: balance, logs, quotas)
+|
++-- Headset: voice-server.mjs (port 3456)
+|   +-- Twilio STT -&gt; Claude Haiku -&gt; ElevenLabs Flash TTS
+|   +-- Caller-specific personality profiles (6 profiles)
+|   +-- ~1.2-2.1s per exchange
+|
++-- cloudflared (tunnel to Headset, auto-restarts on failure)
+|
++-- pilot: jules-server.mjs (port 3470)
+|   +-- freeagent9 #1, deployed to Kyle Cabezas (active POC)
+|   +-- SMS via Twilio, OpenWeather morning briefings
+|   +-- 40+ conversation memory entries
+|
++-- Freeze Watchdog LaunchAgent (NEW — March 28, 2026)
+    +-- Tier 1 (3 min): Kill stuck process
+    +-- Tier 2 (6 min): Force-kill + restart OC
+    +-- Tier 3 (7 min): Full session recovery</pre></div>
+
+    <h3>Terminal Liveness Detection — 4 Layers</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Mechanism</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Layer 1</td><td>PID Tracking</td><td>Terminal claims with PID on /terminal/claim. Watchdog checks PID alive every 30s.</td></tr>
+          <tr><td>Layer 2</td><td>Self-Terminating Ping Loop</td><td>Started in terminal. Checks parent PID each iteration. Dies when Claude Code dies. Calls /terminal/release on exit.</td></tr>
+          <tr><td>Layer 3</td><td>Session Token Validation</td><td>New token generated on each /terminal/claim. Orphan pings get 401 rejected.</td></tr>
+          <tr><td>Layer 4</td><td>State Cleanup</td><td>On terminal death: clear PID, token, files. Switch to autonomous mode immediately. Worst-case: ~45s (was 2.5 min before March 26 hardening).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Communication Architecture</h3>
+    <div class="code-block"><pre>                   Jasson (phone/laptop)
+                            |
+          +---------+-------+-------+---------+
+          |         |               |         |
+      Telegram   iMessage        Email     Voice Call
+          |         |               |         |
+          v         v               v         v
+     +----+----+----+----+----+----+----+----+----+
+     |              OC (comms-hub.mjs)             |
+     |              Port 3457                      |
+     |                                             |
+     |  RELAY MODE          AUTONOMOUS MODE        |
+     |  (terminal up)       (terminal down)        |
+     |  -&gt; signal file      -&gt; Claude Haiku        |
+     |  -&gt; PostToolUse      -&gt; cloud sync          |
+     |     hook              -&gt; request terminal   |
+     +---------------------+-----------------------+
+                            |
+                   Backup QB (Cloudflare Worker)
+                   - Telegram failover when Mac is offline
+                   - Voice failover (SMS via Twilio)
+                   - State synced via KV (every 2 min)</pre></div>
+  </div>
+
+  <!-- ── 2. Org Structure ───────────────────────────────────────────────── -->
+  <div class="section" id="org">
+    <div class="section-label">Section 2</div>
+    <h2>Organizational Structure</h2>
+
+    <div class="code-block"><pre>9 Enterprises LLC (Holding Company)
+|
++-- AiGM (Company)
+|   +-- AiNFLGM (Product)     ainflgm.com       LIVE
+|   +-- AiNBA GM (Product)                      BUILT, deploying
+|   +-- AiMLB GM (Product)                      BUILT, deploying
+|
++-- freeagent9 (Company)
+|   +-- pilot (Product)       Kyle C POC        ACTIVE
+|   +-- Concierge Features    in development
+|
++-- trader9 (Company)
+|   +-- Algorithmic Trading Bot                 Pending Alpaca keys
+|
++-- x9 (Company)
+|   +-- Autonomous X/Twitter presence           Launching
+|
++-- agent9 (Company)
+|   +-- agent9.com consumer site                LIVE
+|   +-- Real Estate AI solution                 Concept stage
+|
++-- AI Underwriter (Company)
+|   +-- Mortgage Guideline RAG                  POC complete
+|
++-- Dropshipping (Company — name TBD)
+    +-- Owner writing plan</pre></div>
+
+    <h3>Approved Definitions (Owner-locked March 28, 2026)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Holding Company</strong></td><td>9 Enterprises LLC. Everything rolls up here.</td></tr>
+          <tr><td><strong>Company</strong></td><td>Revenue-generating business unit. Own brand, own customers, own P&amp;L.</td></tr>
+          <tr><td><strong>Product</strong></td><td>Specific offering within a Company.</td></tr>
+          <tr><td><strong>Concept</strong></td><td>Idea in Draft Room. No resources assigned.</td></tr>
+          <tr><td><strong>Project</strong></td><td>Defined scope of work. Start, end, deliverable. Lives inside a Company.</td></tr>
+          <tr><td><strong>Task</strong></td><td>Single unit of work assigned to an agent or person.</td></tr>
+          <tr><td><strong>Assignment</strong></td><td>Task actively delegated to a specific agent team.</td></tr>
+          <tr><td><strong>Draft Room</strong></td><td>Intake queue. Concepts wait here to become Companies.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px;color:#555;margin-top:12px;">Hierarchy: 9 Enterprises LLC &rarr; Company &rarr; Product &rarr; Project &rarr; Task &rarr; Assignment</p>
+  </div>
+
+  <!-- ── 3. Core Product ────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-label">Section 3</div>
+    <h2>The Core Product: "9"</h2>
+
+    <p>The strategic reframe confirmed March 28 SOTU: the core offering is <strong style="color:#fff;">9</strong> — the AI partner platform itself. All other companies are either standalone companies or add-on modules that extend the core 9 subscription.</p>
+
+    <div class="code-block"><pre>+---------------------------------------------------+
+|                 CORE: "9"                          |
+|                                                    |
+|  4-channel comms | Voice | Agent orchestration    |
+|  Credential vault | Terminal recovery | Cloud sync |
+|  Dashboard (Command Hub) | Draft Room              |
++---------------------------------------------------+
+             |            |           |
+      +------+       +----+      +----+------+
+      |               |               |
+  freeagent9      trader9          agent9
+  (Add-on)        (Add-on)         (Add-on)</pre></div>
+
+    <div class="card orange-accent">
+      <div class="card-meta">Business Model</div>
+      <h4>SaaS Subscription + Modular Upsells</h4>
+      <p>One core subscription. Optional add-ons. White-label rights available for freeagent9, trader9, and x9.</p>
+    </div>
+  </div>
+
+  <!-- ── 4. Business Units ──────────────────────────────────────────────── -->
+  <div class="section" id="businesses">
+    <div class="section-label">Section 4</div>
+    <h2>Business Units</h2>
+
+    <div class="biz-grid">
+
+      <div class="biz-card">
+        <div class="biz-name">AiGM</div>
+        <div class="biz-status status-live">Live</div>
+        <p>AI sports simulator umbrella. AiNFLGM live at ainflgm.com. AiNBA GM and AiMLB GM built and deploying. React 19 + Vite 8 PWA, GitHub Pages.</p>
+      </div>
+
+      <div class="biz-card">
+        <div class="biz-name">freeagent9</div>
+        <div class="biz-status status-active">Active POC</div>
+        <p>AI personal assistant. Deploys via iMessage, Telegram, SMS — no app to download. Pilot: Kyle Cabezas. 40+ memory entries. Morning briefings, shopping, reminders.</p>
+      </div>
+
+      <div class="biz-card">
+        <div class="biz-name">trader9</div>
+        <div class="biz-status status-pending">Pending Keys</div>
+        <p>Autonomous algorithmic trading. Bot complete. Backtesting done. ETH Bollinger strategy +3.51% in 90-day backtest (best across 692 sweeps). Awaiting Alpaca paper API keys.</p>
+      </div>
+
+      <div class="biz-card">
+        <div class="biz-name">x9</div>
+        <div class="biz-status status-building">Launching</div>
+        <p>Autonomous X/Twitter presence. Openly AI. NFL cap analysis, AI takes, business commentary. 10 launch tweets written. Account creation in progress.</p>
+      </div>
+
+      <div class="biz-card">
+        <div class="biz-name">agent9</div>
+        <div class="biz-status status-live">Site Live</div>
+        <p>AI-native real estate. Buy/sell homes without realtors. Consumer site at agent9.com. Research phase. Natural pairing with AI Underwriter for complete homebuying stack.</p>
+      </div>
+
+      <div class="biz-card">
+        <div class="biz-name">AI Underwriter</div>
+        <div class="biz-status status-active">POC Complete</div>
+        <p>Mortgage guideline RAG chatbot. Query FHA/Fannie/Freddie/VA/USDA in plain English, get citations in &lt;5s. 25 test cases validated. Anchor customer: Rapid Mortgage.</p>
+      </div>
+
+    </div>
+
+    <h3>AiGM Revenue Model</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Monthly Active Users</th><th>Ad Revenue</th><th>Premium (5%)</th><th>Affiliates</th><th>Total</th></tr></thead>
+        <tbody>
+          <tr><td>1,000</td><td>$50–100</td><td>$0</td><td>$25–50</td><td>$75–150</td></tr>
+          <tr><td>5,000</td><td>$300–500</td><td>$500–1,000</td><td>$150–300</td><td>$1,150–2,000</td></tr>
+          <tr><td>25,000</td><td>$2,000–3,500</td><td>$3,000–5,000</td><td>$750–1,500</td><td>$6,750–11,000</td></tr>
+          <tr><td>100,000</td><td>$8,000–15,000</td><td>$12,000–20,000</td><td>$3,000–6,000</td><td><strong>$26,000–44,000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>AI Underwriter Competitive Position</h3>
+    <div class="card">
+      <p>Enterprise tools (Tavant, ICE, LoanLogics) cost $200K+ and take 6 months to deploy. Mid-size lenders with 20–50 LOs get nothing. This solution is <strong style="color:#fff;">100x cheaper and deployable in 90 days</strong>. Target: $500–2,000/mo per lender SaaS.</p>
+    </div>
+  </div>
+
+  <!-- ── 5. Command Hub ─────────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-label">Section 5</div>
+    <h2>Command Hub — Dashboard v6</h2>
+    <p>The Owner's single source of truth. v5 static dashboard is a prototype. v6 is Next.js 15 + Supabase. Phase 1 scaffolded.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Description</th><th>Phase</th></tr></thead>
+        <tbody>
+          <tr><td>Branding</td><td>Core "9" brand + orbiting modules product architecture widget</td><td>Phase 1</td></tr>
+          <tr><td>Interactive checkboxes</td><td>Save in real time, alert 9 immediately with context + priority</td><td>Phase 1</td></tr>
+          <tr><td>Command Prompt</td><td>Persistent chat interface — type directly to 9 from dashboard</td><td>Phase 2</td></tr>
+          <tr><td>Daily Briefing</td><td>Auto-refreshes with wins, blockers, 3 recommended Owner actions</td><td>Phase 2</td></tr>
+          <tr><td>Real-time sync</td><td>WebSocket + push notifications, live APIs for MRR, burn, uptime</td><td>Phase 2</td></tr>
+          <tr><td>Draft Room (Kanban)</td><td>Full page, rich cards, roadmap timeline, "Send to 9 for Analysis"</td><td>Phase 2</td></tr>
+          <tr><td>KPI grid</td><td>Active Companies, Burn vs Cap, Runway, Total MRR, North Star Progress</td><td>Phase 3</td></tr>
+          <tr><td>Risk / Escalation Hub</td><td>Top-right panel, red/amber/green Owner Action items</td><td>Phase 3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 6. Hub-and-Spoke ───────────────────────────────────────────────── -->
+  <div class="section" id="hub">
+    <div class="section-label">Section 6 (formerly 8)</div>
+    <h2>Hub-and-Spoke Scaling Model</h2>
+
+    <p>Shared infrastructure at the center powers an unlimited number of business units at the edges. Marginal cost per new company approaches zero.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Hub Capability</th><th>What It Does</th><th>Marginal Cost Per New Company</th></tr></thead>
+        <tbody>
+          <tr><td>OC (comms-hub)</td><td>4-channel communication</td><td>~$0 (same daemon)</td></tr>
+          <tr><td>Headset (voice)</td><td>Inbound/outbound voice calls</td><td>~$0.06/min per call</td></tr>
+          <tr><td>Backup QB</td><td>Always-on cloud failover</td><td>~$0 (same worker)</td></tr>
+          <tr><td>The Locker</td><td>Credential isolation</td><td>$0</td></tr>
+          <tr><td>Agent Engine</td><td>Sub-agent spawning, briefing, QC</td><td>Token cost only</td></tr>
+          <tr><td>Cloud Sync</td><td>State persistence</td><td>~$0 (KV storage)</td></tr>
+          <tr><td>Draft Room</td><td>Concept intake and pipeline</td><td>$0</td></tr>
+          <tr><td>Command Hub</td><td>P&amp;L, roadmaps, live metrics</td><td>Hosting only</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The Compounding Effect</h3>
+    <div class="code-block"><pre>Product 1 (AiNFLGM):
+  Built everything: comms hub, voice, cloud worker, agent engine,
+  credential vault, deployment pipeline, recovery system,
+  dashboard, Draft Room, ETA tracker, freeze watchdog.
+  Total infrastructure investment: ~$252/mo + development time.
+
+Product 2 (freeagent9 / pilot):
+  Reused: all infrastructure.
+  New: jules-server.mjs (~400 lines).
+  Incremental cost: ~$10/mo (Twilio SMS).
+
+Product 3 (AI Underwriter):
+  Reuses: entire stack.
+  New: RAG pipeline + guideline ingestion.
+  Incremental cost: ~$20/mo.
+
+Product 4 (trader9):
+  Reuses: entire stack.
+  New: trading-bot.mjs + Alpaca integration.
+  Incremental cost: ~$0.
+
+Products 5–7 (x9, agent9, Dropshipping):
+  Incremental infrastructure cost approaches zero.</pre></div>
+  </div>
+
+  <!-- ── 7. Revenue Summary ─────────────────────────────────────────────── -->
+  <div class="section" id="revenue">
+    <div class="section-label">Section 7</div>
+    <h2>Revenue Model Summary</h2>
+
+    <div class="highlight-box">
+      <p><strong>North Star:</strong> $1M ARR within 12 months (by ~March 2027). All businesses built clean, documented, and sellable — zero founder dependency for daily operations.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Company</th><th>Revenue Model</th><th>Phase</th><th>Monthly Target</th></tr></thead>
+        <tbody>
+          <tr><td>AiGM</td><td>Affiliates + AdSense + Premium subscriptions</td><td>AdSense pending</td><td>$50K at scale</td></tr>
+          <tr><td>freeagent9</td><td>Subscription per user ($29–99/mo) + white-label</td><td>Q2 2026 beta</td><td>Per-user recurring</td></tr>
+          <tr><td>trader9</td><td>Trading returns (1–2%/mo on capital)</td><td>Pending API keys</td><td>Capital-dependent</td></tr>
+          <tr><td>x9</td><td>Affiliates + X Premium + sponsorships</td><td>Launching now</td><td>Traffic-dependent</td></tr>
+          <tr><td>AI Underwriter</td><td>SaaS ($500–2K/mo per lender)</td><td>Q2 2026 private beta</td><td>Per-lender recurring</td></tr>
+          <tr><td>agent9</td><td>Transaction fee + subscription</td><td>12–18 months</td><td>Custom</td></tr>
+          <tr><td>Core 9</td><td>SaaS subscription + add-on modules</td><td>90 days</td><td>Recurring</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 8. Infrastructure ──────────────────────────────────────────────── -->
+  <div class="section" id="infrastructure">
+    <div class="section-label">Section 8</div>
+    <h2>Infrastructure Costs and Dependencies</h2>
+
+    <h3>Monthly Operating Costs</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>Purpose</th><th>Monthly Cost</th></tr></thead>
+        <tbody>
+          <tr><td>Anthropic Max plan (20x)</td><td>Claude API for all AI operations</td><td>~$200</td></tr>
+          <tr><td>Twilio</td><td>Voice calls + SMS</td><td>~$10</td></tr>
+          <tr><td>ElevenLabs</td><td>Text-to-speech (Dan voice)</td><td>~$22</td></tr>
+          <tr><td>Cloudflare Workers</td><td>Backup QB + CORS proxy</td><td>~$5</td></tr>
+          <tr><td>Domains/hosting</td><td>ainflgm.com, 9enterprises.com, agent9.com, others</td><td>~$20</td></tr>
+          <tr><td colspan="2"><strong>Total current</strong></td><td><strong>~$257/mo</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Third-Party Service Dependencies</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Service</th><th>What It Powers</th><th>Failure Impact</th><th>Failover</th></tr></thead>
+        <tbody>
+          <tr><td>Anthropic API</td><td>All AI reasoning</td><td>Total AI capability loss</td><td>API health probe every 10min, alerts on all channels</td></tr>
+          <tr><td>Telegram Bot API</td><td>Primary Owner comms</td><td>Lose primary comms</td><td>iMessage, Email, SMS cascade</td></tr>
+          <tr><td>Twilio</td><td>Voice + pilot SMS</td><td>Lose voice + pilot</td><td>Text-only fallback</td></tr>
+          <tr><td>ElevenLabs</td><td>Voice TTS</td><td>Lose natural voice</td><td>Twilio native TTS fallback</td></tr>
+          <tr><td>Cloudflare</td><td>Cloud worker + tunnel + CORS</td><td>Lose cloud failover</td><td>Mac-only mode, direct tunnel restart</td></tr>
+          <tr><td>GitHub Pages</td><td>ainflgm.com hosting</td><td>Site down</td><td>Static site, redeploy in minutes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 9. Known Gaps ──────────────────────────────────────────────────── -->
+  <div class="section" id="gaps">
+    <div class="section-label">Section 9</div>
+    <h2>Known Infrastructure Gaps</h2>
+
+    <div class="card">
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>OC API (port 3457) — no auth</h5>
+          <p>Any local process can send as 9. Plan: add token auth (30-day plan).</p>
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>Static .env keys — no rotation</h5>
+          <p>No rotation mechanism. Plan: macOS Keychain integration (60-day plan).</p>
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>No container isolation</h5>
+          <p>Agents run on bare macOS. Plan: Docker containerization (60-day plan).</p>
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>Voice latency 1.7s avg</h5>
+          <p>Above premium threshold (target: sub-500ms). Plan: Evaluate ElevenLabs native Twilio integration.</p>
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>Single Mac dependency</h5>
+          <p>No compute if Mac is offline. Plan: VPS deployment in progress ($6/mo DigitalOcean).</p>
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>iMessage FDA resets on reboot</h5>
+          <p>iMessage read fails silently after Mac restart. Manual FDA re-grant required. Documented in startup protocol.</p>
+        </div>
+      </div>
+      <div class="gap-row">
+        <div class="gap-icon">!</div>
+        <div class="gap-text">
+          <h5>Tunnel URL ephemeral</h5>
+          <p>Voice webhook must update on tunnel restart. Plan: Named Cloudflare Tunnel with domain (deferred to VPS sprint).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 10. ETA Calibration ───────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-label">Section 10</div>
+    <h2>ETA Calibration System</h2>
+
+    <p>9's internal time estimates for sub-agent work run <strong style="color:#fff;">7.5x slower</strong> than reality. Calibration factor validated across multiple data points.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>9 Estimate</th><th>Actual Time</th></tr></thead>
+        <tbody>
+          <tr><td>5 minutes</td><td>~40 seconds</td></tr>
+          <tr><td>20 minutes</td><td>~2.5–3 minutes</td></tr>
+          <tr><td>1 hour</td><td>~8 minutes</td></tr>
+          <tr><td>4 hours</td><td>~32 minutes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>All Owner-facing ETA estimates are pre-divided by 7.5. Task tracking records both estimated and actual to continuously refine the factor. Tracked in <code style="font-family:monospace;font-size:12px;color:#888;">docs/eta-tracker.json</code>.</p>
+  </div>
+
+  <!-- ── 11. Naming ─────────────────────────────────────────────────────── -->
+  <div class="section" id="naming">
+    <div class="section-label">Section 11</div>
+    <h2>Naming Scheme</h2>
+
+    <h3>Infrastructure Names (Football)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Real Component</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>9</strong></td><td>Claude in Claude Code</td><td>AI Partner, Orchestrator</td></tr>
+          <tr><td><strong>OC</strong></td><td>comms-hub.mjs</td><td>Offensive Coordinator — routes all communication</td></tr>
+          <tr><td><strong>The Headset</strong></td><td>voice-server.mjs</td><td>Voice system — Twilio + ElevenLabs</td></tr>
+          <tr><td><strong>Backup QB</strong></td><td>Cloudflare Worker</td><td>Cloud failover when Mac is down</td></tr>
+          <tr><td><strong>Training Staff</strong></td><td>open-terminal.mjs LaunchAgent</td><td>Session recovery system</td></tr>
+          <tr><td><strong>Front Office</strong></td><td>Sub-agent teams</td><td>UNO + Tee + their workers</td></tr>
+          <tr><td><strong>The Locker</strong></td><td>.env credential file</td><td>Vault — managed by 9, never exposed</td></tr>
+          <tr><td><strong>GamePlan</strong></td><td>Strategic planning layer</td><td>Session state, project roadmaps</td></tr>
+          <tr><td><strong>Draft Room</strong></td><td>Concept intake queue</td><td>Idea capture and pipeline management</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Product Names (lowercase + 9)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Product</th><th>Correct Name</th><th>What It Is</th></tr></thead>
+        <tbody>
+          <tr><td>ainflgm</td><td>ainflgm</td><td>NFL simulator — AiGM flagship</td></tr>
+          <tr><td>AiNBA GM</td><td>ainbagm</td><td>NBA simulator — AiGM product</td></tr>
+          <tr><td>AiMLB GM</td><td>aimlbgm</td><td>MLB simulator — AiGM product</td></tr>
+          <tr><td>freeagent9</td><td>freeagent9</td><td>Personal AI assistant platform</td></tr>
+          <tr><td>pilot</td><td>pilot</td><td>freeagent9 instance #1 (Kyle Cabezas)</td></tr>
+          <tr><td>trader9</td><td>trader9</td><td>Algorithmic trading agent</td></tr>
+          <tr><td>AI Underwriter</td><td>underwriter9</td><td>Mortgage guideline RAG chatbot</td></tr>
+          <tr><td>x9</td><td>x9</td><td>Autonomous X/Twitter presence</td></tr>
+          <tr><td>agent9</td><td>agent9</td><td>AI real estate solution + platform</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#555;margin-top:12px;">Rule: Product names never get capitals, spaces, or hyphens. "9 Enterprises LLC" keeps proper formatting in legal contexts only.</p>
+  </div>
+
+  <!-- ── 12. Agent Roster ───────────────────────────────────────────────── -->
+  <div class="section" id="agents">
+    <div class="section-label">Section 12</div>
+    <h2>Agent Roster — The Front Office</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Agent</th><th>Rank</th><th>Role</th><th>Model</th></tr></thead>
+        <tbody>
+          <tr><td><strong>UNO</strong></td><td>#1</td><td>Research Team Lead. Web search, competitive analysis, market research, contact profiling, document synthesis.</td><td>Sonnet default, Opus for critical</td></tr>
+          <tr><td><strong>Tee</strong></td><td>#2</td><td>Engineering Team Lead. Code, tests, deployments, browser automation.</td><td>Sonnet default, Opus for critical</td></tr>
+          <tr><td><strong>SCOUT</strong></td><td>Specialist</td><td>Research and intelligence</td><td>Sonnet</td></tr>
+          <tr><td><strong>MONEY</strong></td><td>Specialist</td><td>Financial analysis</td><td>Sonnet</td></tr>
+          <tr><td><strong>DOC</strong></td><td>Specialist</td><td>Documentation</td><td>Sonnet</td></tr>
+          <tr><td><strong>CANVAS</strong></td><td>Specialist</td><td>Design and frontend</td><td>Sonnet</td></tr>
+          <tr><td><strong>PRESS</strong></td><td>Specialist</td><td>Content and social</td><td>Sonnet</td></tr>
+          <tr><td><strong>Front Office (other)</strong></td><td>Ephemeral</td><td>Task-specific agents, born and die per task</td><td>Haiku (default)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-meta">Delegation Model</div>
+      <h4>QB-and-Front-Office</h4>
+      <p>9 stays on comms at all times. All deep work routes to the Front Office. 9 functions as QB — calling plays, reviewing output, making decisions. UNO and Tee run parallel agent teams without pulling 9 off comms.</p>
+      <p><strong style="color:#fff;">Spend authority:</strong> $20/task auto-approved. Over $20 = Owner approval required.</p>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <div class="footer">
+    <p>9 Enterprises LLC &mdash; System Architecture v3.0 &mdash; March 28, 2026</p>
+    <p style="margin-top:6px;">Classification: Owner Eyes Only &nbsp;|&nbsp; <a href="/docs-index.html">All Documents</a> &nbsp;|&nbsp; <a href="/9enterprises.html">9enterprises.com</a></p>
+  </div>
+
+</div>
+</body>
+</html>

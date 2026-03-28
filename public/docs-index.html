@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Enterprises — Document Library</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #0a0a0a;
+  --bg-2:      #111111;
+  --bg-3:      #1a1a1a;
+  --border:    rgba(255,255,255,0.06);
+  --orange:    #FB4F14;
+  --orange-dim: rgba(251,79,20,0.12);
+  --orange-border: rgba(251,79,20,0.28);
+  --text:      #e2e2e2;
+  --text-dim:  #999;
+  --text-mute: #555;
+  --white:     #ffffff;
+  --green:     #22c55e;
+  --yellow:    #eab308;
+  --blue:      #60a5fa;
+  --purple:    #a78bfa;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header .badge {
+  display: inline-block;
+  background: var(--orange-dim);
+  border: 1px solid var(--orange-border);
+  color: var(--orange);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.header p {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+/* ── Search ──────────────────────────────────────────────────────────────── */
+.search-wrap {
+  margin-bottom: 40px;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.search-input:focus {
+  border-color: var(--orange-border);
+}
+
+.search-input::placeholder { color: var(--text-mute); }
+
+/* ── Section groups ──────────────────────────────────────────────────────── */
+.group {
+  margin-bottom: 48px;
+}
+
+.group-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--orange);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Doc cards ───────────────────────────────────────────────────────────── */
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .doc-grid { grid-template-columns: 1fr; }
+}
+
+.doc-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.doc-card:hover {
+  border-color: var(--orange-border);
+  background: rgba(251,79,20,0.04);
+}
+
+.doc-card.no-link {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.doc-card.no-link:hover {
+  border-color: var(--border);
+  background: var(--bg-2);
+}
+
+.doc-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.doc-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+.doc-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tag-live   { background: rgba(34,197,94,0.12);  color: var(--green); }
+.tag-md     { background: rgba(96,165,250,0.12);  color: var(--blue); }
+.tag-key    { background: var(--orange-dim);       color: var(--orange); }
+.tag-draft  { background: rgba(167,139,250,0.12); color: var(--purple); }
+
+.doc-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.doc-note {
+  font-size: 11px;
+  color: var(--text-mute);
+  font-style: italic;
+}
+
+/* ── Featured / pinned ───────────────────────────────────────────────────── */
+.featured-card {
+  background: var(--orange-dim);
+  border: 1px solid var(--orange-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.featured-card:hover {
+  background: rgba(251,79,20,0.18);
+}
+
+.featured-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featured-body h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.featured-body p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.footer a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+.footer a:hover { text-decoration: underline; }
+
+/* ── Search hidden ───────────────────────────────────────────────────────── */
+.doc-card.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <div class="header">
+    <div class="badge">Internal Documents</div>
+    <h1>9 Enterprises — Document Library</h1>
+    <p>Architecture, strategy, product plans, and operational docs. Updated March 28, 2026.</p>
+  </div>
+
+  <!-- ── Search ─────────────────────────────────────────────────────────── -->
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="searchInput" placeholder="Filter documents..." oninput="filterDocs(this.value)">
+  </div>
+
+  <!-- ── Featured ───────────────────────────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Pinned — Key Documents</div>
+
+    <a class="featured-card" href="/architecture.html">
+      <div class="featured-icon">&#9881;</div>
+      <div class="featured-body">
+        <h3>System Architecture v3.0</h3>
+        <p>Full infrastructure, org structure, business units, agent roster, revenue model, known gaps. March 28, 2026 SOTU edition. Goes to CIO.</p>
+      </div>
+    </a>
+
+    <div class="doc-grid">
+
+      <a class="doc-card" href="/kyle-response-v5b.html" data-search="kyle response architecture cio concerns security dependency">
+        <div class="doc-card-top">
+          <div class="doc-title">Kyle Shea Architecture Response v5b</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">Point-by-point response to CIO concerns. Security, dependency map, cost model, testing. Current canonical version.</div>
+      </a>
+
+      <a class="doc-card" href="/dashboard.html" data-search="dashboard owner command hub">
+        <div class="doc-card-top">
+          <div class="doc-title">Owner Dashboard v5</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">Static command dashboard. Projects, P&amp;L, Draft Room, Hopper, revenue tracking. Being replaced by Command Hub v6.</div>
+      </a>
+
+      <a class="doc-card" href="/9enterprises.html" data-search="9enterprises holding company marketing site">
+        <div class="doc-card-top">
+          <div class="doc-title">9enterprises.com Marketing Site</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">Public-facing holding company site. Launched March 28, 2026.</div>
+      </a>
+
+      <a class="doc-card" href="/cost-model.html" data-search="cost model infrastructure spending">
+        <div class="doc-card-top">
+          <div class="doc-title">Cost Model</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">Infrastructure costs, burn rate, and budget breakdown for the stack.</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── Architecture & Infrastructure ─────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Architecture &amp; Infrastructure</div>
+    <div class="doc-grid">
+
+      <div class="doc-card no-link" data-search="architecture self healing 9 enterprises">
+        <div class="doc-card-top">
+          <div class="doc-title">Self-Healing Architecture</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Freeze watchdog, terminal recovery, 4-layer liveness detection, OC auto-restart design.</div>
+        <div class="doc-note">docs/self-healing-architecture.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="comms architecture audit channels telegram imessage">
+        <div class="doc-card-top">
+          <div class="doc-title">Comms Architecture Audit</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">4-channel communication audit. Telegram, iMessage, Email, Voice. Hub architecture deep dive.</div>
+        <div class="doc-note">docs/comms-architecture-audit.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="dependency map security critical path">
+        <div class="doc-card-top">
+          <div class="doc-title">Dependency Map</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Complete dependency tree: services, credentials, failure impact, and failover for every component.</div>
+        <div class="doc-note">docs/dependency-map.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="docker containerization isolation plan">
+        <div class="doc-card-top">
+          <div class="doc-title">Docker Containerization Plan</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Agent isolation roadmap. Container architecture for 60-day security hardening sprint.</div>
+        <div class="doc-note">docs/docker-containerization-plan.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="vps cloud migration digitalocean voice server">
+        <div class="doc-card-top">
+          <div class="doc-title">VPS Deployment Plan</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Move voice server off Mac to $6/mo DigitalOcean VPS. Cloud-native migration Phase 1.</div>
+        <div class="doc-note">docs/vps-deployment-plan.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="toolbox architecture agent tools">
+        <div class="doc-card-top">
+          <div class="doc-title">Toolbox Architecture</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Agent tool layer design. Playwright MCP, IronClaw pattern, security model.</div>
+        <div class="doc-note">docs/toolbox-architecture.md — terminal access required</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Business Units ─────────────────────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Business Units — Plans &amp; Briefs</div>
+    <div class="doc-grid">
+
+      <div class="doc-card no-link" data-search="aigm merger plan ainflgm ainba aimlb turborepo monorepo">
+        <div class="doc-card-top">
+          <div class="doc-title">AiGM Merger Plan</div>
+          <div class="doc-tag tag-key">Priority</div>
+        </div>
+        <div class="doc-desc">Turborepo monorepo unification of AiNFLGM, AiNBA GM, AiMLB GM. 65-70% code reuse target. AiNBA 3-5 weeks from merge.</div>
+        <div class="doc-note">docs/aigm-merger-plan.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="freeagent9 concierge plan ubereats doordash appointments">
+        <div class="doc-card-top">
+          <div class="doc-title">freeagent9 Concierge Plan</div>
+          <div class="doc-tag tag-key">Priority</div>
+        </div>
+        <div class="doc-desc">Uber Eats/DoorDash ordering, Calendly appointments, PayPal Agentic payments integration roadmap.</div>
+        <div class="doc-note">docs/freeagent9-concierge-plan.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="trader9 strategy alpaca algorithmic trading bot">
+        <div class="doc-card-top">
+          <div class="doc-title">trader9 Strategy</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Momentum, mean reversion, news sentiment strategies. Risk rules. Phase 1 paper trading plan. Alpaca integration.</div>
+        <div class="doc-note">docs/trader9-strategy.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="x9 launch posts twitter social content">
+        <div class="doc-card-top">
+          <div class="doc-title">x9 Launch Posts</div>
+          <div class="doc-tag tag-key">Priority</div>
+        </div>
+        <div class="doc-desc">10 launch tweets + bio for autonomous X/Twitter presence. Ready to post. Account setup in progress.</div>
+        <div class="doc-note">docs/x9-launch-posts.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="ai underwriter mortgage rag guideline kyle brief">
+        <div class="doc-card-top">
+          <div class="doc-title">AI Underwriter Brief (Kyle)</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">CIO-level brief on the mortgage guideline RAG product. Technical plan, POC status, deployment path.</div>
+        <div class="doc-note">docs/ai-underwriter-brief-kyle.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="freeagent9 business plan revenue model">
+        <div class="doc-card-top">
+          <div class="doc-title">freeagent9 Business Plan</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Full business plan. Revenue model ($29-99/mo subscription), white-label rights, pilot expansion roadmap.</div>
+        <div class="doc-note">docs/freeagent9-business-plan.md — terminal access required</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Strategy ───────────────────────────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Strategy &amp; Operations</div>
+    <div class="doc-grid">
+
+      <div class="doc-card no-link" data-search="9 enterprises brand vision identity burrow orange black">
+        <div class="doc-card-top">
+          <div class="doc-title">9 Enterprises Brand Vision</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Orange and black across all holdings. Joe Burrow #9 as holding company identity. Separation rules per product.</div>
+        <div class="doc-note">docs/9enterprises-brand-vision.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="revenue projections 1 million arr north star roadmap">
+        <div class="doc-card-top">
+          <div class="doc-title">Revenue Projections</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">$1M ARR in 12 months. Per-company projections, traffic milestones, conversion assumptions.</div>
+        <div class="doc-note">docs/revenue-projections-march26.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="team operating model agent delegation front office">
+        <div class="doc-card-top">
+          <div class="doc-title">Team Operating Model</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">QB-and-Front-Office delegation model. Agent hierarchy, spend authority, parallel build protocols.</div>
+        <div class="doc-note">docs/team-operating-model.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="org chart 9 enterprises hierarchy companies">
+        <div class="doc-card-top">
+          <div class="doc-title">Org Chart</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Full org hierarchy. Holding company to Company to Product to Task. Agent roster placements.</div>
+        <div class="doc-note">docs/org-chart.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="50k revenue plan monthly target aggressive">
+        <div class="doc-card-top">
+          <div class="doc-title">50K Revenue Plan</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Aggressive 30-day sprint to $50K/mo. Per-company action items and milestones.</div>
+        <div class="doc-note">docs/50k-revenue-plan.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="content calendar april 2026 social x9 reddit">
+        <div class="doc-card-top">
+          <div class="doc-title">Content Calendar — April 2026</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Final April 2026 social calendar. x9, Reddit, AiGM cross-promotion schedule.</div>
+        <div class="doc-note">docs/content-calendar-april2026-final.md — terminal access required</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Live Product Pages ─────────────────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Live Product Pages</div>
+    <div class="doc-grid">
+
+      <a class="doc-card" href="https://ainflgm.com" target="_blank" rel="noopener" data-search="ainflgm nfl simulator live product">
+        <div class="doc-card-top">
+          <div class="doc-title">AiNFLGM</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">ainflgm.com — NFL GM simulator. Flagship AiGM product. React 19 + Vite PWA.</div>
+      </a>
+
+      <a class="doc-card" href="/aigm.html" data-search="aigm umbrella sports simulator">
+        <div class="doc-card-top">
+          <div class="doc-title">AiGM Umbrella Page</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">AiGM company page covering all three simulators (NFL, NBA, MLB).</div>
+      </a>
+
+      <a class="doc-card" href="https://agent9.com" target="_blank" rel="noopener" data-search="agent9 real estate consumer site">
+        <div class="doc-card-top">
+          <div class="doc-title">agent9.com</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">AI-native real estate consumer site. Live March 28, 2026.</div>
+      </a>
+
+      <a class="doc-card" href="/freeagent.html" data-search="freeagent9 landing product page">
+        <div class="doc-card-top">
+          <div class="doc-title">freeagent9 Product Page</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">freeagent9 consumer-facing landing page.</div>
+      </a>
+
+      <a class="doc-card" href="/underwriter.html" data-search="ai underwriter mortgage guideline product">
+        <div class="doc-card-top">
+          <div class="doc-title">AI Underwriter Product Page</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">Mortgage guideline RAG chatbot product page. POC complete.</div>
+      </a>
+
+      <a class="doc-card" href="/dashboard-share.html" data-search="shareable dashboard public no personal data">
+        <div class="doc-card-top">
+          <div class="doc-title">Shareable Dashboard</div>
+          <div class="doc-tag tag-live">Live</div>
+        </div>
+        <div class="doc-desc">Public-safe version of the owner dashboard. No personal data. Safe to share with advisors.</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── Kyle Shea Package ──────────────────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Kyle Shea — CIO Review Package</div>
+    <div class="doc-grid">
+
+      <a class="doc-card" href="/kyle-response-v5b.html" data-search="kyle response v5b current canonical">
+        <div class="doc-card-top">
+          <div class="doc-title">Architecture Response v5b</div>
+          <div class="doc-tag tag-key">Current</div>
+        </div>
+        <div class="doc-desc">Current canonical response to Kyle's architecture concerns. March 27, 2026 state of the company.</div>
+      </a>
+
+      <a class="doc-card" href="/architecture.html" data-search="architecture v3 full system">
+        <div class="doc-card-top">
+          <div class="doc-title">System Architecture v3.0</div>
+          <div class="doc-tag tag-key">New</div>
+        </div>
+        <div class="doc-desc">Full system architecture document. All layers, all companies, all costs. March 28 SOTU edition.</div>
+      </a>
+
+      <div class="doc-card no-link" data-search="kyle concerns response security dependency map questions">
+        <div class="doc-card-top">
+          <div class="doc-title">Kyle Concerns Response (raw)</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Working document — detailed written responses to Kyle's original concern list.</div>
+        <div class="doc-note">docs/kyle-concerns-response.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="kyle presentation slides deck talking points">
+        <div class="doc-card-top">
+          <div class="doc-title">Kyle Presentation</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Presentation framework and talking points for Kyle Shea CIO meeting.</div>
+        <div class="doc-note">docs/kyle-presentation.md — terminal access required</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Recent Sprint Reports ──────────────────────────────────────────── -->
+  <div class="group">
+    <div class="group-label">Recent Sprint Reports</div>
+    <div class="doc-grid">
+
+      <div class="doc-card no-link" data-search="sprint report march 27 deliverables status">
+        <div class="doc-card-top">
+          <div class="doc-title">Sprint Report — March 27</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">All deliverables, completions, and blockers from the March 27 session.</div>
+        <div class="doc-note">docs/sprint-report-march27.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="universal sweep march 27 audit loose ends">
+        <div class="doc-card-top">
+          <div class="doc-title">Universal Sweep — March 27</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Full system sweep: processes, ports, channels, files, and health checks.</div>
+        <div class="doc-note">docs/universal-sweep-march27.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="session handoff march 27 state context next steps">
+        <div class="doc-card-top">
+          <div class="doc-title">Session Handoff — March 27</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Session state, completed work, in-progress items, and next steps for session continuity.</div>
+        <div class="doc-note">docs/session-handoff-march27.md — terminal access required</div>
+      </div>
+
+      <div class="doc-card no-link" data-search="morning briefing march 27 daily summary">
+        <div class="doc-card-top">
+          <div class="doc-title">Morning Briefing — March 27</div>
+          <div class="doc-tag tag-md">MD</div>
+        </div>
+        <div class="doc-desc">Daily briefing: wins, active work, owner actions required, open items.</div>
+        <div class="doc-note">docs/morning-briefing-march27.md — terminal access required</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <div class="footer">
+    <p>9 Enterprises LLC &mdash; Document Library &mdash; Updated March 28, 2026</p>
+    <p style="margin-top:6px;"><a href="/9enterprises.html">9enterprises.com</a> &nbsp;|&nbsp; <a href="/architecture.html">Architecture v3.0</a> &nbsp;|&nbsp; <a href="/dashboard.html">Owner Dashboard</a></p>
+  </div>
+
+</div>
+
+<script>
+function filterDocs(query) {
+  const q = query.toLowerCase().trim();
+  const cards = document.querySelectorAll('.doc-card');
+  cards.forEach(function(card) {
+    if (!q) {
+      card.classList.remove('hidden');
+      return;
+    }
+    const title = (card.querySelector('.doc-title') || {}).textContent || '';
+    const desc = (card.querySelector('.doc-desc') || {}).textContent || '';
+    const note = (card.querySelector('.doc-note') || {}).textContent || '';
+    const searchAttr = card.getAttribute('data-search') || '';
+    const combined = (title + ' ' + desc + ' ' + note + ' ' + searchAttr).toLowerCase();
+    card.classList.toggle('hidden', !combined.includes(q));
+  });
+}
+</script>
+</body>
+</html>
