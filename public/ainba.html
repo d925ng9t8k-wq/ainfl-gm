@@ -25,19 +25,19 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg:         #050508;
-  --bg-2:       #0a0a0e;
-  --bg-3:       #0e0c0a;
-  --bg-card:    #0d0c0a;
+  --bg:         #0a0a0a;
+  --bg-2:       #111111;
+  --bg-3:       #1a1a1a;
+  --bg-card:    #111111;
   --border:     rgba(255,255,255,0.07);
-  --border-hi:  rgba(247,127,0,0.35);
-  --orange:     #f77f00;
-  --orange-2:   #e06c00;
-  --orange-3:   #ffaa44;
-  --orange-dim: rgba(247,127,0,0.15);
-  --text:       #e8e2da;
-  --text-dim:   #8a8278;
-  --text-mute:  #44403a;
+  --border-hi:  rgba(251,79,20,0.35);
+  --orange:     #FB4F14;
+  --orange-2:   #e04412;
+  --orange-3:   #FF6B35;
+  --orange-dim: rgba(251,79,20,0.12);
+  --text:       #e2e2e2;
+  --text-dim:   #888888;
+  --text-mute:  #444444;
   --white:      #ffffff;
   --radius:     16px;
   --radius-sm:  10px;
@@ -143,9 +143,9 @@ nav {
   text-transform: uppercase;
   color: var(--orange);
   padding: 4px 12px;
-  border: 1px solid rgba(247,127,0,0.35);
+  border: 1px solid rgba(251,79,20,0.35);
   border-radius: 20px;
-  background: rgba(247,127,0,0.08);
+  background: rgba(251,79,20,0.08);
 }
 
 /* ─── Hero ───────────────────────────────────────────────────── */
@@ -165,8 +165,8 @@ nav {
   content: '';
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(247,127,0,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(247,127,0,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(251,79,20,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251,79,20,0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   animation: gridFade 5s ease-in-out infinite;
   pointer-events: none;
@@ -178,7 +178,7 @@ nav {
   position: absolute;
   left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(247,127,0,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(251,79,20,0.5), transparent);
   animation: scanOrange 8s linear infinite;
   pointer-events: none;
 }
@@ -190,7 +190,7 @@ nav {
   left: 50%;
   transform: translateX(-50%);
   width: 800px; height: 400px;
-  background: radial-gradient(ellipse at center, rgba(247,127,0,0.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(251,79,20,0.10) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -219,9 +219,9 @@ nav {
   color: var(--orange-3);
   margin-bottom: 24px;
   padding: 6px 16px;
-  border: 1px solid rgba(247,127,0,0.3);
+  border: 1px solid rgba(251,79,20,0.3);
   border-radius: 20px;
-  background: rgba(247,127,0,0.08);
+  background: rgba(251,79,20,0.08);
 }
 
 .hero h1 {
@@ -257,7 +257,7 @@ nav {
 /* ─── Email Capture ──────────────────────────────────────────── */
 .email-capture-box {
   background: var(--bg-card);
-  border: 1px solid rgba(247,127,0,0.25);
+  border: 1px solid rgba(251,79,20,0.25);
   border-radius: var(--radius);
   padding: 36px;
   max-width: 480px;
@@ -317,7 +317,7 @@ nav {
   font-family: inherit;
 }
 .capture-input::placeholder { color: var(--text-mute); }
-.capture-input:focus { border-color: rgba(247,127,0,0.5); }
+.capture-input:focus { border-color: rgba(251,79,20,0.5); }
 
 .capture-btn {
   background: var(--orange);
@@ -382,7 +382,7 @@ nav {
   transition: border-color 0.2s, transform 0.2s;
 }
 .feature-card:hover {
-  border-color: rgba(247,127,0,0.35);
+  border-color: rgba(251,79,20,0.35);
   transform: translateY(-3px);
 }
 
@@ -499,7 +499,7 @@ nav {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   width: 700px; height: 500px;
-  background: radial-gradient(ellipse, rgba(247,127,0,0.07), transparent 70%);
+  background: radial-gradient(ellipse, rgba(251,79,20,0.07), transparent 70%);
   pointer-events: none;
 }
 
@@ -642,11 +642,11 @@ footer {
 
   <!-- Abstract basketball shape -->
   <svg class="ball-visual" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="100" cy="100" r="95" stroke="#f77f00" stroke-width="4"/>
-    <path d="M100 5 Q100 100 100 195" stroke="#f77f00" stroke-width="3"/>
-    <path d="M5 100 Q100 100 195 100" stroke="#f77f00" stroke-width="3"/>
-    <path d="M30 30 Q100 100 170 170" stroke="#f77f00" stroke-width="2"/>
-    <path d="M170 30 Q100 100 30 170" stroke="#f77f00" stroke-width="2"/>
+    <circle cx="100" cy="100" r="95" stroke="#FB4F14" stroke-width="4"/>
+    <path d="M100 5 Q100 100 100 195" stroke="#FB4F14" stroke-width="3"/>
+    <path d="M5 100 Q100 100 195 100" stroke="#FB4F14" stroke-width="3"/>
+    <path d="M30 30 Q100 100 170 170" stroke="#FB4F14" stroke-width="2"/>
+    <path d="M170 30 Q100 100 30 170" stroke="#FB4F14" stroke-width="2"/>
   </svg>
 
   <div class="hero-content">
@@ -776,8 +776,8 @@ footer {
       text-decoration: none;
       transition: background 0.2s, transform 0.15s;
       position: relative;
-    " onmouseover="this.style.background='#e06c00';this.style.transform='translateY(-2px)'"
-       onmouseout="this.style.background='#f77f00';this.style.transform='translateY(0)'">
+    " onmouseover="this.style.background='#e04412';this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.background='#FB4F14';this.style.transform='translateY(0)'">
       Play AiNFL GM Free &rarr;
     </a>
   </div>

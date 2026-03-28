@@ -27,26 +27,26 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg:          #06050a;
-  --bg-2:        #0b0a10;
-  --bg-3:        #110f18;
-  --bg-card:     #0e0c16;
-  --border:      rgba(255,255,255,0.07);
-  --border-gold: rgba(212,163,62,0.35);
-  --gold:        #d4a33e;
-  --gold-2:      #b8882a;
-  --gold-3:      #f0c878;
-  --gold-dim:    rgba(212,163,62,0.18);
-  --amber:       #f59e0b;
-  --purple:      #7c5cdb;
-  --purple-dim:  rgba(124,92,219,0.15);
-  --text:        #e4e0f0;
-  --text-dim:    #8a8499;
-  --text-mute:   #3d3a4a;
-  --white:       #ffffff;
-  --radius:      16px;
-  --radius-sm:   10px;
-  --shadow-gold: 0 0 40px rgba(212,163,62,0.12);
+  --bg:           #0a0a0a;
+  --bg-2:         #111111;
+  --bg-3:         #1a1a1a;
+  --bg-card:      #111111;
+  --border:       rgba(255,255,255,0.07);
+  --border-gold:  rgba(251,79,20,0.35);
+  --gold:         #FB4F14;
+  --gold-2:       #e04412;
+  --gold-3:       #FF6B35;
+  --gold-dim:     rgba(251,79,20,0.15);
+  --amber:        #FB4F14;
+  --purple:       #FB4F14;
+  --purple-dim:   rgba(251,79,20,0.12);
+  --text:         #e2e2e2;
+  --text-dim:     #888888;
+  --text-mute:    #444444;
+  --white:        #ffffff;
+  --radius:       16px;
+  --radius-sm:    10px;
+  --shadow-gold:  0 0 40px rgba(251,79,20,0.12);
 }
 
 html { scroll-behavior: smooth; }
@@ -133,7 +133,7 @@ nav {
 
 .nav-cta {
   background: var(--gold);
-  color: #0b0a10;
+  color: var(--white);
   text-decoration: none;
   padding: 10px 22px;
   border-radius: 8px;
@@ -150,7 +150,7 @@ nav {
   .nav-mobile {
     display: block;
     background: var(--gold);
-    color: #0b0a10;
+    color: var(--white);
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 8px;
@@ -179,19 +179,19 @@ nav {
 }
 .hero-orb-1 {
   width: 520px; height: 520px;
-  background: radial-gradient(circle, rgba(212,163,62,0.14) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(251,79,20,0.12) 0%, transparent 70%);
   top: -80px; left: -120px;
   animation: orbFloat 14s ease-in-out infinite;
 }
 .hero-orb-2 {
   width: 420px; height: 420px;
-  background: radial-gradient(circle, rgba(124,92,219,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(251,79,20,0.08) 0%, transparent 70%);
   bottom: 40px; right: -80px;
   animation: orbFloat 10s ease-in-out infinite reverse;
 }
 .hero-orb-3 {
   width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(212,163,62,0.09) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(251,79,20,0.08) 0%, transparent 70%);
   bottom: 20%; left: 50%;
   transform: translateX(-50%);
   animation: orbFloat 18s ease-in-out infinite;
@@ -275,7 +275,7 @@ nav {
   align-items: center;
   gap: 8px;
   background: var(--gold);
-  color: #0b0a10;
+  color: var(--white);
   text-decoration: none;
   padding: 16px 36px;
   border-radius: 10px;
@@ -288,7 +288,7 @@ nav {
 .btn-primary:hover {
   background: var(--gold-3);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(212,163,62,0.3);
+  box-shadow: 0 8px 32px rgba(251,79,20,0.3);
 }
 
 .btn-secondary {
@@ -369,7 +369,7 @@ nav {
   position: relative;
   transition: border-color 0.25s;
 }
-.problem-card:hover { border-color: rgba(212,163,62,0.2); }
+.problem-card:hover { border-color: rgba(251,79,20,0.2); }
 
 .problem-icon {
   font-size: 28px;
@@ -482,7 +482,7 @@ nav {
   font-size: 26px;
   font-weight: 900;
   color: var(--gold);
-  box-shadow: 0 0 24px rgba(212,163,62,0.12);
+  box-shadow: 0 0 24px rgba(251,79,20,0.10);
 }
 
 .step h3 {
@@ -585,7 +585,7 @@ nav {
   border-radius: 50%;
   background: var(--gold);
   border: 2px solid var(--bg-card);
-  box-shadow: 0 0 10px rgba(212,163,62,0.4);
+  box-shadow: 0 0 10px rgba(251,79,20,0.4);
   cursor: pointer;
 }
 
@@ -734,7 +734,7 @@ nav {
 
 .waitlist-btn {
   background: var(--gold);
-  color: #0b0a10;
+  color: var(--white);
   border: none;
   padding: 15px 28px;
   border-radius: 10px;

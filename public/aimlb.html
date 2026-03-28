@@ -25,12 +25,13 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg:        #05050a;
-  --bg-2:      #090910;
-  --bg-3:      #0c0c16;
-  --bg-card:   #0a0a14;
+  --bg:        #0a0a0a;
+  --bg-2:      #111111;
+  --bg-3:      #1a1a1a;
+  --bg-card:   #111111;
   --border:    rgba(255,255,255,0.07);
   --border-hi: rgba(200,30,30,0.35);
+  --brand:     #FB4F14;
   --red:       #d62828;
   --red-2:     #b91c1c;
   --red-3:     #f87171;
@@ -39,9 +40,9 @@
   --navy-3:    #93c5fd;
   --accent:    #e53935;
   --gold:      #f59e0b;
-  --text:      #e2e0ef;
-  --text-dim:  #8887a0;
-  --text-mute: #3a3a55;
+  --text:      #e2e2e2;
+  --text-dim:  #888888;
+  --text-mute: #444444;
   --white:     #ffffff;
   --radius:    16px;
   --radius-sm: 10px;
@@ -133,7 +134,7 @@ nav {
   color: var(--white);
   text-decoration: none;
 }
-.nav-logo .ai { color: var(--red); }
+.nav-logo .ai { color: var(--brand); }
 .nav-logo .sport { color: var(--text-dim); }
 
 .nav-pill {
@@ -229,7 +230,7 @@ nav {
   line-height: 1.0;
   margin-bottom: 4px;
 }
-.hero h1 .ai { color: var(--red); }
+.hero h1 .ai { color: var(--brand); }
 .hero h1 .sport { color: var(--text-dim); font-weight: 700; }
 
 .hero-tagline {
@@ -683,7 +684,7 @@ footer {
   color: var(--white);
   margin-bottom: 8px;
 }
-.footer-brand .logo .ai { color: var(--red); }
+.footer-brand .logo .ai { color: var(--brand); }
 .footer-brand p {
   font-size: 13px;
   color: var(--text-mute);
