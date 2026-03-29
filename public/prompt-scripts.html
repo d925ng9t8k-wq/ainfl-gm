@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>AI Prompt Scripts Marketplace | 9 Enterprises</title>
+<meta name="description" content="Ready-to-use AI agent prompt scripts for fantasy sports, real estate, business, and personal productivity. Works with Claude, ChatGPT, and Gemini.">
+<meta property="og:title" content="AI Prompt Scripts Marketplace | 9 Enterprises">
+<meta property="og:description" content="Copy-paste AI agent prompt scripts that actually work. Fantasy sports, real estate, business, and lifestyle. Built by 9 Enterprises.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/prompt-scripts.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Prompt Scripts Marketplace | 9 Enterprises">
+<meta name="twitter:description" content="Copy-paste AI agent prompt scripts for fantasy sports, real estate, business, and lifestyle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --gold:       #FFD600;
+  --gold-dim:   rgba(255,214,0,0.12);
+  --purple:     #A855F7;
+  --purple-dim: rgba(168,85,247,0.12);
+  --orange:     #FF6B35;
+  --orange-dim: rgba(255,107,53,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(0,240,255,0.25); }
+  50%       { border-color: rgba(0,240,255,0.6); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Subscriber Banner ── */
+.sub-banner {
+  background: linear-gradient(135deg, rgba(168,85,247,0.18) 0%, rgba(0,240,255,0.10) 100%);
+  border-bottom: 1px solid rgba(168,85,247,0.3);
+  padding: 10px 24px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sub-banner .banner-badge {
+  background: var(--purple-dim);
+  border: 1px solid rgba(168,85,247,0.4);
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple);
+}
+.sub-banner a {
+  color: var(--purple);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  animation: pulse-border 2s infinite;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cyan);
+  display: block;
+}
+.hero-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  align-items: center;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-mute);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 11px 14px 11px 40px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--border-hi); }
+.search-input::placeholder { color: var(--text-mute); }
+.filter-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.filter-tab:hover { border-color: var(--border-hi); color: var(--cyan); }
+.filter-tab.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.filter-tab.cat-nfl.active   { background: var(--green-dim); border-color: rgba(57,255,20,0.3); color: var(--green); }
+.filter-tab.cat-re.active    { background: var(--gold-dim); border-color: rgba(255,214,0,0.3); color: var(--gold); }
+.filter-tab.cat-biz.active   { background: var(--purple-dim); border-color: rgba(168,85,247,0.3); color: var(--purple); }
+.filter-tab.cat-life.active  { background: var(--orange-dim); border-color: rgba(255,107,53,0.3); color: var(--orange); }
+
+/* ── Category Sections ── */
+.category-section {
+  margin-bottom: 40px;
+  animation: fadeUp 0.5s ease both;
+}
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.category-icon {
+  width: 38px; height: 38px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.cat-nfl .category-icon   { background: var(--green-dim); }
+.cat-re .category-icon    { background: var(--gold-dim); }
+.cat-biz .category-icon   { background: var(--purple-dim); }
+.cat-life .category-icon  { background: var(--orange-dim); }
+
+.category-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.cat-nfl .category-title   { color: var(--green); }
+.cat-re .category-title    { color: var(--gold); }
+.cat-biz .category-title   { color: var(--purple); }
+.cat-life .category-title  { color: var(--orange); }
+
+.category-sub {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+/* ── Cards Grid ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+}
+
+/* ── Prompt Card ── */
+.prompt-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.prompt-card:hover { transform: translateY(-2px); }
+.cat-nfl  .prompt-card { border-top: 3px solid var(--green); }
+.cat-nfl  .prompt-card:hover { border-color: rgba(57,255,20,0.4); border-top-color: var(--green); }
+.cat-re   .prompt-card { border-top: 3px solid var(--gold); }
+.cat-re   .prompt-card:hover { border-color: rgba(255,214,0,0.4); border-top-color: var(--gold); }
+.cat-biz  .prompt-card { border-top: 3px solid var(--purple); }
+.cat-biz  .prompt-card:hover { border-color: rgba(168,85,247,0.4); border-top-color: var(--purple); }
+.cat-life .prompt-card { border-top: 3px solid var(--orange); }
+.cat-life .prompt-card:hover { border-color: rgba(255,107,53,0.4); border-top-color: var(--orange); }
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+  line-height: 1.3;
+}
+.price-badge {
+  flex-shrink: 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.price-free {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(57,255,20,0.25);
+}
+.price-paid {
+  background: var(--gold-dim);
+  color: var(--gold);
+  border: 1px solid rgba(255,214,0,0.25);
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── Stars ── */
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.stars {
+  display: flex;
+  gap: 2px;
+  color: var(--gold);
+  font-size: 13px;
+}
+.rating-count {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+/* ── AI Badges ── */
+.ai-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.ai-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--text-mute);
+  background: var(--bg-2);
+}
+
+/* ── Card Actions ── */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+.btn {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 12px;
+  border-radius: var(--radius-xs);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.btn-preview {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.btn-preview:hover { border-color: var(--border-hi); color: var(--cyan); }
+.btn-copy {
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.3);
+  color: var(--green);
+}
+.btn-copy:hover { background: rgba(57,255,20,0.2); }
+.btn-buy {
+  background: var(--gold-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  color: var(--gold);
+}
+.btn-buy:hover { background: rgba(255,214,0,0.2); }
+
+/* ── Preview Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 620px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: glow-in 0.2s ease;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-2);
+  z-index: 1;
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+.modal-close {
+  width: 32px; height: 32px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-dim);
+  transition: all 0.2s;
+  font-size: 18px;
+  line-height: 1;
+}
+.modal-close:hover { color: #fff; border-color: var(--border-hi); }
+.modal-body { padding: 20px; }
+.modal-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.prompt-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  white-space: pre-wrap;
+  word-break: break-word;
+  position: relative;
+  overflow: hidden;
+}
+.prompt-blur {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 16px;
+}
+.blur-cta {
+  background: var(--gold-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  color: var(--gold);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.blur-cta:hover { background: rgba(255,214,0,0.2); }
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* ── Coming Soon Modal ── */
+.coming-modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 400px;
+  width: 100%;
+  padding: 32px 24px;
+  text-align: center;
+  animation: glow-in 0.2s ease;
+}
+.coming-icon {
+  font-size: 42px;
+  margin-bottom: 14px;
+}
+.coming-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.coming-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.coming-price {
+  font-family: 'Oswald', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.coming-price-label {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 20px;
+}
+
+/* ── Copy Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.35);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  z-index: 300;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── No Results ── */
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-mute);
+  display: none;
+}
+.no-results-icon { font-size: 40px; margin-bottom: 12px; }
+.no-results-text { font-size: 15px; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .hero { padding: 36px 16px 24px; }
+  .hero-stats { gap: 20px; }
+  .controls { flex-direction: column; align-items: stretch; }
+  .filter-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .modal-actions { flex-direction: column; }
+  .card-actions { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">9<span>Enterprises</span></a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Subscriber Banner -->
+<div class="sub-banner">
+  <span class="banner-badge">FreeAgent</span>
+  FreeAgent subscribers get ALL paid prompts free.
+  <a href="#">Subscribe to FreeAgent &rarr;</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    16 Agent Scripts Live
+  </div>
+  <h1>AI Prompt Scripts <span>Marketplace</span></h1>
+  <p>Copy-paste agent prompts engineered for results. Works with Claude, ChatGPT, and Gemini. Sports, real estate, business, and life.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num">16</span>
+      <span class="hero-stat-label">Prompt Scripts</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">4</span>
+      <span class="hero-stat-label">Categories</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">3</span>
+      <span class="hero-stat-label">AI Platforms</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M11 11L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search prompt scripts..." oninput="filterCards()">
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-cat="all" onclick="setFilter('all', this)">All Scripts</button>
+      <button class="filter-tab cat-nfl" data-cat="nfl" onclick="setFilter('nfl', this)">NFL &amp; Fantasy</button>
+      <button class="filter-tab cat-re" data-cat="re" onclick="setFilter('re', this)">Real Estate</button>
+      <button class="filter-tab cat-biz" data-cat="biz" onclick="setFilter('biz', this)">Business</button>
+      <button class="filter-tab cat-life" data-cat="life" onclick="setFilter('life', this)">Lifestyle</button>
+    </div>
+  </div>
+
+  <!-- NFL Category -->
+  <div class="category-section cat-nfl" data-section="nfl">
+    <div class="category-header">
+      <div class="category-icon">&#127944;</div>
+      <div>
+        <div class="category-title">NFL &amp; Fantasy Sports</div>
+        <div class="category-sub">Free with AiNFL GM &mdash; No account required</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="prompt-card" data-cat="nfl" data-title="Fantasy Draft Strategy Agent">
+        <div class="card-top">
+          <div class="card-title">Fantasy Draft Strategy Agent</div>
+          <span class="price-badge price-free">FREE</span>
+        </div>
+        <div class="card-desc">Analyzes your league settings, scoring format, and draft position to generate a round-by-round strategy. Adapts to PPR, half-PPR, and standard.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.9 &middot; 312 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('draft-strategy')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-copy" onclick="copyPrompt('draft-strategy', this)">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 9V2h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Copy Prompt
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="nfl" data-title="Trade Evaluation Agent">
+        <div class="card-top">
+          <div class="card-title">Trade Evaluation Agent</div>
+          <span class="price-badge price-free">FREE</span>
+        </div>
+        <div class="card-desc">Evaluates any fantasy trade proposal using player projections, target share, and schedule strength. Returns a clear win/lose/neutral verdict.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.8 &middot; 489 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('trade-eval')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-copy" onclick="copyPrompt('trade-eval', this)">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 9V2h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Copy Prompt
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="nfl" data-title="Waiver Wire Scout Agent">
+        <div class="card-top">
+          <div class="card-title">Waiver Wire Scout Agent</div>
+          <span class="price-badge price-free">FREE</span>
+        </div>
+        <div class="card-desc">Scans waiver wire targets by week, roster needs, and opponent matchup. Ranks pickups by upside, floor, and immediate impact.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <span class="rating-count">(4.7 &middot; 271 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('waiver-scout')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-copy" onclick="copyPrompt('waiver-scout', this)">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 9V2h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Copy Prompt
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="nfl" data-title="Injury Impact Analyst Agent">
+        <div class="card-top">
+          <div class="card-title">Injury Impact Analyst Agent</div>
+          <span class="price-badge price-free">FREE</span>
+        </div>
+        <div class="card-desc">Breaks down how a player injury reshapes target distribution, backfield usage, and lineup decisions for the affected team and your roster.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.9 &middot; 198 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('injury-analyst')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-copy" onclick="copyPrompt('injury-analyst', this)">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 9V2h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Copy Prompt
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Real Estate Category -->
+  <div class="category-section cat-re" data-section="re">
+    <div class="category-header">
+      <div class="category-icon">&#127968;</div>
+      <div>
+        <div class="category-title">Real Estate</div>
+        <div class="category-sub">FreeAgent product &mdash; $4.99 each / Free with FreeAgent subscription</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="prompt-card" data-cat="re" data-title="Property Valuation Agent">
+        <div class="card-top">
+          <div class="card-title">Property Valuation Agent</div>
+          <span class="price-badge price-paid">$4.99</span>
+        </div>
+        <div class="card-desc">Estimates property value using comp analysis, neighborhood trends, and condition inputs. Outputs a CMA-style range with supporting logic.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.8 &middot; 143 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('property-val')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Property Valuation Agent', '$4.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="re" data-title="Listing Description Writer Agent">
+        <div class="card-top">
+          <div class="card-title">Listing Description Writer Agent</div>
+          <span class="price-badge price-paid">$4.99</span>
+        </div>
+        <div class="card-desc">Generates compelling MLS listing descriptions from your property inputs. Highlights selling points, neighborhood features, and lifestyle appeal.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(5.0 &middot; 87 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('listing-writer')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Listing Description Writer Agent', '$4.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="re" data-title="Buyer Qualification Agent">
+        <div class="card-top">
+          <div class="card-title">Buyer Qualification Agent</div>
+          <span class="price-badge price-paid">$4.99</span>
+        </div>
+        <div class="card-desc">Walks buyers through a structured qualification conversation. Uncovers timeline, budget, financing status, and dealbreakers in one clean flow.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <span class="rating-count">(4.6 &middot; 62 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('buyer-qual')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Buyer Qualification Agent', '$4.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="re" data-title="Market Analysis Agent">
+        <div class="card-top">
+          <div class="card-title">Market Analysis Agent</div>
+          <span class="price-badge price-paid">$4.99</span>
+        </div>
+        <div class="card-desc">Produces a buyer's or seller's market assessment for any zip code. Covers DOM trends, price per sq ft, absorption rate, and directional outlook.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.9 &middot; 109 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('market-analysis')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Market Analysis Agent', '$4.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Business Category -->
+  <div class="category-section cat-biz" data-section="biz">
+    <div class="category-header">
+      <div class="category-icon">&#128188;</div>
+      <div>
+        <div class="category-title">Business &amp; Productivity</div>
+        <div class="category-sub">FreeAgent product &mdash; $9.99 each / Free with FreeAgent subscription</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="prompt-card" data-cat="biz" data-title="Email Responder Agent">
+        <div class="card-top">
+          <div class="card-title">Email Responder Agent</div>
+          <span class="price-badge price-paid">$9.99</span>
+        </div>
+        <div class="card-desc">Drafts professional email responses in your voice. Handles follow-ups, objections, requests, and complex multi-thread conversations with precision.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(5.0 &middot; 524 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('email-responder')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Email Responder Agent', '$9.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="biz" data-title="Meeting Notes Summarizer Agent">
+        <div class="card-top">
+          <div class="card-title">Meeting Notes Summarizer Agent</div>
+          <span class="price-badge price-paid">$9.99</span>
+        </div>
+        <div class="card-desc">Transforms raw meeting transcripts or bullet notes into structured summaries with decisions made, action items, owners, and deadlines.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.9 &middot; 381 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('meeting-notes')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Meeting Notes Summarizer Agent', '$9.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="biz" data-title="Sales Outreach Agent">
+        <div class="card-top">
+          <div class="card-title">Sales Outreach Agent</div>
+          <span class="price-badge price-paid">$9.99</span>
+        </div>
+        <div class="card-desc">Writes cold and warm outreach sequences personalized to your ICP. Generates subject lines, openers, value props, and CTAs optimized for reply rate.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <span class="rating-count">(4.7 &middot; 217 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('sales-outreach')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Sales Outreach Agent', '$9.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="biz" data-title="Customer Support Agent">
+        <div class="card-top">
+          <div class="card-title">Customer Support Agent</div>
+          <span class="price-badge price-paid">$9.99</span>
+        </div>
+        <div class="card-desc">Handles inbound support requests with empathy, accuracy, and escalation logic. Covers refunds, troubleshooting, and satisfaction recovery flows.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.8 &middot; 163 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('customer-support')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Customer Support Agent', '$9.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lifestyle Category -->
+  <div class="category-section cat-life" data-section="life">
+    <div class="category-header">
+      <div class="category-icon">&#127775;</div>
+      <div>
+        <div class="category-title">Personal &amp; Lifestyle</div>
+        <div class="category-sub">Jules product &mdash; $2.99 each / Free with FreeAgent subscription</div>
+      </div>
+    </div>
+    <div class="cards-grid">
+
+      <div class="prompt-card" data-cat="life" data-title="Meal Planner Agent">
+        <div class="card-top">
+          <div class="card-title">Meal Planner Agent</div>
+          <span class="price-badge price-paid">$2.99</span>
+        </div>
+        <div class="card-desc">Builds a personalized weekly meal plan around your dietary goals, restrictions, and schedule. Includes a grocery list and prep time estimates.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <span class="rating-count">(4.6 &middot; 204 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('meal-planner')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Meal Planner Agent', '$2.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="life" data-title="Budget Tracker Agent">
+        <div class="card-top">
+          <div class="card-title">Budget Tracker Agent</div>
+          <span class="price-badge price-paid">$2.99</span>
+        </div>
+        <div class="card-desc">Analyzes your monthly spending inputs and outputs a zero-based budget, savings targets, and where you're leaking money — no app required.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(4.8 &middot; 177 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('budget-tracker')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Budget Tracker Agent', '$2.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="life" data-title="Travel Planner Agent">
+        <div class="card-top">
+          <div class="card-title">Travel Planner Agent</div>
+          <span class="price-badge price-paid">$2.99</span>
+        </div>
+        <div class="card-desc">Plans a complete trip itinerary from your destination, budget, and travel style. Covers flights, hotels, daily activities, and hidden local gems.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <span class="rating-count">(5.0 &middot; 319 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('travel-planner')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Travel Planner Agent', '$2.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+      <div class="prompt-card" data-cat="life" data-title="Fitness Coach Agent">
+        <div class="card-top">
+          <div class="card-title">Fitness Coach Agent</div>
+          <span class="price-badge price-paid">$2.99</span>
+        </div>
+        <div class="card-desc">Designs a personalized workout plan based on your goals, equipment, and schedule. Includes progression logic, rest days, and tracking cues.</div>
+        <div class="card-rating">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <span class="rating-count">(4.7 &middot; 241 uses)</span>
+        </div>
+        <div class="ai-badges">
+          <span class="ai-badge">Claude</span>
+          <span class="ai-badge">ChatGPT</span>
+          <span class="ai-badge">Gemini</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-preview" onclick="openPreview('fitness-coach')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="6.5" r="2" fill="currentColor"/></svg>
+            Preview
+          </button>
+          <button class="btn btn-buy" onclick="openComing('Fitness Coach Agent', '$2.99')">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h1.5l1 5h5l1-4H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="11" r="1" fill="currentColor"/></svg>
+            Buy Now
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- No Results -->
+  <div class="no-results" id="noResults">
+    <div class="no-results-icon">&#128270;</div>
+    <div class="no-results-text">No prompt scripts match that search. Try a different keyword.</div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>AI Prompt Scripts engineered by 9 Enterprises. Works with Claude, ChatGPT, and Gemini.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/biz-name-gen.html">Name Generator</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="previewModal" onclick="handleOverlayClick(event)">
+  <div class="modal" id="previewModalInner">
+    <div class="modal-header">
+      <div class="modal-title" id="previewTitle">Preview</div>
+      <button class="modal-close" onclick="closePreview()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-desc" id="previewDesc"></div>
+      <div class="prompt-block" id="promptBlock">
+        <span id="promptText"></span>
+        <div class="prompt-blur" id="promptBlurLayer">
+          <button class="blur-cta" id="blurCta" onclick="handleBlurCta()">Unlock Full Prompt</button>
+        </div>
+      </div>
+      <div class="modal-actions" id="previewActions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Coming Soon Modal -->
+<div class="modal-overlay" id="comingModal" onclick="handleComingOverlayClick(event)">
+  <div class="coming-modal">
+    <div class="coming-icon">&#128274;</div>
+    <div class="coming-title">Coming Soon</div>
+    <div class="coming-desc" id="comingDesc">Secure checkout is almost ready. Drop your email and we'll notify you the moment it launches.</div>
+    <div class="coming-price" id="comingPrice">$4.99</div>
+    <div class="coming-price-label">One-time purchase &middot; Instant download</div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-preview" style="flex:1;" onclick="closeComingModal()">Maybe Later</button>
+      <button class="btn btn-buy" style="flex:1; max-width:none;" onclick="closeComingModal()">Notify Me</button>
+    </div>
+  </div>
+</div>
+
+<!-- Copy Toast -->
+<div class="toast" id="copyToast">Prompt copied to clipboard</div>
+
+<script>
+// ── Prompt Data ──
+const PROMPTS = {
+  'draft-strategy': {
+    title: 'Fantasy Draft Strategy Agent',
+    desc: 'Use this prompt at the start of your fantasy draft session. Fill in your league details in the [brackets] before pasting.',
+    free: true,
+    text: `You are an expert fantasy football draft strategist. I need you to build a round-by-round draft strategy for my league.
+
+LEAGUE SETTINGS:
+- Format: [PPR / Half-PPR / Standard]
+- Teams: [number of teams]
+- Draft position: [my pick #]
+- Roster: QB, 2xRB, 2xWR, TE, FLEX, K, DEF
+- Scoring: [any custom rules]
+
+Build my strategy following these principles:
+1. Identify the optimal first 5 picks based on my position
+2. Note which positions to target in rounds 6-10 vs. 11-16
+3. Flag 3 late-round value picks I should watch for
+4. Tell me which positions to avoid reaching on early
+
+Format your response as: Round Range | Target Position | Reasoning | Key Players to Watch
+
+Start by confirming my league setup, then deliver the full strategy.`,
+    paid_extra: `
+ADVANCED FILTERS (paid):
+- ADP deviation targets (players falling 15+ spots)
+- Handcuff pairing matrix for top RBs
+- Streaming QB/K/DEF schedule analysis
+- Breakout candidate watchlist by position
+- Mock draft simulation with opponent tendencies
+
+Provide a confidence score (1-10) for each recommendation and flag injury risk tiers.`
+  },
+  'trade-eval': {
+    title: 'Trade Evaluation Agent',
+    desc: 'Paste the trade details into the [brackets]. Works for any trade scenario including multi-player and pick-involved deals.',
+    free: true,
+    text: `You are a fantasy football trade analyst. Evaluate this trade proposal and give me a clear verdict.
+
+MY TEAM NEEDS: [e.g., RB depth, WR1, etc.]
+LEAGUE FORMAT: [PPR/Half/Standard]
+WEEK: [current week]
+
+TRADE OFFER:
+I GIVE: [player names]
+I RECEIVE: [player names]
+
+Analyze this trade using:
+1. Current season stats and trajectory
+2. Upcoming schedule strength (next 4 weeks)
+3. Target share / snap count / usage trends
+4. Injury and bye week considerations
+5. My team's specific needs
+
+Verdict format:
+RESULT: [WIN / LOSE / NEUTRAL]
+CONFIDENCE: [High / Medium / Low]
+REASONING: [2-3 sentences]
+COUNTERPROPOSAL: [if applicable]`,
+    paid_extra: `
+ADVANCED (paid):
+- Rest-of-season ranking comparison
+- Dynasty value adjustment (if dynasty league)
+- Trade leverage timing analysis
+- Similar historical trade outcomes
+- Red zone and target share breakdown`
+  },
+  'waiver-scout': {
+    title: 'Waiver Wire Scout Agent',
+    desc: 'Run this each week before your waiver window. Fill in your current roster and the week number.',
+    free: true,
+    text: `You are a waiver wire analyst for fantasy football. Scout this week's best pickups for my roster.
+
+LEAGUE: [PPR / Half / Standard] | [number] teams
+CURRENT WEEK: [week #]
+WAIVER PRIORITY: [#] or FAAB [$remaining]
+
+MY ROSTER GAPS:
+- Injured/bye: [names]
+- Weakest positions: [positions]
+
+PLAYERS I'M CONSIDERING:
+[list any you've already spotted]
+
+For each recommended pickup provide:
+PLAYER | POSITION | OWN% | REASON | UPSIDE | FLOOR | BYE
+
+Sort by: Immediate starter value, then stash value.
+Flag any injury-risk adds and who to drop from my roster to make room.`,
+    paid_extra: `
+ADVANCED (paid):
+- Snap count trend analysis (last 3 weeks)
+- Target share shifts from injuries
+- Beat-the-waiver-wire early adds (next week preview)
+- Weather/game environment impact
+- Rest-of-season streaming schedule`
+  },
+  'injury-analyst': {
+    title: 'Injury Impact Analyst Agent',
+    desc: 'Paste the injury report details and get an immediate fantasy impact breakdown.',
+    free: true,
+    text: `You are a fantasy football injury impact analyst. Break down this injury and its fantasy implications.
+
+INJURED PLAYER: [name, position, team]
+INJURY TYPE: [e.g., hamstring strain, Week 3]
+EXPECTED TIMELINE: [e.g., week-to-week, IR, out 4-6 weeks]
+
+MY ROSTER CONTEXT:
+- Do I own this player? [yes/no]
+- Do I own anyone on their team? [names]
+
+Analyze:
+1. Immediate replacement value (this week's starter options)
+2. Who benefits most on the injured player's team
+3. Opponent fantasy implications (their defense gets easier/harder?)
+4. Handcuff / waiver targets to add right now
+5. Should I trade away or hold players affected by this?
+
+Be direct. Give me actionable moves, not just analysis.`,
+    paid_extra: `
+ADVANCED (paid):
+- Historical recovery timelines for this injury type
+- Player's past injury history and durability risk
+- Dynasty/keeper value adjustment
+- Team's historical performance with/without this player`
+  },
+  'property-val': {
+    title: 'Property Valuation Agent',
+    desc: 'Fill in the property details and comp data for a CMA-style valuation analysis.',
+    free: false,
+    text: `You are a real estate valuation expert. Analyze this property and provide a market value estimate.
+
+SUBJECT PROPERTY:
+- Address / Area: [city, zip, neighborhood]
+- Type: [SFR / Condo / Townhouse / Multi-family]
+- Beds/Baths: [#bd / #ba]
+- Sq Ft: [#]
+- Lot: [#sqft or acres]
+- Year Built: [year]
+- Condition: [Excellent / Good / Average / Below Average]
+- Updates: [kitchen, baths, roof, HVAC, etc.]`,
+    paid_extra: `
+[Full prompt with comp analysis framework, price-per-sqft calculation, adjustment matrix, and value range output — unlocked with purchase]`
+  },
+  'listing-writer': {
+    title: 'Listing Description Writer Agent',
+    desc: 'Input your property details and get a compelling MLS-ready listing description.',
+    free: false,
+    text: `You are a real estate copywriter specializing in property listings. Write a compelling listing description.
+
+PROPERTY DETAILS:
+- Type: [SFR / Condo / etc.]
+- Beds/Baths: [#bd / #ba]
+- Sq Ft: [#]
+- Location: [neighborhood, city]
+- Key features: [list top 5-8 features]
+- Recent updates: [list any]
+- Target buyer: [families / investors / first-time / luxury]`,
+    paid_extra: `
+[Full prompt with tone calibration, SEO keyword integration, neighborhood storytelling, and multiple description variants — unlocked with purchase]`
+  },
+  'buyer-qual': {
+    title: 'Buyer Qualification Agent',
+    desc: 'Use this to structure your buyer consultation conversations and uncover timeline and financing status.',
+    free: false,
+    text: `You are a real estate buyer qualification specialist. Guide a structured qualification conversation.
+
+AGENT CONTEXT:
+- Your market: [city/area]
+- Typical price range: [$range]
+- Specialties: [neighborhoods, property types]
+
+Begin the qualification by asking about:
+1. Timeline to purchase
+2. Pre-approval status`,
+    paid_extra: `
+[Full prompt with complete question flow, motivation discovery, objection handling, and lead scoring matrix — unlocked with purchase]`
+  },
+  'market-analysis': {
+    title: 'Market Analysis Agent',
+    desc: 'Generates a structured market analysis report for any zip code or neighborhood.',
+    free: false,
+    text: `You are a real estate market analyst. Produce a market conditions report for this area.
+
+TARGET MARKET:
+- Area: [city, zip, or neighborhood]
+- Property type focus: [SFR / Condo / Multi-family / All]
+- Client type: [Buyer / Seller / Investor]
+- Analysis period: [last 90 days / last 6 months]`,
+    paid_extra: `
+[Full prompt with DOM analysis, absorption rate calculation, price trend direction, buyer/seller market classification, and investment grade scoring — unlocked with purchase]`
+  },
+  'email-responder': {
+    title: 'Email Responder Agent',
+    desc: 'Paste the email you received and your context. Get a professional response in your voice.',
+    free: false,
+    text: `You are a professional email responder. Draft a response to this email in my voice.
+
+MY CONTEXT:
+- My name: [name]
+- My role: [title/company]
+- My communication style: [formal / conversational / direct]
+- My goal with this response: [e.g., close the deal / resolve issue / schedule call]
+
+ORIGINAL EMAIL:
+[paste the email here]
+
+KEY POINTS TO ADDRESS:
+[list 2-3 things you need to say]`,
+    paid_extra: `
+[Full prompt with tone matching, subtext analysis, strategic positioning, multiple draft variations, and follow-up sequence — unlocked with purchase]`
+  },
+  'meeting-notes': {
+    title: 'Meeting Notes Summarizer Agent',
+    desc: 'Paste your raw notes or transcript and receive a structured summary with action items.',
+    free: false,
+    text: `You are a meeting notes analyst. Transform these raw notes into a structured summary.
+
+MEETING CONTEXT:
+- Meeting type: [internal / client / board / 1:1]
+- Date: [date]
+- Attendees: [list names/roles]
+- Duration: [approx minutes]
+
+RAW NOTES / TRANSCRIPT:
+[paste here]`,
+    paid_extra: `
+[Full prompt with decisions log, owner assignment, deadline extraction, risk flags, and executive summary format — unlocked with purchase]`
+  },
+  'sales-outreach': {
+    title: 'Sales Outreach Agent',
+    desc: 'Define your ICP and product, and receive a multi-touch outreach sequence ready to send.',
+    free: false,
+    text: `You are a B2B sales outreach strategist. Write an outreach sequence for my product.
+
+MY PRODUCT/SERVICE:
+- What it does: [description]
+- Key value prop: [1 sentence]
+- Price range: [$range or model]
+
+TARGET PROSPECT:
+- Title: [e.g., VP of Sales, Owner]
+- Industry: [industry]
+- Company size: [employees]
+- Pain point: [what keeps them up at night]`,
+    paid_extra: `
+[Full prompt with 5-touch sequence, subject line variants, A/B test framework, LinkedIn + email combo, and reply detection logic — unlocked with purchase]`
+  },
+  'customer-support': {
+    title: 'Customer Support Agent',
+    desc: 'Paste the support request and your product context. Get an empathetic, on-brand response.',
+    free: false,
+    text: `You are a customer support specialist. Respond to this support request professionally.
+
+MY BUSINESS:
+- Product/Service: [description]
+- Brand tone: [friendly / professional / casual]
+- Refund policy: [policy summary]
+- Escalation path: [what you can and cannot resolve]
+
+CUSTOMER MESSAGE:
+[paste here]`,
+    paid_extra: `
+[Full prompt with empathy calibration, root cause diagnosis, satisfaction recovery sequence, and escalation decision tree — unlocked with purchase]`
+  },
+  'meal-planner': {
+    title: 'Meal Planner Agent',
+    desc: 'Input your dietary goals and schedule, and get a complete weekly meal plan with grocery list.',
+    free: false,
+    text: `You are a nutrition and meal planning expert. Build my weekly meal plan.
+
+MY PROFILE:
+- Goal: [lose weight / build muscle / maintain / eat healthier]
+- Dietary restrictions: [none / vegetarian / gluten-free / etc.]
+- Cooking skill: [beginner / intermediate / advanced]
+- Time available: [minutes per weekday / weekend]
+- Household size: [# of people]`,
+    paid_extra: `
+[Full prompt with macro targets, prep batch strategy, grocery list sorted by store section, and budget optimization — unlocked with purchase]`
+  },
+  'budget-tracker': {
+    title: 'Budget Tracker Agent',
+    desc: 'Input your income and spending and get a zero-based budget with savings targets.',
+    free: false,
+    text: `You are a personal finance coach. Analyze my spending and build a zero-based budget.
+
+MY FINANCIAL SNAPSHOT:
+- Monthly take-home income: [$amount]
+- Monthly fixed expenses: [rent/mortgage, car, subscriptions — list with amounts]
+- Average monthly variable spend: [food, gas, entertainment — estimates ok]
+- Current savings: [$amount]
+- Financial goal: [emergency fund / pay off debt / save for X]`,
+    paid_extra: `
+[Full prompt with leak detection, savings rate benchmarking, 3-month and 12-month projection, debt payoff sequencing, and net worth tracking template — unlocked with purchase]`
+  },
+  'travel-planner': {
+    title: 'Travel Planner Agent',
+    desc: 'Tell me where you want to go and your travel style. Get a complete day-by-day itinerary.',
+    free: false,
+    text: `You are an expert travel planner. Build me a complete trip itinerary.
+
+MY TRIP:
+- Destination: [city/country]
+- Duration: [# of days]
+- Travel dates: [approx dates or season]
+- Budget: [$total or $/day]
+- Travel style: [luxury / backpacker / mid-range / family]
+- Party: [solo / couple / family with kids / friends]
+- Interests: [food, history, outdoors, nightlife, etc.]`,
+    paid_extra: `
+[Full prompt with day-by-day schedule, booking priority order, hidden gem recommendations, weather contingency plans, and packing list — unlocked with purchase]`
+  },
+  'fitness-coach': {
+    title: 'Fitness Coach Agent',
+    desc: 'Share your fitness level, goals, and equipment. Get a structured training plan with progression.',
+    free: false,
+    text: `You are a certified personal trainer. Design a personalized workout plan for me.
+
+MY PROFILE:
+- Goal: [lose fat / build muscle / improve endurance / get stronger]
+- Current fitness level: [beginner / intermediate / advanced]
+- Available equipment: [gym / home gym / bodyweight only / list equipment]
+- Days per week available: [#]
+- Session length: [# minutes]
+- Any injuries or limitations: [list or none]`,
+    paid_extra: `
+[Full prompt with weekly periodization, progressive overload schedule, RPE targets, deload weeks, tracking log template, and nutrition timing recommendations — unlocked with purchase]`
+  }
+};
+
+let activeFilter = 'all';
+let currentPreviewId = null;
+
+// ── Filter Logic ──
+function setFilter(cat, el) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const sections = document.querySelectorAll('.category-section');
+  let anyVisible = false;
+
+  sections.forEach(section => {
+    const secCat = section.dataset.section;
+    const catMatch = activeFilter === 'all' || activeFilter === secCat;
+    let sectionHasVisible = false;
+
+    const cards = section.querySelectorAll('.prompt-card');
+    cards.forEach(card => {
+      const titleMatch = !q || card.dataset.title.toLowerCase().includes(q);
+      const descText = card.querySelector('.card-desc').textContent.toLowerCase();
+      const descMatch = !q || descText.includes(q);
+      const show = catMatch && (titleMatch || descMatch);
+      card.style.display = show ? '' : 'none';
+      if (show) { sectionHasVisible = true; anyVisible = true; }
+    });
+
+    section.style.display = sectionHasVisible ? '' : 'none';
+  });
+
+  document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+}
+
+// ── Preview Modal ──
+function openPreview(id) {
+  const p = PROMPTS[id];
+  if (!p) return;
+  currentPreviewId = id;
+
+  document.getElementById('previewTitle').textContent = p.title;
+  document.getElementById('previewDesc').textContent = p.desc;
+  document.getElementById('promptText').textContent = p.text;
+
+  const blurLayer = document.getElementById('promptBlurLayer');
+  const actions = document.getElementById('previewActions');
+  const blurCta = document.getElementById('blurCta');
+
+  if (p.free) {
+    blurLayer.style.display = 'none';
+    blurCta.textContent = 'Copy Full Prompt';
+    actions.innerHTML = `
+      <button class="btn btn-copy" style="flex:1;max-width:none;" onclick="copyPromptFromModal('${id}')">
+        Copy Full Prompt
+      </button>`;
+  } else {
+    blurLayer.style.display = 'flex';
+    blurCta.textContent = 'Unlock Full Prompt';
+    actions.innerHTML = `
+      <button class="btn btn-preview" onclick="closePreview()">Close</button>
+      <button class="btn btn-buy" style="flex:1;" onclick="closePreview(); openComing('${p.title}', getPrice('${id}'))">
+        Buy to Unlock
+      </button>`;
+  }
+
+  document.getElementById('previewModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function handleBlurCta() {
+  if (!currentPreviewId) return;
+  const p = PROMPTS[currentPreviewId];
+  if (p.free) {
+    copyPromptFromModal(currentPreviewId);
+  } else {
+    closePreview();
+    openComing(p.title, getPrice(currentPreviewId));
+  }
+}
+
+function closePreview() {
+  document.getElementById('previewModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentPreviewId = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('previewModal')) closePreview();
+}
+
+function copyPromptFromModal(id) {
+  const p = PROMPTS[id];
+  if (!p) return;
+  navigator.clipboard.writeText(p.text).then(() => showToast()).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = p.text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast();
+  });
+  closePreview();
+}
+
+// ── Copy Button on Card ──
+function copyPrompt(id, btn) {
+  const p = PROMPTS[id];
+  if (!p || !p.free) return;
+  navigator.clipboard.writeText(p.text).then(() => showToast()).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = p.text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast();
+  });
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 7L5 10L11 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!';
+  btn.style.background = 'rgba(57,255,20,0.25)';
+  setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
+}
+
+// ── Coming Soon Modal ──
+function getPrice(id) {
+  const p = PROMPTS[id];
+  if (!p || p.free) return '';
+  if (['property-val','listing-writer','buyer-qual','market-analysis'].includes(id)) return '$4.99';
+  if (['email-responder','meeting-notes','sales-outreach','customer-support'].includes(id)) return '$9.99';
+  return '$2.99';
+}
+
+function openComing(title, price) {
+  document.getElementById('comingDesc').textContent = `"${title}" — Secure checkout is almost ready. Drop your email and we'll notify you the moment it launches.`;
+  document.getElementById('comingPrice').textContent = price;
+  document.getElementById('comingModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeComingModal() {
+  document.getElementById('comingModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleComingOverlayClick(e) {
+  if (e.target === document.getElementById('comingModal')) closeComingModal();
+}
+
+// ── Toast ──
+function showToast() {
+  const t = document.getElementById('copyToast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Keyboard ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePreview(); closeComingModal(); }
+});
+</script>
+</body>
+</html>
