@@ -44,6 +44,10 @@ curl -s -X POST http://localhost:3457/send -H "Content-Type: application/json" -
 # Just make sure the hook exists and the script is executable:
 cat ~/.claude/settings.json | grep -q "check-messages" && echo "PostToolUse hook: OK" || echo "WARNING: PostToolUse hook missing!"
 chmod +x scripts/check-messages.sh
+
+# 8. Clean up stale Terminal windows from previous sessions
+# Closes all idle (non-busy) Terminal windows except the current one.
+bash scripts/cleanup-terminals.sh
 ```
 
 ## Graceful Shutdown (before exiting terminal)

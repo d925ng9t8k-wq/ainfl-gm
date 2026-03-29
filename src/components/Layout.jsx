@@ -301,7 +301,7 @@ export default function Layout({ children }) {
         <div style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/nfl-hero.jpg)',
+          backgroundImage: 'url(/nfl-hero.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center 25%',
           filter: 'brightness(0.7) saturate(0.9)',

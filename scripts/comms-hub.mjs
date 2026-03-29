@@ -771,7 +771,7 @@ function checkNewIMessages() {
 }
 
 // ─── Email Send (Gmail SMTP via nodemailer) ─────────────────────────────────
-async function sendEmail(subject, body) {
+async function sendEmail(subject, body, { to, replyTo, contentType } = {}) {
   if (!gmailTransporter) {
     log('Email send skipped: GMAIL_APP_PASSWORD not set in .env');
     addChannelError(state, 'email', 'GMAIL_APP_PASSWORD not configured');
@@ -779,14 +779,21 @@ async function sendEmail(subject, body) {
     return false;
   }
   try {
-    await gmailTransporter.sendMail({
-      from: `"9" <${JASSON_EMAIL}>`,
-      to: JASSON_EMAIL,
+    const recipient = to || JASSON_EMAIL;
+    const mailOpts = {
+      from: `"9 — AiNFL GM" <${JASSON_EMAIL}>`,
+      to: recipient,
       subject,
-      text: body,
-    });
-    log(`Email sent: ${subject}`);
-    addMessage(state, 'email', 'out', `[${subject}] ${body.slice(0, 200)}`);
+      replyTo: replyTo || CAPTAIN_EMAIL,
+    };
+    if (contentType === 'html') {
+      mailOpts.html = body;
+    } else {
+      mailOpts.text = body;
+    }
+    await gmailTransporter.sendMail(mailOpts);
+    log(`Email sent: ${subject} → ${recipient}`);
+    addMessage(state, 'email', 'out', `[From 9] ${subject} → ${recipient}: ${body.slice(0, 200)}`);
     updateChannelStatus(state, 'email', 'active');
     saveState(state);
     return true;
@@ -1087,6 +1094,27 @@ const healthServer = createServer((req, res) => {
           sendIMessage(message);
           ok = true;
         }
+        res.writeHead(ok ? 200 : 500);
+        res.end(ok ? 'sent' : 'failed');
+      } catch (e) {
+        res.writeHead(500);
+        res.end(e.message);
+      }
+    });
+  } else if (req.method === 'POST' && req.url === '/send-email') {
+    // Direct email sending — supports arbitrary recipients, subjects, reply-to
+    // Used by terminal to send emails to consumers, partners, etc.
+    let body = '';
+    req.on('data', c => body += c);
+    req.on('end', async () => {
+      try {
+        const { to, subject, body: emailBody, replyTo, contentType } = JSON.parse(body);
+        if (!to || !subject || !emailBody) {
+          res.writeHead(400);
+          res.end('missing required fields: to, subject, body');
+          return;
+        }
+        const ok = await sendEmail(subject, emailBody, { to, replyTo, contentType });
         res.writeHead(ok ? 200 : 500);
         res.end(ok ? 'sent' : 'failed');
       } catch (e) {

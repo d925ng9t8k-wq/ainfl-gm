@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Draft Pick Trade Value Calculator | AiNFL GM</title>
+<meta name="description" content="Free NFL draft pick trade value calculator. Use the Jimmy Johnson trade chart to instantly analyze any draft pick trade. Find out who wins the deal.">
+<meta property="og:title" content="NFL Draft Pick Trade Value Calculator | AiNFL GM">
+<meta property="og:description" content="Instantly analyze any NFL draft pick trade using the classic Jimmy Johnson trade value chart. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/draft-trade-calc.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Draft Pick Trade Value Calculator | AiNFL GM">
+<meta name="twitter:description" content="Instantly analyze any NFL draft pick trade. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Trade Board ── */
+.trade-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 680px) {
+  .trade-board { grid-template-columns: 1fr; }
+}
+
+.team-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  animation: fadeUp 0.5s ease both;
+}
+.team-panel.team-a { border-top: 3px solid var(--cyan); animation-delay: 0.05s; }
+.team-panel.team-b { border-top: 3px solid var(--green); animation-delay: 0.1s; }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.team-a .panel-title { color: var(--cyan); }
+.team-b .panel-title { color: var(--green); }
+
+.panel-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.team-a .panel-value { color: var(--cyan); }
+.team-b .panel-value { color: var(--green); }
+
+/* ── Pick Selector ── */
+.pick-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.pick-selector select {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: border-color 0.2s;
+}
+.pick-selector select:focus {
+  outline: none;
+  border-color: var(--border-hi);
+}
+.team-b .pick-selector select:focus { border-color: rgba(57,255,20,0.3); }
+
+.btn-add {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  width: 42px;
+  min-width: 42px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.btn-add:hover { background: rgba(0,240,255,0.2); }
+.btn-add:active { transform: scale(0.95); }
+.team-b .btn-add {
+  background: var(--green-dim);
+  border-color: rgba(57,255,20,0.25);
+  color: var(--green);
+}
+.team-b .btn-add:hover { background: rgba(57,255,20,0.2); }
+
+/* ── Pick List ── */
+.pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 60px;
+}
+.pick-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  font-size: 13px;
+  color: var(--text-mute);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.02em;
+}
+.pick-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  animation: glow-in 0.2s ease both;
+}
+.pick-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pick-item-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.pick-item-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-mute);
+}
+.team-a .pick-item-value { color: rgba(0,240,255,0.7); }
+.team-b .pick-item-value { color: rgba(57,255,20,0.7); }
+
+.btn-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-mute);
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-remove:hover { color: var(--red); background: var(--red-dim); }
+
+/* ── Verdict Panel ── */
+.verdict-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+.verdict-empty {
+  color: var(--text-mute);
+  font-size: 14px;
+  padding: 8px 0;
+}
+.verdict-empty .verdict-icon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 10px;
+  opacity: 0.4;
+}
+
+.verdict-content { display: none; }
+.verdict-content.visible { display: block; }
+
+.verdict-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 480px) {
+  .verdict-teams { grid-template-columns: 1fr; gap: 12px; }
+  .verdict-vs { order: 1; font-size: 12px; }
+  .verdict-side:first-child { order: 0; }
+  .verdict-side:last-child { order: 2; }
+}
+
+.verdict-side { text-align: center; }
+.verdict-side-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.verdict-side-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.verdict-side-picks {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.side-a .verdict-side-value { color: var(--cyan); }
+.side-b .verdict-side-value { color: var(--green); }
+
+.verdict-vs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+.verdict-result {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.verdict-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 100px;
+  padding: 8px 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.verdict-badge.fair {
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  color: var(--yellow);
+}
+.verdict-badge.a-wins {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  color: var(--cyan);
+}
+.verdict-badge.b-wins {
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  color: var(--green);
+}
+.verdict-detail {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 380px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.5s ease 0.2s both;
+  flex-wrap: wrap;
+}
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-reset:hover {
+  border-color: rgba(255,255,255,0.18);
+  color: var(--text);
+}
+.btn-reset:active { transform: scale(0.98); }
+
+/* ── Reference Table ── */
+.reference-section {
+  animation: fadeUp 0.5s ease 0.25s both;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.section-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: all 0.2s;
+}
+.section-toggle:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+.ref-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: none;
+}
+.ref-table-wrap.visible { display: block; }
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ref-table thead th {
+  background: var(--bg-3);
+  padding: 10px 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.ref-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+.ref-table tbody td {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.ref-table tbody tr:last-child td { border-bottom: none; }
+.ref-table td.pick-col { color: var(--text); font-weight: 600; }
+.ref-table td.val-col { color: var(--cyan); font-weight: 700; font-family: 'Oswald', sans-serif; font-size: 15px; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    Jimmy Johnson Trade Chart
+  </div>
+  <h1>NFL Draft Pick<br><span>Trade Value</span> Calculator</h1>
+  <p>Build any trade scenario and instantly see who gets the better deal. Uses the classic Jimmy Johnson trade value chart.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Trade Board -->
+  <div class="trade-board">
+
+    <!-- Team A -->
+    <div class="team-panel team-a">
+      <div class="panel-header">
+        <div class="panel-title">Team A Gives</div>
+        <div class="panel-value" id="val-a">0</div>
+      </div>
+      <div class="pick-selector">
+        <select id="pick-select-a" aria-label="Select a pick for Team A">
+          <option value="">Select a pick...</option>
+        </select>
+        <button class="btn-add" onclick="addPick('a')" aria-label="Add pick to Team A">+</button>
+      </div>
+      <div class="pick-list" id="pick-list-a">
+        <div class="pick-empty">No picks added yet</div>
+      </div>
+    </div>
+
+    <!-- Team B -->
+    <div class="team-panel team-b">
+      <div class="panel-header">
+        <div class="panel-title">Team B Gives</div>
+        <div class="panel-value" id="val-b">0</div>
+      </div>
+      <div class="pick-selector">
+        <select id="pick-select-b" aria-label="Select a pick for Team B">
+          <option value="">Select a pick...</option>
+        </select>
+        <button class="btn-add" onclick="addPick('b')" aria-label="Add pick to Team B">+</button>
+      </div>
+      <div class="pick-list" id="pick-list-b">
+        <div class="pick-empty">No picks added yet</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Verdict -->
+  <div class="verdict-panel" id="verdict-panel">
+    <div class="verdict-empty" id="verdict-empty">
+      <span class="verdict-icon">&#9878;</span>
+      Add picks to both sides to analyze the trade
+    </div>
+    <div class="verdict-content" id="verdict-content">
+      <div class="verdict-teams">
+        <div class="verdict-side side-a">
+          <div class="verdict-side-label">Team A Gets</div>
+          <div class="verdict-side-value" id="verdict-val-b">0</div>
+          <div class="verdict-side-picks" id="verdict-picks-b">— picks</div>
+        </div>
+        <div class="verdict-vs">VS</div>
+        <div class="verdict-side side-b">
+          <div class="verdict-side-label">Team B Gets</div>
+          <div class="verdict-side-value" id="verdict-val-a">0</div>
+          <div class="verdict-side-picks" id="verdict-picks-a">— picks</div>
+        </div>
+      </div>
+      <div class="verdict-result">
+        <div class="verdict-badge" id="verdict-badge">Fair Trade</div>
+        <div class="verdict-detail" id="verdict-detail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn-reset" onclick="resetAll()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1.5 7A5.5 5.5 0 1 0 3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M1.5 1.5V4H4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Reset Trade
+    </button>
+  </div>
+
+  <!-- Reference Table -->
+  <div class="reference-section">
+    <div class="section-header">
+      <div class="section-title">Trade Value Chart Reference</div>
+      <button class="section-toggle" id="table-toggle" onclick="toggleTable()">Show Chart</button>
+    </div>
+    <div class="ref-table-wrap" id="ref-table-wrap">
+      <table class="ref-table" id="ref-table">
+        <thead>
+          <tr>
+            <th>Overall Pick</th>
+            <th>Round / Pick</th>
+            <th>Trade Value</th>
+          </tr>
+        </thead>
+        <tbody id="ref-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>Jimmy Johnson Trade Value Chart. Values are approximate and used for reference.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com">Draft Room</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<script>
+// ── Jimmy Johnson Trade Value Chart ────────────────────────────────────────
+// Full 7-round chart (224 picks). Values sourced from the classic JJ chart
+// with standard extrapolations for rounds 4-7.
+const TRADE_VALUES = [
+  3000, 2600, 2200, 1800, 1700, 1600, 1500, 1400, 1350, 1300,
+  1250, 1200, 1150, 1100, 1050, 1000,  950,  900,  875,  850,
+   800,  780,  760,  740,  720,  700,  680,  660,  640,  620,
+   600,  590,  580,  560,  550,  540,  530,  520,  510,  500,
+   490,  480,  470,  460,  450,  440,  430,  420,  410,  400,
+   390,  380,  370,  360,  350,  340,  330,  320,  310,  300,
+   290,  280,  270,  260,  250,  245,  240,  235,  230,  224,
+   218,  212,  206,  200,  196,  192,  188,  184,  180,  176,
+   172,  168,  164,  160,  157,  154,  151,  148,  145,  142,
+   139,  136,  133,  130,  127,  124,  121,  118,  115,  112,
+   109,  106,  103,  100,   97,   94,   91,   88,   85,   82,
+    80,   78,   76,   74,   72,   70,   68,   66,   64,   62,
+    60,   58,   56,   54,   52,   50,   49,   48,   47,   46,
+    45,   44,   43,   42,   41,   40,   39,   38,   37,   36,
+    35,   34,   33,   32,   31,   30,   29,   28,   27,   26,
+    25,   24,   23,   22,   21,   20,   19,   18,   17,   16,
+    15,   14,   13,   12,   11,   10,    9,    8,    7,    6,
+     6,    5,    5,    5,    5,    4,    4,    4,    4,    4,
+     3,    3,    3,    3,    3,    3,    3,    3,    2,    2,
+     2,    2,    2,    2,    2,    2,    2,    2,    2,    2,
+     2,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+     1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+     1,    1,    1,    1
+];
+
+// Ensure exactly 224 entries
+const TOTAL_PICKS = 224;
+
+// Round/pick label helpers
+function getRound(overall) {
+  if (overall <= 32)  return { round: 1, pick: overall };
+  if (overall <= 64)  return { round: 2, pick: overall - 32 };
+  if (overall <= 96)  return { round: 3, pick: overall - 64 };
+  if (overall <= 128) return { round: 4, pick: overall - 96 };
+  if (overall <= 160) return { round: 5, pick: overall - 128 };
+  if (overall <= 192) return { round: 6, pick: overall - 160 };
+  return              { round: 7, pick: overall - 192 };
+}
+
+function getLabel(overall) {
+  const { round, pick } = getRound(overall);
+  return `Round ${round}, Pick ${pick} (Overall #${overall})`;
+}
+
+function getShortLabel(overall) {
+  const { round, pick } = getRound(overall);
+  return `R${round} Pick ${pick}`;
+}
+
+function getValue(overall) {
+  return TRADE_VALUES[overall - 1] || 1;
+}
+
+// ── State ─────────────────────────────────────────────────────────────────
+const state = { a: [], b: [] };
+
+// ── Populate Dropdowns ────────────────────────────────────────────────────
+function buildDropdowns() {
+  ['a', 'b'].forEach(side => {
+    const sel = document.getElementById(`pick-select-${side}`);
+    for (let i = 1; i <= TOTAL_PICKS; i++) {
+      const { round, pick } = getRound(i);
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `Round ${round}, Pick ${pick}  (${getValue(i).toLocaleString()} pts)`;
+      sel.appendChild(opt);
+    }
+  });
+}
+
+// ── Build Reference Table ─────────────────────────────────────────────────
+function buildRefTable() {
+  const tbody = document.getElementById('ref-table-body');
+  for (let i = 1; i <= TOTAL_PICKS; i++) {
+    const { round, pick } = getRound(i);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="pick-col">#${i}</td>
+      <td>Round ${round}, Pick ${pick}</td>
+      <td class="val-col">${getValue(i).toLocaleString()}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// ── Add / Remove Picks ────────────────────────────────────────────────────
+function addPick(side) {
+  const sel = document.getElementById(`pick-select-${side}`);
+  const overall = parseInt(sel.value);
+  if (!overall) return;
+
+  state[side].push(overall);
+  sel.value = '';
+  renderPickList(side);
+  renderVerdict();
+}
+
+function removePick(side, index) {
+  state[side].splice(index, 1);
+  renderPickList(side);
+  renderVerdict();
+}
+
+// ── Render Pick List ──────────────────────────────────────────────────────
+function renderPickList(side) {
+  const list = document.getElementById(`pick-list-${side}`);
+  const valEl = document.getElementById(`val-${side}`);
+
+  if (state[side].length === 0) {
+    list.innerHTML = '<div class="pick-empty">No picks added yet</div>';
+    valEl.textContent = '0';
+    return;
+  }
+
+  const total = state[side].reduce((sum, p) => sum + getValue(p), 0);
+  valEl.textContent = total.toLocaleString();
+
+  list.innerHTML = state[side].map((overall, i) => `
+    <div class="pick-item">
+      <div class="pick-item-left">
+        <div class="pick-item-label">${getShortLabel(overall)}</div>
+        <div class="pick-item-value">${getValue(overall).toLocaleString()} pts &middot; Overall #${overall}</div>
+      </div>
+      <button class="btn-remove" onclick="removePick('${side}', ${i})" aria-label="Remove pick">&#10005;</button>
+    </div>
+  `).join('');
+}
+
+// ── Render Verdict ────────────────────────────────────────────────────────
+function renderVerdict() {
+  const empty = document.getElementById('verdict-empty');
+  const content = document.getElementById('verdict-content');
+
+  const totalA = state.a.reduce((sum, p) => sum + getValue(p), 0);
+  const totalB = state.b.reduce((sum, p) => sum + getValue(p), 0);
+
+  const hasA = state.a.length > 0;
+  const hasB = state.b.length > 0;
+
+  if (!hasA || !hasB) {
+    empty.style.display = '';
+    content.classList.remove('visible');
+    return;
+  }
+
+  empty.style.display = 'none';
+  content.classList.add('visible');
+
+  // Team A gives picks → Team B receives them (and vice versa)
+  // "Team A Gets" = what Team B gives = totalB
+  document.getElementById('verdict-val-b').textContent = totalB.toLocaleString();
+  document.getElementById('verdict-val-a').textContent = totalA.toLocaleString();
+  document.getElementById('verdict-picks-b').textContent =
+    `${state.b.length} pick${state.b.length !== 1 ? 's' : ''}`;
+  document.getElementById('verdict-picks-a').textContent =
+    `${state.a.length} pick${state.a.length !== 1 ? 's' : ''}`;
+
+  const badge = document.getElementById('verdict-badge');
+  const detail = document.getElementById('verdict-detail');
+  const diff = Math.abs(totalA - totalB);
+  const pct = totalA > 0 && totalB > 0
+    ? Math.round((diff / Math.max(totalA, totalB)) * 100)
+    : 0;
+
+  badge.className = 'verdict-badge';
+
+  if (pct <= 5) {
+    badge.classList.add('fair');
+    badge.textContent = 'Fair Trade';
+    detail.textContent = `Values are within ${pct}% of each other. This is a balanced exchange.`;
+  } else if (totalB > totalA) {
+    badge.classList.add('a-wins');
+    badge.textContent = 'Team A Wins';
+    detail.textContent = `Team A gets ${diff.toLocaleString()} more in value (${pct}% edge). Strong return for Team A.`;
+  } else {
+    badge.classList.add('b-wins');
+    badge.textContent = 'Team B Wins';
+    detail.textContent = `Team B gets ${diff.toLocaleString()} more in value (${pct}% edge). Strong return for Team B.`;
+  }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────
+function resetAll() {
+  state.a = [];
+  state.b = [];
+  ['a', 'b'].forEach(side => {
+    document.getElementById(`pick-select-${side}`).value = '';
+    renderPickList(side);
+  });
+  renderVerdict();
+}
+
+// ── Toggle Reference Table ────────────────────────────────────────────────
+function toggleTable() {
+  const wrap = document.getElementById('ref-table-wrap');
+  const btn  = document.getElementById('table-toggle');
+  const visible = wrap.classList.toggle('visible');
+  btn.textContent = visible ? 'Hide Chart' : 'Show Chart';
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+buildDropdowns();
+buildRefTable();
+renderPickList('a');
+renderPickList('b');
+renderVerdict();
+</script>
+</body>
+</html>

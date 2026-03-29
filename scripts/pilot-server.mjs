@@ -7,6 +7,7 @@
 
 import http from "node:http";
 import https from "node:https";
+import net from "node:net";
 import fs from "node:fs";
 import { URL } from "node:url";
 
@@ -729,6 +730,18 @@ function jsonResponse(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
+// ─── Port Guard (check FIRST — prevents LaunchAgent restart spam) ────────────
+// If port 3472 is already bound, another instance is running. Exit cleanly.
+{
+  const check = new net.Socket();
+  check.setTimeout(1000);
+  check.on('connect', () => { check.destroy(); process.exit(0); }); // Port taken = exit
+  check.on('error', () => { check.destroy(); });                    // Port free = proceed
+  check.on('timeout', () => { check.destroy(); });
+  check.connect(PORT, '127.0.0.1');
+  await new Promise(r => setTimeout(r, 1500)); // Wait for check to complete
+}
+
 // ─── HTTP server ──────────────────────────────────────────────────────────────
 const server = http.createServer(async (req, res) => {
   requestCount++;
@@ -869,6 +882,50 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── POST /send (proactive outbound SMS to Kyle) ──
+  // Body: { "message": "text to send" }
+  // Sends directly to JULES_KYLEC_RECIPIENT_PHONE via Twilio.
+  // Does NOT go through Claude — message is sent as-is.
+  // Also saves the outbound message to conversation_memory so Kyle's next reply has context.
+  if (req.method === 'POST' && url.pathname === '/send') {
+    try {
+      const rawBody = await readBody(req);
+      const json = JSON.parse(rawBody);
+      const text = (json.message || json.body || json.text || '').trim();
+
+      if (!text) {
+        jsonResponse(res, 400, { error: 'Missing message field' });
+        return;
+      }
+
+      if (!RECIPIENT_PHONE) {
+        jsonResponse(res, 503, { error: 'JULES_KYLEC_RECIPIENT_PHONE not configured' });
+        return;
+      }
+
+      const sent = await sendSms(text);
+      if (!sent) {
+        jsonResponse(res, 503, { error: 'Twilio send failed — check server logs' });
+        return;
+      }
+
+      // Save outbound to conversation memory so Kyle's reply has context
+      const profile = loadProfile();
+      if (profile) {
+        if (!profile.conversation_memory) profile.conversation_memory = [];
+        profile.conversation_memory.push({ role: 'assistant', content: text, ts: Date.now() });
+        saveProfile(profile);
+      }
+
+      log(`Proactive outbound sent: "${text.slice(0, 60)}${text.length > 60 ? '...' : ''}"`);
+      jsonResponse(res, 200, { sent: true, to: RECIPIENT_PHONE, message: text, ts: new Date().toISOString() });
+    } catch (e) {
+      log(`Proactive send error: ${e.message}`);
+      jsonResponse(res, 500, { error: e.message });
+    }
+    return;
+  }
+
   // ── GET /notes ──
   if (req.method === 'GET' && url.pathname === '/notes') {
     const profile = loadProfile();
@@ -945,7 +1002,7 @@ server.listen(PORT, () => {
   log(`Claude configured: ${!!ANTHROPIC_KEY}`);
   log(`Weather configured: ${!!OPENWEATHER_KEY}`);
   log(`Recipient: ${RECIPIENT_PHONE || 'NOT SET — add JULES_KYLEC_RECIPIENT_PHONE to .env'}`);
-  log(`Endpoints: GET /health, POST /sms, POST /imessage-in, POST /message, POST /briefing, GET /notes, GET /reminders, GET /weather`);
+  log(`Endpoints: GET /health, POST /sms, POST /imessage-in, POST /message, POST /briefing, POST /send, GET /notes, GET /reminders, GET /weather`);
 });
 
 server.on('error', (e) => {
