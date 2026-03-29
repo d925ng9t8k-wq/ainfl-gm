@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0F172A">
-<title>NFL Playoff Bracket Builder 2025 | AiNFL GM</title>
-<meta name="description" content="Build your 2025 NFL playoff bracket. Pick every game from Wild Card to Super Bowl. Share your predictions with friends.">
-<meta property="og:title" content="NFL Playoff Bracket Builder 2025 | AiNFL GM">
-<meta property="og:description" content="Build and share your 2025 NFL playoff bracket. Wild Card through the Super Bowl — who do you have winning it all?">
+<title>NFL Playoff Bracket Builder 2026 | AiNFL GM</title>
+<meta name="description" content="Build your 2026 NFL playoff bracket. Pick every game from Wild Card to Super Bowl. Share your predictions with friends.">
+<meta property="og:title" content="NFL Playoff Bracket Builder 2026 | AiNFL GM">
+<meta property="og:description" content="Build and share your 2026 NFL playoff bracket. Wild Card through the Super Bowl — who do you have winning it all?">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ainflgm.com/playoff-bracket.html">
 <meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NFL Playoff Bracket Builder 2025 | AiNFL GM">
-<meta name="twitter:description" content="Build and share your 2025 NFL playoff bracket. Free tool by AiNFL GM.">
+<meta name="twitter:title" content="NFL Playoff Bracket Builder 2026 | AiNFL GM">
+<meta name="twitter:description" content="Build and share your 2026 NFL playoff bracket. Free tool by AiNFL GM.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -584,7 +584,7 @@ a:hover { text-decoration: underline; }
 <div class="hero">
   <div class="hero-badge">
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7.545 4.09L11 4.618L8.5 7.055L9.09 10.5L6 8.818L2.91 10.5L3.5 7.055L1 4.618L4.455 4.09L6 1Z" fill="currentColor"/></svg>
-    2025 Season
+    2026 Season
   </div>
   <h1>NFL Playoff <span>Bracket Builder</span></h1>
   <p>Pick every game from Wild Card through Super Bowl. Tap a team to advance them. Add predicted scores. Share your bracket.</p>
@@ -689,7 +689,7 @@ a:hover { text-decoration: underline; }
     <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
     <a href="https://ainflgm.com/ai-biz-name.html">AI Tools</a>
   </div>
-  <div style="margin-top:6px">2025 NFL Playoff Bracket Builder &mdash; AiNFLGM</div>
+  <div style="margin-top:6px">2026 NFL Playoff Bracket Builder &mdash; AiNFLGM</div>
 </footer>
 
 <!-- Toast -->
@@ -1102,17 +1102,17 @@ function loadSavedState(json) {
 }
 
 function saveBracket() {
-  localStorage.setItem('playoff-bracket-2025', serializeState());
+  localStorage.setItem('playoff-bracket-2026', serializeState());
   showToast('Bracket saved!');
 }
 
 function saveBracketSilent() {
-  localStorage.setItem('playoff-bracket-2025', serializeState());
+  localStorage.setItem('playoff-bracket-2026', serializeState());
 }
 
 function resetBracket() {
   if (!confirm('Reset your entire bracket? This cannot be undone.')) return;
-  localStorage.removeItem('playoff-bracket-2025');
+  localStorage.removeItem('playoff-bracket-2026');
   defaultState();
   renderAll();
   showToast('Bracket reset.');
@@ -1123,7 +1123,7 @@ function resetBracket() {
 // ─────────────────────────────────────────────
 
 function shareBracket() {
-  const lines = ['-- My 2025 NFL Playoff Bracket (AiNFLGM) --', ''];
+  const lines = ['-- My 2026 NFL Playoff Bracket (AiNFLGM) --', ''];
 
   const formatMatchup = (m, label) => {
     if (!m.top || !m.bot) return null;
@@ -1238,7 +1238,7 @@ function showToast(msg) {
 
 defaultState();
 
-const saved = localStorage.getItem('playoff-bracket-2025');
+const saved = localStorage.getItem('playoff-bracket-2026');
 if (saved) {
   loadSavedState(saved);
 } else {

@@ -107,4 +107,7 @@
   <url><loc>https://ainflgm.com/buccaneers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ainflgm.com/titans</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ainflgm.com/commanders</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ainflgm.com/jules-family.html</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://ainflgm.com/tools.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/command-center.html</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
 </urlset>

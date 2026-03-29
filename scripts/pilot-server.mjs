@@ -210,10 +210,11 @@ function detectGuidelineIntent(text) {
   if ((lower.includes('conventional') || lower.includes('conv')) && lower.includes('credit score')) return { type: 'guideline', topic: 'conv_credit' };
   if (lower.includes('conforming') && lower.includes('limit')) return { type: 'guideline', topic: 'conforming_limit' };
   if (lower.includes('loan limit') && (lower.includes('2025') || lower.includes('conforming'))) return { type: 'guideline', topic: 'conforming_limit' };
-  // VA
+  // VA — check compensating factors BEFORE credit score to avoid false matches
+  if (lower.includes('va') && lower.includes('compensating factor')) return null; // complex question — let AI handle it
   if (lower.includes('va') && lower.includes('funding fee')) return { type: 'guideline', topic: 'va_fee' };
   if (lower.includes('va') && (lower.includes('dti') || lower.includes('debt to income'))) return { type: 'guideline', topic: 'va_dti' };
-  if (lower.includes('va') && lower.includes('credit score')) return { type: 'guideline', topic: 'va_credit' };
+  if (lower.includes('va') && lower.includes('credit score') && !lower.includes('compensat')) return { type: 'guideline', topic: 'va_credit' };
   // USDA
   if (lower.includes('usda') && (lower.includes('dti') || lower.includes('debt to income'))) return { type: 'guideline', topic: 'usda_dti' };
   if (lower.includes('usda') && lower.includes('income limit')) return { type: 'guideline', topic: 'usda_income' };

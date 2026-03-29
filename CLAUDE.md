@@ -58,6 +58,13 @@ grep "Telegram IN:" logs/comms-hub.log | tail -200
 echo "=== END CONVERSATION HISTORY ==="
 # IMPORTANT: Actually READ and INTERNALIZE this output. It contains Owner directives,
 # pending tasks, and context that the 50-message buffer may have lost.
+
+# 10. CRITICAL: Read completed-actions log BEFORE executing any outbound actions
+# This prevents duplicate sends across session crashes (the "gap scenario").
+# File: memory/protocol_completed_actions.md
+# Check this file before sending any message, email, or making any deployment.
+cat ~/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/protocol_completed_actions.md 2>/dev/null | tail -30
+echo "=== Reconcile completed actions before re-executing anything ==="
 ```
 
 ## Graceful Shutdown (before exiting terminal)

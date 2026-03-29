@@ -243,19 +243,74 @@ color:var(--gold);background:rgba(245,197,66,0.06);
 .agent-sel-btn .asel-role{font-family:'DM Mono',sans-serif;font-size:8px;color:var(--muted);letter-spacing:0.05em;display:block;margin-top:1px;text-transform:uppercase;}
 
 /* ═══════════════════════════════════════════
+TELEGRAM CHAT PANEL
+═══════════════════════════════════════════ */
+.tg-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;height:420px;overflow:hidden;}
+.tg-header{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.tg-dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:tgPulse 2s infinite;}
+@keyframes tgPulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.tg-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--cyan);}
+.tg-refresh-lbl{font-size:9px;color:var(--muted);margin-left:auto;}
+.tg-messages{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.tg-messages::-webkit-scrollbar{width:4px;}
+.tg-messages::-webkit-scrollbar-track{background:transparent;}
+.tg-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+.tg-msg{max-width:80%;padding:9px 13px;border-radius:12px;font-size:11px;line-height:1.55;}
+.tg-msg.inbound{background:var(--sur3);border:1px solid var(--border);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;}
+.tg-msg.outbound{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);align-self:flex-end;border-bottom-right-radius:4px;}
+.tg-msg-meta{font-size:9px;color:var(--muted);margin-top:4px;}
+.tg-msg.inbound .tg-msg-meta{text-align:left;}
+.tg-msg.outbound .tg-msg-meta{text-align:right;}
+.tg-input-row{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;}
+.tg-input{flex:1;background:var(--sur2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);outline:none;transition:border-color 0.15s;}
+.tg-input:focus{border-color:rgba(0,229,255,0.35);}
+.tg-input::placeholder{color:var(--muted);}
+.tg-send{background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);border-radius:8px;padding:9px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--cyan);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.tg-send:hover{background:rgba(0,229,255,0.18);border-color:rgba(0,229,255,0.4);}
+.tg-empty{font-size:11px;color:var(--muted);text-align:center;padding:20px 0;}
+
+/* ═══════════════════════════════════════════
+HUB STATUS PANEL
+═══════════════════════════════════════════ */
+.hub-status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
+.hub-channel{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--sur2);border:1px solid var(--border);border-radius:8px;}
+.hub-ch-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.hub-ch-dot.on{background:var(--green);box-shadow:0 0 6px var(--green);}
+.hub-ch-dot.off{background:var(--red);}
+.hub-ch-dot.unknown{background:var(--muted);}
+.hub-ch-name{font-size:10px;color:var(--text);}
+.hub-ch-state{font-size:9px;color:var(--muted);margin-left:auto;}
+.hub-uptime{font-size:11px;color:var(--text);padding:8px 0 4px;border-bottom:1px solid var(--border);margin-bottom:8px;display:flex;justify-content:space-between;}
+.hub-uptime span{color:var(--green);}
+@media(max-width:768px){
+  .bottom-panel-row{grid-template-columns:1fr !important;}
+  .tg-panel{grid-column:1 !important;height:360px;}
+  .stat-bar{grid-template-columns:repeat(2,1fr) !important;}
+}
+
+/* ═══════════════════════════════════════════
 ANIMATIONS
 ═══════════════════════════════════════════ */
-<div class="stat-detail">3 in sprint · 2 pending approval</div>
+<div class="stat-bar">
+  <div class="stat-card" style="--accent:var(--gold)">
+    <div class="stat-label">Active Projects</div>
+    <div class="stat-value">7</div>
+    <div class="stat-detail">3 in sprint · 4 pending approval</div>
   </div>
   <div class="stat-card" style="--accent:var(--cyan)">
     <div class="stat-label">Commits Pushed</div>
-    <div class="stat-value">30+</div>
-    <div class="stat-detail">Mar 26 sprint · All systems</div>
+    <div class="stat-value">80+</div>
+    <div class="stat-detail">Mar 29 sprint · All systems</div>
   </div>
   <div class="stat-card" style="--accent:var(--orange)">
     <div class="stat-label">Revenue Streams</div>
-    <div class="stat-value">5</div>
-    <div class="stat-detail">2 live · 3 pending activation</div>
+    <div class="stat-value">7</div>
+    <div class="stat-detail">3 live · 4 pending activation</div>
+  </div>
+  <div class="stat-card" style="--accent:var(--green)">
+    <div class="stat-label">Hub Status</div>
+    <div class="stat-value" id="stat-hub-state" style="font-size:28px;padding-top:6px">--</div>
+    <div class="stat-detail" id="stat-hub-detail">Checking...</div>
   </div>
 </div>
 
@@ -338,11 +393,12 @@ ANIMATIONS
 
     <div class="panel-card">
       <div class="section-title">Owner Actions</div>
-      <div class="todo-item"><div class="todo-num">1</div><div><div class="todo-text">Solve X9 Twitter CAPTCHA</div><div class="todo-detail">~2 min · Unblocks X9 forever</div></div></div>
-      <div class="todo-item"><div class="todo-num">2</div><div><div class="todo-text">Approve VPS -- DigitalOcean</div><div class="todo-detail">$5/mo · Removes Mac dependency</div></div></div>
-      <div class="todo-item"><div class="todo-num">3</div><div><div class="todo-text">Set up Alpaca Account</div><div class="todo-detail">Paper trading first · Trader9 ready</div></div></div>
-      <div class="todo-item"><div class="todo-num">4</div><div><div class="todo-text">Add Jamie's number to .env</div><div class="todo-detail">Activates Pilot iMessage routing</div></div></div>
-      <div class="todo-item"><div class="todo-num">5</div><div><div class="todo-text">Review AI Underwriter Demo</div><div class="todo-detail">POC live · Port 3471 · 2.2s</div></div></div>
+      <div class="todo-item"><div class="todo-num">1</div><div><div class="todo-text">Resend signup</div><div class="todo-detail">~2 min · Unblocks proper email FROM domains</div></div></div>
+      <div class="todo-item"><div class="todo-num">2</div><div><div class="todo-text">X password recovery</div><div class="todo-detail">~2 min · Unblocks X9 forever</div></div></div>
+      <div class="todo-item"><div class="todo-num">3</div><div><div class="todo-text">CF token Zone Create permission</div><div class="todo-detail">~5 min · Domain DNS control</div></div></div>
+      <div class="todo-item"><div class="todo-num">4</div><div><div class="todo-text">PlayAiGM.com domain registration</div><div class="todo-detail">Multi-sport hub branding</div></div></div>
+      <div class="todo-item"><div class="todo-num">5</div><div><div class="todo-text">Investment portfolio data</div><div class="todo-detail">For dashboard tracker</div></div></div>
+      <div class="todo-item"><div class="todo-num">6</div><div><div class="todo-text">TikTok + Sleeper accounts</div><div class="todo-detail">Critical distribution gaps</div></div></div>
     </div>
 
     <div class="panel-card">
@@ -361,10 +417,65 @@ ANIMATIONS
   <div class="project-card"><div class="project-indicator" style="--ind-color:var(--orange)"></div><div class="project-name">Cloud Migration</div><div class="project-status-text">Script ready · Awaiting VPS</div><div class="project-bar"><div class="project-bar-fill" style="width:75%;--fill-color:var(--orange)"></div></div></div>
   <div class="project-card"><div class="project-indicator" style="--ind-color:var(--red)"></div><div class="project-name">X9 Twitter</div><div class="project-status-text">Blocked -- CAPTCHA · 2 min fix</div><div class="project-bar"><div class="project-bar-fill" style="width:85%;--fill-color:var(--red)"></div></div></div>
   <div class="project-card"><div class="project-indicator" style="--ind-color:var(--orange)"></div><div class="project-name">Trader9 Bot</div><div class="project-status-text">Strategy locked · Awaiting Alpaca</div><div class="project-bar"><div class="project-bar-fill" style="width:50%;--fill-color:var(--orange)"></div></div></div>
-  <div class="project-card"><div class="project-indicator blink" style="--ind-color:var(--purple)"></div><div class="project-name">Pilot / freeagent9</div><div class="project-status-text">Server<div class="sprint-entry"><div class="sprint-time">Mar 26 · 1:55 PM</div><div class="sprint-dot-col"><div class="sprint-dot"></div><div class="sprint-line"></div></div><div class="sprint-body"><div class="sprint-title">30+ Commits -- Afternoon Sprint</div><div class="sprint-desc">AI Underwriter POC live. Voice sprint. Kyle v5b. AiNFLGM split. Reddit polished. LLC filed.</div></div></div>
+  <div class="project-card"><div class="project-indicator blink" style="--ind-color:var(--purple)"></div><div class="project-name">Pilot / freeagent9</div><div class="project-status-text">Server live · iMessage routing</div><div class="project-bar"><div class="project-bar-fill" style="width:70%;--fill-color:var(--purple)"></div></div></div>
+  <div class="project-card"><div class="project-indicator blink" style="--ind-color:var(--green)"></div><div class="project-name">AI Education Co.</div><div class="project-status-text">Greenlit · Hitchhiker's Guide concept</div><div class="project-bar"><div class="project-bar-fill" style="width:20%;--fill-color:var(--green)"></div></div></div>
+  <div class="project-card" onclick="window.open('/jules-family.html','_blank')" style="cursor:pointer"><div class="project-indicator blink" style="--ind-color:var(--green)"></div><div class="project-name">Family Planner</div><div class="project-status-text">Live · jules-family.html</div><div class="project-bar"><div class="project-bar-fill" style="width:85%;--fill-color:var(--green)"></div></div></div>
+</div>
+
+<!-- SPRINT LOG (preserved) -->
+<div style="display:none"><div class="sprint-entry"><div class="sprint-time">Mar 26 · 1:55 PM</div><div class="sprint-dot-col"><div class="sprint-dot"></div><div class="sprint-line"></div></div><div class="sprint-body"><div class="sprint-title">30+ Commits -- Afternoon Sprint</div><div class="sprint-desc">AI Underwriter POC live. Voice sprint. Kyle v5b. AiNFLGM split. Reddit polished. LLC filed.</div></div></div>
   <div class="sprint-entry"><div class="sprint-time">Mar 26 · 11:45 AM</div><div class="sprint-dot-col"><div class="sprint-dot"></div><div class="sprint-line"></div></div><div class="sprint-body"><div class="sprint-title">20+ Commits -- Morning Sprint</div><div class="sprint-desc">Voice latency fixes. Apple Mail fixed. Kyle page deployed. Cost model built. 561-line dep map.</div></div></div>
   <div class="sprint-entry"><div class="sprint-time">Overnight</div><div class="sprint-dot-col"><div class="sprint-dot"></div><div class="sprint-line"></div></div><div class="sprint-body"><div class="sprint-title">8 Commits -- Hub Fixes + Foundation</div><div class="sprint-desc">comms-hub stabilized. Owner dashboard built. 9 Enterprises briefing live. Jules stub shipped.</div></div></div>
 </div>
+
+  <!-- BOTTOM PANEL ROW: Telegram + GA + Hub Status -->
+  <div class="bottom-panel-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:28px;">
+
+    <!-- TELEGRAM CHAT PANEL -->
+    <div class="tg-panel" style="grid-column:1/3;">
+      <div class="tg-header">
+        <div class="tg-dot"></div>
+        <div class="tg-title">Telegram · Live Chat</div>
+        <div class="tg-refresh-lbl" id="tg-refresh-lbl">Refreshing...</div>
+      </div>
+      <div class="tg-messages" id="tg-messages">
+        <div class="tg-empty">Loading messages...</div>
+      </div>
+      <div class="tg-input-row">
+        <input class="tg-input" id="tg-input" type="text" placeholder="Message 9 via Telegram..." autocomplete="off">
+        <button class="tg-send" id="tg-send" onclick="tgSend()">Send</button>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: GA + Hub Status stacked -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <!-- GOOGLE ANALYTICS WIDGET -->
+      <div class="panel-card">
+        <div class="section-title">Google Analytics</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:6px;letter-spacing:0.06em;">Property · G-PLW4H1NNF6</div>
+        <div style="font-size:11px;color:var(--text);line-height:1.6;margin-bottom:12px;">AiNFLGM.com · a388054252p528976282<br>Real-time data via GA dashboard.</div>
+        <a href="https://analytics.google.com/analytics/web/?pli=1#/a388054252p528976282/reports/intelligenthome" target="_blank" rel="noopener" style="display:block;text-align:center;background:rgba(245,197,66,0.1);border:1px solid rgba(245,197,66,0.25);border-radius:8px;padding:9px 14px;font-size:11px;color:var(--gold);text-decoration:none;letter-spacing:0.06em;transition:background 0.15s;" onmouseover="this.style.background='rgba(245,197,66,0.18)'" onmouseout="this.style.background='rgba(245,197,66,0.1)'">View Full Analytics Dashboard</a>
+      </div>
+
+      <!-- HUB STATUS FEED -->
+      <div class="panel-card" style="flex:1;">
+        <div class="section-title">Hub Status</div>
+        <div class="hub-uptime" id="hub-uptime-row">
+          <span>Uptime</span><span id="hub-uptime-val">--</span>
+        </div>
+        <div class="hub-status-grid" id="hub-channels">
+          <div class="hub-channel"><div class="hub-ch-dot unknown"></div><div class="hub-ch-name">Telegram</div><div class="hub-ch-state" id="ch-telegram">--</div></div>
+          <div class="hub-channel"><div class="hub-ch-dot unknown" id="dot-imessage"></div><div class="hub-ch-name">iMessage</div><div class="hub-ch-state" id="ch-imessage">--</div></div>
+          <div class="hub-channel"><div class="hub-ch-dot unknown" id="dot-email"></div><div class="hub-ch-name">Email</div><div class="hub-ch-state" id="ch-email">--</div></div>
+          <div class="hub-channel"><div class="hub-ch-dot unknown" id="dot-voice"></div><div class="hub-ch-name">Voice</div><div class="hub-ch-state" id="ch-voice">--</div></div>
+        </div>
+        <div style="font-size:9px;color:var(--muted);margin-top:8px;text-align:right;" id="hub-last-check">Last check: --</div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /BOTTOM PANEL ROW -->
 
   </div>
   <!-- END OPERATIONS -->
@@ -666,6 +777,164 @@ function getOutput(key) {
 document.getElementById('term-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') sendCommand();
 });
+
+/* ── TELEGRAM CHAT PANEL ── */
+const HUB = 'http://localhost:3457';
+let tgLastMessages = [];
+
+function fmtTime(ts) {
+  if (!ts) return '';
+  try {
+    const d = new Date(ts);
+    return d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+  } catch(e) { return ''; }
+}
+
+function renderTgMessages(msgs) {
+  const el = document.getElementById('tg-messages');
+  if (!el) return;
+  if (!msgs || !msgs.length) {
+    el.innerHTML = '<div class="tg-empty">No recent messages.</div>';
+    return;
+  }
+  const html = msgs.map(m => {
+    const dir = m.direction === 'out' ? 'outbound' : 'inbound';
+    const sender = dir === 'outbound' ? '9' : (m.sender || 'Owner');
+    const text = (m.text || m.message || m.content || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const t = fmtTime(m.timestamp || m.time);
+    return `<div class="tg-msg ${dir}"><div>${text}</div><div class="tg-msg-meta">${sender} · ${t}</div></div>`;
+  }).join('');
+  el.innerHTML = html;
+  el.scrollTop = el.scrollHeight;
+}
+
+async function tgFetch() {
+  const lbl = document.getElementById('tg-refresh-lbl');
+  try {
+    const r = await fetch(HUB + '/state', {signal: AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error('bad status');
+    const data = await r.json();
+    // Pull messages from state — try multiple possible keys
+    let msgs = data.recentMessages || data.messages || data.inbox || [];
+    // Filter to Telegram channel if channel info available
+    if (msgs.length && msgs[0].channel) {
+      const tgMsgs = msgs.filter(m => m.channel === 'telegram');
+      if (tgMsgs.length) msgs = tgMsgs;
+    }
+    // Show last 30
+    msgs = msgs.slice(-30);
+    renderTgMessages(msgs);
+    const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    if (lbl) lbl.textContent = 'Updated ' + now;
+  } catch(e) {
+    if (lbl) lbl.textContent = 'Hub offline';
+    const el = document.getElementById('tg-messages');
+    if (el && el.children.length <= 1) {
+      el.innerHTML = '<div class="tg-empty">Hub not reachable · localhost:3457</div>';
+    }
+  }
+}
+
+async function tgSend() {
+  const input = document.getElementById('tg-input');
+  const btn = document.getElementById('tg-send');
+  const text = input.value.trim();
+  if (!text) return;
+  input.disabled = true;
+  btn.disabled = true;
+  btn.textContent = '...';
+  try {
+    const r = await fetch(HUB + '/send', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({channel:'telegram', message: text}),
+      signal: AbortSignal.timeout(6000)
+    });
+    if (r.ok) {
+      // Optimistically add outbound msg
+      const el = document.getElementById('tg-messages');
+      const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+      const msgEl = document.createElement('div');
+      msgEl.className = 'tg-msg outbound';
+      msgEl.innerHTML = `<div>${text.replace(/</g,'&lt;')}</div><div class="tg-msg-meta">You · ${now}</div>`;
+      el.appendChild(msgEl);
+      el.scrollTop = el.scrollHeight;
+      input.value = '';
+    }
+  } catch(e) {
+    // silently fail — hub may be offline
+  } finally {
+    input.disabled = false;
+    btn.disabled = false;
+    btn.textContent = 'Send';
+    input.focus();
+  }
+}
+
+// Enter to send in Telegram input
+const tgInputEl = document.getElementById('tg-input');
+if (tgInputEl) {
+  tgInputEl.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tgSend();
+  });
+}
+
+/* ── HUB STATUS FEED ── */
+async function hubStatusFetch() {
+  try {
+    const r = await fetch(HUB + '/health', {signal: AbortSignal.timeout(5000)});
+    if (!r.ok) throw new Error('bad');
+    const data = await r.json();
+
+    // Uptime
+    const uptimeEl = document.getElementById('hub-uptime-val');
+    if (uptimeEl && data.uptime != null) {
+      const s = Math.floor(data.uptime);
+      if (s < 3600) uptimeEl.textContent = Math.floor(s/60) + 'm';
+      else uptimeEl.textContent = Math.floor(s/3600) + 'h ' + Math.floor((s%3600)/60) + 'm';
+    }
+
+    // Stat card
+    const statState = document.getElementById('stat-hub-state');
+    const statDetail = document.getElementById('stat-hub-detail');
+    if (statState) { statState.textContent = 'LIVE'; statState.style.color = 'var(--green)'; }
+    if (statDetail) statDetail.textContent = 'All channels reporting';
+
+    // Channels — try common shapes
+    const channels = data.channels || data.channelStatus || {};
+    const chMap = {telegram: 'ch-telegram', imessage: 'ch-imessage', email: 'ch-email', voice: 'ch-voice'};
+    const dotMap = {telegram: 'dot-telegram', imessage: 'dot-imessage', email: 'dot-email', voice: 'dot-voice'};
+    for (const [key, elId] of Object.entries(chMap)) {
+      const el = document.getElementById(elId);
+      if (!el) continue;
+      const raw = channels[key];
+      if (raw == null) { el.textContent = '--'; continue; }
+      const ok = (typeof raw === 'boolean') ? raw : (raw === 'ok' || raw === 'active' || raw === 'online' || raw === true);
+      el.textContent = ok ? 'OK' : 'Down';
+      el.style.color = ok ? 'var(--green)' : 'var(--red)';
+      const dot = el.closest('.hub-channel')?.querySelector('.hub-ch-dot');
+      if (dot) { dot.className = 'hub-ch-dot ' + (ok ? 'on' : 'off'); }
+    }
+
+    const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const lc = document.getElementById('hub-last-check');
+    if (lc) lc.textContent = 'Last check: ' + now;
+  } catch(e) {
+    const statState = document.getElementById('stat-hub-state');
+    const statDetail = document.getElementById('stat-hub-detail');
+    if (statState) { statState.textContent = 'OFF'; statState.style.color = 'var(--red)'; }
+    if (statDetail) { statDetail.textContent = 'Hub not reachable'; }
+    const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const lc = document.getElementById('hub-last-check');
+    if (lc) lc.textContent = 'Last check: ' + now + ' (offline)';
+  }
+}
+
+// Initial load + polling
+tgFetch();
+hubStatusFetch();
+setInterval(tgFetch, 10000);
+setInterval(hubStatusFetch, 30000);
 </script>
 
 </body>

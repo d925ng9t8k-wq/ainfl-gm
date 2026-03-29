@@ -366,6 +366,16 @@
       "role": "assistant",
       "content": "Hey Kyle! Quick update from Pilot. We deployed big improvements to the simulators and company preview page. Have you checked them out? Let me know if you need anything!",
       "ts": 1774744787999
+    },
+    {
+      "role": "assistant",
+      "content": "Hey Kyle — rates have been moving this week. Anything closing soon where a float-down or lock extension matters? Also, wanted to flag that the chat history issue you ran into should be fixed on the backend now. Holler if anything's active on your desk.",
+      "ts": 1774801347576
+    },
+    {
+      "role": "assistant",
+      "content": "Hey Kyle — just checking in. Any files on your desk giving you trouble today? Also, the team pushed some improvements to the tools — the guideline lookup is sharper now. Let me know if you need anything.",
+      "ts": 1774815074605
     }
   ],
   "reminders": [],

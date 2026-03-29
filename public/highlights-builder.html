@@ -765,7 +765,7 @@ textarea.highlight-input::placeholder { color: var(--text-mute); }
         <option value="17">Week 17</option>
         <option value="18">Week 18</option>
       </select>
-      <span class="week-label" style="font-size:13px; color:var(--text-mute);">2025 Season</span>
+      <span class="week-label" style="font-size:13px; color:var(--text-mute);">2026 Season</span>
     </div>
     <input
       type="text"
@@ -1128,7 +1128,7 @@ function renderPreview() {
   const el = document.getElementById('newsletter-preview');
   const week = document.getElementById('week-select').value;
   const titleInput = document.getElementById('newsletter-title').value.trim();
-  const title = titleInput || `NFL Week ${week} Highlights — 2025 Season`;
+  const title = titleInput || `NFL Week ${week} Highlights — 2026 Season`;
 
   if (highlights.length === 0) {
     el.innerHTML = '<div class="preview-placeholder">Add highlights to see your newsletter preview here.</div>';
