@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Emoji Guessing Game | AiNFL GM</title>
+<meta name="description" content="Can you guess the NFL team from emoji clues? Fun viral guessing game — 10 rounds, timer, streaks, and a shareable score. Free by AiNFL GM.">
+<meta property="og:title" content="NFL Emoji Guessing Game | AiNFL GM">
+<meta property="og:description" content="Guess all 32 NFL teams from emoji clues. Fast, fun, and shareable. How many can you get?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/emoji-nfl.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Emoji Guessing Game | AiNFL GM">
+<meta name="twitter:description" content="Guess the NFL team from emoji clues. Free game by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF6B00;
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+@keyframes timer-drain {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+@keyframes flash-green {
+  0%   { background: var(--green-dim); border-color: var(--green); }
+  100% { background: transparent; border-color: var(--border); }
+}
+@keyframes flash-red {
+  0%   { background: var(--red-dim); border-color: var(--red); }
+  100% { background: transparent; border-color: var(--border); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Game Modes ── */
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.mode-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mode-tab:hover { border-color: var(--border-hi); color: var(--text); }
+.mode-tab.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+/* ── Game Stats Bar ── */
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 20px;
+}
+.stat-pill {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  text-align: center;
+}
+.stat-pill .label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 2px;
+}
+.stat-pill .value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+}
+.stat-pill .value.green { color: var(--green); }
+.stat-pill .value.yellow { color: var(--yellow); }
+.stat-pill .value.red { color: var(--red); }
+
+/* ── Timer ── */
+.timer-track {
+  width: 100%;
+  height: 5px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.timer-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: var(--cyan);
+  transition: background 0.5s;
+}
+.timer-fill.warn { background: var(--yellow); }
+.timer-fill.danger { background: var(--red); }
+
+/* ── Puzzle Card ── */
+.puzzle-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 24px 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeUp 0.3s ease both;
+}
+.puzzle-card.correct {
+  animation: flash-green 0.6s ease forwards;
+  border-color: var(--green);
+}
+.puzzle-card.wrong {
+  animation: shake 0.4s ease, flash-red 0.6s ease forwards;
+  border-color: var(--red);
+}
+.round-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+.emoji-display {
+  font-size: clamp(48px, 10vw, 64px);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  animation: bounce 0.6s ease;
+}
+.difficulty-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 100px;
+  padding: 3px 10px;
+  margin-bottom: 20px;
+}
+.difficulty-badge.easy { background: var(--green-dim); color: var(--green); }
+.difficulty-badge.medium { background: var(--yellow-dim); color: var(--yellow); }
+.difficulty-badge.hard { background: var(--red-dim); color: var(--red); }
+
+/* ── Hint ── */
+.hint-text {
+  font-size: 12px;
+  color: var(--yellow);
+  font-weight: 600;
+  min-height: 18px;
+  margin-bottom: 16px;
+  transition: opacity 0.3s;
+}
+
+/* ── Input Area ── */
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.answer-input {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.answer-input:focus { border-color: var(--border-hi); }
+.answer-input::placeholder { color: var(--text-mute); }
+.submit-btn {
+  background: var(--cyan);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+.submit-btn:hover { opacity: 0.88; }
+.submit-btn:active { transform: scale(0.97); }
+
+/* ── Suggestion Chips ── */
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 32px;
+}
+.suggestion-chip {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.suggestion-chip:hover {
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+/* ── Action Buttons ── */
+.action-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.action-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.action-btn:hover { border-color: var(--border-hi); color: var(--text); }
+.action-btn.skip { color: var(--red); }
+.action-btn.skip:hover { border-color: var(--red); }
+
+/* ── Feedback Toast ── */
+.feedback-toast {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  min-height: 24px;
+  margin-bottom: 8px;
+  transition: opacity 0.3s;
+}
+.feedback-toast.correct-msg { color: var(--green); }
+.feedback-toast.wrong-msg { color: var(--red); }
+
+/* ── End Screen ── */
+#endScreen {
+  display: none;
+  animation: fadeUp 0.5s ease both;
+}
+.end-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.end-grade {
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.end-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.end-subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+}
+.score-grid {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.score-item {
+  min-width: 90px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  text-align: center;
+}
+.score-item .si-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.score-item .si-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.end-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.end-btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.end-btn.primary {
+  background: var(--cyan);
+  color: var(--bg);
+}
+.end-btn.primary:hover { opacity: 0.88; }
+.end-btn.secondary {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.end-btn.secondary:hover { border-color: var(--border-hi); }
+.end-btn.share {
+  background: var(--green-dim);
+  border: 1px solid var(--green);
+  color: var(--green);
+}
+.end-btn.share:hover { background: rgba(57,255,20,0.2); }
+
+/* ── Review List ── */
+.review-section {
+  display: none;
+  margin-top: 24px;
+}
+.review-section.visible { display: block; }
+.review-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.review-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+.review-item.hit { border-color: rgba(57,255,20,0.2); }
+.review-item.miss { border-color: rgba(255,45,85,0.2); }
+.review-emoji { font-size: 24px; min-width: 36px; text-align: center; }
+.review-info { flex: 1; }
+.review-answer {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1px;
+}
+.review-user {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.review-status {
+  font-size: 18px;
+}
+
+/* ── Reference Card ── */
+#referenceScreen {
+  display: none;
+  animation: fadeUp 0.4s ease both;
+}
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.ref-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+.ref-card:hover { border-color: var(--border-hi); }
+.ref-emoji { font-size: 28px; min-width: 36px; text-align: center; }
+.ref-info { min-width: 0; }
+.ref-team {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ref-city {
+  font-size: 11px;
+  color: var(--text-mute);
+}
+
+/* ── High Score Banner ── */
+.high-score-banner {
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--yellow);
+  margin-bottom: 20px;
+  display: none;
+}
+.high-score-banner.visible { display: block; }
+
+/* ── Start Screen ── */
+#startScreen {
+  animation: fadeUp 0.4s ease both;
+}
+.start-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.start-emojis {
+  font-size: 40px;
+  margin-bottom: 16px;
+  line-height: 1.4;
+  letter-spacing: 4px;
+}
+.start-card h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.start-card p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rules-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  max-width: 340px;
+  margin: 0 auto 28px;
+}
+.rules-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.rules-list li span { color: var(--cyan); font-weight: 700; min-width: 20px; }
+.start-btn {
+  background: var(--cyan);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.start-btn:hover { opacity: 0.88; }
+.start-btn:active { transform: scale(0.97); }
+.best-score {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-mute);
+}
+.best-score span { color: var(--yellow); font-weight: 700; }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .stats-bar { gap: 8px; }
+  .stat-pill .value { font-size: 18px; }
+  .end-grade { font-size: 56px; }
+  .ref-grid { grid-template-columns: 1fr 1fr; }
+  .score-grid { gap: 10px; }
+  .score-item { min-width: 76px; padding: 12px 12px; }
+  .score-item .si-value { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="/" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="/tools.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    All Tools
+  </a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Mini Game</div>
+  <h1>NFL <span>Emoji</span> Challenge</h1>
+  <p>Guess the NFL team from emoji clues. 10 rounds, 20 seconds each. How many can you get?</p>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Mode Tabs -->
+  <div class="mode-tabs">
+    <button class="mode-tab active" onclick="showMode('game')">Play Game</button>
+    <button class="mode-tab" onclick="showMode('reference')">See All 32 Teams</button>
+  </div>
+
+  <!-- ── GAME SCREEN ── -->
+  <div id="gameScreen">
+
+    <!-- Start Screen -->
+    <div id="startScreen">
+      <div class="start-card">
+        <div class="start-emojis">🦅 🐻 🏈 🐯</div>
+        <h2>Can You Name Them All?</h2>
+        <p>We'll show you emoji clues. You guess the NFL team. Partial credit for team names, full credit for exact matches.</p>
+        <ul class="rules-list">
+          <li><span>10</span> rounds per game</li>
+          <li><span>20</span> seconds per puzzle</li>
+          <li><span>+3</span> bonus points for speed (under 8 seconds)</li>
+          <li><span>Hint</span> appears at 10 seconds — but costs 1 point</li>
+          <li><span>Skip</span> counts as a miss — no points deducted</li>
+        </ul>
+        <button class="start-btn" onclick="startGame()">Start Game</button>
+        <div class="best-score" id="bestScoreDisplay"></div>
+      </div>
+    </div>
+
+    <!-- Active Game -->
+    <div id="activeGame" style="display:none;">
+
+      <!-- High Score Banner -->
+      <div class="high-score-banner" id="highScoreBanner">New High Score! You crushed it.</div>
+
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat-pill">
+          <div class="label">Round</div>
+          <div class="value" id="roundDisplay">1/10</div>
+        </div>
+        <div class="stat-pill">
+          <div class="label">Score</div>
+          <div class="value cyan" id="scoreDisplay">0</div>
+        </div>
+        <div class="stat-pill">
+          <div class="label">Streak</div>
+          <div class="value green" id="streakDisplay">0</div>
+        </div>
+      </div>
+
+      <!-- Timer -->
+      <div class="timer-track">
+        <div class="timer-fill" id="timerFill"></div>
+      </div>
+
+      <!-- Puzzle Card -->
+      <div class="puzzle-card" id="puzzleCard">
+        <div class="round-label" id="roundLabel">Round 1 of 10</div>
+        <div class="emoji-display" id="emojiDisplay">🏈</div>
+        <div class="difficulty-badge" id="difficultyBadge">easy</div>
+        <div class="hint-text" id="hintText"></div>
+
+        <!-- Input -->
+        <div class="input-row">
+          <input
+            type="text"
+            class="answer-input"
+            id="answerInput"
+            placeholder="Type team name..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            maxlength="40"
+          />
+          <button class="submit-btn" onclick="submitAnswer()">Submit</button>
+        </div>
+
+        <!-- Autocomplete suggestions -->
+        <div class="suggestions" id="suggestions"></div>
+
+        <!-- Feedback -->
+        <div class="feedback-toast" id="feedbackToast"></div>
+
+        <!-- Actions -->
+        <div class="action-row">
+          <button class="action-btn skip" onclick="skipPuzzle()">Skip</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- End Screen -->
+    <div id="endScreen">
+      <div class="end-card">
+        <div class="end-grade" id="endGrade">A+</div>
+        <div class="end-title" id="endTitle">NFL Mastermind</div>
+        <div class="end-subtitle" id="endSubtitle">You know your football</div>
+        <div class="score-grid">
+          <div class="score-item">
+            <div class="si-label">Score</div>
+            <div class="si-value" id="finalScore">0</div>
+          </div>
+          <div class="score-item">
+            <div class="si-label">Correct</div>
+            <div class="si-value" id="finalCorrect">0/10</div>
+          </div>
+          <div class="score-item">
+            <div class="si-label">Best Streak</div>
+            <div class="si-value" id="finalStreak">0</div>
+          </div>
+          <div class="score-item">
+            <div class="si-label">Best Score</div>
+            <div class="si-value" id="finalBest">0</div>
+          </div>
+        </div>
+        <div class="end-btns">
+          <button class="end-btn primary" onclick="startGame()">Play Again</button>
+          <button class="end-btn share" onclick="shareResult()">Share Result</button>
+          <button class="end-btn secondary" onclick="toggleReview()">Review Answers</button>
+        </div>
+      </div>
+
+      <!-- Review -->
+      <div class="review-section" id="reviewSection">
+        <div class="review-title">Round Recap</div>
+        <div class="review-list" id="reviewList"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── REFERENCE SCREEN ── -->
+  <div id="referenceScreen">
+    <div class="ref-grid" id="refGrid"></div>
+  </div>
+
+</div>
+
+<!-- More Tools -->
+<div style="max-width:720px;margin:40px auto 0;padding:0 16px 40px;">
+  <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:12px;">More Free Tools</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="/nfl-trivia.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">NFL Trivia</a>
+    <a href="/cap-quiz.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Salary Cap Quiz</a>
+    <a href="/draft-trade-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Draft Trade Calculator</a>
+    <a href="/trade-analyzer.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Trade Analyzer</a>
+    <a href="/" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#00F0FF;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:border-color .2s;">AiNFL GM Simulator</a>
+  </div>
+</div>
+
+<script>
+// ── TEAM DATA: 32 puzzles ──
+const ALL_TEAMS = [
+  // AFC East
+  {
+    team: 'Patriots', city: 'New England', emoji: '🏴‍☠️ 🔴⚪🔵',
+    alts: ['new england', 'new england patriots', 'pats'],
+    difficulty: 'easy', hint: 'New England'
+  },
+  {
+    team: 'Bills', city: 'Buffalo', emoji: '🦬 🔵🔴',
+    alts: ['buffalo', 'buffalo bills'],
+    difficulty: 'easy', hint: 'Buffalo'
+  },
+  {
+    team: 'Dolphins', city: 'Miami', emoji: '🐬 🔵🟠🔴',
+    alts: ['miami', 'miami dolphins', 'fins'],
+    difficulty: 'easy', hint: 'Miami'
+  },
+  {
+    team: 'Jets', city: 'New York', emoji: '🗽 ✈️ 🟢',
+    alts: ['new york jets', 'ny jets'],
+    difficulty: 'medium', hint: 'New York'
+  },
+  // AFC North
+  {
+    team: 'Ravens', city: 'Baltimore', emoji: '🐦‍⬛ 🟣⚫',
+    alts: ['baltimore', 'baltimore ravens'],
+    difficulty: 'medium', hint: 'Baltimore'
+  },
+  {
+    team: 'Steelers', city: 'Pittsburgh', emoji: '⭐ 🔨 ⚫🟡',
+    alts: ['pittsburgh', 'pittsburgh steelers'],
+    difficulty: 'easy', hint: 'Pittsburgh'
+  },
+  {
+    team: 'Browns', city: 'Cleveland', emoji: '🟠⚫ 🐶',
+    alts: ['cleveland', 'cleveland browns'],
+    difficulty: 'medium', hint: 'Cleveland'
+  },
+  {
+    team: 'Bengals', city: 'Cincinnati', emoji: '🐯 🟠⚫',
+    alts: ['cincinnati', 'cincinnati bengals', 'who dey'],
+    difficulty: 'easy', hint: 'Cincinnati'
+  },
+  // AFC South
+  {
+    team: 'Texans', city: 'Houston', emoji: '🤠 🔵🔴 ⭐',
+    alts: ['houston', 'houston texans'],
+    difficulty: 'medium', hint: 'Houston'
+  },
+  {
+    team: 'Colts', city: 'Indianapolis', emoji: '🐴 🔵⚪',
+    alts: ['indianapolis', 'indianapolis colts', 'indy'],
+    difficulty: 'medium', hint: 'Indianapolis'
+  },
+  {
+    team: 'Jaguars', city: 'Jacksonville', emoji: '🐆 🩵⚫🟡',
+    alts: ['jacksonville', 'jacksonville jaguars', 'jags'],
+    difficulty: 'hard', hint: 'Jacksonville'
+  },
+  {
+    team: 'Titans', city: 'Tennessee', emoji: '⚡ 🔱 🔵🔴',
+    alts: ['tennessee', 'tennessee titans'],
+    difficulty: 'hard', hint: 'Tennessee'
+  },
+  // AFC West
+  {
+    team: 'Broncos', city: 'Denver', emoji: '🏔️ 🐎 🟠🔵',
+    alts: ['denver', 'denver broncos'],
+    difficulty: 'easy', hint: 'Denver'
+  },
+  {
+    team: 'Chiefs', city: 'Kansas City', emoji: '🪶 🔴🟡 👑',
+    alts: ['kansas city', 'kansas city chiefs', 'kc chiefs', 'kc'],
+    difficulty: 'easy', hint: 'Kansas City'
+  },
+  {
+    team: 'Raiders', city: 'Las Vegas', emoji: '💀 ⚫🪙 🎰',
+    alts: ['las vegas', 'las vegas raiders', 'oakland raiders', 'raiders'],
+    difficulty: 'easy', hint: 'Las Vegas'
+  },
+  {
+    team: 'Chargers', city: 'Los Angeles', emoji: '⚡ 🔵🟡 ☀️',
+    alts: ['los angeles chargers', 'la chargers', 'chargers'],
+    difficulty: 'medium', hint: 'Los Angeles'
+  },
+  // NFC East
+  {
+    team: 'Cowboys', city: 'Dallas', emoji: '🤠 ⭐ 🔵🟡',
+    alts: ['dallas', 'dallas cowboys', "america's team"],
+    difficulty: 'easy', hint: 'Dallas'
+  },
+  {
+    team: 'Eagles', city: 'Philadelphia', emoji: '🦅 🟢🪙',
+    alts: ['philadelphia', 'philadelphia eagles', 'philly'],
+    difficulty: 'easy', hint: 'Philadelphia'
+  },
+  {
+    team: 'Giants', city: 'New York', emoji: '🗽 🏈 🔵🔴',
+    alts: ['new york giants', 'ny giants', 'giants'],
+    difficulty: 'medium', hint: 'New York'
+  },
+  {
+    team: 'Commanders', city: 'Washington', emoji: '🏛️ 🇺🇸 🔴🟡',
+    alts: ['washington', 'washington commanders', 'commanders', 'football team', 'redskins'],
+    difficulty: 'hard', hint: 'Washington D.C.'
+  },
+  // NFC North
+  {
+    team: 'Bears', city: 'Chicago', emoji: '🐻 🔵🟠',
+    alts: ['chicago', 'chicago bears', 'da bears'],
+    difficulty: 'easy', hint: 'Chicago'
+  },
+  {
+    team: 'Lions', city: 'Detroit', emoji: '🦁 🔵🪙',
+    alts: ['detroit', 'detroit lions'],
+    difficulty: 'easy', hint: 'Detroit'
+  },
+  {
+    team: 'Packers', city: 'Green Bay', emoji: '🧀 🟡🟢',
+    alts: ['green bay', 'green bay packers', 'cheeseheads'],
+    difficulty: 'easy', hint: 'Green Bay'
+  },
+  {
+    team: 'Vikings', city: 'Minnesota', emoji: '⚔️ 🛡️ 🟣🟡',
+    alts: ['minnesota', 'minnesota vikings'],
+    difficulty: 'medium', hint: 'Minnesota'
+  },
+  // NFC South
+  {
+    team: 'Falcons', city: 'Atlanta', emoji: '🦅 🔴⚫',
+    alts: ['atlanta', 'atlanta falcons', 'dirty birds'],
+    difficulty: 'medium', hint: 'Atlanta'
+  },
+  {
+    team: 'Panthers', city: 'Carolina', emoji: '🐆 🔵⚫',
+    alts: ['carolina', 'carolina panthers', 'charlotte'],
+    difficulty: 'medium', hint: 'Carolina'
+  },
+  {
+    team: 'Saints', city: 'New Orleans', emoji: '⚜️ 🟡⚫ 🎷',
+    alts: ['new orleans', 'new orleans saints', 'who dat'],
+    difficulty: 'medium', hint: 'New Orleans'
+  },
+  {
+    team: 'Buccaneers', city: 'Tampa Bay', emoji: '🏴‍☠️ ☠️ 🔴🟠',
+    alts: ['tampa bay', 'tampa bay buccaneers', 'bucs'],
+    difficulty: 'medium', hint: 'Tampa Bay'
+  },
+  // NFC West
+  {
+    team: '49ers', city: 'San Francisco', emoji: '⛏️ 🥇 🔴🟡',
+    alts: ['san francisco', 'san francisco 49ers', 'niners', 'sf 49ers', '49ers'],
+    difficulty: 'medium', hint: 'San Francisco'
+  },
+  {
+    team: 'Seahawks', city: 'Seattle', emoji: '🦅 🟢🔵 ⛰️',
+    alts: ['seattle', 'seattle seahawks'],
+    difficulty: 'medium', hint: 'Seattle'
+  },
+  {
+    team: 'Rams', city: 'Los Angeles', emoji: '🐏 🔵🟡 ☀️',
+    alts: ['los angeles rams', 'la rams', 'rams'],
+    difficulty: 'medium', hint: 'Los Angeles'
+  },
+  {
+    team: 'Cardinals', city: 'Arizona', emoji: '🐦 🔴 🌵',
+    alts: ['arizona', 'arizona cardinals', 'az cardinals'],
+    difficulty: 'medium', hint: 'Arizona'
+  }
+];
+
+// ── STATE ──
+const ROUNDS = 10;
+const TIMER_SECONDS = 20;
+const SPEED_BONUS_THRESHOLD = 8;
+const HINT_PENALTY = 1;
+
+let state = {
+  mode: 'game',
+  phase: 'start',       // start | playing | end
+  queue: [],
+  roundIndex: 0,
+  score: 0,
+  streak: 0,
+  bestStreak: 0,
+  correct: 0,
+  hintUsed: false,
+  history: [],          // { team, emoji, userAnswer, hit }
+  timerInterval: null,
+  timerStart: null,
+  timerRemaining: TIMER_SECONDS,
+  animFrame: null,
+  inputLocked: false
+};
+
+// ── UTILS ──
+function normalize(s) {
+  return s.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function checkAnswer(input, team) {
+  const n = normalize(input);
+  if (!n) return false;
+  const targets = [team.team, ...team.alts].map(normalize);
+  return targets.some(t => t === n || t.includes(n) || n.includes(t));
+}
+
+function getBestScore() {
+  return parseInt(localStorage.getItem('emojiNfl_best') || '0', 10);
+}
+
+function saveBestScore(s) {
+  const current = getBestScore();
+  if (s > current) {
+    localStorage.setItem('emojiNfl_best', String(s));
+    return true;
+  }
+  return false;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── MODE SWITCHING ──
+function showMode(mode) {
+  state.mode = mode;
+  document.querySelectorAll('.mode-tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && mode === 'game') || (i === 1 && mode === 'reference'));
+  });
+  document.getElementById('gameScreen').style.display = mode === 'game' ? 'block' : 'none';
+  document.getElementById('referenceScreen').style.display = mode === 'reference' ? 'block' : 'none';
+  if (mode === 'reference') renderReference();
+}
+
+// ── START GAME ──
+function startGame() {
+  clearTimer();
+  state = {
+    ...state,
+    phase: 'playing',
+    queue: shuffle(ALL_TEAMS).slice(0, ROUNDS),
+    roundIndex: 0,
+    score: 0,
+    streak: 0,
+    bestStreak: 0,
+    correct: 0,
+    hintUsed: false,
+    history: [],
+    timerInterval: null,
+    timerStart: null,
+    timerRemaining: TIMER_SECONDS,
+    inputLocked: false
+  };
+
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('endScreen').style.display = 'none';
+  document.getElementById('activeGame').style.display = 'block';
+  document.getElementById('highScoreBanner').classList.remove('visible');
+  document.getElementById('reviewSection').classList.remove('visible');
+
+  updateStatsBar();
+  loadPuzzle();
+}
+
+// ── LOAD PUZZLE ──
+function loadPuzzle() {
+  const team = state.queue[state.roundIndex];
+  state.hintUsed = false;
+  state.inputLocked = false;
+  state.timerRemaining = TIMER_SECONDS;
+
+  const card = document.getElementById('puzzleCard');
+  card.className = 'puzzle-card';
+
+  document.getElementById('roundLabel').textContent = `Round ${state.roundIndex + 1} of ${ROUNDS}`;
+  document.getElementById('emojiDisplay').textContent = team.emoji;
+  document.getElementById('hintText').textContent = '';
+
+  const badge = document.getElementById('difficultyBadge');
+  badge.textContent = team.difficulty;
+  badge.className = 'difficulty-badge ' + team.difficulty;
+
+  const input = document.getElementById('answerInput');
+  input.value = '';
+  input.disabled = false;
+  input.focus();
+
+  document.getElementById('feedbackToast').textContent = '';
+  document.getElementById('feedbackToast').className = 'feedback-toast';
+  document.getElementById('suggestions').innerHTML = '';
+
+  startTimer();
+}
+
+// ── TIMER ──
+function startTimer() {
+  clearTimer();
+  const fill = document.getElementById('timerFill');
+  const totalMs = TIMER_SECONDS * 1000;
+  const startTime = performance.now();
+  let hintShown = false;
+
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  fill.className = 'timer-fill';
+
+  function tick() {
+    const elapsed = performance.now() - startTime;
+    const remaining = Math.max(0, totalMs - elapsed);
+    const pct = (remaining / totalMs) * 100;
+
+    fill.style.width = pct + '%';
+
+    const secs = remaining / 1000;
+    if (secs <= 5) {
+      fill.className = 'timer-fill danger';
+    } else if (secs <= 10) {
+      fill.className = 'timer-fill warn';
+      if (!hintShown && !state.hintUsed) {
+        showAutoHint();
+        hintShown = true;
+      }
+    }
+
+    if (remaining > 0 && !state.inputLocked) {
+      state.animFrame = requestAnimationFrame(tick);
+    } else if (remaining <= 0 && !state.inputLocked) {
+      timeUp();
+    }
+  }
+
+  state.animFrame = requestAnimationFrame(tick);
+  state.timerStart = performance.now();
+}
+
+function clearTimer() {
+  if (state.animFrame) {
+    cancelAnimationFrame(state.animFrame);
+    state.animFrame = null;
+  }
+  if (state.timerInterval) {
+    clearInterval(state.timerInterval);
+    state.timerInterval = null;
+  }
+}
+
+function showAutoHint() {
+  const team = state.queue[state.roundIndex];
+  const cost = state.hintUsed ? '' : ' (-1 pt)';
+  document.getElementById('hintText').textContent = `Hint: ${team.hint}${cost}`;
+  if (!state.hintUsed) state.hintUsed = true;
+}
+
+function timeUp() {
+  clearTimer();
+  state.inputLocked = true;
+  const team = state.queue[state.roundIndex];
+
+  state.history.push({ team: team.team, emoji: team.emoji, userAnswer: '(time)', hit: false });
+  state.streak = 0;
+
+  const card = document.getElementById('puzzleCard');
+  card.classList.add('wrong');
+
+  const toast = document.getElementById('feedbackToast');
+  toast.textContent = `Time! It was the ${team.city} ${team.team}`;
+  toast.className = 'feedback-toast wrong-msg';
+
+  document.getElementById('answerInput').disabled = true;
+  document.getElementById('suggestions').innerHTML = '';
+
+  updateStatsBar();
+  setTimeout(nextRound, 1800);
+}
+
+// ── SUBMIT ──
+function submitAnswer() {
+  if (state.inputLocked || state.phase !== 'playing') return;
+  const input = document.getElementById('answerInput');
+  const val = input.value.trim();
+  if (!val) return;
+
+  clearTimer();
+  state.inputLocked = true;
+  input.disabled = true;
+  document.getElementById('suggestions').innerHTML = '';
+
+  const team = state.queue[state.roundIndex];
+  const elapsed = (performance.now() - state.timerStart) / 1000;
+  const hit = checkAnswer(val, team);
+
+  if (hit) {
+    let pts = 10;
+    if (state.hintUsed) pts -= HINT_PENALTY;
+    if (elapsed <= SPEED_BONUS_THRESHOLD) pts += 3;
+    state.score += pts;
+    state.streak++;
+    state.bestStreak = Math.max(state.bestStreak, state.streak);
+    state.correct++;
+    state.history.push({ team: team.team, emoji: team.emoji, userAnswer: val, hit: true });
+
+    document.getElementById('puzzleCard').classList.add('correct');
+    const bonus = elapsed <= SPEED_BONUS_THRESHOLD ? ' +3 speed bonus!' : '';
+    const hintNote = state.hintUsed ? ' (-1 hint)' : '';
+    const toast = document.getElementById('feedbackToast');
+    toast.textContent = `Correct! +${pts} pts${bonus}${hintNote}`;
+    toast.className = 'feedback-toast correct-msg';
+  } else {
+    state.streak = 0;
+    state.history.push({ team: team.team, emoji: team.emoji, userAnswer: val, hit: false });
+
+    document.getElementById('puzzleCard').classList.add('wrong');
+    const toast = document.getElementById('feedbackToast');
+    toast.textContent = `Nope — it was the ${team.city} ${team.team}`;
+    toast.className = 'feedback-toast wrong-msg';
+  }
+
+  updateStatsBar();
+  setTimeout(nextRound, 1600);
+}
+
+// ── SKIP ──
+function skipPuzzle() {
+  if (state.inputLocked || state.phase !== 'playing') return;
+  clearTimer();
+  state.inputLocked = true;
+
+  const team = state.queue[state.roundIndex];
+  state.streak = 0;
+  state.history.push({ team: team.team, emoji: team.emoji, userAnswer: '(skipped)', hit: false });
+
+  const toast = document.getElementById('feedbackToast');
+  toast.textContent = `Skipped — it was the ${team.city} ${team.team}`;
+  toast.className = 'feedback-toast wrong-msg';
+
+  document.getElementById('answerInput').disabled = true;
+  document.getElementById('suggestions').innerHTML = '';
+
+  updateStatsBar();
+  setTimeout(nextRound, 1400);
+}
+
+// ── NEXT ROUND ──
+function nextRound() {
+  state.roundIndex++;
+  if (state.roundIndex >= ROUNDS) {
+    endGame();
+  } else {
+    loadPuzzle();
+  }
+}
+
+// ── STATS BAR ──
+function updateStatsBar() {
+  document.getElementById('roundDisplay').textContent = `${state.roundIndex + 1}/${ROUNDS}`;
+  document.getElementById('scoreDisplay').textContent = state.score;
+  const streakEl = document.getElementById('streakDisplay');
+  streakEl.textContent = state.streak;
+  streakEl.className = 'value ' + (state.streak >= 5 ? 'yellow' : state.streak >= 3 ? 'green' : 'cyan');
+}
+
+// ── END GAME ──
+function endGame() {
+  clearTimer();
+  state.phase = 'end';
+
+  document.getElementById('activeGame').style.display = 'none';
+  const endScreen = document.getElementById('endScreen');
+  endScreen.style.display = 'block';
+
+  const pct = state.correct / ROUNDS;
+  let grade, title, subtitle, gradeColor;
+
+  if (pct >= 0.9) {
+    grade = 'A+'; title = 'NFL Mastermind'; subtitle = 'You eat, sleep, and breathe football.'; gradeColor = '#39FF14';
+  } else if (pct >= 0.8) {
+    grade = 'A'; title = 'Front Office Material'; subtitle = 'Your GM skills are legit.'; gradeColor = '#39FF14';
+  } else if (pct >= 0.7) {
+    grade = 'B+'; title = 'Starting Lineup'; subtitle = 'Strong showing — you know the league.'; gradeColor = '#00F0FF';
+  } else if (pct >= 0.6) {
+    grade = 'B'; title = 'Solid Roster Move'; subtitle = 'Good enough for the playoffs.'; gradeColor = '#00F0FF';
+  } else if (pct >= 0.5) {
+    grade = 'C+'; title = 'Practice Squad'; subtitle = 'You got the basics. Keep watching.'; gradeColor = '#FFD600';
+  } else if (pct >= 0.4) {
+    grade = 'C'; title = 'Backup QB Energy'; subtitle = 'Room to grow.'; gradeColor = '#FFD600';
+  } else if (pct >= 0.3) {
+    grade = 'D'; title = 'Cut from the Roster'; subtitle = 'Hit the film room.'; gradeColor = '#FF6B00';
+  } else {
+    grade = 'F'; title = 'Watching the Wrong Sport'; subtitle = 'Are you sure you like football?'; gradeColor = '#FF2D55';
+  }
+
+  document.getElementById('endGrade').textContent = grade;
+  document.getElementById('endGrade').style.color = gradeColor;
+  document.getElementById('endTitle').textContent = title;
+  document.getElementById('endSubtitle').textContent = subtitle;
+  document.getElementById('finalScore').textContent = state.score;
+  document.getElementById('finalCorrect').textContent = `${state.correct}/${ROUNDS}`;
+  document.getElementById('finalStreak').textContent = state.bestStreak;
+
+  const isNewBest = saveBestScore(state.score);
+  const best = getBestScore();
+  document.getElementById('finalBest').textContent = best;
+
+  if (isNewBest && state.score > 0) {
+    document.getElementById('highScoreBanner').classList.add('visible');
+  }
+}
+
+// ── REVIEW ──
+function toggleReview() {
+  const section = document.getElementById('reviewSection');
+  if (section.classList.contains('visible')) {
+    section.classList.remove('visible');
+    return;
+  }
+
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+
+  state.history.forEach(h => {
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (h.hit ? 'hit' : 'miss');
+    item.innerHTML = `
+      <div class="review-emoji">${h.emoji.split(' ')[0]}</div>
+      <div class="review-info">
+        <div class="review-answer">${h.team}</div>
+        <div class="review-user">You: ${h.userAnswer}</div>
+      </div>
+      <div class="review-status">${h.hit ? '✅' : '❌'}</div>
+    `;
+    list.appendChild(item);
+  });
+
+  section.classList.add('visible');
+}
+
+// ── SHARE ──
+function shareResult() {
+  const pct = state.correct / ROUNDS;
+  let grade;
+  if (pct >= 0.9) grade = 'A+';
+  else if (pct >= 0.8) grade = 'A';
+  else if (pct >= 0.7) grade = 'B+';
+  else if (pct >= 0.6) grade = 'B';
+  else if (pct >= 0.5) grade = 'C+';
+  else if (pct >= 0.4) grade = 'C';
+  else if (pct >= 0.3) grade = 'D';
+  else grade = 'F';
+
+  const emojiScore = state.history.map(h => h.hit ? '✅' : '❌').join('');
+  const text = `NFL Emoji Challenge ${grade}\n${emojiScore}\nScore: ${state.score} | ${state.correct}/${ROUNDS} correct\nPlay free at ainflgm.com/emoji-nfl.html`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'NFL Emoji Challenge', text }).catch(() => copyText(text));
+  } else {
+    copyText(text);
+  }
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.end-btn.share');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+}
+
+// ── AUTOCOMPLETE ──
+function renderSuggestions(val) {
+  const container = document.getElementById('suggestions');
+  container.innerHTML = '';
+  if (!val || val.length < 2) return;
+
+  const n = normalize(val);
+  const matches = ALL_TEAMS.filter(t => {
+    return normalize(t.team).includes(n) || normalize(t.city).includes(n) ||
+      t.alts.some(a => normalize(a).includes(n));
+  }).slice(0, 6);
+
+  matches.forEach(t => {
+    const chip = document.createElement('button');
+    chip.className = 'suggestion-chip';
+    chip.textContent = `${t.city} ${t.team}`;
+    chip.onclick = () => {
+      document.getElementById('answerInput').value = t.team;
+      container.innerHTML = '';
+      submitAnswer();
+    };
+    container.appendChild(chip);
+  });
+}
+
+// ── REFERENCE CARD ──
+function renderReference() {
+  const grid = document.getElementById('refGrid');
+  grid.innerHTML = '';
+  ALL_TEAMS.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'ref-card';
+    card.innerHTML = `
+      <div class="ref-emoji">${t.emoji.split(' ')[0]}</div>
+      <div class="ref-info">
+        <div class="ref-team">${t.city} ${t.team}</div>
+        <div class="ref-city">${t.emoji}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── BEST SCORE DISPLAY ──
+function updateBestScoreDisplay() {
+  const best = getBestScore();
+  const el = document.getElementById('bestScoreDisplay');
+  if (best > 0) {
+    el.innerHTML = `Your best: <span>${best} pts</span>`;
+  } else {
+    el.textContent = 'No high score yet. Be the first!';
+  }
+}
+
+// ── INPUT HANDLER ──
+document.addEventListener('DOMContentLoaded', () => {
+  updateBestScoreDisplay();
+
+  const input = document.getElementById('answerInput');
+
+  input.addEventListener('input', () => {
+    if (!state.inputLocked) renderSuggestions(input.value);
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') submitAnswer();
+    if (e.key === 'Escape') document.getElementById('suggestions').innerHTML = '';
+  });
+});
+</script>
+</body>
+</html>
