@@ -21174,7 +21174,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 299.84, "capUsed": 285.44, "deadCap": 11.37, "capSpace": 3.03}
+    "capSummary": {"totalCap": 299.84, "capUsed": 285.38, "deadCap": 11.37, "capSpace": 3.09}
   },
   "NYJ": {
     "players": [
@@ -24932,7 +24932,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 340.19, "capUsed": 272.84, "deadCap": 39.17, "capSpace": 28.17}
+    "capSummary": {"totalCap": 340.19, "capUsed": 272.84, "deadCap": 36.25, "capSpace": 31.1}
   },
   "SEA": {
     "players": [
