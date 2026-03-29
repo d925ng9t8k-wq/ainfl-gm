@@ -361,6 +361,11 @@
       "role": "assistant",
       "content": "VA has no set minimum — VA has no minimum — lender overlay typically 580-620. The VA itself doesn't set a floor.",
       "ts": 1774705625250
+    },
+    {
+      "role": "assistant",
+      "content": "Hey Kyle! Quick update from Pilot. We deployed big improvements to the simulators and company preview page. Have you checked them out? Let me know if you need anything!",
+      "ts": 1774744787999
     }
   ],
   "reminders": [],

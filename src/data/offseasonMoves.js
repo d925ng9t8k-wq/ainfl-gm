@@ -62,10 +62,10 @@ export const preseasonMoves = {
   NYJ: {
     signings: [
       { player: 'Demario Davis', position: 'LB', previousTeam: 'Saints', aav: 6.0, years: 1, total: 6.0, guaranteed: 4.0, rating: 76 },
-      { player: 'Geno Smith', position: 'QB', previousTeam: 'Raiders', aav: 6.5, years: 1, total: 6.5, guaranteed: 6.5, rating: 71 },
     ],
     trades: [
       { acquired: 'Minkah Fitzpatrick', position: 'S', from: 'Dolphins', note: 'Sent 2026 7th-round pick; Fitzpatrick signs 3yr/$40M extension' },
+      { acquired: 'Geno Smith', position: 'QB', from: 'Raiders', note: 'Sent 2026 6th-round pick; received Smith + 2026 7th. Raiders paying $16.2M of his $19.5M salary.' },
     ],
     extensions: [
       { player: 'Minkah Fitzpatrick', position: 'S', details: '3yr/$40M extension upon acquisition from MIA' },
@@ -73,7 +73,7 @@ export const preseasonMoves = {
     departures: [
       { player: 'Justin Fields', position: 'QB', destination: 'Chiefs', note: 'Traded for 2027 6th-round pick' },
     ],
-    summary: 'Jets signed LB Demario Davis and QB Geno Smith (1yr/$6.5M). Acquired S Minkah Fitzpatrick from Miami (3yr/$40M extension). Traded Justin Fields to KC for a 2027 6th.',
+    summary: 'Jets acquired QB Geno Smith via trade from LV (sent 6th, received Smith + 7th; Raiders paying bulk of contract). Signed LB Demario Davis. Acquired S Minkah Fitzpatrick from Miami (3yr/$40M extension). Traded Justin Fields to KC for a 2027 6th.',
   },
 
   // AFC NORTH
@@ -91,15 +91,16 @@ export const preseasonMoves = {
       { player: 'Zion Johnson', position: 'G', previousTeam: 'Chargers', aav: 16.5, years: 3, total: 49.5, guaranteed: 32.4, rating: 79 },
       { player: 'Elgton Jenkins', position: 'G', previousTeam: 'Packers', aav: 12.0, years: 2, total: 24.0, guaranteed: 20.0, rating: 77 },
       { player: 'Quincy Williams', position: 'LB', previousTeam: 'Jets', aav: 17.0, years: 2, total: 34.0, guaranteed: 22.0, rating: 74, note: 'Up to $17M/yr' },
-      { player: 'Wyatt Teller', position: 'G', previousTeam: 'Browns', aav: 10.0, years: 2, total: 20.0, guaranteed: 14.0, rating: 80, note: 'Re-signed' },
       { player: 'Teven Jenkins', position: 'OG', previousTeam: 'Browns', aav: 3.0, years: 1, total: 3.0, guaranteed: 1.5, rating: 68, note: 'Re-sign' },
       { player: 'Jack Stoll', position: 'TE', previousTeam: 'Free Agent', aav: 1.5, years: 1, total: 1.5, guaranteed: 0.75, rating: 60 },
     ],
     trades: [
       { acquired: 'Tytus Howard', position: 'OT', from: 'Texans', note: 'Traded for from HOU' },
     ],
-    departures: [],
-    summary: 'Browns invested heavily in the offensive line: signed G Zion Johnson (3yr/$49.5M, $32.4M gtd), G Elgton Jenkins (2yr/$24M, $20M gtd), re-signed G Wyatt Teller and OG Teven Jenkins, and traded for OT Tytus Howard from HOU. Added LB Quincy Williams (2yr, up to $17M/yr) and TE Jack Stoll.',
+    departures: [
+      { player: 'Wyatt Teller', position: 'G', destination: 'Texans', note: 'Signed 2yr/$23M max value in free agency' },
+    ],
+    summary: 'Browns invested heavily in the offensive line: signed G Zion Johnson (3yr/$49.5M, $32.4M gtd), G Elgton Jenkins (2yr/$24M, $20M gtd), re-signed OG Teven Jenkins, and traded for OT Tytus Howard from HOU. Added LB Quincy Williams (2yr, up to $17M/yr) and TE Jack Stoll. Lost G Wyatt Teller to HOU (2yr/$23M max).',
   },
   PIT: {
     trades: [
@@ -136,10 +137,10 @@ export const preseasonMoves = {
       { player: 'Braden Smith', position: 'OT', previousTeam: 'Colts', aav: 12.0, years: 3, total: 36.0, guaranteed: 22.0, rating: 77 },
       { player: 'Logan Hall', position: 'DT', previousTeam: 'Buccaneers', aav: 5.0, years: 2, total: 10.0, guaranteed: 6.0, rating: 70 },
       { player: 'Foster Moreau', position: 'TE', previousTeam: 'Free Agent', aav: 3.0, years: 1, total: 3.0, guaranteed: 2.0, rating: 66 },
-      { player: 'Wyatt Teller', position: 'OG', previousTeam: 'Free Agent', aav: 8.0, years: 2, total: 16.0, guaranteed: 10.0, rating: 80, note: 'Up to $23M with incentives', date: '2026-03-20' },
+      { player: 'Wyatt Teller', position: 'OG', previousTeam: 'Browns', aav: 8.0, years: 2, total: 16.0, guaranteed: 10.0, rating: 80, note: 'Up to $23M with incentives', date: '2026-03-20' },
     ],
     departures: [],
-    summary: 'Texans traded for RB David Montgomery (from DET for R4, Juice Scruggs, R7). Signed S Reed Blankenship (PHI), OT Braden Smith, DT Logan Hall, TE Foster Moreau, and OG Wyatt Teller (2yr/$16M, up to $23M).',
+    summary: 'Texans traded for RB David Montgomery (from DET for R4, Juice Scruggs, R7). Signed S Reed Blankenship (PHI), OT Braden Smith (IND), DT Logan Hall (TB), TE Foster Moreau, and OG Wyatt Teller from CLE (2yr/$16M, up to $23M).',
   },
   IND: {
     signings: [
@@ -218,13 +219,13 @@ export const preseasonMoves = {
     ],
     signings: [
       { player: 'Kenneth Walker III', position: 'RB', previousTeam: 'Seahawks', aav: 8.0, years: 2, total: 16.0, guaranteed: 10.0, rating: 78 },
-      { player: 'Leo Chenal', position: 'LB', previousTeam: 'Chiefs', aav: 5.0, years: 2, total: 10.0, guaranteed: 6.0, rating: 73, note: 'Re-sign' },
       { player: 'Alohi Gilman', position: 'S', previousTeam: 'Chargers', aav: 4.5, years: 2, total: 9.0, guaranteed: 5.0, rating: 71 },
     ],
     departures: [
       { player: 'Trent McDuffie', position: 'CB', destination: 'Rams', note: 'Traded for 2026 R1 (#29), R5, R6 + 2027 R3' },
+      { player: 'Leo Chenal', position: 'LB', destination: 'Commanders', note: 'Signed 3yr/$24.75M in free agency' },
     ],
-    summary: 'Chiefs traded for Justin Fields from the Jets (for a 2027 6th). Signed RB Kenneth Walker III, re-signed LB Leo Chenal, added S Alohi Gilman. Lost CB Trent McDuffie to the Rams in a blockbuster trade.',
+    summary: 'Chiefs traded for Justin Fields from the Jets (for a 2027 6th). Signed RB Kenneth Walker III and S Alohi Gilman. Lost CB Trent McDuffie to the Rams in a blockbuster trade. Lost LB Leo Chenal to Washington (3yr/$24.75M).',
   },
   LV: {
     signings: [
@@ -237,8 +238,9 @@ export const preseasonMoves = {
     ],
     departures: [
       { player: 'Alex Cappa', position: 'OG', destination: 'Free Agent', note: 'Released March 6, 2026' },
+      { player: 'Geno Smith', position: 'QB', destination: 'Jets', note: 'Traded for 2026 6th-round pick (received 7th back). Raiders paying $16.2M of his $19.5M salary.' },
     ],
-    summary: 'Raiders made C Tyler Linderbaum the highest-paid center ever (3yr/$81M, $60M gtd). Added LB Quay Walker, DE Kwity Paye, re-signed DE Malcolm Koonce, signed LB Nakobe Dean and CB Eric Stokes. Released OG Alex Cappa.',
+    summary: 'Raiders made C Tyler Linderbaum the highest-paid center ever (3yr/$81M, $60M gtd). Added LB Quay Walker, DE Kwity Paye, re-signed DE Malcolm Koonce, signed LB Nakobe Dean and CB Eric Stokes. Released OG Alex Cappa. Traded QB Geno Smith to NYJ for a 6th-round pick.',
   },
   LAC: {
     signings: [
@@ -313,11 +315,11 @@ export const preseasonMoves = {
       { player: 'Marcus Mariota', position: 'QB', previousTeam: 'Free Agent', aav: 2.5, years: 1, total: 2.5, guaranteed: 1.5, rating: 63 },
       { player: 'Tim Settle', position: 'DT', previousTeam: 'Bills', aav: 5.0, years: 2, total: 10.0, guaranteed: 6.0, rating: 71 },
       { player: 'Nick Cross', position: 'S', previousTeam: 'Colts', aav: 3.5, years: 2, total: 7.0, guaranteed: 4.0, rating: 67 },
-      { player: 'Leo Chenal', position: 'LB', previousTeam: 'Chiefs', aav: 5.0, years: 2, total: 10.0, guaranteed: 6.0, rating: 73 },
+      { player: 'Leo Chenal', position: 'LB', previousTeam: 'Chiefs', aav: 8.25, years: 3, total: 24.75, guaranteed: 15.0, rating: 73 },
       { player: 'Charles Omenihu', position: 'DE', previousTeam: '49ers', aav: 6.0, years: 2, total: 12.0, guaranteed: 7.0, rating: 74 },
     ],
     departures: [],
-    summary: 'Commanders signed CB Amik Robertson (2yr/$16M), DE Charles Omenihu, LB Leo Chenal, DT Tim Settle, S Nick Cross, and backup QB Marcus Mariota. Added depth across the defense.',
+    summary: 'Commanders signed CB Amik Robertson (2yr/$16M), DE Charles Omenihu, LB Leo Chenal (3yr/$24.75M from KC), DT Tim Settle, S Nick Cross, and backup QB Marcus Mariota. Added depth across the defense.',
   },
 
   // NFC NORTH
@@ -383,14 +385,14 @@ export const preseasonMoves = {
   },
   MIN: {
     signings: [
-      { player: 'Kyler Murray', position: 'QB', previousTeam: 'Cardinals', aav: 15.0, years: 1, total: 15.0, guaranteed: 15.0, rating: 78, note: '1-year prove-it deal after ARI release' },
+      { player: 'Kyler Murray', position: 'QB', previousTeam: 'Cardinals', aav: 1.3, years: 1, total: 1.3, guaranteed: 1.3, rating: 78, note: 'Veteran minimum; ARI paying $36M+ guarantee on top. No-tag clause included.' },
       { player: 'Eric Wilson', position: 'LB', previousTeam: 'Free Agent', aav: 7.5, years: 3, total: 22.5, guaranteed: 14.0, rating: 72 },
     ],
     extensions: [
       { player: 'Aaron Jones', position: 'RB', details: 'Revised contract: base salary reduced from $9M to $5.5M' },
     ],
     departures: [],
-    summary: "Vikings signed Kyler Murray on a 1-year prove-it deal ($15M) after Arizona released him. Restructured Aaron Jones' contract to save cap. Signed LB Eric Wilson (3yr/$22.5M).",
+    summary: "Vikings signed Kyler Murray on a 1-year vet minimum deal ($1.3M) after Arizona released him — ARI is paying $36M+ guaranteed on top. Includes a no-tag clause. Restructured Aaron Jones' contract to save cap. Signed LB Eric Wilson (3yr/$22.5M).",
   },
 
   // NFC SOUTH
