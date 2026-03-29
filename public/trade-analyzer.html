@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Free AI Fantasy Football Trade Analyzer. Instantly see who wins any trade with dynasty rankings for 100+ NFL players. Built by PlayAiGM.">
+<meta name="keywords" content="fantasy football trade analyzer, fantasy trade calculator, dynasty trade value, NFL fantasy football, fantasy football 2025">
+<meta property="og:title" content="AI Fantasy Football Trade Analyzer — PlayAiGM">
+<meta property="og:description" content="Free instant trade analysis. See who wins any fantasy football trade with dynasty values for 100+ NFL players.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://playaigm.com/trade-analyzer.html">
+<meta property="og:image" content="https://playaigm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Fantasy Football Trade Analyzer — PlayAiGM">
+<meta name="twitter:description" content="Free instant trade analysis. See who wins any fantasy football trade with dynasty values for 100+ NFL players.">
+<link rel="canonical" href="https://playaigm.com/trade-analyzer.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>AI Fantasy Football Trade Analyzer — PlayAiGM</title>
+
+<!-- Google AdSense -->
+<!-- REPLACE ca-pub-XXXXXXXXXX with your AdSense publisher ID -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #0a0a0a;
+  --bg-2:      #111111;
+  --bg-3:      #1a1a1a;
+  --bg-card:   #131313;
+  --border:    rgba(255,255,255,0.07);
+  --border-hi: rgba(255,255,255,0.14);
+  --orange:    #FB4F14;
+  --orange-2:  #e04412;
+  --orange-glow: rgba(251,79,20,0.18);
+  --green:     #22c55e;
+  --green-dim: rgba(34,197,94,0.15);
+  --red:       #ef4444;
+  --red-dim:   rgba(239,68,68,0.15);
+  --text:      #e2e2e2;
+  --text-dim:  #888899;
+  --text-mute: #444;
+  --radius:    14px;
+  --radius-sm: 8px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--text-mute); border-radius: 2px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px var(--orange-glow); }
+  50%       { box-shadow: 0 0 40px rgba(251,79,20,0.35); }
+}
+@keyframes barFill {
+  from { width: 0; }
+}
+@keyframes resultSlide {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+.header {
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.header-logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-logo .dot {
+  width: 8px; height: 8px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: inline-block;
+}
+.header-nav {
+  display: flex;
+  gap: 6px;
+}
+.header-nav a {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.header-nav a:hover {
+  color: var(--text);
+  background: var(--bg-3);
+}
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 20px 36px;
+  animation: fadeUp 0.5s ease;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--orange-glow);
+  border: 1px solid rgba(251,79,20,0.3);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--orange);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(26px, 6vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--orange); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── Main layout ── */
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+}
+
+/* ── Trade card ── */
+.trade-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+@media (max-width: 520px) {
+  .trade-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .vs-divider { display: none; }
+}
+
+.trade-side {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  transition: border-color 0.2s;
+}
+.trade-side:focus-within {
+  border-color: var(--border-hi);
+}
+.side-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+}
+.side-label.you { color: var(--green); }
+.side-label.them { color: var(--red); }
+
+.player-slot {
+  position: relative;
+  margin-bottom: 10px;
+}
+.player-slot:last-child { margin-bottom: 0; }
+
+.player-input-wrap {
+  position: relative;
+}
+.player-input {
+  width: 100%;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  padding: 10px 36px 10px 12px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: inherit;
+}
+.player-input:focus {
+  border-color: rgba(251,79,20,0.5);
+  background: #1c1c1c;
+}
+.player-input::placeholder { color: var(--text-mute); }
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: none;
+  padding: 2px;
+  transition: color 0.2s;
+}
+.clear-btn:hover { color: var(--text-dim); }
+.clear-btn.visible { display: block; }
+
+/* Autocomplete dropdown */
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #1e1e1e;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  z-index: 200;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.autocomplete-list.open { display: block; }
+.autocomplete-item {
+  padding: 9px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background 0.15s;
+  font-size: 13px;
+}
+.autocomplete-item:hover,
+.autocomplete-item.highlighted { background: rgba(251,79,20,0.12); }
+.autocomplete-item .name { color: var(--text); font-weight: 500; }
+.autocomplete-item .meta {
+  font-size: 11px;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.autocomplete-item .val-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.07);
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* Selected player chip */
+.player-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 13px;
+}
+.player-chip-info { display: flex; flex-direction: column; gap: 1px; }
+.player-chip-name { font-weight: 600; color: var(--text); font-size: 14px; }
+.player-chip-meta { font-size: 11px; color: var(--text-mute); }
+.player-chip-val {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background: rgba(251,79,20,0.12);
+  color: var(--orange);
+}
+.player-chip-remove {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+  margin-left: 6px;
+  transition: color 0.2s;
+}
+.player-chip-remove:hover { color: var(--red); }
+
+.add-player-btn {
+  width: 100%;
+  background: none;
+  border: 1px dashed var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--text-mute);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.add-player-btn:hover {
+  color: var(--text);
+  border-color: rgba(251,79,20,0.4);
+  background: rgba(251,79,20,0.05);
+}
+
+.vs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 52px;
+}
+.vs-circle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-mute);
+  letter-spacing: 0.5px;
+}
+
+/* ── Analyze button ── */
+.analyze-btn {
+  width: 100%;
+  background: var(--orange);
+  border: none;
+  border-radius: var(--radius);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  font-family: inherit;
+  letter-spacing: -0.2px;
+  margin-bottom: 24px;
+}
+.analyze-btn:hover {
+  background: var(--orange-2);
+  box-shadow: 0 4px 24px rgba(251,79,20,0.35);
+}
+.analyze-btn:active { transform: scale(0.98); }
+.analyze-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Result ── */
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  animation: resultSlide 0.4s ease;
+  margin-bottom: 20px;
+  display: none;
+}
+.result-card.visible { display: block; }
+.result-card.win-left { border-color: rgba(34,197,94,0.3); }
+.result-card.win-right { border-color: rgba(239,68,68,0.3); }
+.result-card.even { border-color: rgba(251,79,20,0.3); }
+
+.verdict {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.verdict-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.verdict-text {
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #fff;
+}
+.verdict-text.you-win { color: var(--green); }
+.verdict-text.they-win { color: var(--red); }
+.verdict-text.even { color: var(--orange); }
+.verdict-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* Score comparison */
+.score-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.score-box {
+  background: var(--bg-3);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.score-box.winner { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.3); }
+.score-box.loser  { background: var(--red-dim);   border: 1px solid rgba(239,68,68,0.3); }
+.score-side-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.score-players {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.score-number {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #fff;
+}
+.score-box.winner .score-number { color: var(--green); }
+.score-box.loser .score-number  { color: var(--red); }
+.score-vs-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Bar comparison */
+.bar-wrap {
+  margin-bottom: 20px;
+}
+.bar-track {
+  height: 12px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+  display: flex;
+  gap: 2px;
+}
+.bar-left {
+  height: 100%;
+  background: var(--green);
+  border-radius: 100px;
+  animation: barFill 0.8s ease forwards;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.bar-right {
+  height: 100%;
+  background: var(--red);
+  border-radius: 100px;
+  animation: barFill 0.8s ease forwards;
+}
+.bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  font-weight: 600;
+}
+
+/* Player breakdown */
+.breakdown-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.breakdown-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-3);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-size: 12px;
+}
+.breakdown-player-info { display: flex; flex-direction: column; gap: 1px; }
+.breakdown-player-name { font-weight: 600; color: var(--text); font-size: 13px; }
+.breakdown-player-pos  { font-size: 10px; color: var(--text-mute); }
+.breakdown-player-val  {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-dim);
+}
+.breakdown-player.side-you .breakdown-player-val { background: var(--green-dim); color: var(--green); }
+.breakdown-player.side-them .breakdown-player-val { background: var(--red-dim); color: var(--red); }
+
+/* Analysis text */
+.analysis-text {
+  margin-top: 16px;
+  padding: 14px;
+  background: rgba(251,79,20,0.06);
+  border: 1px solid rgba(251,79,20,0.15);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.analysis-text strong { color: var(--orange); }
+
+/* Share button */
+.share-btn {
+  width: 100%;
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  font-family: inherit;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.share-btn:hover {
+  background: #222;
+  border-color: rgba(251,79,20,0.4);
+}
+.share-copied {
+  color: var(--green);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.share-copied.show { opacity: 1; }
+
+/* ── Ad slot ── */
+.ad-slot {
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.ad-slot p {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+/* AdSense unit goes here — replace the placeholder div */
+/* <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins> */
+
+/* ── How it works ── */
+.how-section {
+  margin-bottom: 32px;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  letter-spacing: -0.2px;
+}
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .how-grid { grid-template-columns: 1fr; }
+}
+.how-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.how-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--orange);
+  margin-bottom: 6px;
+  letter-spacing: -1px;
+}
+.how-card h3 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.how-card p  { font-size: 12px; color: var(--text-mute); line-height: 1.5; }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 20px;
+  text-align: center;
+}
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 12px;
+  color: var(--text-mute);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--text-dim); }
+.footer-links a.brand { color: var(--orange); font-weight: 600; }
+.footer-copy {
+  font-size: 11px;
+  color: var(--text-mute);
+}
+.footer-power {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 6px;
+}
+.footer-power a {
+  color: rgba(251,79,20,0.7);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-power a:hover { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <a class="header-logo" href="https://playaigm.com">
+    <span class="dot"></span>PlayAiGM
+  </a>
+  <nav class="header-nav">
+    <a href="https://playaigm.com/aigm.html">GM Sim</a>
+    <a href="https://9enterprises.ai">9E</a>
+  </nav>
+</header>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-badge">Free Tool</div>
+  <h1>Fantasy Football<br><span>Trade Analyzer</span></h1>
+  <p>Add players to both sides. Get instant dynasty trade value with a clear winner and breakdown.</p>
+</section>
+
+<!-- ── Main ── -->
+<div class="container">
+
+  <!-- Ad slot (top) -->
+  <div class="ad-slot">
+    <p>Advertisement</p>
+    <!-- AdSense: replace with your <ins> tag -->
+    <!-- data-ad-slot: XXXXXXXXXX -->
+    <div style="min-height:90px;display:flex;align-items:center;justify-content:center;">
+      <span style="font-size:11px;color:var(--text-mute);">Ad Unit — 728x90 / Responsive</span>
+    </div>
+  </div>
+
+  <!-- Trade builder -->
+  <div class="trade-grid" id="tradeGrid">
+    <!-- Side A (You Give) -->
+    <div class="trade-side" id="sideA">
+      <div class="side-label you">You Give</div>
+      <div id="playersA"></div>
+      <button class="add-player-btn" onclick="addSlot('A')" id="addBtnA">
+        <span>+</span> Add Player
+      </button>
+    </div>
+
+    <div class="vs-divider">
+      <div class="vs-circle">VS</div>
+    </div>
+
+    <!-- Side B (You Get) -->
+    <div class="trade-side" id="sideB">
+      <div class="side-label them">You Get</div>
+      <div id="playersB"></div>
+      <button class="add-player-btn" onclick="addSlot('B')" id="addBtnB">
+        <span>+</span> Add Player
+      </button>
+    </div>
+  </div>
+
+  <!-- Analyze -->
+  <button class="analyze-btn" id="analyzeBtn" onclick="analyzeTrade()" disabled>
+    Analyze Trade
+  </button>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="verdict" id="verdict"></div>
+    <div class="score-row" id="scoreRow"></div>
+    <div class="bar-wrap" id="barWrap"></div>
+    <div class="breakdown-title">Player Breakdown</div>
+    <div class="breakdown-grid" id="breakdown"></div>
+    <div class="analysis-text" id="analysisText"></div>
+    <button class="share-btn" onclick="shareResult()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share Result
+    </button>
+    <div class="share-copied" id="shareCopied">Link copied to clipboard!</div>
+  </div>
+
+  <!-- How it works -->
+  <div class="how-section">
+    <div class="section-title">How It Works</div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h3>Add Players</h3>
+        <p>Type any player name. Pick from the autocomplete list.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h3>Compare Sides</h3>
+        <p>Dynasty values are summed. Age, position, and upside factor in.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h3>See the Winner</h3>
+        <p>Instant verdict with a visual breakdown and shareable link.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad slot (bottom) -->
+  <div class="ad-slot">
+    <p>Advertisement</p>
+    <!-- AdSense: replace with your <ins> tag -->
+    <!-- data-ad-slot: XXXXXXXXXX -->
+    <div style="min-height:90px;display:flex;align-items:center;justify-content:center;">
+      <span style="font-size:11px;color:var(--text-mute);">Ad Unit — 300x250 / Responsive</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-links">
+    <a href="https://playaigm.com" class="brand">PlayAiGM</a>
+    <a href="https://playaigm.com/aigm.html">GM Simulator</a>
+    <a href="https://playaigm.com/privacy.html">Privacy</a>
+    <a href="https://9enterprises.ai">9 Enterprises</a>
+  </div>
+  <div class="footer-copy">Trade values are for dynasty fantasy football. Updated for 2025 season.</div>
+  <div class="footer-power">Powered by <a href="https://9enterprises.ai">9 Enterprises</a></div>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// PLAYER DATABASE — Dynasty values 1–100 (higher = more valuable)
+// Age reflects 2025 season. Positions: QB RB WR TE
+// ─────────────────────────────────────────────────────────────────────────────
+const PLAYERS = [
+  // Elite QBs
+  { name: "Caleb Williams",     pos: "QB", team: "CHI", age: 23, val: 96 },
+  { name: "C.J. Stroud",        pos: "QB", team: "HOU", age: 23, val: 95 },
+  { name: "Lamar Jackson",      pos: "QB", team: "BAL", age: 28, val: 94 },
+  { name: "Jalen Hurts",        pos: "QB", team: "PHI", age: 27, val: 93 },
+  { name: "Josh Allen",         pos: "QB", team: "BUF", age: 29, val: 92 },
+  { name: "Patrick Mahomes",    pos: "QB", team: "KC",  age: 30, val: 91 },
+  { name: "Jayden Daniels",     pos: "QB", team: "WSH", age: 24, val: 90 },
+  { name: "Drake Maye",         pos: "QB", team: "NE",  age: 22, val: 89 },
+  { name: "Anthony Richardson", pos: "QB", team: "IND", age: 23, val: 85 },
+  { name: "Bo Nix",             pos: "QB", team: "DEN", age: 24, val: 82 },
+  { name: "Joe Burrow",         pos: "QB", team: "CIN", age: 28, val: 88 },
+  { name: "Dak Prescott",       pos: "QB", team: "DAL", age: 32, val: 72 },
+  { name: "Kyler Murray",       pos: "QB", team: "ARI", age: 28, val: 79 },
+  { name: "Trevor Lawrence",    pos: "QB", team: "JAX", age: 26, val: 84 },
+  // Elite RBs
+  { name: "Bijan Robinson",     pos: "RB", team: "ATL", age: 23, val: 97 },
+  { name: "Breece Hall",        pos: "RB", team: "NYJ", age: 24, val: 96 },
+  { name: "Jahmyr Gibbs",       pos: "RB", team: "DET", age: 22, val: 98 },
+  { name: "Jonathan Taylor",    pos: "RB", team: "IND", age: 26, val: 88 },
+  { name: "De'Von Achane",      pos: "RB", team: "MIA", age: 23, val: 94 },
+  { name: "Kyren Williams",     pos: "RB", team: "LAR", age: 25, val: 86 },
+  { name: "Rachaad White",      pos: "RB", team: "TB",  age: 26, val: 74 },
+  { name: "Derrick Henry",      pos: "RB", team: "BAL", age: 31, val: 72 },
+  { name: "Saquon Barkley",     pos: "RB", team: "PHI", age: 28, val: 83 },
+  { name: "Josh Jacobs",        pos: "RB", team: "GB",  age: 27, val: 76 },
+  { name: "Tony Pollard",       pos: "RB", team: "TEN", age: 28, val: 70 },
+  { name: "Aaron Jones",        pos: "RB", team: "MIN", age: 31, val: 60 },
+  { name: "Javonte Williams",   pos: "RB", team: "DEN", age: 25, val: 75 },
+  { name: "Travis Etienne",     pos: "RB", team: "JAX", age: 26, val: 77 },
+  { name: "Isiah Pacheco",      pos: "RB", team: "KC",  age: 26, val: 78 },
+  { name: "MarShawn Lloyd",     pos: "RB", team: "GB",  age: 22, val: 80 },
+  // Elite WRs
+  { name: "Ja'Marr Chase",      pos: "WR", team: "CIN", age: 25, val: 100 },
+  { name: "Justin Jefferson",   pos: "WR", team: "MIN", age: 26, val: 99 },
+  { name: "CeeDee Lamb",        pos: "WR", team: "DAL", age: 26, val: 98 },
+  { name: "Amon-Ra St. Brown",  pos: "WR", team: "DET", age: 25, val: 95 },
+  { name: "Puka Nacua",         pos: "WR", team: "LAR", age: 23, val: 91 },
+  { name: "Brian Thomas Jr.",   pos: "WR", team: "JAX", age: 22, val: 92 },
+  { name: "Malik Nabers",       pos: "WR", team: "NYG", age: 21, val: 94 },
+  { name: "Drake London",       pos: "WR", team: "ATL", age: 23, val: 88 },
+  { name: "Garrett Wilson",     pos: "WR", team: "NYJ", age: 25, val: 90 },
+  { name: "Davante Adams",      pos: "WR", team: "LAR", age: 33, val: 65 },
+  { name: "Stefon Diggs",       pos: "WR", team: "NE",  age: 32, val: 60 },
+  { name: "Tyreek Hill",        pos: "WR", team: "MIA", age: 31, val: 78 },
+  { name: "DeVonta Smith",      pos: "WR", team: "PHI", age: 29, val: 80 },
+  { name: "Tee Higgins",        pos: "WR", team: "CIN", age: 26, val: 83 },
+  { name: "Deebo Samuel",       pos: "WR", team: "SF",  age: 29, val: 71 },
+  { name: "A.J. Brown",         pos: "WR", team: "PHI", age: 28, val: 87 },
+  { name: "Davion Davis",       pos: "WR", team: "HOU", age: 24, val: 76 },
+  { name: "Rome Odunze",        pos: "WR", team: "CHI", age: 22, val: 89 },
+  { name: "Xavier Worthy",      pos: "WR", team: "KC",  age: 22, val: 86 },
+  { name: "Marvin Harrison Jr.",pos: "WR", team: "ARI", age: 22, val: 93 },
+  { name: "Ladd McConkey",      pos: "WR", team: "LAC", age: 23, val: 84 },
+  { name: "Terry McLaurin",     pos: "WR", team: "WSH", age: 30, val: 73 },
+  { name: "Rashee Rice",        pos: "WR", team: "KC",  age: 24, val: 87 },
+  { name: "Christian Kirk",     pos: "WR", team: "JAX", age: 28, val: 66 },
+  { name: "Keon Coleman",       pos: "WR", team: "BUF", age: 21, val: 82 },
+  // Elite TEs
+  { name: "Sam LaPorta",        pos: "TE", team: "DET", age: 24, val: 89 },
+  { name: "Trey McBride",       pos: "TE", team: "ARI", age: 25, val: 92 },
+  { name: "Brock Bowers",       pos: "TE", team: "LV",  age: 22, val: 97 },
+  { name: "Travis Kelce",       pos: "TE", team: "KC",  age: 36, val: 68 },
+  { name: "George Kittle",      pos: "TE", team: "SF",  age: 32, val: 73 },
+  { name: "Mark Andrews",       pos: "TE", team: "BAL", age: 30, val: 71 },
+  { name: "Dalton Kincaid",     pos: "TE", team: "BUF", age: 25, val: 78 },
+  { name: "Tucker Kraft",       pos: "TE", team: "GB",  age: 24, val: 80 },
+  { name: "Luke Musgrave",      pos: "TE", team: "GB",  age: 25, val: 74 },
+  { name: "Pat Freiermuth",     pos: "TE", team: "PIT", age: 27, val: 70 },
+  { name: "Cade Otton",         pos: "TE", team: "TB",  age: 25, val: 72 },
+  // Bonus rookies/prospects (2025)
+  { name: "Tetairoa McMillan",  pos: "WR", team: "CAR", age: 21, val: 88 },
+  { name: "Luther Burden III",  pos: "WR", team: "CHI", age: 21, val: 85 },
+  { name: "Emeka Egbuka",       pos: "WR", team: "TB",  age: 22, val: 83 },
+  { name: "Ashton Jeanty",      pos: "RB", team: "LV",  age: 21, val: 90 },
+  { name: "Omarion Hampton",    pos: "RB", team: "LAC", age: 21, val: 86 },
+  { name: "Quinshon Judkins",   pos: "RB", team: "CLE", age: 21, val: 84 },
+  { name: "Shedeur Sanders",    pos: "QB", team: "CLE", age: 23, val: 81 },
+  { name: "Cam Ward",           pos: "QB", team: "TEN", age: 23, val: 83 },
+  { name: "Tyler Warren",       pos: "TE", team: "IND", age: 23, val: 85 },
+  { name: "Mason Taylor",       pos: "TE", team: "NYJ", age: 22, val: 79 },
+  { name: "Harold Fannin Jr.",  pos: "TE", team: "CLE", age: 22, val: 77 },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+const state = {
+  A: [null],  // slots — null = empty
+  B: [null],
+};
+let activeInput = null;  // { side, slotIdx }
+let highlightIdx = -1;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+function init() {
+  renderSide('A');
+  renderSide('B');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+function renderSide(side) {
+  const container = document.getElementById('players' + side);
+  container.innerHTML = '';
+  const slots = state[side];
+
+  slots.forEach((player, idx) => {
+    const slot = document.createElement('div');
+    slot.className = 'player-slot';
+    slot.id = 'slot-' + side + '-' + idx;
+
+    if (player) {
+      // Show chip
+      slot.innerHTML = `
+        <div class="player-chip">
+          <div class="player-chip-info">
+            <span class="player-chip-name">${escHtml(player.name)}</span>
+            <span class="player-chip-meta">${player.pos} &bull; ${player.team} &bull; Age ${player.age}</span>
+          </div>
+          <span class="player-chip-val">${player.val}</span>
+          <button class="player-chip-remove" onclick="removePlayer('${side}', ${idx})" title="Remove">&times;</button>
+        </div>`;
+    } else {
+      // Show input
+      const uid = side + idx;
+      slot.innerHTML = `
+        <div class="player-input-wrap" id="wrap-${uid}">
+          <input
+            class="player-input"
+            id="input-${uid}"
+            type="text"
+            placeholder="Search player..."
+            autocomplete="off"
+            oninput="onInput(this, '${side}', ${idx})"
+            onfocus="onFocus('${side}', ${idx})"
+            onkeydown="onKeydown(event, '${side}', ${idx})"
+          />
+          <button class="clear-btn" id="clear-${uid}" onclick="clearInput('${side}', ${idx})">&times;</button>
+          <div class="autocomplete-list" id="ac-${uid}"></div>
+        </div>`;
+    }
+    container.appendChild(slot);
+  });
+
+  // Add button: max 3 players per side
+  const addBtn = document.getElementById('addBtn' + side);
+  addBtn.style.display = slots.length >= 3 ? 'none' : 'flex';
+
+  checkAnalyzeReady();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SLOT MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────────────
+function addSlot(side) {
+  if (state[side].length >= 3) return;
+  state[side].push(null);
+  renderSide(side);
+  // Auto-focus the new input
+  const idx = state[side].length - 1;
+  setTimeout(() => {
+    const input = document.getElementById('input-' + side + idx);
+    if (input) input.focus();
+  }, 50);
+}
+
+function removePlayer(side, idx) {
+  if (state[side].length === 1) {
+    state[side][idx] = null;
+  } else {
+    state[side].splice(idx, 1);
+  }
+  renderSide(side);
+  hideResult();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTOCOMPLETE
+// ─────────────────────────────────────────────────────────────────────────────
+function onInput(input, side, idx) {
+  const uid = side + idx;
+  const val = input.value.trim();
+  const clearBtn = document.getElementById('clear-' + uid);
+
+  if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
+
+  if (val.length < 1) {
+    closeAc(uid);
+    return;
+  }
+
+  const already = state[side].filter(p => p !== null).map(p => p.name);
+  const otherSide = state[side === 'A' ? 'B' : 'A'].filter(p => p !== null).map(p => p.name);
+
+  const q = val.toLowerCase();
+  const matches = PLAYERS
+    .filter(p => p.name.toLowerCase().includes(q) && !already.includes(p.name) && !otherSide.includes(p.name))
+    .sort((a, b) => b.val - a.val)
+    .slice(0, 8);
+
+  renderAc(uid, matches, side, idx);
+}
+
+function renderAc(uid, matches, side, idx) {
+  const list = document.getElementById('ac-' + uid);
+  if (!list) return;
+
+  if (matches.length === 0) { closeAc(uid); return; }
+
+  highlightIdx = -1;
+  activeInput = { side, idx, uid };
+
+  list.innerHTML = matches.map((p, i) => `
+    <div class="autocomplete-item" data-idx="${i}" onclick="selectPlayer('${side}', ${idx}, '${p.name}')">
+      <span class="name">${escHtml(p.name)}</span>
+      <span class="meta">${p.pos} &bull; ${p.team} &bull; ${p.age}y</span>
+      <span class="val-badge">${p.val}</span>
+    </div>`).join('');
+
+  list.classList.add('open');
+  list._matches = matches;
+}
+
+function closeAc(uid) {
+  const list = document.getElementById('ac-' + uid);
+  if (list) { list.classList.remove('open'); list.innerHTML = ''; }
+}
+
+function closeAllAc() {
+  document.querySelectorAll('.autocomplete-list').forEach(el => {
+    el.classList.remove('open');
+    el.innerHTML = '';
+  });
+  activeInput = null;
+  highlightIdx = -1;
+}
+
+function onFocus(side, idx) {
+  activeInput = { side, idx, uid: side + idx };
+  highlightIdx = -1;
+  // Re-trigger search if there's text
+  const input = document.getElementById('input-' + side + idx);
+  if (input && input.value.length > 0) onInput(input, side, idx);
+}
+
+function onKeydown(event, side, idx) {
+  const uid = side + idx;
+  const list = document.getElementById('ac-' + uid);
+  if (!list || !list.classList.contains('open')) return;
+  const items = list.querySelectorAll('.autocomplete-item');
+
+  if (event.key === 'ArrowDown') {
+    event.preventDefault();
+    highlightIdx = Math.min(highlightIdx + 1, items.length - 1);
+    updateHighlight(items);
+  } else if (event.key === 'ArrowUp') {
+    event.preventDefault();
+    highlightIdx = Math.max(highlightIdx - 1, -1);
+    updateHighlight(items);
+  } else if (event.key === 'Enter') {
+    event.preventDefault();
+    if (highlightIdx >= 0 && list._matches && list._matches[highlightIdx]) {
+      selectPlayer(side, idx, list._matches[highlightIdx].name);
+    }
+  } else if (event.key === 'Escape') {
+    closeAc(uid);
+  }
+}
+
+function updateHighlight(items) {
+  items.forEach((el, i) => el.classList.toggle('highlighted', i === highlightIdx));
+}
+
+function clearInput(side, idx) {
+  const uid = side + idx;
+  const input = document.getElementById('input-' + uid);
+  if (input) { input.value = ''; input.focus(); }
+  const clearBtn = document.getElementById('clear-' + uid);
+  if (clearBtn) clearBtn.classList.remove('visible');
+  closeAc(uid);
+}
+
+function selectPlayer(side, idx, name) {
+  const player = PLAYERS.find(p => p.name === name);
+  if (!player) return;
+  state[side][idx] = player;
+  closeAllAc();
+  renderSide(side);
+  hideResult();
+}
+
+// Close autocomplete when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.player-input-wrap')) closeAllAc();
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ANALYZE
+// ─────────────────────────────────────────────────────────────────────────────
+function checkAnalyzeReady() {
+  const hasA = state.A.some(p => p !== null);
+  const hasB = state.B.some(p => p !== null);
+  document.getElementById('analyzeBtn').disabled = !(hasA && hasB);
+}
+
+function hideResult() {
+  const card = document.getElementById('resultCard');
+  card.classList.remove('visible', 'win-left', 'win-right', 'even');
+}
+
+function analyzeTrade() {
+  const playersA = state.A.filter(Boolean);
+  const playersB = state.B.filter(Boolean);
+  if (!playersA.length || !playersB.length) return;
+
+  const sumA = playersA.reduce((s, p) => s + p.val, 0);
+  const sumB = playersB.reduce((s, p) => s + p.val, 0);
+  const diff = sumA - sumB;
+  const total = sumA + sumB;
+  const pctA = total > 0 ? (sumA / total) * 100 : 50;
+  const pctB = total > 0 ? (sumB / total) * 100 : 50;
+
+  // Verdict
+  let verdictClass, verdictText, verdictSub;
+  const absDiff = Math.abs(diff);
+  if (absDiff <= 3) {
+    verdictClass = 'even';
+    verdictText = 'Fair Trade';
+    verdictSub = 'Both sides get roughly equal value. Accept or decline based on roster fit.';
+  } else if (diff > 0) {
+    // You're giving more (losing)
+    verdictClass = 'they-win';
+    verdictText = 'You\'re Getting Fleeced';
+    if (absDiff <= 8) { verdictText = 'Slight Overpay'; verdictSub = `You give up ${absDiff} points of value. Consider countering.`; }
+    else if (absDiff <= 18) { verdictSub = `You give up ${absDiff} points of value. This trade favors your trade partner.`; }
+    else { verdictText = 'Hard Pass'; verdictSub = `You give up ${absDiff} points of value. Significant overpay — decline.`; }
+  } else {
+    // You're getting more (winning)
+    verdictClass = 'you-win';
+    verdictText = 'You Win This Trade';
+    if (absDiff <= 8) { verdictText = 'Slight Value Win'; verdictSub = `You gain ${absDiff} points of value. Good trade if you need the asset.`; }
+    else if (absDiff <= 18) { verdictSub = `You gain ${absDiff} points of value. Clear value win — accept.`; }
+    else { verdictText = 'Massive Win'; verdictSub = `You gain ${absDiff} points of value. Accept immediately.`; }
+  }
+
+  // Render result
+  const card = document.getElementById('resultCard');
+  card.className = 'result-card visible ' + (diff > 3 ? 'win-right' : diff < -3 ? 'win-left' : 'even');
+
+  // Verdict section
+  document.getElementById('verdict').innerHTML = `
+    <div class="verdict-label">Trade Analysis</div>
+    <div class="verdict-text ${verdictClass}">${verdictText}</div>
+    <div class="verdict-sub">${verdictSub}</div>`;
+
+  // Score boxes
+  const youWin = diff <= -3;
+  const theyWin = diff >= 3;
+  document.getElementById('scoreRow').innerHTML = `
+    <div class="score-box ${youWin ? 'winner' : (theyWin ? 'loser' : '')}">
+      <div class="score-side-label">You Give</div>
+      <div class="score-players">${playersA.map(p => p.name.split(' ').pop()).join(', ')}</div>
+      <div class="score-number">${sumA}</div>
+    </div>
+    <div class="score-vs-badge">VS</div>
+    <div class="score-box ${theyWin ? 'winner' : (youWin ? 'loser' : '')}">
+      <div class="score-side-label">You Get</div>
+      <div class="score-players">${playersB.map(p => p.name.split(' ').pop()).join(', ')}</div>
+      <div class="score-number">${sumB}</div>
+    </div>`;
+
+  // Bar
+  document.getElementById('barWrap').innerHTML = `
+    <div class="bar-track">
+      <div class="bar-left" style="width:${pctA.toFixed(1)}%"></div>
+      <div class="bar-right" style="width:${pctB.toFixed(1)}%"></div>
+    </div>
+    <div class="bar-labels">
+      <span>You Give (${pctA.toFixed(0)}%)</span>
+      <span>You Get (${pctB.toFixed(0)}%)</span>
+    </div>`;
+
+  // Player breakdown
+  const allPlayers = [
+    ...playersA.map(p => ({ ...p, sideClass: 'side-you' })),
+    ...playersB.map(p => ({ ...p, sideClass: 'side-them' })),
+  ].sort((a, b) => b.val - a.val);
+
+  document.getElementById('breakdown').innerHTML = allPlayers.map(p => `
+    <div class="breakdown-player ${p.sideClass}">
+      <div class="breakdown-player-info">
+        <span class="breakdown-player-name">${escHtml(p.name)}</span>
+        <span class="breakdown-player-pos">${p.pos} &bull; ${p.team}</span>
+      </div>
+      <span class="breakdown-player-val">${p.val}</span>
+    </div>`).join('');
+
+  // Analysis text
+  const bestGive = playersA.sort((a,b) => b.val - a.val)[0];
+  const bestGet  = playersB.sort((a,b) => b.val - a.val)[0];
+  let analysis = buildAnalysis(bestGive, bestGet, playersA, playersB, diff);
+  document.getElementById('analysisText').innerHTML = analysis;
+
+  // Scroll into view
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function buildAnalysis(bestGive, bestGet, playersA, playersB, diff) {
+  const lines = [];
+  // Age comparison
+  const avgAgeGive = playersA.reduce((s, p) => s + p.age, 0) / playersA.length;
+  const avgAgeGet  = playersB.reduce((s, p) => s + p.age, 0) / playersB.length;
+  const youngSide  = avgAgeGet < avgAgeGive - 1 ? 'get' : avgAgeGive < avgAgeGet - 1 ? 'give' : null;
+
+  if (bestGive) {
+    lines.push(`<strong>${bestGive.name}</strong> is your key piece — dynasty value of <strong>${bestGive.val}</strong>, age ${bestGive.age}.`);
+  }
+  if (bestGet) {
+    lines.push(`<strong>${bestGet.name}</strong> is the centerpiece coming back — dynasty value of <strong>${bestGet.val}</strong>, age ${bestGet.age}.`);
+  }
+  if (youngSide === 'get') {
+    lines.push(`The players you're getting are younger on average, which <strong>boosts their dynasty upside</strong>.`);
+  } else if (youngSide === 'give') {
+    lines.push(`You're giving up younger assets — factor in <strong>long-term roster impact</strong> beyond raw value.`);
+  }
+  if (Math.abs(diff) > 15) {
+    lines.push(diff > 0
+      ? `The value gap is significant. Unless your roster needs this specific position, push back with a counter.`
+      : `The value gap strongly favors you. This is the kind of trade that wins championships.`);
+  }
+  return lines.join(' ');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SHARE
+// ─────────────────────────────────────────────────────────────────────────────
+function shareResult() {
+  const playersA = state.A.filter(Boolean).map(p => p.name).join(' + ');
+  const playersB = state.B.filter(Boolean).map(p => p.name).join(' + ');
+  const sumA = state.A.filter(Boolean).reduce((s, p) => s + p.val, 0);
+  const sumB = state.B.filter(Boolean).reduce((s, p) => s + p.val, 0);
+
+  const shareText = `Fantasy Trade Analyzer (PlayAiGM)\nYou Give: ${playersA} (${sumA})\nYou Get: ${playersB} (${sumB})\n${window.location.href}`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Fantasy Football Trade Analysis',
+      text: `${playersA} FOR ${playersB} — Check the trade value breakdown!`,
+      url: window.location.href,
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(shareText).then(() => {
+      const el = document.getElementById('shareCopied');
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }).catch(() => {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = window.location.href;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      const el = document.getElementById('shareCopied');
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
