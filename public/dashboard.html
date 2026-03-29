@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="9enterprises">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
 <meta name="theme-color" content="#0a0a0a">
-<title>9enterprises — Command Center v5</title>
+<title>9enterprises — Command Center v6</title>
 <link rel="manifest" href="dashboard-manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -572,6 +572,172 @@ body::after{
   .stat-num-gold,.stat-num-neon,.stat-num-cyan{font-size:32px;}
   .km-val{font-size:16px;}
 }
+
+/* ===================== COMMAND CENTER - COCKPIT GAUGES ===================== */
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:20px;}
+.cc-grid-wide{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+@media(max-width:768px){.cc-grid-wide{grid-template-columns:1fr;}}
+@media(max-width:640px){.cc-grid{grid-template-columns:1fr;}}
+
+/* Semicircle gauge */
+.gauge-semi-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.gauge-semi{position:relative;width:140px;height:80px;overflow:hidden;}
+.gauge-semi svg{position:absolute;top:0;left:0;}
+.gauge-semi-track{fill:none;stroke:rgba(255,255,255,0.05);stroke-width:10;stroke-linecap:round;}
+.gauge-semi-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);}
+.gauge-semi-center{
+  position:absolute;bottom:2px;left:50%;transform:translateX(-50%);
+  text-align:center;width:100%;
+}
+.gauge-semi-val{font-family:var(--font-display);font-size:22px;line-height:1;color:var(--text);}
+.gauge-semi-unit{font-family:var(--font-mono);font-size:8px;color:var(--muted);letter-spacing:1.5px;}
+.gauge-semi-title{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+
+/* Fuel bar gauge */
+.fuel-gauge{display:flex;flex-direction:column;gap:8px;}
+.fuel-row{display:flex;align-items:center;gap:10px;}
+.fuel-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;width:90px;flex-shrink:0;}
+.fuel-track{flex:1;height:10px;background:rgba(255,255,255,0.04);border-radius:5px;overflow:hidden;position:relative;}
+.fuel-fill{height:100%;border-radius:5px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.fuel-fill-neon{background:linear-gradient(90deg,#7a1500,var(--neon));box-shadow:0 0 8px rgba(251,79,20,0.4);}
+.fuel-fill-gold{background:linear-gradient(90deg,#7a4400,var(--gold));box-shadow:0 0 8px rgba(255,102,0,0.4);}
+.fuel-fill-cyan{background:linear-gradient(90deg,rgba(255,107,53,0.2),var(--cyan));box-shadow:0 0 8px rgba(255,107,53,0.4);}
+.fuel-fill-purple{background:linear-gradient(90deg,rgba(176,96,255,0.2),var(--purple));box-shadow:0 0 8px rgba(176,96,255,0.4);}
+.fuel-fill-red{background:linear-gradient(90deg,rgba(255,45,85,0.2),var(--red));box-shadow:0 0 8px rgba(255,45,85,0.4);}
+.fuel-fill-safe{background:linear-gradient(90deg,#1a3a00,#44cc44);box-shadow:0 0 8px rgba(68,204,68,0.4);}
+.fuel-val{font-family:var(--font-mono);font-size:10px;color:var(--text);white-space:nowrap;width:60px;text-align:right;flex-shrink:0;}
+
+/* Traffic light status */
+.tl-grid{display:flex;flex-direction:column;gap:7px;}
+.tl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 10px;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:var(--r-sm);
+}
+.tl-company{font-family:var(--font-display);font-size:13px;letter-spacing:1.5px;flex:1;}
+.tl-deploy{font-family:var(--font-mono);font-size:9px;color:var(--muted);flex:1;text-align:center;}
+.tl-agents{font-family:var(--font-mono);font-size:9px;color:var(--muted);width:50px;text-align:center;}
+.tl-light{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-left:8px;}
+.tl-green{background:#44cc44;box-shadow:0 0 8px rgba(68,204,68,0.7);}
+.tl-yellow{background:#ffcc00;box-shadow:0 0 8px rgba(255,204,0,0.7);}
+.tl-red{background:var(--red);box-shadow:0 0 8px rgba(255,45,85,0.7);}
+.tl-header{display:flex;align-items:center;justify-content:space-between;padding:0 10px;margin-bottom:6px;}
+.tl-header span{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+
+/* System health indicator */
+.health-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.health-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:12px 8px;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:var(--r-sm);
+  text-align:center;gap:6px;
+  position:relative;overflow:hidden;
+}
+.health-item::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  transition:background 0.4s;
+}
+.health-online::before{background:linear-gradient(90deg,transparent,#44cc44,transparent);}
+.health-offline::before{background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.health-unknown::before{background:linear-gradient(90deg,transparent,var(--muted),transparent);}
+.health-dot-lg{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.health-dot-lg.h-online{background:#44cc44;box-shadow:0 0 12px rgba(68,204,68,0.8);animation:pulse-health-green 2.5s ease-in-out infinite;}
+.health-dot-lg.h-offline{background:var(--red);box-shadow:0 0 12px rgba(255,45,85,0.8);animation:blink 1s ease-in-out infinite;}
+.health-dot-lg.h-unknown{background:var(--muted);}
+.health-name{font-family:var(--font-mono);font-size:10px;color:var(--text);letter-spacing:1px;text-transform:uppercase;}
+.health-status-text{font-family:var(--font-mono);font-size:9px;letter-spacing:0.5px;}
+.h-online + .health-status-text, .health-status-text.s-online{color:#44cc44;}
+.health-status-text.s-offline{color:var(--red);}
+.health-status-text.s-unknown{color:var(--muted);}
+
+@keyframes pulse-health-green{0%,100%{box-shadow:0 0 6px rgba(68,204,68,0.5);}50%{box-shadow:0 0 16px rgba(68,204,68,1);}}
+
+/* Live cost counter */
+.cost-counter{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;text-align:center;gap:4px;
+}
+.cost-big{
+  font-family:var(--font-display);font-size:56px;line-height:1;
+  background:linear-gradient(135deg,var(--neon),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(251,79,20,0.4));
+}
+.cost-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.cost-since{font-family:var(--font-mono);font-size:9px;color:var(--dim);letter-spacing:1px;}
+
+/* Sparkline chart */
+.sparkline-wrap{position:relative;width:100%;height:60px;}
+.sparkline-wrap svg{width:100%;height:100%;}
+.sparkline-path{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.sparkline-area{stroke:none;}
+.sparkline-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+
+/* Mini bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:4px;height:64px;padding-top:8px;}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
+.bar-fill{width:100%;border-radius:2px 2px 0 0;transition:height 1s ease;min-height:2px;}
+.bar-x{font-family:var(--font-mono);font-size:7px;color:var(--muted);text-align:center;white-space:nowrap;}
+
+/* Quick actions */
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.qa-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:14px 10px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--glassBorder);
+  border-radius:var(--r-sm);
+  cursor:pointer;transition:all 0.2s;
+  text-decoration:none;font-family:var(--font-mono);font-size:10px;color:var(--text);
+  letter-spacing:1px;text-align:center;text-transform:uppercase;
+}
+.qa-btn:hover{background:rgba(251,79,20,0.06);border-color:var(--glassBorderHover);color:var(--neon);transform:translateY(-1px);}
+.qa-btn-icon{font-size:20px;}
+.qa-btn.qa-danger{border-color:rgba(255,45,85,0.2);}
+.qa-btn.qa-danger:hover{background:rgba(255,45,85,0.06);border-color:rgba(255,45,85,0.4);color:var(--red);}
+.qa-btn.qa-action{border-color:rgba(251,79,20,0.25);}
+.qa-btn.qa-action:hover{background:rgba(251,79,20,0.08);border-color:rgba(251,79,20,0.45);color:var(--neon);}
+
+/* Task board */
+.task-board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:640px){.task-board{grid-template-columns:1fr;}}
+.task-col-head{
+  font-family:var(--font-display);font-size:13px;letter-spacing:2px;
+  padding:8px 10px;border-radius:6px 6px 0 0;
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.task-col-todo .task-col-head{background:rgba(255,255,255,0.03);color:var(--muted);}
+.task-col-doing .task-col-head{background:rgba(255,102,0,0.06);color:var(--gold);}
+.task-col-done .task-col-head{background:rgba(68,204,68,0.05);color:#44cc44;}
+.task-badge{
+  font-family:var(--font-mono);font-size:9px;padding:1px 7px;border-radius:10px;
+  background:rgba(255,255,255,0.06);color:var(--muted);margin-left:auto;
+}
+.task-item{
+  padding:8px 10px;margin-bottom:6px;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);
+  border-radius:var(--r-sm);
+  font-family:var(--font-mono);font-size:10px;color:var(--text);line-height:1.5;
+  position:relative;
+}
+.task-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;border-radius:2px 0 0 2px;}
+.task-p1::before{background:var(--red);}
+.task-p2::before{background:var(--gold);}
+.task-p3::before{background:var(--muted);}
+.task-p-done::before{background:#44cc44;}
+.task-priority{font-size:8px;letter-spacing:1px;text-transform:uppercase;}
+.task-p1 .task-priority{color:var(--red);}
+.task-p2 .task-priority{color:var(--gold);}
+.task-p3 .task-priority{color:var(--muted);}
+.task-p-done .task-priority{color:#44cc44;}
+.task-text{margin-top:2px;}
+
+/* Cockpit layout */
+.cockpit-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;}
+@media(max-width:900px){.cockpit-top{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.cockpit-top{grid-template-columns:1fr;}}
+.cockpit-mid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+@media(max-width:768px){.cockpit-mid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -582,7 +748,7 @@ body::after{
     <div class="logo-9">9</div>
     <div class="topbar-brand">
       <div class="topbar-title">ENTERPRISES</div>
-      <div class="topbar-sub">COMMAND CENTER v5 &nbsp;|&nbsp; SOTU MAR 28 2026</div>
+      <div class="topbar-sub">COMMAND CENTER v6 &nbsp;|&nbsp; SOTU MAR 28 2026</div>
     </div>
   </div>
   <div class="topbar-right">
@@ -622,6 +788,7 @@ body::after{
 <!-- ===================== NAV TABS ===================== -->
 <nav class="nav-tabs">
   <button class="nav-tab active" onclick="showPage('overview',this)">Overview</button>
+  <button class="nav-tab" onclick="showPage('cockpit',this)">&#x2B21; Cockpit</button>
   <button class="nav-tab" onclick="showPage('companies',this)">Companies</button>
   <button class="nav-tab" onclick="showPage('portfolio',this)">Portfolio</button>
   <button class="nav-tab" onclick="showPage('team',this)">Team</button>
@@ -918,6 +1085,452 @@ body::after{
   </div>
 </section>
 
+<!-- ===================== PAGE: COCKPIT ===================== -->
+<section class="page" id="page-cockpit">
+
+  <!-- ===== ROW 1: GAUGES ===== -->
+  <div class="cockpit-top fade-up">
+
+    <!-- Daily API Burn Gauge -->
+    <div class="card card-accent-neon">
+      <div class="card-section-label">API Fuel — Daily Burn</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+        <div class="gauge-semi-wrap">
+          <div class="gauge-semi" id="gauge-api">
+            <svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
+              <!-- track: semi-circle, r=55, center 70,75 -->
+              <path class="gauge-semi-track" d="M 15,75 A 55,55 0 0 1 125,75" />
+              <path class="gauge-semi-fill" id="gauge-api-fill"
+                d="M 15,75 A 55,55 0 0 1 125,75"
+                stroke="var(--neon)"
+                stroke-dasharray="172.8"
+                stroke-dashoffset="172.8"
+                data-total="172.8"
+                data-pct="12" />
+            </svg>
+            <div class="gauge-semi-center">
+              <div class="gauge-semi-val" id="gauge-api-val">12%</div>
+              <div class="gauge-semi-unit">OF DAILY CAP</div>
+            </div>
+          </div>
+          <div class="gauge-semi-title">DAILY USAGE</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Daily cap</div>
+          <div style="font-family:var(--font-display);font-size:20px;color:var(--text);">$20.00</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Used today</div>
+          <div style="font-family:var(--font-display);font-size:20px;color:var(--neon);" id="api-used-today">$2.40</div>
+        </div>
+      </div>
+      <div class="fuel-gauge">
+        <div class="fuel-row">
+          <div class="fuel-label">Today</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-neon" id="fuel-today" style="width:12%;"></div></div>
+          <div class="fuel-val" id="fuel-today-val">$2.40</div>
+        </div>
+        <div class="fuel-row">
+          <div class="fuel-label">This week</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-gold" id="fuel-week" style="width:28%;"></div></div>
+          <div class="fuel-val" id="fuel-week-val">$33.60</div>
+        </div>
+        <div class="fuel-row">
+          <div class="fuel-label">This month</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-cyan" id="fuel-month" style="width:60%;"></div></div>
+          <div class="fuel-val" id="fuel-month-val">$120</div>
+        </div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--dim);margin-top:8px;line-height:1.5;">
+        Anthropic Max 20x &mdash; $200/mo plan. Estimates only &mdash; connect API for live data.
+      </div>
+    </div>
+
+    <!-- Monthly Budget Gauge -->
+    <div class="card card-accent-gold">
+      <div class="card-section-label">Budget Fuel Tank</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+        <div class="gauge-semi-wrap">
+          <div class="gauge-semi" id="gauge-budget">
+            <svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
+              <path class="gauge-semi-track" d="M 15,75 A 55,55 0 0 1 125,75" />
+              <path class="gauge-semi-fill" id="gauge-budget-fill"
+                d="M 15,75 A 55,55 0 0 1 125,75"
+                stroke="var(--gold)"
+                stroke-dasharray="172.8"
+                stroke-dashoffset="172.8"
+                data-total="172.8"
+                data-pct="0" />
+            </svg>
+            <div class="gauge-semi-center">
+              <div class="gauge-semi-val" id="gauge-budget-val">0%</div>
+              <div class="gauge-semi-unit">RESOURCE USED</div>
+            </div>
+          </div>
+          <div class="gauge-semi-title">BUDGET STATUS</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Approved</div>
+          <div style="font-family:var(--font-display);font-size:20px;color:var(--text);">$300</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Spent</div>
+          <div style="font-family:var(--font-display);font-size:20px;color:var(--gold);" id="budget-spent">$0</div>
+        </div>
+      </div>
+      <div class="fuel-gauge">
+        <div class="fuel-row">
+          <div class="fuel-label">Resource</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-gold" id="fuel-resource" style="width:0%;"></div></div>
+          <div class="fuel-val">$0 / $300</div>
+        </div>
+        <div class="fuel-row">
+          <div class="fuel-label">Trading</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-purple" id="fuel-trading" style="width:0%;"></div></div>
+          <div class="fuel-val">$0 / $200</div>
+        </div>
+        <div class="fuel-row">
+          <div class="fuel-label">Remaining</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-safe" id="fuel-remaining" style="width:100%;"></div></div>
+          <div class="fuel-val" style="color:#44cc44;">$500</div>
+        </div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--dim);margin-top:8px;">
+        Mar 26 approval &mdash; $300 resource + $200 trading. Auto-approve &lt;$100/task.
+      </div>
+    </div>
+
+    <!-- Live Cost Counter -->
+    <div class="card card-accent-cyan">
+      <div class="card-section-label">Live Cost Counter</div>
+      <div class="cost-counter">
+        <div class="cost-big" id="live-cost-counter">$2.40</div>
+        <div class="cost-sub">Total spent today</div>
+        <div class="cost-since" id="cost-session-time">Session: 0m 0s</div>
+      </div>
+      <div class="neon-div" style="margin:8px 0;"></div>
+      <div class="fuel-gauge">
+        <div class="fuel-row">
+          <div class="fuel-label">Rate est.</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-neon" style="width:20%;"></div></div>
+          <div class="fuel-val">~$0.20/hr</div>
+        </div>
+        <div class="fuel-row">
+          <div class="fuel-label">Session</div>
+          <div class="fuel-track"><div class="fuel-fill fuel-fill-cyan" id="fuel-session" style="width:5%;"></div></div>
+          <div class="fuel-val" id="fuel-session-val">$0.10</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;">
+        <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.02);border-radius:6px;">
+          <div style="font-family:var(--font-display);font-size:14px;color:var(--neon);">29k</div>
+          <div style="font-family:var(--font-mono);font-size:7px;color:var(--muted);letter-spacing:1px;margin-top:2px;">TOKENS/CALL</div>
+        </div>
+        <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.02);border-radius:6px;">
+          <div style="font-family:var(--font-display);font-size:14px;color:var(--gold);">47</div>
+          <div style="font-family:var(--font-mono);font-size:7px;color:var(--muted);letter-spacing:1px;margin-top:2px;">CALLS TODAY</div>
+        </div>
+        <div style="text-align:center;padding:6px 4px;background:rgba(255,255,255,0.02);border-radius:6px;">
+          <div style="font-family:var(--font-display);font-size:14px;color:var(--cyan);">Max</div>
+          <div style="font-family:var(--font-mono);font-size:7px;color:var(--muted);letter-spacing:1px;margin-top:2px;">PLAN TIER</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cockpit-top -->
+
+  <!-- ===== ROW 2: PROJECT STATUS BOARD + SYSTEM HEALTH ===== -->
+  <div class="cockpit-mid fade-up">
+
+    <!-- Project Status Board -->
+    <div class="card card-accent-cyan">
+      <div class="card-section-label">Project Status Board</div>
+      <div class="tl-header">
+        <span>Company</span>
+        <span>Last Deploy</span>
+        <span>Agents</span>
+        <span style="width:60px;text-align:right;">Status</span>
+      </div>
+      <div class="tl-grid">
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--cyan);">AiGM</div>
+          <div class="tl-deploy">Mar 28 &mdash; v1.4</div>
+          <div class="tl-agents">0 active</div>
+          <div class="tl-light tl-green"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--neon);">freeagent9</div>
+          <div class="tl-deploy">Mar 27 &mdash; pilot</div>
+          <div class="tl-agents">1 active</div>
+          <div class="tl-light tl-yellow"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--purple);">trader9</div>
+          <div class="tl-deploy">Mar 27 &mdash; paper</div>
+          <div class="tl-agents">1 active</div>
+          <div class="tl-light tl-yellow"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--pink);">x9</div>
+          <div class="tl-deploy">Not deployed</div>
+          <div class="tl-agents">0 active</div>
+          <div class="tl-light tl-red"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--gold);">agent9</div>
+          <div class="tl-deploy">Not deployed</div>
+          <div class="tl-agents">0 active</div>
+          <div class="tl-light tl-red"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--yellow);">AI Underwriter</div>
+          <div class="tl-deploy">Research only</div>
+          <div class="tl-agents">0 active</div>
+          <div class="tl-light tl-yellow"></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-company" style="color:var(--red);">Dropshipping</div>
+          <div class="tl-deploy">Not started</div>
+          <div class="tl-agents">0 active</div>
+          <div class="tl-light tl-red"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:10px;font-family:var(--font-mono);font-size:9px;color:var(--muted);">
+        <span><span class="tl-light tl-green" style="display:inline-block;width:8px;height:8px;vertical-align:middle;margin-right:4px;"></span>Live</span>
+        <span><span class="tl-light tl-yellow" style="display:inline-block;width:8px;height:8px;vertical-align:middle;margin-right:4px;"></span>In Progress</span>
+        <span><span class="tl-light tl-red" style="display:inline-block;width:8px;height:8px;vertical-align:middle;margin-right:4px;"></span>Blocked/Not Started</span>
+      </div>
+    </div>
+
+    <!-- System Health -->
+    <div class="card card-accent-neon">
+      <div class="card-section-label">System Health</div>
+      <div class="health-grid" id="health-grid">
+        <div class="health-item health-online" id="health-hub">
+          <div class="health-dot-lg h-online" id="health-hub-dot"></div>
+          <div class="health-name">Comms Hub</div>
+          <div class="health-status-text s-online" id="health-hub-text">ONLINE</div>
+        </div>
+        <div class="health-item health-online" id="health-voice">
+          <div class="health-dot-lg h-online" id="health-voice-dot"></div>
+          <div class="health-name">Voice Server</div>
+          <div class="health-status-text s-online" id="health-voice-text">ONLINE</div>
+        </div>
+        <div class="health-item health-unknown" id="health-tunnel">
+          <div class="health-dot-lg h-unknown" id="health-tunnel-dot"></div>
+          <div class="health-name">CF Tunnel</div>
+          <div class="health-status-text s-unknown" id="health-tunnel-text">CHECKING</div>
+        </div>
+        <div class="health-item health-online" id="health-terminal">
+          <div class="health-dot-lg h-online" id="health-terminal-dot"></div>
+          <div class="health-name">Terminal</div>
+          <div class="health-status-text s-online" id="health-terminal-text">ONLINE</div>
+        </div>
+        <div class="health-item health-unknown" id="health-telegram">
+          <div class="health-dot-lg h-unknown" id="health-telegram-dot"></div>
+          <div class="health-name">Telegram</div>
+          <div class="health-status-text s-unknown" id="health-telegram-text">CHECKING</div>
+        </div>
+        <div class="health-item health-online" id="health-cloud">
+          <div class="health-dot-lg h-online" id="health-cloud-dot"></div>
+          <div class="health-name">Cloud Worker</div>
+          <div class="health-status-text s-online" id="health-cloud-text">ONLINE</div>
+        </div>
+      </div>
+      <div class="neon-div"></div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:8px;">Live checks via hub API</div>
+      <button class="qa-btn qa-action" style="width:100%;flex-direction:row;justify-content:center;gap:8px;padding:10px;" onclick="runHealthCheck()">
+        <span>&#x21BB;</span> Run Health Check
+      </button>
+      <div id="health-last-check" style="font-family:var(--font-mono);font-size:9px;color:var(--dim);text-align:right;margin-top:6px;">Last check: never</div>
+    </div>
+
+  </div><!-- /cockpit-mid -->
+
+  <!-- ===== ROW 3: GRAPHS ===== -->
+  <div class="cc-grid-wide fade-up" style="margin-bottom:20px;">
+
+    <!-- Messages handled chart -->
+    <div class="card card-accent-purple">
+      <div class="card-section-label">Messages Handled &mdash; Last 7 Days</div>
+      <div class="sparkline-wrap" id="chart-messages" style="height:80px;">
+        <svg id="svg-messages" preserveAspectRatio="none"></svg>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--font-mono);font-size:8px;color:var(--dim);">
+        <span>Mar 22</span><span>Mar 23</span><span>Mar 24</span><span>Mar 25</span><span>Mar 26</span><span>Mar 27</span><span>Mar 28</span>
+      </div>
+    </div>
+
+    <!-- API calls trend -->
+    <div class="card card-accent-gold">
+      <div class="card-section-label">API Calls &mdash; Last 7 Days</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:80px;padding-top:10px;" id="chart-apicalls">
+        <!-- bars injected by JS -->
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--font-mono);font-size:8px;color:var(--dim);">
+        <span>Mar 22</span><span>Mar 23</span><span>Mar 24</span><span>Mar 25</span><span>Mar 26</span><span>Mar 27</span><span>Mar 28</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Cost trend sparkline (full width) -->
+  <div class="card card-accent-neon fade-up" style="margin-bottom:20px;">
+    <div class="card-section-label">Daily Cost Trend &mdash; Last 7 Days</div>
+    <div class="sparkline-wrap" id="chart-cost" style="height:80px;">
+      <svg id="svg-cost" preserveAspectRatio="none"></svg>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--font-mono);font-size:8px;color:var(--dim);">
+      <span>Mar 22</span><span>Mar 23</span><span>Mar 24</span><span>Mar 25</span><span>Mar 26</span><span>Mar 27</span><span>Mar 28</span>
+    </div>
+    <div style="display:flex;gap:20px;margin-top:10px;font-family:var(--font-mono);font-size:9px;color:var(--muted);">
+      <span>7-Day Total: <span style="color:var(--neon);">$16.80</span></span>
+      <span>Daily Avg: <span style="color:var(--gold);">$2.40</span></span>
+      <span>Peak: <span style="color:var(--cyan);">$4.20 (Mar 27)</span></span>
+      <span>On Pace: <span style="color:var(--text);">$72/mo</span></span>
+    </div>
+  </div>
+
+  <!-- ===== ROW 4: TASK BOARD ===== -->
+  <div class="card fade-up" style="margin-bottom:20px;">
+    <div class="card-section-label">Task Board</div>
+    <div class="task-board">
+
+      <!-- TODO column -->
+      <div class="task-col-todo">
+        <div class="task-col-head">
+          TODO
+          <div class="task-badge">6</div>
+        </div>
+        <div class="task-item task-p1">
+          <div class="task-priority">P1 &mdash; URGENT</div>
+          <div class="task-text">Launch x9 social presence &mdash; content dying on the vine</div>
+        </div>
+        <div class="task-item task-p1">
+          <div class="task-priority">P1 &mdash; HIGH</div>
+          <div class="task-text">AiNFLGM progress plan &mdash; Owner action</div>
+        </div>
+        <div class="task-item task-p2">
+          <div class="task-priority">P2 &mdash; MEDIUM</div>
+          <div class="task-text">AI Underwriter FHA MVP build (2-3 days)</div>
+        </div>
+        <div class="task-item task-p2">
+          <div class="task-priority">P2 &mdash; MEDIUM</div>
+          <div class="task-text">freeagent9: food ordering concierge feature</div>
+        </div>
+        <div class="task-item task-p3">
+          <div class="task-priority">P3 &mdash; LOW</div>
+          <div class="task-text">Dropshipping: Owner delivers name + plan</div>
+        </div>
+        <div class="task-item task-p3">
+          <div class="task-priority">P3 &mdash; LOW</div>
+          <div class="task-text">agent9: Owner delivers action plan</div>
+        </div>
+      </div>
+
+      <!-- IN PROGRESS column -->
+      <div class="task-col-doing">
+        <div class="task-col-head">
+          IN PROGRESS
+          <div class="task-badge">4</div>
+        </div>
+        <div class="task-item task-p1">
+          <div class="task-priority">P1 &mdash; ACTIVE</div>
+          <div class="task-text">Alpaca account funding &mdash; trader9 paper mode running</div>
+        </div>
+        <div class="task-item task-p1">
+          <div class="task-priority">P1 &mdash; ACTIVE</div>
+          <div class="task-text">Dashboard v6 upgrade &mdash; CANVAS deploying now</div>
+        </div>
+        <div class="task-item task-p2">
+          <div class="task-priority">P2 &mdash; ACTIVE</div>
+          <div class="task-text">freeagent9 Kyle C pilot &mdash; appointments feature greenlit</div>
+        </div>
+        <div class="task-item task-p2">
+          <div class="task-priority">P2 &mdash; ACTIVE</div>
+          <div class="task-text">Web terminal + remote self-healing research</div>
+        </div>
+      </div>
+
+      <!-- DONE TODAY column -->
+      <div class="task-col-done">
+        <div class="task-col-head">
+          DONE TODAY
+          <div class="task-badge">5</div>
+        </div>
+        <div class="task-item task-p-done">
+          <div class="task-priority">DONE &mdash; Mar 28</div>
+          <div class="task-text">SOTU &mdash; 7 companies locked + org hierarchy confirmed</div>
+        </div>
+        <div class="task-item task-p-done">
+          <div class="task-priority">DONE &mdash; Mar 28</div>
+          <div class="task-text">Dashboard v5 shipped (CANVAS)</div>
+        </div>
+        <div class="task-item task-p-done">
+          <div class="task-priority">DONE &mdash; Mar 27</div>
+          <div class="task-text">ETA calibration: 7.5x speed multiplier locked</div>
+        </div>
+        <div class="task-item task-p-done">
+          <div class="task-priority">DONE &mdash; Mar 27</div>
+          <div class="task-text">Hub v5 + comms architecture complete</div>
+        </div>
+        <div class="task-item task-p-done">
+          <div class="task-priority">DONE &mdash; Mar 26</div>
+          <div class="task-text">$300 + $200 budget approvals locked</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== ROW 5: QUICK ACTIONS ===== -->
+  <div class="card fade-up">
+    <div class="card-section-label">Quick Actions</div>
+    <div class="qa-grid">
+      <a href="https://ainflgm.com" target="_blank" class="qa-btn">
+        <div class="qa-btn-icon">&#x1F3C8;</div>
+        AiNFLGM
+      </a>
+      <a href="http://localhost:3457/health" target="_blank" class="qa-btn qa-action">
+        <div class="qa-btn-icon">&#x2665;</div>
+        Hub Health
+      </a>
+      <a href="http://localhost:3457/inbox" target="_blank" class="qa-btn qa-action">
+        <div class="qa-btn-icon">&#x1F4EC;</div>
+        Check Inbox
+      </a>
+      <a href="http://localhost:3457/state" target="_blank" class="qa-btn">
+        <div class="qa-btn-icon">&#x1F4BE;</div>
+        Shared State
+      </a>
+      <a href="http://localhost:3456/health" target="_blank" class="qa-btn qa-action">
+        <div class="qa-btn-icon">&#x1F399;</div>
+        Voice Server
+      </a>
+      <button class="qa-btn qa-action" onclick="runHealthCheck()">
+        <div class="qa-btn-icon">&#x21BB;</div>
+        System Sweep
+      </button>
+      <button class="qa-btn" onclick="refreshDashboard()">
+        <div class="qa-btn-icon">&#x27F3;</div>
+        Refresh Data
+      </button>
+      <a href="https://9enterprises.com" target="_blank" class="qa-btn">
+        <div class="qa-btn-icon">&#x1F3E2;</div>
+        9enterprises
+      </a>
+      <button class="qa-btn qa-danger" onclick="showRestartMenu()">
+        <div class="qa-btn-icon">&#x26A1;</div>
+        Restart Hub
+      </button>
+    </div>
+    <div id="restart-menu" style="display:none;margin-top:12px;padding:12px;background:rgba(255,45,85,0.04);border:1px solid rgba(255,45,85,0.15);border-radius:var(--r-sm);">
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--red);margin-bottom:8px;">RESTART COMMANDS &mdash; run in Terminal:</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);line-height:2;">
+        <div style="padding:4px 8px;background:rgba(0,0,0,0.3);border-radius:4px;margin-bottom:4px;color:var(--text);">pkill -f comms-hub &amp;&amp; sleep 1 &amp;&amp; nohup node scripts/comms-hub.mjs &gt; /dev/null 2&gt;&amp;1 &amp; disown</div>
+        <div style="padding:4px 8px;background:rgba(0,0,0,0.3);border-radius:4px;margin-bottom:4px;color:var(--text);">curl -s http://localhost:3457/health</div>
+      </div>
+      <button class="qa-btn" style="margin-top:8px;width:100%;flex-direction:row;justify-content:center;gap:6px;padding:8px;" onclick="document.getElementById('restart-menu').style.display='none'">Close</button>
+    </div>
+  </div>
+
+</section>
 <!-- ===================== PAGE: COMPANIES ===================== -->
 <section class="page" id="page-companies">
 
@@ -1993,6 +2606,276 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 // PWA install prompt (suppress for cleanliness)
 window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); });
+
+// ===================== COCKPIT ENGINE =====================
+
+// Animate semicircle gauges
+function animateSemiGauge(fillEl, pct){
+  if(!fillEl) return;
+  const total = parseFloat(fillEl.dataset.total) || 172.8;
+  const offset = total - (Math.min(pct,100)/100) * total;
+  fillEl.style.strokeDashoffset = offset;
+  // Color shift based on level
+  if(pct > 80) fillEl.style.stroke = 'var(--red)';
+  else if(pct > 55) fillEl.style.stroke = 'var(--gold)';
+  else fillEl.style.stroke = 'var(--neon)';
+}
+
+// Session timer
+const _sessionStart = Date.now();
+const _baseCostToday = 2.40;
+const _sessionCostRate = 0.10 / 3600; // ~$0.10/hr in dollars/sec
+
+function updateCostCounter(){
+  const elapsed = (Date.now() - _sessionStart) / 1000;
+  const sessionCost = elapsed * _sessionCostRate;
+  const todayCost = _baseCostToday + sessionCost;
+
+  const el = document.getElementById('live-cost-counter');
+  if(el) el.textContent = '$' + todayCost.toFixed(2);
+
+  const elApi = document.getElementById('api-used-today');
+  if(elApi) elApi.textContent = '$' + todayCost.toFixed(2);
+
+  const mins = Math.floor(elapsed / 60);
+  const secs = Math.floor(elapsed % 60);
+  const elSess = document.getElementById('cost-session-time');
+  if(elSess) elSess.textContent = 'Session: ' + mins + 'm ' + secs + 's';
+
+  // Session fuel bar (cap at $5)
+  const sessionPct = Math.min((sessionCost / 5) * 100, 100);
+  const fuelSess = document.getElementById('fuel-session');
+  if(fuelSess) fuelSess.style.width = sessionPct + '%';
+  const fuelSessVal = document.getElementById('fuel-session-val');
+  if(fuelSessVal) fuelSessVal.textContent = '$' + sessionCost.toFixed(2);
+}
+
+// Draw sparkline SVG
+function drawSparkline(svgId, data, color, fillColor){
+  const svg = document.getElementById(svgId);
+  if(!svg) return;
+  const W = svg.parentElement.offsetWidth || 300;
+  const H = 80;
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+  const max = Math.max(...data, 1);
+  const min = Math.min(...data);
+  const range = max - min || 1;
+  const pts = data.map((v,i) => {
+    const x = (i / (data.length - 1)) * (W - 20) + 10;
+    const y = H - 12 - ((v - min) / range) * (H - 24);
+    return [x, y];
+  });
+
+  const pathD = pts.map((p,i) => (i===0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const areaD = pathD + ' L' + pts[pts.length-1][0].toFixed(1) + ',' + (H-4) + ' L' + pts[0][0].toFixed(1) + ',' + (H-4) + ' Z';
+
+  svg.innerHTML = '';
+  // Gradient def
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML = '<linearGradient id="sg-'+svgId+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+fillColor+'" stop-opacity="0.35"/><stop offset="100%" stop-color="'+fillColor+'" stop-opacity="0.01"/></linearGradient>';
+  svg.appendChild(defs);
+
+  const area = document.createElementNS('http://www.w3.org/2000/svg','path');
+  area.setAttribute('d', areaD);
+  area.setAttribute('fill', 'url(#sg-'+svgId+')');
+  svg.appendChild(area);
+
+  const line = document.createElementNS('http://www.w3.org/2000/svg','path');
+  line.setAttribute('d', pathD);
+  line.setAttribute('fill','none');
+  line.setAttribute('stroke', color);
+  line.setAttribute('stroke-width','1.5');
+  line.setAttribute('stroke-linecap','round');
+  line.setAttribute('stroke-linejoin','round');
+  svg.appendChild(line);
+
+  // Dot at last point
+  const last = pts[pts.length-1];
+  const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx', last[0]);
+  dot.setAttribute('cy', last[1]);
+  dot.setAttribute('r', '3');
+  dot.setAttribute('fill', color);
+  svg.appendChild(dot);
+
+  // Value labels
+  pts.forEach((p,i) => {
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', p[0]);
+    label.setAttribute('y', p[1] - 6);
+    label.setAttribute('text-anchor','middle');
+    label.setAttribute('font-size','8');
+    label.setAttribute('fill','rgba(255,255,255,0.4)');
+    label.setAttribute('font-family','DM Mono, monospace');
+    label.textContent = data[i];
+    svg.appendChild(label);
+  });
+}
+
+// Draw bar chart
+function drawBarChart(containerId, data, colors){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  const max = Math.max(...data, 1);
+  container.innerHTML = '';
+  data.forEach((v, i) => {
+    const col = document.createElement('div');
+    col.className = 'bar-col';
+    col.style.flex = '1';
+    col.style.display = 'flex';
+    col.style.flexDirection = 'column';
+    col.style.alignItems = 'center';
+    col.style.justifyContent = 'flex-end';
+    col.style.height = '100%';
+    col.style.gap = '3px';
+
+    const bar = document.createElement('div');
+    const heightPct = (v / max) * 100;
+    bar.style.width = '100%';
+    bar.style.height = '0%';
+    bar.style.borderRadius = '2px 2px 0 0';
+    bar.style.background = colors[i % colors.length];
+    bar.style.boxShadow = '0 0 6px ' + colors[i % colors.length].replace('var(','').replace(')','') + '40';
+    bar.style.transition = 'height 1s ease';
+    bar.style.minHeight = '2px';
+
+    const lbl = document.createElement('div');
+    lbl.style.fontFamily = 'DM Mono, monospace';
+    lbl.style.fontSize = '8px';
+    lbl.style.color = 'rgba(255,255,255,0.5)';
+    lbl.style.textAlign = 'center';
+    lbl.textContent = v;
+
+    col.appendChild(lbl);
+    col.appendChild(bar);
+    container.appendChild(col);
+
+    // Animate in
+    setTimeout(() => { bar.style.height = heightPct + '%'; }, 200 + i * 50);
+  });
+}
+
+// Health check against local hub
+async function runHealthCheck(){
+  const lastEl = document.getElementById('health-last-check');
+  if(lastEl) lastEl.textContent = 'Checking...';
+
+  const checks = [
+    { id:'hub', url:'http://localhost:3457/health', name:'Comms Hub' },
+    { id:'voice', url:'http://localhost:3456/health', name:'Voice Server' },
+  ];
+
+  function setHealth(id, online){
+    const item = document.getElementById('health-' + id);
+    const dot = document.getElementById('health-' + id + '-dot');
+    const txt = document.getElementById('health-' + id + '-text');
+    if(!item) return;
+    item.className = 'health-item ' + (online ? 'health-online' : 'health-offline');
+    if(dot){
+      dot.className = 'health-dot-lg ' + (online ? 'h-online' : 'h-offline');
+    }
+    if(txt){
+      txt.className = 'health-status-text ' + (online ? 's-online' : 's-offline');
+      txt.textContent = online ? 'ONLINE' : 'OFFLINE';
+    }
+  }
+
+  // Mark terminal as online since we're running
+  setHealth('terminal', true);
+
+  for(const check of checks){
+    try{
+      const res = await fetch(check.url, { signal: AbortSignal.timeout(3000) });
+      setHealth(check.id, res.ok);
+    } catch(e){
+      setHealth(check.id, false);
+    }
+  }
+
+  // Telegram check via hub
+  try{
+    const res = await fetch('http://localhost:3457/health', { signal: AbortSignal.timeout(3000) });
+    if(res.ok){
+      const data = await res.json().catch(()=>({}));
+      const tgOk = data.telegram !== false;
+      setHealth('telegram', tgOk);
+      const tunnelOk = data.tunnel !== false && data.tunnelUrl;
+      setHealth('tunnel', tunnelOk);
+      const cloudOk = data.cloudWorker !== false;
+      setHealth('cloud', cloudOk);
+    }
+  } catch(e){
+    // Hub down — all dependent services unknown
+    setHealth('telegram', false);
+    setHealth('tunnel', false);
+  }
+
+  const now = new Date();
+  if(lastEl) lastEl.textContent = 'Last check: ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+// Refresh dashboard data
+function refreshDashboard(){
+  initCockpitCharts();
+  runHealthCheck();
+}
+
+// Restart menu
+function showRestartMenu(){
+  const m = document.getElementById('restart-menu');
+  if(m) m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+
+// Init all cockpit visuals
+function initCockpitCharts(){
+  // Sample data (7 days)
+  const msgData    = [22, 18, 31, 45, 52, 67, 41];
+  const apiData    = [15, 12, 24, 38, 44, 55, 47];
+  const costData   = [1.20, 0.95, 2.10, 2.80, 3.40, 4.20, 2.40];
+
+  drawSparkline('svg-messages', msgData, 'var(--purple)', '#b060ff');
+  drawBarChart('chart-apicalls', apiData, ['var(--gold)','var(--orange)','var(--neon)','var(--cyan)','var(--gold)','var(--neon)','var(--orange)']);
+  drawSparkline('svg-cost', costData, 'var(--neon)', '#FB4F14');
+
+  // Animate semi gauges
+  setTimeout(()=>{
+    animateSemiGauge(document.getElementById('gauge-api-fill'), 12);
+    animateSemiGauge(document.getElementById('gauge-budget-fill'), 0);
+  }, 400);
+
+  // Animate fuel bars
+  setTimeout(()=>{
+    const bars = [
+      {id:'fuel-today', w:'12%'},
+      {id:'fuel-week', w:'28%'},
+      {id:'fuel-month', w:'60%'},
+      {id:'fuel-resource', w:'0%'},
+      {id:'fuel-trading', w:'0%'},
+      {id:'fuel-remaining', w:'100%'},
+    ];
+    bars.forEach(b=>{
+      const el = document.getElementById(b.id);
+      if(el){ el.style.width='0%'; setTimeout(()=>{ el.style.width=b.w; }, 150); }
+    });
+  }, 300);
+}
+
+// Patch showPage to auto-init cockpit on first open
+(function(){
+  const _orig = showPage;
+  showPage = function(id, btn){
+    _orig(id, btn);
+    if(id === 'cockpit'){
+      setTimeout(initCockpitCharts, 100);
+      setTimeout(runHealthCheck, 200);
+    }
+  };
+})();
+
+// Cost counter ticks every second
+setInterval(updateCostCounter, 1000);
+updateCostCounter();
 </script>
 </body>
 </html>
