@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Team Needs Ranker 2026 | AiNFL GM</title>
+<meta name="description" content="See every NFL team's top positional needs heading into the 2026 draft. AI-powered team needs analysis for all 32 teams.">
+<meta property="og:title" content="NFL Team Needs Ranker 2026 | AiNFL GM">
+<meta property="og:description" content="Ranked positional needs for all 32 NFL teams heading into the 2026 draft. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/team-needs.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Team Needs Ranker 2026 | AiNFL GM">
+<meta name="twitter:description" content="Ranked positional needs for all 32 NFL teams heading into the 2026 draft. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes barGrow {
+  from { width: 0; }
+  to   { width: var(--bar-w); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Mode Toggle ── */
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 28px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+.mode-btn {
+  padding: 9px 22px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mode-btn.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.mode-btn:hover:not(.active) { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+/* ── Single Mode ── */
+.single-mode { animation: fadeUp 0.4s ease both; }
+
+.selector-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.selector-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+
+.team-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+.team-select:focus {
+  outline: none;
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 3px var(--cyan-glow);
+}
+.team-select option { background: #1E293B; }
+.team-select optgroup { color: var(--text-mute); font-size: 12px; }
+
+/* ── Results Panel ── */
+.results-panel {
+  display: none;
+  animation: glow-in 0.35s ease both;
+}
+.results-panel.visible { display: block; }
+
+.team-header-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.team-logo-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.12);
+}
+
+.team-header-info { flex: 1; min-width: 0; }
+.team-header-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  line-height: 1.2;
+}
+.team-header-meta {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.share-btn {
+  padding: 9px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+.share-btn:hover { color: var(--cyan); border-color: var(--border-hi); background: var(--cyan-dim); }
+.share-btn.copied { color: var(--green); border-color: rgba(57,255,20,0.25); background: var(--green-dim); }
+
+/* ── Needs List ── */
+.needs-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.needs-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.needs-card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.legend {
+  display: flex;
+  gap: 14px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.legend-dot.critical { background: var(--red); }
+.legend-dot.moderate { background: var(--yellow); }
+.legend-dot.depth    { background: var(--green); }
+
+.need-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.need-row:last-child { border-bottom: none; }
+.need-row:hover { background: rgba(255,255,255,0.02); }
+
+.need-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  color: var(--text-mute);
+}
+.need-row:nth-child(-n+4) .need-rank { color: var(--red); }
+.need-row:nth-child(n+5):nth-child(-n+7) .need-rank { color: var(--yellow); }
+.need-row:nth-child(n+8) .need-rank { color: var(--green); }
+
+.need-pos-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: center;
+}
+.need-pos-badge.critical {
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(255,45,85,0.2);
+}
+.need-pos-badge.moderate {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+  border: 1px solid rgba(255,214,0,0.2);
+}
+.need-pos-badge.depth {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(57,255,20,0.2);
+}
+
+.need-info { flex: 1; min-width: 0; }
+.need-reason {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.need-bar-wrap {
+  width: 80px;
+  height: 6px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+@media (max-width: 480px) { .need-bar-wrap { display: none; } }
+
+.need-bar {
+  height: 100%;
+  border-radius: 3px;
+  animation: barGrow 0.6s ease both;
+  --bar-w: 0%;
+  width: var(--bar-w);
+}
+.need-bar.critical { background: var(--red); }
+.need-bar.moderate { background: var(--yellow); }
+.need-bar.depth    { background: var(--green); }
+
+/* ── Compare Mode ── */
+.compare-mode { animation: fadeUp 0.4s ease both; }
+
+.compare-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) {
+  .compare-selectors { grid-template-columns: 1fr; }
+}
+
+.compare-selector-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.compare-selector-card.card-a { border-top: 3px solid var(--cyan); }
+.compare-selector-card.card-b { border-top: 3px solid var(--green); }
+
+.compare-results {
+  display: none;
+}
+.compare-results.visible { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) {
+  .compare-results.visible { grid-template-columns: 1fr; }
+}
+
+.compare-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: glow-in 0.35s ease both;
+}
+.compare-panel.panel-a { border-top: 3px solid var(--cyan); }
+.compare-panel.panel-b { border-top: 3px solid var(--green); }
+
+.compare-panel-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.compare-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+.compare-panel-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.compare-need-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.compare-need-row:last-child { border-bottom: none; }
+
+.compare-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+  color: var(--text-mute);
+}
+.compare-need-row:nth-child(-n+4) .compare-rank { color: var(--red); }
+.compare-need-row:nth-child(n+5):nth-child(-n+7) .compare-rank { color: var(--yellow); }
+.compare-need-row:nth-child(n+8) .compare-rank { color: var(--green); }
+
+.compare-pos {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  min-width: 46px;
+  text-align: center;
+}
+.compare-pos.critical { background: var(--red-dim); color: var(--red); }
+.compare-pos.moderate { background: var(--yellow-dim); color: var(--yellow); }
+.compare-pos.depth { background: var(--green-dim); color: var(--green); }
+
+.compare-reason {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Empty State ── */
+.empty-state {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px 24px;
+  text-align: center;
+}
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 14px;
+  opacity: 0.4;
+}
+.empty-text {
+  font-size: 15px;
+  color: var(--text-mute);
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Disclaimer ── */
+.disclaimer {
+  font-size: 12px;
+  color: var(--text-mute);
+  text-align: center;
+  padding: 0 16px 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Draft Room
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.9"/>
+    </svg>
+    2026 NFL Draft
+  </div>
+  <h1>Team <span>Needs</span> Ranker</h1>
+  <p>Select any NFL team to see their top 10 positional needs heading into the 2026 draft, ranked from critical to depth pick.</p>
+</section>
+
+<main class="main">
+
+  <!-- Mode Toggle -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('single')" id="btn-single">Single Team</button>
+    <button class="mode-btn" onclick="setMode('compare')" id="btn-compare">Compare Teams</button>
+  </div>
+
+  <!-- Single Mode -->
+  <div class="single-mode" id="single-mode">
+    <div class="selector-card">
+      <div class="selector-label">Select a Team</div>
+      <select class="team-select" id="team-select-single" onchange="renderSingle(this.value)">
+        <option value="">-- Choose an NFL team --</option>
+        <optgroup label="AFC East">
+          <option value="BUF">Buffalo Bills</option>
+          <option value="MIA">Miami Dolphins</option>
+          <option value="NE">New England Patriots</option>
+          <option value="NYJ">New York Jets</option>
+        </optgroup>
+        <optgroup label="AFC North">
+          <option value="BAL">Baltimore Ravens</option>
+          <option value="CIN">Cincinnati Bengals</option>
+          <option value="CLE">Cleveland Browns</option>
+          <option value="PIT">Pittsburgh Steelers</option>
+        </optgroup>
+        <optgroup label="AFC South">
+          <option value="HOU">Houston Texans</option>
+          <option value="IND">Indianapolis Colts</option>
+          <option value="JAC">Jacksonville Jaguars</option>
+          <option value="TEN">Tennessee Titans</option>
+        </optgroup>
+        <optgroup label="AFC West">
+          <option value="DEN">Denver Broncos</option>
+          <option value="KC">Kansas City Chiefs</option>
+          <option value="LV">Las Vegas Raiders</option>
+          <option value="LAC">Los Angeles Chargers</option>
+        </optgroup>
+        <optgroup label="NFC East">
+          <option value="DAL">Dallas Cowboys</option>
+          <option value="NYG">New York Giants</option>
+          <option value="PHI">Philadelphia Eagles</option>
+          <option value="WAS">Washington Commanders</option>
+        </optgroup>
+        <optgroup label="NFC North">
+          <option value="CHI">Chicago Bears</option>
+          <option value="DET">Detroit Lions</option>
+          <option value="GB">Green Bay Packers</option>
+          <option value="MIN">Minnesota Vikings</option>
+        </optgroup>
+        <optgroup label="NFC South">
+          <option value="ATL">Atlanta Falcons</option>
+          <option value="CAR">Carolina Panthers</option>
+          <option value="NO">New Orleans Saints</option>
+          <option value="TB">Tampa Bay Buccaneers</option>
+        </optgroup>
+        <optgroup label="NFC West">
+          <option value="ARI">Arizona Cardinals</option>
+          <option value="LAR">Los Angeles Rams</option>
+          <option value="SF">San Francisco 49ers</option>
+          <option value="SEA">Seattle Seahawks</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="results-panel" id="results-single">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="empty-state" id="empty-single">
+      <div class="empty-icon">&#127944;</div>
+      <div class="empty-text">Select a team above to see their draft needs</div>
+    </div>
+  </div>
+
+  <!-- Compare Mode -->
+  <div class="compare-mode" id="compare-mode" style="display:none;">
+    <div class="compare-selectors">
+      <div class="compare-selector-card card-a">
+        <div class="selector-label">Team A</div>
+        <select class="team-select" id="team-select-a" onchange="renderCompare()">
+          <option value="">-- Choose a team --</option>
+          <optgroup label="AFC East">
+            <option value="BUF">Buffalo Bills</option>
+            <option value="MIA">Miami Dolphins</option>
+            <option value="NE">New England Patriots</option>
+            <option value="NYJ">New York Jets</option>
+          </optgroup>
+          <optgroup label="AFC North">
+            <option value="BAL">Baltimore Ravens</option>
+            <option value="CIN">Cincinnati Bengals</option>
+            <option value="CLE">Cleveland Browns</option>
+            <option value="PIT">Pittsburgh Steelers</option>
+          </optgroup>
+          <optgroup label="AFC South">
+            <option value="HOU">Houston Texans</option>
+            <option value="IND">Indianapolis Colts</option>
+            <option value="JAC">Jacksonville Jaguars</option>
+            <option value="TEN">Tennessee Titans</option>
+          </optgroup>
+          <optgroup label="AFC West">
+            <option value="DEN">Denver Broncos</option>
+            <option value="KC">Kansas City Chiefs</option>
+            <option value="LV">Las Vegas Raiders</option>
+            <option value="LAC">Los Angeles Chargers</option>
+          </optgroup>
+          <optgroup label="NFC East">
+            <option value="DAL">Dallas Cowboys</option>
+            <option value="NYG">New York Giants</option>
+            <option value="PHI">Philadelphia Eagles</option>
+            <option value="WAS">Washington Commanders</option>
+          </optgroup>
+          <optgroup label="NFC North">
+            <option value="CHI">Chicago Bears</option>
+            <option value="DET">Detroit Lions</option>
+            <option value="GB">Green Bay Packers</option>
+            <option value="MIN">Minnesota Vikings</option>
+          </optgroup>
+          <optgroup label="NFC South">
+            <option value="ATL">Atlanta Falcons</option>
+            <option value="CAR">Carolina Panthers</option>
+            <option value="NO">New Orleans Saints</option>
+            <option value="TB">Tampa Bay Buccaneers</option>
+          </optgroup>
+          <optgroup label="NFC West">
+            <option value="ARI">Arizona Cardinals</option>
+            <option value="LAR">Los Angeles Rams</option>
+            <option value="SF">San Francisco 49ers</option>
+            <option value="SEA">Seattle Seahawks</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="compare-selector-card card-b">
+        <div class="selector-label">Team B</div>
+        <select class="team-select" id="team-select-b" onchange="renderCompare()">
+          <option value="">-- Choose a team --</option>
+          <optgroup label="AFC East">
+            <option value="BUF">Buffalo Bills</option>
+            <option value="MIA">Miami Dolphins</option>
+            <option value="NE">New England Patriots</option>
+            <option value="NYJ">New York Jets</option>
+          </optgroup>
+          <optgroup label="AFC North">
+            <option value="BAL">Baltimore Ravens</option>
+            <option value="CIN">Cincinnati Bengals</option>
+            <option value="CLE">Cleveland Browns</option>
+            <option value="PIT">Pittsburgh Steelers</option>
+          </optgroup>
+          <optgroup label="AFC South">
+            <option value="HOU">Houston Texans</option>
+            <option value="IND">Indianapolis Colts</option>
+            <option value="JAC">Jacksonville Jaguars</option>
+            <option value="TEN">Tennessee Titans</option>
+          </optgroup>
+          <optgroup label="AFC West">
+            <option value="DEN">Denver Broncos</option>
+            <option value="KC">Kansas City Chiefs</option>
+            <option value="LV">Las Vegas Raiders</option>
+            <option value="LAC">Los Angeles Chargers</option>
+          </optgroup>
+          <optgroup label="NFC East">
+            <option value="DAL">Dallas Cowboys</option>
+            <option value="NYG">New York Giants</option>
+            <option value="PHI">Philadelphia Eagles</option>
+            <option value="WAS">Washington Commanders</option>
+          </optgroup>
+          <optgroup label="NFC North">
+            <option value="CHI">Chicago Bears</option>
+            <option value="DET">Detroit Lions</option>
+            <option value="GB">Green Bay Packers</option>
+            <option value="MIN">Minnesota Vikings</option>
+          </optgroup>
+          <optgroup label="NFC South">
+            <option value="ATL">Atlanta Falcons</option>
+            <option value="CAR">Carolina Panthers</option>
+            <option value="NO">New Orleans Saints</option>
+            <option value="TB">Tampa Bay Buccaneers</option>
+          </optgroup>
+          <optgroup label="NFC West">
+            <option value="ARI">Arizona Cardinals</option>
+            <option value="LAR">Los Angeles Rams</option>
+            <option value="SF">San Francisco 49ers</option>
+            <option value="SEA">Seattle Seahawks</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="compare-results" id="compare-results">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="empty-state" id="empty-compare">
+      <div class="empty-icon">&#9878;</div>
+      <div class="empty-text">Select two teams above to compare their draft needs</div>
+    </div>
+  </div>
+
+</main>
+
+<p class="disclaimer">AI-generated analysis based on 2026 offseason context. Data reflects free agency and depth chart changes heading into the draft. Not official team data.</p>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>2026 NFL Draft Team Needs — AI analysis for all 32 teams</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-quiz.html">Cap Quiz</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/mortgage-calc.html">Mortgage Calc</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/name-generator.html">Name Generator</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<script>
+// ── Team Data ────────────────────────────────────────────────────────────────
+// Priority levels: 'critical' (1-3), 'moderate' (4-7), 'depth' (8-10)
+// Bar widths roughly map to need severity within tier
+
+const TEAMS = {
+  BUF: {
+    name: 'Buffalo Bills',
+    abbr: 'BUF',
+    division: 'AFC East',
+    color: '#00338D',
+    textColor: '#C60C30',
+    needs: [
+      { pos: 'WR',   reason: 'Stefon Diggs era over — thin at No. 2 and No. 3 receiver',         priority: 'critical', bar: 95 },
+      { pos: 'EDGE', reason: 'Von Miller age concerns; rotation lacks young pass rush talent',    priority: 'critical', bar: 88 },
+      { pos: 'OT',   reason: 'Left tackle depth is a concern with aging starters',                priority: 'critical', bar: 82 },
+      { pos: 'CB',   reason: 'Slot corner is a weak point; need a young developmental piece',     priority: 'moderate', bar: 72 },
+      { pos: 'DT',   reason: 'Interior pass rush needs an upgrade opposite Ed Oliver',            priority: 'moderate', bar: 64 },
+      { pos: 'LB',   reason: 'Coverage linebacker depth thin after free agency losses',           priority: 'moderate', bar: 56 },
+      { pos: 'TE',   reason: 'Need a move tight end to complement blocking TE depth',             priority: 'moderate', bar: 48 },
+      { pos: 'RB',   reason: 'Backfield depth could use a young complementary runner',            priority: 'depth',    bar: 36 },
+      { pos: 'IOL',  reason: 'Guard depth worth addressing in middle rounds',                     priority: 'depth',    bar: 28 },
+      { pos: 'S',    reason: 'Long-term safety development behind starters',                      priority: 'depth',    bar: 20 },
+    ]
+  },
+  MIA: {
+    name: 'Miami Dolphins',
+    abbr: 'MIA',
+    division: 'AFC East',
+    color: '#008E97',
+    textColor: '#FC4C02',
+    needs: [
+      { pos: 'OT',   reason: 'Offensive line a chronic concern; need a starting-caliber tackle', priority: 'critical', bar: 96 },
+      { pos: 'EDGE', reason: 'Pass rush outside of top options needs serious depth',              priority: 'critical', bar: 88 },
+      { pos: 'LB',   reason: 'Run-stopping linebacker is a glaring weakness',                    priority: 'critical', bar: 80 },
+      { pos: 'CB',   reason: 'Cornerback depth behind starters is very thin',                    priority: 'moderate', bar: 70 },
+      { pos: 'IOL',  reason: 'Interior line continuity issues; guard class is strong in 2026',   priority: 'moderate', bar: 62 },
+      { pos: 'DT',   reason: 'Three-technique depth needed to bolster run defense',              priority: 'moderate', bar: 54 },
+      { pos: 'S',    reason: 'Safety depth worth investing in behind starters',                  priority: 'moderate', bar: 46 },
+      { pos: 'TE',   reason: 'A receiving tight end would open up Tua\'s offense further',        priority: 'depth',    bar: 36 },
+      { pos: 'WR',   reason: 'Four and five receivers thin but top of depth chart is solid',     priority: 'depth',    bar: 28 },
+      { pos: 'K',    reason: 'Long-term kicker solution worth monitoring in late rounds',         priority: 'depth',    bar: 18 },
+    ]
+  },
+  NE: {
+    name: 'New England Patriots',
+    abbr: 'NE',
+    division: 'AFC East',
+    color: '#002244',
+    textColor: '#C60C30',
+    needs: [
+      { pos: 'QB',   reason: 'Long-term franchise QB still unresolved after Drake Maye year one', priority: 'critical', bar: 90 },
+      { pos: 'WR',   reason: 'Receiver corps thin with no established No. 1 threat',             priority: 'critical', bar: 88 },
+      { pos: 'OT',   reason: 'Offensive line rebuild continues; need starting tackles',           priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Pass rush was bottom five in sacks; urgent need',                  priority: 'moderate', bar: 74 },
+      { pos: 'CB',   reason: 'Starting cornerback two is a major question mark',                 priority: 'moderate', bar: 66 },
+      { pos: 'DT',   reason: 'Stout run defense needs young bodies in the middle',               priority: 'moderate', bar: 58 },
+      { pos: 'LB',   reason: 'Coverage linebackers needed in new defensive scheme',              priority: 'moderate', bar: 50 },
+      { pos: 'IOL',  reason: 'Interior line is part of the broader OL rebuild',                  priority: 'depth',    bar: 38 },
+      { pos: 'RB',   reason: 'Backfield is functional but lacks explosive upside',               priority: 'depth',    bar: 28 },
+      { pos: 'TE',   reason: 'Developmental tight end for long-term offensive build',            priority: 'depth',    bar: 20 },
+    ]
+  },
+  NYJ: {
+    name: 'New York Jets',
+    abbr: 'NYJ',
+    division: 'AFC East',
+    color: '#125740',
+    textColor: '#FFFFFF',
+    needs: [
+      { pos: 'WR',   reason: 'Garrett Wilson needs a legitimate No. 2 target opposite him',      priority: 'critical', bar: 94 },
+      { pos: 'OT',   reason: 'Protecting Rodgers or successor is still a primary concern',       priority: 'critical', bar: 87 },
+      { pos: 'CB',   reason: 'Cornerback two and three depth is unproven',                       priority: 'critical', bar: 80 },
+      { pos: 'EDGE', reason: 'Edge depth behind starters is limited heading into 2026',          priority: 'moderate', bar: 70 },
+      { pos: 'S',    reason: 'Safety play has been inconsistent; upgrade needed',                priority: 'moderate', bar: 62 },
+      { pos: 'RB',   reason: 'Feature back role open after offseason departures',                priority: 'moderate', bar: 54 },
+      { pos: 'IOL',  reason: 'Guard depth a concern with injury history on interior line',       priority: 'moderate', bar: 46 },
+      { pos: 'DT',   reason: 'Run-stuffing nose tackle needed to anchor defense',               priority: 'depth',    bar: 36 },
+      { pos: 'LB',   reason: 'Young linebacker talent to develop behind vets',                  priority: 'depth',    bar: 26 },
+      { pos: 'TE',   reason: 'Developmental H-back/TE for future versatility',                  priority: 'depth',    bar: 18 },
+    ]
+  },
+  BAL: {
+    name: 'Baltimore Ravens',
+    abbr: 'BAL',
+    division: 'AFC North',
+    color: '#241773',
+    textColor: '#9E7C0C',
+    needs: [
+      { pos: 'WR',   reason: 'Deep threat receiver needed opposite Zay Flowers',                priority: 'critical', bar: 92 },
+      { pos: 'CB',   reason: 'CB2 is a significant question mark after key free agency losses', priority: 'critical', bar: 85 },
+      { pos: 'IOL',  reason: 'Center and guard depth after offseason roster changes',            priority: 'critical', bar: 78 },
+      { pos: 'EDGE', reason: 'Rotate in young pass rusher behind aging edge starters',          priority: 'moderate', bar: 68 },
+      { pos: 'S',    reason: 'Long-term safety successor to aging Kyle Hamilton tandem',        priority: 'moderate', bar: 60 },
+      { pos: 'RB',   reason: 'Committee back to complement Derrick Henry at age 32',            priority: 'moderate', bar: 52 },
+      { pos: 'DT',   reason: 'Interior depth to keep rotation fresh in playoffs',              priority: 'moderate', bar: 44 },
+      { pos: 'TE',   reason: 'Mark Andrews succession planning a growing priority',             priority: 'depth',    bar: 34 },
+      { pos: 'LB',   reason: 'Linebacker depth behind Patrick Queen successor',                priority: 'depth',    bar: 24 },
+      { pos: 'K',    reason: 'Long-term placekicker development on roster',                    priority: 'depth',    bar: 16 },
+    ]
+  },
+  CIN: {
+    name: 'Cincinnati Bengals',
+    abbr: 'CIN',
+    division: 'AFC North',
+    color: '#FB4F14',
+    textColor: '#000000',
+    needs: [
+      { pos: 'OT',   reason: 'Left tackle is an annual need; Orlando Brown Jr. era uncertain',  priority: 'critical', bar: 96 },
+      { pos: 'EDGE', reason: 'Sam Hubbard aging; no established successor behind starters',     priority: 'critical', bar: 88 },
+      { pos: 'CB',   reason: 'Cam Taylor-Britt not living up to starter expectations',          priority: 'critical', bar: 82 },
+      { pos: 'IOL',  reason: 'Interior line has been a chronic Burrow protection issue',        priority: 'moderate', bar: 72 },
+      { pos: 'S',    reason: 'Free safety depth behind Vonn Bell successor thin',              priority: 'moderate', bar: 62 },
+      { pos: 'DT',   reason: 'Run defense ranked bottom half; nose tackle upgrade needed',     priority: 'moderate', bar: 54 },
+      { pos: 'LB',   reason: 'Three-down linebacker remains a positional weakness',            priority: 'moderate', bar: 46 },
+      { pos: 'WR',   reason: 'Four and five receiver depth behind Chase/Higgins/Boyd',         priority: 'depth',    bar: 34 },
+      { pos: 'RB',   reason: 'Joe Mixon successor in pipeline would be smart planning',        priority: 'depth',    bar: 26 },
+      { pos: 'TE',   reason: 'Complementary tight end depth behind starter',                   priority: 'depth',    bar: 18 },
+    ]
+  },
+  CLE: {
+    name: 'Cleveland Browns',
+    abbr: 'CLE',
+    division: 'AFC North',
+    color: '#FF3C00',
+    textColor: '#311D00',
+    needs: [
+      { pos: 'QB',   reason: 'Deshaun Watson uncertainty makes QB the No. 1 priority',         priority: 'critical', bar: 98 },
+      { pos: 'WR',   reason: 'Receiver corps was gutted; need multiple upgrades',              priority: 'critical', bar: 90 },
+      { pos: 'OT',   reason: 'Right tackle is a glaring hole after free agency departures',    priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Pass rush needs a new face opposite Myles Garrett',              priority: 'moderate', bar: 74 },
+      { pos: 'CB',   reason: 'Cornerback two and slot depth are legitimate concerns',          priority: 'moderate', bar: 64 },
+      { pos: 'IOL',  reason: 'Guard and center depth after offseason roster moves',            priority: 'moderate', bar: 56 },
+      { pos: 'S',    reason: 'Safety depth behind Juan Thornhill era needs refresh',           priority: 'moderate', bar: 48 },
+      { pos: 'RB',   reason: 'Nick Chubb post-injury production warrants depth addition',      priority: 'depth',    bar: 36 },
+      { pos: 'LB',   reason: 'Coverage linebacker remains a scheme fit challenge',             priority: 'depth',    bar: 26 },
+      { pos: 'DT',   reason: 'Interior rotation depth behind Dalvin Tomlinson successor',     priority: 'depth',    bar: 18 },
+    ]
+  },
+  PIT: {
+    name: 'Pittsburgh Steelers',
+    abbr: 'PIT',
+    division: 'AFC North',
+    color: '#FFB612',
+    textColor: '#101820',
+    needs: [
+      { pos: 'QB',   reason: 'Russell Wilson stopgap era over; franchise QB is the top need',  priority: 'critical', bar: 96 },
+      { pos: 'WR',   reason: 'George Pickens needs a legitimate target to draw coverage',      priority: 'critical', bar: 88 },
+      { pos: 'OT',   reason: 'Left tackle position has been a revolving door for years',       priority: 'critical', bar: 82 },
+      { pos: 'CB',   reason: 'Joey Porter Jr. needs a capable partner on the outside',        priority: 'moderate', bar: 70 },
+      { pos: 'IOL',  reason: 'Interior line continuity issues need addressing in the draft',   priority: 'moderate', bar: 62 },
+      { pos: 'S',    reason: 'Safety depth aging out with Minkah Fitzpatrick era winding down',priority: 'moderate', bar: 54 },
+      { pos: 'RB',   reason: 'Feature back role more open after Najee Harris era',            priority: 'moderate', bar: 46 },
+      { pos: 'DT',   reason: 'Cam Heyward succession planning is now urgent',                  priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'Receiving tight end to add dimension to passing game',           priority: 'depth',    bar: 24 },
+      { pos: 'LB',   reason: 'Developmental linebacker to groom in 3-4 scheme',               priority: 'depth',    bar: 16 },
+    ]
+  },
+  HOU: {
+    name: 'Houston Texans',
+    abbr: 'HOU',
+    division: 'AFC South',
+    color: '#03202F',
+    textColor: '#A71930',
+    needs: [
+      { pos: 'WR',   reason: 'Need a No. 2 receiver to take pressure off Nico Collins',       priority: 'critical', bar: 92 },
+      { pos: 'OT',   reason: 'Right tackle is a legitimate weakness in Stroud\'s protection', priority: 'critical', bar: 84 },
+      { pos: 'CB',   reason: 'Cornerback two is below starter caliber; upgrade needed',        priority: 'critical', bar: 78 },
+      { pos: 'LB',   reason: 'Run-stopping linebacker depth is a concern in AFC South',        priority: 'moderate', bar: 68 },
+      { pos: 'EDGE', reason: 'Rotate in young rusher behind Will Anderson Jr.',               priority: 'moderate', bar: 60 },
+      { pos: 'DT',   reason: 'Interior depth needs replenishment after free agency',           priority: 'moderate', bar: 52 },
+      { pos: 'IOL',  reason: 'Guard depth worth targeting in the middle rounds',               priority: 'moderate', bar: 44 },
+      { pos: 'S',    reason: 'Safety development behind starters a long-term priority',       priority: 'depth',    bar: 34 },
+      { pos: 'RB',   reason: 'Complementary back behind Joe Mixon as he ages',                priority: 'depth',    bar: 26 },
+      { pos: 'TE',   reason: 'Blocking tight end to help running game in the red zone',       priority: 'depth',    bar: 18 },
+    ]
+  },
+  IND: {
+    name: 'Indianapolis Colts',
+    abbr: 'IND',
+    division: 'AFC South',
+    color: '#002C5F',
+    textColor: '#A2AAAD',
+    needs: [
+      { pos: 'EDGE', reason: 'Pass rush is bottom tier in the AFC; urgent upgrade needed',    priority: 'critical', bar: 94 },
+      { pos: 'WR',   reason: 'Richardson needs more weapons; receiver depth is thin',         priority: 'critical', bar: 86 },
+      { pos: 'CB',   reason: 'Cornerback corps ranked near bottom of league in 2025',         priority: 'critical', bar: 80 },
+      { pos: 'OT',   reason: 'Offensive line continuity an issue protecting Richardson',      priority: 'moderate', bar: 70 },
+      { pos: 'S',    reason: 'Free safety position needs a high-caliber upgrade',             priority: 'moderate', bar: 62 },
+      { pos: 'DT',   reason: 'Run stuffing is inconsistent; nose tackle upgrade helps',       priority: 'moderate', bar: 54 },
+      { pos: 'IOL',  reason: 'Center is a developing position worth investing in',            priority: 'moderate', bar: 46 },
+      { pos: 'LB',   reason: 'Three-down LB to handle coverage demands in AFC South',        priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'Receiving tight end would open up the intermediate game',      priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Jonathan Taylor succession planning on the horizon',            priority: 'depth',    bar: 16 },
+    ]
+  },
+  JAC: {
+    name: 'Jacksonville Jaguars',
+    abbr: 'JAC',
+    division: 'AFC South',
+    color: '#006778',
+    textColor: '#9F792C',
+    needs: [
+      { pos: 'QB',   reason: 'Trevor Lawrence era health concerns; need insurance or successor',priority: 'critical', bar: 94 },
+      { pos: 'OT',   reason: 'Offensive line protection for Lawrence has been poor',           priority: 'critical', bar: 88 },
+      { pos: 'WR',   reason: 'Receiver depth outside of Calvin Ridley is thin',               priority: 'critical', bar: 82 },
+      { pos: 'EDGE', reason: 'Josh Allen\'s pass rush needs a legitimate complement',          priority: 'moderate', bar: 72 },
+      { pos: 'CB',   reason: 'Cornerback two has been a rotating concern for years',          priority: 'moderate', bar: 64 },
+      { pos: 'IOL',  reason: 'Interior line must improve for Lawrence to thrive',             priority: 'moderate', bar: 56 },
+      { pos: 'S',    reason: 'Strong safety position has been a coverage liability',          priority: 'moderate', bar: 48 },
+      { pos: 'DT',   reason: 'Rotation depth in defensive interior needs bolstering',         priority: 'depth',    bar: 36 },
+      { pos: 'LB',   reason: 'Developmental linebacker to groom in hybrid role',              priority: 'depth',    bar: 26 },
+      { pos: 'RB',   reason: 'Committee back depth behind starter',                           priority: 'depth',    bar: 18 },
+    ]
+  },
+  TEN: {
+    name: 'Tennessee Titans',
+    abbr: 'TEN',
+    division: 'AFC South',
+    color: '#0C2340',
+    textColor: '#4B92DB',
+    needs: [
+      { pos: 'QB',   reason: 'Will Levis unproven as franchise answer; QB remains top need',  priority: 'critical', bar: 96 },
+      { pos: 'WR',   reason: 'DeAndre Hopkins departure left a huge hole at receiver',        priority: 'critical', bar: 90 },
+      { pos: 'OT',   reason: 'Left tackle protection for new QB is foundational',             priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Pass rush was historically weak in 2025; major priority',       priority: 'moderate', bar: 74 },
+      { pos: 'CB',   reason: 'Cornerback depth is a recurring issue in secondary',            priority: 'moderate', bar: 66 },
+      { pos: 'LB',   reason: 'Coverage linebacker for modern scheme demands',                 priority: 'moderate', bar: 58 },
+      { pos: 'DT',   reason: 'Jeffery Simmons succession planning now relevant',              priority: 'moderate', bar: 50 },
+      { pos: 'IOL',  reason: 'Guard depth behind starters needs strengthening',               priority: 'depth',    bar: 36 },
+      { pos: 'S',    reason: 'Safety development continues in rebuild phase',                 priority: 'depth',    bar: 26 },
+      { pos: 'RB',   reason: 'Complementary running back in a rebuild year',                  priority: 'depth',    bar: 16 },
+    ]
+  },
+  DEN: {
+    name: 'Denver Broncos',
+    abbr: 'DEN',
+    division: 'AFC West',
+    color: '#FB4F14',
+    textColor: '#002244',
+    needs: [
+      { pos: 'WR',   reason: 'Bo Nix needs a legitimate No. 1 target to take next step',      priority: 'critical', bar: 92 },
+      { pos: 'OT',   reason: 'Offensive line remains a chronic problem protecting young QB',  priority: 'critical', bar: 86 },
+      { pos: 'CB',   reason: 'Patrick Surtain II needs a real partner at corner two',        priority: 'critical', bar: 80 },
+      { pos: 'EDGE', reason: 'Pass rush rotation behind top starters is thin',               priority: 'moderate', bar: 70 },
+      { pos: 'IOL',  reason: 'Center continuity has been an issue; addressable in draft',    priority: 'moderate', bar: 62 },
+      { pos: 'LB',   reason: 'Three-down linebacker depth behind starters',                  priority: 'moderate', bar: 54 },
+      { pos: 'TE',   reason: 'Receiving tight end to take pressure off of struggling WRs',   priority: 'moderate', bar: 46 },
+      { pos: 'S',    reason: 'Safety depth worth investing in with young secondary',          priority: 'depth',    bar: 34 },
+      { pos: 'DT',   reason: 'Interior rotation depth behind starters',                       priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Complementary back for Javonte Williams depth',                 priority: 'depth',    bar: 16 },
+    ]
+  },
+  KC: {
+    name: 'Kansas City Chiefs',
+    abbr: 'KC',
+    division: 'AFC West',
+    color: '#E31837',
+    textColor: '#FFB81C',
+    needs: [
+      { pos: 'WR',   reason: 'Receiver depth still not solved; need a true No. 2 opposite Rice', priority: 'critical', bar: 90 },
+      { pos: 'OT',   reason: 'Left tackle succession planning behind aging starters',           priority: 'critical', bar: 82 },
+      { pos: 'CB',   reason: 'L\'Jarius Sneed departure created a gap still not fully filled',  priority: 'critical', bar: 76 },
+      { pos: 'EDGE', reason: 'Rotate young pass rusher behind Charles Omenihu and vets',        priority: 'moderate', bar: 66 },
+      { pos: 'IOL',  reason: 'Interior line has needed depth investment for years',              priority: 'moderate', bar: 58 },
+      { pos: 'DT',   reason: 'Chris Jones succession plan is a growing urgency',               priority: 'moderate', bar: 52 },
+      { pos: 'S',    reason: 'Safety development behind Bryan Cook-era starters',               priority: 'moderate', bar: 44 },
+      { pos: 'LB',   reason: 'Coverage linebacker depth in a complex Spagnuolo scheme',        priority: 'depth',    bar: 32 },
+      { pos: 'TE',   reason: 'Travis Kelce succession is the elephant in the room',            priority: 'depth',    bar: 26 },
+      { pos: 'RB',   reason: 'Committee back rotation is functional but depth thin',           priority: 'depth',    bar: 18 },
+    ]
+  },
+  LV: {
+    name: 'Las Vegas Raiders',
+    abbr: 'LV',
+    division: 'AFC West',
+    color: '#000000',
+    textColor: '#A5ACAF',
+    needs: [
+      { pos: 'QB',   reason: 'Franchise QB remains unresolved; top priority in rebuild',       priority: 'critical', bar: 97 },
+      { pos: 'OT',   reason: 'Offensive line protection for new QB must be established first', priority: 'critical', bar: 90 },
+      { pos: 'WR',   reason: 'Need a legitimate No. 1 receiver to build around new QB',        priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Maxx Crosby needs a real second option in the pass rush',        priority: 'moderate', bar: 74 },
+      { pos: 'CB',   reason: 'Cornerback depth is below league average across the board',      priority: 'moderate', bar: 66 },
+      { pos: 'LB',   reason: 'Run stopping and coverage linebacker depth are both needed',     priority: 'moderate', bar: 58 },
+      { pos: 'DT',   reason: 'Interior line depth to support Crosby-led defense',             priority: 'moderate', bar: 50 },
+      { pos: 'S',    reason: 'Safety upgrade behind Marcus Epps era starters',                priority: 'depth',    bar: 36 },
+      { pos: 'IOL',  reason: 'Guard depth to stabilize interior protection for new QB',        priority: 'depth',    bar: 26 },
+      { pos: 'TE',   reason: 'Receiving tight end in a rebuilt offensive system',              priority: 'depth',    bar: 16 },
+    ]
+  },
+  LAC: {
+    name: 'Los Angeles Chargers',
+    abbr: 'LAC',
+    division: 'AFC West',
+    color: '#0080C6',
+    textColor: '#FFC20E',
+    needs: [
+      { pos: 'WR',   reason: 'Keenan Allen gone; need a true No. 2 for Justin Herbert',       priority: 'critical', bar: 93 },
+      { pos: 'OT',   reason: 'Right tackle has been a reliability issue for years',            priority: 'critical', bar: 86 },
+      { pos: 'LB',   reason: 'Run-stopping linebacker critical after key FA departures',       priority: 'critical', bar: 80 },
+      { pos: 'CB',   reason: 'Asante Samuel Jr. era questions; depth at corner is thin',       priority: 'moderate', bar: 70 },
+      { pos: 'EDGE', reason: 'Khalil Mack age concerns; need pass rush succession',            priority: 'moderate', bar: 62 },
+      { pos: 'S',    reason: 'Safety depth behind Derwin James and partner',                   priority: 'moderate', bar: 54 },
+      { pos: 'IOL',  reason: 'Interior line guard depth has been a recurrent need',            priority: 'moderate', bar: 46 },
+      { pos: 'DT',   reason: 'Interior pass rush rotation needs a young complement',           priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'Depth behind Gerald Everett successor is thin',                  priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Committee back depth behind Austin Ekeler replacement era',      priority: 'depth',    bar: 16 },
+    ]
+  },
+  DAL: {
+    name: 'Dallas Cowboys',
+    abbr: 'DAL',
+    division: 'NFC East',
+    color: '#003594',
+    textColor: '#869397',
+    needs: [
+      { pos: 'CB',   reason: 'Trevon Diggs health and secondary depth is a major concern',    priority: 'critical', bar: 94 },
+      { pos: 'WR',   reason: 'CeeDee Lamb needs a real running mate; depth is thin',          priority: 'critical', bar: 88 },
+      { pos: 'OT',   reason: 'Right tackle is a position of need after FA moves',             priority: 'critical', bar: 80 },
+      { pos: 'EDGE', reason: 'Micah Parsons dominates but second edge rusher is unproven',    priority: 'moderate', bar: 70 },
+      { pos: 'LB',   reason: 'Coverage linebacker depth behind Parsons is limited',           priority: 'moderate', bar: 62 },
+      { pos: 'S',    reason: 'Safety depth after Donovan Wilson-era changes',                  priority: 'moderate', bar: 54 },
+      { pos: 'IOL',  reason: 'Interior line depth behind Tyler Biadasz successor',             priority: 'moderate', bar: 46 },
+      { pos: 'DT',   reason: 'Interior pass rush complement to nose tackle role',              priority: 'depth',    bar: 34 },
+      { pos: 'RB',   reason: 'Tony Pollard gone; need complementary back for Zeke successor', priority: 'depth',    bar: 26 },
+      { pos: 'TE',   reason: 'Backup tight end depth in case of Jake Ferguson injury',        priority: 'depth',    bar: 18 },
+    ]
+  },
+  NYG: {
+    name: 'New York Giants',
+    abbr: 'NYG',
+    division: 'NFC East',
+    color: '#0B2265',
+    textColor: '#A71930',
+    needs: [
+      { pos: 'QB',   reason: 'Daniel Jones era over; legitimate franchise QB is top need',    priority: 'critical', bar: 98 },
+      { pos: 'OT',   reason: 'Offensive line is one of the worst in the league; must fix',    priority: 'critical', bar: 94 },
+      { pos: 'WR',   reason: 'Receiver corps gutted; need multiple additions',                priority: 'critical', bar: 88 },
+      { pos: 'EDGE', reason: 'Kayvon Thibodeaux needs a legitimate complement',               priority: 'moderate', bar: 74 },
+      { pos: 'CB',   reason: 'Cornerback depth is dangerously thin after free agency',        priority: 'moderate', bar: 66 },
+      { pos: 'IOL',  reason: 'Part of the broader offensive line rebuild mandate',            priority: 'moderate', bar: 58 },
+      { pos: 'LB',   reason: 'Three-down linebacker depth and quality needs upgrading',       priority: 'moderate', bar: 50 },
+      { pos: 'S',    reason: 'Safety leadership and depth after offseason changes',            priority: 'depth',    bar: 36 },
+      { pos: 'DT',   reason: 'Interior rotation depth needs young contributors',              priority: 'depth',    bar: 26 },
+      { pos: 'RB',   reason: 'Saquon Barra gone; feature back situation unresolved',          priority: 'depth',    bar: 18 },
+    ]
+  },
+  PHI: {
+    name: 'Philadelphia Eagles',
+    abbr: 'PHI',
+    division: 'NFC East',
+    color: '#004C54',
+    textColor: '#A5ACAF',
+    needs: [
+      { pos: 'WR',   reason: 'AJ Brown contract situation; need depth at wideout regardless', priority: 'critical', bar: 90 },
+      { pos: 'CB',   reason: 'Darius Slay gone; cornerback depth needs rebuilding',           priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Haason Reddick saga resolved but edge depth still thin',        priority: 'critical', bar: 78 },
+      { pos: 'IOL',  reason: 'Interior line depth as aging core begins to turn over',         priority: 'moderate', bar: 68 },
+      { pos: 'S',    reason: 'Safety depth after Reed/Gardner-Johnson changes',               priority: 'moderate', bar: 60 },
+      { pos: 'LB',   reason: 'Coverage linebacker to handle modern passing game threats',     priority: 'moderate', bar: 52 },
+      { pos: 'DT',   reason: 'Fletcher Cox legacy; interior rotation needs fresh legs',       priority: 'moderate', bar: 44 },
+      { pos: 'RB',   reason: "D'Andre Swift depth and successor planning",                    priority: 'depth',    bar: 32 },
+      { pos: 'OT',   reason: 'Long-term tackle succession as Jordan Mailata ages',            priority: 'depth',    bar: 24 },
+      { pos: 'TE',   reason: 'Dallas Goedert depth and succession pipeline',                  priority: 'depth',    bar: 16 },
+    ]
+  },
+  WAS: {
+    name: 'Washington Commanders',
+    abbr: 'WAS',
+    division: 'NFC East',
+    color: '#5A1414',
+    textColor: '#FFB612',
+    needs: [
+      { pos: 'WR',   reason: 'Need a No. 2 weapon to complement Terry McLaurin for Daniels',  priority: 'critical', bar: 92 },
+      { pos: 'OT',   reason: 'Offensive tackle depth protecting the young franchise QB',       priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Pass rush outside of top option is very thin',                  priority: 'critical', bar: 78 },
+      { pos: 'CB',   reason: 'Cornerback depth outside of starter is inconsistent',           priority: 'moderate', bar: 68 },
+      { pos: 'IOL',  reason: 'Interior line must improve to allow Daniels to develop',        priority: 'moderate', bar: 60 },
+      { pos: 'DT',   reason: 'Run defense needs an upgrade at the nose tackle',               priority: 'moderate', bar: 52 },
+      { pos: 'S',    reason: 'Safety continuity and depth behind starters',                   priority: 'moderate', bar: 44 },
+      { pos: 'LB',   reason: 'Three-down linebacker developmental piece',                     priority: 'depth',    bar: 32 },
+      { pos: 'TE',   reason: 'H-back/TE versatility to enhance Daniels\' play-action game',   priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Committee back to complement Brian Robinson Jr.',               priority: 'depth',    bar: 16 },
+    ]
+  },
+  CHI: {
+    name: 'Chicago Bears',
+    abbr: 'CHI',
+    division: 'NFC North',
+    color: '#0B162A',
+    textColor: '#C83803',
+    needs: [
+      { pos: 'OT',   reason: 'Caleb Williams needs better protection to reach his ceiling',   priority: 'critical', bar: 94 },
+      { pos: 'WR',   reason: 'D.J. Moore is set but No. 2 and No. 3 options are underwhelming',priority: 'critical', bar: 87 },
+      { pos: 'CB',   reason: 'Cornerback two is a major weakness in a tough NFC North',       priority: 'critical', bar: 80 },
+      { pos: 'EDGE', reason: 'Montez Sweat is great but edge depth is poor',                  priority: 'moderate', bar: 70 },
+      { pos: 'IOL',  reason: 'Guard and center continuity has been a multi-year problem',     priority: 'moderate', bar: 62 },
+      { pos: 'S',    reason: 'Safety depth behind Kevin Byard era starters',                  priority: 'moderate', bar: 54 },
+      { pos: 'LB',   reason: 'Three-down linebacker for modern coverage demands',             priority: 'moderate', bar: 46 },
+      { pos: 'DT',   reason: 'Interior pass rush complement to anchor Bears\' D',             priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'Cole Kmet successor development in pipeline',                   priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Complementary back for D\'Onta Foreman-era backfield',          priority: 'depth',    bar: 16 },
+    ]
+  },
+  DET: {
+    name: 'Detroit Lions',
+    abbr: 'DET',
+    division: 'NFC North',
+    color: '#0076B6',
+    textColor: '#B0B7BC',
+    needs: [
+      { pos: 'CB',   reason: 'Cornerback depth after Cam Sutton and slot changes',            priority: 'critical', bar: 90 },
+      { pos: 'EDGE', reason: 'Second edge rusher opposite Aidan Hutchinson remains thin',      priority: 'critical', bar: 84 },
+      { pos: 'S',    reason: 'Safety depth is a developing concern for championship window',  priority: 'critical', bar: 78 },
+      { pos: 'IOL',  reason: 'Interior line continuity with key free agents aging',           priority: 'moderate', bar: 68 },
+      { pos: 'WR',   reason: 'Depth at four and five receiver behind top options',            priority: 'moderate', bar: 58 },
+      { pos: 'DT',   reason: 'Interior rotation reinforcement behind Alim McNeill',           priority: 'moderate', bar: 50 },
+      { pos: 'LB',   reason: 'Coverage LB depth for playoff-level opponent preparation',     priority: 'moderate', bar: 42 },
+      { pos: 'OT',   reason: 'Tackle depth to protect Goff during run at SB',                priority: 'depth',    bar: 32 },
+      { pos: 'RB',   reason: 'Depth behind Gibbs-Montgomery duo for long season',             priority: 'depth',    bar: 24 },
+      { pos: 'TE',   reason: 'Sam LaPorta successor depth beginning to matter',               priority: 'depth',    bar: 16 },
+    ]
+  },
+  GB: {
+    name: 'Green Bay Packers',
+    abbr: 'GB',
+    division: 'NFC North',
+    color: '#203731',
+    textColor: '#FFB612',
+    needs: [
+      { pos: 'WR',   reason: 'Romeo Doubs and Christian Watson need proven depth behind them', priority: 'critical', bar: 92 },
+      { pos: 'OT',   reason: 'Right tackle depth and succession a pressing concern',           priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Rashan Gary health history; need consistent second rusher',      priority: 'critical', bar: 78 },
+      { pos: 'CB',   reason: 'Jaire Alexander aging; cornerback depth needs replenishing',    priority: 'moderate', bar: 68 },
+      { pos: 'LB',   reason: 'Coverage linebacker depth in DeVondre Campbell successor era',  priority: 'moderate', bar: 60 },
+      { pos: 'DT',   reason: 'Interior rotation depth behind Kenny Clark',                    priority: 'moderate', bar: 52 },
+      { pos: 'IOL',  reason: 'Guard depth to maintain elite offensive line status',           priority: 'moderate', bar: 44 },
+      { pos: 'S',    reason: 'Safety depth behind starters a quiet need',                     priority: 'depth',    bar: 32 },
+      { pos: 'RB',   reason: 'Josh Jacobs backup and long-term successor pipeline',           priority: 'depth',    bar: 24 },
+      { pos: 'TE',   reason: 'TE depth behind Tucker Kraft succession plan',                  priority: 'depth',    bar: 16 },
+    ]
+  },
+  MIN: {
+    name: 'Minnesota Vikings',
+    abbr: 'MIN',
+    division: 'NFC North',
+    color: '#4F2683',
+    textColor: '#FFC62F',
+    needs: [
+      { pos: 'OT',   reason: 'Sam Darnold or new QB needs better protection up front',        priority: 'critical', bar: 92 },
+      { pos: 'EDGE', reason: 'Pass rush has been a consistent weakness for the Vikings',       priority: 'critical', bar: 86 },
+      { pos: 'CB',   reason: 'Byron Murphy era fading; cornerback depth needed',              priority: 'critical', bar: 80 },
+      { pos: 'IOL',  reason: 'Center and guard depth concerns in the interior',               priority: 'moderate', bar: 70 },
+      { pos: 'WR',   reason: 'Justin Jefferson elite but No. 2 and No. 3 are average',        priority: 'moderate', bar: 60 },
+      { pos: 'DT',   reason: 'Interior run defense needs an upgrade',                         priority: 'moderate', bar: 52 },
+      { pos: 'LB',   reason: 'Coverage linebacker depth behind starter pair',                 priority: 'moderate', bar: 44 },
+      { pos: 'S',    reason: 'Safety development behind Harrison Smith successor',             priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'T.J. Hockenson health history warrants depth addition',         priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Complementary back behind Aaron Jones aging',                   priority: 'depth',    bar: 16 },
+    ]
+  },
+  ATL: {
+    name: 'Atlanta Falcons',
+    abbr: 'ATL',
+    division: 'NFC South',
+    color: '#A71930',
+    textColor: '#000000',
+    needs: [
+      { pos: 'CB',   reason: 'A.J. Terrell cannot carry entire cornerback room; need depth', priority: 'critical', bar: 93 },
+      { pos: 'EDGE', reason: 'Pass rush ranked near bottom of NFL in 2025',                   priority: 'critical', bar: 87 },
+      { pos: 'OT',   reason: 'Left tackle questions around protecting Kirk Cousins/successor',priority: 'critical', bar: 80 },
+      { pos: 'LB',   reason: 'Run-stopping linebacker is a systemic weakness',               priority: 'moderate', bar: 70 },
+      { pos: 'S',    reason: 'Safety depth after key losses in the secondary',               priority: 'moderate', bar: 62 },
+      { pos: 'WR',   reason: 'Drake London is great but No. 2 and below are unproven',        priority: 'moderate', bar: 54 },
+      { pos: 'DT',   reason: 'Interior rotation needs a physical presence',                   priority: 'moderate', bar: 46 },
+      { pos: 'IOL',  reason: 'Guard and center depth worth addressing',                       priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'Kyle Pitts succession planning and depth',                      priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Bijan Robinson is elite; depth behind him is thin',             priority: 'depth',    bar: 16 },
+    ]
+  },
+  CAR: {
+    name: 'Carolina Panthers',
+    abbr: 'CAR',
+    division: 'NFC South',
+    color: '#0085CA',
+    textColor: '#101820',
+    needs: [
+      { pos: 'QB',   reason: 'Bryce Young era uncertain; franchise QB clarity is urgent',     priority: 'critical', bar: 95 },
+      { pos: 'OT',   reason: 'Offensive line protection is dire; must improve for any QB',    priority: 'critical', bar: 91 },
+      { pos: 'WR',   reason: 'Need legitimate weapons for any quarterback to work with',      priority: 'critical', bar: 86 },
+      { pos: 'EDGE', reason: 'Pass rush is a major weakness across the entire roster',        priority: 'moderate', bar: 74 },
+      { pos: 'CB',   reason: 'Secondary is young and inconsistent across all spots',          priority: 'moderate', bar: 66 },
+      { pos: 'IOL',  reason: 'Part of the broader offensive line reconstruction',             priority: 'moderate', bar: 58 },
+      { pos: 'LB',   reason: 'Run stopping and coverage linebacker both are needs',           priority: 'moderate', bar: 50 },
+      { pos: 'DT',   reason: 'Interior defensive line depth in a total rebuild',              priority: 'depth',    bar: 36 },
+      { pos: 'S',    reason: 'Safety development in full rebuild mode',                       priority: 'depth',    bar: 24 },
+      { pos: 'TE',   reason: 'Receiving tight end to give young QB a safety valve',           priority: 'depth',    bar: 16 },
+    ]
+  },
+  NO: {
+    name: 'New Orleans Saints',
+    abbr: 'NO',
+    division: 'NFC South',
+    color: '#D3BC8D',
+    textColor: '#101820',
+    needs: [
+      { pos: 'QB',   reason: 'Derek Carr era over; franchise QB is the defining question',    priority: 'critical', bar: 97 },
+      { pos: 'WR',   reason: 'Chris Olave cannot be the only reliable option at receiver',    priority: 'critical', bar: 89 },
+      { pos: 'OT',   reason: 'Offensive tackle depth for protecting new quarterback',          priority: 'critical', bar: 82 },
+      { pos: 'EDGE', reason: 'Cameron Jordan aging out; pass rush succession critical',       priority: 'moderate', bar: 72 },
+      { pos: 'CB',   reason: 'Marshon Lattimore health and depth behind him is thin',         priority: 'moderate', bar: 64 },
+      { pos: 'IOL',  reason: 'Interior line continuity after free agency moves',              priority: 'moderate', bar: 56 },
+      { pos: 'LB',   reason: 'Demario Davis successor must be developed now',                 priority: 'moderate', bar: 48 },
+      { pos: 'DT',   reason: 'Sheldon Rankins-era interior depth needs fresh blood',          priority: 'depth',    bar: 36 },
+      { pos: 'S',    reason: 'Safety development behind current starters',                    priority: 'depth',    bar: 26 },
+      { pos: 'RB',   reason: 'Complementary back behind Alvin Kamara as he ages',             priority: 'depth',    bar: 16 },
+    ]
+  },
+  TB: {
+    name: 'Tampa Bay Buccaneers',
+    abbr: 'TB',
+    division: 'NFC South',
+    color: '#D50A0A',
+    textColor: '#FF7900',
+    needs: [
+      { pos: 'WR',   reason: 'Chris Godwin health; need legitimate No. 2 for Baker Mayfield', priority: 'critical', bar: 91 },
+      { pos: 'OT',   reason: 'Right tackle is a position of significant weakness',            priority: 'critical', bar: 84 },
+      { pos: 'EDGE', reason: 'Shaquil Barrett gone; pass rush needs a new face',              priority: 'critical', bar: 78 },
+      { pos: 'CB',   reason: 'Carlton Davis gone; cornerback depth is dangerously thin',      priority: 'moderate', bar: 68 },
+      { pos: 'LB',   reason: 'Devin White-era over; coverage linebacker needed',              priority: 'moderate', bar: 60 },
+      { pos: 'IOL',  reason: 'Interior line depth behind aging starters',                     priority: 'moderate', bar: 52 },
+      { pos: 'DT',   reason: 'Vita Vea partner and interior rotation depth',                  priority: 'moderate', bar: 44 },
+      { pos: 'S',    reason: 'Antoine Winfield Jr. needs quality depth behind him',           priority: 'depth',    bar: 32 },
+      { pos: 'TE',   reason: 'Receiving TE depth behind Cade Otton',                          priority: 'depth',    bar: 22 },
+      { pos: 'RB',   reason: 'Rachaad White depth and succession planning',                   priority: 'depth',    bar: 14 },
+    ]
+  },
+  ARI: {
+    name: 'Arizona Cardinals',
+    abbr: 'ARI',
+    division: 'NFC West',
+    color: '#97233F',
+    textColor: '#FFB612',
+    needs: [
+      { pos: 'OT',   reason: 'Offensive line protecting Kyler Murray is a franchise priority', priority: 'critical', bar: 94 },
+      { pos: 'CB',   reason: 'Marco Wilson era; need a true No. 1 cornerback option',         priority: 'critical', bar: 87 },
+      { pos: 'EDGE', reason: 'Pass rush is one of the worst in NFC West by a wide margin',   priority: 'critical', bar: 82 },
+      { pos: 'WR',   reason: 'Hollywood Brown health; No. 2 and No. 3 receivers are unproven',priority: 'moderate', bar: 70 },
+      { pos: 'LB',   reason: 'Coverage and run-stopping linebacker both are legitimate needs', priority: 'moderate', bar: 62 },
+      { pos: 'DT',   reason: 'Interior line depth after Zach Allen departure',                priority: 'moderate', bar: 54 },
+      { pos: 'IOL',  reason: 'Part of multi-year offensive line rebuild',                     priority: 'moderate', bar: 46 },
+      { pos: 'S',    reason: 'Safety development for long-term secondary upgrade',             priority: 'depth',    bar: 34 },
+      { pos: 'TE',   reason: 'Complementary TE behind Trey McBride',                          priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'James Conner aging; feature back development needed',           priority: 'depth',    bar: 16 },
+    ]
+  },
+  LAR: {
+    name: 'Los Angeles Rams',
+    abbr: 'LAR',
+    division: 'NFC West',
+    color: '#003594',
+    textColor: '#FFD100',
+    needs: [
+      { pos: 'OT',   reason: 'Offensive line aging; tackle succession is a top priority',     priority: 'critical', bar: 93 },
+      { pos: 'CB',   reason: 'Jalen Ramsey gone; cornerback depth is a known weakness',       priority: 'critical', bar: 86 },
+      { pos: 'EDGE', reason: 'Leonard Floyd gone; pass rush needs a complement to Havenstein', priority: 'critical', bar: 80 },
+      { pos: 'S',    reason: 'Safety depth in a division with elite passing games',           priority: 'moderate', bar: 68 },
+      { pos: 'WR',   reason: 'Cooper Kupp health; receiver depth behind top options',         priority: 'moderate', bar: 60 },
+      { pos: 'IOL',  reason: 'Interior line rotation as aging core turns over',               priority: 'moderate', bar: 52 },
+      { pos: 'LB',   reason: 'Ernest Jones-era; coverage linebacker to handle modern TEs',   priority: 'moderate', bar: 44 },
+      { pos: 'DT',   reason: 'A.D. Barr successor; interior pass rush depth',                priority: 'depth',    bar: 32 },
+      { pos: 'TE',   reason: 'Receiving TE depth for McVay scheme versatility',               priority: 'depth',    bar: 22 },
+      { pos: 'RB',   reason: 'Cam Akers replacement; complementary back',                    priority: 'depth',    bar: 14 },
+    ]
+  },
+  SF: {
+    name: 'San Francisco 49ers',
+    abbr: 'SF',
+    division: 'NFC West',
+    color: '#AA0000',
+    textColor: '#B3995D',
+    needs: [
+      { pos: 'OT',   reason: 'Trent Williams aging; left tackle succession is the biggest need', priority: 'critical', bar: 95 },
+      { pos: 'WR',   reason: 'Brandon Aiyuk situation; receiver depth needs bolstering',       priority: 'critical', bar: 87 },
+      { pos: 'CB',   reason: 'Charvarius Ward depth; cornerback two is inconsistent',          priority: 'critical', bar: 80 },
+      { pos: 'EDGE', reason: 'Nick Bosa is elite but second edge rusher is unproven',          priority: 'moderate', bar: 70 },
+      { pos: 'S',    reason: 'Talanoa Hufanga succession a growing priority',                  priority: 'moderate', bar: 60 },
+      { pos: 'IOL',  reason: 'Interior line depth as aging core begins to transition',        priority: 'moderate', bar: 52 },
+      { pos: 'LB',   reason: 'Fred Warner depth; succession pipeline in Shanahan\'s scheme', priority: 'moderate', bar: 44 },
+      { pos: 'DT',   reason: 'Javon Hargrave succession; interior rotation depth',            priority: 'depth',    bar: 32 },
+      { pos: 'TE',   reason: 'George Kittle depth and long-term successor pipeline',          priority: 'depth',    bar: 24 },
+      { pos: 'RB',   reason: 'Christian McCaffrey health history; depth insurance needed',    priority: 'depth',    bar: 16 },
+    ]
+  },
+  SEA: {
+    name: 'Seattle Seahawks',
+    abbr: 'SEA',
+    division: 'NFC West',
+    color: '#002244',
+    textColor: '#69BE28',
+    needs: [
+      { pos: 'OT',   reason: 'Geno Smith successor era; need a tackle to protect new QB',     priority: 'critical', bar: 92 },
+      { pos: 'QB',   reason: 'Geno Smith age creates urgency for long-term QB solution',      priority: 'critical', bar: 88 },
+      { pos: 'EDGE', reason: 'Darrell Taylor and crew; pass rush needs a true star',          priority: 'critical', bar: 82 },
+      { pos: 'CB',   reason: 'Tariq Woolen is developing but depth behind him is thin',       priority: 'moderate', bar: 72 },
+      { pos: 'WR',   reason: 'DK Metcalf is elite but No. 2 wideout role is open',            priority: 'moderate', bar: 64 },
+      { pos: 'IOL',  reason: 'Interior line depth with aging starting guards',                priority: 'moderate', bar: 56 },
+      { pos: 'LB',   reason: 'Bobby Wagner aging; linebacker succession is a real need',      priority: 'moderate', bar: 48 },
+      { pos: 'DT',   reason: 'Interior pass rush complement to front seven',                  priority: 'depth',    bar: 34 },
+      { pos: 'S',    reason: 'Safety development behind Quandre Diggs-era starters',          priority: 'depth',    bar: 24 },
+      { pos: 'TE',   reason: 'Noah Fant replacement; receiving TE upgrade',                   priority: 'depth',    bar: 16 },
+    ]
+  }
+};
+
+// ── Team colors for logo circles ────────────────────────────────────────────
+const TEAM_COLORS = {
+  BUF: { bg: '#00338D', text: '#C60C30' },
+  MIA: { bg: '#008E97', text: '#FC4C02' },
+  NE:  { bg: '#002244', text: '#C60C30' },
+  NYJ: { bg: '#125740', text: '#FFFFFF' },
+  BAL: { bg: '#241773', text: '#9E7C0C' },
+  CIN: { bg: '#FB4F14', text: '#000000' },
+  CLE: { bg: '#FF3C00', text: '#311D00' },
+  PIT: { bg: '#FFB612', text: '#101820' },
+  HOU: { bg: '#03202F', text: '#A71930' },
+  IND: { bg: '#002C5F', text: '#A2AAAD' },
+  JAC: { bg: '#006778', text: '#9F792C' },
+  TEN: { bg: '#0C2340', text: '#4B92DB' },
+  DEN: { bg: '#FB4F14', text: '#002244' },
+  KC:  { bg: '#E31837', text: '#FFB81C' },
+  LV:  { bg: '#000000', text: '#A5ACAF' },
+  LAC: { bg: '#0080C6', text: '#FFC20E' },
+  DAL: { bg: '#003594', text: '#869397' },
+  NYG: { bg: '#0B2265', text: '#A71930' },
+  PHI: { bg: '#004C54', text: '#A5ACAF' },
+  WAS: { bg: '#5A1414', text: '#FFB612' },
+  CHI: { bg: '#0B162A', text: '#C83803' },
+  DET: { bg: '#0076B6', text: '#B0B7BC' },
+  GB:  { bg: '#203731', text: '#FFB612' },
+  MIN: { bg: '#4F2683', text: '#FFC62F' },
+  ATL: { bg: '#A71930', text: '#000000' },
+  CAR: { bg: '#0085CA', text: '#101820' },
+  NO:  { bg: '#D3BC8D', text: '#101820' },
+  TB:  { bg: '#D50A0A', text: '#FF7900' },
+  ARI: { bg: '#97233F', text: '#FFB612' },
+  LAR: { bg: '#003594', text: '#FFD100' },
+  SF:  { bg: '#AA0000', text: '#B3995D' },
+  SEA: { bg: '#002244', text: '#69BE28' },
+};
+
+// ── Bar width by priority and rank ──────────────────────────────────────────
+function getBarWidth(priority, rank) {
+  // rank is 1-indexed
+  if (priority === 'critical') return Math.max(70, 100 - (rank - 1) * 4);
+  if (priority === 'moderate') return Math.max(42, 75 - (rank - 1) * 5);
+  return Math.max(18, 40 - (rank - 1) * 4);
+}
+
+// ── Mode switch ──────────────────────────────────────────────────────────────
+function setMode(mode) {
+  const single = document.getElementById('single-mode');
+  const compare = document.getElementById('compare-mode');
+  const btnS = document.getElementById('btn-single');
+  const btnC = document.getElementById('btn-compare');
+
+  if (mode === 'single') {
+    single.style.display = 'block';
+    compare.style.display = 'none';
+    btnS.classList.add('active');
+    btnC.classList.remove('active');
+  } else {
+    single.style.display = 'none';
+    compare.style.display = 'block';
+    btnS.classList.remove('active');
+    btnC.classList.add('active');
+  }
+}
+
+// ── Render single team ───────────────────────────────────────────────────────
+function renderSingle(abbr) {
+  const resultsEl = document.getElementById('results-single');
+  const emptyEl = document.getElementById('empty-single');
+
+  if (!abbr || !TEAMS[abbr]) {
+    resultsEl.classList.remove('visible');
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  const team = TEAMS[abbr];
+  const colors = TEAM_COLORS[abbr];
+
+  let html = `
+    <div class="team-header-card">
+      <div class="team-logo-circle" style="background:${colors.bg}; color:${colors.text};">
+        ${abbr}
+      </div>
+      <div class="team-header-info">
+        <div class="team-header-name">${team.name}</div>
+        <div class="team-header-meta">${team.division} &nbsp;&middot;&nbsp; 2026 Draft Needs</div>
+      </div>
+      <button class="share-btn" onclick="shareTeam('${abbr}')" id="share-single">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M10 1.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-6 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm6 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8.6 5.3L5.4 6.7M8.6 8.7L5.4 7.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        Share
+      </button>
+    </div>
+    <div class="needs-card">
+      <div class="needs-card-header">
+        <div class="needs-card-title">Top 10 Positional Needs</div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot critical"></div> Critical</div>
+          <div class="legend-item"><div class="legend-dot moderate"></div> Moderate</div>
+          <div class="legend-item"><div class="legend-dot depth"></div> Depth</div>
+        </div>
+      </div>
+  `;
+
+  team.needs.forEach((need, i) => {
+    const barW = need.bar || getBarWidth(need.priority, i + 1);
+    html += `
+      <div class="need-row">
+        <div class="need-rank">${i + 1}</div>
+        <div class="need-pos-badge ${need.priority}">${need.pos}</div>
+        <div class="need-info">
+          <div class="need-reason">${need.reason}</div>
+        </div>
+        <div class="need-bar-wrap">
+          <div class="need-bar ${need.priority}" style="--bar-w:${barW}%; animation-delay:${i * 0.05}s;"></div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  resultsEl.innerHTML = html;
+  resultsEl.classList.add('visible');
+  emptyEl.style.display = 'none';
+}
+
+// ── Render compare ───────────────────────────────────────────────────────────
+function renderCompare() {
+  const abbrA = document.getElementById('team-select-a').value;
+  const abbrB = document.getElementById('team-select-b').value;
+  const resultsEl = document.getElementById('compare-results');
+  const emptyEl = document.getElementById('empty-compare');
+
+  if (!abbrA || !abbrB || !TEAMS[abbrA] || !TEAMS[abbrB]) {
+    resultsEl.classList.remove('visible');
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  let html = '';
+  [[abbrA, 'a'], [abbrB, 'b']].forEach(([abbr, side]) => {
+    const team = TEAMS[abbr];
+    const colors = TEAM_COLORS[abbr];
+    html += `
+      <div class="compare-panel panel-${side}">
+        <div class="compare-panel-header">
+          <div class="compare-logo" style="background:${colors.bg}; color:${colors.text};">${abbr}</div>
+          <div>
+            <div class="compare-panel-name">${team.name}</div>
+            <div style="font-size:11px; color:var(--text-mute); margin-top:2px; text-transform:uppercase; letter-spacing:0.06em;">${team.division}</div>
+          </div>
+        </div>
+    `;
+    team.needs.forEach((need, i) => {
+      html += `
+        <div class="compare-need-row">
+          <div class="compare-rank">${i + 1}</div>
+          <div class="compare-pos ${need.priority}">${need.pos}</div>
+          <div class="compare-reason">${need.reason}</div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  });
+
+  resultsEl.innerHTML = html;
+  resultsEl.classList.add('visible');
+  emptyEl.style.display = 'none';
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+function shareTeam(abbr) {
+  const team = TEAMS[abbr];
+  if (!team) return;
+
+  let text = `${team.name} — 2026 NFL Draft Needs (via AiNFLGM)\n\n`;
+  team.needs.forEach((need, i) => {
+    const tier = need.priority === 'critical' ? '[CRITICAL]' : need.priority === 'moderate' ? '[MODERATE]' : '[DEPTH]';
+    text += `${i + 1}. ${need.pos} ${tier} — ${need.reason}\n`;
+  });
+  text += `\nhttps://ainflgm.com/team-needs.html`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('share-single');
+    if (btn) {
+      btn.classList.add('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 1.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-6 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm6 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" stroke="currentColor" stroke-width="1.5"/><path d="M8.6 5.3L5.4 6.7M8.6 8.7L5.4 7.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Share`;
+      }, 2200);
+    }
+  }).catch(() => {
+    // fallback: prompt
+    prompt('Copy this summary:', text);
+  });
+}
+</script>
+
+</body>
+</html>
