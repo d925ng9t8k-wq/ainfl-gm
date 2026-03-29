@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Debate Settler — Stats-Based Verdicts | AiNFL GM</title>
+<meta name="description" content="Settle the greatest NFL debates with real data. Brady vs Montana, Mahomes vs Allen, best dynasty ever, and more. Data-driven verdicts you can vote on.">
+<meta property="og:title" content="NFL Debate Settler — Stats-Based Verdicts | AiNFL GM">
+<meta property="og:description" content="15 classic NFL debates settled with real stats. Vote, share, and see what the data actually says.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/debate-settler.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Debate Settler — Stats-Based Verdicts | AiNFL GM">
+<meta name="twitter:description" content="15 classic NFL debates settled with data. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-bar {
+  from { width: 0; }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Filter Bar ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 4px;
+}
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--border-hi); color: var(--cyan); }
+.filter-btn.active {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* ── Debate Grid ── */
+.debate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 480px) {
+  .debate-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Debate Card ── */
+.debate-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+  animation: fadeUp 0.4s ease both;
+  display: flex;
+  flex-direction: column;
+}
+.debate-card:hover {
+  border-color: var(--border-hi);
+  transform: translateY(-2px);
+}
+.debate-card[data-hidden="true"] { display: none; }
+
+.card-accent {
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
+}
+.card-body {
+  padding: 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.card-category {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.card-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.card-verdict-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-3);
+  border-radius: var(--radius-xs);
+  padding: 8px 12px;
+  margin-top: auto;
+}
+.verdict-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.verdict-snippet {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.verdict-snippet strong { color: var(--cyan); }
+
+.card-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.btn-settle {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--cyan);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-settle:hover { opacity: 0.85; }
+.votes-preview {
+  font-size: 11px;
+  color: var(--text-mute);
+  font-weight: 600;
+}
+
+/* ── Modal Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  animation: glow-in 0.25s ease both;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.modal-category {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+.modal-close {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  font-size: 18px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.modal-close:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+.modal-body { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+
+/* ── Sides ── */
+.sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 520px) {
+  .sides { grid-template-columns: 1fr; }
+}
+
+.side-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.side-card.side-a { border-top: 2px solid var(--cyan); }
+.side-card.side-b { border-top: 2px solid var(--yellow); }
+
+.side-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.side-card.side-a .side-label { color: var(--cyan); }
+.side-card.side-b .side-label { color: var(--yellow); }
+
+.side-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.stat-row::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  background: var(--text-mute);
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.side-card.side-a .stat-row::before { background: var(--cyan); }
+.side-card.side-b .stat-row::before { background: var(--yellow); }
+
+/* ── Verdict ── */
+.verdict-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.verdict-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.verdict-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.confidence-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  color: var(--green);
+}
+.confidence-badge.medium {
+  background: var(--yellow-dim);
+  border-color: rgba(255,214,0,0.25);
+  color: var(--yellow);
+}
+.confidence-badge.low {
+  background: var(--red-dim);
+  border-color: rgba(255,45,85,0.25);
+  color: var(--red);
+}
+
+.verdict-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.verdict-text strong { color: var(--cyan); }
+
+/* ── Vote Section ── */
+.vote-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vote-prompt {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  text-align: center;
+}
+.vote-buttons {
+  display: flex;
+  gap: 10px;
+}
+.btn-vote {
+  flex: 1;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  background: var(--bg-3);
+  color: var(--text-dim);
+}
+.btn-vote:hover { border-color: var(--border-hi); color: #fff; }
+.btn-vote.agree { background: var(--green-dim); border-color: rgba(57,255,20,0.3); color: var(--green); }
+.btn-vote.disagree { background: var(--red-dim); border-color: rgba(255,45,85,0.3); color: var(--red); }
+.btn-vote.voted { opacity: 0.6; cursor: default; }
+.btn-vote.user-pick { opacity: 1; }
+
+.vote-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.result-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.result-bar-bg {
+  height: 6px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.result-bar {
+  height: 100%;
+  border-radius: 3px;
+  animation: pulse-bar 0.6s ease both;
+}
+.result-bar.agree { background: var(--green); }
+.result-bar.disagree { background: var(--red); }
+
+/* ── Share Button ── */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+.btn-share {
+  flex: 1;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.btn-share:hover { border-color: var(--border-hi); color: var(--cyan); }
+.btn-share.copied { color: var(--green); border-color: rgba(57,255,20,0.3); }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 6px;
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    Data-Driven Verdicts
+  </div>
+  <h1>NFL <span>Debate</span> Settler</h1>
+  <p>Stop arguing. Start reading. 15 classic NFL debates settled with real stats, historical context, and a data-driven verdict — then vote on whether you agree.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filterDebates('all', this)">All Debates</button>
+    <button class="filter-btn" onclick="filterDebates('qbs', this)">QBs</button>
+    <button class="filter-btn" onclick="filterDebates('players', this)">Players</button>
+    <button class="filter-btn" onclick="filterDebates('teams', this)">Teams &amp; History</button>
+    <button class="filter-btn" onclick="filterDebates('rules', this)">Rules &amp; Strategy</button>
+  </div>
+
+  <!-- Debate Grid -->
+  <div class="debate-grid" id="debate-grid">
+    <!-- Cards injected by JS -->
+  </div>
+
+</main>
+
+<!-- Debate Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <div class="modal-category" id="modal-category"></div>
+        <div class="modal-title" id="modal-title"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="sides" id="modal-sides"></div>
+      <div class="verdict-box" id="modal-verdict"></div>
+      <div class="vote-section" id="modal-vote"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-share" id="btn-share" onclick="shareDebate()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="10" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="10" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="2" cy="7" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M3.5 6.1L8.5 3.4M3.5 7.9L8.5 10.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Share This Debate
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>NFL Debate Settler &mdash; Data-driven verdicts, not hot takes.</div>
+  <div class="footer-links">
+    <a href="https://ainflgm.com">AiNFLGM Home</a>
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Value Calculator</a>
+    <a href="https://ainflgm.com/cap-analyzer.html">Cap Analyzer</a>
+    <a href="https://ainflgm.com/qb-rater.html">QB Rater</a>
+    <a href="https://ainflgm.com/salary-predictor.html">Salary Predictor</a>
+  </div>
+  <div style="margin-top:8px;">&copy; 2025 AiNFL GM. For entertainment purposes.</div>
+</footer>
+
+<script>
+// ── Debate Data ──────────────────────────────────────────────────────────────
+const DEBATES = [
+  {
+    id: 'brady-montana',
+    category: 'QBs',
+    filterKey: 'qbs',
+    title: 'Brady vs Montana',
+    sub: 'The GOAT QB debate — settled with numbers',
+    sideA: {
+      label: 'Tom Brady',
+      stats: [
+        '7 Super Bowl titles — most by any player in NFL history',
+        '89,214 career passing yards — all-time record by 20,000+ yards',
+        '649 career TD passes — all-time record',
+        '5x Super Bowl MVP. Played in 10 Super Bowls',
+        'Won with 3 different coordinators, 5 different starting RBs',
+        'Performed across 23 seasons against modern pass-rush defenses'
+      ]
+    },
+    sideB: {
+      label: 'Joe Montana',
+      stats: [
+        '4-0 in Super Bowls — perfect record, never lost the big game',
+        '0 Super Bowl interceptions in 122 attempts across 4 games',
+        '127.8 career passer rating in playoffs — highest in history (min. 150 att.)',
+        '83.5% completion rate in Super Bowls',
+        'No era-inflation: played without modern pass-interference leniency',
+        'Never had to overcome a double-digit deficit in a SB — because he didn\'t need to'
+      ]
+    },
+    verdict: 'Data favors <strong>Brady</strong> on volume, longevity, and wins. Montana\'s perfection metric (4-0, 0 SB INTs) is extraordinary — but Brady won 7 titles, often overcoming deficits Montana never faced. When you win 3 more championships than anyone else in history, the data says GOAT.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'bengals-browns',
+    category: 'Teams',
+    filterKey: 'teams',
+    title: 'Bengals vs Browns',
+    sub: 'AFC North rivalry — who actually owns this matchup?',
+    sideA: {
+      label: 'Cincinnati Bengals',
+      stats: [
+        'All-time series record vs. Browns: 47–41 (through 2024)',
+        '3 Super Bowl appearances (1981, 1988, 2021)',
+        'Joe Burrow era: 2 playoff wins, 1 AFC Championship, 1 Super Bowl run',
+        'Back-to-back 12+ win seasons (2022–2023 under Burrow)',
+        'Home record vs. Browns: 25–19 all-time',
+        'Bengals won 2023 rivalry game by 24+ points'
+      ]
+    },
+    sideB: {
+      label: 'Cleveland Browns',
+      stats: [
+        'Historic franchise: Jim Brown, Bernie Kosar, and 4 pre-merger titles',
+        'All-time series record: 41–47 — trail Cincinnati',
+        'Last playoff win: 2020 Wild Card (first since 1994)',
+        'Deshaun Watson signed: $230M fully guaranteed — highest in NFL history at signing',
+        'Nick Chubb: top-5 RB before injury — when healthy, Browns contend',
+        'Have beaten the Bengals in rivalry games during Burrow\'s tenure'
+      ]
+    },
+    verdict: 'The head-to-head record says <strong>Bengals</strong>. Cincinnati leads the all-time series and the modern era belongs to Burrow. Cleveland\'s Watson contract gamble has yet to pay off. The Browns\' best argument is their pre-merger history — but this is about football now, not then.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'run-vs-pass',
+    category: 'Strategy',
+    filterKey: 'rules',
+    title: 'Run-First vs Pass-First',
+    sub: 'Which offensive philosophy actually wins games?',
+    sideA: {
+      label: 'Pass-First',
+      stats: [
+        'Last 10 Super Bowl winners averaged 245+ pass yards per game in playoffs',
+        'EPA (Expected Points Added) per pass attempt: +0.07 vs. rush: -0.03 (2020–2024)',
+        'Top-5 pass offenses win at a 62% clip in the regular season',
+        'QB rating correlates with wins at 0.74 — highest of any stat',
+        'The 2013 Seahawks are the last "run-first" team to win a Super Bowl',
+        'Modern defenses are built to stop the run — 8-man boxes punished by play-action'
+      ]
+    },
+    sideB: {
+      label: 'Run-First',
+      stats: [
+        'Teams with a 55%+ rush rate in the 4th quarter win 73% of those games (clock control)',
+        'Rushing attempts correlate with time of possession — the best defense',
+        'Fewer turnovers: rush fumbles lost occur at ~half the rate of INT+fumble for QBs',
+        '2015 Panthers (15–1), 2022 Eagles — dominant run games reached SB or NFC CG',
+        'Run game extends QB careers — Lamar Jackson proves both can coexist',
+        'Play-action only works when run game is credible — pass-first teams need it too'
+      ]
+    },
+    verdict: 'The data is clear: <strong>pass-first wins</strong> modern NFL. EPA numbers don\'t lie — passing generates more expected points per play. That said, the best teams balance both. A strong run game unlocks play-action, which is the most efficient play in the league. The real answer: pass-first with a credible run threat.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'best-dynasty',
+    category: 'History',
+    filterKey: 'teams',
+    title: 'Best Dynasty Ever',
+    sub: 'Patriots vs 49ers vs Steelers vs Cowboys',
+    sideA: {
+      label: 'Patriots 2001–2019',
+      stats: [
+        '6 Super Bowl titles across 19 seasons under Belichick + Brady',
+        '9 Super Bowl appearances — no other franchise has more in any comparable window',
+        'Won with different rosters, coordinators, and rule eras',
+        '17 playoff wins during the dynasty window',
+        'Belichick: most wins by any head coach in NFL history',
+        'Only dynasty to survive the salary cap and free agency era at this level'
+      ]
+    },
+    sideB: {
+      label: 'Others (Combined Case)',
+      stats: [
+        '49ers 1981–1994: 5 Super Bowls, 5-0 record — perfect rate, Montana + Young',
+        'Steelers 1970s: 4 SBs in 6 years, Steel Curtain — dominated the pre-cap era',
+        'Cowboys 1990s: 3 SBs in 4 years, Aikman + Emmitt + Irvin — last true dynasty pre-cap',
+        '49ers argument: never lost a Super Bowl in 5 tries — Brady lost 3',
+        'Steelers argument: 4 titles in 6 years is a better rate than 6 in 19',
+        'Cowboys argument: won 3 in 4 years in the modern salary cap era'
+      ]
+    },
+    verdict: 'No dynasty compares to the <strong>2001–2019 Patriots</strong> on total dominance across time. The 49ers were perfect but their window was shorter. The Steelers and Cowboys won more efficiently but in fewer years. The Patriots did it longer, against modern parity, and in the salary cap era. That\'s the standard.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'salary-cap',
+    category: 'Rules',
+    filterKey: 'rules',
+    title: 'Is the Salary Cap Fair?',
+    sub: 'Does the cap create parity, or just the illusion of it?',
+    sideA: {
+      label: 'Cap is Fair',
+      stats: [
+        '24 different franchises have reached the Super Bowl since the cap era began (1994)',
+        'Since 2000: 21 different teams have won a playoff game in any given 5-year window',
+        'Revenue sharing + cap floor ensures small-market teams aren\'t left behind',
+        'The Lions, Browns, and Bengals all reached conference championships recently',
+        'Top-10 picks give rebuilding teams a structural advantage',
+        'Average franchise value has risen 15x since 1994 — cap drives league-wide health'
+      ]
+    },
+    sideB: {
+      label: 'Cap is Flawed',
+      stats: [
+        'Teams restructure contracts to kick debt into future years — "cap hell" is real',
+        'Market corrections lag by years: $30M QBs signed in 2020 look cheap by 2025',
+        'Signing bonuses are front-loaded in year 1 but pro-rated — not real parity',
+        'Teams like the Chiefs find cap "loopholes" through systematic extensions',
+        'Practice squad and rookie deal exploitation disproportionately helps savvy orgs',
+        'Bottom-5 picks have 15–17% bust rate — parity is random, not structural'
+      ]
+    },
+    verdict: 'The cap is <strong>better than nothing but imperfect</strong>. It has expanded competition measurably — 24 franchises reaching the Super Bowl is genuine parity. But accounting tricks, contract restructuring, and organizational competence gaps mean savvy teams consistently game the system. The cap creates a floor, not a level field.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'best-wr',
+    category: 'Players',
+    filterKey: 'players',
+    title: 'Best WR: Rice vs Moss vs Megatron',
+    sub: 'Who is the greatest wide receiver in NFL history?',
+    sideA: {
+      label: 'Jerry Rice',
+      stats: [
+        '1,549 career receptions — all-time record by 300+',
+        '22,895 career yards — all-time record',
+        '197 career TD receptions — all-time record',
+        '13x Pro Bowl, 3x Super Bowl champion',
+        'Averaged 86 rec, 1,383 yards over his 10 peak seasons',
+        'Never had a drop problem: 1.2% career drop rate in the deep chart era'
+      ]
+    },
+    sideB: {
+      label: 'Randy Moss & Megatron',
+      stats: [
+        'Randy Moss: 23 TDs in a single season (2007) — still the record',
+        'Moss: 1,593 career yards receiving per 16 games — higher peak rate than Rice',
+        'Calvin Johnson: 1,964 yards in 2012 — single-season record, still stands',
+        'Megatron: 6\'5", 236 lbs — physically dominated corners with no equal',
+        'Moss: 9.4 yards per target — Rice was 7.8 (era adjusted)',
+        'Johnson\'s catch radius and contested-ball rate were statistically unprecedented'
+      ]
+    },
+    verdict: '<strong>Rice</strong> by the data, and it is not particularly close on volume and winning. But peak Moss is the most statistically dominant WR season ever, and Megatron\'s physical profile was genuinely unprecedented. Rice wins on career value. Moss wins on peak. Megatron wins on physical dominance. For GOAT, it\'s Rice.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'best-rb',
+    category: 'Players',
+    filterKey: 'players',
+    title: 'Best RB: Barry vs Emmitt vs Jim Brown',
+    sub: 'Three legends, one title — what does the data say?',
+    sideA: {
+      label: 'Barry Sanders',
+      stats: [
+        '15,269 career rushing yards — 2nd all-time in NFL history',
+        '99 career rushing TDs + 10 seasons with 1,000+ yards',
+        'Retired early at 31 — likely on pace for all-time yardage record',
+        '6.1 yards per attempt — higher than both Emmitt and Brown',
+        'Ran behind arguably the weakest offensive lines of the three — adjusted YPC is elite',
+        '1997: 2,358 yards, unanimous MVP — never had the playoff success to match'
+      ]
+    },
+    sideB: {
+      label: 'Emmitt Smith & Jim Brown',
+      stats: [
+        'Emmitt Smith: 18,355 career rushing yards — all-time record',
+        'Emmitt: 164 career rushing TDs — NFL record, benefited from elite Cowboys OL',
+        'Emmitt: 3x Super Bowl champion, one Super Bowl MVP',
+        'Jim Brown: 5.2 career YPC — never had a game under 100 yards in any full season',
+        'Brown retired at 29 (peak) — undefeated in terms of legacy management',
+        'Brown: led league in rushing 8 of 9 seasons — dominance no other RB has matched'
+      ]
+    },
+    verdict: 'This is the hardest debate on this list. <strong>Jim Brown</strong> by dominance rate. <strong>Barry</strong> by adjusted efficiency. <strong>Emmitt</strong> by career volume. For pure football impact — Brown never had a peer in his era, Barry made miracles routine behind weak lines, and Emmitt delivered in the biggest moments. Data edge: Brown first, Barry second, Emmitt third.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'best-defense',
+    category: 'History',
+    filterKey: 'teams',
+    title: 'Best Defense Ever',
+    sub: '1985 Bears vs 2000 Ravens vs 2013 Seahawks',
+    sideA: {
+      label: '1985 Bears',
+      stats: [
+        'Allowed 198 points in 16 games — 12.4 per game, fewest in the NFL that year',
+        'Famously shut out the Giants and Rams in the playoffs before Super Bowl rout',
+        '15–1 regular season, Super Bowl XX rout (46–10 over Patriots)',
+        '46 Defense by Buddy Ryan: disguised coverages before modern QBs could process it',
+        'Held Walter Payton\'s Bears to 10 pts allowed — defense outscored opponents 4 times',
+        'Mike Singletary, Richard Dent (SB MVP), Dan Hampton, Wilber Marshall'
+      ]
+    },
+    sideB: {
+      label: '2000 Ravens & 2013 Seahawks',
+      stats: [
+        '2000 Ravens: allowed 165 points — still the all-time record for a 16-game season',
+        'Ravens went 5 straight games without allowing a TD in the regular season',
+        'Ray Lewis, Rod Woodson, Chris McAlister — 4 Hall of Famers on the unit',
+        '2013 Seahawks: LOB (Legion of Boom) — Sherman, Thomas, Chancellor, Maxwell',
+        'Seahawks held Peyton Manning\'s historic offense to 8 points in Super Bowl XLVIII',
+        'Seattle allowed 14.4 pts/game — second-best in the cap era behind 2000 Ravens'
+      ]
+    },
+    verdict: 'By points allowed, <strong>2000 Ravens</strong> hold the all-time record — 165 points in a full 16-game season. The 1985 Bears were transcendent in cultural impact but the Ravens\' raw numbers are superior. The 2013 Seahawks\' Super Bowl performance is the single most dominant defensive game ever played. Data winner: Ravens (volume). Legacy winner: Bears. Playoff performance winner: Seahawks.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'ot-rules',
+    category: 'Rules',
+    filterKey: 'rules',
+    title: 'NFL vs College Overtime',
+    sub: 'Which overtime format is better for the game?',
+    sideA: {
+      label: 'NFL OT (Revised)',
+      stats: [
+        'Both teams guaranteed a possession since 2022 — addressed the main critique',
+        '15-minute OT period with sudden death after first full possession exchange',
+        'Playoff OT: full additional period if still tied after one possession each',
+        'Higher stakes: tie-game tension preserved — sudden death creates pressure',
+        'Statistical fairness improved significantly under 2022 rules',
+        'Professional athletes — full field goals and TDs create complete scoring scenarios'
+      ]
+    },
+    sideB: {
+      label: 'College OT',
+      stats: [
+        'Each team gets the ball from the 25-yard line — guaranteed equal possessions',
+        'Two-point conversion shootout after the 4th OT adds drama',
+        'No coin flip advantage: position in the field is fixed, not won',
+        'Fan approval: college OT games frequently cited as the most exciting in sports',
+        'Statistically fairer: home field advantage in OT is roughly neutral',
+        'Produces a winner faster on average — games don\'t drag past midnight'
+      ]
+    },
+    verdict: 'College OT is <strong>more entertaining</strong>, NFL OT is <strong>more realistic football</strong>. The revised NFL format addressed the coin-flip problem. The college format creates manufactured drama. For purists, real field position matters — the 25-yard line trivializes defense. Verdict: the revised NFL format is the better rule. College format is better TV.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'pro-bowl',
+    category: 'Rules',
+    filterKey: 'rules',
+    title: 'Should the Pro Bowl Exist?',
+    sub: 'Does the Pro Bowl add value or is it a waste of a week?',
+    sideA: {
+      label: 'Keep It',
+      stats: [
+        'Viewership: 5–8 million viewers annually — a meaningful audience for the league',
+        'Players earn $75,000 (winners) and $45,000 (losers) — real financial incentive',
+        'Fan experience: skill competitions (fastest, strongest, accuracy) are genuinely popular',
+        'Young players: first All-Star selection is a milestone for careers and families',
+        'Moved to flag football in 2023 — injury problem solved, entertainment improved',
+        'Alternative Pro Bowl week: charitable activities, community engagement, fan events'
+      ]
+    },
+    sideB: {
+      label: 'Abolish It',
+      stats: [
+        '5–8M viewers vs. 120M+ for Super Bowl — the gap shows fans don\'t actually care',
+        'Players routinely decline — "made the Pro Bowl" but didn\'t attend is common',
+        'Replaced with flag football: no longer an actual football game at all',
+        'Pro Bowl selections are now used as contract incentives — often politically decided',
+        'Week is a distraction from Super Bowl preparation for teams still playing',
+        'NHL, NBA, MLB All-Star Games all face similar irrelevance problems — trend is clear'
+      ]
+    },
+    verdict: 'The <strong>Pro Bowl in its current form should not exist</strong> as a football game — the league already agreed by replacing it with flag football and skills events. The Pro Bowl selection honor has value. The game/event itself does not. Solution: keep the honor, the bonus pay, and skills week. Kill the game. The data (viewership trends) confirms it.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'mahomes-allen',
+    category: 'QBs',
+    filterKey: 'qbs',
+    title: 'Mahomes vs Allen',
+    sub: 'Who is better right now — the best QB debate of this era',
+    sideA: {
+      label: 'Patrick Mahomes',
+      stats: [
+        '3 Super Bowl titles (through 2024) — all in different offensive systems',
+        '67,317 career passing yards and 516 TDs through 2024 — at age 29',
+        'Career passer rating: 105.2 — among the highest all-time',
+        '3x Super Bowl MVP. Has won every Super Bowl in which he appeared',
+        '10–3 in AFC Championship Games — owns the conference',
+        'Clutch: 32 game-winning drives and counting — most in the last 6 seasons'
+      ]
+    },
+    sideB: {
+      label: 'Josh Allen',
+      stats: [
+        'Career rushing TDs (QB): 65+ — most ever for a QB at comparable age',
+        'Career completion % improvement: 52% (2018) to 65%+ (2023) — elite development arc',
+        'Dual-threat dominance: 4,200+ passing + 500+ rushing yards in multiple seasons',
+        'MVP caliber seasons: 2020, 2022, 2024 — always in the conversation',
+        'Despite no Super Bowl wins, Bills are 0-5 against Mahomes in playoff games',
+        'Raw athleticism ceiling: no QB in history combines arm + legs at this level'
+      ]
+    },
+    verdict: '<strong>Mahomes</strong> by every winning metric that exists. Allen is the more physically gifted player and arguably the better raw athlete. But Mahomes has three rings, an unblemished Super Bowl record, and the edge in every high-stakes game between the two. Until Allen beats Mahomes when it matters, the data doesn\'t support flipping the ranking.',
+    confidence: 'high',
+    confidenceLabel: 'High Confidence'
+  },
+  {
+    id: 'regular-vs-playoff',
+    category: 'Strategy',
+    filterKey: 'rules',
+    title: 'Regular Season vs Playoffs',
+    sub: 'What matters more — 17 games or the postseason run?',
+    sideA: {
+      label: 'Regular Season',
+      stats: [
+        '17 games of evidence vs. 3–4 playoff games — larger statistical sample size',
+        'Home-field advantage in playoffs is earned entirely through regular season performance',
+        'Salary structures, contract incentives, and awards are all regular-season based',
+        'Injury variance in playoffs is high — one helmet-to-helmet hit changes dynasties',
+        'The 2007 Patriots (16–0) are the greatest regular season team ever — regardless of SB loss',
+        'Cumulative fan engagement: 17x more games = 17x more touchpoints'
+      ]
+    },
+    sideB: {
+      label: 'Playoffs',
+      stats: [
+        'No team remembered as great finished with a loss — every dynasty was defined by SBs',
+        'Playoff passer ratings are 8+ points higher than regular season for elite QBs',
+        'Montana, Brady, Mahomes: legacy built entirely on postseason record',
+        'Every coaching legend — Belichick, Walsh, Lombardi — is measured in rings',
+        'One bad week in January can erase a perfect regular season in memory',
+        'Draft slot and trade value are playoff-driven, not regular-season-driven'
+      ]
+    },
+    verdict: 'In terms of <strong>legacy, the playoffs win</strong>. In terms of <strong>talent evaluation, the regular season wins</strong>. The smartest NFL front offices use regular-season data for roster decisions. But the culture, history, and memory of the NFL is built on what happened in January. Brady isn\'t the GOAT because of regular-season stats. He\'s the GOAT because of February.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'burrow-herbert',
+    category: 'QBs',
+    filterKey: 'qbs',
+    title: 'Burrow vs Herbert',
+    sub: 'The 2020 draft class QB battle — settled with data',
+    sideA: {
+      label: 'Joe Burrow',
+      stats: [
+        'Super Bowl LVI appearance (2021 season) — reached the big game in year 2',
+        '2023: 4,285 yards, 41 TDs, 12 INTs before injury — elite efficiency',
+        'Career passer rating: 101.1 — among the best in the league',
+        '2 playoff wins in 2021 season including road wins at TEN and KC',
+        'Clutch rating: best 4th-quarter passer in the league (2021–2022)',
+        'Proven winner in big games — record 4th-quarter comeback drives vs. KC'
+      ]
+    },
+    sideB: {
+      label: 'Justin Herbert',
+      stats: [
+        'Most passing yards in a QB\'s first 4 seasons in NFL history: 19,000+',
+        '2021: 5,014 yards — 4th QB in history to eclipse 5K yards in a season',
+        'Arm talent: Herbert has the strongest arm in the NFL by objective testing',
+        'Lower injury history than Burrow — durability advantage is real',
+        'Career TD/INT ratio: 164/61 through 2024 — exceptional ball security',
+        'Has not had the same supporting cast investment as Burrow — Chargers front office gap'
+      ]
+    },
+    verdict: '<strong>Burrow</strong> by winning and clutch performance. Herbert has better raw numbers in terms of volume and arm talent. But Burrow went to a Super Bowl, has the better TD-to-INT efficiency per snap, and is demonstrably better in high-pressure situations. Herbert\'s case improves if the Chargers ever build around him. As of now: Burrow leads.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'coaching-era',
+    category: 'History',
+    filterKey: 'teams',
+    title: 'Old School vs New School Coaching',
+    sub: 'Lombardi, Noll, and Walsh vs. Belichick, Reid, and McVay',
+    sideA: {
+      label: 'Old School (Pre-1990)',
+      stats: [
+        'Vince Lombardi: 105–35–6 career record, 5 NFL titles in 7 years',
+        'Chuck Noll: 4 Super Bowl titles, only coach to win 4 with one franchise',
+        'Bill Walsh: invented the West Coast Offense — changed football conceptually',
+        'Don Shula: 347 career wins — most in NFL history; only undefeated season ever',
+        'Tom Landry: 20 consecutive winning seasons, invented the 4-3 defense',
+        'Context: no salary cap, no free agency, no analytics — built teams without modern tools'
+      ]
+    },
+    sideB: {
+      label: 'New School (Post-1990)',
+      stats: [
+        'Belichick: 333 wins (2nd all-time), 6 Super Bowls — in the parity era',
+        'Andy Reid: 270+ wins, innovated RPO and unique motion-heavy schemes',
+        'Sean McVay: youngest SB-winning head coach in NFL history (36)',
+        'Modern coaches manage salary cap, analytics, and 24/7 roster turnover',
+        'Winning in the free agency era requires 3x the organizational management',
+        'Kyle Shanahan: invented the modern stretch run and motion-play-action system'
+      ]
+    },
+    verdict: 'Both eras produced <strong>all-time coaches</strong> for different reasons. Old-school coaches built schemes that defined the sport. New-school coaches manage complexity old-school coaches never faced. The verdict: Walsh and Lombardi built the language of football. Belichick and Reid speak it better than anyone. For greatest of all time: Belichick\'s record in the parity era stands alone.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  },
+  {
+    id: 'tanking',
+    category: 'Strategy',
+    filterKey: 'rules',
+    title: 'Is Tanking Ever Justified?',
+    sub: 'Deliberate losing for draft position — good strategy or disgrace?',
+    sideA: {
+      label: 'Tanking Works',
+      stats: [
+        'Trevor Lawrence (2021 #1) went 9–8 in year 2 after the Jags tanked for him',
+        'Sam Bradford, Andrew Luck, Cam Newton: first overall picks reshape franchises',
+        'Bengals selected Joe Burrow #1 after their worst season in franchise history (2019)',
+        'Statistically: #1 overall picks start for their franchise 78% of the time',
+        'Pure math: the expected value of top-5 picks is 3–4x higher than picks 10–32',
+        'NBA teams tank openly — the NFL has the same draft incentive structure'
+      ]
+    },
+    sideB: {
+      label: 'Tanking Is Wrong',
+      stats: [
+        'NFL has not implemented a lottery system — tanking is rewarded directly',
+        'Browns tanked openly 2016–2017: 1–31 across two seasons, still no Super Bowl',
+        'Jets tanked for Zach Wilson at #2 — was a bust. Tanking only works with the right pick',
+        'Players on tanking teams lose jobs, income, and health for a strategy they don\'t control',
+        'Fan trust collapses: Browns attendance and ratings cratered during tank years',
+        'Most teams that win the Super Bowl did NOT have a top-5 pick the prior season'
+      ]
+    },
+    verdict: 'Tanking is <strong>justified only when the right QB is at the top of the draft</strong>. The Bengals getting Burrow by finishing 2–14 is a textbook case of it working. But tanking for the sake of tanking — without a clear top target — is organizational malpractice. The data supports strategic tanking for a generational QB prospect. Tanking for depth picks is not worth the damage.',
+    confidence: 'medium',
+    confidenceLabel: 'Medium Confidence'
+  }
+];
+
+// ── Vote Storage ─────────────────────────────────────────────────────────────
+function loadVotes() {
+  try {
+    return JSON.parse(localStorage.getItem('nfl_debate_votes') || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+function saveVote(id, choice) {
+  const votes = loadVotes();
+  if (!votes[id]) votes[id] = { agree: 0, disagree: 0, userVote: null };
+  votes[id].userVote = choice;
+  votes[id][choice]++;
+  localStorage.setItem('nfl_debate_votes', JSON.stringify(votes));
+  return votes[id];
+}
+function getVote(id) {
+  const votes = loadVotes();
+  return votes[id] || { agree: 0, disagree: 0, userVote: null };
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let currentDebateId = null;
+let currentFilter = 'all';
+
+// ── Render Cards ──────────────────────────────────────────────────────────────
+function renderCards(filter) {
+  const grid = document.getElementById('debate-grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? DEBATES : DEBATES.filter(d => d.filterKey === filter);
+
+  filtered.forEach((d, i) => {
+    const v = getVote(d.id);
+    const totalVotes = v.agree + v.disagree;
+    const votesText = totalVotes > 0 ? `${totalVotes} vote${totalVotes !== 1 ? 's' : ''}` : 'No votes yet';
+
+    const card = document.createElement('div');
+    card.className = 'debate-card';
+    card.style.animationDelay = `${i * 0.04}s`;
+    card.innerHTML = `
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-category">${d.category}</div>
+        <div class="card-title">${d.title}</div>
+        <div class="card-sub">${d.sub}</div>
+        <div class="card-verdict-preview">
+          <div class="verdict-icon">&#x2696;</div>
+          <div class="verdict-snippet"><strong>Verdict available</strong> — see the data breakdown</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-settle" onclick="openDebate('${d.id}')">Settle This</button>
+        <div class="votes-preview">${votesText}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── Filter ────────────────────────────────────────────────────────────────────
+function filterDebates(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(filter);
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openDebate(id) {
+  const d = DEBATES.find(x => x.id === id);
+  if (!d) return;
+  currentDebateId = id;
+
+  document.getElementById('modal-category').textContent = d.category;
+  document.getElementById('modal-title').textContent = d.title;
+
+  // Sides
+  const sides = document.getElementById('modal-sides');
+  sides.innerHTML = `
+    <div class="side-card side-a">
+      <div class="side-label">${d.sideA.label}</div>
+      <div class="side-stats">
+        ${d.sideA.stats.map(s => `<div class="stat-row">${s}</div>`).join('')}
+      </div>
+    </div>
+    <div class="side-card side-b">
+      <div class="side-label">${d.sideB.label}</div>
+      <div class="side-stats">
+        ${d.sideB.stats.map(s => `<div class="stat-row">${s}</div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  // Verdict
+  const confidenceClass = d.confidence === 'high' ? '' : d.confidence === 'medium' ? 'medium' : 'low';
+  document.getElementById('modal-verdict').innerHTML = `
+    <div class="verdict-header">
+      <div class="verdict-label">Data Verdict</div>
+      <div class="confidence-badge ${confidenceClass}">${d.confidenceLabel}</div>
+    </div>
+    <div class="verdict-text">${d.verdict}</div>
+  `;
+
+  // Vote
+  renderVoteSection(id);
+
+  // Open overlay
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Track GA event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'debate_opened', { debate_id: id, debate_title: d.title });
+  }
+}
+
+function renderVoteSection(id) {
+  const v = getVote(id);
+  const voted = v.userVote !== null;
+  const total = v.agree + v.disagree;
+
+  const agreeCount = v.agree;
+  const disagreeCount = v.disagree;
+  const agreePct = total > 0 ? Math.round((agreeCount / total) * 100) : 50;
+  const disagreePct = total > 0 ? Math.round((disagreeCount / total) * 100) : 50;
+
+  const agreeClass = voted ? (v.userVote === 'agree' ? 'agree user-pick voted' : 'agree voted') : '';
+  const disagreeClass = voted ? (v.userVote === 'disagree' ? 'disagree user-pick voted' : 'disagree voted') : '';
+
+  const onAgree = voted ? '' : `onclick="castVote('agree')"`;
+  const onDisagree = voted ? '' : `onclick="castVote('disagree')"`;
+
+  let resultHtml = '';
+  if (voted && total > 0) {
+    resultHtml = `
+      <div class="vote-results">
+        <div class="result-row">
+          <div class="result-label"><span>Agree with verdict</span><span>${agreePct}%</span></div>
+          <div class="result-bar-bg"><div class="result-bar agree" style="width:${agreePct}%"></div></div>
+        </div>
+        <div class="result-row">
+          <div class="result-label"><span>Disagree</span><span>${disagreePct}%</span></div>
+          <div class="result-bar-bg"><div class="result-bar disagree" style="width:${disagreePct}%"></div></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-mute);text-align:center;">${total} vote${total !== 1 ? 's' : ''} cast</div>
+      </div>
+    `;
+  }
+
+  document.getElementById('modal-vote').innerHTML = `
+    <div class="vote-prompt">${voted ? 'Your vote is in' : 'Do you agree with the verdict?'}</div>
+    <div class="vote-buttons">
+      <button class="btn-vote ${agreeClass}" ${onAgree}>Agree</button>
+      <button class="btn-vote ${disagreeClass}" ${onDisagree}>Disagree</button>
+    </div>
+    ${resultHtml}
+  `;
+}
+
+function castVote(choice) {
+  if (!currentDebateId) return;
+  saveVote(currentDebateId, choice);
+  renderVoteSection(currentDebateId);
+
+  // Update card vote count
+  renderCards(currentFilter);
+
+  // Track GA
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'debate_vote', { debate_id: currentDebateId, vote: choice });
+  }
+}
+
+function closeModal() {
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  currentDebateId = null;
+
+  // Reset share button
+  const btn = document.getElementById('btn-share');
+  if (btn) {
+    btn.classList.remove('copied');
+    btn.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="10" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="10" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="2" cy="7" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M3.5 6.1L8.5 3.4M3.5 7.9L8.5 10.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      Share This Debate
+    `;
+  }
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+function shareDebate() {
+  if (!currentDebateId) return;
+  const d = DEBATES.find(x => x.id === currentDebateId);
+  const url = `https://ainflgm.com/debate-settler.html?debate=${currentDebateId}`;
+  const text = `NFL Debate: ${d.title} — settled with data. ${url}`;
+
+  if (navigator.share) {
+    navigator.share({ title: `NFL Debate: ${d.title}`, text: d.sub, url })
+      .catch(() => copyToClipboard(url));
+  } else {
+    copyToClipboard(text);
+  }
+
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'debate_shared', { debate_id: currentDebateId });
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-share');
+    btn.classList.add('copied');
+    btn.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7L5.5 10.5L12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Link Copied!
+    `;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="10" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="10" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="2" cy="7" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M3.5 6.1L8.5 3.4M3.5 7.9L8.5 10.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Share This Debate
+      `;
+    }, 2500);
+  }).catch(() => {});
+}
+
+// ── Deep Link ─────────────────────────────────────────────────────────────────
+function checkDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const debateId = params.get('debate');
+  if (debateId && DEBATES.find(d => d.id === debateId)) {
+    setTimeout(() => openDebate(debateId), 400);
+  }
+}
+
+// ── Keyboard ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderCards('all');
+checkDeepLink();
+</script>
+
+</body>
+</html>
