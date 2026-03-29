@@ -65,6 +65,17 @@ echo "=== END CONVERSATION HISTORY ==="
 # Check this file before sending any message, email, or making any deployment.
 cat ~/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/protocol_completed_actions.md 2>/dev/null | tail -30
 echo "=== Reconcile completed actions before re-executing anything ==="
+
+# 11. Monitor voice call transcripts
+# Voice server saves transcripts to /tmp/call-transcript-latest.txt
+# Check for new transcripts periodically — they are NOT relayed to terminal automatically.
+# If a new transcript exists, read it immediately and act on it.
+VOICE_TRANSCRIPT="/tmp/call-transcript-latest.txt"
+if [ -f "$VOICE_TRANSCRIPT" ]; then
+  echo "=== VOICE CALL TRANSCRIPT FOUND ==="
+  cat "$VOICE_TRANSCRIPT"
+  echo "=== END TRANSCRIPT — ACT ON THIS ==="
+fi
 ```
 
 ## Graceful Shutdown (before exiting terminal)
