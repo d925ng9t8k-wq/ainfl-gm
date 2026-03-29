@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Player Wordle — Guess the Player | AiNFL GM</title>
+<meta name="description" content="Guess today's mystery NFL player in 6 tries. Get clues on team, position, division, experience, Pro Bowls, and draft round. Free daily NFL puzzle.">
+<meta property="og:title" content="NFL Player Wordle — Guess the Player | AiNFL GM">
+<meta property="og:description" content="A daily NFL player guessing game. 6 tries, smart clues, daily streak. Free by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/nfl-wordle.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Player Wordle — Guess the Player | AiNFL GM">
+<meta name="twitter:description" content="Guess today's mystery NFL player in 6 tries. Daily NFL puzzle by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.15);
+  --green-bg:   #1a3a0f;
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.15);
+  --yellow-bg:  #3a2e00;
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --grey-bg:    #1e293b;
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes flipIn {
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0deg); }
+}
+@keyframes bounceIn {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 40px 24px 24px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(26px, 5vw, 42px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 14px;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* ── Stats bar ── */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.stat-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-pill strong {
+  color: var(--cyan);
+  font-size: 14px;
+}
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legend-dot.green  { background: var(--green-bg); border: 1px solid var(--green); }
+.legend-dot.yellow { background: var(--yellow-bg); border: 1px solid var(--yellow); }
+.legend-dot.grey   { background: var(--grey-bg); border: 1px solid var(--border); }
+
+/* ── Guess Grid ── */
+.guess-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.2s both;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+
+/* ── Grid Header ── */
+.grid-header {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1.1fr 1fr 1.1fr 1fr;
+  gap: 4px;
+  min-width: 560px;
+  padding: 0 2px;
+  margin-bottom: 2px;
+}
+.grid-header-cell {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  text-align: center;
+  padding: 0 2px;
+}
+.grid-header-cell:first-child { text-align: left; }
+
+/* ── Guess Row ── */
+.guess-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1.1fr 1fr 1.1fr 1fr;
+  gap: 4px;
+  min-width: 560px;
+}
+.guess-row.shake { animation: shake 0.4s ease; }
+
+.cell {
+  border-radius: var(--radius-xs);
+  padding: 8px 6px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.cell.player-name {
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  align-items: flex-start;
+  padding: 8px 10px;
+}
+
+.cell.green  { background: var(--green-bg);  border-color: var(--green);  color: var(--green);  }
+.cell.yellow { background: var(--yellow-bg); border-color: var(--yellow); color: var(--yellow); }
+.cell.grey   { background: var(--grey-bg);   border-color: var(--border); color: var(--text-dim); }
+
+.cell .arrow {
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.cell .val {
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+.cell.flip { animation: flipIn 0.5s ease forwards; }
+
+/* ── Empty rows ── */
+.guess-row-empty .cell {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  min-height: 52px;
+}
+
+/* ── Input area ── */
+.input-area {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease 0.25s both;
+}
+.input-area.disabled { opacity: 0.5; pointer-events: none; }
+
+.input-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+
+.autocomplete-wrap {
+  position: relative;
+}
+
+.player-input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.player-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,240,255,0.08);
+}
+.player-input::placeholder { color: var(--text-mute); }
+
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 50;
+  display: none;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+}
+.autocomplete-list.open { display: block; }
+.autocomplete-item {
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.autocomplete-item:last-child { border-bottom: none; }
+.autocomplete-item:hover,
+.autocomplete-item.active { background: var(--bg-3); color: var(--cyan); }
+.autocomplete-item .ac-meta {
+  font-size: 11px;
+  color: var(--text-mute);
+  font-weight: 400;
+}
+.autocomplete-item.already-guessed {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.guess-btn {
+  width: 100%;
+  margin-top: 12px;
+  background: var(--cyan);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 24px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.guess-btn:hover { background: #22f5ff; }
+.guess-btn:active { transform: scale(0.98); }
+.guess-btn:disabled { background: var(--bg-3); color: var(--text-mute); cursor: not-allowed; }
+
+/* ── Toast ── */
+.toast-wrap {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  animation: bounceIn 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.error   { border-color: var(--red);   color: var(--red); }
+
+/* ── Game Over Panel ── */
+.game-over {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 24px;
+  text-align: center;
+  display: none;
+  animation: fadeUp 0.4s ease both;
+}
+.game-over.visible { display: block; }
+
+.game-over h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.game-over .answer-reveal {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.game-over .timer-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.game-over .timer {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.share-btn {
+  background: var(--green-bg);
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: var(--radius-sm);
+  padding: 11px 24px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.share-btn:hover { background: rgba(57,255,20,0.2); }
+
+/* ── Stats Panel ── */
+.stats-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+.stats-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (max-width: 400px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-box {
+  text-align: center;
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 14px 8px;
+  border: 1px solid var(--border);
+}
+.stat-box .num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-box .lbl {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+
+/* ── Guess distribution ── */
+.dist-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.dist-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.dist-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  width: 14px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.dist-bar-wrap {
+  flex: 1;
+  height: 22px;
+  background: var(--bg-2);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.dist-bar {
+  height: 100%;
+  background: var(--cyan-dim);
+  border-radius: 4px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyan);
+  transition: width 0.6s ease;
+}
+.dist-bar.current { background: var(--cyan); color: #0F172A; }
+
+/* ── How to play ── */
+.how-to {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.35s both;
+}
+.how-to-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+}
+.how-to ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.how-to ul li {
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+.how-to ul li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+/* ── AdSense ── */
+.ad-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── More Tools ── */
+.more-tools {
+  margin-top: 32px;
+}
+.more-tools-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+  margin-bottom: 12px;
+}
+.tool-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tool-link {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 10px 16px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  transition: border-color 0.2s;
+}
+.tool-link:hover { border-color: var(--cyan); color: var(--cyan); text-decoration: none; }
+.tool-link.primary { color: var(--cyan); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="/" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="/" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to GM
+  </a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Daily Puzzle</div>
+  <h1>NFL Player <span>Wordle</span></h1>
+  <p>Guess today's mystery NFL player in 6 tries. Each guess reveals clues about team, position, division, experience, Pro Bowls, and draft round.</p>
+</div>
+
+<div class="main">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-pill">Streak <strong id="pillStreak">0</strong></div>
+    <div class="stat-pill">Played <strong id="pillPlayed">0</strong></div>
+    <div class="stat-pill">Win % <strong id="pillWin">0%</strong></div>
+    <div class="stat-pill">Puzzle #<strong id="pillNum">1</strong></div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot green"></div>Exact match</div>
+    <div class="legend-item"><div class="legend-dot yellow"></div>Close (same conf/division)</div>
+    <div class="legend-item"><div class="legend-dot grey"></div>No match</div>
+  </div>
+
+  <!-- Guess Grid -->
+  <div class="guess-grid">
+    <div class="grid-header">
+      <div class="grid-header-cell">Player</div>
+      <div class="grid-header-cell">Team</div>
+      <div class="grid-header-cell">Pos</div>
+      <div class="grid-header-cell">Division</div>
+      <div class="grid-header-cell">Yrs</div>
+      <div class="grid-header-cell">Pro Bowls</div>
+      <div class="grid-header-cell">Rd</div>
+    </div>
+    <div id="guessGrid"></div>
+  </div>
+
+  <!-- Game Over -->
+  <div class="game-over" id="gameOver">
+    <h2 id="gameOverTitle">Nice Work!</h2>
+    <div class="answer-reveal" id="answerReveal"></div>
+    <div class="timer-label">Next puzzle in</div>
+    <div class="timer" id="countdown">--:--:--</div>
+    <button class="share-btn" onclick="shareResult()">Share Result</button>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area" id="inputArea">
+    <div class="input-label">Type a player name to guess</div>
+    <div class="autocomplete-wrap">
+      <input
+        type="text"
+        class="player-input"
+        id="playerInput"
+        placeholder="e.g. Patrick Mahomes, Lamar Jackson..."
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+      >
+      <div class="autocomplete-list" id="acList"></div>
+    </div>
+    <button class="guess-btn" id="guessBtn" onclick="submitGuess()" disabled>Guess Player</button>
+  </div>
+
+  <!-- AdSense -->
+  <div class="ad-wrap">
+    <ins class="adsbygoogle"
+      style="display:block;width:100%;min-height:90px;"
+      data-ad-client="ca-pub-8928127451532131"
+      data-ad-slot="auto"
+      data-ad-format="horizontal"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- How to play -->
+  <div class="how-to">
+    <div class="how-to-title">How to Play</div>
+    <ul>
+      <li>Search for any NFL player and submit your guess.</li>
+      <li>Each cell turns green (exact match), yellow (close), or grey (wrong).</li>
+      <li>Team: green = same team, yellow = same conference, grey = different conf.</li>
+      <li>Division: green = exact, yellow = same conference, grey = different.</li>
+      <li>Years in league, Pro Bowls, Draft Round: arrows show whether mystery player is higher or lower.</li>
+      <li>Guess all 6 wrong and the answer is revealed. New puzzle resets at midnight EST.</li>
+    </ul>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-panel">
+    <div class="stats-title">Your Stats</div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="num" id="statPlayed">0</div><div class="lbl">Played</div></div>
+      <div class="stat-box"><div class="num" id="statWinPct">0%</div><div class="lbl">Win %</div></div>
+      <div class="stat-box"><div class="num" id="statStreak">0</div><div class="lbl">Streak</div></div>
+      <div class="stat-box"><div class="num" id="statMaxStreak">0</div><div class="lbl">Max Streak</div></div>
+    </div>
+    <div class="dist-title">Guess Distribution</div>
+    <div id="distribution"></div>
+  </div>
+
+  <!-- More Tools -->
+  <div class="more-tools">
+    <div class="more-tools-label">More Free Tools</div>
+    <div class="tool-links">
+      <a href="/draft-trade-calc.html" class="tool-link">Draft Trade Calculator</a>
+      <a href="/trade-analyzer.html" class="tool-link">Trade Analyzer</a>
+      <a href="/mortgage-calc.html" class="tool-link">Mortgage Calculator</a>
+      <a href="/name-generator.html" class="tool-link">AI Business Name Generator</a>
+      <a href="/" class="tool-link primary">AiNFL GM Simulator</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast container -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+// ── Player Database ──────────────────────────────────────────────────────
+// Fields: name, team, teamAbbr, conf, div, pos, years, probowls, draftRound
+// conf: AFC/NFC  div: AFC East/AFC West/AFC North/AFC South/NFC East/NFC West/NFC North/NFC South
+
+const PLAYERS = [
+  // AFC North
+  { name:"Lamar Jackson",      team:"Baltimore Ravens",   teamAbbr:"BAL", conf:"AFC", div:"AFC North", pos:"QB",  years:7,  probowls:4, draftRound:1 },
+  { name:"Derrick Henry",      team:"Baltimore Ravens",   teamAbbr:"BAL", conf:"AFC", div:"AFC North", pos:"RB",  years:9,  probowls:3, draftRound:5 },
+  { name:"Joe Burrow",         team:"Cincinnati Bengals", teamAbbr:"CIN", conf:"AFC", div:"AFC North", pos:"QB",  years:5,  probowls:3, draftRound:1 },
+  { name:"Ja'Marr Chase",      team:"Cincinnati Bengals", teamAbbr:"CIN", conf:"AFC", div:"AFC North", pos:"WR",  years:4,  probowls:3, draftRound:1 },
+  { name:"Tee Higgins",        team:"Cincinnati Bengals", teamAbbr:"CIN", conf:"AFC", div:"AFC North", pos:"WR",  years:5,  probowls:0, draftRound:2 },
+  { name:"Joe Mixon",          team:"Houston Texans",     teamAbbr:"HOU", conf:"AFC", div:"AFC South", pos:"RB",  years:8,  probowls:1, draftRound:2 },
+  { name:"Deshaun Watson",     team:"Cleveland Browns",   teamAbbr:"CLE", conf:"AFC", div:"AFC North", pos:"QB",  years:8,  probowls:3, draftRound:1 },
+  { name:"Nick Chubb",         team:"Cleveland Browns",   teamAbbr:"CLE", conf:"AFC", div:"AFC North", pos:"RB",  years:7,  probowls:3, draftRound:2 },
+  { name:"Amari Cooper",       team:"Cleveland Browns",   teamAbbr:"CLE", conf:"AFC", div:"AFC North", pos:"WR",  years:10, probowls:4, draftRound:1 },
+  { name:"T.J. Watt",          team:"Pittsburgh Steelers",teamAbbr:"PIT", conf:"AFC", div:"AFC North", pos:"LB",  years:8,  probowls:5, draftRound:1 },
+  { name:"Najee Harris",       team:"Pittsburgh Steelers",teamAbbr:"PIT", conf:"AFC", div:"AFC North", pos:"RB",  years:4,  probowls:0, draftRound:1 },
+
+  // AFC East
+  { name:"Josh Allen",         team:"Buffalo Bills",      teamAbbr:"BUF", conf:"AFC", div:"AFC East", pos:"QB",  years:7,  probowls:5, draftRound:1 },
+  { name:"Stefon Diggs",       team:"Buffalo Bills",      teamAbbr:"BUF", conf:"AFC", div:"AFC East", pos:"WR",  years:10, probowls:4, draftRound:5 },
+  { name:"Tua Tagovailoa",     team:"Miami Dolphins",     teamAbbr:"MIA", conf:"AFC", div:"AFC East", pos:"QB",  years:5,  probowls:1, draftRound:1 },
+  { name:"Tyreek Hill",        team:"Miami Dolphins",     teamAbbr:"MIA", conf:"AFC", div:"AFC East", pos:"WR",  years:9,  probowls:7, draftRound:5 },
+  { name:"Jaylen Waddle",      team:"Miami Dolphins",     teamAbbr:"MIA", conf:"AFC", div:"AFC East", pos:"WR",  years:4,  probowls:1, draftRound:1 },
+  { name:"Davante Adams",      team:"New York Jets",      teamAbbr:"NYJ", conf:"AFC", div:"AFC East", pos:"WR",  years:11, probowls:6, draftRound:2 },
+  { name:"Mac Jones",          team:"New England Patriots",teamAbbr:"NE", conf:"AFC", div:"AFC East", pos:"QB",  years:4,  probowls:0, draftRound:1 },
+
+  // AFC West
+  { name:"Patrick Mahomes",    team:"Kansas City Chiefs", teamAbbr:"KC",  conf:"AFC", div:"AFC West", pos:"QB",  years:8,  probowls:6, draftRound:1 },
+  { name:"Travis Kelce",       team:"Kansas City Chiefs", teamAbbr:"KC",  conf:"AFC", div:"AFC West", pos:"TE",  years:13, probowls:9, draftRound:3 },
+  { name:"Chris Jones",        team:"Kansas City Chiefs", teamAbbr:"KC",  conf:"AFC", div:"AFC West", pos:"DT",  years:9,  probowls:5, draftRound:2 },
+  { name:"Justin Herbert",     team:"Los Angeles Chargers",teamAbbr:"LAC",conf:"AFC", div:"AFC West", pos:"QB",  years:5,  probowls:1, draftRound:1 },
+  { name:"Keenan Allen",       team:"Chicago Bears",      teamAbbr:"CHI", conf:"NFC", div:"NFC North",pos:"WR",  years:12, probowls:7, draftRound:3 },
+  { name:"Maxx Crosby",        team:"Las Vegas Raiders",  teamAbbr:"LV",  conf:"AFC", div:"AFC West", pos:"DE",  years:6,  probowls:3, draftRound:4 },
+  { name:"Russell Wilson",     team:"Pittsburgh Steelers",teamAbbr:"PIT", conf:"AFC", div:"AFC North", pos:"QB", years:13, probowls:9, draftRound:3 },
+  { name:"Davante Adams",      team:"Las Vegas Raiders",  teamAbbr:"LV",  conf:"AFC", div:"AFC West", pos:"WR",  years:11, probowls:6, draftRound:2 },
+  { name:"Bo Jackson",         team:"Las Vegas Raiders",  teamAbbr:"LV",  conf:"AFC", div:"AFC West", pos:"RB",  years:4,  probowls:1, draftRound:1 },
+
+  // AFC South
+  { name:"C.J. Stroud",        team:"Houston Texans",     teamAbbr:"HOU", conf:"AFC", div:"AFC South", pos:"QB",  years:2,  probowls:1, draftRound:1 },
+  { name:"Stefon Diggs",       team:"Houston Texans",     teamAbbr:"HOU", conf:"AFC", div:"AFC South", pos:"WR",  years:10, probowls:4, draftRound:5 },
+  { name:"Anthony Richardson", team:"Indianapolis Colts", teamAbbr:"IND", conf:"AFC", div:"AFC South", pos:"QB",  years:2,  probowls:0, draftRound:1 },
+  { name:"Jonathan Taylor",    team:"Indianapolis Colts", teamAbbr:"IND", conf:"AFC", div:"AFC South", pos:"RB",  years:5,  probowls:1, draftRound:2 },
+  { name:"DeAndre Hopkins",    team:"Tennessee Titans",   teamAbbr:"TEN", conf:"AFC", div:"AFC South", pos:"WR",  years:12, probowls:5, draftRound:1 },
+  { name:"Trevor Lawrence",    team:"Jacksonville Jaguars",teamAbbr:"JAX",conf:"AFC", div:"AFC South", pos:"QB",  years:4,  probowls:0, draftRound:1 },
+  { name:"Calvin Ridley",      team:"Jacksonville Jaguars",teamAbbr:"JAX",conf:"AFC", div:"AFC South", pos:"WR",  years:6,  probowls:1, draftRound:1 },
+
+  // NFC North
+  { name:"Jordan Love",        team:"Green Bay Packers",  teamAbbr:"GB",  conf:"NFC", div:"NFC North", pos:"QB",  years:5,  probowls:1, draftRound:1 },
+  { name:"Davante Adams",      team:"Green Bay Packers",  teamAbbr:"GB",  conf:"NFC", div:"NFC North", pos:"WR",  years:11, probowls:6, draftRound:2 },
+  { name:"Christian Watson",   team:"Green Bay Packers",  teamAbbr:"GB",  conf:"NFC", div:"NFC North", pos:"WR",  years:3,  probowls:0, draftRound:2 },
+  { name:"Caleb Williams",     team:"Chicago Bears",      teamAbbr:"CHI", conf:"NFC", div:"NFC North", pos:"QB",  years:1,  probowls:0, draftRound:1 },
+  { name:"D.J. Moore",         team:"Chicago Bears",      teamAbbr:"CHI", conf:"NFC", div:"NFC North", pos:"WR",  years:7,  probowls:0, draftRound:1 },
+  { name:"Jared Goff",         team:"Detroit Lions",      teamAbbr:"DET", conf:"NFC", div:"NFC North", pos:"QB",  years:9,  probowls:2, draftRound:1 },
+  { name:"Amon-Ra St. Brown",  team:"Detroit Lions",      teamAbbr:"DET", conf:"NFC", div:"NFC North", pos:"WR",  years:4,  probowls:2, draftRound:4 },
+  { name:"Sam LaPorta",        team:"Detroit Lions",      teamAbbr:"DET", conf:"NFC", div:"NFC North", pos:"TE",  years:2,  probowls:0, draftRound:2 },
+  { name:"Kirk Cousins",       team:"Atlanta Falcons",    teamAbbr:"ATL", conf:"NFC", div:"NFC South", pos:"QB",  years:13, probowls:1, draftRound:4 },
+  { name:"Justin Jefferson",   team:"Minnesota Vikings",  teamAbbr:"MIN", conf:"NFC", div:"NFC North", pos:"WR",  years:5,  probowls:4, draftRound:1 },
+  { name:"Sam Darnold",        team:"Minnesota Vikings",  teamAbbr:"MIN", conf:"NFC", div:"NFC North", pos:"QB",  years:7,  probowls:0, draftRound:1 },
+
+  // NFC East
+  { name:"Dak Prescott",       team:"Dallas Cowboys",     teamAbbr:"DAL", conf:"NFC", div:"NFC East",  pos:"QB",  years:9,  probowls:4, draftRound:4 },
+  { name:"CeeDee Lamb",        team:"Dallas Cowboys",     teamAbbr:"DAL", conf:"NFC", div:"NFC East",  pos:"WR",  years:5,  probowls:3, draftRound:1 },
+  { name:"Micah Parsons",      team:"Dallas Cowboys",     teamAbbr:"DAL", conf:"NFC", div:"NFC East",  pos:"LB",  years:4,  probowls:3, draftRound:1 },
+  { name:"Saquon Barkley",     team:"Philadelphia Eagles",teamAbbr:"PHI", conf:"NFC", div:"NFC East",  pos:"RB",  years:7,  probowls:3, draftRound:1 },
+  { name:"Jalen Hurts",        team:"Philadelphia Eagles",teamAbbr:"PHI", conf:"NFC", div:"NFC East",  pos:"QB",  years:5,  probowls:3, draftRound:2 },
+  { name:"A.J. Brown",         team:"Philadelphia Eagles",teamAbbr:"PHI", conf:"NFC", div:"NFC East",  pos:"WR",  years:6,  probowls:3, draftRound:2 },
+  { name:"DeVonta Smith",      team:"Philadelphia Eagles",teamAbbr:"PHI", conf:"NFC", div:"NFC East",  pos:"WR",  years:4,  probowls:1, draftRound:1 },
+  { name:"Daniel Jones",       team:"New York Giants",    teamAbbr:"NYG", conf:"NFC", div:"NFC East",  pos:"QB",  years:6,  probowls:0, draftRound:1 },
+  { name:"Jaylin Hyatt",       team:"New York Giants",    teamAbbr:"NYG", conf:"NFC", div:"NFC East",  pos:"WR",  years:2,  probowls:0, draftRound:3 },
+  { name:"Sam Howell",         team:"Washington Commanders",teamAbbr:"WAS",conf:"NFC",div:"NFC East",  pos:"QB",  years:3,  probowls:0, draftRound:5 },
+  { name:"Terry McLaurin",     team:"Washington Commanders",teamAbbr:"WAS",conf:"NFC",div:"NFC East",  pos:"WR",  years:6,  probowls:0, draftRound:3 },
+  { name:"Jayden Daniels",     team:"Washington Commanders",teamAbbr:"WAS",conf:"NFC",div:"NFC East",  pos:"QB",  years:1,  probowls:0, draftRound:1 },
+
+  // NFC West
+  { name:"Kyler Murray",       team:"Arizona Cardinals",  teamAbbr:"ARI", conf:"NFC", div:"NFC West",  pos:"QB",  years:6,  probowls:2, draftRound:1 },
+  { name:"Marvin Harrison Jr.",team:"Arizona Cardinals",  teamAbbr:"ARI", conf:"NFC", div:"NFC West",  pos:"WR",  years:1,  probowls:0, draftRound:1 },
+  { name:"Matthew Stafford",   team:"Los Angeles Rams",   teamAbbr:"LAR", conf:"NFC", div:"NFC West",  pos:"QB",  years:16, probowls:1, draftRound:1 },
+  { name:"Cooper Kupp",        team:"Los Angeles Rams",   teamAbbr:"LAR", conf:"NFC", div:"NFC West",  pos:"WR",  years:8,  probowls:2, draftRound:3 },
+  { name:"Puka Nacua",         team:"Los Angeles Rams",   teamAbbr:"LAR", conf:"NFC", div:"NFC West",  pos:"WR",  years:2,  purnbowls:0, draftRound:5 },
+  { name:"Brock Purdy",        team:"San Francisco 49ers",teamAbbr:"SF",  conf:"NFC", div:"NFC West",  pos:"QB",  years:3,  probowls:1, draftRound:7 },
+  { name:"Christian McCaffrey",team:"San Francisco 49ers",teamAbbr:"SF",  conf:"NFC", div:"NFC West",  pos:"RB",  years:8,  probowls:5, draftRound:1 },
+  { name:"Deebo Samuel",       team:"San Francisco 49ers",teamAbbr:"SF",  conf:"NFC", div:"NFC West",  pos:"WR",  years:6,  probowls:2, draftRound:2 },
+  { name:"Brandon Aiyuk",      team:"San Francisco 49ers",teamAbbr:"SF",  conf:"NFC", div:"NFC West",  pos:"WR",  years:5,  probowls:1, draftRound:1 },
+  { name:"Geno Smith",         team:"Seattle Seahawks",   teamAbbr:"SEA", conf:"NFC", div:"NFC West",  pos:"QB",  years:12, probowls:1, draftRound:2 },
+  { name:"DK Metcalf",         team:"Seattle Seahawks",   teamAbbr:"SEA", conf:"NFC", div:"NFC West",  pos:"WR",  years:6,  probowls:2, draftRound:2 },
+  { name:"Tyler Lockett",      team:"Seattle Seahawks",   teamAbbr:"SEA", conf:"NFC", div:"NFC West",  pos:"WR",  years:10, probowls:1, draftRound:3 },
+
+  // NFC South
+  { name:"Bijan Robinson",     team:"Atlanta Falcons",    teamAbbr:"ATL", conf:"NFC", div:"NFC South", pos:"RB",  years:2,  probowls:1, draftRound:1 },
+  { name:"Drake London",       team:"Atlanta Falcons",    teamAbbr:"ATL", conf:"NFC", div:"NFC South", pos:"WR",  years:3,  probowls:0, draftRound:1 },
+  { name:"Bryce Young",        team:"Carolina Panthers",  teamAbbr:"CAR", conf:"NFC", div:"NFC South", pos:"QB",  years:2,  probowls:0, draftRound:1 },
+  { name:"Adam Thielen",       team:"Carolina Panthers",  teamAbbr:"CAR", conf:"NFC", div:"NFC South", pos:"WR",  years:12, probowls:2, draftRound:7 },
+  { name:"Derek Carr",         team:"New Orleans Saints", teamAbbr:"NO",  conf:"NFC", div:"NFC South", pos:"QB",  years:11, probowls:1, draftRound:2 },
+  { name:"Chris Olave",        team:"New Orleans Saints", teamAbbr:"NO",  conf:"NFC", div:"NFC South", pos:"WR",  years:3,  probowls:0, draftRound:1 },
+  { name:"Baker Mayfield",     team:"Tampa Bay Buccaneers",teamAbbr:"TB", conf:"NFC", div:"NFC South", pos:"QB",  years:7,  probowls:0, draftRound:1 },
+  { name:"Mike Evans",         team:"Tampa Bay Buccaneers",teamAbbr:"TB", conf:"NFC", div:"NFC South", pos:"WR",  years:11, probowls:5, draftRound:1 },
+  { name:"Chris Godwin",       team:"Tampa Bay Buccaneers",teamAbbr:"TB", conf:"NFC", div:"NFC South", pos:"WR",  years:8,  probowls:2, draftRound:3 },
+
+  // Extra stars / historical legends for variety
+  { name:"Aaron Rodgers",      team:"New York Jets",      teamAbbr:"NYJ", conf:"AFC", div:"AFC East", pos:"QB",  years:20, probowls:10,draftRound:1 },
+  { name:"Tom Brady",          team:"Tampa Bay Buccaneers",teamAbbr:"TB", conf:"NFC", div:"NFC South", pos:"QB",  years:23, probowls:15,draftRound:6 },
+  { name:"Peyton Manning",     team:"Indianapolis Colts", teamAbbr:"IND", conf:"AFC", div:"AFC South", pos:"QB",  years:18, probowls:14,draftRound:1 },
+  { name:"Jerry Rice",         team:"San Francisco 49ers",teamAbbr:"SF",  conf:"NFC", div:"NFC West",  pos:"WR",  years:20, probowls:13,draftRound:1 },
+  { name:"Randy Moss",         team:"Minnesota Vikings",  teamAbbr:"MIN", conf:"NFC", div:"NFC North", pos:"WR",  years:14, probowls:6, draftRound:1 },
+  { name:"Emmitt Smith",       team:"Dallas Cowboys",     teamAbbr:"DAL", conf:"NFC", div:"NFC East",  pos:"RB",  years:15, probowls:8, draftRound:1 },
+  { name:"Barry Sanders",      team:"Detroit Lions",      teamAbbr:"DET", conf:"NFC", div:"NFC North", pos:"RB",  years:10, probowls:10,draftRound:1 },
+  { name:"Lawrence Taylor",    team:"New York Giants",    teamAbbr:"NYG", conf:"NFC", div:"NFC East",  pos:"LB",  years:13, probowls:10,draftRound:1 },
+  { name:"Reggie White",       team:"Green Bay Packers",  teamAbbr:"GB",  conf:"NFC", div:"NFC North", pos:"DE",  years:15, probowls:13,draftRound:1 },
+  { name:"Joe Montana",        team:"San Francisco 49ers",teamAbbr:"SF",  conf:"NFC", div:"NFC West",  pos:"QB",  years:16, probowls:8, draftRound:3 },
+  { name:"Dan Marino",         team:"Miami Dolphins",     teamAbbr:"MIA", conf:"AFC", div:"AFC East", pos:"QB",  years:17, probowls:9, draftRound:1 },
+  { name:"Walter Payton",      team:"Chicago Bears",      teamAbbr:"CHI", conf:"NFC", div:"NFC North", pos:"RB",  years:13, probowls:9, draftRound:1 },
+  { name:"Jim Brown",          team:"Cleveland Browns",   teamAbbr:"CLE", conf:"AFC", div:"AFC North", pos:"RB",  years:9,  probowls:9, draftRound:1 },
+  { name:"Dick Butkus",        team:"Chicago Bears",      teamAbbr:"CHI", conf:"NFC", div:"NFC North", pos:"LB",  years:9,  probowls:8, draftRound:1 },
+  { name:"Deion Sanders",      team:"Dallas Cowboys",     teamAbbr:"DAL", conf:"NFC", div:"NFC East",  pos:"CB",  years:14, probowls:8, draftRound:1 },
+  { name:"Tony Gonzalez",      team:"Atlanta Falcons",    teamAbbr:"ATL", conf:"NFC", div:"NFC South", pos:"TE",  years:17, probowls:14,draftRound:1 },
+  { name:"Calvin Johnson",     team:"Detroit Lions",      teamAbbr:"DET", conf:"NFC", div:"NFC North", pos:"WR",  years:9,  probowls:6, draftRound:1 },
+  { name:"Adrian Peterson",    team:"Minnesota Vikings",  teamAbbr:"MIN", conf:"NFC", div:"NFC North", pos:"RB",  years:15, probowls:7, draftRound:1 },
+  { name:"Aaron Donald",       team:"Los Angeles Rams",   teamAbbr:"LAR", conf:"NFC", div:"NFC West",  pos:"DT",  years:11, probowls:8, draftRound:1 },
+  { name:"Von Miller",         team:"Buffalo Bills",      teamAbbr:"BUF", conf:"AFC", div:"AFC East", pos:"LB",  years:13, probowls:8, draftRound:1 },
+  { name:"Marshawn Lynch",     team:"Seattle Seahawks",   teamAbbr:"SEA", conf:"NFC", div:"NFC West",  pos:"RB",  years:12, probowls:5, draftRound:1 },
+  { name:"Rob Gronkowski",     team:"Tampa Bay Buccaneers",teamAbbr:"TB", conf:"NFC", div:"NFC South", pos:"TE",  years:11, probowls:5, draftRound:2 },
+  { name:"Antonio Brown",      team:"Tampa Bay Buccaneers",teamAbbr:"TB", conf:"NFC", div:"NFC South", pos:"WR",  years:12, probowls:7, draftRound:6 },
+  { name:"Drew Brees",         team:"New Orleans Saints", teamAbbr:"NO",  conf:"NFC", div:"NFC South", pos:"QB",  years:20, probowls:13,draftRound:2 },
+  { name:"Philip Rivers",      team:"Los Angeles Chargers",teamAbbr:"LAC",conf:"AFC", div:"AFC West", pos:"QB",  years:17, probowls:8, draftRound:1 },
+  { name:"Julio Jones",        team:"Atlanta Falcons",    teamAbbr:"ATL", conf:"NFC", div:"NFC South", pos:"WR",  years:11, probowls:7, draftRound:1 },
+];
+
+// De-duplicate by name (first occurrence wins)
+const seen = new Set();
+const PLAYER_LIST = PLAYERS.filter(p => {
+  if (seen.has(p.name)) return false;
+  seen.add(p.name);
+  return true;
+});
+
+// ── Daily puzzle seed ────────────────────────────────────────────────────
+function getPuzzleNumber() {
+  const epoch = new Date('2025-01-01T00:00:00-05:00');
+  const now = new Date();
+  const estOffset = -5 * 60;
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  const estMs = utcMs + estOffset * 60000;
+  const estDate = new Date(estMs);
+  const days = Math.floor((estDate - epoch) / (1000 * 60 * 60 * 24));
+  return Math.max(0, days);
+}
+
+function getTodayKey() {
+  const estOffset = -5 * 60;
+  const now = new Date();
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  const estMs = utcMs + estOffset * 60000;
+  const d = new Date(estMs);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getMysteryPlayer() {
+  const n = getPuzzleNumber();
+  // Simple LCG to spread across player pool
+  let idx = n % PLAYER_LIST.length;
+  // Mix it a bit so puzzle 0 isn't always player 0
+  idx = (idx * 7 + 3) % PLAYER_LIST.length;
+  return PLAYER_LIST[idx];
+}
+
+// ── State ────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'nflWordle_v1';
+const STATS_KEY   = 'nflWordleStats_v1';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (s.date !== getTodayKey()) return null;
+    return s;
+  } catch { return null; }
+}
+
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+}
+
+function loadStats() {
+  try {
+    const raw = localStorage.getItem(STATS_KEY);
+    return raw ? JSON.parse(raw) : { played:0, wins:0, streak:0, maxStreak:0, dist:{1:0,2:0,3:0,4:0,5:0,6:0} };
+  } catch {
+    return { played:0, wins:0, streak:0, maxStreak:0, dist:{1:0,2:0,3:0,4:0,5:0,6:0} };
+  }
+}
+
+function saveStats(s) {
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch {}
+}
+
+// ── Compare logic ────────────────────────────────────────────────────────
+function compareGuess(guess, mystery) {
+  const result = {};
+
+  // Team
+  if (guess.teamAbbr === mystery.teamAbbr) {
+    result.team = { val: guess.teamAbbr, color: 'green' };
+  } else if (guess.conf === mystery.conf) {
+    result.team = { val: guess.teamAbbr, color: 'yellow' };
+  } else {
+    result.team = { val: guess.teamAbbr, color: 'grey' };
+  }
+
+  // Position
+  result.pos = { val: guess.pos, color: guess.pos === mystery.pos ? 'green' : 'grey' };
+
+  // Division
+  if (guess.div === mystery.div) {
+    result.div = { val: guess.div.replace('AFC ','').replace('NFC ',''), color: 'green' };
+  } else if (guess.conf === mystery.conf) {
+    result.div = { val: guess.div.replace('AFC ','').replace('NFC ',''), color: 'yellow' };
+  } else {
+    result.div = { val: guess.div.replace('AFC ','').replace('NFC ',''), color: 'grey' };
+  }
+
+  // Years
+  if (guess.years === mystery.years) {
+    result.years = { val: guess.years, arrow: '', color: 'green' };
+  } else {
+    result.years = { val: guess.years, arrow: guess.years < mystery.years ? '↑' : '↓', color: 'grey' };
+  }
+
+  // Pro Bowls
+  const gPB = guess.probowls || 0;
+  const mPB = mystery.probowls || 0;
+  if (gPB === mPB) {
+    result.probowls = { val: gPB, arrow: '', color: 'green' };
+  } else {
+    result.probowls = { val: gPB, arrow: gPB < mPB ? '↑' : '↓', color: 'grey' };
+  }
+
+  // Draft Round
+  if (guess.draftRound === mystery.draftRound) {
+    result.draftRound = { val: guess.draftRound, arrow: '', color: 'green' };
+  } else {
+    result.draftRound = { val: guess.draftRound, arrow: guess.draftRound < mystery.draftRound ? '↑' : '↓', color: 'grey' };
+  }
+
+  return result;
+}
+
+// ── Render ───────────────────────────────────────────────────────────────
+const MAX_GUESSES = 6;
+const mystery = getMysteryPlayer();
+let state = loadState() || { date: getTodayKey(), guesses: [], solved: false, failed: false };
+let selectedPlayer = null;
+let acActiveIdx = -1;
+
+function renderGrid() {
+  const grid = document.getElementById('guessGrid');
+  grid.innerHTML = '';
+
+  // Filled rows
+  state.guesses.forEach((g, i) => {
+    const row = document.createElement('div');
+    row.className = 'guess-row';
+    row.dataset.idx = i;
+
+    const p = PLAYER_LIST.find(pl => pl.name === g.name);
+    if (!p) return;
+    const result = compareGuess(p, mystery);
+
+    // Player name cell
+    const nameCell = document.createElement('div');
+    nameCell.className = 'cell player-name grey';
+    nameCell.textContent = g.name;
+    row.appendChild(nameCell);
+
+    // Team
+    const teamCell = document.createElement('div');
+    teamCell.className = `cell ${result.team.color}`;
+    teamCell.textContent = result.team.val;
+    row.appendChild(teamCell);
+
+    // Pos
+    const posCell = document.createElement('div');
+    posCell.className = `cell ${result.pos.color}`;
+    posCell.textContent = result.pos.val;
+    row.appendChild(posCell);
+
+    // Division
+    const divCell = document.createElement('div');
+    divCell.className = `cell ${result.div.color}`;
+    divCell.textContent = result.div.val;
+    row.appendChild(divCell);
+
+    // Years
+    const yrsCell = document.createElement('div');
+    yrsCell.className = `cell ${result.years.color}`;
+    if (result.years.arrow) {
+      yrsCell.innerHTML = `<span class="arrow">${result.years.arrow}</span><span class="val">${result.years.val}</span>`;
+    } else {
+      yrsCell.textContent = result.years.val;
+    }
+    row.appendChild(yrsCell);
+
+    // Pro Bowls
+    const pbCell = document.createElement('div');
+    pbCell.className = `cell ${result.probowls.color}`;
+    if (result.probowls.arrow) {
+      pbCell.innerHTML = `<span class="arrow">${result.probowls.arrow}</span><span class="val">${result.probowls.val}</span>`;
+    } else {
+      pbCell.textContent = result.probowls.val;
+    }
+    row.appendChild(pbCell);
+
+    // Draft Round
+    const rdCell = document.createElement('div');
+    rdCell.className = `cell ${result.draftRound.color}`;
+    if (result.draftRound.arrow) {
+      rdCell.innerHTML = `<span class="arrow">${result.draftRound.arrow}</span><span class="val">Rd ${result.draftRound.val}</span>`;
+    } else {
+      rdCell.textContent = `Rd ${result.draftRound.val}`;
+    }
+    row.appendChild(rdCell);
+
+    grid.appendChild(row);
+  });
+
+  // Empty rows
+  const remaining = MAX_GUESSES - state.guesses.length;
+  for (let i = 0; i < remaining; i++) {
+    const row = document.createElement('div');
+    row.className = 'guess-row guess-row-empty';
+    for (let j = 0; j < 7; j++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      row.appendChild(cell);
+    }
+    grid.appendChild(row);
+  }
+}
+
+function renderStats() {
+  const stats = loadStats();
+  const winPct = stats.played > 0 ? Math.round((stats.wins / stats.played) * 100) : 0;
+
+  document.getElementById('pillStreak').textContent  = stats.streak;
+  document.getElementById('pillPlayed').textContent  = stats.played;
+  document.getElementById('pillWin').textContent     = winPct + '%';
+  document.getElementById('pillNum').textContent     = getPuzzleNumber() + 1;
+
+  document.getElementById('statPlayed').textContent    = stats.played;
+  document.getElementById('statWinPct').textContent    = winPct + '%';
+  document.getElementById('statStreak').textContent    = stats.streak;
+  document.getElementById('statMaxStreak').textContent = stats.maxStreak;
+
+  renderDist(stats);
+}
+
+function renderDist(stats) {
+  const wrap = document.getElementById('distribution');
+  wrap.innerHTML = '';
+  const max = Math.max(1, ...Object.values(stats.dist));
+  for (let i = 1; i <= 6; i++) {
+    const val = stats.dist[i] || 0;
+    const pct = Math.round((val / max) * 100);
+    const isCurrent = state.solved && state.guesses.length === i;
+
+    const row = document.createElement('div');
+    row.className = 'dist-row';
+    row.innerHTML = `
+      <div class="dist-label">${i}</div>
+      <div class="dist-bar-wrap">
+        <div class="dist-bar ${isCurrent ? 'current' : ''}" style="width:${Math.max(pct,4)}%">${val}</div>
+      </div>`;
+    wrap.appendChild(row);
+  }
+}
+
+function showGameOver() {
+  const panel = document.getElementById('gameOver');
+  const title = document.getElementById('gameOverTitle');
+  const reveal = document.getElementById('answerReveal');
+
+  panel.classList.add('visible');
+
+  if (state.solved) {
+    const n = state.guesses.length;
+    title.textContent = n === 1 ? 'Incredible!' : n <= 2 ? 'Outstanding!' : n <= 3 ? 'Great Job!' : n <= 4 ? 'Nice Work!' : n <= 5 ? 'Close Call!' : 'Phew!';
+    reveal.textContent = mystery.name + ' — ' + mystery.pos + ', ' + mystery.team;
+  } else {
+    title.textContent = 'Better luck tomorrow!';
+    reveal.textContent = mystery.name + ' — ' + mystery.pos + ', ' + mystery.team;
+  }
+
+  document.getElementById('inputArea').classList.add('disabled');
+  startCountdown();
+}
+
+function startCountdown() {
+  function tick() {
+    const estOffset = -5 * 60;
+    const now = new Date();
+    const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+    const estMs = utcMs + estOffset * 60000;
+    const estNow = new Date(estMs);
+
+    const tomorrow = new Date(estNow);
+    tomorrow.setHours(24, 0, 0, 0);
+    const diff = tomorrow - estNow;
+
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('countdown').textContent =
+      `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+// ── Autocomplete ─────────────────────────────────────────────────────────
+const input = document.getElementById('playerInput');
+const acList = document.getElementById('acList');
+const guessBtn = document.getElementById('guessBtn');
+
+function getAlreadyGuessed() {
+  return new Set(state.guesses.map(g => g.name));
+}
+
+function updateAutocomplete(query) {
+  acList.innerHTML = '';
+  acActiveIdx = -1;
+
+  if (!query || query.length < 2) {
+    acList.classList.remove('open');
+    return;
+  }
+
+  const q = query.toLowerCase();
+  const already = getAlreadyGuessed();
+  const matches = PLAYER_LIST.filter(p => p.name.toLowerCase().includes(q)).slice(0, 12);
+
+  if (!matches.length) {
+    acList.classList.remove('open');
+    return;
+  }
+
+  matches.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'autocomplete-item' + (already.has(p.name) ? ' already-guessed' : '');
+    item.dataset.idx = i;
+    item.innerHTML = `
+      <span>${p.name}</span>
+      <span class="ac-meta">${p.pos} · ${p.teamAbbr}</span>`;
+    item.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      selectPlayer(p);
+    });
+    acList.appendChild(item);
+  });
+
+  acList.classList.add('open');
+}
+
+function selectPlayer(p) {
+  selectedPlayer = p;
+  input.value = p.name;
+  acList.classList.remove('open');
+  guessBtn.disabled = false;
+}
+
+input.addEventListener('input', () => {
+  selectedPlayer = null;
+  guessBtn.disabled = true;
+  updateAutocomplete(input.value.trim());
+});
+
+input.addEventListener('keydown', (e) => {
+  const items = acList.querySelectorAll('.autocomplete-item:not(.already-guessed)');
+  if (!acList.classList.contains('open') || !items.length) {
+    if (e.key === 'Enter' && selectedPlayer) submitGuess();
+    return;
+  }
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    acActiveIdx = Math.min(acActiveIdx + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    acActiveIdx = Math.max(acActiveIdx - 1, 0);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (acActiveIdx >= 0) {
+      items[acActiveIdx].dispatchEvent(new Event('mousedown'));
+    } else if (selectedPlayer) {
+      submitGuess();
+    }
+    return;
+  } else if (e.key === 'Escape') {
+    acList.classList.remove('open');
+    return;
+  } else {
+    return;
+  }
+
+  items.forEach((item, i) => item.classList.toggle('active', i === acActiveIdx));
+  if (acActiveIdx >= 0) {
+    const allItems = acList.querySelectorAll('.autocomplete-item');
+    // Find real index from visible items
+    const p = PLAYER_LIST.find(pl => pl.name === items[acActiveIdx].querySelector('span').textContent);
+    if (p) { selectedPlayer = p; input.value = p.name; guessBtn.disabled = false; }
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.autocomplete-wrap')) {
+    acList.classList.remove('open');
+  }
+});
+
+// ── Submit ────────────────────────────────────────────────────────────────
+function submitGuess() {
+  if (!selectedPlayer) return;
+  if (state.solved || state.failed) return;
+
+  const already = getAlreadyGuessed();
+  if (already.has(selectedPlayer.name)) {
+    showToast('Already guessed that player', 'error');
+    return;
+  }
+
+  state.guesses.push({ name: selectedPlayer.name });
+
+  const solved = selectedPlayer.name === mystery.name;
+  if (solved) state.solved = true;
+  if (!solved && state.guesses.length >= MAX_GUESSES) state.failed = true;
+
+  saveState(state);
+
+  // Update stats on completion
+  if (state.solved || state.failed) {
+    const stats = loadStats();
+    stats.played++;
+    if (state.solved) {
+      stats.wins++;
+      stats.streak++;
+      stats.maxStreak = Math.max(stats.maxStreak, stats.streak);
+      stats.dist[state.guesses.length] = (stats.dist[state.guesses.length] || 0) + 1;
+    } else {
+      stats.streak = 0;
+    }
+    saveStats(stats);
+  }
+
+  renderGrid();
+  renderStats();
+
+  // Clear input
+  input.value = '';
+  selectedPlayer = null;
+  guessBtn.disabled = true;
+
+  if (state.solved) {
+    setTimeout(() => showToast('Correct! Nice work!', 'success'), 300);
+    setTimeout(() => showGameOver(), 800);
+  } else if (state.failed) {
+    setTimeout(() => showToast('Out of guesses!', 'error'), 300);
+    setTimeout(() => showGameOver(), 800);
+  }
+}
+
+// ── Share ────────────────────────────────────────────────────────────────
+function emojiFor(color) {
+  if (color === 'green') return '🟩';
+  if (color === 'yellow') return '🟨';
+  return '⬛';
+}
+
+function shareResult() {
+  const n = getPuzzleNumber() + 1;
+  const result = state.solved ? state.guesses.length + '/6' : 'X/6';
+  let text = `NFL Player Wordle #${n} ${result}\n\n`;
+
+  state.guesses.forEach(g => {
+    const p = PLAYER_LIST.find(pl => pl.name === g.name);
+    if (!p) return;
+    const r = compareGuess(p, mystery);
+    text += emojiFor('grey'); // name always grey
+    text += emojiFor(r.team.color);
+    text += emojiFor(r.pos.color);
+    text += emojiFor(r.div.color);
+    text += emojiFor(r.years.color);
+    text += emojiFor(r.probowls.color);
+    text += emojiFor(r.draftRound.color);
+    text += '\n';
+  });
+
+  text += '\nainfgm.com/nfl-wordle.html';
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!', 'success'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied!', 'success');
+  }
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = `toast${type ? ' ' + type : ''}`;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+renderGrid();
+renderStats();
+
+if (state.solved || state.failed) {
+  showGameOver();
+}
+</script>
+
+<!-- More Tools -->
+<div style="max-width:720px;margin:40px auto 0;padding:0 16px 48px;">
+  <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:12px;">More Free Tools</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="/draft-trade-calc.html" style="background:#1A2540;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Draft Trade Calculator</a>
+    <a href="/trade-analyzer.html" style="background:#1A2540;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Trade Analyzer</a>
+    <a href="/mortgage-calc.html" style="background:#1A2540;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Mortgage Calculator</a>
+    <a href="/name-generator.html" style="background:#1A2540;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">AI Business Name Generator</a>
+    <a href="/" style="background:#1A2540;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 16px;color:#00F0FF;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:border-color .2s;">AiNFL GM Simulator</a>
+  </div>
+</div>
+
+</body>
+</html>
