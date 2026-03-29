@@ -1009,52 +1009,52 @@ a:hover { text-decoration: underline; }
 // ── Coach Data ──────────────────────────────────────────────────────────────
 const COACHES = [
   // AFC East
-  { name:"Mike McDaniel",   initials:"MM", team:"Miami Dolphins",      div:"AFC East", conf:"AFC", hired:2022, wins:19, losses:18, playoffs:1, sb:0, hotseat:3, notes:"Back-to-back 8-9 / 9-8 seasons. Tua health still a question." },
-  { name:"Mike Vrabel",     initials:"MV2",team:"New England Patriots", div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Jerod Mayo was fired following a 4-13 season. Respected defensive coach, first rebuild year." },
-  { name:"Aaron Glenn",     initials:"AG", team:"New York Jets",        div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Robert Saleh was fired in October 2024. Former Lions DC. Tasked with full rebuild." },
-  { name:"Sean McDermott",  initials:"SM2",team:"Buffalo Bills",        div:"AFC East", conf:"AFC", hired:2017, wins:76, losses:54, playoffs:6, sb:0, hotseat:2, notes:"Rebuilt Bills into perennial AFC contenders. Josh Allen era. SB window still open." },
+  { name:"Jeff Hafley",      initials:"JH", team:"Miami Dolphins",      div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Mike McDaniel was let go. Former BC and Green Bay DC. First NFL HC job. New era in South Beach." },
+  { name:"Mike Vrabel",      initials:"MV", team:"New England Patriots", div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Jerod Mayo was fired following a 4-13 season. Respected defensive coach, first rebuild year." },
+  { name:"Aaron Glenn",      initials:"AG", team:"New York Jets",        div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Robert Saleh was fired in October 2024. Former Lions DC. Tasked with full rebuild." },
+  { name:"Joe Brady",        initials:"JB", team:"Buffalo Bills",        div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Sean McDermott was fired following Josh Allen's exit. Former Panthers OC and rising play-caller." },
 
   // AFC North
-  { name:"Zac Taylor",      initials:"ZT", team:"Cincinnati Bengals",   div:"AFC North", conf:"AFC", hired:2019, wins:46, losses:44, playoffs:3, sb:0, hotseat:2, notes:"Super Bowl LVI appearance. Built a winner with Burrow." },
-  { name:"Kevin Stefanski",  initials:"KS", team:"Cleveland Browns",     div:"AFC North", conf:"AFC", hired:2020, wins:46, losses:42, playoffs:2, sb:0, hotseat:3, notes:"2020 COY. Front office pressure after Deshaun Watson experiment." },
-  { name:"Mike Tomlin",      initials:"MT", team:"Pittsburgh Steelers",  div:"AFC North", conf:"AFC", hired:2007, wins:174,losses:107,playoffs:9, sb:1, hotseat:1, notes:"Never had a losing season. NFL's gold standard for sustained winning." },
-  { name:"John Harbaugh",    initials:"JH", team:"Baltimore Ravens",     div:"AFC North", conf:"AFC", hired:2008, wins:175,losses:103,playoffs:11,sb:1, hotseat:1, notes:"Lamar era renaissance. Multiple Lamar MVP seasons under his watch." },
+  { name:"Zac Taylor",       initials:"ZT", team:"Cincinnati Bengals",   div:"AFC North", conf:"AFC", hired:2019, wins:46, losses:44, playoffs:3, sb:0, hotseat:2, notes:"Super Bowl LVI appearance. Built a winner with Burrow." },
+  { name:"Todd Monken",      initials:"TM", team:"Cleveland Browns",     div:"AFC North", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Kevin Stefanski was dismissed. Former Georgia OC and Ravens OC. Inherits a roster in transition post-Watson." },
+  { name:"Mike McCarthy",    initials:"MC", team:"Pittsburgh Steelers",  div:"AFC North", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Mike Tomlin departed. Super Bowl champion with Green Bay (XLV) and Dallas OC. Tasked with post-Tomlin rebuild." },
+  { name:"Jesse Minter",     initials:"JM", team:"Baltimore Ravens",     div:"AFC North", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after John Harbaugh stepped down. Former Michigan DC under Jim Harbaugh. Rising defensive coordinator making the leap." },
 
   // AFC South
   { name:"DeMeco Ryans",     initials:"DR", team:"Houston Texans",       div:"AFC South", conf:"AFC", hired:2023, wins:22, losses:13, playoffs:2, sb:0, hotseat:1, notes:"Built fastest-rising team in AFC. CJ Stroud franchise cornerstone." },
   { name:"Shane Steichen",   initials:"SS", team:"Indianapolis Colts",   div:"AFC South", conf:"AFC", hired:2023, wins:14, losses:20, playoffs:0, sb:0, hotseat:3, notes:"Still building. QB situation critical for his job security." },
-  { name:"Doug Pederson",    initials:"DP", team:"Jacksonville Jaguars",  div:"AFC South", conf:"AFC", hired:2022, wins:21, losses:30, playoffs:1, sb:0, hotseat:4, notes:"Hot seat after Lawrence regression and consecutive losing seasons." },
-  { name:"Mike Vrabel",      initials:"MV", team:"Tennessee Titans",     div:"AFC South", conf:"AFC", hired:2018, wins:54, losses:45, playoffs:3, sb:0, hotseat:2, notes:"Left in 2023, returned 2025 for rebuild. Respected defensive mind." },
+  { name:"Liam Coen",        initials:"LC", team:"Jacksonville Jaguars",  div:"AFC South", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Doug Pederson was fired. Former Buccaneers OC. Youngest HC in the league. Trevor Lawrence's future in his hands." },
+  { name:"Robert Saleh",     initials:"RS", team:"Tennessee Titans",     div:"AFC South", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after being fired by the Jets mid-2024. Former 49ers DC and Jets HC. Gets a second chance with a rebuilding Titans squad." },
 
   // AFC West
   { name:"Andy Reid",        initials:"AR", team:"Kansas City Chiefs",   div:"AFC West", conf:"AFC", hired:2013, wins:132,losses:48, playoffs:12,sb:3, hotseat:1, notes:"Greatest coach of his era. 3 Super Bowls with Mahomes (LIV, LVII, LVIII). Future Hall of Famer." },
-  { name:"Jim Harbaugh",     initials:"JH", team:"Los Angeles Chargers", div:"AFC West", conf:"AFC", hired:2024, wins:11, losses:6,  playoffs:1, sb:0, hotseat:1, notes:"Energized franchise immediately. College legend translating to NFL." },
-  { name:"Antonio Pierce",   initials:"AP", team:"Las Vegas Raiders",    div:"AFC West", conf:"AFC", hired:2024, wins:5,  losses:12, playoffs:0, sb:0, hotseat:4, notes:"Interim-turned-permanent. Young roster, thin cap situation." },
+  { name:"Jim Harbaugh",     initials:"JH2",team:"Los Angeles Chargers", div:"AFC West", conf:"AFC", hired:2024, wins:11, losses:6,  playoffs:1, sb:0, hotseat:1, notes:"Energized franchise immediately. College legend translating to NFL." },
+  { name:"Klint Kubiak",     initials:"KK", team:"Las Vegas Raiders",    div:"AFC West", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Antonio Pierce was let go. Former Vikings and Broncos OC. Son of Gary Kubiak. Young HC inheriting a thin roster." },
   { name:"Sean Payton",      initials:"SP", team:"Denver Broncos",       div:"AFC West", conf:"AFC", hired:2023, wins:15, losses:18, playoffs:0, sb:0, hotseat:3, notes:"Expected more. Bo Nix development year key to his tenure." },
 
   // NFC East
-  { name:"Brian Daboll",     initials:"BD", team:"New York Giants",      div:"NFC East", conf:"NFC", hired:2022, wins:23, losses:31, playoffs:1, sb:0, hotseat:4, notes:"Post-Barkley decline. Ownership patience running thin." },
-  { name:"Mike McCarthy",    initials:"MM", team:"Dallas Cowboys",       div:"NFC East", conf:"NFC", hired:2020, wins:49, losses:35, playoffs:3, sb:0, hotseat:3, notes:"Dak era. Perennial playoff entries, no deep runs." },
-  { name:"Dan Quinn",        initials:"DQ", team:"Washington Commanders", div:"NFC East", conf:"NFC", hired:2024, wins:13, losses:4,  playoffs:1, sb:0, hotseat:1, notes:"Jayden Daniels exploded under him. Instant credibility." },
+  { name:"Brian Schottenheimer", initials:"BS", team:"Dallas Cowboys",   div:"NFC East", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Mike McCarthy was fired. Former Seahawks OC. Inherits Dak Prescott and a roster still built to compete." },
+  { name:"John Harbaugh",    initials:"JH3",team:"New York Giants",      div:"NFC East", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Brian Daboll was fired. Left Baltimore after stepping down. One of the most accomplished coaches in the NFL. Major credibility hire for a struggling Giants franchise." },
   { name:"Nick Sirianni",    initials:"NS", team:"Philadelphia Eagles",   div:"NFC East", conf:"NFC", hired:2021, wins:46, losses:29, playoffs:4, sb:1, hotseat:1, notes:"SB LIX champion. Jalen Hurts-led dynasty building in Philly." },
+  { name:"Dan Quinn",        initials:"DQ", team:"Washington Commanders", div:"NFC East", conf:"NFC", hired:2024, wins:13, losses:4,  playoffs:1, sb:0, hotseat:1, notes:"Jayden Daniels exploded under him. Instant credibility." },
 
   // NFC North
+  { name:"Ben Johnson",      initials:"BJ", team:"Chicago Bears",        div:"NFC North", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Matt Eberflus was fired. Former Lions OC and the most coveted coordinator in football. Reunites with Caleb Williams to unlock a potential dynasty." },
   { name:"Dan Campbell",     initials:"DC", team:"Detroit Lions",        div:"NFC North", conf:"NFC", hired:2021, wins:38, losses:32, playoffs:2, sb:0, hotseat:1, notes:"Culture builder. Lions are legitimate NFC contenders." },
-  { name:"Kevin O'Connell",  initials:"KO", team:"Minnesota Vikings",    div:"NFC North", conf:"NFC", hired:2022, wins:35, losses:25, playoffs:2, sb:0, hotseat:1, notes:"JJ McCarthy era beginning. Offensive-minded, players love him." },
-  { name:"Matt Eberflus",    initials:"ME", team:"Chicago Bears",        div:"NFC North", conf:"NFC", hired:2022, wins:16, losses:34, playoffs:0, sb:0, hotseat:5, notes:"Caleb Williams first year mixed. Defense bottom-tier." },
   { name:"Matt LaFleur",     initials:"ML", team:"Green Bay Packers",    div:"NFC North", conf:"NFC", hired:2019, wins:65, losses:30, playoffs:5, sb:0, hotseat:1, notes:"Love era. Consistent double-digit win coach. SB still elusive." },
+  { name:"Kevin O'Connell",  initials:"KO", team:"Minnesota Vikings",    div:"NFC North", conf:"NFC", hired:2022, wins:35, losses:25, playoffs:2, sb:0, hotseat:1, notes:"JJ McCarthy era beginning. Offensive-minded, players love him." },
 
   // NFC South
-  { name:"Dave Canales",     initials:"DC", team:"Carolina Panthers",    div:"NFC South", conf:"NFC", hired:2024, wins:5,  losses:12, playoffs:0, sb:0, hotseat:4, notes:"Bryce Young struggled. Multiple consecutive 5+ win seasons needed." },
-  { name:"Raheem Morris",    initials:"RM", team:"Atlanta Falcons",      div:"NFC South", conf:"NFC", hired:2024, wins:8,  losses:9,  playoffs:0, sb:0, hotseat:3, notes:"Kirk Cousins still acclimating post-injury. Division winnable." },
-  { name:"Dennis Allen",     initials:"DA", team:"New Orleans Saints",   div:"NFC South", conf:"NFC", hired:2022, wins:16, losses:32, playoffs:0, sb:0, hotseat:5, notes:"Post-Payton depression. Worst stretch in 20 years. Job in danger." },
-  { name:"Todd Bowles",      initials:"TB2",team:"Tampa Bay Buccaneers", div:"NFC South", conf:"NFC", hired:2022, wins:26, losses:24, playoffs:2, sb:0, hotseat:2, notes:"Baker Mayfield renaissance. Winning in Brady's shadow." },
+  { name:"Kevin Stefanski",  initials:"KS", team:"Atlanta Falcons",      div:"NFC South", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Raheem Morris was fired. Former Browns HC and 2020 COY. Gets a fresh start with Michael Penix Jr. and a retooled Falcons roster." },
+  { name:"Dave Canales",     initials:"DC2",team:"Carolina Panthers",    div:"NFC South", conf:"NFC", hired:2024, wins:5,  losses:12, playoffs:0, sb:0, hotseat:4, notes:"Bryce Young struggled. Multiple consecutive 5+ win seasons needed." },
+  { name:"Kellen Moore",     initials:"KM", team:"New Orleans Saints",   div:"NFC South", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Dennis Allen was fired mid-season. Former Eagles OC and Cowboys OC. Highly regarded offensive mind tasked with rebuilding a Saints franchise at rock bottom." },
+  { name:"Todd Bowles",      initials:"TB", team:"Tampa Bay Buccaneers", div:"NFC South", conf:"NFC", hired:2022, wins:26, losses:24, playoffs:2, sb:0, hotseat:2, notes:"Baker Mayfield renaissance. Winning in Brady's shadow." },
 
   // NFC West
+  { name:"Mike LaFleur",     initials:"MLF",team:"Arizona Cardinals",    div:"NFC West", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Jonathan Gannon was fired. Former Jets and 49ers passing game coordinator. Brother of Matt LaFleur. Inherits Kyler Murray and a rebuilding Cards squad." },
   { name:"Sean McVay",       initials:"SM", team:"Los Angeles Rams",     div:"NFC West", conf:"NFC", hired:2017, wins:88, losses:47, playoffs:7, sb:1, hotseat:1, notes:"Elite offensive mind. Youngest coach ever to win a Super Bowl." },
   { name:"Kyle Shanahan",    initials:"KS2",team:"San Francisco 49ers",  div:"NFC West", conf:"NFC", hired:2017, wins:75, losses:59, playoffs:5, sb:0, hotseat:2, notes:"Multiple SB appearances. Scheme god but SB ring missing." },
   { name:"Mike Macdonald",   initials:"MM2",team:"Seattle Seahawks",     div:"NFC West", conf:"NFC", hired:2024, wins:10, losses:7,  playoffs:1, sb:0, hotseat:1, notes:"Defensive specialist. Geno Smith and young roster responding well." },
-  { name:"Jonathan Gannon",  initials:"JG", team:"Arizona Cardinals",    div:"NFC West", conf:"NFC", hired:2023, wins:10, losses:23, playoffs:0, sb:0, hotseat:4, notes:"Kyler Murray relationship complicated. Rebuild pace too slow." },
 ];
 
 // Deduplicate initials for display
