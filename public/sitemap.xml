@@ -45,6 +45,7 @@
   <url><loc>https://ainflgm.com/emoji-nfl.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/stat-leaders.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/gameday-planner.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/schedule-strength.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <!-- Sport simulators -->
   <url><loc>https://ainflgm.com/aigm.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
