@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Prop Bet Parlay Builder | AiNFL GM</title>
+<meta name="description" content="Build your own NFL prop bet parlay. Pick player props, game props, and team props, then see combined odds and potential payouts. Free tool by AiNFL GM.">
+<meta property="og:title" content="NFL Prop Bet Parlay Builder | AiNFL GM">
+<meta property="og:description" content="Build a custom NFL prop bet parlay. Add props, see combined odds, calculate payouts. Free entertainment tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/prop-builder.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Prop Bet Parlay Builder | AiNFL GM">
+<meta name="twitter:description" content="Build a custom NFL prop bet parlay. Free entertainment tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF8C00;
+  --orange-dim: rgba(255,140,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57,255,20,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(57,255,20,0.1); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Section Header ── */
+.section-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease both;
+}
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Matchup Selector ── */
+.matchup-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+@media (max-width: 500px) {
+  .matchup-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .matchup-vs { display: none; }
+}
+.matchup-vs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+/* ── Selects ── */
+select, .styled-select {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 11px 36px 11px 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  transition: border-color 0.2s;
+}
+select:focus {
+  outline: none;
+  border-color: var(--border-hi);
+}
+
+/* ── Prop Category Tabs ── */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.cat-tab {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.cat-tab:hover { border-color: var(--border-hi); color: var(--cyan); }
+.cat-tab.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+/* ── Prop Options Grid ── */
+.prop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 500px) {
+  .prop-grid { grid-template-columns: 1fr; }
+}
+
+.prop-option {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  animation: glow-in 0.2s ease both;
+}
+.prop-option:hover {
+  border-color: var(--border-hi);
+  background: rgba(0,240,255,0.04);
+}
+.prop-option.selected {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+}
+.prop-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.prop-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prop-desc {
+  font-size: 11px;
+  color: var(--text-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prop-odds {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.odds-neg { color: var(--red); }
+.odds-pos { color: var(--green); }
+.odds-even { color: var(--yellow); }
+
+.btn-add-prop {
+  margin-top: 14px;
+  width: 100%;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.1s;
+  letter-spacing: 0.02em;
+}
+.btn-add-prop:hover { background: rgba(0,240,255,0.2); }
+.btn-add-prop:active { transform: scale(0.98); }
+.btn-add-prop:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.btn-add-prop:disabled:active { transform: none; }
+
+/* ── Parlay Slip ── */
+.parlay-slip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+.parlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.parlay-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--green);
+}
+.parlay-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-mute);
+  background: var(--bg-2);
+  border-radius: 100px;
+  padding: 3px 10px;
+}
+
+.slip-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  font-size: 13px;
+  color: var(--text-mute);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.02em;
+}
+
+.slip-legs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.slip-leg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  animation: glow-in 0.2s ease both;
+}
+.slip-leg-info {
+  flex: 1;
+  min-width: 0;
+}
+.slip-leg-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.slip-leg-cat {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+.slip-leg-odds {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.slip-leg-remove {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.slip-leg-remove:hover { color: var(--red); }
+
+/* ── Odds Display ── */
+.odds-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+@media (max-width: 420px) {
+  .odds-display { grid-template-columns: 1fr; }
+}
+.odds-stat {
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  text-align: center;
+}
+.odds-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.odds-stat-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.odds-stat-value.large {
+  font-size: 28px;
+}
+
+/* ── Payout Table ── */
+.payout-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.payout-table th {
+  padding: 8px 12px;
+  background: var(--bg-2);
+  color: var(--text-mute);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.payout-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.payout-table tbody tr:last-child td { border-bottom: none; }
+.payout-table td.stake-col { color: var(--text); font-weight: 600; }
+.payout-table td.payout-col { color: var(--green); font-weight: 700; font-family: 'Oswald', sans-serif; font-size: 15px; }
+.payout-table td.profit-col { color: var(--yellow); font-weight: 600; }
+
+/* ── Risk Meter ── */
+.risk-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+}
+.risk-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.risk-stars {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.risk-star {
+  width: 18px;
+  height: 18px;
+  fill: var(--bg-3);
+  transition: fill 0.2s;
+}
+.risk-star.active { fill: var(--yellow); }
+.risk-star.high   { fill: var(--red); }
+.risk-tag {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.risk-low    { background: var(--green-dim);  color: var(--green); }
+.risk-medium { background: var(--yellow-dim); color: var(--yellow); }
+.risk-high   { background: var(--orange-dim); color: var(--orange); }
+.risk-degen  { background: var(--red-dim);    color: var(--red); }
+
+/* ── Share Button ── */
+.btn-share {
+  width: 100%;
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  border-radius: var(--radius-sm);
+  color: var(--green);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.1s;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-share:hover { background: rgba(57,255,20,0.2); }
+.btn-share:active { transform: scale(0.98); }
+.btn-share:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 200;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ── Disclaimer ── */
+.disclaimer {
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--yellow);
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    Parlay Builder
+  </div>
+  <h1>NFL Prop Bet<br><span>Parlay Builder</span></h1>
+  <p>Pick a matchup, add your props, and see combined odds with potential payouts. Build your custom parlay in seconds.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Matchup Selector -->
+  <div class="card" style="animation-delay:0.05s;">
+    <div class="card-title">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="1" y="3" width="14" height="10" rx="2" stroke="#00F0FF" stroke-width="1.4"/>
+        <path d="M1 6h14" stroke="#00F0FF" stroke-width="1.4"/>
+        <path d="M5.5 10h5" stroke="#00F0FF" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      Select Matchup
+    </div>
+    <div class="matchup-row">
+      <select id="team-home" aria-label="Home team">
+        <option value="">Home Team...</option>
+      </select>
+      <div class="matchup-vs">VS</div>
+      <select id="team-away" aria-label="Away team">
+        <option value="">Away Team...</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Prop Selector -->
+  <div class="card" style="animation-delay:0.1s;">
+    <div class="card-title">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6.5" stroke="#00F0FF" stroke-width="1.4"/>
+        <path d="M8 5v3.5l2 2" stroke="#00F0FF" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      Add Props
+    </div>
+
+    <div class="section-label">Category</div>
+    <div class="category-tabs" id="cat-tabs">
+      <button class="cat-tab active" data-cat="player-passing">Passing</button>
+      <button class="cat-tab" data-cat="player-rushing">Rushing</button>
+      <button class="cat-tab" data-cat="player-tds">Touchdowns</button>
+      <button class="cat-tab" data-cat="game-total">Game Total</button>
+      <button class="cat-tab" data-cat="game-first">First Score</button>
+      <button class="cat-tab" data-cat="game-margin">Margin</button>
+      <button class="cat-tab" data-cat="team-yards">Team Yards</button>
+      <button class="cat-tab" data-cat="team-turnovers">Turnovers</button>
+    </div>
+
+    <div class="section-label" style="margin-top:14px;">Pick a prop</div>
+    <div class="prop-grid" id="prop-grid">
+      <!-- populated by JS -->
+    </div>
+
+    <button class="btn-add-prop" id="btn-add" onclick="addSelectedProp()" disabled>
+      + Add to Parlay
+    </button>
+  </div>
+
+  <!-- Parlay Slip -->
+  <div class="parlay-slip" id="parlay-slip">
+    <div class="parlay-header">
+      <div class="parlay-title">My Parlay</div>
+      <div class="parlay-count" id="leg-count">0 legs</div>
+    </div>
+
+    <div id="slip-body">
+      <div class="slip-empty">No props added — start building above</div>
+    </div>
+
+    <!-- Odds Stats -->
+    <div class="odds-display" id="odds-display" style="display:none;">
+      <div class="odds-stat">
+        <div class="odds-stat-label">Parlay Odds</div>
+        <div class="odds-stat-value large" id="parlay-odds">+100</div>
+      </div>
+      <div class="odds-stat">
+        <div class="odds-stat-label">Implied Prob.</div>
+        <div class="odds-stat-value" id="implied-prob">50%</div>
+      </div>
+    </div>
+
+    <!-- Risk Meter -->
+    <div class="risk-row" id="risk-row" style="display:none;">
+      <div class="risk-label">Risk</div>
+      <div class="risk-stars" id="risk-stars" aria-label="Risk level"></div>
+      <div class="risk-tag" id="risk-tag">Low</div>
+    </div>
+
+    <!-- Payout Table -->
+    <div id="payout-wrap" style="display:none;">
+      <div class="section-label" style="margin-bottom:8px;">Potential Payout</div>
+      <table class="payout-table">
+        <thead>
+          <tr>
+            <th>Wager</th>
+            <th>Payout</th>
+            <th>Profit</th>
+          </tr>
+        </thead>
+        <tbody id="payout-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Share -->
+    <button class="btn-share" id="btn-share" onclick="shareParlay()" disabled>
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <path d="M10 2l3 3-3 3M13 5H5.5A3.5 3.5 0 002 8.5V13" stroke="#39FF14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Share Parlay
+    </button>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    For entertainment purposes only. This tool does not constitute gambling advice. Odds shown are approximations for illustrative use only.
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/qb-rater.html">QB Rater</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── NFL Teams ──────────────────────────────────────────────────────────────
+const NFL_TEAMS = [
+  'Arizona Cardinals','Atlanta Falcons','Baltimore Ravens','Buffalo Bills',
+  'Carolina Panthers','Chicago Bears','Cincinnati Bengals','Cleveland Browns',
+  'Dallas Cowboys','Denver Broncos','Detroit Lions','Green Bay Packers',
+  'Houston Texans','Indianapolis Colts','Jacksonville Jaguars','Kansas City Chiefs',
+  'Las Vegas Raiders','Los Angeles Chargers','Los Angeles Rams','Miami Dolphins',
+  'Minnesota Vikings','New England Patriots','New Orleans Saints','New York Giants',
+  'New York Jets','Philadelphia Eagles','Pittsburgh Steelers','San Francisco 49ers',
+  'Seattle Seahawks','Tampa Bay Buccaneers','Tennessee Titans','Washington Commanders'
+];
+
+// ── Prop Database ──────────────────────────────────────────────────────────
+// Each prop: { id, cat, name, desc, odds }
+// odds: American format integer
+const PROPS = {
+  'player-passing': [
+    { id:'pp1', name:'QB Over 249.5 Pass Yds',   desc:'Starter passes for 250+ yards',  odds: -115 },
+    { id:'pp2', name:'QB Under 249.5 Pass Yds',  desc:'Starter passes for under 250',    odds: -110 },
+    { id:'pp3', name:'QB Over 299.5 Pass Yds',   desc:'Starter passes for 300+ yards',  odds: +140 },
+    { id:'pp4', name:'QB Under 299.5 Pass Yds',  desc:'Starter stays under 300',         odds: -170 },
+    { id:'pp5', name:'QB Over 1.5 TD Passes',    desc:'Starter throws 2+ TD passes',    odds: -130 },
+    { id:'pp6', name:'QB Over 2.5 TD Passes',    desc:'Starter throws 3+ TD passes',    odds: +185 },
+    { id:'pp7', name:'QB Over 24.5 Completions', desc:'25+ completions for starting QB', odds: -120 },
+    { id:'pp8', name:'QB Over 0.5 Interceptions',desc:'QB throws at least one INT',      odds: -105 },
+  ],
+  'player-rushing': [
+    { id:'pr1', name:'RB1 Over 74.5 Rush Yds',   desc:'Starting RB rushes for 75+',     odds: -110 },
+    { id:'pr2', name:'RB1 Under 74.5 Rush Yds',  desc:'Starting RB stays under 75',      odds: -115 },
+    { id:'pr3', name:'RB1 Over 99.5 Rush Yds',   desc:'Starting RB rushes for 100+',    odds: +185 },
+    { id:'pr4', name:'RB1 Over 4.5 Rush Yds/Att',desc:'Starter averages 5+ yds per carry',odds: +120},
+    { id:'pr5', name:'RB2 Over 39.5 Rush Yds',   desc:'Backup RB rushes for 40+',       odds: +100 },
+    { id:'pr6', name:'WR1 Over 14.5 Rush Yds',   desc:'Lead WR totals 15+ rush yds',    odds: +110 },
+    { id:'pr7', name:'QB Over 19.5 Rush Yds',    desc:'QB scrambles for 20+ yds',        odds: -130 },
+    { id:'pr8', name:'Team Over 109.5 Rush Yds', desc:'Team totals 110+ rush yards',     odds: -115 },
+  ],
+  'player-tds': [
+    { id:'pt1', name:'Anytime TD Scorer (RB1)',   desc:'Starting RB scores at any point', odds: -145 },
+    { id:'pt2', name:'Anytime TD Scorer (WR1)',   desc:'Lead WR scores at any point',     odds: +110 },
+    { id:'pt3', name:'Anytime TD Scorer (TE1)',   desc:'Starting TE scores at any point', odds: +135 },
+    { id:'pt4', name:'First TD Scorer (RB1)',     desc:'Starting RB scores first TD',     odds: +350 },
+    { id:'pt5', name:'First TD Scorer (WR1)',     desc:'Lead WR scores first TD',         odds: +450 },
+    { id:'pt6', name:'QB Rushing TD',             desc:'QB scores on a scramble',         odds: +200 },
+    { id:'pt7', name:'Over 3.5 Total TDs',        desc:'Combined 4+ touchdowns in game',  odds: -125 },
+    { id:'pt8', name:'Over 5.5 Total TDs',        desc:'Combined 6+ touchdowns in game',  odds: +175 },
+  ],
+  'game-total': [
+    { id:'gt1', name:'Over 44.5 Total Points',   desc:'Both teams combine for 45+',      odds: -110 },
+    { id:'gt2', name:'Under 44.5 Total Points',  desc:'Both teams combine for under 45', odds: -115 },
+    { id:'gt3', name:'Over 47.5 Total Points',   desc:'Both teams combine for 48+',      odds: +105 },
+    { id:'gt4', name:'Under 47.5 Total Points',  desc:'Both teams combine for under 48', odds: -130 },
+    { id:'gt5', name:'Over 51.5 Total Points',   desc:'High-scoring game, 52+ pts',      odds: +160 },
+    { id:'gt6', name:'Under 40.5 Total Points',  desc:'Defensive game, under 41 pts',    odds: +145 },
+    { id:'gt7', name:'Over 21.5 1H Points',      desc:'Combined 22+ pts in first half',  odds: -115 },
+    { id:'gt8', name:'Under 21.5 1H Points',     desc:'Under 22 pts in first half',       odds: -110 },
+  ],
+  'game-first': [
+    { id:'gf1', name:'Home Team Scores First',   desc:'Home team draws first blood',     odds: -115 },
+    { id:'gf2', name:'Away Team Scores First',   desc:'Away team draws first blood',     odds: -110 },
+    { id:'gf3', name:'First Score: FG',          desc:'Game opens with a field goal',    odds: +140 },
+    { id:'gf4', name:'First Score: TD',          desc:'Game opens with a touchdown',     odds: -175 },
+    { id:'gf5', name:'Home Team Leads at Half',  desc:'Home is ahead at halftime',       odds: -120 },
+    { id:'gf6', name:'Away Team Leads at Half',  desc:'Away is ahead at halftime',       odds: +110 },
+    { id:'gf7', name:'Score in 1st 5 minutes',   desc:'A score occurs in first 5 min',   odds: +115 },
+    { id:'gf8', name:'No Score in 1st 5 min',    desc:'Scoreless through 5 minutes',     odds: -140 },
+  ],
+  'game-margin': [
+    { id:'gm1', name:'Home Wins by 1-6',         desc:'Close home victory, 1-6 pts',     odds: +200 },
+    { id:'gm2', name:'Home Wins by 7-13',        desc:'Home wins by 7-13 pts',           odds: +250 },
+    { id:'gm3', name:'Home Wins by 14+',         desc:'Home blowout, 14+ margin',        odds: +320 },
+    { id:'gm4', name:'Away Wins by 1-6',         desc:'Close away win, 1-6 pts',         odds: +220 },
+    { id:'gm5', name:'Away Wins by 7+',          desc:'Away wins by a full week',        odds: +280 },
+    { id:'gm6', name:'Home -3.5 Spread',         desc:'Home covers -3.5 spread',         odds: -110 },
+    { id:'gm7', name:'Away +3.5 Spread',         desc:'Away covers +3.5 spread',         odds: -115 },
+    { id:'gm8', name:'Game Goes to OT',          desc:'Overtime required to decide',     odds: +550 },
+  ],
+  'team-yards': [
+    { id:'ty1', name:'Home Over 349.5 Total Yds',  desc:'Home team totals 350+ yards',   odds: -115 },
+    { id:'ty2', name:'Home Under 349.5 Total Yds', desc:'Home stays under 350 yards',    odds: -110 },
+    { id:'ty3', name:'Away Over 299.5 Total Yds',  desc:'Away team totals 300+ yards',   odds: -125 },
+    { id:'ty4', name:'Away Under 299.5 Total Yds', desc:'Away stays under 300 yards',    odds: +100 },
+    { id:'ty5', name:'Home Over 24.5 1st Downs',   desc:'Home earns 25+ first downs',    odds: -120 },
+    { id:'ty6', name:'Both Teams Over 270 Yds',    desc:'Both sides gain 270+ yards',    odds: +135 },
+    { id:'ty7', name:'Over 699.5 Combined Yds',    desc:'Both teams combine for 700+',   odds: +110 },
+    { id:'ty8', name:'Under 599.5 Combined Yds',   desc:'Both teams stay under 600',     odds: +125 },
+  ],
+  'team-turnovers': [
+    { id:'tt1', name:'Over 1.5 Total Turnovers',   desc:'Game has 2+ combined turnovers', odds: -145 },
+    { id:'tt2', name:'Under 1.5 Total Turnovers',  desc:'Game stays clean, under 2 TOs', odds: +110 },
+    { id:'tt3', name:'Over 2.5 Total Turnovers',   desc:'3+ combined turnovers in game',  odds: +105 },
+    { id:'tt4', name:'Home Team: 0 Turnovers',     desc:'Home team has a clean game',    odds: +150 },
+    { id:'tt5', name:'Away Team: 1+ Turnover',     desc:'Away commits at least 1 TO',    odds: -130 },
+    { id:'tt6', name:'Over 1.5 Interceptions',     desc:'2+ INTs thrown across the game',odds: +115 },
+    { id:'tt7', name:'Over 0.5 Fumbles Lost',      desc:'At least one lost fumble',      odds: -110 },
+    { id:'tt8', name:'Under 0.5 Fumbles Lost',     desc:'No fumbles lost in the game',   odds: -115 },
+  ],
+};
+
+const CAT_LABELS = {
+  'player-passing': 'Passing Props',
+  'player-rushing': 'Rushing Props',
+  'player-tds':     'TD Props',
+  'game-total':     'Game Total',
+  'game-first':     'First Score',
+  'game-margin':    'Margin',
+  'team-yards':     'Team Yards',
+  'team-turnovers': 'Turnovers',
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+let currentCat = 'player-passing';
+let selectedPropId = null;
+let parlay = []; // array of prop objects
+
+// ── Init ───────────────────────────────────────────────────────────────────
+(function init() {
+  // Populate team dropdowns
+  const homeEl = document.getElementById('team-home');
+  const awayEl = document.getElementById('team-away');
+  NFL_TEAMS.forEach(t => {
+    homeEl.add(new Option(t, t));
+    awayEl.add(new Option(t, t));
+  });
+
+  // Default selection so the matchup isn't blank
+  homeEl.value = 'Cincinnati Bengals';
+  awayEl.value = 'Kansas City Chiefs';
+
+  // Category tab click
+  document.getElementById('cat-tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.cat-tab');
+    if (!tab) return;
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentCat = tab.dataset.cat;
+    selectedPropId = null;
+    renderPropGrid();
+    syncAddButton();
+  });
+
+  renderPropGrid();
+})();
+
+// ── Render Prop Grid ───────────────────────────────────────────────────────
+function renderPropGrid() {
+  const grid = document.getElementById('prop-grid');
+  const props = PROPS[currentCat] || [];
+  grid.innerHTML = '';
+
+  props.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'prop-option' + (p.id === selectedPropId ? ' selected' : '');
+    div.dataset.id = p.id;
+    div.innerHTML = `
+      <div class="prop-left">
+        <div class="prop-name">${p.name}</div>
+        <div class="prop-desc">${p.desc}</div>
+      </div>
+      <div class="prop-odds ${oddsClass(p.odds)}">${formatOdds(p.odds)}</div>
+    `;
+    div.addEventListener('click', () => selectProp(p.id));
+    grid.appendChild(div);
+  });
+}
+
+function selectProp(id) {
+  selectedPropId = selectedPropId === id ? null : id;
+  renderPropGrid();
+  syncAddButton();
+}
+
+function syncAddButton() {
+  document.getElementById('btn-add').disabled = !selectedPropId;
+}
+
+// ── Add Prop to Parlay ─────────────────────────────────────────────────────
+function addSelectedProp() {
+  if (!selectedPropId) return;
+  const props = PROPS[currentCat];
+  const prop = props.find(p => p.id === selectedPropId);
+  if (!prop) return;
+
+  // Prevent duplicate
+  if (parlay.find(leg => leg.id === prop.id)) {
+    showToast('Already in your parlay');
+    return;
+  }
+
+  if (parlay.length >= 12) {
+    showToast('Max 12 legs per parlay');
+    return;
+  }
+
+  parlay.push({ ...prop, cat: currentCat });
+  selectedPropId = null;
+  renderPropGrid();
+  syncAddButton();
+  renderSlip();
+  showToast('Added to parlay');
+}
+
+function removeLeg(id) {
+  parlay = parlay.filter(p => p.id !== id);
+  renderSlip();
+}
+
+// ── Render Parlay Slip ─────────────────────────────────────────────────────
+function renderSlip() {
+  const slipBody  = document.getElementById('slip-body');
+  const legCount  = document.getElementById('leg-count');
+  const oddsDisp  = document.getElementById('odds-display');
+  const riskRow   = document.getElementById('risk-row');
+  const payWrap   = document.getElementById('payout-wrap');
+  const shareBtn  = document.getElementById('btn-share');
+  const n = parlay.length;
+
+  legCount.textContent = n === 1 ? '1 leg' : `${n} legs`;
+
+  if (n === 0) {
+    slipBody.innerHTML = '<div class="slip-empty">No props added — start building above</div>';
+    oddsDisp.style.display = 'none';
+    riskRow.style.display  = 'none';
+    payWrap.style.display  = 'none';
+    shareBtn.disabled = true;
+    return;
+  }
+
+  // Render legs
+  const legsDiv = document.createElement('div');
+  legsDiv.className = 'slip-legs';
+  parlay.forEach(p => {
+    const leg = document.createElement('div');
+    leg.className = 'slip-leg';
+    leg.innerHTML = `
+      <div class="slip-leg-info">
+        <div class="slip-leg-name">${p.name}</div>
+        <div class="slip-leg-cat">${CAT_LABELS[p.cat] || p.cat}</div>
+      </div>
+      <div class="slip-leg-odds ${oddsClass(p.odds)}">${formatOdds(p.odds)}</div>
+      <button class="slip-leg-remove" onclick="removeLeg('${p.id}')" aria-label="Remove leg">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    `;
+    legsDiv.appendChild(leg);
+  });
+  slipBody.innerHTML = '';
+  slipBody.appendChild(legsDiv);
+
+  // Compute combined decimal odds
+  let decimal = 1;
+  parlay.forEach(p => { decimal *= americanToDecimal(p.odds); });
+
+  const parlayAmerican = decimalToAmerican(decimal);
+  const impliedPct     = ((1 / decimal) * 100).toFixed(1);
+
+  // Odds stats
+  document.getElementById('parlay-odds').textContent  = formatOdds(parlayAmerican);
+  document.getElementById('parlay-odds').className    = 'odds-stat-value large ' + oddsClass(parlayAmerican);
+  document.getElementById('implied-prob').textContent = impliedPct + '%';
+  oddsDisp.style.display = 'grid';
+
+  // Payout table
+  const stakes = [10, 25, 50, 100];
+  const tbody   = document.getElementById('payout-body');
+  tbody.innerHTML = '';
+  stakes.forEach(stake => {
+    const payout = (stake * decimal).toFixed(2);
+    const profit = (stake * decimal - stake).toFixed(2);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="stake-col">$${stake}</td>
+      <td class="payout-col">$${payout}</td>
+      <td class="profit-col">+$${profit}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  payWrap.style.display = 'block';
+
+  // Risk meter
+  renderRisk(n, parlayAmerican);
+  riskRow.style.display = 'flex';
+
+  shareBtn.disabled = false;
+}
+
+// ── Risk Meter ─────────────────────────────────────────────────────────────
+function renderRisk(legs, americanOdds) {
+  // Score: 1-5 based on legs count and odds magnitude
+  let score = 1;
+  if (legs >= 2) score = 2;
+  if (legs >= 3) score = 3;
+  if (legs >= 5) score = 4;
+  if (legs >= 8) score = 5;
+  // Boost if odds are very high
+  if (americanOdds > 500)  score = Math.min(5, score + 1);
+  if (americanOdds > 2000) score = 5;
+
+  const starsEl = document.getElementById('risk-stars');
+  const tagEl   = document.getElementById('risk-tag');
+  starsEl.innerHTML = '';
+
+  for (let i = 1; i <= 5; i++) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 18 18');
+    svg.classList.add('risk-star');
+    if (i <= score) {
+      svg.classList.add(score >= 4 ? 'high' : 'active');
+    }
+    svg.innerHTML = '<path d="M9 1.5l2.09 4.26 4.71.68-3.41 3.32.81 4.69L9 12l-4.2 2.45.81-4.69-3.41-3.32 4.71-.68z"/>';
+    starsEl.appendChild(svg);
+  }
+
+  const labels = ['', 'Low', 'Low-Med', 'Medium', 'High', 'Degen'];
+  const classes = ['', 'risk-low', 'risk-low', 'risk-medium', 'risk-high', 'risk-degen'];
+  tagEl.textContent  = labels[score];
+  tagEl.className    = 'risk-tag ' + classes[score];
+}
+
+// ── Share ──────────────────────────────────────────────────────────────────
+function shareParlay() {
+  if (!parlay.length) return;
+
+  const homeEl = document.getElementById('team-home');
+  const awayEl = document.getElementById('team-away');
+  const home   = homeEl.value || 'Home';
+  const away   = awayEl.value || 'Away';
+
+  let decimal = 1;
+  parlay.forEach(p => { decimal *= americanToDecimal(p.odds); });
+  const parlayOdds = formatOdds(decimalToAmerican(decimal));
+  const payout100  = (100 * decimal).toFixed(2);
+
+  let text = `My NFL Prop Parlay (${away} @ ${home})\n`;
+  text += '---\n';
+  parlay.forEach((p, i) => {
+    text += `${i + 1}. ${p.name} (${formatOdds(p.odds)})\n`;
+  });
+  text += '---\n';
+  text += `Combined Odds: ${parlayOdds}\n`;
+  text += `$100 pays: $${payout100}\n`;
+  text += '\nBuilt at ainflgm.com/prop-builder.html\n';
+  text += '(For entertainment purposes only)';
+
+  if (navigator.share) {
+    navigator.share({ title: 'My NFL Prop Parlay', text }).catch(() => copyText(text));
+  } else {
+    copyText(text);
+  }
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Parlay copied to clipboard');
+  }).catch(() => {
+    showToast('Could not copy — try again');
+  });
+}
+
+// ── Odds Math ──────────────────────────────────────────────────────────────
+function americanToDecimal(american) {
+  if (american >= 0) {
+    return (american / 100) + 1;
+  }
+  return (100 / Math.abs(american)) + 1;
+}
+
+function decimalToAmerican(decimal) {
+  if (decimal >= 2) {
+    return Math.round((decimal - 1) * 100);
+  }
+  return Math.round(-100 / (decimal - 1));
+}
+
+function formatOdds(american) {
+  return american >= 0 ? '+' + american : '' + american;
+}
+
+function oddsClass(american) {
+  if (american > 0)  return 'odds-pos';
+  if (american < -150) return 'odds-neg';
+  return 'odds-even';
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+</script>
+</body>
+</html>
