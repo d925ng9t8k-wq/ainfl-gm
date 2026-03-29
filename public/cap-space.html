@@ -751,7 +751,7 @@ a:hover { text-decoration: underline; }
 <div class="hero">
   <div class="hero-badge">
     <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
-    2026 SALARY CAP — $272.5M
+    2026 SALARY CAP — $301.2M
   </div>
   <h1>NFL Cap Space <span>Rankings</span></h1>
   <p>All 32 teams ranked by available 2026 cap space. Cap health grades, dead money, and top contracts — updated for the new league year.</p>
@@ -763,7 +763,7 @@ a:hover { text-decoration: underline; }
   <div class="league-summary" id="leagueSummary">
     <div class="summary-card">
       <div class="s-label">League Cap</div>
-      <div class="s-value cyan" id="sumLeagueCap">$272.5M</div>
+      <div class="s-value cyan" id="sumLeagueCap">$301.2M</div>
     </div>
     <div class="summary-card">
       <div class="s-label">Teams in the Green</div>
@@ -885,8 +885,8 @@ a:hover { text-decoration: underline; }
 
 <script>
 // ── 2026 Cap Data ─────────────────────────────────────────────────────────
-// CAP = $272.5M. capSpace = available after all commitments.
-// Figures are realistic estimates for 2026 league year.
+// CAP = $301.2M (official 2026 salary cap per NFL/NFLPA). Up from $255.4M (2025).
+// capSpace = available after all commitments. Figures are estimates for 2026 league year.
 const TEAMS = [
   {
     abbr: 'NE',  name: 'New England Patriots', conf: 'AFC', div: 'AFC East',
@@ -1181,7 +1181,7 @@ const TEAMS = [
 // Sort by capSpace descending (done above)
 TEAMS.sort((a, b) => b.capSpace - a.capSpace);
 
-const CAP = 272.5;
+const CAP = 301.2;
 let activeFilter = 'all';
 let compareState = { a: null, b: null };
 let currentView = 'list';
