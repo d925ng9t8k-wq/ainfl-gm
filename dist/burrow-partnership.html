@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0F172A">
+<title>Joe Burrow Partnership Strategy — 9 Enterprises</title>
+<meta name="description" content="A local, charity-forward partnership proposal between 9 Enterprises and Joe Burrow.">
+<meta property="og:title" content="Joe Burrow Partnership Strategy — 9 Enterprises">
+<meta property="og:description" content="Charity-forward partnership: local authenticity, community impact, first-of-its-kind AI brand relationship.">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #141414;
+  --bg-section: #1a1a1a;
+  --border: rgba(255,255,255,0.08);
+  --orange: #FB4F14;
+  --orange-dim: rgba(251,79,20,0.15);
+  --gold: #FFB800;
+  --gold-dim: rgba(255,184,0,0.12);
+  --green: #22C55E;
+  --green-dim: rgba(34,197,94,0.12);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --text: #F1F1F1;
+  --text-dim: #999;
+  --text-muted: #666;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.header-badge {
+  display: inline-block;
+  background: var(--orange-dim);
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.header h1 span {
+  color: var(--orange);
+}
+
+.header .subtitle {
+  font-size: 18px;
+  color: var(--text-dim);
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header .date {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+/* Executive Summary */
+.exec-summary {
+  background: linear-gradient(135deg, var(--orange-dim), rgba(251,79,20,0.05));
+  border: 1px solid rgba(251,79,20,0.2);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 48px;
+}
+
+.exec-summary h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.exec-summary p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 48px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--orange);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.section-header h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Pillar Cards */
+.pillars {
+  display: grid;
+  gap: 20px;
+}
+
+.pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  transition: border-color 0.3s;
+}
+
+.pillar-card:hover {
+  border-color: rgba(251,79,20,0.3);
+}
+
+.pillar-card .pillar-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+.pillar-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.pillar-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.pillar-card ul li {
+  padding: 6px 0 6px 20px;
+  position: relative;
+  color: var(--text-dim);
+  font-size: 15px;
+}
+
+.pillar-card ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+}
+
+/* Sponsor Grid */
+.sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.sponsor-tag {
+  background: var(--bg-section);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.sponsor-tag.gap {
+  border-color: rgba(251,79,20,0.3);
+  background: var(--orange-dim);
+  color: var(--orange);
+  font-weight: 700;
+}
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card .value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.stat-card .label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Contact Paths */
+.contact-path {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 12px;
+}
+
+.contact-path .path-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--green);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.contact-path h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.contact-path p {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+/* Risk Assessment */
+.risk-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.risk-bar:last-child { border-bottom: none; }
+
+.risk-label {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.risk-level {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.risk-level.low { background: rgba(239,68,68,0.15); color: #EF4444; }
+.risk-level.moderate { background: var(--gold-dim); color: var(--gold); }
+.risk-level.high { background: var(--green-dim); color: var(--green); }
+
+/* Next Steps */
+.steps-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: step;
+}
+
+.steps-list li {
+  counter-increment: step;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.steps-list li:last-child { border-bottom: none; }
+
+.steps-list li::before {
+  content: counter(step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--orange-dim);
+  color: var(--orange);
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.steps-list li .step-text {
+  font-size: 15px;
+  color: var(--text-dim);
+  padding-top: 4px;
+}
+
+/* Bottom Line */
+.bottom-line {
+  background: linear-gradient(135deg, #1a1a1a, #111);
+  border: 2px solid var(--orange);
+  border-radius: 16px;
+  padding: 36px;
+  text-align: center;
+  margin-top: 48px;
+}
+
+.bottom-line h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.bottom-line p {
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.bottom-line .tagline {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-top: 20px;
+}
+
+/* Foundation Info */
+.foundation-box {
+  background: var(--bg-section);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.foundation-box .foundation-name {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.foundation-box .foundation-detail {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 0 0;
+  margin-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
+.footer p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.footer .brand {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 20px 16px 60px; }
+  .header { padding: 40px 0 30px; }
+  .exec-summary { padding: 24px; }
+  .pillar-card { padding: 20px; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .sponsor-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="header-badge">Confidential Strategy Document</div>
+    <h1>Joe Burrow <span>×</span> 9 Enterprises</h1>
+    <div class="subtitle">A local, charity-forward partnership that gives Cincinnati's franchise quarterback an authentic AI brand relationship — and gives 9 Enterprises legitimate brand rights and credibility.</div>
+    <div class="date">Prepared March 29, 2026 — 9 Enterprises</div>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="exec-summary">
+    <h2>Executive Summary</h2>
+    <p>We propose a partnership between 9 Enterprises and Joe Burrow built on three pillars: a charity revenue split benefiting The Joe Burrow Foundation, an authentic local Cincinnati connection, and a photo rights agreement that legitimizes our brand identity. This is not a traditional endorsement — it's a shared mission with a genuine story behind it.</p>
+  </div>
+
+  <!-- Pillar 1: Charity -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>Charity Revenue Split</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar One — Community Impact</div>
+        <h3>Revenue to The Joe Burrow Foundation</h3>
+        <ul>
+          <li>A percentage of 9 Enterprises revenue flows directly to The Joe Burrow Foundation</li>
+          <li>Reframes the deal from a traditional endorsement to a shared community mission</li>
+          <li>Burrow is known for giving back — this aligns directly with his values</li>
+          <li>Not transactional. It's community-forward and authentic</li>
+          <li>A corporate partnership with charity revenue split would be novel in his portfolio</li>
+        </ul>
+        <div class="foundation-box">
+          <div class="foundation-name">The Joe Burrow Foundation</div>
+          <div class="foundation-detail">
+            Mission: Food insecurity + youth mental health in Greater Cincinnati &amp; Baton Rouge<br>
+            HQ: 255 E 5th St, Suite 1900, Cincinnati, OH 45202<br>
+            Board: Jimmy Burrow (VP), Robin Burrow (Secretary)<br>
+            Website: joeburrow.org
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pillar 2: Local -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>Local Authenticity</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar Two — Neighbor to Neighbor</div>
+        <h3>Cincinnati Native, Two Neighborhoods Apart</h3>
+        <ul>
+          <li>Jasson Fishback is a Cincinnati native, living approximately two neighborhoods from Burrow</li>
+          <li>The name "9" literally comes from Joe Burrow's jersey number — the connection is genuine</li>
+          <li>This is a neighbor-to-neighbor pitch, not a corporate cold call</li>
+          <li>The "local kid does good" narrative is powerful and authentic</li>
+          <li>Precedent: Burrow already does local deals — Kroger Health is a Cincinnati-based partnership</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pillar 3: Photo Rights -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>Photo Rights &amp; Brand Legitimacy</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar Three — Brand Identity</div>
+        <h3>Securing the #9 Image with His Blessing</h3>
+        <ul>
+          <li>9 Enterprises currently uses a Joe Burrow #9 photo for brand identity</li>
+          <li>A partnership with his blessing makes the usage fully legal and legitimate</li>
+          <li>Transforms the brand from "inspired by" to "partnered with"</li>
+          <li>A rights waiver on the image is a critical, high-value brand asset</li>
+          <li>This is not cosmetic — it's foundational to the 9 Enterprises identity</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why He Would Say Yes -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>Why He Would Say Yes</h2>
+    </div>
+
+    <p style="color: var(--text-dim); font-size: 15px; margin-bottom: 20px;">Joe Burrow has <strong style="color: var(--orange);">no AI or tech startup</strong> in his current sponsorship portfolio. 9 Enterprises fills a gap no one else is filling — and AI is the hottest sector in the market.</p>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="value">~$4M</div>
+        <div class="label">Annual Endorsement Revenue</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">12+</div>
+        <div class="label">Current Brand Partners</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">0</div>
+        <div class="label">AI Brands in Portfolio</div>
+      </div>
+    </div>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 12px; font-weight: 600;">Current Sponsorship Portfolio:</p>
+    <div class="sponsor-grid">
+      <div class="sponsor-tag">Nike</div>
+      <div class="sponsor-tag">Alo</div>
+      <div class="sponsor-tag">Kroger Health</div>
+      <div class="sponsor-tag">Guinness</div>
+      <div class="sponsor-tag">Nerf</div>
+      <div class="sponsor-tag">Fanatics</div>
+      <div class="sponsor-tag">BWW</div>
+      <div class="sponsor-tag">Bose</div>
+      <div class="sponsor-tag">Lowe's</div>
+      <div class="sponsor-tag">Cash App</div>
+      <div class="sponsor-tag">BodyArmor</div>
+      <div class="sponsor-tag gap">9 Enterprises ← Gap</div>
+    </div>
+  </div>
+
+  <!-- Contact Paths -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>Contact Paths</h2>
+    </div>
+
+    <div class="contact-path">
+      <div class="path-label">Path 1 — Foundation Direct</div>
+      <h4>joeburrow.org/contact-us</h4>
+      <p>Select "Partner" topic. Lower barrier. Reaches foundation staff directly. Best entry point for a charity-aligned pitch.</p>
+    </div>
+
+    <div class="contact-path">
+      <div class="path-label">Path 2 — Agent (Brand Deals)</div>
+      <h4>Brian Ayrault — WIN Sports Group</h4>
+      <p>Handles both contracts and endorsements. Formerly WME Sports. No public contact info — requires a warm introduction through Bengals organization, mutual connections, or the NFLPA agent directory.</p>
+    </div>
+
+    <div class="contact-path">
+      <div class="path-label">Path 3 — Local / Community</div>
+      <h4>Cincinnati Network</h4>
+      <p>Mutual Cincinnati connections. Bengals community events. Joe Burrow Foundation charity events — attend, network, and build a relationship organically.</p>
+    </div>
+  </div>
+
+  <!-- Risk Assessment -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>Risk Assessment</h2>
+    </div>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
+      <div class="risk-bar">
+        <span class="risk-label">Cold pitch to agent (no introduction)</span>
+        <span class="risk-level low">Low Probability</span>
+      </div>
+      <div class="risk-bar">
+        <span class="risk-label">Foundation contact with charity angle</span>
+        <span class="risk-level moderate">Moderate</span>
+      </div>
+      <div class="risk-bar">
+        <span class="risk-label">Local connection + charity + authentic story</span>
+        <span class="risk-level high">Highest Probability</span>
+      </div>
+      <div class="risk-bar">
+        <span class="risk-label">Downside risk if declined</span>
+        <span class="risk-level" style="background: var(--blue-dim); color: var(--blue);">Near Zero</span>
+      </div>
+    </div>
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 12px;">Worst case scenario is no response. There is no brand damage risk — the pitch is mission-aligned and respectful.</p>
+  </div>
+
+  <!-- Next Steps -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2>Recommended Next Steps</h2>
+    </div>
+
+    <ol class="steps-list">
+      <li><div class="step-text">Submit a partnership inquiry through joeburrow.org/contact-us with a charity-forward pitch</div></li>
+      <li><div class="step-text">Draft a one-page partnership proposal — charity split terms, brand usage request, mutual benefits</div></li>
+      <li><div class="step-text">Identify warm connections to Burrow, his family, or his inner circle in the Cincinnati area</div></li>
+      <li><div class="step-text">Attend a Joe Burrow Foundation event in Cincinnati for a face-to-face introduction</div></li>
+      <li><div class="step-text">Prepare a live demo of 9 Enterprises products to showcase what has been built</div></li>
+    </ol>
+  </div>
+
+  <!-- Bottom Line -->
+  <div class="bottom-line">
+    <h2>The Bottom Line</h2>
+    <p>This is not a long shot — it's a calculated play with a genuine story behind it. The charity angle removes the transactional feel. The local angle makes it personal. The AI gap in his portfolio makes it timely.</p>
+    <div class="tagline">"The AI company Joe Burrow believes in."</div>
+  </div>
+
+  <div class="footer">
+    <div class="brand">9 ENTERPRISES</div>
+    <p>Confidential — Prepared for Jasson Fishback<br>March 29, 2026</p>
+  </div>
+
+</div>
+
+</body>
+</html>
