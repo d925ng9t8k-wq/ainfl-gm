@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Draft Day War Room Simulator | AiNFL GM</title>
+<meta name="description" content="You are the GM. The clock is ticking. Make real-time pick and trade decisions in the ultimate NFL Draft Day War Room Simulator.">
+<meta property="og:title" content="NFL Draft Day War Room Simulator | AiNFL GM">
+<meta property="og:description" content="You are the GM. Make real-time draft picks and trade decisions in this 5-round NFL Draft simulator. Powered by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/war-room.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Draft Day War Room Simulator | AiNFL GM">
+<meta name="twitter:description" content="5-round NFL draft simulator. Pick your team, make trades, grade your class.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF6B00;
+  --orange-dim: rgba(255,107,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(0,240,255,0.15); }
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,45,85,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(255,45,85,0.2); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes ticker-slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes countdown-pulse {
+  0%, 100% { color: var(--text); }
+  50%       { color: var(--red); }
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.92) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Live Ticker ── */
+.ticker-wrap {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+.ticker-label {
+  background: var(--red);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0 14px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker-slide 40s linear infinite;
+  will-change: transform;
+}
+.ticker-track span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  padding: 0 24px;
+}
+.ticker-track span strong { color: var(--cyan); }
+.ticker-track span.pick-owned { color: var(--yellow); }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 40px 24px 28px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red-dim);
+  border: 1px solid rgba(255,45,85,0.3);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(26px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Team Select Screen ── */
+#team-select-screen {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  animation: fadeUp 0.4s ease both;
+}
+.team-select-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+}
+@media (max-width: 680px) {
+  .team-select-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.team-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  color: var(--text);
+  font-family: inherit;
+}
+.team-btn:hover {
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+  transform: translateY(-2px);
+}
+.team-btn .team-abbr {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cyan);
+  display: block;
+  margin-bottom: 4px;
+}
+.team-btn .team-name-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+
+/* ── Game Layout ── */
+#game-screen { display: none; }
+
+.game-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .game-layout { grid-template-columns: 1fr; }
+}
+
+/* ── On The Clock Bar ── */
+.on-clock-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--red);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: fadeUp 0.3s ease both;
+}
+.clock-info { display: flex; flex-direction: column; gap: 2px; }
+.clock-round {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.clock-pick-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.clock-team-label {
+  font-size: 13px;
+  color: var(--cyan);
+  font-weight: 600;
+}
+.clock-timer {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+  min-width: 80px;
+  text-align: right;
+  transition: color 0.3s;
+}
+.clock-timer.urgent { animation: countdown-pulse 0.5s ease infinite; }
+
+/* ── Big Board ── */
+.board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.board-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.big-board {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.board-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 56px 52px 80px;
+  align-items: center;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+  gap: 8px;
+}
+.board-row:last-child { border-bottom: none; }
+.board-row:hover { background: rgba(0,240,255,0.04); }
+.board-row.drafted {
+  opacity: 0.35;
+  pointer-events: none;
+  text-decoration: line-through;
+}
+.board-row.your-pick-available {
+  background: rgba(0,240,255,0.04);
+  border-left: 2px solid var(--cyan);
+}
+.rank-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+}
+.player-info { min-width: 0; }
+.player-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-school {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+.pos-tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  text-align: center;
+}
+.pos-QB { background: rgba(0,240,255,0.15); color: var(--cyan); }
+.pos-WR { background: rgba(57,255,20,0.12); color: var(--green); }
+.pos-RB { background: rgba(255,214,0,0.12); color: var(--yellow); }
+.pos-TE { background: rgba(255,107,0,0.12); color: var(--orange); }
+.pos-OT, .pos-OG, .pos-OL { background: rgba(148,163,184,0.12); color: var(--text-dim); }
+.pos-DE, .pos-DT, .pos-DL { background: rgba(255,45,85,0.12); color: var(--red); }
+.pos-CB, .pos-S { background: rgba(167,139,250,0.15); color: #A78BFA; }
+.pos-LB, .pos-EDGE { background: rgba(251,146,60,0.12); color: #FB923C; }
+.grade-tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+.grade-A  { color: var(--green); }
+.grade-B  { color: var(--cyan); }
+.grade-C  { color: var(--yellow); }
+.pick-btn {
+  background: var(--cyan);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.pick-btn:hover { opacity: 0.85; transform: scale(1.03); }
+.pick-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+/* ── Sidebar ── */
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+.sidebar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.sidebar-card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sidebar-card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.sidebar-card-body { padding: 12px 16px; }
+
+.your-picks-list { display: flex; flex-direction: column; gap: 8px; }
+.your-pick-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border-radius: var(--radius-xs);
+  animation: slideIn 0.3s ease both;
+}
+.pick-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+  flex-shrink: 0;
+  min-width: 36px;
+}
+.pick-player-info { min-width: 0; flex: 1; }
+.pick-player-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pick-player-pos {
+  font-size: 10px;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+.your-picks-empty {
+  font-size: 12px;
+  color: var(--text-mute);
+  text-align: center;
+  padding: 16px 0;
+}
+
+.upcoming-picks { display: flex; flex-direction: column; gap: 4px; }
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+}
+.upcoming-item.is-yours {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+}
+.upcoming-pick-num {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.upcoming-team-name {
+  color: var(--text-mute);
+  font-size: 11px;
+}
+.upcoming-item.is-yours .upcoming-pick-num { color: var(--cyan); }
+.upcoming-item.is-yours .upcoming-team-name { color: var(--cyan); font-weight: 600; }
+
+/* ── Trade Offer Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.modal-overlay.hidden { display: none; }
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-top: 3px solid var(--yellow);
+  border-radius: var(--radius);
+  max-width: 440px;
+  width: 100%;
+  animation: modal-in 0.3s ease both;
+  overflow: hidden;
+}
+.modal-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.25);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 10px;
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+.modal-subtitle { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+.modal-body { padding: 16px 20px; }
+.trade-compare {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.trade-side { }
+.trade-side-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.trade-picks { display: flex; flex-direction: column; gap: 6px; }
+.trade-pick-tag {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 6px 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.trade-pick-tag.theirs { color: var(--yellow); }
+.trade-arrow {
+  font-size: 20px;
+  color: var(--text-mute);
+  text-align: center;
+  line-height: 1;
+}
+.trade-value-row {
+  background: var(--bg-2);
+  border-radius: var(--radius-xs);
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.trade-verdict {
+  font-weight: 700;
+  font-size: 13px;
+}
+.trade-verdict.win  { color: var(--green); }
+.trade-verdict.loss { color: var(--red); }
+.trade-verdict.even { color: var(--yellow); }
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+.btn-accept {
+  background: var(--green);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 12px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-accept:hover { opacity: 0.85; }
+.btn-decline {
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: var(--radius-xs);
+  padding: 12px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-decline:hover { background: var(--red-dim); }
+
+/* ── Draft Complete Screen ── */
+#results-screen { display: none; }
+.results-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  animation: fadeUp 0.5s ease both;
+}
+.grade-hero {
+  text-align: center;
+  padding: 32px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.grade-letter {
+  font-family: 'Oswald', sans-serif;
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.grade-letter.A { color: var(--green); text-shadow: 0 0 40px rgba(57,255,20,0.4); }
+.grade-letter.B { color: var(--cyan); text-shadow: 0 0 40px rgba(0,240,255,0.4); }
+.grade-letter.C { color: var(--yellow); text-shadow: 0 0 40px rgba(255,214,0,0.3); }
+.grade-letter.D { color: var(--red); text-shadow: 0 0 40px rgba(255,45,85,0.3); }
+.grade-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.grade-desc { font-size: 14px; color: var(--text-dim); max-width: 400px; margin: 0 auto; }
+
+.results-picks {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.results-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.results-pick-row {
+  display: grid;
+  grid-template-columns: 48px 1fr 56px 54px;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.results-pick-row:last-child { border-bottom: none; }
+.result-pick-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.result-player-name { font-weight: 700; font-size: 13px; }
+.result-school { font-size: 11px; color: var(--text-mute); margin-top: 2px; }
+
+.results-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-share {
+  flex: 1;
+  min-width: 140px;
+  background: var(--cyan);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-share:hover { opacity: 0.85; }
+.btn-restart {
+  flex: 1;
+  min-width: 140px;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-restart:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── AI Picking Indicator ── */
+.ai-picking {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.ai-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: pulse-cyan 1s ease infinite;
+  flex-shrink: 0;
+}
+
+/* ── Your Turn Banner ── */
+.your-turn-banner {
+  background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, rgba(0,240,255,0.04) 100%);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  animation: pulse-cyan 2s ease infinite;
+}
+.your-turn-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.your-turn-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Notification Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  z-index: 600;
+  transition: transform 0.3s ease;
+  max-width: 360px;
+  text-align: center;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.green { border-color: var(--green); color: var(--green); }
+.toast.red { border-color: var(--red); color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Live Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker-label">LIVE DRAFT</div>
+  <div style="overflow:hidden;flex:1;">
+    <div class="ticker-track" id="ticker-track">
+      <span>Loading draft board...</span>
+      <span>Loading draft board...</span>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero-section">
+  <div class="hero-badge">
+    <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+      <circle cx="4" cy="4" r="3" fill="#FF2D55"/>
+    </svg>
+    Draft Day Simulator
+  </div>
+  <h1>NFL Draft Day<br><span>War Room</span></h1>
+  <p>You are the GM. The clock is ticking. Make picks, negotiate trades, and build your roster — round by round.</p>
+</section>
+
+<!-- Team Select -->
+<div id="team-select-screen">
+  <div style="text-align:center; margin-bottom:8px;">
+    <span style="font-family:'Oswald',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);">Choose Your Team</span>
+  </div>
+  <div class="team-select-grid" id="team-select-grid"></div>
+</div>
+
+<!-- Game Screen -->
+<div id="game-screen">
+  <div class="game-layout">
+    <!-- Left Column -->
+    <div>
+      <!-- On The Clock Bar -->
+      <div class="on-clock-bar" id="on-clock-bar">
+        <div class="clock-info">
+          <div class="clock-round" id="clock-round-label">Round 1</div>
+          <div class="clock-pick-label" id="clock-pick-label">Pick #1 On The Clock</div>
+          <div class="clock-team-label" id="clock-team-label"></div>
+        </div>
+        <div class="clock-timer" id="clock-timer">90</div>
+      </div>
+
+      <!-- AI Picking / Your Turn -->
+      <div class="ai-picking" id="ai-picking-indicator" style="display:none;">
+        <div class="ai-dot"></div>
+        <span id="ai-picking-text">Other teams making their picks...</span>
+      </div>
+      <div class="your-turn-banner" id="your-turn-banner" style="display:none;">
+        <div>
+          <div class="your-turn-text">YOUR PICK IS ON THE CLOCK</div>
+          <div class="your-turn-sub">Select a player from the board or propose a trade</div>
+        </div>
+        <button class="filter-btn" style="border-color:var(--yellow);color:var(--yellow);" onclick="showTradePanel()">Offer Trade</button>
+      </div>
+
+      <!-- Board Header -->
+      <div class="board-header">
+        <div class="board-title">Big Board — Top 50 Prospects</div>
+        <div class="filter-row" id="pos-filters">
+          <button class="filter-btn active" data-pos="ALL" onclick="filterBoard('ALL',this)">All</button>
+          <button class="filter-btn" data-pos="QB" onclick="filterBoard('QB',this)">QB</button>
+          <button class="filter-btn" data-pos="WR" onclick="filterBoard('WR',this)">WR</button>
+          <button class="filter-btn" data-pos="RB" onclick="filterBoard('RB',this)">RB</button>
+          <button class="filter-btn" data-pos="OT" onclick="filterBoard('OT',this)">OL</button>
+          <button class="filter-btn" data-pos="EDGE" onclick="filterBoard('EDGE',this)">EDGE</button>
+          <button class="filter-btn" data-pos="CB" onclick="filterBoard('CB',this)">DB</button>
+        </div>
+      </div>
+
+      <!-- Big Board Table -->
+      <div class="big-board" id="big-board"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Your Draft Class -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">
+          <div class="sidebar-card-title" id="your-team-label">Your Draft Class</div>
+          <div style="font-size:11px;color:var(--text-mute);" id="picks-count-label">0 picks</div>
+        </div>
+        <div class="sidebar-card-body">
+          <div class="your-picks-list" id="your-picks-list">
+            <div class="your-picks-empty">Your picks will appear here</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Picks -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-header">
+          <div class="sidebar-card-title">Next Up</div>
+        </div>
+        <div class="sidebar-card-body" style="padding:8px 12px;">
+          <div class="upcoming-picks" id="upcoming-picks"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results Screen -->
+<div id="results-screen">
+  <div class="results-wrap">
+    <div class="grade-hero">
+      <div class="grade-letter" id="grade-letter">A</div>
+      <div class="grade-title" id="grade-title">Elite Draft Class</div>
+      <div class="grade-desc" id="grade-desc">You nailed it in the war room. Your picks should make an immediate impact.</div>
+    </div>
+    <div class="results-picks" id="results-picks">
+      <div class="results-header" id="results-team-header">Your Draft Class</div>
+      <div id="results-picks-body"></div>
+    </div>
+    <div class="results-actions">
+      <button class="btn-share" onclick="shareDraft()">Share Draft Class</button>
+      <button class="btn-restart" onclick="restartGame()">Draft Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- Trade Offer Modal -->
+<div class="modal-overlay hidden" id="trade-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-badge">
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+          <circle cx="4" cy="4" r="3" fill="#FFD600"/>
+        </svg>
+        Incoming Trade Offer
+      </div>
+      <div class="modal-title" id="modal-title">Trade Offer</div>
+      <div class="modal-subtitle" id="modal-subtitle">Review carefully before deciding.</div>
+    </div>
+    <div class="modal-body">
+      <div class="trade-compare">
+        <div class="trade-side">
+          <div class="trade-side-label">You Give</div>
+          <div class="trade-picks" id="trade-you-give"></div>
+        </div>
+        <div class="trade-arrow">&#8644;</div>
+        <div class="trade-side">
+          <div class="trade-side-label">You Get</div>
+          <div class="trade-picks" id="trade-you-get"></div>
+        </div>
+      </div>
+      <div class="trade-value-row">
+        <span id="trade-value-text">Trade value analysis</span>
+        <span class="trade-verdict" id="trade-verdict"></span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-accept" onclick="acceptTrade()">Accept Trade</button>
+      <button class="btn-decline" onclick="declineTrade()">Decline</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/freeagent-tracker.html">Free Agent Tracker</a>
+  </div>
+  <div style="margin-top:8px; color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<script>
+// ── 2026 NFL Draft Prospect Big Board (Top 50) ─────────────────────────────
+const PROSPECTS = [
+  { rank:1,  name:'Travis Hunter',      school:'Colorado',        pos:'CB',   grade:'A+', gradeClass:'A' },
+  { rank:2,  name:'Abdul Carter',       school:'Penn State',      pos:'EDGE', grade:'A+', gradeClass:'A' },
+  { rank:3,  name:'Tetairoa McMillan',  school:'Arizona',         pos:'WR',   grade:'A+', gradeClass:'A' },
+  { rank:4,  name:'Shedeur Sanders',    school:'Colorado',        pos:'QB',   grade:'A',  gradeClass:'A' },
+  { rank:5,  name:'Will Campbell',      school:'LSU',             pos:'OT',   grade:'A',  gradeClass:'A' },
+  { rank:6,  name:'Mason Graham',       school:'Michigan',        pos:'DT',   grade:'A',  gradeClass:'A' },
+  { rank:7,  name:'Mykel Williams',     school:'Georgia',         pos:'EDGE', grade:'A',  gradeClass:'A' },
+  { rank:8,  name:'Kelvin Banks',       school:'Texas',           pos:'OT',   grade:'A',  gradeClass:'A' },
+  { rank:9,  name:'Malaki Starks',      school:'Georgia',         pos:'S',    grade:'A-', gradeClass:'A' },
+  { rank:10, name:'Emeka Egbuka',       school:'Ohio State',      pos:'WR',   grade:'A-', gradeClass:'A' },
+  { rank:11, name:'James Pearce Jr.',   school:'Tennessee',       pos:'EDGE', grade:'A-', gradeClass:'A' },
+  { rank:12, name:'Cam Ward',           school:'Miami (FL)',      pos:'QB',   grade:'A-', gradeClass:'A' },
+  { rank:13, name:'Luther Burden III',  school:'Missouri',        pos:'WR',   grade:'B+', gradeClass:'B' },
+  { rank:14, name:'Derrick Harmon',     school:'Oregon',          pos:'DT',   grade:'B+', gradeClass:'B' },
+  { rank:15, name:'Shemar Stewart',     school:'Texas A&M',       pos:'DT',   grade:'B+', gradeClass:'B' },
+  { rank:16, name:'Aireontae Ersery',   school:'Minnesota',       pos:'OT',   grade:'B+', gradeClass:'B' },
+  { rank:17, name:'Benjamin Morrison',  school:'Notre Dame',      pos:'CB',   grade:'B+', gradeClass:'B' },
+  { rank:18, name:'Josh Simmons',       school:'Ohio State',      pos:'OT',   grade:'B+', gradeClass:'B' },
+  { rank:19, name:'Tyler Warren',       school:'Penn State',      pos:'TE',   grade:'B+', gradeClass:'B' },
+  { rank:20, name:'Nick Emmanwori',     school:'South Carolina',  pos:'S',    grade:'B+', gradeClass:'B' },
+  { rank:21, name:'Jalon Walker',       school:'Georgia',         pos:'LB',   grade:'B+', gradeClass:'B' },
+  { rank:22, name:'Kyle Williams',      school:'Washington State',pos:'WR',   grade:'B',  gradeClass:'B' },
+  { rank:23, name:'Omarion Hampton',    school:'North Carolina',  pos:'RB',   grade:'B',  gradeClass:'B' },
+  { rank:24, name:'Donovan Ezeiruaku',  school:'Boston College',  pos:'EDGE', grade:'B',  gradeClass:'B' },
+  { rank:25, name:'Alfred Collins',     school:'Texas',           pos:'DT',   grade:'B',  gradeClass:'B' },
+  { rank:26, name:'Azareye\'h Thomas',  school:'Florida State',   pos:'CB',   grade:'B',  gradeClass:'B' },
+  { rank:27, name:'Princely Umanmielen',school:'Ole Miss',        pos:'EDGE', grade:'B',  gradeClass:'B' },
+  { rank:28, name:'Grey Zabel',         school:'North Dakota State',pos:'OG', grade:'B',  gradeClass:'B' },
+  { rank:29, name:'Jack Bech',          school:'TCU',             pos:'WR',   grade:'B',  gradeClass:'B' },
+  { rank:30, name:'Demetrius Knight Jr.',school:'South Carolina', pos:'LB',   grade:'B',  gradeClass:'B' },
+  { rank:31, name:'Darien Porter',      school:'Iowa State',      pos:'CB',   grade:'B',  gradeClass:'B' },
+  { rank:32, name:'RJ Harvey',          school:'UCF',             pos:'RB',   grade:'B-', gradeClass:'B' },
+  { rank:33, name:'Walter Nolen',       school:'Ole Miss',        pos:'DT',   grade:'B-', gradeClass:'B' },
+  { rank:34, name:'Olumuyiwa Fashanu',  school:'Penn State',      pos:'OT',   grade:'B-', gradeClass:'B' },
+  { rank:35, name:'Tyleik Williams',    school:'Ohio State',      pos:'DT',   grade:'B-', gradeClass:'B' },
+  { rank:36, name:'Tate Ratledge',      school:'Georgia',         pos:'OG',   grade:'B-', gradeClass:'B' },
+  { rank:37, name:'Tre Harris',         school:'Ole Miss',        pos:'WR',   grade:'B-', gradeClass:'B' },
+  { rank:38, name:'Isaiah Hamilton',    school:'Penn State',      pos:'WR',   grade:'B-', gradeClass:'B' },
+  { rank:39, name:'Colston Loveland',   school:'Michigan',        pos:'TE',   grade:'B-', gradeClass:'B' },
+  { rank:40, name:'Quinshon Judkins',   school:'Ohio State',      pos:'RB',   grade:'B-', gradeClass:'B' },
+  { rank:41, name:'Dylan Sampson',      school:'Tennessee',       pos:'RB',   grade:'C+', gradeClass:'C' },
+  { rank:42, name:'Kaleb Johnson',      school:'Iowa',            pos:'RB',   grade:'C+', gradeClass:'C' },
+  { rank:43, name:'Johnny Wilson',      school:'Penn State',      pos:'WR',   grade:'C+', gradeClass:'C' },
+  { rank:44, name:'Harold Fannin Jr.',  school:'Bowling Green',   pos:'TE',   grade:'C+', gradeClass:'C' },
+  { rank:45, name:'Landon Jackson',     school:'Arkansas',        pos:'DE',   grade:'C+', gradeClass:'C' },
+  { rank:46, name:'Maxwell Hairston',   school:'Kentucky',        pos:'CB',   grade:'C+', gradeClass:'C' },
+  { rank:47, name:'Wyatt Milum',        school:'West Virginia',   pos:'OT',   grade:'C+', gradeClass:'C' },
+  { rank:48, name:'Jaxson Dart',        school:'Ole Miss',        pos:'QB',   grade:'C+', gradeClass:'C' },
+  { rank:49, name:'Josh Conerly Jr.',   school:'Oregon',          pos:'OT',   grade:'C',  gradeClass:'C' },
+  { rank:50, name:'Darius Alexander',   school:'Toledo',          pos:'DT',   grade:'C',  gradeClass:'C' },
+];
+
+// ── NFL Teams (32 teams, abbr + full name + draft position in round 1) ─────
+const NFL_TEAMS = [
+  { abbr:'TEN', name:'Tennessee Titans',         pick1: 1  },
+  { abbr:'CLE', name:'Cleveland Browns',          pick1: 2  },
+  { abbr:'NYG', name:'New York Giants',           pick1: 3  },
+  { abbr:'NE',  name:'New England Patriots',      pick1: 4  },
+  { abbr:'JAX', name:'Jacksonville Jaguars',      pick1: 5  },
+  { abbr:'LV',  name:'Las Vegas Raiders',         pick1: 6  },
+  { abbr:'NYJ', name:'New York Jets',             pick1: 7  },
+  { abbr:'CAR', name:'Carolina Panthers',         pick1: 8  },
+  { abbr:'NO',  name:'New Orleans Saints',        pick1: 9  },
+  { abbr:'CHI', name:'Chicago Bears',             pick1: 10 },
+  { abbr:'SF',  name:'San Francisco 49ers',       pick1: 11 },
+  { abbr:'DAL', name:'Dallas Cowboys',            pick1: 12 },
+  { abbr:'MIA', name:'Miami Dolphins',            pick1: 13 },
+  { abbr:'IND', name:'Indianapolis Colts',        pick1: 14 },
+  { abbr:'ATL', name:'Atlanta Falcons',           pick1: 15 },
+  { abbr:'ARI', name:'Arizona Cardinals',         pick1: 16 },
+  { abbr:'CIN', name:'Cincinnati Bengals',        pick1: 17 },
+  { abbr:'SEA', name:'Seattle Seahawks',          pick1: 18 },
+  { abbr:'TB',  name:'Tampa Bay Buccaneers',      pick1: 19 },
+  { abbr:'DEN', name:'Denver Broncos',            pick1: 20 },
+  { abbr:'PIT', name:'Pittsburgh Steelers',       pick1: 21 },
+  { abbr:'LAC', name:'Los Angeles Chargers',      pick1: 22 },
+  { abbr:'GB',  name:'Green Bay Packers',         pick1: 23 },
+  { abbr:'MIN', name:'Minnesota Vikings',         pick1: 24 },
+  { abbr:'HOU', name:'Houston Texans',            pick1: 25 },
+  { abbr:'LAR', name:'Los Angeles Rams',          pick1: 26 },
+  { abbr:'BAL', name:'Baltimore Ravens',          pick1: 27 },
+  { abbr:'BUF', name:'Buffalo Bills',             pick1: 28 },
+  { abbr:'DET', name:'Detroit Lions',             pick1: 29 },
+  { abbr:'WSH', name:'Washington Commanders',     pick1: 30 },
+  { abbr:'PHI', name:'Philadelphia Eagles',       pick1: 31 },
+  { abbr:'KC',  name:'Kansas City Chiefs',        pick1: 32 },
+];
+
+// Jimmy Johnson trade value chart (picks 1–160)
+const JJ = [
+  3000,2600,2200,1800,1700,1600,1500,1400,1350,1300,
+  1250,1200,1150,1100,1050,1000, 950, 900, 875, 850,
+   800, 780, 760, 740, 720, 700, 680, 660, 640, 620,
+   600, 590, 580, 560, 550, 540, 530, 520, 510, 500,
+   490, 480, 470, 460, 450, 440, 430, 420, 410, 400,
+   390, 380, 370, 360, 350, 340, 330, 320, 310, 300,
+   290, 280, 270, 260, 250, 240, 230, 220, 210, 200,
+   190, 185, 180, 175, 170, 165, 160, 155, 150, 145,
+   140, 136, 132, 128, 124, 120, 116, 112, 108, 104,
+   100,  96,  93,  90,  87,  84,  81,  78,  75,  72,
+    70,  68,  66,  64,  62,  60,  58,  56,  54,  52,
+    50,  49,  48,  47,  46,  45,  44,  43,  42,  41,
+    40,  39,  38,  37,  36,  35,  34,  33,  32,  31,
+    30,  29,  28,  27,  26,  25,  24,  23,  22,  21,
+    20,  19,  18,  17,  16,  15,  14,  13,  12,  11,
+    10,   9,   8,   7,   6,   5,   4,   3,   2,   1,
+];
+function jjVal(pick) { return JJ[Math.min(pick-1, JJ.length-1)] || 1; }
+
+// ── Game State ────────────────────────────────────────────────────────────
+let state = {
+  phase: 'select',       // 'select' | 'draft' | 'results'
+  userTeamIdx: -1,
+  teams: [],             // array of {abbr, name, picks:[overall pick nums]}
+  prospects: [],         // deep copy with drafted flag
+  draftOrder: [],        // array of {overall, round, roundPick, teamIdx}
+  currentPickIdx: 0,
+  userPicks: [],         // {overall, player, round}
+  timer: 90,
+  timerInterval: null,
+  isUserTurn: false,
+  currentFilter: 'ALL',
+  pendingTrade: null,
+  tickerItems: [],
+};
+
+// ── Build draft order: 5 rounds, snake-style picks ────────────────────────
+function buildDraftOrder(teams) {
+  const order = [];
+  let overall = 1;
+  for (let round = 1; round <= 5; round++) {
+    const teamList = teams.map((t, i) => i);
+    // Even rounds: reverse
+    if (round % 2 === 0) teamList.reverse();
+    for (const teamIdx of teamList) {
+      order.push({ overall, round, roundPick: teamList.indexOf(teamIdx)+1, teamIdx });
+      overall++;
+    }
+  }
+  return order;
+}
+
+// ── Shuffle array ─────────────────────────────────────────────────────────
+function shuffle(arr) {
+  for (let i = arr.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ── Init game ─────────────────────────────────────────────────────────────
+function startGame(teamIdx) {
+  const shuffledTeams = [...NFL_TEAMS];
+  // Keep user team at selected index but assign all teams random draft positions
+  const teamOrder = shuffle([...Array(32).keys()]);
+  state.userTeamIdx = teamIdx;
+  state.teams = shuffledTeams.map((t, i) => ({ ...t, picks: [] }));
+  state.prospects = PROSPECTS.map(p => ({ ...p, drafted: false, draftedBy: null }));
+  state.draftOrder = buildDraftOrder(state.teams);
+  state.currentPickIdx = 0;
+  state.userPicks = [];
+  state.isUserTurn = false;
+  state.pendingTrade = null;
+  state.currentFilter = 'ALL';
+
+  // Assign round-1 pick positions based on NFL_TEAMS.pick1
+  // Re-sort draft order so user's team picks at their natural slot
+  state.tickerItems = [];
+
+  document.getElementById('team-select-screen').style.display = 'none';
+  document.getElementById('hero-section').style.display = 'none';
+  document.getElementById('game-screen').style.display = 'block';
+  document.getElementById('results-screen').style.display = 'none';
+
+  document.getElementById('your-team-label').textContent =
+    `${state.teams[state.userTeamIdx].abbr} Draft Class`;
+
+  renderBoard();
+  renderUpcoming();
+  updateTicker();
+  runDraft();
+}
+
+// ── Render Big Board ──────────────────────────────────────────────────────
+function renderBoard(filter) {
+  if (filter !== undefined) state.currentFilter = filter;
+  const f = state.currentFilter;
+  const dbPos = ['CB','S'];
+  const olPos = ['OT','OG','OL'];
+  const board = document.getElementById('big-board');
+  board.innerHTML = '';
+  state.prospects.forEach(p => {
+    let show = true;
+    if (f === 'OT')   show = olPos.includes(p.pos);
+    else if (f === 'CB')   show = dbPos.includes(p.pos);
+    else if (f !== 'ALL')  show = p.pos === f;
+    if (!show) return;
+
+    const canPick = state.isUserTurn && !p.drafted;
+    const row = document.createElement('div');
+    row.className = 'board-row' + (p.drafted ? ' drafted' : '') +
+                    (canPick ? ' your-pick-available' : '');
+    row.dataset.rank = p.rank;
+    row.innerHTML = `
+      <div class="rank-num">${p.rank}</div>
+      <div class="player-info">
+        <div class="player-name">${p.name}</div>
+        <div class="player-school">${p.school}</div>
+      </div>
+      <div class="pos-tag pos-${p.pos}">${p.pos}</div>
+      <div class="grade-tag grade-${p.gradeClass}">${p.grade}</div>
+      ${canPick ? `<button class="pick-btn" onclick="userPick(${p.rank})">Pick</button>` : '<div></div>'}
+    `;
+    board.appendChild(row);
+  });
+}
+
+// ── Filter Board ──────────────────────────────────────────────────────────
+function filterBoard(pos, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBoard(pos);
+}
+
+// ── Render Upcoming Picks ─────────────────────────────────────────────────
+function renderUpcoming() {
+  const container = document.getElementById('upcoming-picks');
+  container.innerHTML = '';
+  const start = state.currentPickIdx;
+  const end = Math.min(start + 8, state.draftOrder.length);
+  for (let i = start; i < end; i++) {
+    const slot = state.draftOrder[i];
+    const team = state.teams[slot.teamIdx];
+    const isYours = slot.teamIdx === state.userTeamIdx;
+    const div = document.createElement('div');
+    div.className = 'upcoming-item' + (isYours ? ' is-yours' : '');
+    div.innerHTML = `
+      <span class="upcoming-pick-num">#${slot.overall}</span>
+      <span class="upcoming-team-name">${isYours ? 'YOUR PICK' : team.abbr}</span>
+    `;
+    container.appendChild(div);
+  }
+}
+
+// ── Update Live Ticker ────────────────────────────────────────────────────
+function updateTicker() {
+  const track = document.getElementById('ticker-track');
+  if (state.tickerItems.length === 0) {
+    track.innerHTML = '<span>2026 NFL Draft is underway &mdash; picks are being made now</span><span>2026 NFL Draft is underway &mdash; picks are being made now</span>';
+    return;
+  }
+  const content = state.tickerItems.slice(-20).join('') +
+                  state.tickerItems.slice(-20).join('');
+  track.innerHTML = content;
+}
+
+// ── Clock ─────────────────────────────────────────────────────────────────
+function startClock(seconds) {
+  clearInterval(state.timerInterval);
+  state.timer = seconds;
+  const el = document.getElementById('clock-timer');
+  el.textContent = seconds;
+  el.classList.remove('urgent');
+  state.timerInterval = setInterval(() => {
+    state.timer--;
+    el.textContent = state.timer;
+    if (state.timer <= 10) el.classList.add('urgent');
+    if (state.timer <= 0) {
+      clearInterval(state.timerInterval);
+      if (state.isUserTurn) {
+        // Auto-pick best available
+        const best = state.prospects.find(p => !p.drafted);
+        if (best) userPick(best.rank, true);
+      }
+    }
+  }, 1000);
+}
+
+function stopClock() { clearInterval(state.timerInterval); }
+
+// ── Main Draft Loop ───────────────────────────────────────────────────────
+async function runDraft() {
+  while (state.currentPickIdx < state.draftOrder.length) {
+    const slot = state.draftOrder[state.currentPickIdx];
+    const team = state.teams[slot.teamIdx];
+    const isUser = slot.teamIdx === state.userTeamIdx;
+
+    // Update clock bar
+    document.getElementById('clock-round-label').textContent = `Round ${slot.round}`;
+    document.getElementById('clock-pick-label').textContent =
+      `Pick #${slot.overall} — Round ${slot.round}, Pick ${slot.roundPick}`;
+    document.getElementById('clock-team-label').textContent = team.name;
+    renderUpcoming();
+
+    if (isUser) {
+      // Random trade offer ~25% of the time on user turns
+      const offerTrade = Math.random() < 0.25 && slot.overall < 150;
+      if (offerTrade) {
+        await showRandomTradeOffer(slot);
+        // If trade accepted, draft order changed, restart loop iteration
+        if (state.pendingTrade && state.pendingTrade.accepted) {
+          state.pendingTrade = null;
+          continue;
+        }
+        state.pendingTrade = null;
+      }
+
+      // User's turn
+      state.isUserTurn = true;
+      document.getElementById('ai-picking-indicator').style.display = 'none';
+      document.getElementById('your-turn-banner').style.display = 'flex';
+      renderBoard();
+      startClock(90);
+
+      // Wait for user to pick
+      await waitForUserPick();
+
+      state.isUserTurn = false;
+      document.getElementById('your-turn-banner').style.display = 'none';
+      stopClock();
+    } else {
+      // AI picks
+      document.getElementById('ai-picking-indicator').style.display = 'flex';
+      document.getElementById('your-turn-banner').style.display = 'none';
+      document.getElementById('ai-picking-text').textContent =
+        `${team.name} is on the clock...`;
+
+      startClock(slot.overall <= 32 ? 8 : 4);
+      await sleep(slot.overall <= 32 ? 1200 : 600);
+      aiPick(slot.teamIdx);
+      stopClock();
+      document.getElementById('ai-picking-indicator').style.display = 'none';
+    }
+
+    state.currentPickIdx++;
+  }
+
+  // Draft complete
+  showResults();
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+let userPickResolver = null;
+function waitForUserPick() {
+  return new Promise(resolve => { userPickResolver = resolve; });
+}
+
+// ── AI Pick Logic ─────────────────────────────────────────────────────────
+function aiPick(teamIdx) {
+  const team = state.teams[teamIdx];
+  // Simple: pick best available
+  const available = state.prospects.filter(p => !p.drafted);
+  if (!available.length) return;
+  // Slight position randomness for AI
+  let pick = available[0];
+  if (Math.random() < 0.3 && available.length > 1) pick = available[Math.floor(Math.random() * Math.min(3, available.length))];
+  pick.drafted = true;
+  pick.draftedBy = team.abbr;
+  const slot = state.draftOrder[state.currentPickIdx];
+  team.picks.push(slot.overall);
+
+  // Add to ticker
+  state.tickerItems.push(`<span><strong>Pick #${slot.overall} (${team.abbr}):</strong> ${pick.name}, ${pick.pos}, ${pick.school}</span>`);
+  updateTicker();
+  renderBoard();
+}
+
+// ── User Pick ─────────────────────────────────────────────────────────────
+function userPick(rank, auto) {
+  if (!state.isUserTurn) return;
+  const prospect = state.prospects.find(p => p.rank === rank);
+  if (!prospect || prospect.drafted) return;
+
+  prospect.drafted = true;
+  prospect.draftedBy = state.teams[state.userTeamIdx].abbr;
+  const slot = state.draftOrder[state.currentPickIdx];
+  state.teams[state.userTeamIdx].picks.push(slot.overall);
+
+  state.userPicks.push({ overall: slot.overall, player: prospect, round: slot.round });
+  renderYourPicks();
+
+  state.tickerItems.push(
+    `<span class="pick-owned"><strong>Pick #${slot.overall} (YOU):</strong> ${prospect.name}, ${prospect.pos}, ${prospect.school}</span>`
+  );
+  updateTicker();
+  renderBoard();
+
+  if (!auto) showToast(`Selected ${prospect.name} — ${prospect.pos} — ${prospect.school}`, 'green');
+
+  if (userPickResolver) { userPickResolver(); userPickResolver = null; }
+}
+
+// ── Render Your Picks ─────────────────────────────────────────────────────
+function renderYourPicks() {
+  const container = document.getElementById('your-picks-list');
+  const count = document.getElementById('picks-count-label');
+  count.textContent = `${state.userPicks.length} pick${state.userPicks.length !== 1 ? 's' : ''}`;
+  if (!state.userPicks.length) {
+    container.innerHTML = '<div class="your-picks-empty">Your picks will appear here</div>';
+    return;
+  }
+  container.innerHTML = state.userPicks.map(p => `
+    <div class="your-pick-item">
+      <div class="pick-badge">#${p.overall}</div>
+      <div class="pick-player-info">
+        <div class="pick-player-name">${p.player.name}</div>
+        <div class="pick-player-pos">${p.player.pos} &mdash; ${p.player.school}</div>
+      </div>
+      <div class="pos-tag pos-${p.player.pos}" style="font-size:10px;padding:2px 6px;">${p.player.grade}</div>
+    </div>
+  `).join('');
+}
+
+// ── Random Trade Offer ────────────────────────────────────────────────────
+function showRandomTradeOffer(userSlot) {
+  return new Promise(resolve => {
+    // Pick a random non-user team
+    const otherTeams = state.teams.filter((t, i) => i !== state.userTeamIdx);
+    const offeringTeam = otherTeams[Math.floor(Math.random() * otherTeams.length)];
+    const offeringIdx = state.teams.indexOf(offeringTeam);
+
+    // Find a future pick the offering team has
+    const theirFuturePicks = state.draftOrder
+      .slice(state.currentPickIdx + 1)
+      .filter(s => s.teamIdx === offeringIdx)
+      .slice(0, 3);
+
+    if (!theirFuturePicks.length) { resolve(); return; }
+
+    // Offer: they want current user pick, give future pick(s)
+    const give = [userSlot];
+    const get = [theirFuturePicks[0]];
+    // Sometimes add a 2nd pick to sweeten
+    if (theirFuturePicks.length > 1 && Math.random() < 0.4) {
+      get.push(theirFuturePicks[1]);
+    }
+
+    const giveVal = give.reduce((s, p) => s + jjVal(p.overall), 0);
+    const getVal  = get.reduce((s, p) => s + jjVal(p.overall), 0);
+    const diff    = getVal - giveVal;
+    const verdictText = diff > 100 ? 'Great Value' : diff > -50 ? 'Fair Deal' : 'Bad Value';
+    const verdictClass = diff > 100 ? 'win' : diff > -50 ? 'even' : 'loss';
+
+    document.getElementById('modal-title').textContent = `${offeringTeam.name} Offer`;
+    document.getElementById('modal-subtitle').textContent =
+      `They want pick #${userSlot.overall}. Here's what they're offering:`;
+    document.getElementById('trade-you-give').innerHTML =
+      give.map(p => `<div class="trade-pick-tag">Pick #${p.overall} (R${p.round})</div>`).join('');
+    document.getElementById('trade-you-get').innerHTML =
+      get.map(p => `<div class="trade-pick-tag theirs">Pick #${p.overall} (R${p.round})</div>`).join('');
+    document.getElementById('trade-value-text').textContent =
+      `JJ Value: You give ${giveVal} pts &mdash; You get ${getVal} pts`;
+    document.getElementById('trade-verdict').textContent = verdictText;
+    document.getElementById('trade-verdict').className = `trade-verdict ${verdictClass}`;
+
+    state.pendingTrade = { offeringIdx, give, get, resolve };
+    document.getElementById('trade-modal').classList.remove('hidden');
+  });
+}
+
+function acceptTrade() {
+  if (!state.pendingTrade) return;
+  const { offeringIdx, give, get, resolve } = state.pendingTrade;
+
+  // Swap picks in draftOrder
+  give.forEach(gSlot => {
+    const orderIdx = state.draftOrder.findIndex(s => s.overall === gSlot.overall);
+    if (orderIdx >= 0) state.draftOrder[orderIdx].teamIdx = offeringIdx;
+  });
+  get.forEach(gSlot => {
+    const orderIdx = state.draftOrder.findIndex(s => s.overall === gSlot.overall);
+    if (orderIdx >= 0) state.draftOrder[orderIdx].teamIdx = state.userTeamIdx;
+  });
+
+  state.pendingTrade.accepted = true;
+  document.getElementById('trade-modal').classList.add('hidden');
+  showToast('Trade accepted! Pick order updated.', 'green');
+
+  // Signal user pick resolver so draft loop can advance
+  if (userPickResolver) { userPickResolver(); userPickResolver = null; }
+  resolve();
+}
+
+function declineTrade() {
+  document.getElementById('trade-modal').classList.add('hidden');
+  if (state.pendingTrade) { state.pendingTrade.resolve(); }
+  showToast('Trade declined.', '');
+}
+
+// ── Manual Trade Panel ────────────────────────────────────────────────────
+function showTradePanel() {
+  // For user-initiated trades, just trigger a random offer
+  const slot = state.draftOrder[state.currentPickIdx];
+  showRandomTradeOffer(slot).then(() => {});
+}
+
+// ── Grade Draft ───────────────────────────────────────────────────────────
+function gradeDraft(picks) {
+  if (!picks.length) return { letter:'D', title:'No Picks', desc:'Something went wrong — you made no picks.', cls:'D' };
+  const avgGrade = picks.reduce((sum, p) => {
+    const g = p.player.gradeClass;
+    return sum + (g === 'A' ? 4 : g === 'B' ? 3 : g === 'C' ? 2 : 1);
+  }, 0) / picks.length;
+
+  const roundBonus = picks.some(p => p.round === 1) ? 0.3 : 0;
+  const score = avgGrade + roundBonus;
+
+  if (score >= 3.8) return { letter:'A+', title:'Elite Draft Class', desc:'You absolutely crushed this draft. Every pick projects as a starter or better.', cls:'A' };
+  if (score >= 3.3) return { letter:'A',  title:'Excellent Draft',   desc:'Solid value throughout. Your team should see immediate improvement.', cls:'A' };
+  if (score >= 2.8) return { letter:'B+', title:'Strong Draft Class', desc:'Good picks with upside. A few gems that could pan out big.', cls:'B' };
+  if (score >= 2.3) return { letter:'B',  title:'Solid Draft',        desc:'Dependable selections. No major misses, steady contributors expected.', cls:'B' };
+  if (score >= 1.8) return { letter:'C',  title:'Average Draft',      desc:'Mixed bag. Some value but some questionable decisions under pressure.', cls:'C' };
+  return { letter:'D', title:'Rough Draft Day', desc:'The war room got the better of you this time. Every GM has a bad draft.', cls:'D' };
+}
+
+// ── Show Results ──────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('game-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'block';
+
+  const grade = gradeDraft(state.userPicks);
+  const gl = document.getElementById('grade-letter');
+  gl.textContent = grade.letter;
+  gl.className = `grade-letter ${grade.cls}`;
+  document.getElementById('grade-title').textContent = grade.title;
+  document.getElementById('grade-desc').textContent  = grade.desc;
+
+  const team = state.teams[state.userTeamIdx];
+  document.getElementById('results-team-header').textContent = `${team.name} — ${state.userPicks.length} Picks`;
+
+  const body = document.getElementById('results-picks-body');
+  body.innerHTML = state.userPicks.map(p => `
+    <div class="results-pick-row">
+      <div class="result-pick-num">#${p.overall}</div>
+      <div>
+        <div class="result-player-name">${p.player.name}</div>
+        <div class="result-school">${p.player.school}</div>
+      </div>
+      <div class="pos-tag pos-${p.player.pos}">${p.player.pos}</div>
+      <div class="grade-tag grade-${p.player.gradeClass}">${p.player.grade}</div>
+    </div>
+  `).join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Share Draft ───────────────────────────────────────────────────────────
+function shareDraft() {
+  const team = state.teams[state.userTeamIdx];
+  const grade = gradeDraft(state.userPicks);
+  const pickStr = state.userPicks.map(p => `#${p.overall} ${p.player.name} (${p.player.pos})`).join(', ');
+  const text = `My 2026 NFL Draft class as the ${team.name}: ${pickStr}. Draft grade: ${grade.letter}. Built in the War Room at ainflgm.com/war-room.html`;
+  if (navigator.share) {
+    navigator.share({ title: 'My 2026 NFL Draft Class', text, url: 'https://ainflgm.com/war-room.html' })
+      .catch(() => copyToClipboard(text));
+  } else {
+    copyToClipboard(text);
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Draft class copied to clipboard!', 'green');
+  }).catch(() => showToast('Share: ' + text.substring(0, 60) + '...', ''));
+}
+
+// ── Restart ───────────────────────────────────────────────────────────────
+function restartGame() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('hero-section').style.display = 'block';
+  document.getElementById('team-select-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ── Team Select Grid ──────────────────────────────────────────────────────
+function buildTeamSelect() {
+  const grid = document.getElementById('team-select-grid');
+  grid.innerHTML = '';
+  NFL_TEAMS.forEach((team, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'team-btn';
+    btn.innerHTML = `<span class="team-abbr">${team.abbr}</span><span class="team-name-label">${team.name.replace(/^.+ /,'')}</span>`;
+    btn.addEventListener('click', () => startGame(i));
+    grid.appendChild(btn);
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+buildTeamSelect();
+updateTicker();
+</script>
+</body>
+</html>
