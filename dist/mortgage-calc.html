@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>Free AI Mortgage Calculator | Monthly Payment Estimator</title>
+<meta name="description" content="Free mortgage payment calculator. Get your monthly P&I, PMI, taxes, and insurance estimate instantly. Also includes affordability reverse calculator. Powered by 9 Enterprises.">
+<meta property="og:title" content="Free AI Mortgage Calculator | Monthly Payment Estimator">
+<meta property="og:description" content="Calculate your exact monthly mortgage payment including PMI, taxes, and insurance. Free tool by 9 Enterprises.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://9enterprises.ai/mortgage-calc">
+<meta property="og:image" content="https://9enterprises.ai/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free AI Mortgage Calculator | Monthly Payment Estimator">
+<meta name="twitter:description" content="Calculate your monthly mortgage payment instantly. Free tool by 9 Enterprises.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Google AdSense Placeholder -->
+<!-- ADSENSE_PLACEHOLDER: Replace with actual AdSense script tag when approved -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_CLIENT_ID" crossorigin="anonymous"></script> -->
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0a0a0a;
+  --bg-2:       #111111;
+  --bg-3:       #1a1a1a;
+  --bg-card:    #111111;
+  --border:     rgba(255,255,255,0.07);
+  --border-hi:  rgba(255,255,255,0.13);
+  --orange:     #FB4F14;
+  --orange-dim: rgba(251,79,20,0.15);
+  --orange-glow:rgba(251,79,20,0.08);
+  --text:       #e2e2e2;
+  --text-dim:   #888;
+  --text-mute:  #444;
+  --green:      #22c55e;
+  --green-dim:  rgba(34,197,94,0.15);
+  --radius:     16px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--orange); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+
+/* ── Nav ───────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(10,10,10,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-brand {
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.nav-brand span { color: var(--orange); }
+.nav-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--text); text-decoration: none; }
+
+/* ── Hero ──────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 56px 24px 40px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--orange-dim);
+  border: 1px solid rgba(251,79,20,0.3);
+  color: var(--orange);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.8px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.hero p {
+  font-size: 16px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Tab Switcher ──────────────────────────── */
+.tab-wrap {
+  display: flex;
+  gap: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  max-width: 520px;
+  margin: 32px auto 0;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: var(--orange);
+  color: #fff;
+}
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+/* ── Layout ────────────────────────────────── */
+.main {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .main { grid-template-columns: 1fr; }
+}
+
+/* ── Card ──────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border-hi); }
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-mute);
+  margin-bottom: 22px;
+}
+
+/* ── Form Fields ───────────────────────────── */
+.field { margin-bottom: 18px; }
+.field:last-child { margin-bottom: 0; }
+.label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.label-hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-mute);
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-prefix, .input-suffix {
+  position: absolute;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-mute);
+  pointer-events: none;
+}
+.input-prefix { left: 14px; }
+.input-suffix { right: 14px; }
+
+input[type="number"], input[type="text"], select {
+  width: 100%;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+input.has-prefix { padding-left: 28px; }
+input.has-suffix { padding-right: 32px; }
+input:focus, select:focus { border-color: rgba(251,79,20,0.5); background: #1d1d1d; }
+
+/* Range slider */
+.range-wrap { position: relative; margin-top: 4px; }
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+input[type="range"]:focus { outline: none; border: none; }
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-3);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: 2px solid var(--bg);
+  margin-top: -7px;
+  box-shadow: 0 0 0 3px rgba(251,79,20,0.2);
+  transition: box-shadow 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 5px rgba(251,79,20,0.3);
+}
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-3);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: 2px solid var(--bg);
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+
+/* Select */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* ── Calc Button ───────────────────────────── */
+.calc-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 22px;
+  letter-spacing: -0.2px;
+}
+.calc-btn:hover { background: #e04412; }
+.calc-btn:active { transform: scale(0.99); }
+
+/* ── Results Panel ─────────────────────────── */
+.results-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.results-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+.results-empty .empty-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+
+/* Monthly total */
+.monthly-total {
+  text-align: center;
+  padding: 24px;
+  background: var(--orange-dim);
+  border: 1px solid rgba(251,79,20,0.25);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+.monthly-total .label-sm {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.monthly-total .amount {
+  font-size: 44px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1.5px;
+  line-height: 1;
+}
+.monthly-total .amount-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* Breakdown rows */
+.breakdown { margin-bottom: 24px; }
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-row .row-label { color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+.breakdown-row .row-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.breakdown-row .row-value { font-weight: 600; color: var(--text); }
+.breakdown-row .row-note { font-size: 11px; color: var(--text-mute); margin-top: 1px; }
+
+/* PMI warning */
+.pmi-notice {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: rgba(251,79,20,0.08);
+  border: 1px solid rgba(251,79,20,0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+.pmi-notice .notice-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Pie Chart ─────────────────────────────── */
+.chart-section { margin-bottom: 20px; }
+.chart-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-mute);
+  margin-bottom: 16px;
+}
+.chart-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.pie-chart {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+.pie-inner {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.2;
+}
+.legend { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 140px; }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legend-label { color: var(--text-dim); flex: 1; }
+.legend-pct { font-weight: 600; color: var(--text); font-size: 12px; }
+
+/* ── Loan Summary ──────────────────────────── */
+.loan-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.summary-box {
+  background: var(--bg-3);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.summary-box .s-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.summary-box .s-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+/* ── Underwriter CTA ───────────────────────── */
+.uw-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(99,102,241,0.06));
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 20px;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.uw-cta:hover {
+  border-color: rgba(99,102,241,0.4);
+  background: linear-gradient(135deg, rgba(99,102,241,0.18), rgba(99,102,241,0.1));
+  text-decoration: none;
+}
+.uw-cta-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(99,102,241,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.uw-cta-text { flex: 1; }
+.uw-cta-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.uw-cta-text span {
+  font-size: 12px;
+  color: #818cf8;
+}
+.uw-cta-arrow { color: #818cf8; font-size: 18px; flex-shrink: 0; }
+
+/* ── Affordability Panel ───────────────────── */
+.afford-panel { display: none; }
+.afford-panel.visible { display: block; }
+.calc-panel { display: none; }
+.calc-panel.visible { display: block; }
+
+.afford-result {
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.afford-result .ar-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.afford-result .ar-price {
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1.2px;
+  line-height: 1;
+}
+.afford-result .ar-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+.afford-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.afford-box {
+  background: var(--bg-3);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.afford-box .ab-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.afford-box .ab-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── Ad placeholder ────────────────────────── */
+/* ADSENSE_SLOT: Insert ad unit here */
+.ad-slot {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 12px;
+  margin: 32px 0;
+  max-width: 1060px;
+  margin-left: auto;
+  margin-right: auto;
+  display: none; /* hidden until AdSense is configured */
+}
+
+/* ── Footer ────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--text); }
+.footer-brand {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.footer-brand span { color: var(--orange); }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* ── Animations ────────────────────────────── */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.3s ease forwards; }
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 480px) {
+  .hero { padding: 36px 20px 28px; }
+  .card, .results-card { padding: 20px; }
+  .monthly-total .amount { font-size: 36px; }
+  .afford-result .ar-price { font-size: 32px; }
+  .loan-summary, .afford-grid { grid-template-columns: 1fr 1fr; }
+  .tab-btn { font-size: 12px; padding: 10px 12px; }
+  .nav-brand { font-size: 15px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-brand">9<span>E</span> Mortgage</div>
+  <a href="/underwriter.html" class="nav-link">AI Underwriter</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">Free Tool</div>
+  <h1>Mortgage Payment<br>Calculator</h1>
+  <p>Get your full monthly payment estimate in seconds — principal, interest, PMI, taxes, and insurance included.</p>
+
+  <div class="tab-wrap">
+    <button class="tab-btn active" id="tab-calc" onclick="switchTab('calc')">Monthly Payment</button>
+    <button class="tab-btn" id="tab-afford" onclick="switchTab('afford')">How Much Can I Afford?</button>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="main">
+
+  <!-- ── CALCULATOR PANEL ── -->
+  <div class="calc-panel visible" id="panel-calc">
+    <div class="card">
+      <div class="card-title">Loan Details</div>
+
+      <!-- Home Price -->
+      <div class="field">
+        <div class="label">
+          Home Price
+          <span class="label-hint" id="price-display">$400,000</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="home-price" class="has-prefix" value="400000" min="50000" max="5000000" step="1000" oninput="syncPrice(this.value)">
+        </div>
+        <div class="range-wrap" style="margin-top:10px;">
+          <input type="range" id="price-range" min="50000" max="2000000" step="5000" value="400000" oninput="syncPriceRange(this.value)">
+          <div class="range-labels"><span>$50K</span><span>$2M</span></div>
+        </div>
+      </div>
+
+      <!-- Down Payment -->
+      <div class="field">
+        <div class="label">
+          Down Payment
+          <span class="label-hint" id="down-display">20% — $80,000</span>
+        </div>
+        <div class="input-wrap">
+          <input type="number" id="down-pct" class="has-suffix" value="20" min="3" max="50" step="0.5" oninput="syncDown(this.value, 'pct')">
+          <span class="input-suffix">%</span>
+        </div>
+        <div class="range-wrap" style="margin-top:10px;">
+          <input type="range" id="down-range" min="3" max="50" step="0.5" value="20" oninput="syncDown(this.value, 'range')">
+          <div class="range-labels"><span>3%</span><span>50%</span></div>
+        </div>
+      </div>
+
+      <!-- Interest Rate -->
+      <div class="field">
+        <div class="label">
+          Interest Rate (APR)
+          <span class="label-hint" id="rate-display">7.00%</span>
+        </div>
+        <div class="input-wrap">
+          <input type="number" id="interest-rate" class="has-suffix" value="7.00" min="1" max="20" step="0.05" oninput="syncRate(this.value)">
+          <span class="input-suffix">%</span>
+        </div>
+        <div class="range-wrap" style="margin-top:10px;">
+          <input type="range" id="rate-range" min="1" max="15" step="0.05" value="7.00" oninput="syncRateRange(this.value)">
+          <div class="range-labels"><span>1%</span><span>15%</span></div>
+        </div>
+      </div>
+
+      <!-- Loan Term -->
+      <div class="field">
+        <div class="label">Loan Term</div>
+        <select id="loan-term">
+          <option value="30">30-Year Fixed</option>
+          <option value="20">20-Year Fixed</option>
+          <option value="15">15-Year Fixed</option>
+          <option value="10">10-Year Fixed</option>
+          <option value="7">7/1 ARM (7-Year Fixed)</option>
+          <option value="5">5/1 ARM (5-Year Fixed)</option>
+        </select>
+      </div>
+
+      <!-- Property Tax -->
+      <div class="field">
+        <div class="label">
+          Property Tax Rate
+          <span class="label-hint" id="tax-display">1.10%</span>
+        </div>
+        <div class="input-wrap">
+          <input type="number" id="tax-rate" class="has-suffix" value="1.10" min="0.1" max="5" step="0.05" oninput="syncTax(this.value)">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+
+      <!-- Insurance -->
+      <div class="field">
+        <div class="label">
+          Annual Home Insurance
+          <span class="label-hint" id="ins-display">$1,200/yr</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="insurance" class="has-prefix" value="1200" min="0" max="20000" step="100" oninput="syncIns(this.value)">
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate Payment</button>
+    </div>
+  </div>
+
+  <!-- ── AFFORDABILITY PANEL ── -->
+  <div class="afford-panel" id="panel-afford">
+    <div class="card">
+      <div class="card-title">Affordability Calculator</div>
+
+      <div class="field">
+        <div class="label">Monthly Budget for Housing</div>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="monthly-budget" class="has-prefix" value="2500" min="500" max="50000" step="100">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Down Payment Available</div>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="afford-down" class="has-prefix" value="60000" min="0" step="1000">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">
+          Interest Rate (APR)
+          <span class="label-hint" id="afford-rate-display">7.00%</span>
+        </div>
+        <div class="input-wrap">
+          <input type="number" id="afford-rate" class="has-suffix" value="7.00" min="1" max="20" step="0.05" oninput="document.getElementById('afford-rate-display').textContent = parseFloat(this.value||7).toFixed(2) + '%'">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Loan Term</div>
+        <select id="afford-term">
+          <option value="30">30-Year Fixed</option>
+          <option value="20">20-Year Fixed</option>
+          <option value="15">15-Year Fixed</option>
+          <option value="10">10-Year Fixed</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <div class="label">
+          Property Tax Rate
+          <span class="label-hint">Annual % of home value</span>
+        </div>
+        <div class="input-wrap">
+          <input type="number" id="afford-tax" class="has-suffix" value="1.10" min="0.1" max="5" step="0.05">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Annual Home Insurance</div>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="afford-ins" class="has-prefix" value="1200" min="0" max="20000" step="100">
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calcAfford()">Calculate Max Home Price</button>
+    </div>
+  </div>
+
+  <!-- ── RESULTS COLUMN ── -->
+  <div>
+    <!-- Results: Payment Calculator -->
+    <div id="results-calc">
+      <div class="results-card">
+        <div class="results-empty">
+          <div class="empty-icon">&#x1F3E0;</div>
+          <div>Enter your loan details and tap<br><strong>Calculate Payment</strong> to see your estimate.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results: Affordability -->
+    <div id="results-afford" style="display:none;">
+      <div class="results-card">
+        <div class="results-empty">
+          <div class="empty-icon">&#x1F4B0;</div>
+          <div>Enter your budget and tap<br><strong>Calculate Max Home Price</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Ad Slot Placeholder -->
+<!-- ADSENSE_SLOT: 728x90 leaderboard or responsive unit here -->
+<div class="ad-slot" id="ad-slot">Advertisement</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-brand">Powered by <span>9 Enterprises</span></div>
+  <div>This calculator provides estimates for informational purposes only. Actual rates, taxes, and insurance will vary. Always consult a licensed mortgage professional before making financial decisions.</div>
+  <div class="footer-links">
+    <a href="https://9enterprises.ai" target="_blank" rel="noopener">9enterprises.ai</a>
+    <a href="/underwriter.html">AI Underwriter</a>
+    <a href="/privacy.html">Privacy</a>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+// ── Formatters ──────────────────────────────
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+function fmtDec(n) {
+  return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+// ── Sync helpers ────────────────────────────
+function syncPrice(val) {
+  const v = parseFloat(val) || 0;
+  document.getElementById('price-range').value = Math.min(v, 2000000);
+  document.getElementById('price-display').textContent = fmt(v);
+  updateDownDisplay();
+}
+function syncPriceRange(val) {
+  document.getElementById('home-price').value = val;
+  document.getElementById('price-display').textContent = fmt(val);
+  updateDownDisplay();
+}
+function syncDown(val, source) {
+  const pct = parseFloat(val) || 0;
+  if (source === 'range') document.getElementById('down-pct').value = pct;
+  else document.getElementById('down-range').value = Math.min(pct, 50);
+  updateDownDisplay();
+}
+function updateDownDisplay() {
+  const price = parseFloat(document.getElementById('home-price').value) || 0;
+  const pct   = parseFloat(document.getElementById('down-pct').value) || 0;
+  const dollars = price * pct / 100;
+  document.getElementById('down-display').textContent = pct.toFixed(1) + '% — ' + fmt(dollars);
+}
+function syncRate(val) {
+  const v = parseFloat(val) || 0;
+  document.getElementById('rate-range').value = Math.min(v, 15);
+  document.getElementById('rate-display').textContent = v.toFixed(2) + '%';
+}
+function syncRateRange(val) {
+  document.getElementById('interest-rate').value = parseFloat(val).toFixed(2);
+  document.getElementById('rate-display').textContent = parseFloat(val).toFixed(2) + '%';
+}
+function syncTax(val) {
+  document.getElementById('tax-display').textContent = (parseFloat(val)||0).toFixed(2) + '%';
+}
+function syncIns(val) {
+  document.getElementById('ins-display').textContent = fmt(parseFloat(val)||0) + '/yr';
+}
+
+// ── PMI calculation ─────────────────────────
+function calcPMI(loanAmount, homePrice) {
+  // ~0.5–1% of loan per year, only if LTV > 80%
+  const ltv = loanAmount / homePrice;
+  if (ltv <= 0.80) return 0;
+  const rate = ltv > 0.95 ? 0.0110 : ltv > 0.90 ? 0.0085 : 0.0065;
+  return (loanAmount * rate) / 12;
+}
+
+// ── Monthly P&I ─────────────────────────────
+function calcPI(principal, annualRate, termYears) {
+  if (annualRate === 0) return principal / (termYears * 12);
+  const r = annualRate / 100 / 12;
+  const n = termYears * 12;
+  return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+
+// ── Build pie chart gradient ────────────────
+function buildPie(slices) {
+  // slices: [{color, pct}, ...]
+  let conic = '';
+  let cum = 0;
+  slices.forEach((s, i) => {
+    const start = cum;
+    cum += s.pct;
+    conic += (i > 0 ? ', ' : '') + s.color + ' ' + start.toFixed(1) + '% ' + cum.toFixed(1) + '%';
+  });
+  return 'conic-gradient(' + conic + ')';
+}
+
+// ── Main calculator ─────────────────────────
+function calculate() {
+  const homePrice  = parseFloat(document.getElementById('home-price').value) || 0;
+  const downPct    = parseFloat(document.getElementById('down-pct').value) || 0;
+  const rate       = parseFloat(document.getElementById('interest-rate').value) || 0;
+  const term       = parseInt(document.getElementById('loan-term').value) || 30;
+  const taxRate    = parseFloat(document.getElementById('tax-rate').value) || 0;
+  const insurance  = parseFloat(document.getElementById('insurance').value) || 0;
+
+  if (homePrice < 1000) {
+    alert('Please enter a valid home price.');
+    return;
+  }
+
+  const downAmt    = homePrice * downPct / 100;
+  const loanAmt    = homePrice - downAmt;
+  const pi         = calcPI(loanAmt, rate, term);
+  const pmi        = calcPMI(loanAmt, homePrice);
+  const taxMo      = (homePrice * taxRate / 100) / 12;
+  const insMo      = insurance / 12;
+  const total      = pi + pmi + taxMo + insMo;
+
+  const totalPaid  = pi * term * 12;
+  const totalInterest = totalPaid - loanAmt;
+
+  // Pie chart percentages (of total monthly)
+  const piPct      = (pi   / total) * 100;
+  const pmiPct     = (pmi  / total) * 100;
+  const taxPct     = (taxMo/ total) * 100;
+  const insPct     = (insMo/ total) * 100;
+
+  const hasDownWarning = downPct < 20;
+
+  const html = `
+    <div class="results-card fade-in">
+      <div class="monthly-total">
+        <div class="label-sm">Estimated Monthly Payment</div>
+        <div class="amount">${fmt(total)}</div>
+        <div class="amount-sub">per month</div>
+      </div>
+
+      ${hasDownWarning ? `
+      <div class="pmi-notice">
+        <span class="notice-icon">&#x26A0;&#xFE0F;</span>
+        <span>PMI applies because your down payment is under 20%. PMI is typically removed once you reach 20% equity.</span>
+      </div>` : ''}
+
+      <div class="breakdown">
+        <div class="breakdown-row">
+          <span class="row-label"><span class="row-dot" style="background:#FB4F14;"></span>Principal &amp; Interest</span>
+          <span class="row-value">${fmt(pi)}</span>
+        </div>
+        ${pmi > 0 ? `
+        <div class="breakdown-row">
+          <span class="row-label"><span class="row-dot" style="background:#f77f00;"></span>PMI</span>
+          <span class="row-value">${fmt(pmi)}</span>
+        </div>` : ''}
+        <div class="breakdown-row">
+          <span class="row-label"><span class="row-dot" style="background:#818cf8;"></span>Property Taxes</span>
+          <span class="row-value">${fmt(taxMo)}</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="row-label"><span class="row-dot" style="background:#22c55e;"></span>Home Insurance</span>
+          <span class="row-value">${fmt(insMo)}</span>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-title">Payment Breakdown</div>
+        <div class="chart-wrap">
+          <div class="pie-chart" id="pie-el">
+            <div class="pie-inner">Monthly<br>Split</div>
+          </div>
+          <div class="legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#FB4F14;"></div>
+              <span class="legend-label">P&amp;I</span>
+              <span class="legend-pct">${piPct.toFixed(0)}%</span>
+            </div>
+            ${pmi > 0 ? `
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#f77f00;"></div>
+              <span class="legend-label">PMI</span>
+              <span class="legend-pct">${pmiPct.toFixed(0)}%</span>
+            </div>` : ''}
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#818cf8;"></div>
+              <span class="legend-label">Taxes</span>
+              <span class="legend-pct">${taxPct.toFixed(0)}%</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#22c55e;"></div>
+              <span class="legend-label">Insurance</span>
+              <span class="legend-pct">${insPct.toFixed(0)}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="loan-summary">
+        <div class="summary-box">
+          <div class="s-label">Loan Amount</div>
+          <div class="s-value">${fmt(loanAmt)}</div>
+        </div>
+        <div class="summary-box">
+          <div class="s-label">Down Payment</div>
+          <div class="s-value">${fmt(downAmt)}</div>
+        </div>
+        <div class="summary-box">
+          <div class="s-label">Total Interest</div>
+          <div class="s-value">${fmt(totalInterest)}</div>
+        </div>
+        <div class="summary-box">
+          <div class="s-label">Total Cost</div>
+          <div class="s-value">${fmt(totalPaid + downAmt)}</div>
+        </div>
+      </div>
+
+      <a href="/underwriter.html" class="uw-cta">
+        <div class="uw-cta-icon">&#x1F916;</div>
+        <div class="uw-cta-text">
+          <strong>Need help understanding your mortgage options?</strong>
+          <span>Try AI Underwriter &rarr;</span>
+        </div>
+        <span class="uw-cta-arrow">&rsaquo;</span>
+      </a>
+    </div>
+  `;
+
+  document.getElementById('results-calc').innerHTML = html;
+
+  // Apply pie chart via JS after render
+  const slices = [{ color: '#FB4F14', pct: piPct }];
+  if (pmi > 0) slices.push({ color: '#f77f00', pct: pmiPct });
+  slices.push({ color: '#818cf8', pct: taxPct });
+  slices.push({ color: '#22c55e', pct: insPct });
+
+  // Normalize to 100
+  const sum = slices.reduce((a, s) => a + s.pct, 0);
+  if (sum < 99.9) slices[slices.length - 1].pct += (100 - sum);
+
+  document.getElementById('pie-el').style.background = buildPie(slices);
+
+  // Scroll results into view on mobile
+  if (window.innerWidth < 720) {
+    document.getElementById('results-calc').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── Affordability calculator ────────────────
+function calcAfford() {
+  const budget   = parseFloat(document.getElementById('monthly-budget').value) || 0;
+  const downAmt  = parseFloat(document.getElementById('afford-down').value) || 0;
+  const rate     = parseFloat(document.getElementById('afford-rate').value) || 0;
+  const term     = parseInt(document.getElementById('afford-term').value) || 30;
+  const taxRate  = parseFloat(document.getElementById('afford-tax').value) || 0;
+  const insurance= parseFloat(document.getElementById('afford-ins').value) || 0;
+
+  if (budget < 100) {
+    alert('Please enter a valid monthly budget.');
+    return;
+  }
+
+  // Deduct fixed monthly costs (taxes + insurance) from budget
+  // But taxes depend on home price — need iterative solve
+  // Solve: budget = PI(loanAmt, r, n) + pmi(loanAmt, homePrice) + homePrice*taxRate/1200 + ins/12
+  // Simplify: assume no PMI first, then check if down >= 20%
+
+  const insMo = insurance / 12;
+  const r = rate / 100 / 12;
+  const n = term * 12;
+
+  // We want to find homePrice such that total = budget
+  // totalMonthly = PI(homePrice - downAmt, r, n) + homePrice*taxRate/1200 + insMo
+  // Let p = homePrice, d = downAmt, loanAmt = p - d
+  // PI = (p-d) * r*(1+r)^n / ((1+r)^n - 1)
+  // Let factor = r*(1+r)^n / ((1+r)^n - 1)
+  // totalMonthly = (p-d)*factor + p*(taxRate/1200) + insMo
+  // budget - insMo = p*factor - d*factor + p*(taxRate/1200)
+  // budget - insMo + d*factor = p*(factor + taxRate/1200)
+  // p = (budget - insMo + d*factor) / (factor + taxRate/1200)
+
+  let factor;
+  if (rate === 0) {
+    factor = 1 / n;
+  } else {
+    const compound = Math.pow(1 + r, n);
+    factor = (r * compound) / (compound - 1);
+  }
+
+  const taxMoFactor = (taxRate / 100) / 12;
+  let homePrice = (budget - insMo + downAmt * factor) / (factor + taxMoFactor);
+  homePrice = Math.max(0, homePrice);
+  const loanAmt = Math.max(0, homePrice - downAmt);
+
+  // Check if PMI applies, if so, solve with PMI included
+  const ltv = downAmt > 0 ? loanAmt / homePrice : 1;
+  let pmiRate = 0;
+  if (ltv > 0.80 && ltv <= 1) {
+    pmiRate = ltv > 0.95 ? 0.0110 : ltv > 0.90 ? 0.0085 : 0.0065;
+    const pmiMoFactor = pmiRate / 12;
+    homePrice = (budget - insMo + downAmt * factor) / (factor + taxMoFactor + pmiMoFactor);
+    homePrice = Math.max(0, homePrice);
+  }
+
+  const loanFinal   = Math.max(0, homePrice - downAmt);
+  const piMo        = calcPI(loanFinal, rate, term);
+  const pmiMo       = calcPMI(loanFinal, homePrice);
+  const taxMo       = (homePrice * taxRate / 100) / 12;
+  const totalMo     = piMo + pmiMo + taxMo + insMo;
+  const downPct     = homePrice > 0 ? (downAmt / homePrice) * 100 : 0;
+
+  const html = `
+    <div class="results-card fade-in">
+      <div class="afford-result">
+        <div class="ar-label">Maximum Home Price</div>
+        <div class="ar-price">${fmt(homePrice)}</div>
+        <div class="ar-sub">estimated at ${fmt(totalMo)}/mo</div>
+      </div>
+
+      <div class="afford-grid">
+        <div class="afford-box">
+          <div class="ab-label">Down Payment</div>
+          <div class="ab-value">${fmt(downAmt)} <span style="font-size:11px;color:var(--text-mute);">(${downPct.toFixed(1)}%)</span></div>
+        </div>
+        <div class="afford-box">
+          <div class="ab-label">Loan Amount</div>
+          <div class="ab-value">${fmt(loanFinal)}</div>
+        </div>
+        <div class="afford-box">
+          <div class="ab-label">P&amp;I Payment</div>
+          <div class="ab-value">${fmt(piMo)}/mo</div>
+        </div>
+        <div class="afford-box">
+          <div class="ab-label">${pmiMo > 0 ? 'Includes PMI' : 'No PMI'}</div>
+          <div class="ab-value" style="color:${pmiMo > 0 ? '#f77f00' : 'var(--green)'};">${pmiMo > 0 ? fmt(pmiMo) + '/mo' : 'Qualifies'}</div>
+        </div>
+      </div>
+
+      ${downPct < 20 ? `
+      <div class="pmi-notice">
+        <span class="notice-icon">&#x1F4A1;</span>
+        <span>Tip: Save <strong>${fmt(homePrice * 0.20 - downAmt)}</strong> more for a 20% down payment to eliminate PMI and increase your buying power.</span>
+      </div>` : ''}
+
+      <a href="/underwriter.html" class="uw-cta">
+        <div class="uw-cta-icon">&#x1F916;</div>
+        <div class="uw-cta-text">
+          <strong>Need help understanding your mortgage options?</strong>
+          <span>Try AI Underwriter &rarr;</span>
+        </div>
+        <span class="uw-cta-arrow">&rsaquo;</span>
+      </a>
+    </div>
+  `;
+
+  document.getElementById('results-afford').innerHTML = html;
+
+  if (window.innerWidth < 720) {
+    document.getElementById('results-afford').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── Tab switcher ─────────────────────────────
+function switchTab(tab) {
+  const isCalc = tab === 'calc';
+  document.getElementById('tab-calc').classList.toggle('active', isCalc);
+  document.getElementById('tab-afford').classList.toggle('active', !isCalc);
+  document.getElementById('panel-calc').classList.toggle('visible', isCalc);
+  document.getElementById('panel-afford').classList.toggle('visible', !isCalc);
+  document.getElementById('results-calc').style.display = isCalc ? '' : 'none';
+  document.getElementById('results-afford').style.display = isCalc ? 'none' : '';
+}
+
+// ── Init ─────────────────────────────────────
+(function init() {
+  updateDownDisplay();
+})();
+</script>
+</body>
+</html>
