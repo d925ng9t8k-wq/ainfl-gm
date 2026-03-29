@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL 2026 Award Predictions Builder | AiNFL GM</title>
+<meta name="description" content="Build your NFL 2026 award predictions. Pick MVP, OPOY, DPOY, Rookies of the Year, Coach of the Year, Super Bowl champion and more. Lock in your picks and see how bold you are.">
+<meta property="og:title" content="NFL 2026 Award Predictions Builder | AiNFL GM">
+<meta property="og:description" content="Make your NFL 2026 season award predictions. Pick every major award, lock them in, and see your boldness score vs Vegas favorites.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/award-predictions.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL 2026 Award Predictions Builder | AiNFL GM">
+<meta name="twitter:description" content="Build your NFL 2026 award predictions and share your card. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --purple:     #A855F7;
+  --purple-dim: rgba(168,85,247,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Boldness Bar ── */
+.boldness-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.05s;
+}
+.boldness-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.boldness-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.boldness-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--yellow);
+}
+.boldness-desc {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-style: italic;
+}
+.boldness-track {
+  height: 8px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.boldness-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.4s ease, background 0.4s ease;
+  background: var(--yellow);
+  width: 0%;
+}
+
+/* ── Award Grid ── */
+.awards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+@media (max-width: 600px) {
+  .awards-grid { grid-template-columns: 1fr; }
+}
+
+.award-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  animation: fadeUp 0.4s ease both;
+  transition: border-color 0.2s;
+}
+.award-card.selected {
+  border-color: var(--border-hi);
+}
+.award-card:nth-child(1) { animation-delay: 0.05s; }
+.award-card:nth-child(2) { animation-delay: 0.08s; }
+.award-card:nth-child(3) { animation-delay: 0.11s; }
+.award-card:nth-child(4) { animation-delay: 0.14s; }
+.award-card:nth-child(5) { animation-delay: 0.17s; }
+.award-card:nth-child(6) { animation-delay: 0.20s; }
+.award-card:nth-child(7) { animation-delay: 0.23s; }
+.award-card:nth-child(8) { animation-delay: 0.26s; }
+.award-card:nth-child(9) { animation-delay: 0.29s; }
+
+.award-icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+  display: block;
+}
+.award-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.award-favorite {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.fav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--yellow);
+  flex-shrink: 0;
+}
+
+/* ── Select Dropdown ── */
+.award-select {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 14px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%2394A3B8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.award-select:focus {
+  border-color: var(--border-hi);
+  background-color: var(--bg-3);
+}
+.award-select.has-pick {
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.award-select.is-bold {
+  color: var(--yellow);
+  border-color: rgba(255,214,0,0.3);
+}
+
+.bold-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border-radius: 4px;
+  padding: 2px 7px;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.bold-tag.visible { opacity: 1; }
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.btn-primary {
+  background: var(--cyan);
+  color: #0F172A;
+}
+.btn-primary:hover {
+  background: #30f8ff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,240,255,0.25);
+}
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-secondary:hover {
+  border-color: var(--border-hi);
+  color: var(--cyan);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.btn-ghost:hover {
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Prediction Card ── */
+.prediction-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 28px;
+  animation: glow-in 0.4s ease both;
+  display: none;
+}
+.prediction-card.visible { display: block; }
+
+.card-header {
+  background: linear-gradient(135deg, rgba(0,240,255,0.08), rgba(168,85,247,0.06));
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+.card-title span { color: var(--cyan); }
+.card-meta {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+.card-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: var(--radius-xs);
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+.card-rows {
+  padding: 4px 0;
+}
+.card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 24px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card-row:last-child { border-bottom: none; }
+.card-row-award {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  min-width: 160px;
+}
+.card-row-pick {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  text-align: right;
+}
+.card-row-pick.is-bold { color: var(--yellow); }
+.card-row-pick.is-fav  { color: var(--cyan); }
+
+.card-row-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg-2);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 999;
+  opacity: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Info Block ── */
+.info-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.35s;
+}
+.info-block strong { color: var(--text); font-weight: 600; }
+
+/* ── Progress Indicator ── */
+.progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.progress-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.progress-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.progress-track {
+  height: 4px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--cyan);
+  border-radius: 100px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* ── Ad slot ── */
+.ad-slot {
+  text-align: center;
+  margin: 28px 0;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Hub
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+    2026 Season
+  </div>
+  <h1>NFL <span>Award</span> Predictions</h1>
+  <p>Pick every major award for the 2026 NFL season. Lock in your card, see your boldness score, and share your predictions.</p>
+</section>
+
+<main class="main">
+
+  <!-- Progress -->
+  <div class="progress-row">
+    <span class="progress-label">Predictions filled</span>
+    <span class="progress-count" id="progressCount">0 / 9</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- Boldness Bar -->
+  <div class="boldness-bar">
+    <div class="boldness-header">
+      <span class="boldness-label">Boldness Score</span>
+      <span class="boldness-score" id="boldnessScore">0</span>
+    </div>
+    <div class="boldness-desc" id="boldnessDesc">Make your picks to see how bold your card is vs Vegas favorites.</div>
+    <div class="boldness-track" style="margin-top:12px;">
+      <div class="boldness-fill" id="boldnessFill"></div>
+    </div>
+  </div>
+
+  <!-- Awards Grid -->
+  <div class="awards-grid" id="awardsGrid">
+
+    <!-- MVP -->
+    <div class="award-card" id="card-mvp">
+      <span class="award-icon">🏆</span>
+      <div class="award-name">Most Valuable Player</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Lamar Jackson</div>
+      <select class="award-select" id="sel-mvp" data-award="mvp" data-fav="Lamar Jackson" onchange="handlePick(this)">
+        <option value="">-- Select MVP --</option>
+        <option value="Lamar Jackson">Lamar Jackson, QB, Ravens</option>
+        <option value="Josh Allen">Josh Allen, QB, Bills</option>
+        <option value="Joe Burrow">Joe Burrow, QB, Bengals</option>
+        <option value="Patrick Mahomes">Patrick Mahomes, QB, Chiefs</option>
+        <option value="Jalen Hurts">Jalen Hurts, QB, Eagles</option>
+        <option value="Jayden Daniels">Jayden Daniels, QB, Commanders</option>
+        <option value="Dak Prescott">Dak Prescott, QB, Cowboys</option>
+        <option value="CJ Stroud">CJ Stroud, QB, Texans</option>
+        <option value="Sam Darnold">Sam Darnold, QB, Vikings</option>
+        <option value="Brock Purdy">Brock Purdy, QB, 49ers</option>
+        <option value="Jordan Love">Jordan Love, QB, Packers</option>
+        <option value="Saquon Barkley">Saquon Barkley, RB, Eagles</option>
+      </select>
+      <div class="bold-tag" id="bold-mvp">BOLD PICK</div>
+    </div>
+
+    <!-- OPOY -->
+    <div class="award-card" id="card-opoy">
+      <span class="award-icon">⚡</span>
+      <div class="award-name">Offensive Player of the Year</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Saquon Barkley</div>
+      <select class="award-select" id="sel-opoy" data-award="opoy" data-fav="Saquon Barkley" onchange="handlePick(this)">
+        <option value="">-- Select OPOY --</option>
+        <option value="Saquon Barkley">Saquon Barkley, RB, Eagles</option>
+        <option value="Lamar Jackson">Lamar Jackson, QB, Ravens</option>
+        <option value="Josh Allen">Josh Allen, QB, Bills</option>
+        <option value="CeeDee Lamb">CeeDee Lamb, WR, Cowboys</option>
+        <option value="Amon-Ra St. Brown">Amon-Ra St. Brown, WR, Lions</option>
+        <option value="Joe Burrow">Joe Burrow, QB, Bengals</option>
+        <option value="Ja'Marr Chase">Ja'Marr Chase, WR, Bengals</option>
+        <option value="Justin Jefferson">Justin Jefferson, WR, Vikings</option>
+        <option value="Tyreek Hill">Tyreek Hill, WR, Dolphins</option>
+        <option value="Jayden Daniels">Jayden Daniels, QB, Commanders</option>
+        <option value="Sam LaPorta">Sam LaPorta, TE, Lions</option>
+        <option value="Bijan Robinson">Bijan Robinson, RB, Falcons</option>
+      </select>
+      <div class="bold-tag" id="bold-opoy">BOLD PICK</div>
+    </div>
+
+    <!-- DPOY -->
+    <div class="award-card" id="card-dpoy">
+      <span class="award-icon">🛡️</span>
+      <div class="award-name">Defensive Player of the Year</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Micah Parsons</div>
+      <select class="award-select" id="sel-dpoy" data-award="dpoy" data-fav="Micah Parsons" onchange="handlePick(this)">
+        <option value="">-- Select DPOY --</option>
+        <option value="Micah Parsons">Micah Parsons, LB, Cowboys</option>
+        <option value="Myles Garrett">Myles Garrett, DE, Browns</option>
+        <option value="Maxx Crosby">Maxx Crosby, DE, Raiders</option>
+        <option value="T.J. Watt">T.J. Watt, LB, Steelers</option>
+        <option value="Nick Bosa">Nick Bosa, DE, 49ers</option>
+        <option value="Jalen Carter">Jalen Carter, DT, Eagles</option>
+        <option value="Brian Burns">Brian Burns, DE, Giants</option>
+        <option value="Roquan Smith">Roquan Smith, LB, Ravens</option>
+        <option value="Sauce Gardner">Sauce Gardner, CB, Jets</option>
+        <option value="Darius Slay">Darius Slay, CB, Eagles</option>
+        <option value="Quinnen Williams">Quinnen Williams, DT, Jets</option>
+        <option value="Chris Jones">Chris Jones, DT, Chiefs</option>
+      </select>
+      <div class="bold-tag" id="bold-dpoy">BOLD PICK</div>
+    </div>
+
+    <!-- OROY -->
+    <div class="award-card" id="card-oroy">
+      <span class="award-icon">🌟</span>
+      <div class="award-name">Offensive Rookie of the Year</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Ashton Jeanty</div>
+      <select class="award-select" id="sel-oroy" data-award="oroy" data-fav="Ashton Jeanty" onchange="handlePick(this)">
+        <option value="">-- Select OROY --</option>
+        <option value="Ashton Jeanty">Ashton Jeanty, RB, Raiders</option>
+        <option value="Cam Ward">Cam Ward, QB, Titans</option>
+        <option value="Travis Hunter">Travis Hunter, WR, Jaguars</option>
+        <option value="Omarion Hampton">Omarion Hampton, RB, Chargers</option>
+        <option value="Tetairoa McMillan">Tetairoa McMillan, WR, Panthers</option>
+        <option value="Colston Loveland">Colston Loveland, TE, Bears</option>
+        <option value="Luther Burden III">Luther Burden III, WR, Cardinals</option>
+        <option value="Jonah Savaiinaea">Jonah Savaiinaea, G, Bengals</option>
+        <option value="Shedeur Sanders">Shedeur Sanders, QB, Browns</option>
+        <option value="Will Johnson">Will Johnson, CB, Patriots</option>
+        <option value="Dillon Gabriel">Dillon Gabriel, QB, Browns</option>
+        <option value="Kyle Williams">Kyle Williams, WR, Patriots</option>
+      </select>
+      <div class="bold-tag" id="bold-oroy">BOLD PICK</div>
+    </div>
+
+    <!-- DROY -->
+    <div class="award-card" id="card-droy">
+      <span class="award-icon">🔥</span>
+      <div class="award-name">Defensive Rookie of the Year</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Abdul Carter</div>
+      <select class="award-select" id="sel-droy" data-award="droy" data-fav="Abdul Carter" onchange="handlePick(this)">
+        <option value="">-- Select DROY --</option>
+        <option value="Abdul Carter">Abdul Carter, LB, Giants</option>
+        <option value="Travis Hunter">Travis Hunter, CB, Jaguars</option>
+        <option value="Will Johnson">Will Johnson, CB, Patriots</option>
+        <option value="Malaki Starks">Malaki Starks, S, Packers</option>
+        <option value="Mason Graham">Mason Graham, DT, Browns</option>
+        <option value="Jalon Walker">Jalon Walker, LB, Falcons</option>
+        <option value="Kenneth Grant">Kenneth Grant, DT, Dolphins</option>
+        <option value="Shemar Stewart">Shemar Stewart, DE, Bengals</option>
+        <option value="Mykel Williams">Mykel Williams, DE, 49ers</option>
+        <option value="Tyleik Williams">Tyleik Williams, DT, Cowboys</option>
+        <option value="James Pearce Jr.">James Pearce Jr., DE, Bears</option>
+      </select>
+      <div class="bold-tag" id="bold-droy">BOLD PICK</div>
+    </div>
+
+    <!-- CPOY -->
+    <div class="award-card" id="card-cpoy">
+      <span class="award-icon">💪</span>
+      <div class="award-name">Comeback Player of the Year</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Dak Prescott</div>
+      <select class="award-select" id="sel-cpoy" data-award="cpoy" data-fav="Dak Prescott" onchange="handlePick(this)">
+        <option value="">-- Select CPOY --</option>
+        <option value="Dak Prescott">Dak Prescott, QB, Cowboys</option>
+        <option value="Tua Tagovailoa">Tua Tagovailoa, QB, Dolphins</option>
+        <option value="Christian McCaffrey">Christian McCaffrey, RB, 49ers</option>
+        <option value="Jordan Love">Jordan Love, QB, Packers</option>
+        <option value="Davante Adams">Davante Adams, WR, Raiders</option>
+        <option value="Cooper Kupp">Cooper Kupp, WR, Rams</option>
+        <option value="Aaron Jones">Aaron Jones, RB, Vikings</option>
+        <option value="Diontae Johnson">Diontae Johnson, WR, Ravens</option>
+        <option value="Rashee Rice">Rashee Rice, WR, Chiefs</option>
+        <option value="Odell Beckham Jr.">Odell Beckham Jr., WR, Free Agent</option>
+        <option value="Jake Haener">Jake Haener, QB, Saints</option>
+      </select>
+      <div class="bold-tag" id="bold-cpoy">BOLD PICK</div>
+    </div>
+
+    <!-- Coach of the Year -->
+    <div class="award-card" id="card-coty">
+      <span class="award-icon">📋</span>
+      <div class="award-name">Coach of the Year</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Brian Flores</div>
+      <select class="award-select" id="sel-coty" data-award="coty" data-fav="Brian Flores" onchange="handlePick(this)">
+        <option value="">-- Select Coach of the Year --</option>
+        <option value="Brian Flores">Brian Flores, Steelers</option>
+        <option value="Dan Quinn">Dan Quinn, Commanders</option>
+        <option value="Mike Macdonald">Mike Macdonald, Seahawks</option>
+        <option value="Raheem Morris">Raheem Morris, Falcons</option>
+        <option value="Liam Coen">Liam Coen, Buccaneers</option>
+        <option value="Kevin O'Connell">Kevin O'Connell, Vikings</option>
+        <option value="Sean McVay">Sean McVay, Rams</option>
+        <option value="Andy Reid">Andy Reid, Chiefs</option>
+        <option value="Kyle Shanahan">Kyle Shanahan, 49ers</option>
+        <option value="John Harbaugh">John Harbaugh, Ravens</option>
+        <option value="Nick Sirianni">Nick Sirianni, Eagles</option>
+        <option value="Zac Taylor">Zac Taylor, Bengals</option>
+        <option value="DeMeco Ryans">DeMeco Ryans, Texans</option>
+      </select>
+      <div class="bold-tag" id="bold-coty">BOLD PICK</div>
+    </div>
+
+    <!-- Super Bowl Champion -->
+    <div class="award-card" id="card-sb">
+      <span class="award-icon">🏈</span>
+      <div class="award-name">Super Bowl LX Champion</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Kansas City Chiefs</div>
+      <select class="award-select" id="sel-sb" data-award="sb" data-fav="Kansas City Chiefs" onchange="handlePick(this)">
+        <option value="">-- Select Super Bowl Champion --</option>
+        <option value="Kansas City Chiefs">Kansas City Chiefs</option>
+        <option value="Philadelphia Eagles">Philadelphia Eagles</option>
+        <option value="Baltimore Ravens">Baltimore Ravens</option>
+        <option value="Buffalo Bills">Buffalo Bills</option>
+        <option value="San Francisco 49ers">San Francisco 49ers</option>
+        <option value="Detroit Lions">Detroit Lions</option>
+        <option value="Dallas Cowboys">Dallas Cowboys</option>
+        <option value="Cincinnati Bengals">Cincinnati Bengals</option>
+        <option value="Washington Commanders">Washington Commanders</option>
+        <option value="Houston Texans">Houston Texans</option>
+        <option value="Green Bay Packers">Green Bay Packers</option>
+        <option value="Minnesota Vikings">Minnesota Vikings</option>
+        <option value="Los Angeles Rams">Los Angeles Rams</option>
+        <option value="Miami Dolphins">Miami Dolphins</option>
+        <option value="Pittsburgh Steelers">Pittsburgh Steelers</option>
+        <option value="Jacksonville Jaguars">Jacksonville Jaguars</option>
+      </select>
+      <div class="bold-tag" id="bold-sb">BOLD PICK</div>
+    </div>
+
+    <!-- Super Bowl MVP -->
+    <div class="award-card" id="card-sbmvp">
+      <span class="award-icon">🎯</span>
+      <div class="award-name">Super Bowl MVP</div>
+      <div class="award-favorite"><span class="fav-dot"></span> Vegas Fav: Patrick Mahomes</div>
+      <select class="award-select" id="sel-sbmvp" data-award="sbmvp" data-fav="Patrick Mahomes" onchange="handlePick(this)">
+        <option value="">-- Select Super Bowl MVP --</option>
+        <option value="Patrick Mahomes">Patrick Mahomes, QB, Chiefs</option>
+        <option value="Jalen Hurts">Jalen Hurts, QB, Eagles</option>
+        <option value="Lamar Jackson">Lamar Jackson, QB, Ravens</option>
+        <option value="Josh Allen">Josh Allen, QB, Bills</option>
+        <option value="Brock Purdy">Brock Purdy, QB, 49ers</option>
+        <option value="Jared Goff">Jared Goff, QB, Lions</option>
+        <option value="Dak Prescott">Dak Prescott, QB, Cowboys</option>
+        <option value="Joe Burrow">Joe Burrow, QB, Bengals</option>
+        <option value="Jayden Daniels">Jayden Daniels, QB, Commanders</option>
+        <option value="CJ Stroud">CJ Stroud, QB, Texans</option>
+        <option value="Jordan Love">Jordan Love, QB, Packers</option>
+        <option value="Sam Darnold">Sam Darnold, QB, Vikings</option>
+        <option value="Saquon Barkley">Saquon Barkley, RB, Eagles</option>
+        <option value="CeeDee Lamb">CeeDee Lamb, WR, Cowboys</option>
+      </select>
+      <div class="bold-tag" id="bold-sbmvp">BOLD PICK</div>
+    </div>
+
+  </div>
+
+  <!-- Ad Slot -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <button class="btn btn-primary" id="btnLock" onclick="lockPredictions()" disabled>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/></svg>
+      Lock In Predictions
+    </button>
+    <button class="btn btn-secondary" id="btnShare" onclick="sharePredictions()" disabled>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" stroke="currentColor" stroke-width="2"/><polyline points="16 6 12 2 8 6" stroke="currentColor" stroke-width="2"/><line x1="12" y1="2" x2="12" y2="15" stroke="currentColor" stroke-width="2"/></svg>
+      Share My Card
+    </button>
+    <button class="btn btn-ghost" onclick="resetPredictions()">
+      Reset
+    </button>
+  </div>
+
+  <!-- Locked Prediction Card -->
+  <div class="prediction-card" id="predictionCard">
+    <div class="card-header">
+      <div>
+        <div class="card-title">My 2026 NFL <span>Predictions</span></div>
+        <div class="card-meta" id="cardMeta">Locked in --</div>
+      </div>
+      <div class="card-badge" id="cardBoldBadge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
+        <span id="cardBoldScore">0</span> Boldness
+      </div>
+    </div>
+    <div class="card-rows" id="cardRows"></div>
+  </div>
+
+  <!-- Info Block -->
+  <div class="info-block">
+    <strong>How Boldness Score Works</strong><br>
+    Each award has a consensus Vegas favorite. Picking the favorite scores <strong>0 boldness points</strong>. Picking anyone else scores <strong>10+ boldness points</strong> depending on how far outside consensus they are. A score of 0-20 = Safe Player. 21-40 = Contrarian. 41-60 = Bold. 61-80 = High Risk. 81-90 = All-In Degen.
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>NFL 2026 award candidates based on consensus preseason projections. Picks are for entertainment purposes only.</div>
+  <div style="margin-top:8px;">
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Draft Trade Calc</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-quiz.html">Cap Quiz</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/combine-stats.html">Combine Stats</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/fantasy-trade.html">Fantasy Trade</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  // ── Award config ──────────────────────────────────────────────────────────
+  const AWARDS = [
+    { id: 'mvp',   label: 'MVP',                    icon: '🏆' },
+    { id: 'opoy',  label: 'Offensive POY',           icon: '⚡' },
+    { id: 'dpoy',  label: 'Defensive POY',           icon: '🛡️' },
+    { id: 'oroy',  label: 'Offensive ROY',           icon: '🌟' },
+    { id: 'droy',  label: 'Defensive ROY',           icon: '🔥' },
+    { id: 'cpoy',  label: 'Comeback POY',            icon: '💪' },
+    { id: 'coty',  label: 'Coach of the Year',       icon: '📋' },
+    { id: 'sb',    label: 'Super Bowl Champion',     icon: '🏈' },
+    { id: 'sbmvp', label: 'Super Bowl MVP',          icon: '🎯' },
+  ];
+
+  const TOTAL = AWARDS.length;
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  let picks = {};
+  let locked = false;
+
+  // ── Load from localStorage ────────────────────────────────────────────────
+  try {
+    const saved = localStorage.getItem('nfl2026-award-predictions');
+    if (saved) {
+      const data = JSON.parse(saved);
+      picks = data.picks || {};
+      locked = data.locked || false;
+      // Restore selects
+      AWARDS.forEach(function(a) {
+        const sel = document.getElementById('sel-' + a.id);
+        if (sel && picks[a.id]) {
+          sel.value = picks[a.id];
+          updateSelectStyle(sel);
+        }
+      });
+      if (locked) {
+        renderCard(data.lockedAt);
+        document.getElementById('btnShare').disabled = false;
+      }
+    }
+  } catch(e) {}
+
+  updateProgress();
+  updateBoldness();
+
+  // ── Handle pick change ────────────────────────────────────────────────────
+  window.handlePick = function(sel) {
+    const id = sel.dataset.award;
+    const val = sel.value;
+    if (val) {
+      picks[id] = val;
+    } else {
+      delete picks[id];
+    }
+    updateSelectStyle(sel);
+    updateProgress();
+    updateBoldness();
+    saveState();
+    locked = false;
+    document.getElementById('predictionCard').classList.remove('visible');
+    document.getElementById('btnShare').disabled = true;
+  };
+
+  function updateSelectStyle(sel) {
+    const val = sel.value;
+    const fav = sel.dataset.fav;
+    sel.classList.remove('has-pick', 'is-bold');
+    const boldTag = document.getElementById('bold-' + sel.dataset.award);
+    if (val) {
+      if (val === fav) {
+        sel.classList.add('has-pick');
+        boldTag.classList.remove('visible');
+      } else {
+        sel.classList.add('has-pick', 'is-bold');
+        boldTag.classList.add('visible');
+      }
+    } else {
+      boldTag.classList.remove('visible');
+    }
+  }
+
+  // ── Progress ──────────────────────────────────────────────────────────────
+  function updateProgress() {
+    const filled = Object.keys(picks).length;
+    document.getElementById('progressCount').textContent = filled + ' / ' + TOTAL;
+    document.getElementById('progressFill').style.width = (filled / TOTAL * 100) + '%';
+    document.getElementById('btnLock').disabled = filled < TOTAL;
+  }
+
+  // ── Boldness ──────────────────────────────────────────────────────────────
+  function calcBoldness() {
+    let score = 0;
+    AWARDS.forEach(function(a) {
+      const sel = document.getElementById('sel-' + a.id);
+      if (!sel) return;
+      const fav = sel.dataset.fav;
+      const val = picks[a.id];
+      if (val && val !== fav) {
+        score += 10;
+      }
+    });
+    return score;
+  }
+
+  function boldnessLabel(score) {
+    if (score === 0)  return 'Safe — you went all chalk.';
+    if (score <= 20)  return 'Safe Player — a couple bold picks.';
+    if (score <= 40)  return 'Contrarian — you like to stir the pot.';
+    if (score <= 60)  return 'Bold — real conviction here.';
+    if (score <= 80)  return 'High Risk — going against Vegas hard.';
+    return 'All-In Degen — maximum chaos card.';
+  }
+
+  function updateBoldness() {
+    const score = calcBoldness();
+    const max = TOTAL * 10;
+    const pct = Math.min(score / max * 100, 100);
+    document.getElementById('boldnessScore').textContent = score;
+    document.getElementById('boldnessDesc').textContent = boldnessLabel(score);
+    document.getElementById('boldnessFill').style.width = pct + '%';
+    // Color shift
+    const fill = document.getElementById('boldnessFill');
+    if (score === 0) fill.style.background = 'var(--text-mute)';
+    else if (score <= 20) fill.style.background = 'var(--cyan)';
+    else if (score <= 50) fill.style.background = 'var(--yellow)';
+    else fill.style.background = 'var(--red)';
+  }
+
+  // ── Lock ──────────────────────────────────────────────────────────────────
+  window.lockPredictions = function() {
+    if (Object.keys(picks).length < TOTAL) return;
+    locked = true;
+    const now = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    saveState(now);
+    renderCard(now);
+    document.getElementById('btnShare').disabled = false;
+    showToast('Predictions locked in!');
+    // Scroll to card
+    setTimeout(function() {
+      document.getElementById('predictionCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  };
+
+  // ── Render locked card ────────────────────────────────────────────────────
+  function renderCard(lockedAt) {
+    const score = calcBoldness();
+    document.getElementById('cardMeta').textContent = lockedAt ? 'Locked: ' + lockedAt : '';
+    document.getElementById('cardBoldScore').textContent = score;
+    const rows = document.getElementById('cardRows');
+    rows.innerHTML = '';
+    AWARDS.forEach(function(a) {
+      const sel = document.getElementById('sel-' + a.id);
+      const fav = sel ? sel.dataset.fav : '';
+      const val = picks[a.id] || '—';
+      const isBold = val !== fav && val !== '—';
+      const row = document.createElement('div');
+      row.className = 'card-row';
+      row.innerHTML =
+        '<span class="card-row-icon">' + a.icon + '</span>' +
+        '<span class="card-row-award">' + a.label + '</span>' +
+        '<span class="card-row-pick' + (isBold ? ' is-bold' : ' is-fav') + '">' + val + '</span>';
+      rows.appendChild(row);
+    });
+    document.getElementById('predictionCard').classList.add('visible');
+  }
+
+  // ── Share ─────────────────────────────────────────────────────────────────
+  window.sharePredictions = function() {
+    const score = calcBoldness();
+    const label = boldnessLabel(score);
+    let text = 'My 2026 NFL Award Predictions (Boldness: ' + score + ' — ' + label + ')\n\n';
+    AWARDS.forEach(function(a) {
+      text += a.icon + ' ' + a.label + ': ' + (picks[a.id] || '—') + '\n';
+    });
+    text += '\nMade at https://ainflgm.com/award-predictions.html';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Copied to clipboard!');
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  };
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('Copied to clipboard!'); }
+    catch(e) { showToast('Could not copy — try manually.'); }
+    document.body.removeChild(ta);
+  }
+
+  // ── Reset ─────────────────────────────────────────────────────────────────
+  window.resetPredictions = function() {
+    picks = {};
+    locked = false;
+    AWARDS.forEach(function(a) {
+      const sel = document.getElementById('sel-' + a.id);
+      if (sel) {
+        sel.value = '';
+        sel.classList.remove('has-pick', 'is-bold');
+        const boldTag = document.getElementById('bold-' + a.id);
+        if (boldTag) boldTag.classList.remove('visible');
+      }
+    });
+    document.getElementById('predictionCard').classList.remove('visible');
+    document.getElementById('btnShare').disabled = true;
+    updateProgress();
+    updateBoldness();
+    try { localStorage.removeItem('nfl2026-award-predictions'); } catch(e) {}
+    showToast('Predictions reset.');
+  };
+
+  // ── Save ──────────────────────────────────────────────────────────────────
+  function saveState(lockedAt) {
+    try {
+      localStorage.setItem('nfl2026-award-predictions', JSON.stringify({
+        picks: picks,
+        locked: locked,
+        lockedAt: lockedAt || null
+      }));
+    } catch(e) {}
+  }
+
+  // ── Toast ─────────────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 2500);
+  }
+
+  // ── AdSense init ──────────────────────────────────────────────────────────
+  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+
+})();
+</script>
+</body>
+</html>
