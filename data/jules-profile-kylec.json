@@ -144,7 +144,7 @@
       "dti_standard": "36/45",
       "dti_du_max": "50% (DU approval)",
       "min_credit_score": 620,
-      "conforming_loan_limit_2025": 806500,
+      "conforming_loan_limit_2026": 832750,
       "pmi_required_below_ltv": "80%"
     },
     "va": {

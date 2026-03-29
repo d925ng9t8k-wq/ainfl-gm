@@ -95,7 +95,7 @@ Conventional:
 - DTI standard: ${conv.dti_standard || '36/45'}
 - DTI max via DU: ${conv.dti_du_max || '50%'}
 - Min credit score: ${conv.min_credit_score || 620}
-- 2025 conforming loan limit: $${conv.conforming_loan_limit_2025?.toLocaleString() || '806,500'}
+- 2026 conforming loan limit: $${conv.conforming_loan_limit_2026?.toLocaleString() || '832,750'}
 - PMI required when: LTV above ${conv.pmi_required_below_ltv || '80%'}
 
 VA:
@@ -237,7 +237,7 @@ function handleGuidelineIntent(intent, profile) {
     fha_down:       `FHA minimum down is 3.5% at ${fha.min_credit_score_35_down || 580}+ credit, 10% down for ${fha.min_credit_score_10_down || 500}-579. That's the floor — lender overlays may vary.`,
     conv_dti:       `Conventional DTI: ${conv.dti_standard || '36/45'} standard, up to ${conv.dti_du_max || '50%'} with DU approval. Fannie/Freddie allow 50% if the rest of the file is clean.`,
     conv_credit:    `Conventional min credit: ${conv.min_credit_score || 620}. PMI required above ${conv.pmi_required_below_ltv || '80%'} LTV — rate and terms improve significantly at 680+.`,
-    conforming_limit: `2025 conforming loan limit: $${conv.conforming_loan_limit_2025?.toLocaleString() || '806,500'}. Anything over that is jumbo.`,
+    conforming_limit: `2026 conforming loan limit: $${conv.conforming_loan_limit_2026?.toLocaleString() || '832,750'}. Up from $806,500 in 2025. Anything over that is jumbo.`,
     va_fee:         `VA funding fee: ${va.funding_fee_first_use_5_down || '2.15%'} first use (< 5% down), ${va.funding_fee_subsequent_5_down || '3.30%'} subsequent use (< 5% down). Exempt if rated 10%+ service-connected disability.`,
     va_dti:         `VA DTI: ${va.dti_guideline || '41% guideline, but residual income takes priority'}. A veteran with strong residual income can go higher — it's less strict than FHA or conventional in practice.`,
     va_credit:      `VA has no set minimum — ${va.min_credit_score || 'lender overlay is typically 580-620'}. The VA itself doesn't set a floor.`,
