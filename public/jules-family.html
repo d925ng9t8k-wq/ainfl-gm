@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Family Planner — Cincinnati</title>
+  <meta name="description" content="Family activity and date night ideas for Cincinnati. Curated for your family." />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLW4H1NNF6');
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:      #f2a7a7;
+      --rose-deep: #e07575;
+      --peach:     #fcd5b5;
+      --cream:     #fdf6ef;
+      --warm-tan:  #f5e6d3;
+      --sage:      #9cbf9c;
+      --sage-deep: #6fa36f;
+      --sky:       #aed6ea;
+      --gold:      #e8b86d;
+      --text:      #3d2e28;
+      --text-mid:  #7a5c52;
+      --text-soft: #b89c94;
+      --white:     #ffffff;
+      --shadow:    rgba(120, 80, 60, 0.12);
+      --radius:    18px;
+      --radius-sm: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(160deg, #fdf0e8 0%, #f7e8f0 50%, #edf4fb 100%);
+      min-height: 100vh;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #f9cdd2 0%, #fce4c8 50%, #fdf0e8 100%);
+      padding: 36px 20px 28px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200, 140, 120, 0.15);
+    }
+    .header-icon { font-size: 40px; margin-bottom: 8px; }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      margin-top: 6px;
+      font-size: 15px;
+      color: var(--text-mid);
+      font-weight: 400;
+    }
+    .season-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(200, 160, 120, 0.3);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-mid);
+    }
+
+    /* ── Main container ── */
+    .container { max-width: 480px; margin: 0 auto; padding: 20px 16px 100px; }
+
+    /* ── Surprise Me button ── */
+    .surprise-wrap { margin: 24px 0 20px; text-align: center; }
+    .btn-surprise {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #e8778a 0%, #d4607a 100%);
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(200, 80, 100, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: -0.2px;
+      width: 100%;
+      max-width: 320px;
+      justify-content: center;
+    }
+    .btn-surprise:active { transform: scale(0.97); box-shadow: 0 3px 12px rgba(200, 80, 100, 0.25); }
+    .btn-surprise .icon { font-size: 22px; }
+
+    /* ── Result card ── */
+    .result-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 24px var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
+      display: none;
+      animation: pop 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .result-card.visible { display: block; }
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .result-card.date-night::before   { background: linear-gradient(90deg, #f2a7a7, #e07575); }
+    .result-card.family-fun::before   { background: linear-gradient(90deg, #aed6ea, #6fb0d0); }
+    .result-card.outdoor::before      { background: linear-gradient(90deg, #9cbf9c, #6fa36f); }
+    .result-card.budget::before       { background: linear-gradient(90deg, #fcd5b5, #e8b86d); }
+    .result-card.special::before      { background: linear-gradient(90deg, #d4aee8, #b07dc8); }
+
+    @keyframes pop {
+      0%   { opacity: 0; transform: translateY(10px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .result-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .result-card.date-night .result-category   { background: #fce8e8; color: #c05050; }
+    .result-card.family-fun .result-category   { background: #e4f2fa; color: #3a8ab0; }
+    .result-card.outdoor .result-category      { background: #e4f2e4; color: #3a7a3a; }
+    .result-card.budget .result-category       { background: #fef3e4; color: #b07030; }
+    .result-card.special .result-category      { background: #f3e8fc; color: #8040b0; }
+
+    .result-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .result-desc {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .result-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+    .tag {
+      background: var(--warm-tan);
+      color: var(--text-mid);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .result-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-save, .btn-another {
+      flex: 1;
+      padding: 11px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.12s, opacity 0.12s;
+    }
+    .btn-save:active, .btn-another:active { transform: scale(0.96); }
+    .btn-save {
+      background: var(--warm-tan);
+      color: var(--text-mid);
+      border: 1.5px solid rgba(180, 140, 110, 0.3);
+    }
+    .btn-save.saved {
+      background: linear-gradient(135deg, #9cbf9c, #6fa36f);
+      color: white;
+      border-color: transparent;
+    }
+    .btn-another {
+      background: linear-gradient(135deg, #f2b8be, #e07575);
+      color: white;
+    }
+
+    /* ── Category tabs ── */
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-soft);
+      margin: 28px 0 12px;
+    }
+    .categories {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .cat-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 15px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1.5px solid transparent;
+      background: white;
+      color: var(--text-mid);
+      cursor: pointer;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .cat-btn:active { transform: scale(0.95); }
+    .cat-btn.active-date   { background: #fce8e8; border-color: #e07575; color: #c05050; }
+    .cat-btn.active-family { background: #e4f2fa; border-color: #6fb0d0; color: #3a8ab0; }
+    .cat-btn.active-outdoor { background: #e4f2e4; border-color: #6fa36f; color: #3a7a3a; }
+    .cat-btn.active-budget { background: #fef3e4; border-color: #e8b86d; color: #b07030; }
+    .cat-btn.active-special { background: #f3e8fc; border-color: #b07dc8; color: #8040b0; }
+
+    /* ── Favorites ── */
+    .favorites-section { margin-top: 32px; }
+    .favorites-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .btn-clear-fav {
+      font-size: 12px;
+      color: var(--text-soft);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+    .btn-clear-fav:active { opacity: 0.6; }
+    .favorites-empty {
+      text-align: center;
+      padding: 28px 20px;
+      background: white;
+      border-radius: var(--radius);
+      color: var(--text-soft);
+      font-size: 14px;
+      box-shadow: 0 2px 10px var(--shadow);
+    }
+    .favorites-empty .empty-icon { font-size: 32px; margin-bottom: 8px; }
+    .fav-item {
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 10px var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: pop 0.2s ease;
+    }
+    .fav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .fav-dot.date-night  { background: #e07575; }
+    .fav-dot.family-fun  { background: #6fb0d0; }
+    .fav-dot.outdoor     { background: #6fa36f; }
+    .fav-dot.budget      { background: #e8b86d; }
+    .fav-dot.special     { background: #b07dc8; }
+    .fav-text { flex: 1; }
+    .fav-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .fav-cat  { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+    .btn-fav-remove {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-soft);
+      padding: 4px;
+      line-height: 1;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 32px 20px 24px;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .footer .jules-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: white;
+      border-radius: 20px;
+      padding: 6px 14px;
+      box-shadow: 0 2px 10px var(--shadow);
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-mid);
+    }
+    .footer .jules-badge span { font-size: 15px; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-icon">🌸</div>
+  <h1>What should we do?</h1>
+  <p>Ideas for the family — or just the two of you</p>
+  <div class="season-badge">🌱 Spring in Cincinnati</div>
+</div>
+
+<div class="container">
+
+  <!-- Surprise Me -->
+  <div class="surprise-wrap">
+    <button class="btn-surprise" id="btnSurprise">
+      <span class="icon">✨</span> Surprise Me!
+    </button>
+  </div>
+
+  <!-- Result card -->
+  <div class="result-card" id="resultCard">
+    <div class="result-category" id="resultCat"></div>
+    <div class="result-title"  id="resultTitle"></div>
+    <div class="result-desc"   id="resultDesc"></div>
+    <div class="result-tags"   id="resultTags"></div>
+    <div class="result-actions">
+      <button class="btn-save"    id="btnSave">Save it</button>
+      <button class="btn-another" id="btnAnother">Another one</button>
+    </div>
+  </div>
+
+  <!-- Category filters -->
+  <div class="section-label">Browse by category</div>
+  <div class="categories">
+    <button class="cat-btn" data-cat="date-night"   onclick="pickFromCat('date-night')">  💕 Date Night</button>
+    <button class="cat-btn" data-cat="family-fun"   onclick="pickFromCat('family-fun')">  👨‍👩‍👧‍👦 Family Fun</button>
+    <button class="cat-btn" data-cat="outdoor"      onclick="pickFromCat('outdoor')">      🌿 Outdoor</button>
+    <button class="cat-btn" data-cat="budget"       onclick="pickFromCat('budget')">       💛 Budget</button>
+    <button class="cat-btn" data-cat="special"      onclick="pickFromCat('special')">      🎉 Special</button>
+  </div>
+
+  <!-- Favorites -->
+  <div class="favorites-section">
+    <div class="favorites-header">
+      <div class="section-label" style="margin:0;">Saved ideas</div>
+      <button class="btn-clear-fav" onclick="clearFavorites()">Clear all</button>
+    </div>
+    <div id="favoritesContainer"></div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="jules-badge"><span>🤍</span> Powered by Jules</div>
+  <div>from 9 Enterprises · Made for your family</div>
+</div>
+
+<script>
+// ── Activity data ─────────────────────────────────────────────────────────────
+const activities = [
+
+  // DATE NIGHT
+  {
+    id: 'dn1', cat: 'date-night',
+    title: 'Dinner at Orchids at Palm Court',
+    desc: 'Cincinnati\'s most romantic restaurant inside the historic Hilton. Perfect for a special evening — white tablecloths, incredible food, no kids required.',
+    tags: ['Downtown', 'Upscale', '2hrs', 'Reservations recommended'],
+    icon: '🍷'
+  },
+  {
+    id: 'dn2', cat: 'date-night',
+    title: 'Sunset Walk at Eden Park',
+    desc: 'Stroll the Twin Lakes loop as the sun goes down. Stop at the Mirror Lake overlook — one of the prettiest spots in Cincinnati. Bring coffees from a nearby cafe.',
+    tags: ['Free', 'Outdoors', '1hr', 'Anytime'],
+    icon: '🌅'
+  },
+  {
+    id: 'dn3', cat: 'date-night',
+    title: 'Cincinnati Art Museum After Hours',
+    desc: 'The CAM is free to enter. Wednesday evenings often have live jazz in the atrium. Wander the impressionist wing and feel like you\'re in Paris.',
+    tags: ['Free entry', 'Mt Adams', '2hrs', 'Calm & beautiful'],
+    icon: '🎨'
+  },
+  {
+    id: 'dn4', cat: 'date-night',
+    title: 'Wine Tasting at Party Source',
+    desc: 'The Party Source in Bellevue (just across the river) does Saturday tastings. Fun, low-key, and you\'ll probably end up buying a bottle to take home.',
+    tags: ['Newport KY', '$20-30', '1.5hrs', 'Casual'],
+    icon: '🍾'
+  },
+  {
+    id: 'dn5', cat: 'date-night',
+    title: 'Movie at Esquire Theatre',
+    desc: 'Classic art-house cinema in Clifton. Catch a new release or indie film in a beautifully restored 1930s theater. Get there early for a glass of wine.',
+    tags: ['Clifton', '$15/person', '2hrs', 'Classic Cincinnati'],
+    icon: '🎬'
+  },
+  {
+    id: 'dn6', cat: 'date-night',
+    title: 'Dinner on the Ohio at Covington Landing',
+    desc: 'Cross the bridge to Covington and walk the Licking River boardwalk. Tons of great restaurants with riverfront views — try Coppin\'s or Prime Cincinnati.',
+    tags: ['Covington KY', 'Waterfront', 'Dinner', 'Spring vibes'],
+    icon: '🌊'
+  },
+
+  // FAMILY FUN (kids 8-11)
+  {
+    id: 'ff1', cat: 'family-fun',
+    title: 'Cincinnati Zoo — Spring Walk',
+    desc: 'The Zoo is beautiful in spring. The Animal Babies exhibit is usually running in March-April. Jude and Jacy will both love the big cats and the hippos.',
+    tags: ['All ages', '3-4hrs', 'Great in spring', 'Hippos!'],
+    icon: '🦁'
+  },
+  {
+    id: 'ff2', cat: 'family-fun',
+    title: 'Cosi Columbus Day Trip',
+    desc: 'Only 1.5hrs north. Ohio\'s best science museum — massive physical challenge course (Jude will dominate), an ocean exhibit, and a planetarium show.',
+    tags: ['Day trip', 'Columbus', 'Ages 6-15', 'Hands-on everything'],
+    icon: '🔬'
+  },
+  {
+    id: 'ff3', cat: 'family-fun',
+    title: 'Pump It Up (Indoor Inflatables)',
+    desc: 'A massive indoor inflatable park in Kenwood. Both kids are right in the sweet spot age-wise. Great for a rainy spring day — they will sleep well tonight.',
+    tags: ['Kenwood', '2hrs', 'Active', 'Ages 5-12'],
+    icon: '🎪'
+  },
+  {
+    id: 'ff4', cat: 'family-fun',
+    title: 'Bake Together — Family Pizza Night',
+    desc: 'Make homemade pizzas with the kids. Let Jude and Jacy each build their own. Pick up dough from Kroger or Trader Joe\'s and set up a topping bar.',
+    tags: ['At home', 'Free', 'Ages 8+', 'Memory-maker'],
+    icon: '🍕'
+  },
+  {
+    id: 'ff5', cat: 'family-fun',
+    title: 'Perfect North Slopes (Last Ski Weekend)',
+    desc: 'Spring skiing is still on in March. Perfect North in Lawrenceburg is only 40min away. Evening sessions are discounted — end of season fun before it closes.',
+    tags: ['Lawrenceburg IN', '3hrs', 'Seasonal', 'Last chance'],
+    icon: '⛷️'
+  },
+  {
+    id: 'ff6', cat: 'family-fun',
+    title: 'Escape Room at Break Out Games',
+    desc: 'Break Out Games in Blue Ash has family-rated rooms. Jude (11) and Jacy (8) are perfectly ready for it. Great teamwork activity — pick the 60-min beginner room.',
+    tags: ['Blue Ash', '1hr', 'Team challenge', 'Ages 8+'],
+    icon: '🔐'
+  },
+  {
+    id: 'ff7', cat: 'family-fun',
+    title: 'Bowling at Strikes & Spares',
+    desc: 'Classic family bowling. Kids this age love it, scores are close enough to be fun, and it\'s zero planning. Add arcade tokens for a full afternoon.',
+    tags: ['Multiple locations', '2hrs', 'Guaranteed fun', 'No reservations needed'],
+    icon: '🎳'
+  },
+
+  // OUTDOOR
+  {
+    id: 'out1', cat: 'outdoor',
+    title: 'Little Miami Scenic Trail — Bike Ride',
+    desc: 'Spring is perfect for the Little Miami Trail. Rent bikes or bring your own. The Milford to Loveland section is flat, gorgeous, and family-friendly.',
+    tags: ['Milford / Loveland', 'Free', 'Bikes needed', 'All ages'],
+    icon: '🚴'
+  },
+  {
+    id: 'out2', cat: 'outdoor',
+    title: 'Devou Park Kite Flying',
+    desc: 'Devou Park in Covington has the best open fields and views of Cincinnati skyline. Grab kites from Walmart, drive over the bridge — instant spring afternoon.',
+    tags: ['Covington KY', 'Free', 'Open fields', 'Best views in the area'],
+    icon: '🪁'
+  },
+  {
+    id: 'out3', cat: 'outdoor',
+    title: 'East Fork State Park — Spring Hike',
+    desc: 'Only 30min from Anderson Township. Easy to moderate trails, still uncrowded in early spring. Dogwood trees start blooming in late March. Bring a picnic.',
+    tags: ['Clermont County', 'Free', '2-3hrs', 'Wildflowers'],
+    icon: '🥾'
+  },
+  {
+    id: 'out4', cat: 'outdoor',
+    title: 'Armleder Park Disc Golf',
+    desc: 'Free 18-hole course along the Little Miami. Jude will love throwing for distance, Jacy loves the competition. Borrow discs from the park or grab a starter set.',
+    tags: ['East End', 'Free', '2hrs', 'Competitive and fun'],
+    icon: '🥏'
+  },
+  {
+    id: 'out5', cat: 'outdoor',
+    title: 'Smale Riverfront Park',
+    desc: 'Walk, play, splash. The interactive water features turn on in spring — Jacy loves them. Great skyline views, the carousel, and easy food nearby.',
+    tags: ['Downtown', 'Free', 'All ages', 'Riverfront'],
+    icon: '🌊'
+  },
+  {
+    id: 'out6', cat: 'outdoor',
+    title: 'Anderson Township Park — Picnic',
+    desc: 'Your own backyard park. Pack a lunch, throw a frisbee, let the kids burn energy. Sometimes the simplest spring afternoons are the ones everyone remembers.',
+    tags: ['Anderson Township', 'Free', 'Easy', 'No planning needed'],
+    icon: '🧺'
+  },
+
+  // BUDGET-FRIENDLY
+  {
+    id: 'bud1', cat: 'budget',
+    title: 'Homemade Brunch — Pancake Bar',
+    desc: 'Set up a DIY pancake bar Saturday morning. Chocolate chips, strawberries, whipped cream, blueberries. Play music, stay in PJs, no schedule. Pure family morning.',
+    tags: ['At home', 'Under $20', 'Weekend morning', 'Kids love it'],
+    icon: '🥞'
+  },
+  {
+    id: 'bud2', cat: 'budget',
+    title: 'Board Game Tournament Night',
+    desc: 'Pull out what you have — Monopoly, Uno, Clue, Ticket to Ride. Bracket format, winner picks dinner. Jude and Jacy at these ages love the strategy games.',
+    tags: ['At home', 'Free', 'All evening', 'Competitive'],
+    icon: '🎲'
+  },
+  {
+    id: 'bud3', cat: 'budget',
+    title: 'IKEA Browse + Swedish Meatballs',
+    desc: 'Hear us out — the kids love IKEA. Let them pick a small item each ($5 limit), eat the famous meatballs in the cafeteria. Full afternoon for under $40.',
+    tags: ['West Chester', 'Under $40 total', '2hrs', 'Surprisingly fun'],
+    icon: '🛋️'
+  },
+  {
+    id: 'bud4', cat: 'budget',
+    title: 'Backyard Movie Night',
+    desc: 'Borrow or buy a cheap projector, hang a white sheet, pop popcorn and build a blanket pile. Kids pick the movie, parents add the wine. Perfect spring evening.',
+    tags: ['At home', 'Under $15', 'After dark', 'Memory-maker'],
+    icon: '🎞️'
+  },
+  {
+    id: 'bud5', cat: 'budget',
+    title: 'Cincinnati Library Discovery Day',
+    desc: 'The Cincinnati Public Library downtown is genuinely beautiful. Kids section has interactive exhibits. Free parking on weekends. End with ice cream on Fountain Square.',
+    tags: ['Downtown', 'Free entry', 'Rainy day', 'Educational'],
+    icon: '📚'
+  },
+
+  // SPECIAL OCCASION
+  {
+    id: 'sp1', cat: 'special',
+    title: 'Reds Opening Week — Family Game',
+    desc: 'It\'s baseball season. Great American Ball Park is gorgeous in spring. Cheap upper deck seats are under $25 each. Get there early for batting practice — Jude will love it.',
+    tags: ['Downtown', 'Spring!', '3hrs', 'Cincinnati tradition'],
+    icon: '⚾'
+  },
+  {
+    id: 'sp2', cat: 'special',
+    title: 'Newport Aquarium — Special Visit',
+    desc: 'Never gets old. The shark tunnel and touch tanks are the highlights. Spring break crowds have cleared by late March. Pair it with lunch on the Levee.',
+    tags: ['Newport KY', '2-3hrs', 'All ages', 'Always a hit'],
+    icon: '🦈'
+  },
+  {
+    id: 'sp3', cat: 'special',
+    title: 'Dinner at Jeff Ruby\'s Steakhouse',
+    desc: 'For the nights that count. Best steakhouse in Cincinnati. Make a reservation, dress up a little, get the creme brulee. A night she won\'t forget.',
+    tags: ['Downtown', 'Special occasion', 'Reservations required', 'Treat yourselves'],
+    icon: '🥩'
+  },
+  {
+    id: 'sp4', cat: 'special',
+    title: 'Kings Island Early Season',
+    desc: 'Kings Island opens in mid-April — check their calendar. Beat the summer crowds. Jude is old enough for every ride, Jacy for most. Make a full day of it.',
+    tags: ['Mason', 'Full day', 'Teens & tweens', 'Early season = short lines'],
+    icon: '🎢'
+  },
+  {
+    id: 'sp5', cat: 'special',
+    title: 'Family Spa Day at YMCA or Retreat',
+    desc: 'Book a family day at a local retreat or nicer gym with a pool. Let Jamie actually relax. The kids swim, the adults breathe. This one is for her.',
+    tags: ['For Jamie', 'Relaxing', 'Weekend', 'She deserves it'],
+    icon: '💆'
+  }
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let currentActivity   = null;
+let currentCatFilter  = null;
+let favorites         = JSON.parse(localStorage.getItem('jules-fav') || '[]');
+let lastPickedIds     = [];
+
+const catLabels = {
+  'date-night':  '💕 Date Night',
+  'family-fun':  '👨‍👩‍👧‍👦 Family Fun',
+  'outdoor':     '🌿 Outdoor',
+  'budget':      '💛 Budget-Friendly',
+  'special':     '🎉 Special Occasion'
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function saveFavorites() {
+  localStorage.setItem('jules-fav', JSON.stringify(favorites));
+}
+
+function pickRandom(pool) {
+  // Avoid repeating recent picks
+  let filtered = pool.filter(a => !lastPickedIds.includes(a.id));
+  if (!filtered.length) { lastPickedIds = []; filtered = pool; }
+  const pick = filtered[Math.floor(Math.random() * filtered.length)];
+  lastPickedIds.push(pick.id);
+  if (lastPickedIds.length > 4) lastPickedIds.shift();
+  return pick;
+}
+
+function showActivity(activity) {
+  currentActivity = activity;
+
+  const card  = document.getElementById('resultCard');
+  const cat   = document.getElementById('resultCat');
+  const title = document.getElementById('resultTitle');
+  const desc  = document.getElementById('resultDesc');
+  const tags  = document.getElementById('resultTags');
+  const save  = document.getElementById('btnSave');
+
+  // Reset animation
+  card.classList.remove('visible');
+  void card.offsetWidth; // force reflow
+
+  card.className = 'result-card ' + activity.cat + ' visible';
+  cat.innerHTML  = activity.icon + ' ' + catLabels[activity.cat];
+  title.textContent = activity.title;
+  desc.textContent  = activity.desc;
+
+  tags.innerHTML = '';
+  activity.tags.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = t;
+    tags.appendChild(span);
+  });
+
+  const isSaved = favorites.some(f => f.id === activity.id);
+  save.textContent = isSaved ? 'Saved!' : 'Save it';
+  save.className = 'btn-save' + (isSaved ? ' saved' : '');
+  save.disabled = false;
+}
+
+function surprise() {
+  clearCatButtons();
+  currentCatFilter = null;
+  const pick = pickRandom(activities);
+  showActivity(pick);
+}
+
+function pickFromCat(cat) {
+  // Toggle same category
+  if (currentCatFilter === cat) {
+    clearCatButtons();
+    currentCatFilter = null;
+    surprise();
+    return;
+  }
+  currentCatFilter = cat;
+  clearCatButtons();
+  document.querySelector('[data-cat="' + cat + '"]').classList.add('active-' + cat);
+
+  const pool = activities.filter(a => a.cat === cat);
+  const pick = pickRandom(pool);
+  showActivity(pick);
+}
+
+function clearCatButtons() {
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.className = 'cat-btn';
+  });
+}
+
+function saveActivity() {
+  if (!currentActivity) return;
+  const btn = document.getElementById('btnSave');
+  const already = favorites.findIndex(f => f.id === currentActivity.id);
+
+  if (already >= 0) {
+    favorites.splice(already, 1);
+    btn.textContent = 'Save it';
+    btn.className = 'btn-save';
+  } else {
+    favorites.push({ id: currentActivity.id, title: currentActivity.title, cat: currentActivity.cat });
+    btn.textContent = 'Saved!';
+    btn.className = 'btn-save saved';
+  }
+  saveFavorites();
+  renderFavorites();
+}
+
+function renderFavorites() {
+  const container = document.getElementById('favoritesContainer');
+  container.innerHTML = '';
+
+  if (!favorites.length) {
+    container.innerHTML = '<div class="favorites-empty"><div class="empty-icon">🌸</div>Tap "Save it" on any idea to keep it here</div>';
+    return;
+  }
+
+  favorites.forEach(fav => {
+    const el = document.createElement('div');
+    el.className = 'fav-item';
+    el.innerHTML =
+      '<div class="fav-dot ' + fav.cat + '"></div>' +
+      '<div class="fav-text">' +
+        '<div class="fav-name">' + fav.title + '</div>' +
+        '<div class="fav-cat">' + catLabels[fav.cat] + '</div>' +
+      '</div>' +
+      '<button class="btn-fav-remove" onclick="removeFavorite(\'' + fav.id + '\')" aria-label="Remove">×</button>';
+    container.appendChild(el);
+  });
+}
+
+function removeFavorite(id) {
+  favorites = favorites.filter(f => f.id !== id);
+  saveFavorites();
+  renderFavorites();
+  // Update save button if currently showing this activity
+  if (currentActivity && currentActivity.id === id) {
+    const btn = document.getElementById('btnSave');
+    btn.textContent = 'Save it';
+    btn.className = 'btn-save';
+  }
+}
+
+function clearFavorites() {
+  if (!favorites.length) return;
+  favorites = [];
+  saveFavorites();
+  renderFavorites();
+  // Reset save button
+  if (currentActivity) {
+    const btn = document.getElementById('btnSave');
+    btn.textContent = 'Save it';
+    btn.className = 'btn-save';
+  }
+}
+
+// ── Event listeners ───────────────────────────────────────────────────────────
+document.getElementById('btnSurprise').addEventListener('click', surprise);
+document.getElementById('btnSave').addEventListener('click', saveActivity);
+document.getElementById('btnAnother').addEventListener('click', function() {
+  if (currentCatFilter) {
+    const pool = activities.filter(a => a.cat === currentCatFilter);
+    showActivity(pickRandom(pool));
+  } else {
+    surprise();
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderFavorites();
+// Auto-show a seasonal suggestion on load
+setTimeout(function() {
+  // Spring opening: lead with an outdoor pick
+  const springPick = activities.find(a => a.id === 'out2') || activities[0];
+  showActivity(springPick);
+}, 200);
+</script>
+</body>
+</html>

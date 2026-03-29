@@ -48,6 +48,16 @@ chmod +x scripts/check-messages.sh
 # 8. Clean up stale Terminal windows from previous sessions
 # Closes all idle (non-busy) Terminal windows except the current one.
 bash scripts/cleanup-terminals.sh
+
+# 9. CRITICAL: Ingest full Telegram conversation history from hub log
+# The 50-message buffer in /state is NOT enough. The hub log has EVERYTHING.
+# This prevents context loss across crashes and session restores.
+# Read the last 200 inbound messages to reconstruct full conversation context.
+echo "=== CONVERSATION HISTORY (last 200 inbound) ==="
+grep "Telegram IN:" logs/comms-hub.log | tail -200
+echo "=== END CONVERSATION HISTORY ==="
+# IMPORTANT: Actually READ and INTERNALIZE this output. It contains Owner directives,
+# pending tasks, and context that the 50-message buffer may have lost.
 ```
 
 ## Graceful Shutdown (before exiting terminal)
