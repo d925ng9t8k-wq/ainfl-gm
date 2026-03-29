@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Roster Budget Challenge — Build Your Dream Team Under the Cap | AiNFL GM</title>
+<meta name="description" content="Can you build the best NFL roster under the $272.5M salary cap? Pick real players, manage your cap space, and score the highest possible overall. Free tool by AiNFL GM.">
+<meta property="og:title" content="NFL Roster Budget Challenge | AiNFL GM">
+<meta property="og:description" content="Build your dream NFL roster under the $272.5M salary cap. Pick real players, manage cap space, maximize your team rating. Can you beat the leaderboard?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/roster-budget.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Roster Budget Challenge | AiNFL GM">
+<meta name="twitter:description" content="Build your dream NFL roster under the $272.5M salary cap. Free game by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57,255,20,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(57,255,20,0.12); }
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,45,85,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(255,45,85,0.18); }
+}
+@keyframes bounce-in {
+  0%   { transform: scale(0.85); opacity: 0; }
+  60%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Cap Bar */
+.cap-bar-wrap {
+  max-width: 860px;
+  margin: 0 auto 28px;
+  padding: 0 16px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+.cap-bar-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.cap-bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.cap-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cap-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.cap-stat-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.cap-stat-value.green { color: var(--green); }
+.cap-stat-value.red   { color: var(--red); }
+.cap-stat-value.yellow { color: var(--yellow); }
+
+.cap-track {
+  height: 8px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.cap-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.4s ease, background 0.3s ease;
+  background: var(--green);
+}
+.cap-fill.warn   { background: var(--yellow); }
+.cap-fill.danger { background: var(--red); animation: pulse-red 1.5s infinite; }
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+}
+.score-badge-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.score-badge-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+/* Main Layout */
+.main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* Position Grid */
+.positions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+@media (max-width: 600px) {
+  .positions-grid { grid-template-columns: 1fr; }
+}
+
+/* Position Card */
+.pos-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: fadeUp 0.5s ease both;
+  transition: border-color 0.2s;
+}
+.pos-card.filled {
+  border-color: rgba(57,255,20,0.3);
+}
+.pos-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+}
+.pos-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border: 1px solid rgba(0,240,255,0.2);
+  flex-shrink: 0;
+}
+.pos-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.pos-selected-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  margin-left: auto;
+  text-align: right;
+}
+.pos-clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.pos-clear-btn:hover { color: var(--red); }
+
+/* Player Options */
+.player-options {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.player-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+  width: 100%;
+}
+.player-btn:hover {
+  border-color: var(--border-hi);
+  background: var(--bg-3);
+}
+.player-btn:active { transform: scale(0.99); }
+.player-btn.selected {
+  border-color: rgba(57,255,20,0.4);
+  background: rgba(57,255,20,0.06);
+}
+.player-btn.selected .player-btn-name { color: var(--green); }
+.player-btn.cant-afford {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.player-btn.cant-afford:hover {
+  border-color: var(--border);
+  background: var(--bg-2);
+}
+.player-btn-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.player-btn-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-btn-team {
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+}
+.player-btn-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.player-btn-salary {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--yellow);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.04em;
+}
+.player-btn-ovr {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.ovr-elite  { background: rgba(255,214,0,0.15); color: var(--yellow); }
+.ovr-great  { background: rgba(57,255,20,0.12); color: var(--green); }
+.ovr-good   { background: rgba(0,240,255,0.1);  color: var(--cyan); }
+.ovr-avg    { background: rgba(255,255,255,0.07); color: var(--text-dim); }
+
+/* Result Panel */
+.result-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.3s both;
+  text-align: center;
+}
+.result-empty {
+  color: var(--text-mute);
+  font-size: 14px;
+  padding: 12px 0;
+}
+.result-content { display: none; }
+.result-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 8px;
+  animation: bounce-in 0.4s ease both;
+}
+.result-subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+.result-roster-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+@media (max-width: 500px) {
+  .result-roster-summary { grid-template-columns: repeat(2, 1fr); }
+}
+.result-slot {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 6px;
+  text-align: center;
+}
+.result-slot-pos {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  margin-bottom: 3px;
+}
+.result-slot-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.result-slot-ovr {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--yellow);
+  font-family: 'Oswald', sans-serif;
+}
+.result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-share {
+  background: var(--cyan);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #0F172A;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-share:hover { filter: brightness(1.1); }
+.btn-share:active { transform: scale(0.98); }
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-reset:hover { border-color: rgba(255,255,255,0.18); color: var(--text); }
+.btn-reset:active { transform: scale(0.98); }
+
+/* Leaderboard */
+.leaderboard-section {
+  animation: fadeUp 0.5s ease 0.35s both;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.section-clear {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: all 0.2s;
+}
+.section-clear:hover { border-color: rgba(255,45,85,0.3); color: var(--red); }
+
+.leaderboard-empty {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lb-entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+}
+.lb-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-mute);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.lb-rank.gold   { color: var(--yellow); }
+.lb-rank.silver { color: #94A3B8; }
+.lb-rank.bronze { color: #B45309; }
+.lb-info {
+  flex: 1;
+  min-width: 0;
+}
+.lb-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.lb-meta {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.lb-cap-left {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: 'Oswald', sans-serif;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-2);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 999;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 32px 24px 40px;
+  font-size: 13px;
+  color: var(--text-mute);
+  border-top: 1px solid var(--border);
+  line-height: 2;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); text-decoration: none; }
+
+/* Over-cap warning shake */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+.shake { animation: shake 0.35s ease both; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#39FF14" opacity="0.8"/>
+    </svg>
+    $272.5M Salary Cap
+  </div>
+  <h1>NFL Roster<br><span>Budget Challenge</span></h1>
+  <p>Build the best 10-man roster you can without busting the cap. Pick smart — elite players cost big. Bargains can win the game.</p>
+</section>
+
+<!-- Cap Bar -->
+<div class="cap-bar-wrap">
+  <div class="cap-bar-panel">
+    <div class="cap-bar-row">
+      <div class="cap-stat">
+        <div class="cap-stat-label">Cap Space</div>
+        <div class="cap-stat-value green" id="cap-remaining">$272.5M</div>
+      </div>
+      <div class="cap-stat">
+        <div class="cap-stat-label">Spent</div>
+        <div class="cap-stat-value" id="cap-spent">$0</div>
+      </div>
+      <div class="cap-stat">
+        <div class="cap-stat-label">Slots Filled</div>
+        <div class="cap-stat-value" id="slots-filled">0 / 10</div>
+      </div>
+      <div class="score-badge">
+        <span class="score-badge-label">OVR Score</span>
+        <span class="score-badge-value" id="ovr-score">—</span>
+      </div>
+    </div>
+    <div class="cap-track">
+      <div class="cap-fill" id="cap-fill" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Position Cards -->
+  <div class="positions-grid" id="positions-grid">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- Result Panel -->
+  <div class="result-panel" id="result-panel">
+    <div class="result-empty" id="result-empty">Fill all 10 positions to see your final score.</div>
+    <div class="result-content" id="result-content">
+      <div class="result-title" id="result-title"></div>
+      <div class="result-subtitle" id="result-subtitle"></div>
+      <div class="result-roster-summary" id="result-roster-summary"></div>
+      <div class="result-actions">
+        <button class="btn-share" onclick="shareRoster()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M10 1L13 4L10 7M13 4H5C3.34 4 2 5.34 2 7v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Share Roster
+        </button>
+        <button class="btn-reset" onclick="resetAll()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7a6 6 0 1 0 1.1-3.5M1 2v3.5h3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Start Over
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="leaderboard-section">
+    <div class="section-header">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1l1.8 3.6L14 5.2l-3 2.9.7 4.1L8 10.2l-3.7 1.9.7-4.1L2 5.2l4.2-.6L8 1z" stroke="#FFD600" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      <div class="section-title">Leaderboard</div>
+      <button class="section-clear" onclick="clearLeaderboard()">Clear</button>
+    </div>
+    <div id="leaderboard-container"></div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>Salaries are approximate 2025 AAV figures for entertainment purposes only.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Draft Trade Calc</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-quiz.html">Cap Quiz</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/fantasy-trade.html">Fantasy Trade</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Player Data ─────────────────────────────────────────────────────────────
+// salary in $M AAV, ovr 1-99
+const POSITIONS = [
+  {
+    id: 'QB',
+    label: 'Quarterback',
+    players: [
+      { name: 'Patrick Mahomes', team: 'KC',  salary: 55.0, ovr: 99 },
+      { name: 'Joe Burrow',      team: 'CIN', salary: 48.0, ovr: 97 },
+      { name: 'Josh Allen',      team: 'BUF', salary: 46.5, ovr: 97 },
+      { name: 'Lamar Jackson',   team: 'BAL', salary: 52.0, ovr: 96 },
+      { name: 'C.J. Stroud',     team: 'HOU', salary: 12.0, ovr: 92 },
+      { name: 'Geno Smith',      team: 'SEA', salary:  3.5, ovr: 82 },
+    ]
+  },
+  {
+    id: 'RB',
+    label: 'Running Back',
+    players: [
+      { name: 'Saquon Barkley',  team: 'PHI', salary: 13.0, ovr: 95 },
+      { name: 'Derrick Henry',   team: 'BAL', salary:  4.0, ovr: 91 },
+      { name: 'Breece Hall',     team: 'NYJ', salary: 10.8, ovr: 89 },
+      { name: 'De\'Von Achane',  team: 'MIA', salary:  3.2, ovr: 87 },
+      { name: 'Tony Pollard',    team: 'TEN', salary:  8.0, ovr: 84 },
+      { name: 'Gus Edwards',     team: 'LAC', salary:  1.5, ovr: 76 },
+    ]
+  },
+  {
+    id: 'WR1',
+    label: 'Wide Receiver 1',
+    players: [
+      { name: 'Ja\'Marr Chase',  team: 'CIN', salary: 34.0, ovr: 99 },
+      { name: 'Tyreek Hill',     team: 'MIA', salary: 30.0, ovr: 96 },
+      { name: 'Justin Jefferson', team: 'MIN', salary: 35.0, ovr: 97 },
+      { name: 'Davante Adams',   team: 'NYJ', salary: 17.5, ovr: 90 },
+      { name: 'Keenan Allen',    team: 'CHI', salary:  7.0, ovr: 86 },
+      { name: 'Tee Higgins',     team: 'CIN', salary: 21.8, ovr: 91 },
+    ]
+  },
+  {
+    id: 'WR2',
+    label: 'Wide Receiver 2',
+    players: [
+      { name: 'Amon-Ra St. Brown', team: 'DET', salary: 25.0, ovr: 94 },
+      { name: 'Brandon Aiyuk',   team: 'SF',  salary: 23.0, ovr: 93 },
+      { name: 'Chris Godwin',    team: 'TB',  salary: 14.3, ovr: 88 },
+      { name: 'Garrett Wilson',  team: 'NYJ', salary: 14.0, ovr: 90 },
+      { name: 'Stefon Diggs',    team: 'NE',  salary:  8.0, ovr: 85 },
+      { name: 'Courtland Sutton', team: 'DEN', salary:  7.5, ovr: 83 },
+    ]
+  },
+  {
+    id: 'TE',
+    label: 'Tight End',
+    players: [
+      { name: 'Travis Kelce',    team: 'KC',  salary: 17.1, ovr: 97 },
+      { name: 'Sam LaPorta',     team: 'DET', salary:  2.3, ovr: 87 },
+      { name: 'Mark Andrews',    team: 'BAL', salary: 18.5, ovr: 93 },
+      { name: 'Trey McBride',    team: 'ARI', salary:  4.0, ovr: 89 },
+      { name: 'Dalton Kincaid',  team: 'BUF', salary:  3.1, ovr: 83 },
+      { name: 'Cole Kmet',       team: 'CHI', salary:  7.0, ovr: 82 },
+    ]
+  },
+  {
+    id: 'LT',
+    label: 'Left Tackle',
+    players: [
+      { name: 'Trent Williams',  team: 'SF',  salary: 23.0, ovr: 99 },
+      { name: 'Laremy Tunsil',   team: 'HOU', salary: 25.0, ovr: 96 },
+      { name: 'Tristan Wirfs',   team: 'TB',  salary: 28.0, ovr: 96 },
+      { name: 'Christian Darrisaw', team: 'MIN', salary: 20.0, ovr: 92 },
+      { name: 'Penei Sewell',    team: 'DET', salary: 18.0, ovr: 93 },
+      { name: 'Dion Dawkins',    team: 'BUF', salary:  8.5, ovr: 82 },
+    ]
+  },
+  {
+    id: 'EDGE1',
+    label: 'Pass Rusher 1',
+    players: [
+      { name: 'Myles Garrett',   team: 'CLE', salary: 25.0, ovr: 99 },
+      { name: 'Micah Parsons',   team: 'DAL', salary: 40.0, ovr: 99 },
+      { name: 'Maxx Crosby',     team: 'LV',  salary: 26.5, ovr: 97 },
+      { name: 'Aidan Hutchinson', team: 'DET', salary: 29.0, ovr: 96 },
+      { name: 'Josh Allen',      team: 'JAX', salary: 22.0, ovr: 94 },
+      { name: 'Haason Reddick',  team: 'NYJ', salary:  8.0, ovr: 84 },
+    ]
+  },
+  {
+    id: 'EDGE2',
+    label: 'Pass Rusher 2',
+    players: [
+      { name: 'Trey Hendrickson', team: 'CIN', salary: 31.8, ovr: 96 },
+      { name: 'Brian Burns',     team: 'NYG', salary: 23.5, ovr: 93 },
+      { name: 'Leonard Floyd',   team: 'BUF', salary:  5.5, ovr: 87 },
+      { name: 'Danielle Hunter', team: 'HOU', salary: 21.0, ovr: 91 },
+      { name: 'Chase Young',     team: 'SF',  salary:  9.0, ovr: 86 },
+      { name: 'Za\'Darius Smith', team: 'DET', salary:  3.0, ovr: 80 },
+    ]
+  },
+  {
+    id: 'CB1',
+    label: 'Cornerback',
+    players: [
+      { name: 'Jalen Ramsey',    team: 'LAR', salary: 24.0, ovr: 95 },
+      { name: 'Sauce Gardner',   team: 'NYJ', salary: 20.0, ovr: 96 },
+      { name: 'Darius Slay',     team: 'PHI', salary: 16.5, ovr: 88 },
+      { name: 'Patrick Surtain', team: 'DEN', salary: 26.0, ovr: 97 },
+      { name: 'Marshon Lattimore', team: 'NO', salary: 16.8, ovr: 89 },
+      { name: 'Rasul Douglas',   team: 'GB',  salary:  4.0, ovr: 82 },
+    ]
+  },
+  {
+    id: 'S',
+    label: 'Safety',
+    players: [
+      { name: 'Derwin James',    team: 'LAC', salary: 19.0, ovr: 96 },
+      { name: 'Minkah Fitzpatrick', team: 'PIT', salary: 18.4, ovr: 95 },
+      { name: 'Kevin Byard',     team: 'CHI', salary:  5.5, ovr: 85 },
+      { name: 'Jessie Bates III', team: 'ATL', salary: 15.0, ovr: 90 },
+      { name: 'Jordan Poyer',    team: 'MIA', salary:  4.0, ovr: 83 },
+      { name: 'Justin Simmons',  team: 'DEN', salary:  3.0, ovr: 80 },
+    ]
+  }
+];
+
+const CAP_TOTAL = 272.5; // $M
+
+// ── State ────────────────────────────────────────────────────────────────────
+const selections = {}; // positionId -> player object
+
+function getSpent() {
+  return Object.values(selections).reduce((s, p) => s + p.salary, 0);
+}
+function getRemaining() {
+  return CAP_TOTAL - getSpent();
+}
+function getScore() {
+  const vals = Object.values(selections);
+  if (!vals.length) return 0;
+  return Math.round(vals.reduce((s, p) => s + p.ovr, 0) / vals.length);
+}
+function slotsFilled() {
+  return Object.keys(selections).length;
+}
+function isComplete() {
+  return slotsFilled() === POSITIONS.length;
+}
+
+// ── Cap Bar ──────────────────────────────────────────────────────────────────
+function updateCapBar() {
+  const spent    = getSpent();
+  const remaining = getRemaining();
+  const pct      = Math.min((spent / CAP_TOTAL) * 100, 100);
+
+  const remEl   = document.getElementById('cap-remaining');
+  const spentEl = document.getElementById('cap-spent');
+  const fillEl  = document.getElementById('cap-fill');
+  const slotsEl = document.getElementById('slots-filled');
+  const ovrEl   = document.getElementById('ovr-score');
+
+  remEl.textContent   = '$' + remaining.toFixed(1) + 'M';
+  spentEl.textContent = '$' + spent.toFixed(1) + 'M';
+  fillEl.style.width  = pct + '%';
+  slotsEl.textContent = slotsFilled() + ' / ' + POSITIONS.length;
+
+  remEl.className = 'cap-stat-value';
+  fillEl.className = 'cap-fill';
+  if (pct >= 100) {
+    remEl.classList.add('red');
+    fillEl.classList.add('danger');
+  } else if (pct >= 85) {
+    remEl.classList.add('yellow');
+    fillEl.classList.add('warn');
+  } else {
+    remEl.classList.add('green');
+  }
+
+  if (isComplete()) {
+    ovrEl.textContent = getScore();
+  } else {
+    const vals = Object.values(selections);
+    ovrEl.textContent = vals.length ? Math.round(vals.reduce((s,p)=>s+p.ovr,0)/vals.length) : '—';
+  }
+}
+
+// ── OVR Class ────────────────────────────────────────────────────────────────
+function ovrClass(ovr) {
+  if (ovr >= 95) return 'ovr-elite';
+  if (ovr >= 88) return 'ovr-great';
+  if (ovr >= 82) return 'ovr-good';
+  return 'ovr-avg';
+}
+
+// ── Render Positions ─────────────────────────────────────────────────────────
+function renderPositions() {
+  const grid = document.getElementById('positions-grid');
+  grid.innerHTML = '';
+
+  POSITIONS.forEach((pos, pi) => {
+    const selected = selections[pos.id];
+    const card = document.createElement('div');
+    card.className = 'pos-card' + (selected ? ' filled' : '');
+    card.id = 'card-' + pos.id;
+    card.style.animationDelay = (0.05 * pi) + 's';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'pos-card-header';
+    header.innerHTML = `
+      <span class="pos-badge">${pos.id}</span>
+      <span class="pos-name">${pos.label}</span>
+      ${selected ? `<span class="pos-selected-name">${selected.name}</span>
+        <button class="pos-clear-btn" onclick="clearPosition('${pos.id}')" title="Remove player">&#x2715;</button>` : ''}
+    `;
+    card.appendChild(header);
+
+    // Options
+    const opts = document.createElement('div');
+    opts.className = 'player-options';
+    pos.players.forEach(player => {
+      const isSelected = selected && selected.name === player.name;
+      // Can afford? (current remaining + selected slot's salary, minus this player's salary)
+      const currentSlotCost = selected ? selected.salary : 0;
+      const wouldSpend = getSpent() - currentSlotCost + player.salary;
+      const canAfford = wouldSpend <= CAP_TOTAL;
+
+      const btn = document.createElement('button');
+      btn.className = 'player-btn' +
+        (isSelected ? ' selected' : '') +
+        (!isSelected && !canAfford ? ' cant-afford' : '');
+      btn.disabled = !isSelected && !canAfford;
+      btn.innerHTML = `
+        <div class="player-btn-left">
+          <div class="player-btn-name">${player.name}</div>
+          <div class="player-btn-team">${player.team}</div>
+        </div>
+        <div class="player-btn-right">
+          <div class="player-btn-salary">$${player.salary}M</div>
+          <div class="player-btn-ovr ${ovrClass(player.ovr)}">${player.ovr} OVR</div>
+        </div>
+      `;
+      if (!btn.disabled || isSelected) {
+        btn.addEventListener('click', () => selectPlayer(pos.id, player));
+      }
+      opts.appendChild(btn);
+    });
+    card.appendChild(opts);
+    grid.appendChild(card);
+  });
+}
+
+// ── Select Player ─────────────────────────────────────────────────────────────
+function selectPlayer(posId, player) {
+  // Check cap (swap cost)
+  const currentCost = selections[posId] ? selections[posId].salary : 0;
+  const newSpent = getSpent() - currentCost + player.salary;
+
+  if (newSpent > CAP_TOTAL) {
+    // Shake the cap bar
+    const panel = document.querySelector('.cap-bar-panel');
+    panel.classList.remove('shake');
+    void panel.offsetWidth;
+    panel.classList.add('shake');
+    showToast('Over the cap! Free up space first.');
+    return;
+  }
+
+  if (selections[posId] && selections[posId].name === player.name) {
+    // Deselect
+    delete selections[posId];
+  } else {
+    selections[posId] = player;
+  }
+
+  renderPositions();
+  updateCapBar();
+  updateResult();
+}
+
+// ── Clear Position ────────────────────────────────────────────────────────────
+function clearPosition(posId) {
+  delete selections[posId];
+  renderPositions();
+  updateCapBar();
+  updateResult();
+}
+
+// ── Update Result ─────────────────────────────────────────────────────────────
+function updateResult() {
+  const emptyEl   = document.getElementById('result-empty');
+  const contentEl = document.getElementById('result-content');
+
+  if (!isComplete()) {
+    emptyEl.style.display = '';
+    contentEl.style.display = 'none';
+    const left = POSITIONS.length - slotsFilled();
+    emptyEl.textContent = left === 0 ? '' : `Fill ${left} more position${left !== 1 ? 's' : ''} to see your score.`;
+    return;
+  }
+
+  // Complete
+  emptyEl.style.display = 'none';
+  contentEl.style.display = '';
+
+  const score = getScore();
+  const spent = getSpent();
+  const remaining = getRemaining();
+
+  const titleEl    = document.getElementById('result-title');
+  const subtitleEl = document.getElementById('result-subtitle');
+  const summaryEl  = document.getElementById('result-roster-summary');
+
+  let grade = '';
+  if (score >= 95) grade = 'DYNASTY TEAM';
+  else if (score >= 90) grade = 'SUPER BOWL CONTENDER';
+  else if (score >= 85) grade = 'PLAYOFF CALIBER';
+  else if (score >= 80) grade = 'SOLID ROSTER';
+  else grade = 'NEEDS WORK';
+
+  titleEl.textContent = score + ' OVR — ' + grade;
+  subtitleEl.textContent = `$${spent.toFixed(1)}M spent · $${remaining.toFixed(1)}M remaining`;
+
+  summaryEl.innerHTML = POSITIONS.map(pos => {
+    const p = selections[pos.id];
+    return `<div class="result-slot">
+      <div class="result-slot-pos">${pos.id}</div>
+      <div class="result-slot-name">${p.name.split(' ').pop()}</div>
+      <div class="result-slot-ovr">${p.ovr}</div>
+    </div>`;
+  }).join('');
+
+  // Save to leaderboard
+  saveToLeaderboard(score, spent, remaining);
+  renderLeaderboard();
+}
+
+// ── Leaderboard ───────────────────────────────────────────────────────────────
+function loadLeaderboard() {
+  try { return JSON.parse(localStorage.getItem('rbc_lb') || '[]'); }
+  catch(e) { return []; }
+}
+function saveLeaderboard(lb) {
+  try { localStorage.setItem('rbc_lb', JSON.stringify(lb)); } catch(e) {}
+}
+function saveToLeaderboard(score, spent, remaining) {
+  const lb = loadLeaderboard();
+  const entry = {
+    score,
+    spent: spent.toFixed(1),
+    remaining: remaining.toFixed(1),
+    roster: POSITIONS.map(pos => ({ pos: pos.id, name: selections[pos.id].name, ovr: selections[pos.id].ovr })),
+    date: new Date().toLocaleDateString()
+  };
+  lb.push(entry);
+  lb.sort((a,b) => b.score - a.score);
+  saveLeaderboard(lb.slice(0, 10));
+}
+function renderLeaderboard() {
+  const container = document.getElementById('leaderboard-container');
+  const lb = loadLeaderboard();
+
+  if (!lb.length) {
+    container.innerHTML = '<div class="leaderboard-empty">No scores yet. Complete a roster to get on the board.</div>';
+    return;
+  }
+
+  const rankClass = (i) => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+
+  container.innerHTML = '<div class="leaderboard-list">' +
+    lb.map((e, i) => `
+      <div class="lb-entry">
+        <div class="lb-rank ${rankClass(i)}">${i + 1}</div>
+        <div class="lb-info">
+          <div class="lb-score">${e.score} OVR</div>
+          <div class="lb-meta">$${e.spent}M spent &middot; ${e.date}</div>
+        </div>
+        <div class="lb-cap-left">$${e.remaining}M left</div>
+      </div>
+    `).join('') +
+  '</div>';
+}
+function clearLeaderboard() {
+  try { localStorage.removeItem('rbc_lb'); } catch(e) {}
+  renderLeaderboard();
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+function shareRoster() {
+  if (!isComplete()) return;
+  const score = getScore();
+  const spent = getSpent();
+  const lines = [
+    'NFL Roster Budget Challenge',
+    `Score: ${score} OVR | $${spent.toFixed(1)}M / $${CAP_TOTAL}M`,
+    '',
+    ...POSITIONS.map(pos => {
+      const p = selections[pos.id];
+      return `${pos.id}: ${p.name} (${p.ovr} OVR, $${p.salary}M)`;
+    }),
+    '',
+    'Play at ainflgm.com/roster-budget.html'
+  ];
+  const text = lines.join('\n');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Roster copied to clipboard!'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Roster copied!');
+  }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+function resetAll() {
+  Object.keys(selections).forEach(k => delete selections[k]);
+  renderPositions();
+  updateCapBar();
+  updateResult();
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderPositions();
+updateCapBar();
+updateResult();
+renderLeaderboard();
+</script>
+</body>
+</html>
