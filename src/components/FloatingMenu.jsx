@@ -22,7 +22,7 @@ function FeedbackPanel({ onClose }) {
     ].join('\n');
     fetch('https://ntfy.sh/ainfl-gm-visitors-jf2026', {
       method: 'POST',
-      headers: { 'Title': `AiNFL GM Feedback: ${feedbackType}`, 'Priority': '4', 'Tags': 'memo', 'Email': 'emailfishback@gmail.com' },
+      headers: { 'Title': `AiNFL GM Feedback: ${feedbackType}`, 'Priority': '4', 'Tags': 'memo', 'Email': 'captain@ainflgm.com' },
       body: body,
     }).then(() => {
       setSubmitted(true);

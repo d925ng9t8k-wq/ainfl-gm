@@ -23,7 +23,7 @@ export default function EmailCapture() {
         'Title': 'AiNFL GM - Email Signup',
         'Priority': '4',
         'Tags': 'email,football',
-        'Email': 'emailfishback@gmail.com',
+        'Email': 'captain@ainflgm.com',
       },
       body: body,
     })
