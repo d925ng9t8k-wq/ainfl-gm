@@ -32,6 +32,7 @@
   <url><loc>https://ainflgm.com/nfl-countdown.html</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/cap-impact.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/draft-grade.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/combine-stats.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <!-- Sport simulators -->
   <url><loc>https://ainflgm.com/aigm.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>

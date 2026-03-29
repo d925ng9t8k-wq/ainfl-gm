@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>2026 NFL Combine Stats Explorer | AiNFL GM</title>
+<meta name="description" content="Explore 2026 NFL Combine results. Filter by position, sort by any metric, compare prospects side by side. Free tool by AiNFL GM.">
+<meta property="og:title" content="2026 NFL Combine Stats Explorer | AiNFL GM">
+<meta property="og:description" content="Explore every 2026 NFL Combine result. Filter, sort, and compare top draft prospects by 40-yard dash, bench press, vertical, and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/combine-stats.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2026 NFL Combine Stats Explorer | AiNFL GM">
+<meta name="twitter:description" content="Filter, sort, and compare every 2026 NFL Combine participant. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Controls ── */
+.controls {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+.controls-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-mute);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px 10px 38px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input::placeholder { color: var(--text-mute); }
+.search-input:focus { border-color: var(--border-hi); }
+
+.compare-btn {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+.compare-btn:hover { background: rgba(0,240,255,0.2); }
+.compare-btn:active { transform: scale(0.97); }
+.compare-btn.active {
+  background: var(--cyan);
+  color: var(--bg);
+}
+
+/* ── Position Pills ── */
+.pos-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.pill {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.pill:hover { border-color: var(--border-hi); color: var(--cyan); }
+.pill.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+/* ── Compare Banner ── */
+.compare-banner {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.3s ease both;
+}
+.compare-banner.visible { display: flex; }
+.compare-banner-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  white-space: nowrap;
+}
+.compare-slots {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+.compare-slot {
+  background: var(--bg-2);
+  border: 1px dashed var(--border-hi);
+  border-radius: var(--radius-xs);
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+  min-width: 140px;
+}
+.compare-slot.filled {
+  background: var(--cyan-dim);
+  border-style: solid;
+  color: var(--cyan);
+  font-weight: 600;
+}
+.compare-slot .remove-player {
+  margin-left: 8px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.compare-slot .remove-player:hover { opacity: 1; }
+.compare-go-btn {
+  background: var(--cyan);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--bg);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+.compare-go-btn:hover { opacity: 0.85; }
+.compare-go-btn:active { transform: scale(0.97); }
+.compare-go-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── Table ── */
+.table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.table-count {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-weight: 500;
+}
+.sort-hint {
+  font-size: 11px;
+  color: var(--text-mute);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 900px;
+}
+thead th {
+  background: var(--bg-2);
+  padding: 11px 14px;
+  text-align: left;
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  position: relative;
+}
+thead th:hover { color: var(--cyan); }
+thead th.sorted { color: var(--cyan); }
+thead th .sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  opacity: 0.5;
+  font-size: 10px;
+}
+thead th.sorted .sort-arrow { opacity: 1; }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody tr.selected { background: var(--cyan-dim); }
+tbody tr.selected td:first-child { border-left: 3px solid var(--cyan); }
+
+td {
+  padding: 11px 14px;
+  color: var(--text);
+  white-space: nowrap;
+}
+td.player-name {
+  font-weight: 600;
+  color: #fff;
+  min-width: 160px;
+}
+td.player-name .school-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+td.pos-cell {
+  text-align: center;
+}
+.pos-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.grade-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  min-width: 44px;
+  text-align: center;
+}
+.grade-elite  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(57,255,20,0.25); }
+.grade-good   { background: var(--cyan-dim);  color: var(--cyan);  border: 1px solid rgba(0,240,255,0.2); }
+.grade-avg    { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(255,214,0,0.2); }
+.grade-below  { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(255,45,85,0.2); }
+
+.metric-val {
+  font-variant-numeric: tabular-nums;
+}
+.metric-val.elite { color: var(--green); font-weight: 700; }
+.metric-val.good  { color: var(--cyan); }
+.metric-val.avg   { color: var(--text); }
+.metric-val.below { color: var(--red); }
+.metric-val.na    { color: var(--text-mute); font-style: italic; }
+
+.projection-cell {
+  font-size: 12px;
+  color: var(--text-dim);
+  max-width: 140px;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+/* ── Compare Modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px 40px;
+  overflow-y: auto;
+}
+.modal-overlay.visible { display: flex; }
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 780px;
+  animation: glow-in 0.25s ease both;
+  overflow: hidden;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--red); }
+.modal-body { padding: 24px; }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+}
+.compare-player {
+  padding: 0 16px;
+}
+.compare-player:first-child { padding-left: 0; text-align: left; }
+.compare-player:last-child  { padding-right: 0; text-align: right; }
+.compare-player-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.compare-player:first-child .compare-player-name { color: var(--cyan); }
+.compare-player:last-child  .compare-player-name { color: var(--green); }
+.compare-player-meta {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.compare-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 4px;
+  gap: 0;
+}
+.compare-vs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-mute);
+  padding: 0 8px;
+}
+
+.compare-rows { margin-top: 24px; }
+.compare-row {
+  margin-bottom: 18px;
+}
+.compare-row-label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.compare-bars {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+.bar-wrap {
+  height: 24px;
+  background: var(--bg-2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-wrap.left { direction: rtl; }
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.bar-fill.cyan  { background: linear-gradient(90deg, var(--cyan-dim), var(--cyan)); }
+.bar-fill.green { background: linear-gradient(90deg, var(--green-dim), var(--green)); }
+.bar-center-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-align: center;
+  min-width: 60px;
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.bar-val {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+.bar-wrap.left  .bar-val { right: 0; }
+.bar-wrap.right .bar-val { left: 0; }
+
+.compare-grade-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.compare-grade-block {
+  text-align: center;
+}
+.compare-grade-block .grade-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.compare-grade-block .big-grade {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+}
+.compare-grade-block .grade-label-text {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+.compare-projection-block {
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+}
+.proj-item { text-align: center; }
+.proj-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.proj-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.proj-divider { color: var(--border); align-self: center; font-size: 24px; }
+
+@media (max-width: 600px) {
+  .compare-player-name { font-size: 15px; }
+  .compare-grid { gap: 0; }
+  .compare-player { padding: 0 8px; }
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-mute);
+  line-height: 2;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── No Results ── */
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+.no-results svg { margin-bottom: 12px; opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a class="nav-logo" href="https://ainflgm.com">AiNFL<span>GM</span></a>
+  <a class="nav-back" href="https://ainflgm.com">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Draft Room
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    2026 NFL Combine
+  </div>
+  <h1>Combine Stats<br><span>Explorer</span></h1>
+  <p>Every measurable from the 2026 NFL Scouting Combine. Filter by position, sort any column, and compare two prospects head to head.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="controls-row">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" id="searchInput" placeholder="Search player name..." autocomplete="off">
+      </div>
+      <button class="compare-btn" id="compareModeBtn" onclick="toggleCompareMode()">+ Compare Mode</button>
+    </div>
+    <div class="pos-pills" id="posPills"></div>
+  </div>
+
+  <!-- Compare Banner -->
+  <div class="compare-banner" id="compareBanner">
+    <span class="compare-banner-label">SELECT 2 PLAYERS</span>
+    <div class="compare-slots">
+      <div class="compare-slot" id="slot0">Slot 1 — click a row</div>
+      <div class="compare-slot" id="slot1">Slot 2 — click a row</div>
+    </div>
+    <button class="compare-go-btn" id="compareGoBtn" disabled onclick="openCompareModal()">Compare</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <div class="table-meta">
+      <span class="table-count" id="tableCount">Loading...</span>
+      <span class="sort-hint">Click any column header to sort</span>
+    </div>
+    <div class="table-scroll">
+      <table id="combineTable">
+        <thead>
+          <tr id="tableHead"></tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- Compare Modal -->
+<div class="modal-overlay" id="compareModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Player Comparison</span>
+      <button class="modal-close" onclick="closeCompareModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="compareModalBody"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>2026 NFL Scouting Combine data. All measurements are estimates based on publicly available information.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-grade.html">Draft Grader</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-impact.html">Cap Impact</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/team-needs.html">Team Needs</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+// Fields: name, pos, school, ht (in), wt (lbs), forty, bench, vert, broad, cone, shuttle, grade, projection
+// forty: 40-yard dash (sec), bench: reps at 225lbs, vert: vertical jump (in),
+// broad: broad jump (in), cone: 3-cone drill (sec), shuttle: 20-yard shuttle (sec)
+// null = did not participate in that drill
+
+const PLAYERS = [
+  // QBs
+  { name:'Shedeur Sanders',    pos:'QB', school:'Colorado',      ht:74, wt:215, forty:4.71, bench:null, vert:32.5, broad:117, cone:null, shuttle:4.42, grade:9.2, projection:'1st Round — Top 5 Pick' },
+  { name:'Cam Ward',           pos:'QB', school:'Miami (FL)',    ht:75, wt:221, forty:4.68, bench:null, vert:31.0, broad:115, cone:null, shuttle:4.38, grade:9.0, projection:'1st Round — Top 5 Pick' },
+  { name:'Dillon Gabriel',     pos:'QB', school:'Oregon',        ht:71, wt:200, forty:4.74, bench:null, vert:28.5, broad:109, cone:null, shuttle:4.41, grade:7.8, projection:'1st Round — Pick 15-25' },
+  { name:'Quinn Ewers',        pos:'QB', school:'Texas',         ht:74, wt:210, forty:4.78, bench:null, vert:27.0, broad:106, cone:null, shuttle:4.55, grade:7.2, projection:'2nd Round' },
+  { name:'Tyler Shough',       pos:'QB', school:'Louisville',    ht:76, wt:218, forty:4.65, bench:null, vert:30.0, broad:112, cone:null, shuttle:4.47, grade:6.8, projection:'2nd–3rd Round' },
+  { name:'Jalen Milroe',       pos:'QB', school:'Alabama',       ht:74, wt:219, forty:4.44, bench:null, vert:35.0, broad:124, cone:null, shuttle:4.29, grade:7.5, projection:'1st–2nd Round' },
+
+  // WRs
+  { name:'Travis Hunter',      pos:'WR', school:'Colorado',      ht:71, wt:188, forty:4.38, bench:12,   vert:38.5, broad:128, cone:6.55, shuttle:4.12, grade:9.8, projection:'1st Round — Top 3 Pick' },
+  { name:'Tetairoa McMillan',  pos:'WR', school:'Arizona',       ht:76, wt:219, forty:4.52, bench:13,   vert:36.0, broad:122, cone:6.74, shuttle:4.24, grade:9.1, projection:'1st Round — Top 10' },
+  { name:'Luther Burden III',  pos:'WR', school:'Missouri',      ht:71, wt:210, forty:4.44, bench:15,   vert:37.0, broad:126, cone:6.68, shuttle:4.18, grade:8.7, projection:'1st Round — Pick 10-20' },
+  { name:'Matthew Golden',     pos:'WR', school:'Texas',         ht:71, wt:190, forty:4.29, bench:10,   vert:40.0, broad:132, cone:6.62, shuttle:4.08, grade:8.4, projection:'1st Round — Pick 15-25' },
+  { name:'Jayden Higgins',     pos:'WR', school:'Iowa State',    ht:76, wt:212, forty:4.49, bench:11,   vert:35.5, broad:120, cone:6.78, shuttle:4.21, grade:8.1, projection:'1st Round — Pick 20-32' },
+  { name:'Elic Ayomanor',      pos:'WR', school:'Stanford',      ht:74, wt:208, forty:4.48, bench:14,   vert:36.5, broad:124, cone:6.72, shuttle:4.19, grade:7.9, projection:'1st–2nd Round' },
+  { name:'Darien Porter',      pos:'WR', school:'Iowa State',    ht:74, wt:196, forty:4.38, bench:9,    vert:39.0, broad:130, cone:6.58, shuttle:4.09, grade:7.8, projection:'1st–2nd Round' },
+  { name:'Tre Harris',         pos:'WR', school:'Ole Miss',      ht:74, wt:205, forty:4.52, bench:11,   vert:35.0, broad:119, cone:6.81, shuttle:4.26, grade:7.5, projection:'2nd Round' },
+  { name:'Xavier Restrepo',    pos:'WR', school:'Miami (FL)',    ht:70, wt:196, forty:4.42, bench:13,   vert:37.5, broad:127, cone:6.64, shuttle:4.14, grade:7.4, projection:'2nd Round' },
+
+  // OTs
+  { name:'Kelvin Banks Jr.',   pos:'OT', school:'Texas',         ht:76, wt:320, forty:5.04, bench:28,   vert:28.0, broad:102, cone:7.72, shuttle:4.80, grade:9.4, projection:'1st Round — Top 5 Pick' },
+  { name:'Will Campbell',      pos:'OT', school:'LSU',           ht:77, wt:315, forty:5.11, bench:27,   vert:26.5, broad:98,  cone:7.84, shuttle:4.89, grade:9.2, projection:'1st Round — Top 10' },
+  { name:'Armand Membou',      pos:'OT', school:'Missouri',      ht:76, wt:322, forty:5.07, bench:30,   vert:27.0, broad:100, cone:7.68, shuttle:4.77, grade:8.8, projection:'1st Round — Pick 10-20' },
+  { name:'Josh Simmons',       pos:'OT', school:'Ohio State',    ht:77, wt:305, forty:5.13, bench:25,   vert:25.5, broad:95,  cone:7.92, shuttle:4.94, grade:8.5, projection:'1st Round — Pick 15-25' },
+  { name:'Jonah Savaiinaea',   pos:'OT', school:'Arizona',       ht:76, wt:318, forty:5.09, bench:29,   vert:26.0, broad:99,  cone:7.78, shuttle:4.83, grade:8.2, projection:'1st Round — Pick 20-32' },
+  { name:'Marcus Mbow',        pos:'OT', school:'Purdue',        ht:75, wt:310, forty:5.08, bench:26,   vert:27.5, broad:101, cone:7.75, shuttle:4.81, grade:7.9, projection:'1st–2nd Round' },
+  { name:'Wyatt Milum',        pos:'OT', school:'West Virginia', ht:77, wt:316, forty:5.14, bench:28,   vert:25.0, broad:96,  cone:7.88, shuttle:4.91, grade:7.6, projection:'2nd Round' },
+
+  // IDL / DT
+  { name:'Mason Graham',       pos:'DT', school:'Michigan',      ht:75, wt:318, forty:4.88, bench:35,   vert:29.0, broad:107, cone:7.48, shuttle:4.68, grade:9.5, projection:'1st Round — Top 5 Pick' },
+  { name:'Kenneth Grant',      pos:'DT', school:'Michigan',      ht:76, wt:336, forty:4.96, bench:38,   vert:27.0, broad:103, cone:7.55, shuttle:4.74, grade:8.9, projection:'1st Round — Top 10' },
+  { name:'Derrick Harmon',     pos:'DT', school:'Oregon',        ht:77, wt:315, forty:4.92, bench:34,   vert:28.0, broad:105, cone:7.51, shuttle:4.71, grade:8.5, projection:'1st Round — Pick 10-20' },
+  { name:'Walter Nolen',       pos:'DT', school:'Ole Miss',      ht:74, wt:305, forty:4.84, bench:32,   vert:30.0, broad:110, cone:7.42, shuttle:4.62, grade:8.2, projection:'1st Round — Pick 15-25' },
+  { name:'Darius Robinson',    pos:'DT', school:'Missouri',      ht:76, wt:298, forty:4.79, bench:30,   vert:31.5, broad:113, cone:7.38, shuttle:4.57, grade:7.8, projection:'1st–2nd Round' },
+  { name:'Leonard Taylor III', pos:'DT', school:'Miami (FL)',    ht:75, wt:306, forty:4.91, bench:33,   vert:29.5, broad:108, cone:7.49, shuttle:4.69, grade:7.6, projection:'2nd Round' },
+
+  // EDGE
+  { name:'Abdul Carter',       pos:'EDGE', school:'Penn State',  ht:74, wt:247, forty:4.55, bench:22,   vert:36.5, broad:124, cone:6.88, shuttle:4.31, grade:9.7, projection:'1st Round — Top 3 Pick' },
+  { name:'Mykel Williams',     pos:'EDGE', school:'Georgia',     ht:76, wt:256, forty:4.61, bench:25,   vert:34.0, broad:119, cone:6.95, shuttle:4.38, grade:8.8, projection:'1st Round — Top 10' },
+  { name:'James Pearce Jr.',   pos:'EDGE', school:'Tennessee',   ht:76, wt:240, forty:4.52, bench:19,   vert:37.0, broad:127, cone:6.82, shuttle:4.27, grade:8.5, projection:'1st Round — Pick 10-20' },
+  { name:'Shemar Stewart',     pos:'EDGE', school:'Texas A&M',   ht:77, wt:265, forty:4.65, bench:27,   vert:33.0, broad:116, cone:7.02, shuttle:4.44, grade:8.2, projection:'1st Round — Pick 15-25' },
+  { name:'Princely Umanmielen',pos:'EDGE', school:'Ole Miss',    ht:76, wt:254, forty:4.58, bench:23,   vert:35.0, broad:121, cone:6.91, shuttle:4.34, grade:7.9, projection:'1st Round — Pick 20-32' },
+  { name:'Landon Jackson',     pos:'EDGE', school:'Arkansas',    ht:78, wt:258, forty:4.71, bench:24,   vert:32.0, broad:113, cone:7.08, shuttle:4.51, grade:7.5, projection:'1st–2nd Round' },
+  { name:'Jack Sawyer',        pos:'EDGE', school:'Ohio State',  ht:76, wt:252, forty:4.63, bench:26,   vert:33.5, broad:117, cone:6.98, shuttle:4.41, grade:7.7, projection:'1st–2nd Round' },
+
+  // CB
+  { name:'Will Johnson',       pos:'CB', school:'Michigan',      ht:74, wt:202, forty:4.41, bench:11,   vert:37.5, broad:127, cone:6.68, shuttle:4.14, grade:9.3, projection:'1st Round — Top 5 Pick' },
+  { name:'Jahdae Barron',      pos:'CB', school:'Texas',         ht:70, wt:196, forty:4.46, bench:13,   vert:36.0, broad:122, cone:6.72, shuttle:4.18, grade:8.6, projection:'1st Round — Top 15' },
+  { name:'Trey Amos',          pos:'CB', school:'Ole Miss',      ht:72, wt:190, forty:4.39, bench:10,   vert:38.5, broad:129, cone:6.61, shuttle:4.10, grade:8.2, projection:'1st Round — Pick 15-25' },
+  { name:'Benjamin Morrison',  pos:'CB', school:'Notre Dame',    ht:73, wt:194, forty:4.44, bench:11,   vert:37.0, broad:125, cone:6.66, shuttle:4.13, grade:8.0, projection:'1st Round — Pick 20-32' },
+  { name:'Denzel Burke',       pos:'CB', school:'Ohio State',    ht:73, wt:197, forty:4.48, bench:12,   vert:36.5, broad:123, cone:6.71, shuttle:4.17, grade:7.7, projection:'1st–2nd Round' },
+  { name:'Marcus Watts',       pos:'CB', school:'Texas',         ht:71, wt:188, forty:4.38, bench:9,    vert:39.0, broad:131, cone:6.58, shuttle:4.08, grade:7.4, projection:'2nd Round' },
+  { name:'Shavon Revel Jr.',   pos:'CB', school:'East Carolina', ht:76, wt:206, forty:4.43, bench:14,   vert:37.5, broad:126, cone:6.69, shuttle:4.15, grade:7.6, projection:'1st–2nd Round' },
+
+  // S
+  { name:'Malaki Starks',      pos:'S', school:'Georgia',        ht:72, wt:197, forty:4.42, bench:13,   vert:38.0, broad:128, cone:6.62, shuttle:4.11, grade:8.9, projection:'1st Round — Top 15' },
+  { name:'Andrew Mukuba',      pos:'S', school:'Texas',          ht:71, wt:192, forty:4.48, bench:11,   vert:36.5, broad:123, cone:6.74, shuttle:4.19, grade:8.2, projection:'1st Round — Pick 15-25' },
+  { name:'Lathan Ransom',      pos:'S', school:'Ohio State',     ht:72, wt:200, forty:4.45, bench:14,   vert:37.0, broad:125, cone:6.69, shuttle:4.15, grade:7.8, projection:'1st–2nd Round' },
+  { name:'Nick Emmanwori',     pos:'S', school:'South Carolina', ht:74, wt:218, forty:4.49, bench:17,   vert:35.0, broad:118, cone:6.81, shuttle:4.26, grade:7.5, projection:'2nd Round' },
+  { name:'Xavier Watts',       pos:'S', school:'Notre Dame',     ht:71, wt:196, forty:4.52, bench:12,   vert:35.5, broad:119, cone:6.78, shuttle:4.22, grade:7.2, projection:'2nd Round' },
+
+  // LB
+  { name:'Jihaad Campbell',    pos:'LB', school:'Alabama',       ht:74, wt:236, forty:4.52, bench:22,   vert:36.0, broad:122, cone:6.88, shuttle:4.28, grade:8.8, projection:'1st Round — Top 15' },
+  { name:'Danny Striggow',     pos:'LB', school:'Michigan State',ht:74, wt:242, forty:4.58, bench:24,   vert:34.5, broad:118, cone:6.95, shuttle:4.35, grade:7.5, projection:'2nd Round' },
+  { name:'Shemar James',       pos:'LB', school:'Florida',       ht:73, wt:229, forty:4.49, bench:20,   vert:37.0, broad:126, cone:6.82, shuttle:4.24, grade:8.1, projection:'1st Round — Pick 20-32' },
+  { name:'Harold Perkins Jr.', pos:'LB', school:'LSU',           ht:73, wt:227, forty:4.46, bench:19,   vert:38.0, broad:129, cone:6.79, shuttle:4.21, grade:8.4, projection:'1st Round — Pick 15-25' },
+  { name:'Dasan McCullough',   pos:'LB', school:'Indiana',       ht:76, wt:246, forty:4.61, bench:21,   vert:33.0, broad:115, cone:7.02, shuttle:4.42, grade:7.2, projection:'2nd–3rd Round' },
+
+  // TE
+  { name:'Tyler Warren',       pos:'TE', school:'Penn State',    ht:78, wt:258, forty:4.68, bench:21,   vert:33.5, broad:116, cone:7.08, shuttle:4.48, grade:9.0, projection:'1st Round — Top 15' },
+  { name:'Colston Loveland',   pos:'TE', school:'Michigan',      ht:78, wt:248, forty:4.65, bench:18,   vert:34.5, broad:119, cone:7.02, shuttle:4.42, grade:8.7, projection:'1st Round — Pick 15-25' },
+  { name:'Mason Taylor',       pos:'TE', school:'LSU',           ht:78, wt:252, forty:4.71, bench:20,   vert:32.5, broad:113, cone:7.15, shuttle:4.54, grade:8.3, projection:'1st Round — Pick 20-32' },
+  { name:'Harold Fannin Jr.',  pos:'TE', school:'Bowling Green', ht:77, wt:244, forty:4.62, bench:17,   vert:35.5, broad:122, cone:6.95, shuttle:4.38, grade:7.9, projection:'1st–2nd Round' },
+  { name:'Elijah Arroyo',      pos:'TE', school:'Miami (FL)',    ht:77, wt:246, forty:4.70, bench:19,   vert:33.0, broad:114, cone:7.10, shuttle:4.51, grade:7.5, projection:'2nd Round' },
+
+  // RB
+  { name:'Ashton Jeanty',      pos:'RB', school:'Boise State',   ht:68, wt:215, forty:4.43, bench:18,   vert:38.0, broad:128, cone:6.78, shuttle:4.21, grade:9.4, projection:'1st Round — Top 10' },
+  { name:'Omarion Hampton',    pos:'RB', school:'North Carolina', ht:71, wt:221, forty:4.47, bench:20,   vert:36.5, broad:124, cone:6.85, shuttle:4.28, grade:8.6, projection:'1st Round — Pick 10-25' },
+  { name:'Quinshon Judkins',   pos:'RB', school:'Ohio State',    ht:71, wt:211, forty:4.44, bench:17,   vert:37.5, broad:127, cone:6.80, shuttle:4.23, grade:8.3, projection:'1st Round — Pick 15-25' },
+  { name:'TreVeyon Henderson', pos:'RB', school:'Ohio State',    ht:70, wt:202, forty:4.38, bench:15,   vert:40.0, broad:132, cone:6.70, shuttle:4.14, grade:8.0, projection:'1st Round — Pick 20-32' },
+  { name:'Dylan Sampson',      pos:'RB', school:'Tennessee',     ht:69, wt:205, forty:4.42, bench:16,   vert:38.5, broad:129, cone:6.74, shuttle:4.18, grade:7.7, projection:'1st–2nd Round' },
+  { name:'Cam Skattebo',       pos:'RB', school:'Arizona State', ht:70, wt:218, forty:4.51, bench:22,   vert:35.5, broad:120, cone:6.92, shuttle:4.34, grade:7.4, projection:'2nd Round' },
+
+  // IOL
+  { name:'Tyler Booker',       pos:'IOL', school:'Alabama',      ht:76, wt:328, forty:5.18, bench:36,   vert:24.5, broad:92,  cone:8.01, shuttle:5.02, grade:8.7, projection:'1st Round — Pick 15-25' },
+  { name:'Tate Ratledge',      pos:'IOL', school:'Georgia',      ht:77, wt:325, forty:5.21, bench:34,   vert:24.0, broad:90,  cone:8.08, shuttle:5.08, grade:8.2, projection:'1st Round — Pick 20-32' },
+  { name:'Grey Zabel',         pos:'IOL', school:'North Dakota State', ht:77, wt:310, forty:5.14, bench:31, vert:26.0, broad:96, cone:7.89, shuttle:4.92, grade:7.8, projection:'1st–2nd Round' },
+  { name:'Donovan Jackson',    pos:'IOL', school:'Ohio State',   ht:75, wt:316, forty:5.17, bench:33,   vert:25.0, broad:93,  cone:7.96, shuttle:4.98, grade:7.6, projection:'1st–2nd Round' },
+  { name:'Jared Wilson',       pos:'IOL', school:'Georgia',      ht:75, wt:304, forty:5.10, bench:30,   vert:26.5, broad:97,  cone:7.84, shuttle:4.88, grade:7.2, projection:'2nd–3rd Round' },
+
+  // Additional players to reach 75
+  { name:'Emeka Egbuka',       pos:'WR', school:'Ohio State',    ht:73, wt:208, forty:4.46, bench:13,   vert:36.5, broad:123, cone:6.71, shuttle:4.17, grade:7.8, projection:'1st–2nd Round' },
+  { name:'Nick Singleton',     pos:'RB', school:'Penn State',    ht:70, wt:210, forty:4.39, bench:16,   vert:39.0, broad:130, cone:6.72, shuttle:4.16, grade:7.8, projection:'1st–2nd Round' },
+  { name:'LT Overton',         pos:'EDGE', school:'Georgia',     ht:75, wt:248, forty:4.60, bench:21,   vert:34.0, broad:118, cone:6.97, shuttle:4.40, grade:7.3, projection:'2nd–3rd Round' },
+  { name:'Kyle Kennard',       pos:'EDGE', school:'Georgia',     ht:76, wt:242, forty:4.57, bench:22,   vert:35.5, broad:122, cone:6.90, shuttle:4.33, grade:7.6, projection:'2nd Round' },
+  { name:'Elijah Roberts',     pos:'EDGE', school:'SMU',         ht:76, wt:258, forty:4.66, bench:25,   vert:33.0, broad:115, cone:7.04, shuttle:4.46, grade:7.2, projection:'2nd–3rd Round' },
+];
+
+// ── Position Colors ───────────────────────────────────────────────────────────
+const POS_COLORS = {
+  QB:   { bg:'rgba(0,240,255,0.14)',  color:'#00F0FF' },
+  WR:   { bg:'rgba(57,255,20,0.14)',  color:'#39FF14' },
+  OT:   { bg:'rgba(255,214,0,0.14)',  color:'#FFD600' },
+  IOL:  { bg:'rgba(255,214,0,0.14)',  color:'#FFD600' },
+  DT:   { bg:'rgba(255,45,85,0.14)',  color:'#FF2D55' },
+  EDGE: { bg:'rgba(255,120,0,0.14)',  color:'#FF7800' },
+  CB:   { bg:'rgba(180,0,255,0.14)',  color:'#C855FF' },
+  S:    { bg:'rgba(0,180,255,0.14)',  color:'#00B4FF' },
+  LB:   { bg:'rgba(255,200,50,0.14)', color:'#FFC832' },
+  TE:   { bg:'rgba(0,255,180,0.14)',  color:'#00FFB4' },
+  RB:   { bg:'rgba(255,80,120,0.14)', color:'#FF5078' },
+};
+
+// ── Position Benchmarks (for color coding) ───────────────────────────────────
+// elite/good/avg thresholds per position per metric (lower is better for forty/cone/shuttle)
+const BENCHMARKS = {
+  QB:   { forty:{elite:4.60,good:4.72,avg:4.85}, bench:{elite:20,good:15,avg:10}, vert:{elite:33,good:29,avg:25}, broad:{elite:118,good:110,avg:102}, cone:{elite:6.90,good:7.10,avg:7.30}, shuttle:{elite:4.30,good:4.45,avg:4.60} },
+  WR:   { forty:{elite:4.40,good:4.48,avg:4.58}, bench:{elite:15,good:12,avg:9},  vert:{elite:38,good:34,avg:30}, broad:{elite:127,good:120,avg:112}, cone:{elite:6.60,good:6.78,avg:6.95}, shuttle:{elite:4.10,good:4.20,avg:4.32} },
+  OT:   { forty:{elite:5.00,good:5.12,avg:5.25}, bench:{elite:30,good:26,avg:22}, vert:{elite:28,good:25,avg:21}, broad:{elite:104,good:98,avg:91},  cone:{elite:7.60,good:7.80,avg:8.00}, shuttle:{elite:4.70,good:4.88,avg:5.05} },
+  IOL:  { forty:{elite:5.05,good:5.18,avg:5.30}, bench:{elite:33,good:28,avg:23}, vert:{elite:26,good:23,avg:19}, broad:{elite:98,good:93,avg:87},   cone:{elite:7.75,good:7.95,avg:8.15}, shuttle:{elite:4.82,good:4.98,avg:5.15} },
+  DT:   { forty:{elite:4.80,good:4.94,avg:5.08}, bench:{elite:35,good:30,avg:24}, vert:{elite:30,good:26,avg:22}, broad:{elite:110,good:103,avg:96},  cone:{elite:7.35,good:7.55,avg:7.75}, shuttle:{elite:4.58,good:4.72,avg:4.88} },
+  EDGE: { forty:{elite:4.55,good:4.65,avg:4.78}, bench:{elite:25,good:21,avg:17}, vert:{elite:36,good:32,avg:28}, broad:{elite:124,good:117,avg:109}, cone:{elite:6.85,good:7.00,avg:7.18}, shuttle:{elite:4.28,good:4.40,avg:4.55} },
+  CB:   { forty:{elite:4.40,good:4.47,avg:4.55}, bench:{elite:14,good:11,avg:8},  vert:{elite:38,good:34,avg:30}, broad:{elite:127,good:120,avg:112}, cone:{elite:6.60,good:6.75,avg:6.90}, shuttle:{elite:4.10,good:4.20,avg:4.32} },
+  S:    { forty:{elite:4.42,good:4.50,avg:4.60}, bench:{elite:16,good:13,avg:10}, vert:{elite:37,good:33,avg:29}, broad:{elite:125,good:118,avg:110}, cone:{elite:6.65,good:6.80,avg:6.96}, shuttle:{elite:4.12,good:4.22,avg:4.35} },
+  LB:   { forty:{elite:4.48,good:4.58,avg:4.70}, bench:{elite:24,good:20,avg:16}, vert:{elite:37,good:33,avg:28}, broad:{elite:126,good:118,avg:109}, cone:{elite:6.78,good:6.95,avg:7.12}, shuttle:{elite:4.22,good:4.35,avg:4.50} },
+  TE:   { forty:{elite:4.60,good:4.70,avg:4.82}, bench:{elite:22,good:18,avg:14}, vert:{elite:35,good:31,avg:27}, broad:{elite:120,good:113,avg:105}, cone:{elite:6.92,good:7.08,avg:7.25}, shuttle:{elite:4.35,good:4.50,avg:4.65} },
+  RB:   { forty:{elite:4.40,good:4.47,avg:4.55}, bench:{elite:21,good:17,avg:13}, vert:{elite:38,good:34,avg:30}, broad:{elite:128,good:120,avg:111}, cone:{elite:6.72,good:6.88,avg:7.05}, shuttle:{elite:4.18,good:4.28,avg:4.40} },
+};
+
+// ── Column Definitions ────────────────────────────────────────────────────────
+const COLUMNS = [
+  { key:'name',       label:'Player',         sortable:true,  type:'name' },
+  { key:'pos',        label:'POS',            sortable:true,  type:'pos'  },
+  { key:'school',     label:'School',         sortable:true,  type:'text' },
+  { key:'ht',         label:'HT',             sortable:true,  type:'ht'   },
+  { key:'wt',         label:'WT',             sortable:true,  type:'num'  },
+  { key:'forty',      label:'40 YD',          sortable:true,  type:'metric', lowerBetter:true  },
+  { key:'bench',      label:'BENCH',          sortable:true,  type:'metric', lowerBetter:false },
+  { key:'vert',       label:'VERT',           sortable:true,  type:'metric', lowerBetter:false },
+  { key:'broad',      label:'BROAD',          sortable:true,  type:'metric', lowerBetter:false },
+  { key:'cone',       label:'3-CONE',         sortable:true,  type:'metric', lowerBetter:true  },
+  { key:'shuttle',    label:'SHUTTLE',        sortable:true,  type:'metric', lowerBetter:true  },
+  { key:'grade',      label:'GRADE',          sortable:true,  type:'grade' },
+  { key:'projection', label:'Projection',     sortable:false, type:'proj'  },
+];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let state = {
+  players: [...PLAYERS],
+  filtered: [...PLAYERS],
+  sortKey: 'grade',
+  sortAsc: false,
+  activePos: 'ALL',
+  searchQuery: '',
+  compareMode: false,
+  compareSlots: [null, null],
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function fmtHt(inches) {
+  if (inches == null) return '—';
+  return Math.floor(inches/12) + "'" + (inches%12) + '"';
+}
+function fmtVal(val, decimals=2) {
+  if (val == null) return null;
+  return val.toFixed(decimals);
+}
+
+function getMetricClass(val, key, pos, lowerBetter) {
+  if (val == null) return 'na';
+  const bench = BENCHMARKS[pos];
+  if (!bench || !bench[key]) return 'avg';
+  const b = bench[key];
+  if (lowerBetter) {
+    if (val <= b.elite) return 'elite';
+    if (val <= b.good)  return 'good';
+    if (val <= b.avg)   return 'avg';
+    return 'below';
+  } else {
+    if (val >= b.elite) return 'elite';
+    if (val >= b.good)  return 'good';
+    if (val >= b.avg)   return 'avg';
+    return 'below';
+  }
+}
+
+function gradeClass(grade) {
+  if (grade >= 9.0) return 'grade-elite';
+  if (grade >= 7.5) return 'grade-good';
+  if (grade >= 6.0) return 'grade-avg';
+  return 'grade-below';
+}
+
+function getPositions() {
+  const set = new Set(PLAYERS.map(p => p.pos));
+  const order = ['ALL','QB','WR','RB','TE','OT','IOL','DT','EDGE','LB','CB','S'];
+  return order.filter(p => p === 'ALL' || set.has(p));
+}
+
+// ── Build ─────────────────────────────────────────────────────────────────────
+function buildHeader() {
+  const tr = document.getElementById('tableHead');
+  tr.innerHTML = '';
+  COLUMNS.forEach(col => {
+    const th = document.createElement('th');
+    th.dataset.key = col.key;
+    if (col.sortable) {
+      const arrow = state.sortKey === col.key
+        ? (state.sortAsc ? ' ▲' : ' ▼')
+        : ' ↕';
+      th.innerHTML = col.label + '<span class="sort-arrow">' + arrow + '</span>';
+      th.classList.toggle('sorted', state.sortKey === col.key);
+      th.onclick = () => handleSort(col.key);
+    } else {
+      th.textContent = col.label;
+      th.style.cursor = 'default';
+    }
+    tr.appendChild(th);
+  });
+}
+
+function buildPills() {
+  const wrap = document.getElementById('posPills');
+  wrap.innerHTML = '';
+  getPositions().forEach(pos => {
+    const pill = document.createElement('div');
+    pill.className = 'pill' + (state.activePos === pos ? ' active' : '');
+    pill.textContent = pos;
+    pill.onclick = () => handlePosFilter(pos);
+    wrap.appendChild(pill);
+  });
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  if (state.filtered.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="${COLUMNS.length}" class="no-results">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <div>No players match your filters.</div>
+    </td>`;
+    tbody.appendChild(tr);
+    document.getElementById('tableCount').textContent = '0 players';
+    return;
+  }
+
+  document.getElementById('tableCount').textContent = state.filtered.length + ' players';
+
+  state.filtered.forEach((p, idx) => {
+    const tr = document.createElement('tr');
+    const isSelected = state.compareSlots.includes(p.name);
+    if (isSelected) tr.classList.add('selected');
+
+    COLUMNS.forEach(col => {
+      const td = document.createElement('td');
+      switch (col.type) {
+        case 'name':
+          td.className = 'player-name';
+          td.innerHTML = p.name + '<span class="school-label">' + p.school + '</span>';
+          break;
+        case 'pos': {
+          td.className = 'pos-cell';
+          const pc = POS_COLORS[p.pos] || {};
+          td.innerHTML = `<span class="pos-badge" style="background:${pc.bg||'rgba(255,255,255,0.08)'};color:${pc.color||'#94A3B8'}">${p.pos}</span>`;
+          break;
+        }
+        case 'text':
+          td.textContent = p[col.key];
+          td.style.color = 'var(--text-dim)';
+          break;
+        case 'ht':
+          td.textContent = fmtHt(p.ht);
+          td.style.fontVariantNumeric = 'tabular-nums';
+          break;
+        case 'num':
+          td.textContent = p[col.key] != null ? p[col.key] : '—';
+          td.className = 'metric-val avg';
+          break;
+        case 'metric': {
+          const val = p[col.key];
+          const cls = val != null ? getMetricClass(val, col.key, p.pos, col.lowerBetter) : 'na';
+          td.className = 'metric-val ' + cls;
+          if (val == null) {
+            td.textContent = '—';
+          } else {
+            const d = col.key === 'vert' || col.key === 'broad' ? 1 : 2;
+            td.textContent = val.toFixed(d);
+          }
+          break;
+        }
+        case 'grade': {
+          const gc = gradeClass(p.grade);
+          td.innerHTML = `<span class="grade-badge ${gc}">${p.grade.toFixed(1)}</span>`;
+          break;
+        }
+        case 'proj':
+          td.className = 'projection-cell';
+          td.textContent = p.projection;
+          break;
+      }
+      tr.appendChild(td);
+    });
+
+    tr.onclick = () => handleRowClick(p);
+    tbody.appendChild(tr);
+  });
+}
+
+// ── Filtering + Sorting ───────────────────────────────────────────────────────
+function applyFilters() {
+  let list = [...PLAYERS];
+  if (state.activePos !== 'ALL') {
+    list = list.filter(p => p.pos === state.activePos);
+  }
+  if (state.searchQuery) {
+    const q = state.searchQuery.toLowerCase();
+    list = list.filter(p => p.name.toLowerCase().includes(q) || p.school.toLowerCase().includes(q));
+  }
+  list.sort((a, b) => {
+    const av = a[state.sortKey];
+    const bv = b[state.sortKey];
+    if (av == null && bv == null) return 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    const cmp = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
+    return state.sortAsc ? cmp : -cmp;
+  });
+  state.filtered = list;
+}
+
+function handleSort(key) {
+  if (state.sortKey === key) {
+    state.sortAsc = !state.sortAsc;
+  } else {
+    state.sortKey = key;
+    // For lower-is-better metrics default to ascending; everything else descending
+    const col = COLUMNS.find(c => c.key === key);
+    state.sortAsc = !!(col && col.lowerBetter);
+  }
+  applyFilters();
+  buildHeader();
+  renderTable();
+}
+
+function handlePosFilter(pos) {
+  state.activePos = pos;
+  applyFilters();
+  buildPills();
+  renderTable();
+}
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  state.searchQuery = this.value.trim();
+  applyFilters();
+  renderTable();
+});
+
+// ── Compare Mode ──────────────────────────────────────────────────────────────
+function toggleCompareMode() {
+  state.compareMode = !state.compareMode;
+  state.compareSlots = [null, null];
+  const btn = document.getElementById('compareModeBtn');
+  const banner = document.getElementById('compareBanner');
+  if (state.compareMode) {
+    btn.textContent = '✕ Exit Compare';
+    btn.classList.add('active');
+    banner.classList.add('visible');
+  } else {
+    btn.textContent = '+ Compare Mode';
+    btn.classList.remove('active');
+    banner.classList.remove('visible');
+  }
+  renderTable();
+}
+
+function handleRowClick(player) {
+  if (!state.compareMode) return;
+  const idx = state.compareSlots.indexOf(player.name);
+  if (idx !== -1) {
+    state.compareSlots[idx] = null;
+  } else {
+    const emptySlot = state.compareSlots.indexOf(null);
+    if (emptySlot !== -1) {
+      state.compareSlots[emptySlot] = player.name;
+    }
+  }
+  updateCompareBanner();
+  renderTable();
+}
+
+function updateCompareBanner() {
+  [0, 1].forEach(i => {
+    const slot = document.getElementById('slot' + i);
+    const name = state.compareSlots[i];
+    if (name) {
+      slot.className = 'compare-slot filled';
+      slot.innerHTML = name + '<span class="remove-player" onclick="removeFromSlot(' + i + ')">&#x2715;</span>';
+    } else {
+      slot.className = 'compare-slot';
+      slot.textContent = 'Slot ' + (i+1) + ' — click a row';
+    }
+  });
+  const goBtn = document.getElementById('compareGoBtn');
+  goBtn.disabled = !(state.compareSlots[0] && state.compareSlots[1]);
+}
+
+function removeFromSlot(i) {
+  state.compareSlots[i] = null;
+  updateCompareBanner();
+  renderTable();
+}
+
+// ── Compare Modal ─────────────────────────────────────────────────────────────
+function openCompareModal() {
+  const p1 = PLAYERS.find(p => p.name === state.compareSlots[0]);
+  const p2 = PLAYERS.find(p => p.name === state.compareSlots[1]);
+  if (!p1 || !p2) return;
+  document.getElementById('compareModalBody').innerHTML = buildCompareHTML(p1, p2);
+  document.getElementById('compareModal').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill[data-pct]').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 50);
+}
+
+function closeCompareModal() {
+  document.getElementById('compareModal').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('compareModal')) closeCompareModal();
+}
+
+function buildCompareHTML(p1, p2) {
+  const metrics = [
+    { key:'forty',   label:'40-Yard Dash', unit:'s', lowerBetter:true,  decimals:2 },
+    { key:'bench',   label:'Bench Press',  unit:' reps', lowerBetter:false, decimals:0 },
+    { key:'vert',    label:'Vertical Jump',unit:'"', lowerBetter:false, decimals:1 },
+    { key:'broad',   label:'Broad Jump',   unit:'"', lowerBetter:false, decimals:0 },
+    { key:'cone',    label:'3-Cone Drill', unit:'s', lowerBetter:true,  decimals:2 },
+    { key:'shuttle', label:'Shuttle Run',  unit:'s', lowerBetter:true,  decimals:2 },
+  ];
+
+  function barPct(v1, v2, lowerBetter) {
+    if (v1 == null || v2 == null) return [50, 50];
+    if (v1 === v2) return [50, 50];
+    const lo = Math.min(v1, v2);
+    const hi = Math.max(v1, v2);
+    const range = hi - lo || 1;
+    if (lowerBetter) {
+      // lower is better: the lower value gets 80%, higher gets 40%
+      const p1pct = v1 <= v2 ? 80 : 40;
+      const p2pct = v2 <= v1 ? 80 : 40;
+      return [p1pct, p2pct];
+    } else {
+      const p1pct = 40 + ((v1 - lo) / range) * 40;
+      const p2pct = 40 + ((v2 - lo) / range) * 40;
+      return [p1pct, p2pct];
+    }
+  }
+
+  let rows = '';
+  metrics.forEach(m => {
+    const v1 = p1[m.key];
+    const v2 = p2[m.key];
+    const [pct1, pct2] = barPct(v1, v2, m.lowerBetter);
+    const d1 = v1 != null ? v1.toFixed(m.decimals) + m.unit : '—';
+    const d2 = v2 != null ? v2.toFixed(m.decimals) + m.unit : '—';
+    rows += `
+      <div class="compare-row">
+        <div class="compare-row-label">${m.label}</div>
+        <div class="compare-bars">
+          <div class="bar-wrap left">
+            <div class="bar-fill cyan" data-pct="${pct1}" style="width:0%"></div>
+            <span class="bar-val">${d1}</span>
+          </div>
+          <div class="bar-center-val">${m.label.split(' ').map(w=>w[0]).join('')}</div>
+          <div class="bar-wrap right">
+            <div class="bar-fill green" data-pct="${pct2}" style="width:0%"></div>
+            <span class="bar-val">${d2}</span>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  const g1cls = gradeClass(p1.grade);
+  const g2cls = gradeClass(p2.grade);
+
+  return `
+    <div class="compare-grid">
+      <div class="compare-player">
+        <div class="compare-player-name">${p1.name}</div>
+        <div class="compare-player-meta">${p1.pos} &middot; ${p1.school} &middot; ${fmtHt(p1.ht)} / ${p1.wt} lbs</div>
+      </div>
+      <div class="compare-divider">
+        <span class="compare-vs">VS</span>
+      </div>
+      <div class="compare-player">
+        <div class="compare-player-name">${p2.name}</div>
+        <div class="compare-player-meta">${p2.pos} &middot; ${p2.school} &middot; ${fmtHt(p2.ht)} / ${p2.wt} lbs</div>
+      </div>
+    </div>
+    <div class="compare-rows">${rows}</div>
+    <div class="compare-grade-row">
+      <div class="compare-grade-block">
+        <div class="grade-label">Scout Grade</div>
+        <div class="big-grade ${g1cls.replace('grade-','')}">${p1.grade.toFixed(1)}</div>
+        <div class="grade-label-text">${p1.projection.split('—')[0].trim()}</div>
+      </div>
+      <div style="text-align:center;color:var(--text-mute);font-family:'Oswald',sans-serif;font-size:18px;">vs</div>
+      <div class="compare-grade-block">
+        <div class="grade-label">Scout Grade</div>
+        <div class="big-grade ${g2cls.replace('grade-','')}">${p2.grade.toFixed(1)}</div>
+        <div class="grade-label-text">${p2.projection.split('—')[0].trim()}</div>
+      </div>
+    </div>
+    <div class="compare-projection-block">
+      <div class="proj-item">
+        <div class="proj-label">Draft Projection</div>
+        <div class="proj-val">${p1.projection}</div>
+      </div>
+      <div class="proj-divider">|</div>
+      <div class="proj-item">
+        <div class="proj-label">Draft Projection</div>
+        <div class="proj-val">${p2.projection}</div>
+      </div>
+    </div>`;
+}
+
+// ── Grade Badge Helpers (for modal) ──────────────────────────────────────────
+// (reuse gradeClass defined above — map to color)
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+function init() {
+  applyFilters();
+  buildHeader();
+  buildPills();
+  renderTable();
+}
+
+init();
+</script>
+</body>
+</html>
