@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL 2026 Cap Space Rankings | AiNFL GM</title>
+<meta name="description" content="Live ranking of all 32 NFL teams by 2026 salary cap space. See which teams have room to spend and which are pinched. Cap grades, dead cap, and top contracts.">
+<meta property="og:title" content="NFL 2026 Cap Space Rankings | AiNFL GM">
+<meta property="og:description" content="All 32 NFL teams ranked by 2026 salary cap space. Cap health grades, dead cap, top contracts, and team comparisons. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/cap-space.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL 2026 Cap Space Rankings | AiNFL GM">
+<meta name="twitter:description" content="All 32 NFL teams ranked by 2026 cap space. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(26px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── League Summary Bar ── */
+.league-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+@media (max-width: 600px) {
+  .league-summary { grid-template-columns: repeat(2, 1fr); }
+}
+
+.summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+.summary-card .s-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.summary-card .s-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.summary-card .s-value.green { color: var(--green); }
+.summary-card .s-value.red   { color: var(--red); }
+.summary-card .s-value.cyan  { color: var(--cyan); }
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+.filter-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.filter-btn.active { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+
+.filter-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+}
+.filter-select:focus { border-color: var(--cyan); }
+
+.controls-right {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 7px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.view-btn:hover  { border-color: var(--cyan); color: var(--cyan); }
+.view-btn.active { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+
+/* ── Rankings List ── */
+.rankings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+
+.team-row {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+}
+.team-row:hover { border-color: rgba(0,240,255,0.2); background: #1e2d4a; }
+.team-row.selected { border-color: var(--cyan); background: var(--cyan-glow); }
+.team-row.compare-a { border-color: var(--cyan); }
+.team-row.compare-b { border-color: var(--green); }
+
+.row-main {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.row-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+  line-height: 1;
+}
+.row-rank.top3 { color: var(--cyan); }
+
+.row-info {
+  min-width: 0;
+}
+.row-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-meta {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+.row-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+  max-width: 340px;
+  width: 100%;
+}
+.bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.bar-fill.green  { background: linear-gradient(90deg, #39FF14, #00c96b); }
+.bar-fill.yellow { background: linear-gradient(90deg, #FFD600, #ff9500); }
+.bar-fill.red    { background: linear-gradient(90deg, #FF2D55, #ff6b35); }
+
+.bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-mute);
+}
+
+.row-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 100px;
+}
+.row-space {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+.row-space.green  { color: var(--green); }
+.row-space.yellow { color: var(--yellow); }
+.row-space.red    { color: var(--red); }
+
+.grade-badge {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: center;
+}
+.grade-A  { background: rgba(57,255,20,0.2);  color: var(--green); }
+.grade-B  { background: rgba(0,240,255,0.15); color: var(--cyan); }
+.grade-C  { background: rgba(255,214,0,0.15); color: var(--yellow); }
+.grade-D  { background: rgba(255,150,0,0.15); color: #ff9500; }
+.grade-F  { background: rgba(255,45,85,0.2);  color: var(--red); }
+
+/* Expanded detail */
+.row-detail {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.row-detail.open { display: block; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+@media (max-width: 560px) {
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.detail-stat {
+  background: var(--bg-2);
+  border-radius: var(--radius-xs);
+  padding: 10px 12px;
+}
+.detail-stat .ds-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.detail-stat .ds-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.detail-stat .ds-value.green  { color: var(--green); }
+.detail-stat .ds-value.red    { color: var(--red); }
+.detail-stat .ds-value.yellow { color: var(--yellow); }
+
+.contracts-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.contracts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.contract-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-2);
+  border-radius: var(--radius-xs);
+  padding: 8px 12px;
+}
+.contract-player {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+.contract-pos {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-mute);
+  background: var(--bg-3);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: 8px;
+}
+.contract-cap {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--yellow);
+}
+
+.compare-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.compare-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── Compare Panel ── */
+.compare-panel {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.3s ease both;
+}
+.compare-panel.open { display: block; }
+
+.compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.compare-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+.compare-close {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.compare-close:hover { border-color: var(--red); color: var(--red); }
+
+.compare-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 560px) {
+  .compare-teams { grid-template-columns: 1fr; }
+  .compare-vs { display: none; }
+}
+
+.compare-team-col {
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.compare-team-col.team-a { border-top: 3px solid var(--cyan); }
+.compare-team-col.team-b { border-top: 3px solid var(--green); }
+
+.cteam-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.cteam-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.cteam-stat:last-child { border-bottom: none; }
+.cteam-stat .stat-lbl { color: var(--text-dim); }
+.cteam-stat .stat-val { font-weight: 700; color: #fff; }
+
+.compare-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-mute);
+  padding-top: 40px;
+}
+
+.compare-prompt {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.compare-prompt strong { color: var(--cyan); }
+
+/* ── Share button ── */
+.share-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease 0.12s both;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xs);
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cyan);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.share-btn:hover { background: rgba(0,240,255,0.18); animation: pulse-cyan 1.2s infinite; }
+
+.share-toast {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-2);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 200;
+  animation: fadeUp 0.3s ease both;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 28px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 2;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Grid view ── */
+.rankings-grid {
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+.rankings-grid.active { display: grid; }
+.rankings-list.hidden { display: none; }
+
+.grid-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.grid-card:hover { border-color: rgba(0,240,255,0.2); background: #1e2d4a; }
+
+.gc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.gc-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mute);
+}
+.gc-rank.top3 { color: var(--cyan); }
+
+.gc-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+  text-align: center;
+}
+.gc-space {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+.gc-space.green  { color: var(--green); }
+.gc-space.yellow { color: var(--yellow); }
+.gc-space.red    { color: var(--red); }
+
+.gc-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.gc-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+.gc-bar-fill.green  { background: linear-gradient(90deg, #39FF14, #00c96b); }
+.gc-bar-fill.yellow { background: linear-gradient(90deg, #FFD600, #ff9500); }
+.gc-bar-fill.red    { background: linear-gradient(90deg, #FF2D55, #ff6b35); }
+
+.gc-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-mute);
+  align-items: center;
+}
+
+/* ── No results ── */
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-dim);
+  display: none;
+}
+.no-results.visible { display: block; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="/" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to GM Hub
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+    2026 SALARY CAP — $272.5M
+  </div>
+  <h1>NFL Cap Space <span>Rankings</span></h1>
+  <p>All 32 teams ranked by available 2026 cap space. Cap health grades, dead money, and top contracts — updated for the new league year.</p>
+</div>
+
+<main class="main">
+
+  <!-- League Summary -->
+  <div class="league-summary" id="leagueSummary">
+    <div class="summary-card">
+      <div class="s-label">League Cap</div>
+      <div class="s-value cyan" id="sumLeagueCap">$272.5M</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">Teams in the Green</div>
+      <div class="s-value green" id="sumGreen">—</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">Teams Over/Tight</div>
+      <div class="s-value red" id="sumRed">—</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">Most Space</div>
+      <div class="s-value" id="sumMost" style="font-size:16px;">—</div>
+    </div>
+  </div>
+
+  <!-- Compare Panel -->
+  <div class="compare-panel" id="comparePanel">
+    <div class="compare-header">
+      <div class="compare-title">Team Comparison</div>
+      <button class="compare-close" onclick="closeCompare()">Clear</button>
+    </div>
+    <div id="compareContent">
+      <div class="compare-prompt">Click <strong>Compare</strong> on any team card, then a second team to compare side by side.</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="filter-group">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All 32</button>
+      <button class="filter-btn" data-filter="green" onclick="setFilter('green', this)">Lots of Room</button>
+      <button class="filter-btn" data-filter="tight" onclick="setFilter('tight', this)">Tight/Over</button>
+    </div>
+    <select class="filter-select" id="conferenceFilter" onchange="applyFilters()">
+      <option value="all">All Conferences</option>
+      <option value="AFC">AFC</option>
+      <option value="NFC">NFC</option>
+    </select>
+    <select class="filter-select" id="divisionFilter" onchange="applyFilters()">
+      <option value="all">All Divisions</option>
+      <option value="AFC East">AFC East</option>
+      <option value="AFC North">AFC North</option>
+      <option value="AFC South">AFC South</option>
+      <option value="AFC West">AFC West</option>
+      <option value="NFC East">NFC East</option>
+      <option value="NFC North">NFC North</option>
+      <option value="NFC South">NFC South</option>
+      <option value="NFC West">NFC West</option>
+    </select>
+    <div class="controls-right">
+      <button class="view-btn active" id="viewList" onclick="setView('list')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="0" y="1" width="14" height="2" rx="1" fill="currentColor"/>
+          <rect x="0" y="6" width="14" height="2" rx="1" fill="currentColor"/>
+          <rect x="0" y="11" width="14" height="2" rx="1" fill="currentColor"/>
+        </svg>
+        List
+      </button>
+      <button class="view-btn" id="viewGrid" onclick="setView('grid')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <rect x="0" y="0" width="6" height="6" rx="1" fill="currentColor"/>
+          <rect x="8" y="0" width="6" height="6" rx="1" fill="currentColor"/>
+          <rect x="0" y="8" width="6" height="6" rx="1" fill="currentColor"/>
+          <rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor"/>
+        </svg>
+        Grid
+      </button>
+    </div>
+  </div>
+
+  <!-- Share -->
+  <div class="share-row">
+    <button class="share-btn" onclick="shareRankings()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <circle cx="10.5" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="10.5" cy="10.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="2.5" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M4 6L9 3M4 7L9 10" stroke="currentColor" stroke-width="1.3"/>
+      </svg>
+      Share Rankings
+    </button>
+  </div>
+
+  <!-- List View -->
+  <div class="rankings-list" id="rankingsList"></div>
+
+  <!-- Grid View -->
+  <div class="rankings-grid" id="rankingsGrid"></div>
+
+  <!-- No Results -->
+  <div class="no-results" id="noResults">No teams match this filter.</div>
+
+</main>
+
+<!-- More Tools -->
+<div style="max-width:900px;margin:40px auto 0;padding:0 16px 40px;">
+  <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:12px;">More Free Tools</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="/draft-trade-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Draft Trade Calculator</a>
+    <a href="/trade-analyzer.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Trade Analyzer</a>
+    <a href="/mortgage-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Mortgage Calculator</a>
+    <a href="/name-generator.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">AI Business Name Generator</a>
+    <a href="/" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#00F0FF;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:border-color .2s;">AiNFL GM Simulator</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div>2026 cap figures are estimates based on publicly available data. Actual numbers may vary.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Bengals Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Value Calc</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com">Draft Room</a>
+  </div>
+  <div style="margin-top:8px;color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<div class="share-toast" id="shareToast">Link copied to clipboard!</div>
+
+<script>
+// ── 2026 Cap Data ─────────────────────────────────────────────────────────
+// CAP = $272.5M. capSpace = available after all commitments.
+// Figures are realistic estimates for 2026 league year.
+const TEAMS = [
+  {
+    abbr: 'NE',  name: 'New England Patriots', conf: 'AFC', div: 'AFC East',
+    capSpace: 118.4, committed: 154.1, deadCap: 14.2,
+    contracts: [
+      { player: 'Jalen Reagor', pos: 'WR', cap: 8.2 },
+      { player: 'Marcus Jones', pos: 'CB', cap: 6.8 },
+      { player: 'Hunter Henry', pos: 'TE', cap: 6.1 }
+    ]
+  },
+  {
+    abbr: 'NYG', name: 'New York Giants', conf: 'NFC', div: 'NFC East',
+    capSpace: 99.2, committed: 173.3, deadCap: 18.6,
+    contracts: [
+      { player: 'Daniel Jones', pos: 'QB', cap: 18.5 },
+      { player: 'Dexter Lawrence', pos: 'DT', cap: 16.2 },
+      { player: 'Saquon Barkley', pos: 'RB', cap: 12.0 }
+    ]
+  },
+  {
+    abbr: 'CAR', name: 'Carolina Panthers', conf: 'NFC', div: 'NFC South',
+    capSpace: 91.8, committed: 180.7, deadCap: 22.4,
+    contracts: [
+      { player: 'Bryce Young', pos: 'QB', cap: 12.1 },
+      { player: 'Derrick Brown', pos: 'DT', cap: 14.8 },
+      { player: 'Jaycee Horn', pos: 'CB', cap: 11.4 }
+    ]
+  },
+  {
+    abbr: 'CHI', name: 'Chicago Bears', conf: 'NFC', div: 'NFC North',
+    capSpace: 87.5, committed: 185.0, deadCap: 19.8,
+    contracts: [
+      { player: 'Caleb Williams', pos: 'QB', cap: 10.2 },
+      { player: 'D.J. Moore', pos: 'WR', cap: 20.0 },
+      { player: 'Montez Sweat', pos: 'DE', cap: 21.8 }
+    ]
+  },
+  {
+    abbr: 'LV',  name: 'Las Vegas Raiders', conf: 'AFC', div: 'AFC West',
+    capSpace: 83.1, committed: 189.4, deadCap: 25.1,
+    contracts: [
+      { player: 'Aidan O\'Connell', pos: 'QB', cap: 5.2 },
+      { player: 'Maxx Crosby', pos: 'DE', cap: 26.1 },
+      { player: 'Josh Jacobs', pos: 'RB', cap: 12.0 }
+    ]
+  },
+  {
+    abbr: 'TEN', name: 'Tennessee Titans', conf: 'AFC', div: 'AFC South',
+    capSpace: 76.2, committed: 196.3, deadCap: 16.4,
+    contracts: [
+      { player: 'Will Levis', pos: 'QB', cap: 7.8 },
+      { player: 'Calvin Ridley', pos: 'WR', cap: 15.0 },
+      { player: 'Jeffery Simmons', pos: 'DT', cap: 18.2 }
+    ]
+  },
+  {
+    abbr: 'CLE', name: 'Cleveland Browns', conf: 'AFC', div: 'AFC North',
+    capSpace: 70.8, committed: 201.7, deadCap: 28.9,
+    contracts: [
+      { player: 'Deshaun Watson', pos: 'QB', cap: 54.9 },
+      { player: 'Myles Garrett', pos: 'DE', cap: 25.0 },
+      { player: 'Amari Cooper', pos: 'WR', cap: 20.0 }
+    ]
+  },
+  {
+    abbr: 'ATL', name: 'Atlanta Falcons', conf: 'NFC', div: 'NFC South',
+    capSpace: 66.3, committed: 206.2, deadCap: 21.3,
+    contracts: [
+      { player: 'Kirk Cousins', pos: 'QB', cap: 38.0 },
+      { player: 'Drake London', pos: 'WR', cap: 16.8 },
+      { player: 'Grady Jarrett', pos: 'DT', cap: 15.0 }
+    ]
+  },
+  {
+    abbr: 'WAS', name: 'Washington Commanders', conf: 'NFC', div: 'NFC East',
+    capSpace: 61.7, committed: 210.8, deadCap: 17.2,
+    contracts: [
+      { player: 'Jayden Daniels', pos: 'QB', cap: 9.4 },
+      { player: 'Terry McLaurin', pos: 'WR', cap: 22.0 },
+      { player: 'Daron Payne', pos: 'DT', cap: 20.0 }
+    ]
+  },
+  {
+    abbr: 'JAX', name: 'Jacksonville Jaguars', conf: 'AFC', div: 'AFC South',
+    capSpace: 57.4, committed: 215.1, deadCap: 23.7,
+    contracts: [
+      { player: 'Trevor Lawrence', pos: 'QB', cap: 52.5 },
+      { player: 'Christian Kirk', pos: 'WR', cap: 18.0 },
+      { player: 'Travon Walker', pos: 'DE', cap: 9.8 }
+    ]
+  },
+  {
+    abbr: 'NYJ', name: 'New York Jets', conf: 'AFC', div: 'AFC East',
+    capSpace: 53.9, committed: 218.6, deadCap: 29.4,
+    contracts: [
+      { player: 'Aaron Rodgers', pos: 'QB', cap: 37.7 },
+      { player: 'Sauce Gardner', pos: 'CB', cap: 23.0 },
+      { player: 'Haason Reddick', pos: 'LB', cap: 14.0 }
+    ]
+  },
+  {
+    abbr: 'DEN', name: 'Denver Broncos', conf: 'AFC', div: 'AFC West',
+    capSpace: 50.1, committed: 222.4, deadCap: 20.6,
+    contracts: [
+      { player: 'Bo Nix', pos: 'QB', cap: 8.2 },
+      { player: 'Courtland Sutton', pos: 'WR', cap: 15.0 },
+      { player: 'Patrick Surtain II', pos: 'CB', cap: 26.0 }
+    ]
+  },
+  {
+    abbr: 'IND', name: 'Indianapolis Colts', conf: 'AFC', div: 'AFC South',
+    capSpace: 47.6, committed: 224.9, deadCap: 18.0,
+    contracts: [
+      { player: 'Anthony Richardson', pos: 'QB', cap: 8.8 },
+      { player: 'Jonathan Taylor', pos: 'RB', cap: 14.0 },
+      { player: 'DeForest Buckner', pos: 'DT', cap: 21.0 }
+    ]
+  },
+  {
+    abbr: 'HOU', name: 'Houston Texans', conf: 'AFC', div: 'AFC South',
+    capSpace: 44.2, committed: 228.3, deadCap: 15.8,
+    contracts: [
+      { player: 'C.J. Stroud', pos: 'QB', cap: 11.4 },
+      { player: 'Nico Collins', pos: 'WR', cap: 20.0 },
+      { player: 'Danielle Hunter', pos: 'DE', cap: 20.0 }
+    ]
+  },
+  {
+    abbr: 'LAR', name: 'Los Angeles Rams', conf: 'NFC', div: 'NFC West',
+    capSpace: 41.8, committed: 230.7, deadCap: 32.1,
+    contracts: [
+      { player: 'Matthew Stafford', pos: 'QB', cap: 40.0 },
+      { player: 'Cooper Kupp', pos: 'WR', cap: 22.0 },
+      { player: 'Aaron Donald', pos: 'DT', cap: 0 }
+    ]
+  },
+  {
+    abbr: 'SEA', name: 'Seattle Seahawks', conf: 'NFC', div: 'NFC West',
+    capSpace: 38.5, committed: 234.0, deadCap: 24.7,
+    contracts: [
+      { player: 'Geno Smith', pos: 'QB', cap: 31.0 },
+      { player: 'Tyler Lockett', pos: 'WR', cap: 17.0 },
+      { player: 'DK Metcalf', pos: 'WR', cap: 24.0 }
+    ]
+  },
+  {
+    abbr: 'PIT', name: 'Pittsburgh Steelers', conf: 'AFC', div: 'AFC North',
+    capSpace: 35.7, committed: 236.8, deadCap: 16.2,
+    contracts: [
+      { player: 'Russell Wilson', pos: 'QB', cap: 35.4 },
+      { player: 'T.J. Watt', pos: 'LB', cap: 28.0 },
+      { player: 'George Pickens', pos: 'WR', cap: 9.4 }
+    ]
+  },
+  {
+    abbr: 'ARI', name: 'Arizona Cardinals', conf: 'NFC', div: 'NFC West',
+    capSpace: 33.2, committed: 239.3, deadCap: 21.5,
+    contracts: [
+      { player: 'Kyler Murray', pos: 'QB', cap: 46.1 },
+      { player: 'Marvin Harrison Jr.', pos: 'WR', cap: 8.6 },
+      { player: 'Zach Ertz', pos: 'TE', cap: 9.5 }
+    ]
+  },
+  {
+    abbr: 'GB',  name: 'Green Bay Packers', conf: 'NFC', div: 'NFC North',
+    capSpace: 30.6, committed: 241.9, deadCap: 19.8,
+    contracts: [
+      { player: 'Jordan Love', pos: 'QB', cap: 48.0 },
+      { player: 'Jayden Reed', pos: 'WR', cap: 9.4 },
+      { player: 'Rashan Gary', pos: 'LB', cap: 17.0 }
+    ]
+  },
+  {
+    abbr: 'MIA', name: 'Miami Dolphins', conf: 'AFC', div: 'AFC East',
+    capSpace: 27.4, committed: 245.1, deadCap: 26.3,
+    contracts: [
+      { player: 'Tua Tagovailoa', pos: 'QB', cap: 53.1 },
+      { player: 'Tyreek Hill', pos: 'WR', cap: 30.0 },
+      { player: 'Jalen Ramsey', pos: 'CB', cap: 24.0 }
+    ]
+  },
+  {
+    abbr: 'DAL', name: 'Dallas Cowboys', conf: 'NFC', div: 'NFC East',
+    capSpace: 24.8, committed: 247.7, deadCap: 38.2,
+    contracts: [
+      { player: 'Dak Prescott', pos: 'QB', cap: 60.0 },
+      { player: 'CeeDee Lamb', pos: 'WR', cap: 35.0 },
+      { player: 'Micah Parsons', pos: 'LB', cap: 35.0 }
+    ]
+  },
+  {
+    abbr: 'BAL', name: 'Baltimore Ravens', conf: 'AFC', div: 'AFC North',
+    capSpace: 22.1, committed: 250.4, deadCap: 17.6,
+    contracts: [
+      { player: 'Lamar Jackson', pos: 'QB', cap: 52.0 },
+      { player: 'Roquan Smith', pos: 'LB', cap: 20.0 },
+      { player: 'Zay Flowers', pos: 'WR', cap: 9.2 }
+    ]
+  },
+  {
+    abbr: 'LA',  name: 'Los Angeles Chargers', conf: 'AFC', div: 'AFC West',
+    capSpace: 19.6, committed: 252.9, deadCap: 22.8,
+    contracts: [
+      { player: 'Justin Herbert', pos: 'QB', cap: 52.5 },
+      { player: 'Khalil Mack', pos: 'DE', cap: 22.0 },
+      { player: 'Keenan Allen', pos: 'WR', cap: 23.0 }
+    ]
+  },
+  {
+    abbr: 'MIN', name: 'Minnesota Vikings', conf: 'NFC', div: 'NFC North',
+    capSpace: 17.3, committed: 255.2, deadCap: 20.1,
+    contracts: [
+      { player: 'Sam Darnold', pos: 'QB', cap: 11.0 },
+      { player: 'Justin Jefferson', pos: 'WR', cap: 35.0 },
+      { player: 'Danielle Hunter', pos: 'DE', cap: 20.0 }
+    ]
+  },
+  {
+    abbr: 'PHI', name: 'Philadelphia Eagles', conf: 'NFC', div: 'NFC East',
+    capSpace: 15.0, committed: 257.5, deadCap: 29.4,
+    contracts: [
+      { player: 'Jalen Hurts', pos: 'QB', cap: 51.0 },
+      { player: 'A.J. Brown', pos: 'WR', cap: 32.0 },
+      { player: 'Jordan Mailata', pos: 'OT', cap: 18.0 }
+    ]
+  },
+  {
+    abbr: 'TB',  name: 'Tampa Bay Buccaneers', conf: 'NFC', div: 'NFC South',
+    capSpace: 12.4, committed: 260.1, deadCap: 23.5,
+    contracts: [
+      { player: 'Baker Mayfield', pos: 'QB', cap: 50.0 },
+      { player: 'Chris Godwin', pos: 'WR', cap: 18.0 },
+      { player: 'Tristan Wirfs', pos: 'OT', cap: 21.0 }
+    ]
+  },
+  {
+    abbr: 'CIN', name: 'Cincinnati Bengals', conf: 'AFC', div: 'AFC North',
+    capSpace: 10.2, committed: 262.3, deadCap: 18.8,
+    contracts: [
+      { player: 'Joe Burrow', pos: 'QB', cap: 55.0 },
+      { player: 'Ja\'Marr Chase', pos: 'WR', cap: 34.6 },
+      { player: 'Tee Higgins', pos: 'WR', cap: 23.0 }
+    ]
+  },
+  {
+    abbr: 'BUF', name: 'Buffalo Bills', conf: 'AFC', div: 'AFC East',
+    capSpace: 8.7, committed: 263.8, deadCap: 16.4,
+    contracts: [
+      { player: 'Josh Allen', pos: 'QB', cap: 43.0 },
+      { player: 'Stefon Diggs', pos: 'WR', cap: 23.0 },
+      { player: 'Von Miller', pos: 'DE', cap: 19.0 }
+    ]
+  },
+  {
+    abbr: 'DET', name: 'Detroit Lions', conf: 'NFC', div: 'NFC North',
+    capSpace: 6.4, committed: 266.1, deadCap: 14.9,
+    contracts: [
+      { player: 'Jared Goff', pos: 'QB', cap: 53.0 },
+      { player: 'Amon-Ra St. Brown', pos: 'WR', cap: 30.0 },
+      { player: 'Aidan Hutchinson', pos: 'DE', cap: 26.0 }
+    ]
+  },
+  {
+    abbr: 'KC',  name: 'Kansas City Chiefs', conf: 'AFC', div: 'AFC West',
+    capSpace: 4.1, committed: 268.4, deadCap: 21.7,
+    contracts: [
+      { player: 'Patrick Mahomes', pos: 'QB', cap: 57.7 },
+      { player: 'Travis Kelce', pos: 'TE', cap: 17.1 },
+      { player: 'Chris Jones', pos: 'DT', cap: 31.0 }
+    ]
+  },
+  {
+    abbr: 'SF',  name: 'San Francisco 49ers', conf: 'NFC', div: 'NFC West',
+    capSpace: 1.8, committed: 270.7, deadCap: 35.8,
+    contracts: [
+      { player: 'Brock Purdy', pos: 'QB', cap: 10.0 },
+      { player: 'Trent Williams', pos: 'OT', cap: 25.0 },
+      { player: 'Brandon Aiyuk', pos: 'WR', cap: 30.0 }
+    ]
+  },
+  {
+    abbr: 'NO',  name: 'New Orleans Saints', conf: 'NFC', div: 'NFC South',
+    capSpace: -14.6, committed: 287.1, deadCap: 58.3,
+    contracts: [
+      { player: 'Derek Carr', pos: 'QB', cap: 40.0 },
+      { player: 'Chris Olave', pos: 'WR', cap: 16.0 },
+      { player: 'Marshon Lattimore', pos: 'CB', cap: 18.0 }
+    ]
+  }
+];
+
+// Sort by capSpace descending (done above)
+TEAMS.sort((a, b) => b.capSpace - a.capSpace);
+
+const CAP = 272.5;
+let activeFilter = 'all';
+let compareState = { a: null, b: null };
+let currentView = 'list';
+
+// ── Helpers ──────────────────────────────────────────────────────────────
+
+function fmt(n) {
+  const abs = Math.abs(n);
+  const sign = n < 0 ? '-' : '';
+  if (abs >= 100) return sign + '$' + Math.round(abs) + 'M';
+  return sign + '$' + abs.toFixed(1) + 'M';
+}
+
+function colorClass(space) {
+  if (space >= 40)  return 'green';
+  if (space >= 10)  return 'yellow';
+  return 'red';
+}
+
+function grade(space) {
+  if (space >= 80)  return 'A+';
+  if (space >= 60)  return 'A';
+  if (space >= 40)  return 'A-';
+  if (space >= 25)  return 'B+';
+  if (space >= 15)  return 'B';
+  if (space >= 8)   return 'B-';
+  if (space >= 0)   return 'C';
+  if (space >= -10) return 'D';
+  return 'F';
+}
+
+function gradeBase(g) {
+  return g.replace('+','').replace('-','');
+}
+
+function barPct(space) {
+  // bar shows % of cap that is available (capped 0-100)
+  const pct = (space / CAP) * 100;
+  return Math.max(0, Math.min(100, pct));
+}
+
+function usedPct(committed) {
+  return Math.min(100, (committed / CAP) * 100);
+}
+
+// ── Build summary ─────────────────────────────────────────────────────────
+
+function buildSummary() {
+  const green = TEAMS.filter(t => t.capSpace >= 10).length;
+  const red   = TEAMS.filter(t => t.capSpace < 10).length;
+  const most  = TEAMS[0];
+  document.getElementById('sumGreen').textContent = green;
+  document.getElementById('sumRed').textContent   = red;
+  document.getElementById('sumMost').textContent  = most.abbr + ' ' + fmt(most.capSpace);
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────
+
+function setFilter(type, btn) {
+  activeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const conf = document.getElementById('conferenceFilter').value;
+  const div  = document.getElementById('divisionFilter').value;
+  const ranked = TEAMS.map((t, i) => ({ ...t, rank: i + 1 }));
+
+  const visible = ranked.filter(t => {
+    if (activeFilter === 'green' && t.capSpace < 10) return false;
+    if (activeFilter === 'tight' && t.capSpace >= 10) return false;
+    if (conf !== 'all' && t.conf !== conf) return false;
+    if (div  !== 'all' && t.div  !== div)  return false;
+    return true;
+  });
+
+  renderList(visible);
+  renderGrid(visible);
+
+  const none = document.getElementById('noResults');
+  if (visible.length === 0) {
+    none.classList.add('visible');
+  } else {
+    none.classList.remove('visible');
+  }
+}
+
+// ── Render list ───────────────────────────────────────────────────────────
+
+function renderList(teams) {
+  const list = document.getElementById('rankingsList');
+  if (teams.length === 0) { list.innerHTML = ''; return; }
+
+  list.innerHTML = teams.map(t => {
+    const cl  = colorClass(t.capSpace);
+    const g   = grade(t.capSpace);
+    const gb  = gradeBase(g);
+    const pct = barPct(t.capSpace);
+    const top3 = t.contracts.map(c =>
+      `<div class="contract-row">
+        <div style="display:flex;align-items:center;gap:0;">
+          <span class="contract-player">${c.player}</span>
+          <span class="contract-pos">${c.pos}</span>
+        </div>
+        <span class="contract-cap">${fmt(c.cap)}</span>
+      </div>`
+    ).join('');
+
+    return `
+    <div class="team-row" id="row-${t.abbr}" onclick="toggleDetail('${t.abbr}')">
+      <div class="row-main">
+        <div class="row-rank${t.rank <= 3 ? ' top3' : ''}">${t.rank}</div>
+        <div class="row-info">
+          <div class="row-name">${t.name}</div>
+          <div class="row-meta">${t.div}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:110px;">
+          <div class="row-space ${cl}">${fmt(t.capSpace)}</div>
+          <div class="grade-badge grade-${gb}">${g}</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;">
+        <div class="bar-track">
+          <div class="bar-fill ${cl}" style="width:${pct}%"></div>
+        </div>
+        <div class="bar-labels">
+          <span>${fmt(t.committed)} committed</span>
+          <span>${fmt(t.deadCap)} dead</span>
+          <span>${fmt(t.capSpace)} available</span>
+        </div>
+      </div>
+      <div class="row-detail" id="detail-${t.abbr}">
+        <div class="detail-grid">
+          <div class="detail-stat">
+            <div class="ds-label">Cap Space</div>
+            <div class="ds-value ${cl}">${fmt(t.capSpace)}</div>
+          </div>
+          <div class="detail-stat">
+            <div class="ds-label">Committed</div>
+            <div class="ds-value">${fmt(t.committed)}</div>
+          </div>
+          <div class="detail-stat">
+            <div class="ds-label">Dead Cap</div>
+            <div class="ds-value red">${fmt(t.deadCap)}</div>
+          </div>
+          <div class="detail-stat">
+            <div class="ds-label">Cap Grade</div>
+            <div class="ds-value ${cl}">${g}</div>
+          </div>
+          <div class="detail-stat">
+            <div class="ds-label">Used %</div>
+            <div class="ds-value">${Math.round(usedPct(t.committed))}%</div>
+          </div>
+          <div class="detail-stat">
+            <div class="ds-label">Conference</div>
+            <div class="ds-value" style="font-size:13px;">${t.conf}</div>
+          </div>
+        </div>
+        <div class="contracts-label">Top 3 Cap Hits</div>
+        <div class="contracts-list">${top3}</div>
+        <button class="compare-btn" onclick="event.stopPropagation(); addToCompare('${t.abbr}')">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6H10M6 2V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          Compare
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Render grid ───────────────────────────────────────────────────────────
+
+function renderGrid(teams) {
+  const grid = document.getElementById('rankingsGrid');
+  if (teams.length === 0) { grid.innerHTML = ''; return; }
+
+  grid.innerHTML = teams.map(t => {
+    const cl  = colorClass(t.capSpace);
+    const g   = grade(t.capSpace);
+    const pct = barPct(t.capSpace);
+    return `
+    <div class="grid-card" onclick="openListAndDetail('${t.abbr}')">
+      <div class="gc-top">
+        <div class="gc-rank${t.rank <= 3 ? ' top3' : ''}">#${t.rank}</div>
+        <div class="gc-name">${t.abbr}</div>
+        <div class="gc-space ${cl}">${fmt(t.capSpace)}</div>
+      </div>
+      <div class="gc-bar"><div class="gc-bar-fill ${cl}" style="width:${pct}%"></div></div>
+      <div class="gc-bottom">
+        <span>${t.div}</span>
+        <span class="grade-badge grade-${gradeBase(g)}" style="width:auto;padding:1px 8px;height:auto;line-height:1.6;font-size:11px;">${g}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Detail toggle ─────────────────────────────────────────────────────────
+
+function toggleDetail(abbr) {
+  const detail = document.getElementById('detail-' + abbr);
+  if (!detail) return;
+  detail.classList.toggle('open');
+}
+
+function openListAndDetail(abbr) {
+  setView('list');
+  // slight delay to allow rerender
+  setTimeout(() => {
+    const row = document.getElementById('row-' + abbr);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const d = document.getElementById('detail-' + abbr);
+      if (d) d.classList.add('open');
+    }
+  }, 100);
+}
+
+// ── View toggle ───────────────────────────────────────────────────────────
+
+function setView(v) {
+  currentView = v;
+  const list = document.getElementById('rankingsList');
+  const grid = document.getElementById('rankingsGrid');
+  const btnL = document.getElementById('viewList');
+  const btnG = document.getElementById('viewGrid');
+  if (v === 'list') {
+    list.classList.remove('hidden');
+    grid.classList.remove('active');
+    btnL.classList.add('active');
+    btnG.classList.remove('active');
+  } else {
+    list.classList.add('hidden');
+    grid.classList.add('active');
+    btnG.classList.add('active');
+    btnL.classList.remove('active');
+  }
+}
+
+// ── Compare ───────────────────────────────────────────────────────────────
+
+function addToCompare(abbr) {
+  const panel = document.getElementById('comparePanel');
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (!compareState.a) {
+    compareState.a = abbr;
+  } else if (!compareState.b) {
+    if (compareState.a === abbr) return; // same team
+    compareState.b = abbr;
+  } else {
+    // replace b, keep a
+    compareState.b = abbr;
+  }
+
+  // update row highlights
+  document.querySelectorAll('.team-row').forEach(r => {
+    r.classList.remove('compare-a', 'compare-b');
+  });
+  if (compareState.a) {
+    const ra = document.getElementById('row-' + compareState.a);
+    if (ra) ra.classList.add('compare-a');
+  }
+  if (compareState.b) {
+    const rb = document.getElementById('row-' + compareState.b);
+    if (rb) rb.classList.add('compare-b');
+  }
+
+  renderCompare();
+}
+
+function renderCompare() {
+  const content = document.getElementById('compareContent');
+  const { a, b } = compareState;
+
+  if (!a) {
+    content.innerHTML = '<div class="compare-prompt">Click <strong>Compare</strong> on any team card to begin.</div>';
+    return;
+  }
+  if (!b) {
+    const ta = TEAMS.find(t => t.abbr === a);
+    content.innerHTML = `<div class="compare-prompt"><strong style="color:var(--cyan)">${ta.name}</strong> selected. Now click Compare on a second team.</div>`;
+    return;
+  }
+
+  const ta = TEAMS.find(t => t.abbr === a);
+  const tb = TEAMS.find(t => t.abbr === b);
+
+  const col = (t, side) => {
+    const cl = colorClass(t.capSpace);
+    return `
+    <div class="compare-team-col team-${side}">
+      <div class="cteam-name">${t.name}</div>
+      <div class="cteam-stat"><span class="stat-lbl">Cap Space</span><span class="stat-val" style="color:var(--${cl === 'green' ? 'green' : cl === 'yellow' ? 'yellow' : 'red'})">${fmt(t.capSpace)}</span></div>
+      <div class="cteam-stat"><span class="stat-lbl">Cap Grade</span><span class="stat-val">${grade(t.capSpace)}</span></div>
+      <div class="cteam-stat"><span class="stat-lbl">Committed</span><span class="stat-val">${fmt(t.committed)}</span></div>
+      <div class="cteam-stat"><span class="stat-lbl">Dead Cap</span><span class="stat-val" style="color:var(--red)">${fmt(t.deadCap)}</span></div>
+      <div class="cteam-stat"><span class="stat-lbl">Used</span><span class="stat-val">${Math.round(usedPct(t.committed))}%</span></div>
+      <div class="cteam-stat"><span class="stat-lbl">Division</span><span class="stat-val" style="font-size:12px;">${t.div}</span></div>
+    </div>`;
+  };
+
+  content.innerHTML = `
+    <div class="compare-teams">
+      ${col(ta, 'a')}
+      <div class="compare-vs">VS</div>
+      ${col(tb, 'b')}
+    </div>`;
+}
+
+function closeCompare() {
+  compareState = { a: null, b: null };
+  document.querySelectorAll('.team-row').forEach(r => {
+    r.classList.remove('compare-a', 'compare-b');
+  });
+  document.getElementById('comparePanel').classList.remove('open');
+  document.getElementById('compareContent').innerHTML = '<div class="compare-prompt">Click <strong>Compare</strong> on any team card, then a second team to compare side by side.</div>';
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────
+
+function shareRankings() {
+  const url = 'https://ainflgm.com/cap-space.html';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast());
+  } else {
+    const el = document.createElement('input');
+    el.value = url;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast();
+  }
+}
+
+function showToast() {
+  const t = document.getElementById('shareToast');
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 2800);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+
+buildSummary();
+applyFilters();
+</script>
+
+</body>
+</html>
