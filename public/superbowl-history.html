@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Super Bowl History Explorer | All 59 Super Bowls | AiNFL GM</title>
+<meta name="description" content="Complete NFL Super Bowl history from Super Bowl I to LIX. Winners, losers, scores, MVPs, locations, and memorable moments. Search by team or browse every championship.">
+<meta property="og:title" content="NFL Super Bowl History Explorer | AiNFL GM">
+<meta property="og:description" content="Every Super Bowl ever played — winners, scores, MVPs, stadiums, and the moments that defined them. Free interactive explorer by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/superbowl-history.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Super Bowl History Explorer | AiNFL GM">
+<meta name="twitter:description" content="Every Super Bowl ever played. Scores, MVPs, locations, fun facts. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 50px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--yellow); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--yellow);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* ── Controls Bar ── */
+.controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.05s both;
+  align-items: center;
+}
+.search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-mute);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px 10px 36px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input::placeholder { color: var(--text-mute); }
+.search-input:focus { border-color: var(--border-hi); }
+
+.filter-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.filter-select:focus { border-color: var(--border-hi); }
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+.view-btn {
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--text-mute);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+.view-btn.active {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+
+.results-count {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  animation: fadeUp 0.5s ease 0.1s both;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 8px 16px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mute);
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+.tab-btn:hover:not(.active) { color: var(--text-dim); }
+
+/* ── Section panels ── */
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+
+/* ── SB Card Grid ── */
+.sb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 680px) {
+  .sb-grid { grid-template-columns: 1fr; }
+}
+
+.sb-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.15s;
+  animation: fadeUp 0.4s ease both;
+  cursor: pointer;
+}
+.sb-card:hover {
+  border-color: rgba(255,214,0,0.3);
+  transform: translateY(-2px);
+}
+
+.sb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+}
+.sb-roman {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: 0.06em;
+}
+.sb-year {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sb-location {
+  font-size: 11px;
+  color: var(--text-mute);
+  font-weight: 500;
+  text-align: right;
+  max-width: 160px;
+  line-height: 1.4;
+}
+
+.sb-card-body {
+  padding: 14px 16px;
+}
+
+.sb-matchup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.sb-team {
+  flex: 1;
+  text-align: center;
+}
+.sb-team-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.sb-team-name.winner { color: var(--green); }
+.sb-team-name.loser { color: var(--text-dim); }
+.sb-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.sb-score.winner { color: var(--green); }
+.sb-score.loser { color: var(--text-mute); }
+.sb-vs {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+.sb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.sb-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.sb-tag.mvp { border-color: rgba(0,240,255,0.2); color: var(--cyan); }
+
+.sb-fact {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.6;
+  font-style: italic;
+  border-left: 2px solid rgba(255,214,0,0.3);
+  padding-left: 10px;
+}
+
+.sb-card-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-share {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 5px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+.btn-share:hover { border-color: var(--border-hi); color: var(--cyan); }
+.btn-share.copied { border-color: rgba(57,255,20,0.3); color: var(--green); }
+
+/* ── List view ── */
+.sb-list-view { display: none; }
+.sb-list-view.active { display: block; }
+.sb-grid-view { display: grid; }
+.sb-grid-view.hidden { display: none; }
+
+.sb-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  overflow-x: auto;
+}
+.sb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 700px;
+}
+.sb-table thead th {
+  background: var(--bg-3);
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.sb-table thead th:hover { color: var(--yellow); }
+.sb-table thead th.sorted { color: var(--yellow); }
+.sb-table tbody tr {
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.sb-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.018); }
+.sb-table tbody tr:hover { background: rgba(255,214,0,0.04); }
+.sb-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  vertical-align: middle;
+}
+.sb-table tbody tr:last-child td { border-bottom: none; }
+.td-roman {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--yellow);
+  white-space: nowrap;
+}
+.td-winner { color: var(--green); font-weight: 600; }
+.td-score { font-family: 'Oswald', sans-serif; color: #fff; font-size: 14px; }
+.td-mvp { color: var(--cyan); font-weight: 500; }
+
+/* ── No results ── */
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-mute);
+}
+.no-results-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.no-results p { font-size: 14px; }
+
+/* ── Timeline ── */
+.timeline-wrap {
+  padding: 8px 0 24px;
+}
+.decade-block {
+  margin-bottom: 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.decade-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.timeline-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tl-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+.tl-item:hover { border-color: rgba(255,214,0,0.25); }
+.tl-roman {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--yellow);
+  min-width: 52px;
+}
+.tl-year {
+  font-size: 11px;
+  color: var(--text-mute);
+  min-width: 36px;
+  font-weight: 500;
+}
+.tl-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.tl-bar-win {
+  height: 100%;
+  background: var(--green);
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.tl-teams {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+  min-width: 120px;
+}
+@media (max-width: 500px) {
+  .tl-teams { max-width: 120px; }
+  .tl-bar-wrap { display: none; }
+}
+.tl-score-small {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ── Leaderboard ── */
+.leaderboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+@media (max-width: 700px) {
+  .leaderboard-grid { grid-template-columns: 1fr; }
+}
+
+.lb-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.lb-card-header {
+  padding: 14px 18px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+}
+.lb-card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-transform: uppercase;
+}
+.lb-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.lb-item:last-child { border-bottom: none; }
+.lb-item:hover { background: rgba(255,255,255,0.02); }
+.lb-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-mute);
+  min-width: 22px;
+}
+.lb-rank.top1 { color: var(--yellow); }
+.lb-rank.top2 { color: #B0B0B0; }
+.lb-rank.top3 { color: #CD7F32; }
+.lb-team {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.lb-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--yellow);
+}
+.lb-bar-wrap {
+  width: 80px;
+  height: 5px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.lb-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--yellow), rgba(255,214,0,0.5));
+  border-radius: 3px;
+}
+.lb-never-label {
+  font-size: 11px;
+  color: var(--red);
+  font-weight: 600;
+  padding: 2px 8px;
+  background: var(--red-dim);
+  border-radius: 100px;
+}
+.lb-drought-years {
+  font-size: 11px;
+  color: var(--text-mute);
+  min-width: 52px;
+  text-align: right;
+}
+
+/* ── Detail Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal {
+  transform: scale(1) translateY(0);
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-2);
+  z-index: 1;
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: 0.04em;
+}
+.modal-close {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-close:hover { border-color: var(--border-hi); color: var(--text); }
+.modal-body {
+  padding: 20px;
+}
+.modal-score-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+  margin-bottom: 18px;
+  background: var(--bg-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.modal-team-block { text-align: center; }
+.modal-team-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.modal-team-name.winner { color: var(--green); }
+.modal-team-name.loser { color: var(--text-dim); }
+.modal-score-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+}
+.modal-score-num.winner { color: var(--green); }
+.modal-score-num.loser { color: var(--text-mute); }
+.modal-vs-divider {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-mute);
+}
+.modal-field {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+.modal-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  min-width: 72px;
+  padding-top: 1px;
+}
+.modal-field-value {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.modal-field-value.highlight { color: var(--cyan); }
+.modal-fact-block {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--yellow);
+  border-radius: var(--radius-xs);
+  padding: 12px 14px;
+  margin-top: 14px;
+}
+.modal-fact-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--yellow);
+  margin-bottom: 6px;
+}
+.modal-fact-text {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-share-modal {
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: var(--radius-sm);
+  padding: 9px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--yellow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.btn-share-modal:hover { background: rgba(255,214,0,0.2); }
+.btn-share-modal.copied { background: var(--green-dim); border-color: rgba(57,255,20,0.3); color: var(--green); }
+
+/* ── AdSense slot ── */
+.ad-slot {
+  margin: 20px 0;
+  text-align: center;
+  min-height: 90px;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.9;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--yellow); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <polygon points="5,1 6.5,4 10,4.5 7.5,7 8.2,10 5,8.5 1.8,10 2.5,7 0,4.5 3.5,4" fill="#FFD600" opacity="0.9"/>
+    </svg>
+    Super Bowl History
+  </div>
+  <h1>NFL <span>Super Bowl</span> Explorer</h1>
+  <p>Every championship game ever played. Scores, MVPs, stadiums, and the moments that defined NFL history.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="stat-total">59</div>
+      <div class="hero-stat-label">Super Bowls</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="stat-champs">22</div>
+      <div class="hero-stat-label">Different Champions</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="stat-top-team">NE / KC</div>
+      <div class="hero-stat-label">Most Titles</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="stat-years">1967–2025</div>
+      <div class="hero-stat-label">Years Covered</div>
+    </div>
+  </div>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Tabs -->
+  <div class="tabs" id="main-tabs">
+    <button class="tab-btn active" onclick="switchTab('games')">All Games</button>
+    <button class="tab-btn" onclick="switchTab('timeline')">Timeline</button>
+    <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
+    <button class="tab-btn" onclick="switchTab('droughts')">Droughts</button>
+  </div>
+
+  <!-- ── Games Tab ── -->
+  <div class="section-panel active" id="tab-games">
+
+    <!-- Controls -->
+    <div class="controls-bar">
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input class="search-input" id="search-input" type="text" placeholder="Search team, MVP, city..." oninput="applyFilters()" autocomplete="off" spellcheck="false">
+      </div>
+      <select class="filter-select" id="decade-filter" onchange="applyFilters()" aria-label="Filter by decade">
+        <option value="">All Decades</option>
+        <option value="1960s">1960s</option>
+        <option value="1970s">1970s</option>
+        <option value="1980s">1980s</option>
+        <option value="1990s">1990s</option>
+        <option value="2000s">2000s</option>
+        <option value="2010s">2010s</option>
+        <option value="2020s">2020s</option>
+      </select>
+      <select class="filter-select" id="team-filter" onchange="applyFilters()" aria-label="Filter by team">
+        <option value="">All Teams</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-grid" onclick="setView('grid')">Grid</button>
+        <button class="view-btn" id="btn-list" onclick="setView('list')">List</button>
+      </div>
+      <div class="results-count" id="results-count"></div>
+    </div>
+
+    <!-- AdSense -->
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+
+    <!-- Grid view -->
+    <div class="sb-grid sb-grid-view" id="sb-grid"></div>
+
+    <!-- List view -->
+    <div class="sb-list-view" id="sb-list">
+      <div class="sb-table-wrap">
+        <table class="sb-table" id="sb-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable('roman')" id="th-roman">Game</th>
+              <th onclick="sortTable('year')" id="th-year">Year</th>
+              <th onclick="sortTable('winner')" id="th-winner">Winner</th>
+              <th onclick="sortTable('score')" id="th-score">Score</th>
+              <th onclick="sortTable('loser')" id="th-loser">Runner-Up</th>
+              <th onclick="sortTable('mvp')" id="th-mvp">MVP</th>
+              <th id="th-location">Location</th>
+            </tr>
+          </thead>
+          <tbody id="sb-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="no-results" id="no-results" style="display:none">
+      <div class="no-results-icon">&#127944;</div>
+      <p>No Super Bowls match your search. Try a different team or keyword.</p>
+    </div>
+  </div>
+
+  <!-- ── Timeline Tab ── -->
+  <div class="section-panel" id="tab-timeline">
+    <div class="timeline-wrap" id="timeline-wrap"></div>
+  </div>
+
+  <!-- ── Leaderboard Tab ── -->
+  <div class="section-panel" id="tab-leaderboard">
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+    <div class="leaderboard-grid" id="leaderboard-wrap"></div>
+  </div>
+
+  <!-- ── Droughts Tab ── -->
+  <div class="section-panel" id="tab-droughts">
+    <div class="leaderboard-grid" id="droughts-wrap"></div>
+  </div>
+
+</main>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title"></div>
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-share-modal" id="btn-share-modal" onclick="shareModal()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <circle cx="10" cy="2" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="10" cy="11" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="2" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M3.3 7.2L8.8 10.3M3.3 5.8L8.8 2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Share This Game
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>Complete Super Bowl history — Super Bowl I through LIX (1967&ndash;2025).</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Draft Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/qb-comparison.html">QB Comparison</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/nfl-trivia.html">NFL Trivia</a>
+  </div>
+  <div style="margin-top:8px; color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+</footer>
+
+<script>
+// ── Super Bowl Data ─────────────────────────────────────────────────────────
+// All 59 Super Bowls. winner/loser = city/team name. w/l = scores.
+const SUPERBOWLS = [
+  { num:1,  roman:"I",      year:1967, winner:"Green Bay Packers",    w:35, loser:"Kansas City Chiefs",      l:10, mvp:"Bart Starr, QB",                 location:"Memorial Coliseum, Los Angeles",            fact:"The first Super Bowl was not a sellout — about 30,000 seats were empty. Ticket prices topped out at $12." },
+  { num:2,  roman:"II",     year:1968, winner:"Green Bay Packers",    w:33, loser:"Oakland Raiders",         l:14, mvp:"Bart Starr, QB",                 location:"Miami Orange Bowl, Miami",                  fact:"Vince Lombardi's final game as Packers coach. He finished 2-0 in Super Bowls and never returned." },
+  { num:3,  roman:"III",    year:1969, winner:"New York Jets",        w:16, loser:"Baltimore Colts",         l:7,  mvp:"Joe Namath, QB",                 location:"Miami Orange Bowl, Miami",                  fact:"Joe Namath's famous guarantee: 'I guarantee a victory.' The Jets delivered one of the biggest upsets in football history." },
+  { num:4,  roman:"IV",     year:1970, winner:"Kansas City Chiefs",   w:23, loser:"Minnesota Vikings",       l:7,  mvp:"Len Dawson, QB",                 location:"Tulane Stadium, New Orleans",               fact:"Dawson was investigated by the FBI for alleged gambling ties the week of the game — then went out and won MVP." },
+  { num:5,  roman:"V",      year:1971, winner:"Baltimore Colts",      w:16, loser:"Dallas Cowboys",          l:13, mvp:"Chuck Howley, LB",               location:"Miami Orange Bowl, Miami",                  fact:"The only MVP in Super Bowl history to come from the losing team. Dallas linebacker Chuck Howley earned the honor despite the Cowboys' loss." },
+  { num:6,  roman:"VI",     year:1972, winner:"Dallas Cowboys",       w:24, loser:"Miami Dolphins",          l:3,  mvp:"Roger Staubach, QB",             location:"Tulane Stadium, New Orleans",               fact:"Roger Staubach became the first quarterback to win Super Bowl MVP after replacing a starter mid-season." },
+  { num:7,  roman:"VII",    year:1973, winner:"Miami Dolphins",       w:14, loser:"Washington Redskins",     l:7,  mvp:"Jake Scott, S",                  location:"Memorial Coliseum, Los Angeles",            fact:"The Dolphins capped the only perfect season in NFL history — 17-0 — with this victory." },
+  { num:8,  roman:"VIII",   year:1974, winner:"Miami Dolphins",       w:24, loser:"Minnesota Vikings",       l:7,  mvp:"Larry Csonka, RB",               location:"Rice Stadium, Houston",                     fact:"Larry Csonka rushed for 145 yards and 2 touchdowns, dominating the game on the ground for Miami's second straight title." },
+  { num:9,  roman:"IX",     year:1975, winner:"Pittsburgh Steelers",  w:16, loser:"Minnesota Vikings",       l:6,  mvp:"Franco Harris, RB",              location:"Tulane Stadium, New Orleans",               fact:"The Steelers' first Super Bowl title. Minnesota's offense was shut out until late — the Vikings scored only on a blocked punt safety." },
+  { num:10, roman:"X",      year:1976, winner:"Pittsburgh Steelers",  w:21, loser:"Dallas Cowboys",          l:17, mvp:"Lynn Swann, WR",                 location:"Miami Orange Bowl, Miami",                  fact:"Lynn Swann made four legendary catches for 161 yards, including a 64-yard TD. Considered one of the greatest individual Super Bowl performances ever." },
+  { num:11, roman:"XI",     year:1977, winner:"Oakland Raiders",      w:32, loser:"Minnesota Vikings",       l:14, mvp:"Fred Biletnikoff, WR",           location:"Rose Bowl, Pasadena",                       fact:"Minnesota's fourth Super Bowl loss in eight years. The Raiders were led by a fleet of castoffs and reclamation projects." },
+  { num:12, roman:"XII",    year:1978, winner:"Dallas Cowboys",       w:27, loser:"Denver Broncos",          l:10, mvp:"Harvey Martin & Randy White, DL", location:"Louisiana Superdome, New Orleans",          fact:"First time co-MVPs were awarded. The Cowboys' Doomsday Defense II forced eight turnovers and held Denver to 156 total yards." },
+  { num:13, roman:"XIII",   year:1979, winner:"Pittsburgh Steelers",  w:35, loser:"Dallas Cowboys",          l:31, mvp:"Terry Bradshaw, QB",             location:"Miami Orange Bowl, Miami",                  fact:"The first rematch in Super Bowl history. Bradshaw threw for 318 yards and 4 TDs in the highest-scoring Super Bowl to that point." },
+  { num:14, roman:"XIV",    year:1980, winner:"Pittsburgh Steelers",  w:31, loser:"Los Angeles Rams",        l:19, mvp:"Terry Bradshaw, QB",             location:"Rose Bowl, Pasadena",                       fact:"Pittsburgh's fourth Super Bowl title in six years. Bradshaw connected with John Stallworth on two critical second-half scores." },
+  { num:15, roman:"XV",     year:1981, winner:"Oakland Raiders",      w:27, loser:"Philadelphia Eagles",     l:10, mvp:"Jim Plunkett, QB",               location:"Louisiana Superdome, New Orleans",          fact:"Jim Plunkett, a starter no team wanted, had been released and nearly retired before leading the Raiders to the title as a 34-year-old." },
+  { num:16, roman:"XVI",    year:1982, winner:"San Francisco 49ers",  w:26, loser:"Cincinnati Bengals",      l:21, mvp:"Joe Montana, QB",                location:"Pontiac Silverdome, Pontiac MI",             fact:"The game that launched the 49ers dynasty. Montana drove 92 yards for the go-ahead score. The Bengals' final drive fell short at the 1-yard line." },
+  { num:17, roman:"XVII",   year:1983, winner:"Washington Redskins",  w:27, loser:"Miami Dolphins",          l:17, mvp:"John Riggins, RB",               location:"Rose Bowl, Pasadena",                       fact:"John Riggins rushed for 166 yards and broke a 4th-and-1 tackle for the decisive TD. He told President Reagan at a White House event, 'Loosen up Sandy baby, you're too tight.'" },
+  { num:18, roman:"XVIII",  year:1984, winner:"Los Angeles Raiders",  w:38, loser:"Washington Redskins",     l:9,  mvp:"Marcus Allen, RB",               location:"Tampa Stadium, Tampa",                      fact:"Marcus Allen's 74-yard touchdown run — reversing field and leaving defenders grabbing air — is considered the greatest run in Super Bowl history." },
+  { num:19, roman:"XIX",    year:1985, winner:"San Francisco 49ers",  w:38, loser:"Miami Dolphins",          l:16, mvp:"Joe Montana, QB",                location:"Stanford Stadium, Stanford",                fact:"The battle between Montana and Marino. Montana outdueled Marino — 331 yards, 3 TDs — in what was billed as the greatest QB matchup ever staged." },
+  { num:20, roman:"XX",     year:1986, winner:"Chicago Bears",        w:46, loser:"New England Patriots",    l:10, mvp:"Richard Dent, DE",               location:"Louisiana Superdome, New Orleans",          fact:"The '85 Bears delivered one of the most dominant seasons ever. New England ran just 11 times for 7 yards. Chicago was outright frightening." },
+  { num:21, roman:"XXI",    year:1987, winner:"New York Giants",      w:39, loser:"Denver Broncos",          l:20, mvp:"Phil Simms, QB",                 location:"Rose Bowl, Pasadena",                       fact:"Phil Simms completed 22 of 25 passes — an 88% completion rate that stood as the Super Bowl record for decades." },
+  { num:22, roman:"XXII",   year:1988, winner:"Washington Redskins",  w:42, loser:"Denver Broncos",          l:10, mvp:"Doug Williams, QB",              location:"Jack Murphy Stadium, San Diego",            fact:"Doug Williams became the first Black starting quarterback to play — and win — a Super Bowl. He threw 4 TD passes in a single record-setting second quarter." },
+  { num:23, roman:"XXIII",  year:1989, winner:"San Francisco 49ers",  w:20, loser:"Cincinnati Bengals",      l:16, mvp:"Jerry Rice, WR",                 location:"Miami Orange Bowl, Miami",                  fact:"Montana drove 92 yards in the final 3:20 and hit John Taylor for the winning TD with 34 seconds left. Considered among the greatest drives in NFL history." },
+  { num:24, roman:"XXIV",   year:1990, winner:"San Francisco 49ers",  w:55, loser:"Denver Broncos",          l:10, mvp:"Joe Montana, QB",                location:"Louisiana Superdome, New Orleans",          fact:"Montana was near-perfect: 22/29, 297 yards, 5 TDs. San Francisco's 45-point margin of victory remains a Super Bowl record." },
+  { num:25, roman:"XXV",    year:1991, winner:"New York Giants",      w:20, loser:"Buffalo Bills",           l:19, mvp:"Ottis Anderson, RB",             location:"Tampa Stadium, Tampa",                      fact:"Scott Norwood's 47-yard field goal sailed wide right with 8 seconds left. The Bills became the first team to lose the Super Bowl in consecutive years." },
+  { num:26, roman:"XXVI",   year:1992, winner:"Washington Redskins",  w:37, loser:"Buffalo Bills",           l:24, mvp:"Mark Rypien, QB",                location:"Metrodome, Minneapolis",                    fact:"Buffalo's second straight loss. The Redskins set a Super Bowl record with six touchdown passes and four rushing scores in a dominant performance." },
+  { num:27, roman:"XXVII",  year:1993, winner:"Dallas Cowboys",       w:52, loser:"Buffalo Bills",           l:17, mvp:"Troy Aikman, QB",                location:"Rose Bowl, Pasadena",                       fact:"The Bills became the first team to lose three straight Super Bowls. Dallas forced nine turnovers — Leon Lett nearly scored before Michael Jackson-ing the ball at the 1." },
+  { num:28, roman:"XXVIII", year:1994, winner:"Dallas Cowboys",       w:30, loser:"Buffalo Bills",           l:13, mvp:"Emmitt Smith, RB",               location:"Georgia Dome, Atlanta",                     fact:"The Bills became the only team in history to lose four straight Super Bowls. Emmitt Smith ran for 132 yards and 2 TDs to seal it." },
+  { num:29, roman:"XXIX",   year:1995, winner:"San Francisco 49ers",  w:49, loser:"San Diego Chargers",      l:26, mvp:"Steve Young, QB",                location:"Miami Orange Bowl, Miami",                  fact:"Steve Young finally escaped from Joe Montana's shadow, throwing a then-record 6 touchdown passes in a dominant win." },
+  { num:30, roman:"XXX",    year:1996, winner:"Dallas Cowboys",       w:27, loser:"Pittsburgh Steelers",     l:17, mvp:"Larry Brown, CB",                location:"Sun Devil Stadium, Tempe",                  fact:"Cornerback Larry Brown's two interceptions in the fourth quarter stole MVP honors from Emmitt Smith in Dallas's third title in four years." },
+  { num:31, roman:"XXXI",   year:1997, winner:"Green Bay Packers",    w:35, loser:"New England Patriots",    l:21, mvp:"Desmond Howard, KR",             location:"Louisiana Superdome, New Orleans",          fact:"Desmond Howard became the first special teams player to win Super Bowl MVP, returning a kickoff 99 yards for a touchdown to seal the game." },
+  { num:32, roman:"XXXII",  year:1998, winner:"Denver Broncos",       w:31, loser:"Green Bay Packers",       l:24, mvp:"Terrell Davis, RB",              location:"Qualcomm Stadium, San Diego",               fact:"John Elway finally won his first Super Bowl at age 37. Terrell Davis rushed for 157 yards despite playing through a migraine that blinded him in one eye." },
+  { num:33, roman:"XXXIII", year:1999, winner:"Denver Broncos",       w:34, loser:"Atlanta Falcons",         l:19, mvp:"John Elway, QB",                 location:"Pro Player Stadium, Miami",                 fact:"Elway's final game. He ran for a crucial first down and raised his fist after a hit — 'The Helicopter' — in what became his iconic farewell." },
+  { num:34, roman:"XXXIV",  year:2000, winner:"St. Louis Rams",       w:23, loser:"Tennessee Titans",        l:16, mvp:"Kurt Warner, QB",                location:"Georgia Dome, Atlanta",                     fact:"One yard short. Kevin Dyson was tackled by Mike Jones at the 1-yard line as time expired. The greatest finish in Super Bowl history." },
+  { num:35, roman:"XXXV",   year:2001, winner:"Baltimore Ravens",     w:34, loser:"New York Giants",         l:7,  mvp:"Ray Lewis, LB",                  location:"Raymond James Stadium, Tampa",              fact:"The Ravens' defense allowed just one offensive touchdown all postseason. Ray Lewis was the heartbeat of the most dominant defense of the modern era." },
+  { num:36, roman:"XXXVI",  year:2002, winner:"New England Patriots", w:20, loser:"St. Louis Rams",          l:17, mvp:"Tom Brady, QB",                  location:"Louisiana Superdome, New Orleans",          fact:"A dynasty was born. Adam Vinatieri's 48-yard field goal as time expired shocked the heavily favored Rams. Brady was introduced as a team, not individually." },
+  { num:37, roman:"XXXVII", year:2003, winner:"Tampa Bay Buccaneers", w:48, loser:"Oakland Raiders",         l:21, mvp:"Dexter Jackson, S",              location:"Qualcomm Stadium, San Diego",               fact:"Jon Gruden, traded away by Oakland the previous year, beat his former team. The Bucs' defense returned three interceptions for touchdowns." },
+  { num:38, roman:"XXXVIII",year:2004, winner:"New England Patriots", w:32, loser:"Carolina Panthers",       l:29, mvp:"Tom Brady, QB",                  location:"Reliant Stadium, Houston",                  fact:"A boring first half became a wild shootout in the second. Brady's second title, plus the first halftime wardrobe malfunction in TV history." },
+  { num:39, roman:"XXXIX",  year:2005, winner:"New England Patriots", w:24, loser:"Philadelphia Eagles",     l:21, mvp:"Deion Branch, WR",               location:"ALLTEL Stadium, Jacksonville",              fact:"Donovan McNabb threw 3 INTs and the Eagles inexplicably took their time driving late. Branch tied Jerry Rice's record with 11 catches." },
+  { num:40, roman:"XL",     year:2006, winner:"Pittsburgh Steelers",  w:21, loser:"Seattle Seahawks",        l:10, mvp:"Hines Ward, WR",                 location:"Ford Field, Detroit",                       fact:"Jerome Bettis, a Detroit native, played his final game in his hometown. Two controversial officiating calls still haunt Seahawks fans." },
+  { num:41, roman:"XLI",    year:2007, winner:"Indianapolis Colts",   w:29, loser:"Chicago Bears",           l:17, mvp:"Peyton Manning, QB",             location:"Dolphin Stadium, Miami",                    fact:"Devin Hester returned the opening kickoff for a touchdown — the first in Super Bowl history. Peyton Manning's first championship ended years of playoff criticism." },
+  { num:42, roman:"XLII",   year:2008, winner:"New York Giants",      w:17, loser:"New England Patriots",    l:14, mvp:"Eli Manning, QB",                location:"University of Phoenix Stadium, Glendale",   fact:"David Tyree's helmet catch. Manning escaped a certain sack and hurled the ball downfield to Tyree, who pinned it against his helmet. The perfect season died." },
+  { num:43, roman:"XLIII",  year:2009, winner:"Pittsburgh Steelers",  w:27, loser:"Arizona Cardinals",       l:23, mvp:"Santonio Holmes, WR",            location:"Raymond James Stadium, Tampa",              fact:"Santonio Holmes toe-tapped both feet in the back of the end zone with 35 seconds left for the winning score. One of the most clutch catches in NFL history." },
+  { num:44, roman:"XLIV",   year:2010, winner:"New Orleans Saints",   w:31, loser:"Indianapolis Colts",      l:17, mvp:"Drew Brees, QB",                 location:"Sun Life Stadium, Miami",                   fact:"Head coach Sean Payton's onside kick to open the second half shocked the nation. The Saints won their first ever Super Bowl for a hurricane-ravaged city." },
+  { num:45, roman:"XLV",    year:2011, winner:"Green Bay Packers",    w:31, loser:"Pittsburgh Steelers",     l:25, mvp:"Aaron Rodgers, QB",              location:"Cowboys Stadium, Arlington",                fact:"Aaron Rodgers won his first Super Bowl two years after replacing Brett Favre. He finished with 304 yards and 3 TDs, looking absolutely composed under pressure." },
+  { num:46, roman:"XLVI",   year:2012, winner:"New York Giants",      w:21, loser:"New England Patriots",    l:17, mvp:"Eli Manning, QB",                location:"Lucas Oil Stadium, Indianapolis",           fact:"Mario Manningham's sideline catch under pressure set up the game-winning drive. Eli beat Brady twice in four years and finished with 296 passing yards." },
+  { num:47, roman:"XLVII",  year:2013, winner:"Baltimore Ravens",     w:34, loser:"San Francisco 49ers",     l:31, mvp:"Joe Flacco, QB",                 location:"Mercedes-Benz Superdome, New Orleans",      fact:"A 34-minute power outage plunged the stadium into darkness at halftime. San Francisco nearly overcame a 22-point deficit in the second half." },
+  { num:48, roman:"XLVIII", year:2014, winner:"Seattle Seahawks",     w:43, loser:"Denver Broncos",          l:8,  mvp:"Malcolm Smith, LB",              location:"MetLife Stadium, East Rutherford NJ",       fact:"The most lopsided Super Bowl in 35 years. Seattle's Legion of Boom dismantled Peyton Manning's record-setting offense, forcing 8 turnovers." },
+  { num:49, roman:"XLIX",   year:2015, winner:"New England Patriots", w:28, loser:"Seattle Seahawks",        l:24, mvp:"Tom Brady, QB",                  location:"University of Phoenix Stadium, Glendale",   fact:"Malcolm Butler's goal-line interception with 26 seconds left is one of the most shocking plays in Super Bowl history. Seattle had the ball at the 1." },
+  { num:50, roman:"50",     year:2016, winner:"Denver Broncos",       w:24, loser:"Carolina Panthers",       l:10, mvp:"Von Miller, LB",                 location:"Levi's Stadium, Santa Clara",               fact:"The 50th Super Bowl was labeled just '50,' not 'L.' Von Miller stripped the ball twice from Cam Newton in a defensive masterpiece by Denver." },
+  { num:51, roman:"LI",     year:2017, winner:"New England Patriots", w:34, loser:"Atlanta Falcons",         l:28, mvp:"Tom Brady, QB",                  location:"NRG Stadium, Houston",                      fact:"The greatest comeback in Super Bowl history. New England trailed 28-3 in the third quarter and won in the first-ever overtime. Brady finished with 466 yards." },
+  { num:52, roman:"LII",    year:2018, winner:"Philadelphia Eagles",  w:41, loser:"New England Patriots",    l:33, mvp:"Nick Foles, QB",                 location:"U.S. Bank Stadium, Minneapolis",            fact:"Nick Foles caught a touchdown pass on the Philly Special trick play. The Eagles won their first Super Bowl. Brady threw for 505 yards in a losing effort." },
+  { num:53, roman:"LIII",   year:2019, winner:"New England Patriots", w:13, loser:"Los Angeles Rams",        l:3,  mvp:"Julian Edelman, WR",             location:"Mercedes-Benz Stadium, Atlanta",            fact:"The lowest-scoring Super Bowl ever. New England's defense was impenetrable. Sony Michel's 2-yard TD was the only touchdown of the game." },
+  { num:54, roman:"LIV",    year:2020, winner:"Kansas City Chiefs",   w:31, loser:"San Francisco 49ers",     l:20, mvp:"Patrick Mahomes, QB",             location:"Hard Rock Stadium, Miami",                  fact:"Kansas City trailed 20-10 in the 4th quarter. Mahomes engineered two TD drives in the final seven minutes to end the Chiefs' 50-year Super Bowl drought." },
+  { num:55, roman:"LV",     year:2021, winner:"Tampa Bay Buccaneers", w:31, loser:"Kansas City Chiefs",      l:9,  mvp:"Tom Brady, QB",                  location:"Raymond James Stadium, Tampa",              fact:"Brady's 7th Super Bowl title, his first with Tampa Bay. He became the only player to win the Super Bowl in his own stadium — and did it at age 43." },
+  { num:56, roman:"LVI",    year:2022, winner:"Los Angeles Rams",     w:23, loser:"Cincinnati Bengals",      l:20, mvp:"Cooper Kupp, WR",                location:"SoFi Stadium, Inglewood CA",                fact:"The Rams won the Super Bowl in their home stadium. Cooper Kupp caught the game-winning TD with 1:29 left. The Bengals' remarkable run ended three points short." },
+  { num:57, roman:"LVII",   year:2023, winner:"Kansas City Chiefs",   w:38, loser:"Philadelphia Eagles",     l:35, mvp:"Patrick Mahomes, QB",             location:"State Farm Stadium, Glendale",              fact:"Mahomes rushed for the go-ahead score on a hobbled ankle and finished with 182 passing yards. Harrison Butker's field goals were the margin of victory." },
+  { num:58, roman:"LVIII",  year:2024, winner:"Kansas City Chiefs",   w:25, loser:"San Francisco 49ers",     l:22, mvp:"Patrick Mahomes, QB",             location:"Allegiant Stadium, Las Vegas",              fact:"The first Super Bowl ever played in Las Vegas. Mahomes led a 13-play OT drive to win. Kansas City's third title in five years cemented the dynasty." },
+  { num:59, roman:"LIX",    year:2025, winner:"Philadelphia Eagles",  w:40, loser:"Kansas City Chiefs",      l:22, mvp:"Saquon Barkley, RB",             location:"Caesars Superdome, New Orleans",             fact:"Saquon Barkley ran for 57 yards and two touchdowns, and the Eagles dismantled the Chiefs' would-be three-peat bid with a dominant all-around performance." }
+];
+
+// ── State ─────────────────────────────────────────────────────────────────
+let currentView = 'grid';
+let currentTab  = 'games';
+let sortKey     = 'num';
+let sortAsc     = false; // newest first default
+let activeModal = null;
+let filtered    = [...SUPERBOWLS].sort((a,b) => b.num - a.num);
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function romanToNum(r) { return SUPERBOWLS.find(s => s.roman === r)?.num ?? 0; }
+
+function decades() {
+  const d = {};
+  SUPERBOWLS.forEach(s => {
+    const dec = Math.floor(s.year / 10) * 10 + 's';
+    if (!d[dec]) d[dec] = [];
+    d[dec].push(s);
+  });
+  return d;
+}
+
+function allTeams() {
+  const set = new Set();
+  SUPERBOWLS.forEach(s => { set.add(s.winner); set.add(s.loser); });
+  return [...set].sort();
+}
+
+function winCounts() {
+  const m = {};
+  SUPERBOWLS.forEach(s => { m[s.winner] = (m[s.winner] || 0) + 1; });
+  return m;
+}
+
+function appearanceCounts() {
+  const m = {};
+  SUPERBOWLS.forEach(s => {
+    m[s.winner] = (m[s.winner] || 0) + 1;
+    m[s.loser]  = (m[s.loser]  || 0) + 1;
+  });
+  return m;
+}
+
+function lastWinYear(team) {
+  const wins = SUPERBOWLS.filter(s => s.winner === team);
+  if (!wins.length) return null;
+  return Math.max(...wins.map(s => s.year));
+}
+
+// ── Populate Team Filter ───────────────────────────────────────────────────
+(function populateTeamFilter() {
+  const sel = document.getElementById('team-filter');
+  allTeams().forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    sel.appendChild(opt);
+  });
+})();
+
+// ── Filter / Sort ─────────────────────────────────────────────────────────
+function applyFilters() {
+  const q    = document.getElementById('search-input').value.trim().toLowerCase();
+  const dec  = document.getElementById('decade-filter').value;
+  const team = document.getElementById('team-filter').value;
+
+  filtered = SUPERBOWLS.filter(s => {
+    const decadeMatch = !dec || (Math.floor(s.year / 10) * 10 + 's') === dec;
+    const teamMatch   = !team || s.winner === team || s.loser === team;
+    const qMatch      = !q || [s.winner, s.loser, s.mvp, s.location, s.roman, String(s.year), s.fact]
+                              .some(v => v.toLowerCase().includes(q));
+    return decadeMatch && teamMatch && qMatch;
+  });
+
+  sortFiltered();
+  render();
+}
+
+function sortFiltered() {
+  filtered.sort((a, b) => {
+    let va = a[sortKey], vb = b[sortKey];
+    if (sortKey === 'roman') { va = a.num; vb = b.num; }
+    if (sortKey === 'score') { va = a.w; vb = b.w; }
+    if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return sortAsc ? va - vb : vb - va;
+  });
+}
+
+function sortTable(key) {
+  if (sortKey === key) { sortAsc = !sortAsc; }
+  else { sortKey = key; sortAsc = (key !== 'num' && key !== 'roman' && key !== 'year'); }
+  document.querySelectorAll('.sb-table thead th').forEach(th => th.classList.remove('sorted'));
+  const th = document.getElementById('th-' + key);
+  if (th) th.classList.add('sorted');
+  sortFiltered();
+  renderList();
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function render() {
+  if (currentView === 'grid') renderGrid();
+  else renderList();
+
+  const c = document.getElementById('results-count');
+  c.textContent = filtered.length + ' of ' + SUPERBOWLS.length;
+
+  document.getElementById('no-results').style.display = filtered.length ? 'none' : 'block';
+  document.getElementById('sb-grid').style.display = (filtered.length && currentView === 'grid') ? '' : 'none';
+}
+
+function renderGrid() {
+  const grid = document.getElementById('sb-grid');
+  if (!filtered.length) { grid.innerHTML = ''; return; }
+  grid.innerHTML = filtered.map((s, i) => cardHTML(s, i)).join('');
+}
+
+function cardHTML(s, delay) {
+  const margin = s.w - s.l;
+  return `
+  <div class="sb-card" style="animation-delay:${Math.min(delay*0.03, 0.4)}s" onclick="openModal(${s.num})">
+    <div class="sb-card-header">
+      <div>
+        <div class="sb-roman">SUPER BOWL ${s.roman}</div>
+        <div class="sb-year">${s.year}</div>
+      </div>
+      <div class="sb-location">${s.location}</div>
+    </div>
+    <div class="sb-card-body">
+      <div class="sb-matchup">
+        <div class="sb-team">
+          <div class="sb-team-name winner">${s.winner}</div>
+          <div class="sb-score winner">${s.w}</div>
+        </div>
+        <div class="sb-vs">vs</div>
+        <div class="sb-team">
+          <div class="sb-team-name loser">${s.loser}</div>
+          <div class="sb-score loser">${s.l}</div>
+        </div>
+      </div>
+      <div class="sb-meta">
+        <div class="sb-tag mvp">MVP: ${s.mvp}</div>
+        <div class="sb-tag">+${margin}</div>
+      </div>
+      <div class="sb-fact">${s.fact.slice(0, 110)}${s.fact.length > 110 ? '...' : ''}</div>
+    </div>
+    <div class="sb-card-footer">
+      <button class="btn-share" onclick="shareCard(event, ${s.num})">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <circle cx="8.5" cy="1.5" r="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="8.5" cy="9.5" r="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="1.5" cy="5.5" r="1.2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M2.6 6L7.5 8.8M2.6 5L7.5 2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        Share
+      </button>
+    </div>
+  </div>`;
+}
+
+function renderList() {
+  const tbody = document.getElementById('sb-tbody');
+  if (!filtered.length) { tbody.innerHTML = ''; return; }
+  tbody.innerHTML = filtered.map(s => `
+    <tr onclick="openModal(${s.num})">
+      <td class="td-roman">SB ${s.roman}</td>
+      <td>${s.year}</td>
+      <td class="td-winner">${s.winner}</td>
+      <td class="td-score">${s.w}–${s.l}</td>
+      <td>${s.loser}</td>
+      <td class="td-mvp">${s.mvp}</td>
+      <td style="font-size:11px; color:var(--text-mute)">${s.location}</td>
+    </tr>`).join('');
+}
+
+// ── View Toggle ────────────────────────────────────────────────────────────
+function setView(v) {
+  currentView = v;
+  document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('btn-list').classList.toggle('active', v === 'list');
+  document.getElementById('sb-grid').classList.toggle('hidden', v !== 'grid');
+  document.getElementById('sb-list').classList.toggle('active', v === 'list');
+  render();
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['games','timeline','leaderboard','droughts'][i] === tab);
+  });
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'timeline')     renderTimeline();
+  if (tab === 'leaderboard')  renderLeaderboard();
+  if (tab === 'droughts')     renderDroughts();
+}
+
+// ── Timeline ───────────────────────────────────────────────────────────────
+function renderTimeline() {
+  const wrap = document.getElementById('timeline-wrap');
+  const dec = decades();
+  const maxScore = Math.max(...SUPERBOWLS.map(s => s.w));
+
+  wrap.innerHTML = Object.keys(dec).sort().map(d => `
+    <div class="decade-block">
+      <div class="decade-label">${d}</div>
+      <div class="timeline-row">
+        ${dec[d].map(s => `
+          <div class="tl-item" onclick="openModal(${s.num})">
+            <div class="tl-roman">SB ${s.roman}</div>
+            <div class="tl-year">${s.year}</div>
+            <div class="tl-bar-wrap">
+              <div class="tl-bar-win" style="width:${Math.round((s.w/maxScore)*100)}%"></div>
+            </div>
+            <div class="tl-teams">${s.winner}</div>
+            <div class="tl-score-small">${s.w}–${s.l}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ── Leaderboard ────────────────────────────────────────────────────────────
+function renderLeaderboard() {
+  const wc  = winCounts();
+  const ac  = appearanceCounts();
+
+  const byWins = Object.entries(wc).sort((a,b) => b[1]-a[1]);
+  const byApps = Object.entries(ac).sort((a,b) => b[1]-a[1]);
+  const maxW   = byWins[0]?.[1] || 1;
+  const maxA   = byApps[0]?.[1] || 1;
+
+  function rankClass(i) {
+    return i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+  }
+
+  const winsHTML = `
+    <div class="lb-card">
+      <div class="lb-card-header"><div class="lb-card-title">Most Super Bowl Wins</div></div>
+      ${byWins.map(([ t, n ], i) => `
+        <div class="lb-item">
+          <div class="lb-rank ${rankClass(i)}">#${i+1}</div>
+          <div class="lb-team">${t}</div>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${Math.round((n/maxW)*100)}%"></div></div>
+          <div class="lb-count">${n}</div>
+        </div>`).join('')}
+    </div>`;
+
+  const appsHTML = `
+    <div class="lb-card">
+      <div class="lb-card-header"><div class="lb-card-title">Most Super Bowl Appearances</div></div>
+      ${byApps.map(([t, n], i) => `
+        <div class="lb-item">
+          <div class="lb-rank ${rankClass(i)}">#${i+1}</div>
+          <div class="lb-team">${t}</div>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${Math.round((n/maxA)*100)}%"></div></div>
+          <div class="lb-count">${n}</div>
+        </div>`).join('')}
+    </div>`;
+
+  document.getElementById('leaderboard-wrap').innerHTML = winsHTML + appsHTML;
+}
+
+// ── Droughts ───────────────────────────────────────────────────────────────
+function renderDroughts() {
+  const CURRENT_YEAR = 2025;
+  const wc = winCounts();
+  const ac = appearanceCounts();
+
+  // Teams with appearances but no wins
+  const neverWon = Object.keys(ac).filter(t => !wc[t]).sort();
+
+  // Teams with wins — sorted by years since last win (descending)
+  const withWins = Object.keys(wc).map(t => ({
+    team: t,
+    wins: wc[t],
+    lastWin: lastWinYear(t),
+    drought: CURRENT_YEAR - lastWinYear(t)
+  })).sort((a,b) => b.drought - a.drought);
+
+  // Teams that have never appeared
+  const allNFLTeams = [
+    'Arizona Cardinals','Atlanta Falcons','Baltimore Ravens','Buffalo Bills',
+    'Carolina Panthers','Chicago Bears','Cincinnati Bengals','Cleveland Browns',
+    'Dallas Cowboys','Denver Broncos','Detroit Lions','Green Bay Packers',
+    'Houston Texans','Indianapolis Colts','Jacksonville Jaguars','Kansas City Chiefs',
+    'Las Vegas Raiders','Los Angeles Chargers','Los Angeles Rams','Miami Dolphins',
+    'Minnesota Vikings','New England Patriots','New Orleans Saints','New York Giants',
+    'New York Jets','Philadelphia Eagles','Pittsburgh Steelers','San Francisco 49ers',
+    'Seattle Seahawks','Tampa Bay Buccaneers','Tennessee Titans','Washington Commanders'
+  ];
+  const appeared = new Set(Object.keys(ac));
+  const neverAppeared = allNFLTeams.filter(t => !appeared.has(t) && !appeared.has(t.replace('Washington Commanders','Washington Redskins')));
+
+  const maxDrought = withWins[0]?.drought || 1;
+
+  const winDroughtHTML = `
+    <div class="lb-card">
+      <div class="lb-card-header"><div class="lb-card-title">Longest Championship Droughts</div></div>
+      ${withWins.map((d, i) => `
+        <div class="lb-item">
+          <div class="lb-rank" style="color:var(--text-mute)">#${i+1}</div>
+          <div class="lb-team">${d.team}</div>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${Math.round((d.drought/maxDrought)*100)}%; background: linear-gradient(90deg, var(--red), rgba(255,45,85,0.4))"></div></div>
+          <div class="lb-drought-years">${d.lastWin} (${d.drought} yrs)</div>
+        </div>`).join('')}
+    </div>`;
+
+  const neverWonHTML = `
+    <div class="lb-card">
+      <div class="lb-card-header"><div class="lb-card-title">Never Won a Super Bowl</div></div>
+      ${neverWon.map(t => `
+        <div class="lb-item">
+          <div class="lb-team">${t}</div>
+          <div class="lb-never-label">${ac[t] || 0} app${(ac[t] || 0) !== 1 ? 's' : ''}</div>
+        </div>`).join('')}
+      ${neverAppeared.map(t => `
+        <div class="lb-item">
+          <div class="lb-team" style="color:var(--text-mute)">${t}</div>
+          <div class="lb-never-label">0 apps</div>
+        </div>`).join('')}
+    </div>`;
+
+  document.getElementById('droughts-wrap').innerHTML = winDroughtHTML + neverWonHTML;
+}
+
+// ── Modal ──────────────────────────────────────────────────────────────────
+function openModal(num) {
+  const s = SUPERBOWLS.find(x => x.num === num);
+  if (!s) return;
+  activeModal = s;
+
+  document.getElementById('modal-title').textContent = 'Super Bowl ' + s.roman + ' · ' + s.year;
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-score-block">
+      <div class="modal-team-block">
+        <div class="modal-team-name winner">${s.winner}</div>
+        <div class="modal-score-num winner">${s.w}</div>
+      </div>
+      <div class="modal-vs-divider">vs</div>
+      <div class="modal-team-block">
+        <div class="modal-team-name loser">${s.loser}</div>
+        <div class="modal-score-num loser">${s.l}</div>
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">MVP</div>
+      <div class="modal-field-value highlight">${s.mvp}</div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">Location</div>
+      <div class="modal-field-value">${s.location}</div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-field-label">Margin</div>
+      <div class="modal-field-value">${s.winner} won by ${s.w - s.l} point${s.w - s.l !== 1 ? 's' : ''}</div>
+    </div>
+    <div class="modal-fact-block">
+      <div class="modal-fact-label">Memorable Moment</div>
+      <div class="modal-fact-text">${s.fact}</div>
+    </div>`;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const shareBtn = document.getElementById('btn-share-modal');
+  shareBtn.textContent = '';
+  shareBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="10" cy="2" r="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="11" r="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="2" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M3.3 7.2L8.8 10.3M3.3 5.8L8.8 2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Share This Game`;
+  shareBtn.classList.remove('copied');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  activeModal = null;
+}
+
+function shareModal() {
+  if (!activeModal) return;
+  const s = activeModal;
+  const text = `Super Bowl ${s.roman} (${s.year}): ${s.winner} ${s.w}, ${s.loser} ${s.l}. MVP: ${s.mvp}. ${window.location.href.split('?')[0]}?sb=${s.num}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-share-modal');
+    btn.classList.add('copied');
+    btn.innerHTML = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="10" cy="2" r="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="10" cy="11" r="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="2" cy="6.5" r="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M3.3 7.2L8.8 10.3M3.3 5.8L8.8 2.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Share This Game`;
+    }, 2000);
+  }).catch(() => {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+  });
+}
+
+function shareCard(e, num) {
+  e.stopPropagation();
+  const s = SUPERBOWLS.find(x => x.num === num);
+  if (!s) return;
+  const btn = e.currentTarget;
+  const text = `Super Bowl ${s.roman} (${s.year}): ${s.winner} ${s.w}, ${s.loser} ${s.l}. MVP: ${s.mvp}. ainflgm.com/superbowl-history.html?sb=${s.num}`;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.textContent = 'Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="8.5" cy="1.5" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="9.5" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="1.5" cy="5.5" r="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M2.6 6L7.5 8.8M2.6 5L7.5 2.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg> Share`;
+    }, 2000);
+  }).catch(() => {});
+}
+
+// ── Deep link via ?sb= param ───────────────────────────────────────────────
+(function checkDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const sbNum  = parseInt(params.get('sb'), 10);
+  if (sbNum) setTimeout(() => openModal(sbNum), 400);
+})();
+
+// ── Keyboard ───────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModalDirect();
+});
+
+// ── Init ───────────────────────────────────────────────────────────────────
+(function init() {
+  sortKey = 'num';
+  sortAsc = false;
+  sortFiltered();
+  render();
+  // Trigger AdSense
+  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+})();
+</script>
+</body>
+</html>
