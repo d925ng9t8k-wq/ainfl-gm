@@ -1205,5 +1205,51 @@ footer {
 })();
 </script>
 
+<!-- ── Interactive Feedback Widget ──────────────────────────────────────── -->
+<div id="feedback-fab" style="position:fixed;bottom:24px;right:24px;z-index:9999;cursor:pointer;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#FB4F14,#e04412);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(251,79,20,0.4);transition:transform 0.2s" onclick="document.getElementById('feedback-modal').style.display='flex'" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">
+  <svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</div>
+
+<div id="feedback-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#111;border:1px solid rgba(251,79,20,0.3);border-radius:16px;padding:28px;max-width:460px;width:100%;position:relative">
+    <button onclick="document.getElementById('feedback-modal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#888;font-size:24px;cursor:pointer">&times;</button>
+    <h3 style="color:#fff;font-size:20px;font-weight:700;margin-bottom:4px">Talk to 9</h3>
+    <p style="color:#888;font-size:13px;margin-bottom:20px">Ask a question, give feedback, or request a deeper dive. 9 responds directly.</p>
+    <input id="fb-name" type="text" placeholder="Your name (optional)" style="width:100%;padding:12px 14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit">
+    <textarea id="fb-msg" rows="4" placeholder="What's on your mind?" style="width:100%;padding:12px 14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:14px;resize:none;outline:none;font-family:inherit;margin-bottom:14px"></textarea>
+    <button id="fb-send" onclick="sendFeedback()" style="width:100%;padding:14px;background:linear-gradient(135deg,#FB4F14,#e04412);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.02em">Send to 9</button>
+    <div id="fb-status" style="text-align:center;margin-top:10px;font-size:13px;color:#888"></div>
+  </div>
+</div>
+
+<script>
+async function sendFeedback() {
+  const name = document.getElementById('fb-name').value.trim() || 'Anonymous';
+  const msg = document.getElementById('fb-msg').value.trim();
+  const status = document.getElementById('fb-status');
+  const btn = document.getElementById('fb-send');
+  if (!msg) { status.textContent = 'Please type a message.'; status.style.color = '#FB4F14'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    const resp = await fetch('https://ainflgm.com/api/feedback', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name, message: msg, source: 'rapid-pitch'})
+    });
+    if (!resp.ok) throw new Error('Network error');
+    status.textContent = '9 got your message. Expect a response soon.';
+    status.style.color = '#4ade80';
+    document.getElementById('fb-msg').value = '';
+    document.getElementById('fb-name').value = '';
+    setTimeout(() => { document.getElementById('feedback-modal').style.display = 'none'; status.textContent = ''; }, 3000);
+  } catch(e) {
+    const mailLink = 'mailto:captain@ainflgm.com?subject=Rapid Pitch Feedback from ' + encodeURIComponent(name) + '&body=' + encodeURIComponent(msg);
+    window.location.href = mailLink;
+    status.textContent = 'Opening email as fallback...';
+    status.style.color = '#fbbf24';
+  }
+  btn.disabled = false; btn.textContent = 'Send to 9';
+}
+</script>
+
 </body>
 </html>
