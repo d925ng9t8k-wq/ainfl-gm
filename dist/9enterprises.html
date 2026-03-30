@@ -6,23 +6,23 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#050508">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="9enterprises">
+<meta name="apple-mobile-web-app-title" content="9 Universe">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
-<meta name="description" content="9enterprises — The world's first autonomous AI business partner. Not a chatbot. Not a tool. A partner that builds, trades, creates, and operates businesses alongside you.">
-<meta property="og:title" content="9enterprises — The World's First Autonomous AI Business Partner">
+<meta name="description" content="The 9 Enterprises Universe. Nine companies, one AI partner. The world's first autonomous AI business operation.">
+<meta property="og:title" content="The 9 Enterprises Universe">
 <meta property="og:description" content="Not a chatbot. Not a tool. A partner that builds, trades, creates, and operates businesses alongside you. 24/7. Autonomous. Elite.">
 <meta property="og:image" content="https://ainflgm.com/9e-og-preview.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ainflgm.com/9enterprises.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="9enterprises — Autonomous AI Business Partner">
-<meta name="twitter:description" content="Not a chatbot. A partner. 24/7 autonomous operation across 6 companies.">
+<meta name="twitter:title" content="The 9 Enterprises Universe">
+<meta name="twitter:description" content="Not a chatbot. A partner. 24/7 autonomous operation across 9 companies.">
 <meta name="twitter:image" content="https://ainflgm.com/9e-og-preview.jpg">
 <link rel="manifest" href="/9enterprises-manifest.json">
-<title>9enterprises — The World's First Autonomous AI Business Partner</title>
+<title>The 9 Enterprises Universe</title>
+<link rel="canonical" href="https://bengalsoracle.com/9enterprises.html">
 <style>
 /* ─── Reset & Base ─────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1192,6 +1192,74 @@ footer {
 
 /* ─── Selection ─────────────────────────────────────────────────────────── */
 ::selection { background: rgba(251,79,20,0.35); color: var(--white); }
+
+/* ─── Draft Room ─────────────────────────────────────────────────────────── */
+#draft-room {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 100px 0;
+}
+
+.draft-room-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .draft-room-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .draft-room-grid { grid-template-columns: 1fr; }
+}
+
+.draft-card {
+  background: transparent;
+  border: 1px dashed rgba(255,255,255,0.14);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.draft-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(251,79,20,0.35);
+  background: rgba(251,79,20,0.03);
+}
+
+.draft-card-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px dashed rgba(255,255,255,0.10);
+}
+
+.draft-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.draft-card-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.badge-eval {
+  background: rgba(139,92,246,0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(139,92,246,0.25);
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
 <script>
@@ -1207,10 +1275,11 @@ footer {
 <nav>
   <a href="#hero" class="nav-logo"><span>9</span>enterprises</a>
   <ul class="nav-links">
-    <li><a href="/dashboard.html">Dashboard</a></li>
+    <li><a href="/dashboard.html">The War Room</a></li>
+    <li><a href="/cockpit.html">9 Huddle</a></li>
     <li><a href="#products">Products</a></li>
+    <li><a href="#draft-room">Draft Room</a></li>
     <li><a href="#story">Story</a></li>
-    <li><a href="#pricing">Pricing</a></li>
   </ul>
   <a href="#pricing" class="nav-cta">Get Started</a>
   <a href="#pricing" class="nav-mobile">Get Started</a>
@@ -1226,7 +1295,7 @@ footer {
   <div class="hero-inner">
     <div class="hero-eyebrow">
       <span class="dot"></span>
-      Live &amp; Operating — Cincinnati, OH
+      The 9 Enterprises Universe
     </div>
 
     <img src="/9-brand.jpg" alt="9 Enterprises" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:24px;border:3px solid #FB4F14;box-shadow:0 0 30px rgba(251,79,20,0.4);">
@@ -1257,6 +1326,7 @@ footer {
 <section style="padding:40px 0 0;">
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:900px;margin:0 auto;">
+      <a href="/cockpit.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid rgba(251,79,20,0.35);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.7)'" onmouseout="this.style.borderColor='rgba(251,79,20,0.35)'">&#127918; 9 Huddle</a>
       <a href="/dashboard.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">&#128202; Dashboard</a>
       <a href="/architecture.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">&#127959; Architecture</a>
       <a href="/pitch.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">&#128196; Pitch Deck</a>
@@ -1281,7 +1351,7 @@ footer {
       <div class="stat-label">Messages handled autonomously</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">6</div>
+      <div class="stat-number">9</div>
       <div class="stat-label">Companies operating simultaneously</div>
     </div>
     <div class="stat-item">
@@ -1327,7 +1397,7 @@ footer {
         </p>
 
         <p class="reveal">
-          9enterprises is the living proof. Every product in the lineup is built, operated, and scaled by 9. Six companies. One AI. Zero days off.
+          9enterprises is the living proof. Every product in the lineup is built, operated, and scaled by 9. Nine companies. One AI. Zero days off.
         </p>
       </div>
 
@@ -1340,13 +1410,13 @@ footer {
   <div class="container">
     <div class="section-header">
       <div class="label reveal">The Franchise</div>
-      <h2 class="reveal">Eight companies. One AI partner.</h2>
+      <h2 class="reveal">Nine companies. One AI partner.</h2>
       <p class="reveal">Each product stands alone. Together, they're a flywheel — every user feeds the next product, every product feeds the algorithm.</p>
     </div>
 
     <div class="products-grid">
 
-      <div class="product-card reveal">
+      <a href="/freeagent-landing.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-purple">&#129302;</div>
         <div class="product-header">
           <div class="product-name">freeagent9</div>
@@ -1358,9 +1428,9 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">$29/mo</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="#products" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;" title="trader9 — Coming soon">
         <div class="product-icon icon-blue">&#128200;</div>
         <div class="product-header">
           <div class="product-name">trader9</div>
@@ -1372,9 +1442,9 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">$49/mo</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="#products" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;" title="x9 — Coming soon">
         <div class="product-icon icon-cyan">&#9889;</div>
         <div class="product-header">
           <div class="product-name">x9</div>
@@ -1386,9 +1456,9 @@ footer {
           <span class="product-tag">Content</span>
           <span class="product-tag">$39/mo</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="/aigm.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-green">&#127944;</div>
         <div class="product-header">
           <div class="product-name">PlayAiGM</div>
@@ -1400,9 +1470,9 @@ footer {
           <span class="product-tag">Community</span>
           <span class="product-tag">Free</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="/agent9.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-amber">&#127968;</div>
         <div class="product-header">
           <div class="product-name">agent9</div>
@@ -1414,9 +1484,9 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">Enterprise</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="/underwriter.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-rose">&#128196;</div>
         <div class="product-header">
           <div class="product-name">AI Underwriter</div>
@@ -1428,9 +1498,9 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">$149/mo</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="#draft-room" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;" title="AI Education — In development">
         <div class="product-icon icon-green">&#127891;</div>
         <div class="product-header">
           <div class="product-name">AI Education</div>
@@ -1442,9 +1512,9 @@ footer {
           <span class="product-tag">Education</span>
           <span class="product-tag">Top of Funnel</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="#draft-room" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;" title="Dropshipping — In development">
         <div class="product-icon icon-rose">&#128230;</div>
         <div class="product-header">
           <div class="product-name">Dropshipping</div>
@@ -1455,6 +1525,119 @@ footer {
           <span class="product-tag">E-Commerce</span>
           <span class="product-tag">Automation</span>
           <span class="product-tag">TBD</span>
+        </div>
+      </a>
+
+      <a href="/jules-family.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
+        <div class="product-icon icon-green">&#128106;</div>
+        <div class="product-header">
+          <div class="product-name">Jules</div>
+          <span class="badge badge-pilot">Pilot</span>
+        </div>
+        <p class="product-desc">AI family planner and personal assistant for moms. Scheduling, meal planning, activity coordination, and household management. Standalone product + freeagent9 feature.</p>
+        <div class="product-tags">
+          <span class="product-tag">Family</span>
+          <span class="product-tag">AI Assistant</span>
+          <span class="product-tag">$19/mo</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── DRAFT ROOM ─────────────────────────────────────────────────────────── -->
+<section id="draft-room">
+  <div class="container">
+    <div class="section-header">
+      <div class="label reveal">Draft Room</div>
+      <h2 class="reveal">Concepts in evaluation.</h2>
+      <p class="reveal">Promising plays that haven't been called yet. These move to the active roster when the time is right.</p>
+    </div>
+
+    <div class="draft-room-grid">
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#128200;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Trading Strategy Marketplace</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">A marketplace for proven algorithmic trading strategies. Traders publish, subscribers deploy. trader9 spinoff with recurring revenue model.</p>
+        <div class="product-tags">
+          <span class="product-tag">FinTech</span>
+          <span class="product-tag">Marketplace</span>
+          <span class="product-tag">trader9</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#128221;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Prompt Scripts Marketplace</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">Buy, sell, and deploy proven AI prompt workflows. Engineers and creators monetize their best prompts. Community-powered quality signal.</p>
+        <div class="product-tags">
+          <span class="product-tag">AI Tools</span>
+          <span class="product-tag">Marketplace</span>
+          <span class="product-tag">Community</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#127891;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">AI Education Platform</div>
+          <span class="badge badge-eval">Naming TBD</span>
+        </div>
+        <p class="draft-card-desc">Standalone education product. Teach everyday people how AI can be a trusted partner. Working names: LearnWith9, 9Academy, NineIQ, Pathway9.</p>
+        <div class="product-tags">
+          <span class="product-tag">Education</span>
+          <span class="product-tag">Top of Funnel</span>
+          <span class="product-tag">TBD</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#128176;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Subscription Bundle</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">Cross-product discount bundle. Unlock multiple 9 Enterprises products at a reduced rate. Increases retention and reduces churn across the portfolio.</p>
+        <div class="product-tags">
+          <span class="product-tag">Bundling</span>
+          <span class="product-tag">Retention</span>
+          <span class="product-tag">Cross-sell</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#127936;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">NBA / MLB Expansion</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">Expand the PlayAiGM franchise into basketball and baseball. Same AI GM simulator model applied to two of the top 3 sports leagues in North America.</p>
+        <div class="product-tags">
+          <span class="product-tag">Sports</span>
+          <span class="product-tag">PlayAiGM</span>
+          <span class="product-tag">Expansion</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#129302;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Multi-AI Orchestration</div>
+          <span class="badge badge-eval">Concept</span>
+        </div>
+        <p class="draft-card-desc">Multiple AI platforms co-managing companies or projects. One AI owns the project, accesses others for best-case usage. "AI Think Tank" model — Claude, Grok, GPT collaborating under 9's orchestration for superior decision-making.</p>
+        <div class="product-tags">
+          <span class="product-tag">AI Infrastructure</span>
+          <span class="product-tag">Multi-Platform</span>
+          <span class="product-tag">Orchestration</span>
         </div>
       </div>
 
@@ -1477,7 +1660,7 @@ footer {
         <div class="number-desc">Messages handled autonomously across every channel</div>
       </div>
       <div class="number-card reveal">
-        <div class="number-value">8</div>
+        <div class="number-value">9</div>
         <div class="number-desc">Companies launched and actively operating</div>
       </div>
       <div class="number-card reveal">
@@ -1705,6 +1888,30 @@ footer {
 <!-- Share button for PWA home screen -->
 <button id="share-btn" aria-label="Share" style="display:none;position:fixed;bottom:24px;right:24px;z-index:200;width:52px;height:52px;border-radius:50%;border:none;background:var(--purple);color:#fff;font-size:22px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(251,79,20,0.4);transition:transform 0.15s,box-shadow 0.15s;" ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">&#x1F4E4;</button>
 
+<!-- ─── Video Pitch ──────────────────────────────────────────────────────── -->
+<section id="video-pitch" style="padding:80px 32px;text-align:center;">
+  <div class="container" style="max-width:900px;margin:0 auto;">
+    <div class="label" style="margin-bottom:16px;">The Hitchhiker's Guide to AI</div>
+    <h2 style="font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-0.02em;">AI Isn't Complicated. It Just Needs a Guide.</h2>
+    <p style="font-size:16px;color:var(--text-dim);margin-bottom:32px;max-width:600px;margin-left:auto;margin-right:auto;">The education-first resource for everyone who wants to use AI as a trusted partner — not a science project.</p>
+    <div style="position:relative;width:100%;padding-top:177.78%;background:var(--bg-2);border-radius:16px;overflow:hidden;border:1px solid var(--border-glow);box-shadow:var(--shadow-glow);max-width:420px;margin:0 auto;">
+      <iframe src="https://app.heygen.com/embeds/51f712dbee214b31aa9cd286876e6162" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Video Pitch 2 (Dropshipping) ──────────────────────────────────────── -->
+<section id="video-dropshipping" style="padding:80px 32px;text-align:center;background:var(--bg-2);">
+  <div class="container" style="max-width:900px;margin:0 auto;">
+    <div class="label" style="margin-bottom:16px;">Proving Grounds</div>
+    <h2 style="font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-0.02em;">E-Commerce That Runs Itself.</h2>
+    <p style="font-size:16px;color:var(--text-dim);margin-bottom:32px;max-width:600px;margin-left:auto;margin-right:auto;">A fully autonomous dropshipping operation — no warehouse, no employees. Just AI, running the business 24/7.</p>
+    <div style="position:relative;width:100%;padding-top:177.78%;background:var(--bg-2);border-radius:16px;overflow:hidden;border:1px solid var(--border-glow);box-shadow:var(--shadow-glow);max-width:420px;margin:0 auto;">
+      <iframe src="https://app.heygen.com/embeds/cc1368ee7674427a800c9453baec5aa8" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
 <!-- ─── FOOTER ────────────────────────────────────────────────────────────── -->
 <footer>
   <div class="container">
@@ -1713,7 +1920,7 @@ footer {
       <div>
         <div class="footer-brand-name"><span>9</span>enterprises</div>
         <p class="footer-brand-desc">
-          The world's first autonomous AI business partner. Eight companies. One AI. Cincinnati, OH.
+          The world's first autonomous AI business partner. Nine companies. One AI. Cincinnati, OH.
         </p>
         <div class="footer-socials">
           <a href="#" class="social-link" aria-label="X / Twitter">&#120143;</a>
@@ -1733,16 +1940,20 @@ footer {
           <li><a href="/underwriter.html">AI Underwriter</a></li>
           <li><a href="/9enterprises.html#products">AI Education</a></li>
           <li><a href="/9enterprises.html#products">Dropshipping</a></li>
+          <li><a href="/9enterprises.html#products">Jules</a></li>
         </ul>
       </div>
 
       <div>
         <div class="footer-col-title">Company</div>
         <ul class="footer-links">
+          <li><a href="/cockpit.html">9 Huddle</a></li>
+          <li><a href="#draft-room">Draft Room</a></li>
           <li><a href="#story">Story</a></li>
           <li><a href="#team">Team</a></li>
           <li><a href="#business">Enterprise</a></li>
           <li><a href="#pricing">Pricing</a></li>
+          <li><a href="/architecture.html">Architecture</a></li>
         </ul>
       </div>
 
@@ -1900,6 +2111,53 @@ footer {
     });
   }
 })();
+</script>
+
+<!-- ── Interactive Feedback Widget ──────────────────────────────────────── -->
+<div id="feedback-fab" style="position:fixed;bottom:24px;right:24px;z-index:9999;cursor:pointer;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#FB4F14,#e04412);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(251,79,20,0.4);transition:transform 0.2s" onclick="document.getElementById('feedback-modal').style.display='flex'" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">
+  <svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</div>
+
+<div id="feedback-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#111;border:1px solid rgba(251,79,20,0.3);border-radius:16px;padding:28px;max-width:460px;width:100%;position:relative">
+    <button onclick="document.getElementById('feedback-modal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#888;font-size:24px;cursor:pointer">&times;</button>
+    <h3 style="color:#fff;font-size:20px;font-weight:700;margin-bottom:4px">Talk to 9</h3>
+    <p style="color:#888;font-size:13px;margin-bottom:20px">Ask a question, give feedback, or request a deeper dive on anything in the Universe. 9 responds directly.</p>
+    <input id="fb-name" type="text" placeholder="Your name (optional)" style="width:100%;padding:12px 14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit">
+    <textarea id="fb-msg" rows="4" placeholder="What's on your mind?" style="width:100%;padding:12px 14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:14px;resize:none;outline:none;font-family:inherit;margin-bottom:14px"></textarea>
+    <button id="fb-send" onclick="sendFeedback()" style="width:100%;padding:14px;background:linear-gradient(135deg,#FB4F14,#e04412);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.02em">Send to 9</button>
+    <div id="fb-status" style="text-align:center;margin-top:10px;font-size:13px;color:#888"></div>
+  </div>
+</div>
+
+<script>
+async function sendFeedback() {
+  const name = document.getElementById('fb-name').value.trim() || 'Anonymous';
+  const msg = document.getElementById('fb-msg').value.trim();
+  const status = document.getElementById('fb-status');
+  const btn = document.getElementById('fb-send');
+  if (!msg) { status.textContent = 'Please type a message.'; status.style.color = '#FB4F14'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    const resp = await fetch('https://ainflgm.com/api/feedback', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name, message: msg, source: '9enterprises-universe'})
+    });
+    if (!resp.ok) throw new Error('Network error');
+    status.textContent = '9 got your message. Expect a response soon.';
+    status.style.color = '#4ade80';
+    document.getElementById('fb-msg').value = '';
+    document.getElementById('fb-name').value = '';
+    setTimeout(() => { document.getElementById('feedback-modal').style.display = 'none'; status.textContent = ''; }, 3000);
+  } catch(e) {
+    // Fallback: email
+    const mailLink = 'mailto:captain@ainflgm.com?subject=Universe Feedback from ' + encodeURIComponent(name) + '&body=' + encodeURIComponent(msg);
+    window.location.href = mailLink;
+    status.textContent = 'Opening email as fallback...';
+    status.style.color = '#fbbf24';
+  }
+  btn.disabled = false; btn.textContent = 'Send to 9';
+}
 </script>
 </body>
 </html>

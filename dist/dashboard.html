@@ -6,13 +6,12 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="9enterprises">
+<meta name="apple-mobile-web-app-title" content="9 War Room">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
 <meta name="theme-color" content="#0a0a0a">
-<title>9enterprises — Command Center v6</title>
+<title>9 War Room</title>
 <link rel="manifest" href="dashboard-manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -755,7 +754,7 @@ body::after{
     <div class="logo-9">9</div>
     <div class="topbar-brand">
       <div class="topbar-title">ENTERPRISES</div>
-      <div class="topbar-sub">COMMAND CENTER v6 &nbsp;|&nbsp; SOTU MAR 28 2026</div>
+      <div class="topbar-sub">THE WAR ROOM &nbsp;|&nbsp; OPERATIONAL COMMAND</div>
     </div>
   </div>
   <div class="topbar-right">
@@ -795,7 +794,7 @@ body::after{
 <!-- ===================== NAV TABS ===================== -->
 <nav class="nav-tabs">
   <button class="nav-tab active" onclick="showPage('overview',this)">Overview</button>
-  <button class="nav-tab" onclick="showPage('cockpit',this)">&#x2B21; Cockpit</button>
+  <button class="nav-tab" onclick="showPage('cockpit',this)">&#127918; The Huddle</button>
   <button class="nav-tab" onclick="showPage('companies',this)">Companies</button>
   <button class="nav-tab" onclick="showPage('portfolio',this)">Portfolio</button>
   <button class="nav-tab" onclick="showPage('team',this)">Team</button>
@@ -1154,7 +1153,7 @@ body::after{
   </div>
 </section>
 
-<!-- ===================== PAGE: COCKPIT ===================== -->
+<!-- ===================== PAGE: THE HUDDLE ===================== -->
 <section class="page" id="page-cockpit">
 
   <!-- ===== ROW 1: GAUGES ===== -->
@@ -2951,6 +2950,76 @@ function initCockpitCharts(){
 // Cost counter ticks every second
 setInterval(updateCostCounter, 1000);
 updateCostCounter();
+
+// ===================== PIN GATE (OWNER MODE) =====================
+const WR_OWNER_PIN = '3333';
+const WR_AUTH_KEY = '9e_warroom_auth';
+
+function wrCheckOwnerAuth() {
+  return sessionStorage.getItem(WR_AUTH_KEY) === 'authenticated';
+}
+
+function wrApplyAccessMode(isOwner) {
+  const ownerPanels = document.querySelectorAll('.owner-only');
+  ownerPanels.forEach(el => el.style.display = isOwner ? '' : 'none');
+  document.body.classList.toggle('owner-mode', isOwner);
+  document.body.classList.toggle('guest-mode', !isOwner);
+}
+
+function wrShowPinOverlay() {
+  const overlay = document.createElement('div');
+  overlay.id = 'wr-pin-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(12px);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML = `
+    <div style="background:#111111;border:1px solid rgba(251,79,20,0.35);border-radius:16px;padding:40px 32px;max-width:380px;width:90%;text-align:center;">
+      <div style="font-size:40px;margin-bottom:16px;">&#127916;</div>
+      <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;">9 War Room</div>
+      <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:28px;">Enter PIN for Owner access, or continue as Guest</div>
+      <input id="wr-pin-input" type="password" maxlength="10" placeholder="Enter PIN" style="width:100%;padding:14px 16px;background:#1a1a1a;border:1px solid rgba(251,79,20,0.3);border-radius:10px;color:#fff;font-size:16px;text-align:center;letter-spacing:6px;outline:none;margin-bottom:12px;">
+      <div id="wr-pin-error" style="color:#ff3b5c;font-size:12px;margin-bottom:12px;display:none;">Incorrect PIN</div>
+      <div style="display:flex;gap:10px;">
+        <button id="wr-pin-guest-btn" style="flex:1;padding:13px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-size:14px;font-weight:600;cursor:pointer;">Guest Access</button>
+        <button id="wr-pin-submit-btn" style="flex:1;padding:13px;background:#FB4F14;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Owner Access</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  const pinInput = document.getElementById('wr-pin-input');
+  const pinError = document.getElementById('wr-pin-error');
+
+  document.getElementById('wr-pin-submit-btn').onclick = function() {
+    if (pinInput.value === WR_OWNER_PIN) {
+      sessionStorage.setItem(WR_AUTH_KEY, 'authenticated');
+      overlay.remove();
+      wrApplyAccessMode(true);
+    } else {
+      pinError.style.display = 'block';
+      pinInput.value = '';
+      pinInput.focus();
+      setTimeout(() => { pinError.style.display = 'none'; }, 2000);
+    }
+  };
+
+  document.getElementById('wr-pin-guest-btn').onclick = function() {
+    overlay.remove();
+    wrApplyAccessMode(false);
+  };
+
+  pinInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('wr-pin-submit-btn').click();
+  });
+
+  pinInput.focus();
+}
+
+// Show pin gate on load
+(function() {
+  if (wrCheckOwnerAuth()) {
+    wrApplyAccessMode(true);
+  } else {
+    wrShowPinOverlay();
+  }
+})();
 </script>
 </body>
 </html>
