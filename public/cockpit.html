@@ -869,6 +869,192 @@ body::after {
   .company-card { padding: 12px; }
   .tg-messages { min-height: 180px; max-height: 240px; }
 }
+
+/* ===================== PORTFOLIO SECTION ===================== */
+.portfolio-section {
+  grid-column: 1 / -1;
+  grid-row: auto;
+}
+.portfolio-overview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+@media (max-width: 900px) {
+  .portfolio-overview { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .portfolio-overview { grid-template-columns: 1fr 1fr; }
+}
+.pf-kpi {
+  background: var(--bg3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.pf-kpi::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--kpi-accent, var(--gold));
+  opacity: 0.7;
+}
+.pf-kpi:hover { border-color: rgba(251,79,20,0.18); }
+.pf-kpi-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.pf-kpi-value {
+  font-family: var(--font-display); font-size: 26px; letter-spacing: 1px;
+  color: var(--text); line-height: 1;
+}
+.pf-kpi-sub {
+  font-family: var(--font-mono); font-size: 10px; margin-top: 4px;
+  color: var(--muted);
+}
+.pf-kpi-sub.up   { color: var(--green); }
+.pf-kpi-sub.down { color: var(--red); }
+
+.portfolio-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .portfolio-body { grid-template-columns: 1fr; }
+}
+
+/* Data tables */
+.pf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.pf-table th {
+  text-align: left;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-weight: 500;
+}
+.pf-table th:not(:first-child) { text-align: right; }
+.pf-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  vertical-align: middle;
+}
+.pf-table td:not(:first-child) { text-align: right; }
+.pf-table tr:last-child td { border-bottom: none; }
+.pf-table tr:hover td { background: rgba(255,255,255,0.025); }
+.pf-table .td-ticker {
+  color: var(--gold2); font-weight: 600; letter-spacing: 0.5px;
+}
+.pf-table .td-total {
+  font-weight: 700; color: var(--text);
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.pf-table .td-muted { color: var(--muted); font-size: 10px; }
+.td-up   { color: var(--green); }
+.td-down { color: var(--red); }
+
+/* Real estate cards */
+.pf-re-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 0;
+}
+@media (max-width: 600px) {
+  .pf-re-grid { grid-template-columns: 1fr; }
+}
+.pf-re-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+}
+.pf-re-addr {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  color: var(--text); margin-bottom: 4px;
+}
+.pf-re-tag {
+  font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+}
+.pf-re-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-family: var(--font-mono); font-size: 11px;
+}
+.pf-re-row:last-child { border-bottom: none; }
+.pf-re-row-label { color: var(--muted); }
+.pf-re-row-val   { color: var(--text); font-weight: 500; }
+.pf-re-row-val.total-val { color: var(--red); }
+
+/* Trader9 status card */
+.pf-trader-card {
+  background: rgba(251,79,20,0.04);
+  border: 1px solid rgba(251,79,20,0.18);
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pf-trader-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pf-trader-title {
+  font-family: var(--font-display); font-size: 18px; letter-spacing: 2px;
+  color: var(--gold);
+}
+.pf-trader-rows {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.pf-trader-row {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 11px;
+}
+.pf-trader-row-label { color: var(--muted); }
+.pf-trader-row-val   { color: var(--text); font-weight: 500; }
+.pf-trader-row-val.live { color: var(--green); }
+
+/* Aggression bar */
+.pf-aggression {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pf-aggression-label {
+  font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px;
+  display: flex; justify-content: space-between;
+}
+.pf-aggression-bar {
+  height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden;
+}
+.pf-aggression-fill {
+  height: 100%; width: 80%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--red));
+  box-shadow: 0 0 6px rgba(251,79,20,0.5);
+}
+
+.portfolio-bottom {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+@media (max-width: 900px) {
+  .portfolio-bottom { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -1222,6 +1408,299 @@ body::after {
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- PORTFOLIO — full width, owner only, PIN protected -->
+  <section class="portfolio-section owner-only fade-up" style="animation-delay:0.3s">
+    <div class="section-label"><span class="accent">05</span> Portfolio — Investment Dashboard</div>
+
+    <!-- KPI Row -->
+    <div class="portfolio-overview">
+      <div class="pf-kpi" style="--kpi-accent:var(--gold)">
+        <div class="pf-kpi-label">Total Investments</div>
+        <div class="pf-kpi-value">$981K+</div>
+        <div class="pf-kpi-sub">All accounts combined</div>
+      </div>
+      <div class="pf-kpi" style="--kpi-accent:var(--red)">
+        <div class="pf-kpi-label">Mortgage Debt</div>
+        <div class="pf-kpi-value">$903K</div>
+        <div class="pf-kpi-sub">2 properties</div>
+      </div>
+      <div class="pf-kpi" style="--kpi-accent:var(--green)">
+        <div class="pf-kpi-label">Est. Net Worth</div>
+        <div class="pf-kpi-value">~$78K+</div>
+        <div class="pf-kpi-sub">Investments minus debt</div>
+      </div>
+      <div class="pf-kpi" style="--kpi-accent:var(--red)">
+        <div class="pf-kpi-label">Today's Change</div>
+        <div class="pf-kpi-value" style="color:var(--red)">-$4,069</div>
+        <div class="pf-kpi-sub down">-0.61% (Chase brokerage)</div>
+      </div>
+    </div>
+
+    <!-- Accounts + Holdings row -->
+    <div class="portfolio-body">
+
+      <!-- Accounts Summary -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Accounts</div>
+          <div class="chip">6 ACCOUNTS</div>
+        </div>
+        <div class="panel-body" style="padding:0 0 4px;">
+          <table class="pf-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Institution</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-ticker">401k</td>
+                <td class="td-muted">Fidelity Freedom 2040</td>
+                <td>$259,294</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">Brokerage</td>
+                <td class="td-muted">Chase / JP Morgan</td>
+                <td>$665,029</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">Crypto</td>
+                <td class="td-muted">Coinbase — BTC</td>
+                <td>$32,814</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">Brokerage</td>
+                <td class="td-muted">Fidelity / Other</td>
+                <td>$23,805+</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">Trader9</td>
+                <td class="td-muted">Alpaca — Live</td>
+                <td>$333</td>
+              </tr>
+              <tr>
+                <td class="td-ticker td-total">Total</td>
+                <td class="td-total td-muted">All accounts</td>
+                <td class="td-total" style="color:var(--gold2)">~$981,275+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Top Holdings -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Top Holdings</div>
+          <div class="chip">CHASE — TOP 10</div>
+        </div>
+        <div class="panel-body" style="padding:0 0 4px;">
+          <table class="pf-table">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Value</th>
+                <th>Day G/L</th>
+                <th>Total G/L</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-ticker">IBIT</td>
+                <td>$146,764</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-4.85%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">TSLA</td>
+                <td>$128,967</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-18.09%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">JPMPD</td>
+                <td>$100,000</td>
+                <td class="td-muted">--</td>
+                <td class="td-muted">0.00%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">IAU</td>
+                <td>$59,706</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-0.96%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">SLV</td>
+                <td>$57,168</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-20.17%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">CPER</td>
+                <td>$53,979</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-9.97%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">NVDA</td>
+                <td>$22,793</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-11.75%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">ORCL</td>
+                <td>$17,350</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-13.25%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">INTC</td>
+                <td>$17,300</td>
+                <td class="td-down">--</td>
+                <td class="td-down">-11.84%</td>
+              </tr>
+              <tr>
+                <td class="td-ticker">PLTR</td>
+                <td>$10,591</td>
+                <td class="td-up">--</td>
+                <td class="td-up">+1.25%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /portfolio-body -->
+
+    <!-- Real Estate + Trader9 row -->
+    <div class="portfolio-bottom">
+
+      <!-- Real Estate -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Real Estate</div>
+          <div class="chip">2 PROPERTIES</div>
+        </div>
+        <div class="panel-body" style="padding-top:14px;">
+          <div class="pf-re-grid">
+
+            <div class="pf-re-card">
+              <div class="pf-re-addr">655 Nordyke Rd</div>
+              <div class="pf-re-tag">Primary Residence &mdash; Cincinnati</div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Mortgage (Third Federal)</span>
+                <span class="pf-re-row-val">$494,258</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">HELOC (Third Federal)</span>
+                <span class="pf-re-row-val">$198,826</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Rate (mortgage)</span>
+                <span class="pf-re-row-val">4.74% fixed</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Total Debt</span>
+                <span class="pf-re-row-val total-val">$693,083</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Zillow Value</span>
+                <span class="pf-re-row-val" style="color:var(--muted);">TBD</span>
+              </div>
+            </div>
+
+            <div class="pf-re-card">
+              <div class="pf-re-addr">3059 Jenny Lind Rd</div>
+              <div class="pf-re-tag">Investment Property &mdash; Cincinnati</div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Mortgage (Freedom)</span>
+                <span class="pf-re-row-val">$210,306</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Rate</span>
+                <span class="pf-re-row-val">3.38% fixed</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Account</span>
+                <span class="pf-re-row-val td-muted">&bull;&bull;&bull;9567</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Total Debt</span>
+                <span class="pf-re-row-val total-val">$210,306</span>
+              </div>
+              <div class="pf-re-row">
+                <span class="pf-re-row-label">Zillow Value</span>
+                <span class="pf-re-row-val" style="color:var(--muted);">TBD</span>
+              </div>
+            </div>
+
+          </div><!-- /pf-re-grid -->
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Total Mortgage Debt</span>
+            <span style="font-family:var(--font-mono);font-size:14px;color:var(--red);font-weight:600;">$903,389</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trader9 Status -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Trader 9</div>
+          <div class="chip status-active">LIVE</div>
+        </div>
+        <div class="panel-body" style="padding-top:14px;">
+          <div class="pf-trader-card">
+            <div class="pf-trader-header">
+              <div class="pf-trader-title">TRADER9</div>
+              <div class="live-badge">
+                <div class="live-dot"></div>
+                ACTIVE
+              </div>
+            </div>
+            <div class="pf-trader-rows">
+              <div class="pf-trader-row">
+                <span class="pf-trader-row-label">Platform</span>
+                <span class="pf-trader-row-val">Alpaca</span>
+              </div>
+              <div class="pf-trader-row">
+                <span class="pf-trader-row-label">Balance</span>
+                <span class="pf-trader-row-val" style="color:var(--gold2)">$333.00</span>
+              </div>
+              <div class="pf-trader-row">
+                <span class="pf-trader-row-label">Status</span>
+                <span class="pf-trader-row-val live">LIVE — Ready to Trade</span>
+              </div>
+              <div class="pf-trader-row">
+                <span class="pf-trader-row-label">Strategy Model</span>
+                <span class="pf-trader-row-val">3-Strategy Blend</span>
+              </div>
+              <div class="pf-trader-row">
+                <span class="pf-trader-row-label">Funded</span>
+                <span class="pf-trader-row-val td-muted">Mar 30, 2026</span>
+              </div>
+            </div>
+            <div class="pf-aggression">
+              <div class="pf-aggression-label">
+                <span>Aggression Level</span>
+                <span style="color:var(--gold2)">8 / 10</span>
+              </div>
+              <div class="pf-aggression-bar">
+                <div class="pf-aggression-fill"></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <a href="https://app.alpaca.markets" target="_blank" class="ga-open-btn">Open Alpaca Dashboard &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /portfolio-bottom -->
+
   </section>
 
 </main>
