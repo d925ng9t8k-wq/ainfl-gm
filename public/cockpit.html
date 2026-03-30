@@ -5,8 +5,9 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
-<meta name="apple-mobile-web-app-title" content="The Huddle">
+<meta name="apple-mobile-web-app-title" content="9 Huddle">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<link rel="manifest" href="/huddle-manifest.json">
 <title>9 Enterprises — The Huddle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,21 +17,23 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg:        #0a0a0a;
-  --bg2:       #111114;
-  --bg3:       #161618;
-  --bg4:       #1a1a1e;
-  --panel:     #12121a;
+  --bg2:       #111111;
+  --bg3:       #161616;
+  --bg4:       #1a1a1a;
+  --panel:     #111111;
   --border:    rgba(255,255,255,0.07);
-  --border-glow: rgba(240,165,0,0.25);
-  --gold:      #f0a500;
-  --gold2:     #ffd060;
+  --border-glow: rgba(251,79,20,0.35);
+  --gold:      #FB4F14;
+  --gold2:     #FF6B35;
   --neon:      #FB4F14;
-  --cyan:      #00e5ff;
+  --cyan:      #FF6B35;
   --green:     #00ff88;
   --red:       #ff3b5c;
-  --orange:    #ff7a2f;
-  --purple:    #9b6dff;
-  --text:      #e8e8e8;
+  --orange:    #FB4F14;
+  --purple:    #FB4F14;
+  --accent:    #FB4F14;
+  --accent2:   #FF6B35;
+  --text:      #e2e2e2;
   --muted:     rgba(255,255,255,0.4);
   --dim:       rgba(255,255,255,0.12);
   --font-display: 'Bebas Neue', sans-serif;
@@ -1756,7 +1759,7 @@ const colMeta = {
 })();
 
 // ===================== PIN GATE (OWNER MODE) =====================
-const OWNER_PIN_HASH = '9e2026'; // Simple PIN — upgrade to SHA-256 hash later
+const OWNER_PIN_HASH = '3333'; // Owner PIN
 const PIN_STORAGE_KEY = '9e_huddle_auth';
 
 function checkOwnerAuth() {

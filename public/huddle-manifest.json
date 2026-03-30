@@ -1,14 +1,14 @@
 {
-  "name": "9 Enterprises Universe",
-  "short_name": "9 Universe",
-  "description": "The world's first autonomous AI business partner. Not a chatbot. Not a tool. A partner.",
+  "name": "9 Huddle",
+  "short_name": "9 Huddle",
+  "description": "The 9 Enterprises command center. Owner and guest access. Live operations, task board, and team feed.",
   "theme_color": "#0a0a0a",
   "background_color": "#0a0a0a",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "start_url": "./9enterprises.html",
+  "start_url": "./cockpit.html",
   "scope": "/",
-  "id": "/9enterprises.html",
+  "id": "/cockpit.html",
   "icons": [
     {
       "src": "9-brand.jpg",
