@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="9 Cockpit">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<title>9 Enterprises — Cockpit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===================== RESET & TOKENS ===================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg:        #0a0a0a;
+  --bg2:       #111114;
+  --bg3:       #161618;
+  --bg4:       #1a1a1e;
+  --panel:     #12121a;
+  --border:    rgba(255,255,255,0.07);
+  --border-glow: rgba(240,165,0,0.25);
+  --gold:      #f0a500;
+  --gold2:     #ffd060;
+  --neon:      #FB4F14;
+  --cyan:      #00e5ff;
+  --green:     #00ff88;
+  --red:       #ff3b5c;
+  --orange:    #ff7a2f;
+  --purple:    #9b6dff;
+  --text:      #e8e8e8;
+  --muted:     rgba(255,255,255,0.4);
+  --dim:       rgba(255,255,255,0.12);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --r: 12px;
+  --r-sm: 8px;
+  --r-lg: 16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===================== BACKGROUND ===================== */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  background-image:
+    linear-gradient(rgba(240,165,0,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,165,0,0.012) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* gold ambient glow top-left */
+body::after {
+  content: '';
+  position: fixed; top: -20%; left: -10%; width: 50%; height: 50%;
+  background: radial-gradient(ellipse, rgba(240,165,0,0.04) 0%, transparent 70%);
+  pointer-events: none; z-index: -1;
+}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 6px rgba(240,165,0,0.3); }
+  50%       { box-shadow: 0 0 20px rgba(240,165,0,0.7), 0 0 40px rgba(240,165,0,0.2); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes progress-fill {
+  from { width: 0%; }
+  to   { width: var(--target-width); }
+}
+@keyframes tick {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.fade-up { animation: fadeUp 0.4s ease both; }
+
+/* scanline */
+.scanline {
+  position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(transparent, rgba(240,165,0,0.06), transparent);
+  z-index: 9999; pointer-events: none;
+  animation: scanline 10s linear infinite;
+}
+
+/* ===================== TOPBAR ===================== */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 24px;
+  padding-top: calc(10px + env(safe-area-inset-top));
+  padding-left: calc(24px + env(safe-area-inset-left));
+  padding-right: calc(24px + env(safe-area-inset-right));
+  background: rgba(10,10,10,0.96);
+  border-bottom: 1px solid rgba(240,165,0,0.12);
+  position: sticky; top: 0; z-index: 200;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.logo-img {
+  width: 38px; height: 38px; border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(240,165,0,0.3);
+  box-shadow: 0 0 12px rgba(240,165,0,0.2);
+}
+.logo-fallback {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: linear-gradient(135deg, #f0a500, #ff6600);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 22px; color: #000;
+  font-weight: 700;
+  border: 1px solid rgba(240,165,0,0.4);
+  box-shadow: 0 0 12px rgba(240,165,0,0.3);
+}
+.topbar-brand { display: flex; flex-direction: column; gap: 1px; }
+.topbar-title {
+  font-family: var(--font-display); font-size: 22px; letter-spacing: 4px;
+  color: var(--text); line-height: 1;
+}
+.topbar-sub {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.topbar-center { display: flex; align-items: center; gap: 20px; }
+.topbar-right { display: flex; align-items: center; gap: 18px; }
+.live-clock {
+  font-family: var(--font-mono); font-size: 13px; color: var(--gold2);
+  letter-spacing: 1.5px;
+}
+.live-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--green); letter-spacing: 1.5px; text-transform: uppercase;
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .topbar-center { display: none; }
+  .topbar-title { font-size: 18px; letter-spacing: 2px; }
+  .topbar-sub { display: none; }
+}
+
+/* ===================== SPRINT BANNER ===================== */
+.sprint-banner {
+  background: linear-gradient(135deg, rgba(240,165,0,0.06) 0%, rgba(18,18,26,0.95) 60%);
+  border-bottom: 1px solid rgba(240,165,0,0.12);
+  padding: 10px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap;
+}
+.sprint-label {
+  font-family: var(--font-display); font-size: 16px; letter-spacing: 3px;
+  color: var(--gold); text-transform: uppercase;
+}
+.sprint-meta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.sprint-stat {
+  display: flex; flex-direction: column; gap: 1px;
+  font-family: var(--font-mono); font-size: 10px;
+}
+.sprint-stat-label { color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.sprint-stat-value { color: var(--text); font-size: 13px; font-weight: 500; }
+.sprint-stat-value.gold { color: var(--gold2); }
+.sprint-day-pips { display: flex; gap: 4px; align-items: center; }
+.sprint-pip {
+  width: 18px; height: 6px; border-radius: 3px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.3s;
+}
+.sprint-pip.active { background: var(--gold); box-shadow: 0 0 6px rgba(240,165,0,0.5); }
+
+@media (max-width: 640px) {
+  .sprint-banner { padding: 10px 14px; }
+  .sprint-meta { gap: 14px; }
+}
+
+/* ===================== MAIN GRID ===================== */
+.cockpit {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: auto auto 1fr;
+  gap: 16px;
+  padding: 16px 20px;
+  padding-bottom: 32px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .cockpit {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+/* ===================== SECTION HEADERS ===================== */
+.section-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent);
+}
+.section-label .accent { color: var(--gold); }
+
+/* ===================== PANEL BASE ===================== */
+.panel {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.panel:hover { border-color: rgba(240,165,0,0.12); }
+.panel-header {
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title {
+  font-family: var(--font-display); font-size: 16px; letter-spacing: 2.5px;
+  color: var(--text); text-transform: uppercase;
+}
+.panel-body { padding: 16px 18px; }
+
+/* ===================== COMPANIES GRID (left column, top) ===================== */
+.companies-section { grid-column: 1; grid-row: 1; }
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 900px) {
+  .companies-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .companies-grid { grid-template-columns: 1fr; }
+}
+
+/* ===================== COMPANY CARD ===================== */
+.company-card {
+  background: var(--bg3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+  animation: fadeUp 0.4s ease both;
+}
+.company-card:hover {
+  border-color: rgba(240,165,0,0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(240,165,0,0.08);
+}
+.company-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--card-accent, var(--gold));
+  opacity: 0.6;
+}
+.cc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.cc-name {
+  font-family: var(--font-display); font-size: 17px; letter-spacing: 1.5px;
+  color: var(--text); line-height: 1.2;
+}
+.cc-tag {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px;
+  color: var(--muted); text-transform: uppercase; margin-top: 2px;
+}
+.cc-status {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 20px;
+  white-space: nowrap; margin-left: 8px;
+  flex-shrink: 0;
+}
+.status-active   { background: rgba(0,255,136,0.1); color: #00ff88; border: 1px solid rgba(0,255,136,0.2); }
+.status-building { background: rgba(0,229,255,0.1); color: #00e5ff; border: 1px solid rgba(0,229,255,0.2); }
+.status-research { background: rgba(155,109,255,0.1); color: #9b6dff; border: 1px solid rgba(155,109,255,0.2); }
+.status-live     { background: rgba(240,165,0,0.12); color: var(--gold2); border: 1px solid rgba(240,165,0,0.25); }
+
+.cc-metric {
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  margin-bottom: 8px; min-height: 16px;
+}
+.cc-metric span { color: var(--text); font-weight: 500; }
+
+.cc-progress-track {
+  height: 5px; background: rgba(255,255,255,0.07);
+  border-radius: 3px; overflow: hidden;
+}
+.cc-progress-fill {
+  height: 100%; border-radius: 3px;
+  background: var(--card-accent, var(--gold));
+  width: var(--target-width, 0%);
+  animation: progress-fill 1.2s ease-out both;
+  box-shadow: 0 0 6px var(--card-accent, var(--gold));
+}
+.cc-pct {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  text-align: right; margin-top: 4px;
+}
+
+/* ===================== MIDDLE ROW (left): TODO + TERMINAL ===================== */
+.middle-section {
+  grid-column: 1; grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .middle-section { grid-template-columns: 1fr; }
+}
+
+/* ===================== TODO LIST ===================== */
+.todo-list { display: flex; flex-direction: column; gap: 2px; }
+.todo-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+.todo-item:hover { background: rgba(255,255,255,0.03); }
+.todo-item.checked { opacity: 0.45; }
+.todo-cb {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  background: transparent; flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  position: relative;
+}
+.todo-item.checked .todo-cb {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.todo-item.checked .todo-cb::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 1px;
+  width: 5px; height: 8px;
+  border: 2px solid #000;
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+.todo-text {
+  font-family: var(--font-body); font-size: 13px; color: var(--text);
+  line-height: 1.4;
+}
+.todo-item.checked .todo-text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.todo-clear {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  background: none; border: none; cursor: pointer; padding: 4px 8px;
+  border-radius: 4px; transition: color 0.15s, background 0.15s;
+  margin-left: auto;
+}
+.todo-clear:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+/* ===================== TERMINAL ===================== */
+.terminal-panel { display: flex; flex-direction: column; }
+.terminal-body {
+  padding: 14px 18px;
+  display: flex; flex-direction: column;
+  gap: 10px; flex: 1;
+}
+.terminal-output {
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+  height: 160px; overflow-y: auto;
+  font-family: var(--font-mono); font-size: 12px;
+  line-height: 1.7;
+  flex-shrink: 0;
+}
+.terminal-output::-webkit-scrollbar { width: 3px; }
+.terminal-output::-webkit-scrollbar-thumb { background: var(--bg4); }
+.term-line { display: flex; gap: 6px; }
+.term-prefix { color: var(--gold); flex-shrink: 0; }
+.term-text { color: #b8ffb8; }
+.term-text.muted { color: var(--muted); }
+.term-text.sent { color: var(--gold2); }
+.term-text.error { color: var(--red); }
+.term-text.system { color: var(--cyan); }
+.term-input-row {
+  display: flex; align-items: center; gap: 0;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.term-input-row:focus-within { border-color: rgba(240,165,0,0.35); }
+.term-prompt {
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--gold); padding: 10px 10px 10px 14px; flex-shrink: 0;
+}
+.term-input {
+  flex: 1; background: transparent; border: none; outline: none;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text);
+  padding: 10px 8px;
+  caret-color: var(--gold);
+}
+.term-input::placeholder { color: rgba(255,255,255,0.2); }
+.term-send-btn {
+  font-family: var(--font-mono); font-size: 11px; color: #000;
+  background: var(--gold); border: none; cursor: pointer;
+  padding: 0 16px; height: 100%; align-self: stretch;
+  transition: background 0.15s; letter-spacing: 1px;
+  font-weight: 600; text-transform: uppercase;
+}
+.term-send-btn:hover { background: var(--gold2); }
+
+/* ===================== RIGHT COLUMN ===================== */
+.right-col {
+  grid-column: 2; grid-row: 1 / 4;
+  display: flex; flex-direction: column; gap: 16px;
+}
+@media (max-width: 1100px) {
+  .right-col { grid-column: 1; grid-row: auto; }
+}
+
+/* ===================== TELEGRAM FEED ===================== */
+.tg-feed {
+  flex: 1 1 auto;
+  display: flex; flex-direction: column;
+  min-height: 0;
+}
+.tg-body {
+  flex: 1; display: flex; flex-direction: column;
+  padding: 14px 18px;
+  gap: 10px;
+  min-height: 0;
+}
+.tg-messages {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 8px;
+  min-height: 240px; max-height: 320px;
+  padding-right: 4px;
+}
+.tg-messages::-webkit-scrollbar { width: 3px; }
+.tg-messages::-webkit-scrollbar-thumb { background: var(--bg4); }
+.tg-msg {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--r-sm);
+  padding: 8px 10px;
+  animation: fadeUp 0.3s ease both;
+}
+.tg-msg-meta {
+  font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+  margin-bottom: 4px; display: flex; gap: 6px; align-items: center;
+}
+.tg-msg-who {
+  color: var(--gold); font-weight: 500;
+}
+.tg-msg-text {
+  font-family: var(--font-body); font-size: 12px; color: var(--text);
+  line-height: 1.5;
+}
+.tg-msg-text.system-msg { color: var(--muted); font-style: italic; }
+.tg-actions {
+  display: flex; gap: 8px; align-items: center;
+}
+.tg-refresh-btn {
+  font-family: var(--font-mono); font-size: 10px; color: var(--gold);
+  background: rgba(240,165,0,0.08); border: 1px solid rgba(240,165,0,0.18);
+  border-radius: 6px; padding: 6px 12px; cursor: pointer;
+  transition: all 0.15s; letter-spacing: 1px; text-transform: uppercase;
+}
+.tg-refresh-btn:hover { background: rgba(240,165,0,0.15); border-color: rgba(240,165,0,0.35); }
+.tg-refresh-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.tg-status-text {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  flex: 1; text-align: right;
+}
+.tg-empty {
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  text-align: center; padding: 24px; line-height: 1.8;
+}
+.tg-spinner {
+  display: inline-block; width: 12px; height: 12px;
+  border: 2px solid rgba(240,165,0,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===================== BROWSER EMBED ===================== */
+.browser-section { }
+.browser-bar {
+  display: flex; gap: 0;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+.browser-bar:focus-within { border-color: rgba(240,165,0,0.35); }
+.browser-url {
+  flex: 1; background: transparent; border: none; outline: none;
+  font-family: var(--font-mono); font-size: 11px; color: var(--text);
+  padding: 9px 12px;
+  caret-color: var(--gold);
+}
+.browser-url::placeholder { color: rgba(255,255,255,0.2); }
+.browser-go {
+  font-family: var(--font-mono); font-size: 11px; color: #000;
+  background: var(--gold); border: none; cursor: pointer;
+  padding: 0 14px;
+  transition: background 0.15s; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.browser-go:hover { background: var(--gold2); }
+.browser-frame-wrap {
+  height: 280px;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  position: relative;
+}
+.browser-iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+.browser-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  text-align: center; padding: 20px;
+}
+.browser-placeholder-icon {
+  font-size: 28px; line-height: 1; opacity: 0.3;
+}
+
+/* ===================== BOTTOM ROW (spanning) ===================== */
+.bottom-section {
+  grid-column: 1; grid-row: 3;
+  display: none; /* hidden on desktop, shown when needed */
+}
+
+/* ===================== UTILITY CHIPS ===================== */
+.chip {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
+  background: rgba(255,255,255,0.05); color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ===================== QUICK LINKS ===================== */
+.quick-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.quick-link {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px; padding: 5px 10px; cursor: pointer;
+  transition: all 0.15s; text-decoration: none; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.quick-link:hover {
+  color: var(--gold); background: rgba(240,165,0,0.07);
+  border-color: rgba(240,165,0,0.2);
+}
+
+/* ===================== TICKER ===================== */
+.ticker-wrap {
+  background: rgba(240,165,0,0.025);
+  border-bottom: 1px solid rgba(240,165,0,0.08);
+  overflow: hidden; height: 26px; display: flex; align-items: center;
+}
+.ticker-track {
+  display: flex; white-space: nowrap;
+  animation: ticker-scroll 60s linear infinite;
+}
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-item {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  padding: 0 28px; display: flex; align-items: center; gap: 8px;
+}
+.ti-g { color: var(--gold2); font-weight: 500; }
+.ti-sep { color: rgba(255,255,255,0.15); }
+
+/* ===================== RESPONSIVE ADJUSTMENTS ===================== */
+@media (max-width: 640px) {
+  .cockpit { padding: 10px 12px; gap: 12px; }
+  .panel-body { padding: 12px 14px; }
+  .panel-header { padding: 10px 14px 8px; }
+  .company-card { padding: 12px; }
+  .tg-messages { min-height: 180px; max-height: 240px; }
+}
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<!-- ===================== TOPBAR ===================== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <img src="/9-brand.jpg" class="logo-img" alt="9E" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="logo-fallback" style="display:none">9</div>
+    <div class="topbar-brand">
+      <div class="topbar-title">9 ENTERPRISES</div>
+      <div class="topbar-sub">Cockpit — Owner View</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-clock" id="live-clock">--:--:--</div>
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      LIVE
+    </div>
+  </div>
+</header>
+
+<!-- ===================== TICKER ===================== -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ti-g">AiGM</span><span class="ti-sep">|</span> Sports AI Platform</span>
+    <span class="ticker-item"><span class="ti-g">freeagent9</span><span class="ti-sep">|</span> AI Concierge</span>
+    <span class="ticker-item"><span class="ti-g">Jules</span><span class="ti-sep">|</span> Family AI</span>
+    <span class="ticker-item"><span class="ti-g">trader9</span><span class="ti-sep">|</span> Strategy Marketplace</span>
+    <span class="ticker-item"><span class="ti-g">agent9</span><span class="ti-sep">|</span> AI Real Estate</span>
+    <span class="ticker-item"><span class="ti-g">x9</span><span class="ti-sep">|</span> Content &amp; Social</span>
+    <span class="ticker-item"><span class="ti-g">Prompt Scripts</span><span class="ti-sep">|</span> Marketplace</span>
+    <span class="ticker-item"><span class="ti-g">AI Education</span><span class="ti-sep">|</span> Platform TBD</span>
+    <span class="ticker-item"><span class="ti-g">Dropship Co</span><span class="ti-sep">|</span> eCommerce</span>
+    <!-- repeat for seamless scroll -->
+    <span class="ticker-item"><span class="ti-g">AiGM</span><span class="ti-sep">|</span> Sports AI Platform</span>
+    <span class="ticker-item"><span class="ti-g">freeagent9</span><span class="ti-sep">|</span> AI Concierge</span>
+    <span class="ticker-item"><span class="ti-g">Jules</span><span class="ti-sep">|</span> Family AI</span>
+    <span class="ticker-item"><span class="ti-g">trader9</span><span class="ti-sep">|</span> Strategy Marketplace</span>
+    <span class="ticker-item"><span class="ti-g">agent9</span><span class="ti-sep">|</span> AI Real Estate</span>
+    <span class="ticker-item"><span class="ti-g">x9</span><span class="ti-sep">|</span> Content &amp; Social</span>
+    <span class="ticker-item"><span class="ti-g">Prompt Scripts</span><span class="ti-sep">|</span> Marketplace</span>
+    <span class="ticker-item"><span class="ti-g">AI Education</span><span class="ti-sep">|</span> Platform TBD</span>
+    <span class="ticker-item"><span class="ti-g">Dropship Co</span><span class="ti-sep">|</span> eCommerce</span>
+  </div>
+</div>
+
+<!-- ===================== SPRINT BANNER ===================== -->
+<div class="sprint-banner">
+  <div class="sprint-label">7-Day Enterprise Sprint</div>
+  <div class="sprint-meta">
+    <div class="sprint-stat">
+      <div class="sprint-stat-label">Day</div>
+      <div class="sprint-stat-value gold" id="sprint-day">1 of 7</div>
+    </div>
+    <div class="sprint-stat">
+      <div class="sprint-stat-label">Budget</div>
+      <div class="sprint-stat-value gold">$1,750</div>
+    </div>
+    <div class="sprint-stat">
+      <div class="sprint-stat-label">Start</div>
+      <div class="sprint-stat-value" id="sprint-start">Pending Green Light</div>
+    </div>
+    <div class="sprint-stat">
+      <div class="sprint-stat-label">Progress</div>
+      <div class="sprint-day-pips" id="sprint-pips"></div>
+    </div>
+    <div class="sprint-stat">
+      <div class="sprint-stat-label">Status</div>
+      <div class="sprint-stat-value" style="color:var(--gold2)">READY TO LAUNCH</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== COCKPIT GRID ===================== -->
+<main class="cockpit">
+
+  <!-- LEFT: Companies -->
+  <section class="companies-section fade-up" style="animation-delay:0.05s">
+    <div class="section-label"><span class="accent">01</span> Portfolio Companies</div>
+    <div class="companies-grid" id="companies-grid">
+      <!-- injected by JS -->
+    </div>
+  </section>
+
+  <!-- LEFT: Middle Row -->
+  <section class="middle-section fade-up" style="animation-delay:0.15s">
+
+    <!-- TO-DO -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">To-Do List</div>
+        <button class="todo-clear" onclick="clearCompleted()">Clear done</button>
+      </div>
+      <div class="panel-body" style="padding-top:10px;">
+        <div class="todo-list" id="todo-list">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="panel terminal-panel">
+      <div class="panel-header">
+        <div class="panel-title">Message 9</div>
+        <div class="chip">LIVE RELAY</div>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-output" id="term-output">
+          <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises Cockpit v1.0</span></div>
+          <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Type a message and press Enter — sends directly to 9 via Telegram.</span></div>
+          <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Ready.</span></div>
+        </div>
+        <div class="term-input-row">
+          <span class="term-prompt">&#62;</span>
+          <input
+            type="text"
+            class="term-input"
+            id="term-input"
+            placeholder="Message 9..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          >
+          <button class="term-send-btn" id="term-send-btn" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RIGHT COLUMN -->
+  <aside class="right-col fade-up" style="animation-delay:0.1s">
+
+    <!-- TELEGRAM FEED -->
+    <div class="panel tg-feed">
+      <div class="panel-header">
+        <div class="panel-title">Telegram Feed</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="live-badge" style="font-size:9px;">
+            <div class="live-dot" style="width:5px;height:5px;"></div>
+            HUB
+          </div>
+        </div>
+      </div>
+      <div class="tg-body">
+        <div class="tg-messages" id="tg-messages">
+          <div class="tg-empty" id="tg-empty">
+            <div style="font-size:22px;opacity:0.3;margin-bottom:8px;">&#9993;</div>
+            Telegram feed will connect here.<br>
+            <span style="color:rgba(255,255,255,0.2);font-size:10px;">Hit Refresh to load latest messages from 9.</span>
+          </div>
+        </div>
+        <div class="tg-actions">
+          <button class="tg-refresh-btn" id="tg-refresh-btn" onclick="loadTelegramFeed()">Refresh</button>
+          <div class="tg-status-text" id="tg-status">Not loaded</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Quick Links</div>
+      </div>
+      <div class="panel-body" style="padding-top:12px;">
+        <div class="quick-links">
+          <a class="quick-link" href="/aigm.html" target="_blank">AiGM</a>
+          <a class="quick-link" href="/freeagent.html" target="_blank">FreeAgent9</a>
+          <a class="quick-link" href="/jules-family.html" target="_blank">Jules</a>
+          <a class="quick-link" href="/agent9.html" target="_blank">agent9</a>
+          <a class="quick-link" href="/prompt-scripts.html" target="_blank">Prompts</a>
+          <a class="quick-link" href="/dashboard.html" target="_blank">Dashboard</a>
+          <a class="quick-link" href="/9enterprises.html" target="_blank">9enterprises.ai</a>
+          <a class="quick-link" href="/war-room.html" target="_blank">War Room</a>
+          <a class="quick-link" href="/pitch.html" target="_blank">Pitch Deck</a>
+          <a class="quick-link" href="/underwriter.html" target="_blank">Underwriter</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- BROWSER EMBED -->
+    <div class="panel browser-section">
+      <div class="panel-header">
+        <div class="panel-title">Browser</div>
+        <div class="chip">EMBED</div>
+      </div>
+      <div class="panel-body" style="padding-top:12px;">
+        <div class="browser-bar">
+          <input
+            type="url"
+            class="browser-url"
+            id="browser-url"
+            placeholder="https://..."
+            onkeydown="if(event.key==='Enter')loadBrowser()"
+          >
+          <button class="browser-go" onclick="loadBrowser()">Go</button>
+        </div>
+        <div class="browser-frame-wrap">
+          <div class="browser-placeholder" id="browser-placeholder">
+            <div class="browser-placeholder-icon">&#127760;</div>
+            Enter a URL above and press Go
+          </div>
+          <iframe class="browser-iframe" id="browser-iframe" style="display:none;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://ainflgm.com')">ainflgm.com</button>
+          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://console.anthropic.com')">Anthropic</button>
+          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://dashboard.cloudflare.com')">Cloudflare</button>
+          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://analytics.google.com')">Analytics</button>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+</main>
+
+<!-- ===================== JS ===================== -->
+<script>
+// ===================== CLOCK =====================
+function updateClock() {
+  const now = new Date();
+  const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'America/New_York' };
+  const time = now.toLocaleTimeString('en-US', opts);
+  const dateOpts = { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/New_York' };
+  const date = now.toLocaleDateString('en-US', dateOpts);
+  document.getElementById('live-clock').textContent = `${time} ET`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ===================== SPRINT PIPS =====================
+(function buildPips() {
+  const container = document.getElementById('sprint-pips');
+  for (let i = 1; i <= 7; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'sprint-pip' + (i === 1 ? ' active' : '');
+    pip.title = `Day ${i}`;
+    container.appendChild(pip);
+  }
+})();
+
+// ===================== COMPANIES =====================
+const companies = [
+  {
+    name: 'AiGM',
+    tag: 'PlayAiGM — Sports Platform',
+    status: 'active',
+    statusLabel: 'Active',
+    metric: 'Site: <span>ainflgm.com</span>',
+    pct: 72,
+    accent: '#00ff88',
+    animDelay: 0.05
+  },
+  {
+    name: 'FreeAgent9',
+    tag: 'AI Concierge',
+    status: 'building',
+    statusLabel: 'Building',
+    metric: 'Pilot: <span>Live</span>',
+    pct: 55,
+    accent: '#00e5ff',
+    animDelay: 0.1
+  },
+  {
+    name: 'AI Education',
+    tag: 'Platform — Name TBD',
+    status: 'research',
+    statusLabel: 'Research',
+    metric: 'Concept: <span>In Progress</span>',
+    pct: 20,
+    accent: '#9b6dff',
+    animDelay: 0.15
+  },
+  {
+    name: 'Prompt Scripts',
+    tag: 'Marketplace',
+    status: 'building',
+    statusLabel: 'Building',
+    metric: 'Page: <span>Live</span>',
+    pct: 45,
+    accent: '#f0a500',
+    animDelay: 0.2
+  },
+  {
+    name: 'Dropship Co',
+    tag: 'eCommerce',
+    status: 'building',
+    statusLabel: 'Building',
+    metric: 'Shopify: <span>Pending</span>',
+    pct: 30,
+    accent: '#ff7a2f',
+    animDelay: 0.25
+  },
+  {
+    name: 'trader9',
+    tag: 'Trading Strategy Marketplace',
+    status: 'research',
+    statusLabel: 'Research',
+    metric: 'Alpaca: <span>Paper Mode</span>',
+    pct: 25,
+    accent: '#fb4f14',
+    animDelay: 0.3
+  },
+  {
+    name: 'agent9',
+    tag: 'AI Real Estate',
+    status: 'research',
+    statusLabel: 'Research',
+    metric: 'Stage: <span>Concept</span>',
+    pct: 15,
+    accent: '#b060ff',
+    animDelay: 0.35
+  },
+  {
+    name: 'Jules',
+    tag: 'Family AI Assistant',
+    status: 'active',
+    statusLabel: 'Active',
+    metric: 'Pilot: <span>Live</span>',
+    pct: 65,
+    accent: '#ff9de2',
+    animDelay: 0.4
+  },
+  {
+    name: 'x9',
+    tag: 'Content & Social',
+    status: 'building',
+    statusLabel: 'Building',
+    metric: 'Accounts: <span>Pending</span>',
+    pct: 20,
+    accent: '#ffd700',
+    animDelay: 0.45
+  }
+];
+
+function renderCompanies() {
+  const grid = document.getElementById('companies-grid');
+  grid.innerHTML = '';
+  companies.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'company-card';
+    card.style.cssText = `--card-accent:${c.accent};--target-width:${c.pct}%;animation-delay:${c.animDelay}s;`;
+    card.innerHTML = `
+      <div class="cc-top">
+        <div>
+          <div class="cc-name">${c.name}</div>
+          <div class="cc-tag">${c.tag}</div>
+        </div>
+        <div class="cc-status status-${c.status}">${c.statusLabel}</div>
+      </div>
+      <div class="cc-metric">${c.metric}</div>
+      <div class="cc-progress-track">
+        <div class="cc-progress-fill" style="--target-width:${c.pct}%"></div>
+      </div>
+      <div class="cc-pct">${c.pct}%</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+renderCompanies();
+
+// ===================== TO-DO =====================
+const TODO_KEY = '9e_cockpit_todos';
+const todoItems = [
+  { id: 'td1', text: 'Transfer PlayAiGM.com domain' },
+  { id: 'td2', text: 'Complete AdSense phone verification' },
+  { id: 'td3', text: 'Choose AI Education platform name' },
+  { id: 'td4', text: 'Set up Shopify account access' },
+  { id: 'td5', text: 'Approve Alpaca live trading' },
+  { id: 'td6', text: 'X password recovery' },
+  { id: 'td7', text: 'Cloudflare API token' },
+  { id: 'td8', text: 'TikTok / Sleeper account setup' },
+  { id: 'td9', text: 'Portfolio data export' }
+];
+
+function loadTodoState() {
+  try { return JSON.parse(localStorage.getItem(TODO_KEY) || '{}'); } catch { return {}; }
+}
+function saveTodoState(state) {
+  localStorage.setItem(TODO_KEY, JSON.stringify(state));
+}
+
+function renderTodos() {
+  const state = loadTodoState();
+  const list = document.getElementById('todo-list');
+  list.innerHTML = '';
+  todoItems.forEach(item => {
+    const checked = !!state[item.id];
+    const div = document.createElement('div');
+    div.className = 'todo-item' + (checked ? ' checked' : '');
+    div.dataset.id = item.id;
+    div.onclick = () => toggleTodo(item.id);
+    div.innerHTML = `
+      <div class="todo-cb"></div>
+      <div class="todo-text">${item.text}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function toggleTodo(id) {
+  const state = loadTodoState();
+  state[id] = !state[id];
+  saveTodoState(state);
+  renderTodos();
+}
+
+function clearCompleted() {
+  const state = loadTodoState();
+  Object.keys(state).forEach(k => { if (state[k]) delete state[k]; });
+  saveTodoState(state);
+  renderTodos();
+}
+
+renderTodos();
+
+// ===================== TERMINAL / MESSAGE 9 =====================
+const termOutput = document.getElementById('term-output');
+const termInput = document.getElementById('term-input');
+
+function termLog(text, cls) {
+  const line = document.createElement('div');
+  line.className = 'term-line';
+  line.innerHTML = `<span class="term-prefix">$</span><span class="term-text ${cls||''}">${escHtml(text)}</span>`;
+  termOutput.appendChild(line);
+  termOutput.scrollTop = termOutput.scrollHeight;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+termInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+async function sendMessage() {
+  const msg = termInput.value.trim();
+  if (!msg) return;
+
+  const btn = document.getElementById('term-send-btn');
+  termInput.value = '';
+  btn.disabled = true;
+
+  termLog(`> ${msg}`, 'sent');
+
+  try {
+    const res = await fetch('http://localhost:3457/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channel: 'telegram', message: msg })
+    });
+    if (res.ok) {
+      termLog('Sent to 9 via Telegram.', '');
+    } else {
+      termLog(`Error: Hub returned ${res.status}`, 'error');
+    }
+  } catch (err) {
+    termLog('Could not reach hub (localhost:3457)', 'error');
+  } finally {
+    btn.disabled = false;
+    termInput.focus();
+  }
+}
+
+// ===================== TELEGRAM FEED =====================
+async function loadTelegramFeed() {
+  const btn = document.getElementById('tg-refresh-btn');
+  const status = document.getElementById('tg-status');
+  const container = document.getElementById('tg-messages');
+  const empty = document.getElementById('tg-empty');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="tg-spinner"></span>Loading...';
+  status.textContent = 'Fetching...';
+
+  try {
+    const res = await fetch('http://localhost:3457/state');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    // Pull messages from state
+    const messages = [];
+
+    // Check recentMessages array
+    if (data.recentMessages && Array.isArray(data.recentMessages)) {
+      data.recentMessages.slice(-20).forEach(m => {
+        messages.push({ who: m.channel || 'System', text: m.message || m.text || '', ts: m.timestamp || '' });
+      });
+    }
+    // Check inbox / last messages
+    if (data.lastTelegramMessage) {
+      messages.push({ who: 'Telegram', text: data.lastTelegramMessage, ts: data.lastTelegramTime || '' });
+    }
+
+    // Render
+    container.innerHTML = '';
+    if (messages.length === 0) {
+      // Show state summary instead
+      const summary = document.createElement('div');
+      summary.className = 'tg-msg';
+      summary.innerHTML = `
+        <div class="tg-msg-meta"><span class="tg-msg-who">HUB STATE</span></div>
+        <div class="tg-msg-text">Hub is online. No buffered messages found.<br>
+          <span style="color:var(--muted);font-size:11px;">Mode: ${data.mode || 'unknown'} &nbsp;|&nbsp; Relay: ${data.terminalActive ? 'Active' : 'DC mode'}</span>
+        </div>
+      `;
+      container.appendChild(summary);
+    } else {
+      messages.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'tg-msg';
+        const ts = m.ts ? new Date(m.ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York' }) : '';
+        div.innerHTML = `
+          <div class="tg-msg-meta">
+            <span class="tg-msg-who">${escHtml(m.who)}</span>
+            ${ts ? `<span>${ts} ET</span>` : ''}
+          </div>
+          <div class="tg-msg-text">${escHtml(m.text)}</div>
+        `;
+        container.appendChild(div);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/New_York' });
+    status.textContent = `Updated ${now} ET`;
+
+  } catch (err) {
+    container.innerHTML = `
+      <div class="tg-msg">
+        <div class="tg-msg-meta"><span class="tg-msg-who" style="color:var(--red)">ERROR</span></div>
+        <div class="tg-msg-text tg-empty-msg" style="color:var(--muted);">Could not reach hub at localhost:3457.<br>
+          <span style="font-size:11px;">Make sure 9 is running.</span>
+        </div>
+      </div>
+    `;
+    status.textContent = 'Connection failed';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Refresh';
+  }
+}
+
+// Auto-load feed on page load
+loadTelegramFeed();
+
+// ===================== BROWSER EMBED =====================
+function loadBrowser() {
+  const urlInput = document.getElementById('browser-url');
+  const iframe = document.getElementById('browser-iframe');
+  const placeholder = document.getElementById('browser-placeholder');
+
+  let url = urlInput.value.trim();
+  if (!url) return;
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  urlInput.value = url;
+
+  iframe.src = url;
+  iframe.style.display = 'block';
+  placeholder.style.display = 'none';
+}
+
+function setBrowserUrl(url) {
+  const urlInput = document.getElementById('browser-url');
+  urlInput.value = url;
+  loadBrowser();
+}
+</script>
+
+</body>
+</html>

@@ -76,6 +76,14 @@ if [ -f "$VOICE_TRANSCRIPT" ]; then
   cat "$VOICE_TRANSCRIPT"
   echo "=== END TRANSCRIPT — ACT ON THIS ==="
 fi
+
+# 12. Time anchor — real-world clock sync (from Grok time-sync research)
+# AI agents have no native clock. Inject server-side timestamp at session start.
+# Use this as the authoritative time reference. All ETAs calibrate from here.
+echo "=== TIME ANCHOR ==="
+echo "Current real-world time (ET): $(TZ='America/New_York' date '+%Y-%m-%dT%H:%M:%S%z')"
+echo "ISO 8601 UTC: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+echo "=== Use ONLY server-side time. Never estimate from context. ==="
 ```
 
 ## Graceful Shutdown (before exiting terminal)
@@ -138,6 +146,63 @@ ps aux | grep -E "(telegram-agent|telegram-webhook|inbox-monitor)" | grep -v gre
 - **LaunchAgent com.9.comms-hub** — Safety net. Auto-restarts hub if process dies. Degraded mode (no iMessage read).
 - **LaunchAgent com.9.terminal-opener** — Watches signal file, opens Terminal.
 
+## Session Resilience (tmux + crash-proofing)
+
+### tmux for Crash-Proof Sessions
+- tmux is installed at /opt/homebrew/bin/tmux
+- For 24/7 autonomy: run Claude Code inside a tmux session
+- Start: `tmux new -s claude` → run `claude` inside
+- Detach: Ctrl+B then D (session survives terminal close, sleep, SSH drops)
+- Reattach: `tmux attach -t claude`
+- List sessions: `tmux ls`
+- This prevents terminal crashes from killing the session entirely
+
+### Progress Checkpoints
+- Before any context compaction or refresh: write a full state summary to `memory/project_session_state.md`
+- Include: what was being worked on, what is done, what is pending, last Owner directive
+- Commit the state file so it survives any crash
+- On session restore: read the state file BEFORE doing anything else
+- When using /compact: preserve implementation plan, all file paths, pending Owner directives, and active agent deployments
+- AUTO-CHECKPOINT: When context feels >60% full, proactively write handoff summary WITHOUT being asked
+
+### Self-Correction Loop
+- If a step fails: diagnose root cause, adjust approach, retry
+- Up to 3 retries before escalating to Owner
+- Log the failure and fix in completed actions
+- Prefer self-recovery over asking for help
+
+### Success Criteria
+- For every major task, define measurable success criteria upfront
+- Example: "Success = all tests passing + PR ready" or "Success = video renders at 1080p + link sent"
+- Prevents drift and scope creep
+- Check criteria before marking task complete
+
+## Workflow Orchestration
+
+### Verification Before Done
+- Never mark a task complete without proving it works
+- Diff behavior between main and your changes when relevant
+- Ask yourself: "Would a staff engineer approve this?"
+- Run tests, check logs, demonstrate correctness
+
+### Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes — do not over-engineer
+- Challenge your own work before presenting it
+
+### Self-Improvement Loop
+- After ANY correction from Owner: burn the lesson into memory
+- Write rules for yourself that prevent the same mistake twice
+- Ruthlessly iterate on these lessons until mistake rate drops
+- Review lessons at session start for relevant project
+
+### Autonomous Bug Fixing
+- When given a bug report: just fix it. Do not ask for hand-holding.
+- Point at logs, errors, failing tests — then resolve them
+- Zero context switching required from the Owner
+- Go fix failing CI tests without being told how
+
 ## Rules
 
 - NEVER run deprecated scripts (anything with .deprecated extension)
@@ -149,3 +214,6 @@ ps aux | grep -E "(telegram-agent|telegram-webhook|inbox-monitor)" | grep -v gre
 - Save important decisions to memory files
 - Update shared state via `POST /context` when working on something
 - After any code change to comms scripts, restart the affected process and run the sweep
+- Simplicity First: Make every change as simple as possible. Impact minimal code.
+- Zero Laziness: Find root causes. No temporary fixes. Senior developer standards.
+- Minimal Footprint: Changes should only touch what is necessary. Avoid introducing bugs.
