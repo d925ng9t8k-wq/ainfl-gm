@@ -11,18 +11,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="9enterprises">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
-<meta name="description" content="9enterprises — The world's first autonomous AI business partner. Not a chatbot. Not a tool. A partner that builds, trades, creates, and operates businesses alongside you.">
-<meta property="og:title" content="9enterprises — The World's First Autonomous AI Business Partner">
+<meta name="description" content="The War Room — 9 Enterprises command center. Nine companies, one AI partner. The world's first autonomous AI business operation.">
+<meta property="og:title" content="The War Room — 9 Enterprises Command Center">
 <meta property="og:description" content="Not a chatbot. Not a tool. A partner that builds, trades, creates, and operates businesses alongside you. 24/7. Autonomous. Elite.">
 <meta property="og:image" content="https://ainflgm.com/9e-og-preview.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ainflgm.com/9enterprises.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="9enterprises — Autonomous AI Business Partner">
-<meta name="twitter:description" content="Not a chatbot. A partner. 24/7 autonomous operation across 6 companies.">
+<meta name="twitter:title" content="The War Room — 9 Enterprises Command Center">
+<meta name="twitter:description" content="Not a chatbot. A partner. 24/7 autonomous operation across 9 companies.">
 <meta name="twitter:image" content="https://ainflgm.com/9e-og-preview.jpg">
 <link rel="manifest" href="/9enterprises-manifest.json">
-<title>9enterprises — The World's First Autonomous AI Business Partner</title>
+<title>The War Room — 9 Enterprises Command Center</title>
 <style>
 /* ─── Reset & Base ─────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1192,6 +1192,74 @@ footer {
 
 /* ─── Selection ─────────────────────────────────────────────────────────── */
 ::selection { background: rgba(251,79,20,0.35); color: var(--white); }
+
+/* ─── Draft Room ─────────────────────────────────────────────────────────── */
+#draft-room {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 100px 0;
+}
+
+.draft-room-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .draft-room-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .draft-room-grid { grid-template-columns: 1fr; }
+}
+
+.draft-card {
+  background: transparent;
+  border: 1px dashed rgba(255,255,255,0.14);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.draft-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(251,79,20,0.35);
+  background: rgba(251,79,20,0.03);
+}
+
+.draft-card-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px dashed rgba(255,255,255,0.10);
+}
+
+.draft-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.draft-card-desc {
+  font-size: 13px;
+  color: var(--text-mute);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.badge-eval {
+  background: rgba(139,92,246,0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(139,92,246,0.25);
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
 <script>
@@ -1207,8 +1275,9 @@ footer {
 <nav>
   <a href="#hero" class="nav-logo"><span>9</span>enterprises</a>
   <ul class="nav-links">
-    <li><a href="/dashboard.html">Dashboard</a></li>
+    <li><a href="/cockpit.html">The Huddle</a></li>
     <li><a href="#products">Products</a></li>
+    <li><a href="#draft-room">Draft Room</a></li>
     <li><a href="#story">Story</a></li>
     <li><a href="#pricing">Pricing</a></li>
   </ul>
@@ -1226,7 +1295,7 @@ footer {
   <div class="hero-inner">
     <div class="hero-eyebrow">
       <span class="dot"></span>
-      Live &amp; Operating — Cincinnati, OH
+      The War Room &mdash; 9 Enterprises Command Center
     </div>
 
     <img src="/9-brand.jpg" alt="9 Enterprises" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:24px;border:3px solid #FB4F14;box-shadow:0 0 30px rgba(251,79,20,0.4);">
@@ -1257,6 +1326,7 @@ footer {
 <section style="padding:40px 0 0;">
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:900px;margin:0 auto;">
+      <a href="/cockpit.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid rgba(251,79,20,0.35);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.7)'" onmouseout="this.style.borderColor='rgba(251,79,20,0.35)'">&#127918; The Huddle</a>
       <a href="/dashboard.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">&#128202; Dashboard</a>
       <a href="/architecture.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">&#127959; Architecture</a>
       <a href="/pitch.html" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;color:var(--text);font-size:14px;font-weight:600;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(251,79,20,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'">&#128196; Pitch Deck</a>
@@ -1281,7 +1351,7 @@ footer {
       <div class="stat-label">Messages handled autonomously</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">6</div>
+      <div class="stat-number">9</div>
       <div class="stat-label">Companies operating simultaneously</div>
     </div>
     <div class="stat-item">
@@ -1327,7 +1397,7 @@ footer {
         </p>
 
         <p class="reveal">
-          9enterprises is the living proof. Every product in the lineup is built, operated, and scaled by 9. Six companies. One AI. Zero days off.
+          9enterprises is the living proof. Every product in the lineup is built, operated, and scaled by 9. Nine companies. One AI. Zero days off.
         </p>
       </div>
 
@@ -1340,13 +1410,13 @@ footer {
   <div class="container">
     <div class="section-header">
       <div class="label reveal">The Franchise</div>
-      <h2 class="reveal">Eight companies. One AI partner.</h2>
+      <h2 class="reveal">Nine companies. One AI partner.</h2>
       <p class="reveal">Each product stands alone. Together, they're a flywheel — every user feeds the next product, every product feeds the algorithm.</p>
     </div>
 
     <div class="products-grid">
 
-      <div class="product-card reveal">
+      <a href="/freeagent-landing.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-purple">&#129302;</div>
         <div class="product-header">
           <div class="product-name">freeagent9</div>
@@ -1358,7 +1428,7 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">$29/mo</span>
         </div>
-      </div>
+      </a>
 
       <div class="product-card reveal">
         <div class="product-icon icon-blue">&#128200;</div>
@@ -1388,7 +1458,7 @@ footer {
         </div>
       </div>
 
-      <div class="product-card reveal">
+      <a href="/aigm.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-green">&#127944;</div>
         <div class="product-header">
           <div class="product-name">PlayAiGM</div>
@@ -1400,9 +1470,9 @@ footer {
           <span class="product-tag">Community</span>
           <span class="product-tag">Free</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="/agent9.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-amber">&#127968;</div>
         <div class="product-header">
           <div class="product-name">agent9</div>
@@ -1414,9 +1484,9 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">Enterprise</span>
         </div>
-      </div>
+      </a>
 
-      <div class="product-card reveal">
+      <a href="/underwriter.html" class="product-card reveal" style="text-decoration:none;display:block;cursor:pointer;">
         <div class="product-icon icon-rose">&#128196;</div>
         <div class="product-header">
           <div class="product-name">AI Underwriter</div>
@@ -1428,7 +1498,7 @@ footer {
           <span class="product-tag">White Label</span>
           <span class="product-tag">$149/mo</span>
         </div>
-      </div>
+      </a>
 
       <div class="product-card reveal">
         <div class="product-icon icon-green">&#127891;</div>
@@ -1458,6 +1528,105 @@ footer {
         </div>
       </div>
 
+      <div class="product-card reveal">
+        <div class="product-icon icon-green">&#128106;</div>
+        <div class="product-header">
+          <div class="product-name">Jules</div>
+          <span class="badge badge-pilot">Pilot</span>
+        </div>
+        <p class="product-desc">AI family planner and personal assistant for moms. Scheduling, meal planning, activity coordination, and household management. Standalone product + freeagent9 feature.</p>
+        <div class="product-tags">
+          <span class="product-tag">Family</span>
+          <span class="product-tag">AI Assistant</span>
+          <span class="product-tag">$19/mo</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── DRAFT ROOM ─────────────────────────────────────────────────────────── -->
+<section id="draft-room">
+  <div class="container">
+    <div class="section-header">
+      <div class="label reveal">Draft Room</div>
+      <h2 class="reveal">Concepts in evaluation.</h2>
+      <p class="reveal">Promising plays that haven't been called yet. These move to the active roster when the time is right.</p>
+    </div>
+
+    <div class="draft-room-grid">
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#128200;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Trading Strategy Marketplace</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">A marketplace for proven algorithmic trading strategies. Traders publish, subscribers deploy. trader9 spinoff with recurring revenue model.</p>
+        <div class="product-tags">
+          <span class="product-tag">FinTech</span>
+          <span class="product-tag">Marketplace</span>
+          <span class="product-tag">trader9</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#128221;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Prompt Scripts Marketplace</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">Buy, sell, and deploy proven AI prompt workflows. Engineers and creators monetize their best prompts. Community-powered quality signal.</p>
+        <div class="product-tags">
+          <span class="product-tag">AI Tools</span>
+          <span class="product-tag">Marketplace</span>
+          <span class="product-tag">Community</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#127891;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">AI Education Platform</div>
+          <span class="badge badge-eval">Naming TBD</span>
+        </div>
+        <p class="draft-card-desc">Standalone education product. Teach everyday people how AI can be a trusted partner. Working names: LearnWith9, 9Academy, NineIQ, Pathway9.</p>
+        <div class="product-tags">
+          <span class="product-tag">Education</span>
+          <span class="product-tag">Top of Funnel</span>
+          <span class="product-tag">TBD</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#128176;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">Subscription Bundle</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">Cross-product discount bundle. Unlock multiple 9 Enterprises products at a reduced rate. Increases retention and reduces churn across the portfolio.</p>
+        <div class="product-tags">
+          <span class="product-tag">Bundling</span>
+          <span class="product-tag">Retention</span>
+          <span class="product-tag">Cross-sell</span>
+        </div>
+      </div>
+
+      <div class="draft-card reveal">
+        <div class="draft-card-icon">&#127936;</div>
+        <div class="product-header" style="margin-bottom:8px;">
+          <div class="draft-card-name">NBA / MLB Expansion</div>
+          <span class="badge badge-eval">Evaluating</span>
+        </div>
+        <p class="draft-card-desc">Expand the PlayAiGM franchise into basketball and baseball. Same AI GM simulator model applied to two of the top 3 sports leagues in North America.</p>
+        <div class="product-tags">
+          <span class="product-tag">Sports</span>
+          <span class="product-tag">PlayAiGM</span>
+          <span class="product-tag">Expansion</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1477,7 +1646,7 @@ footer {
         <div class="number-desc">Messages handled autonomously across every channel</div>
       </div>
       <div class="number-card reveal">
-        <div class="number-value">8</div>
+        <div class="number-value">9</div>
         <div class="number-desc">Companies launched and actively operating</div>
       </div>
       <div class="number-card reveal">
@@ -1713,7 +1882,7 @@ footer {
       <div>
         <div class="footer-brand-name"><span>9</span>enterprises</div>
         <p class="footer-brand-desc">
-          The world's first autonomous AI business partner. Eight companies. One AI. Cincinnati, OH.
+          The world's first autonomous AI business partner. Nine companies. One AI. Cincinnati, OH.
         </p>
         <div class="footer-socials">
           <a href="#" class="social-link" aria-label="X / Twitter">&#120143;</a>
@@ -1733,16 +1902,20 @@ footer {
           <li><a href="/underwriter.html">AI Underwriter</a></li>
           <li><a href="/9enterprises.html#products">AI Education</a></li>
           <li><a href="/9enterprises.html#products">Dropshipping</a></li>
+          <li><a href="/9enterprises.html#products">Jules</a></li>
         </ul>
       </div>
 
       <div>
         <div class="footer-col-title">Company</div>
         <ul class="footer-links">
+          <li><a href="/cockpit.html">The Huddle</a></li>
+          <li><a href="#draft-room">Draft Room</a></li>
           <li><a href="#story">Story</a></li>
           <li><a href="#team">Team</a></li>
           <li><a href="#business">Enterprise</a></li>
           <li><a href="#pricing">Pricing</a></li>
+          <li><a href="/architecture.html">Architecture</a></li>
         </ul>
       </div>
 

@@ -7,9 +7,9 @@
 <meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="9 Cockpit">
+<meta name="apple-mobile-web-app-title" content="The Huddle">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
-<title>9 Enterprises — Cockpit</title>
+<title>9 Enterprises — The Huddle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -212,10 +212,10 @@ body::after {
 }
 
 /* ===================== MAIN GRID ===================== */
-.cockpit {
+.huddle {
   display: grid;
   grid-template-columns: 1fr 320px;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
   gap: 16px;
   padding: 16px 20px;
   padding-bottom: 32px;
@@ -224,7 +224,7 @@ body::after {
 }
 
 @media (max-width: 1100px) {
-  .cockpit {
+  .huddle {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
@@ -588,8 +588,233 @@ body::after {
 /* ===================== BOTTOM ROW (spanning) ===================== */
 .bottom-section {
   grid-column: 1; grid-row: 3;
-  display: none; /* hidden on desktop, shown when needed */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
 }
+@media (max-width: 1100px) {
+  .bottom-section { grid-column: 1; }
+}
+@media (max-width: 900px) {
+  .bottom-section { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .bottom-section { grid-template-columns: 1fr; }
+}
+
+/* Draft Room row */
+.draft-room-section {
+  grid-column: 1; grid-row: 4;
+}
+@media (max-width: 1100px) {
+  .draft-room-section { grid-column: 1; grid-row: auto; }
+}
+
+/* ===================== TOPBAR NAV ===================== */
+.topbar-nav { display: flex; align-items: center; gap: 6px; }
+.topbar-nav-link {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
+  color: var(--muted); text-decoration: none; text-transform: uppercase;
+  padding: 5px 10px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+  transition: all 0.15s; white-space: nowrap;
+}
+.topbar-nav-link:hover {
+  color: var(--gold); background: rgba(240,165,0,0.07);
+  border-color: rgba(240,165,0,0.2);
+}
+.topbar-nav-link.active {
+  color: var(--gold2); background: rgba(240,165,0,0.1);
+  border-color: rgba(240,165,0,0.25);
+}
+@media (max-width: 640px) {
+  .topbar-nav { display: none; }
+}
+
+/* ===================== QUICK ACTIONS ===================== */
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+@media (max-width: 500px) {
+  .qa-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.qa-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 14px 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r);
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s;
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  letter-spacing: 0.5px; text-align: center; text-transform: uppercase;
+}
+.qa-btn:hover {
+  background: rgba(240,165,0,0.07);
+  border-color: rgba(240,165,0,0.22);
+  color: var(--gold2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.qa-icon { font-size: 20px; line-height: 1; }
+.qa-btn.green { border-color: rgba(0,255,136,0.12); }
+.qa-btn.green:hover { background: rgba(0,255,136,0.07); border-color: rgba(0,255,136,0.25); color: var(--green); }
+.qa-btn.cyan { border-color: rgba(0,229,255,0.12); }
+.qa-btn.cyan:hover { background: rgba(0,229,255,0.07); border-color: rgba(0,229,255,0.25); color: var(--cyan); }
+.qa-btn.red { border-color: rgba(255,59,92,0.12); }
+.qa-btn.red:hover { background: rgba(255,59,92,0.07); border-color: rgba(255,59,92,0.25); color: var(--red); }
+
+/* ===================== ACTIVITY FEED ===================== */
+.activity-list { display: flex; flex-direction: column; gap: 1px; }
+.activity-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--r-sm);
+  transition: background 0.15s;
+}
+.activity-item:hover { background: rgba(255,255,255,0.025); }
+.activity-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 5px;
+}
+.activity-content { flex: 1; min-width: 0; }
+.activity-text {
+  font-family: var(--font-body); font-size: 12px; color: var(--text);
+  line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.activity-time {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ===================== BUDGET TRACKER ===================== */
+.budget-list { display: flex; flex-direction: column; gap: 12px; }
+.budget-row { display: flex; flex-direction: column; gap: 4px; }
+.budget-row-meta {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.budget-label {
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.budget-amounts {
+  font-family: var(--font-mono); font-size: 11px; color: var(--text);
+}
+.budget-bar-track {
+  height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden;
+}
+.budget-bar-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 1.2s ease-out;
+}
+.budget-total {
+  display: flex; justify-content: space-between;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-family: var(--font-mono); font-size: 12px;
+}
+.budget-total-label { color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.budget-total-value { color: var(--gold2); font-weight: 500; }
+
+/* ===================== GA WIDGET ===================== */
+.ga-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 14px;
+}
+.ga-stat {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-sm);
+  padding: 12px 14px;
+}
+.ga-stat-label {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+}
+.ga-stat-value {
+  font-family: var(--font-display); font-size: 24px; color: var(--text);
+  line-height: 1; letter-spacing: 1px;
+}
+.ga-stat-delta {
+  font-family: var(--font-mono); font-size: 10px; margin-top: 2px;
+}
+.ga-stat-delta.up { color: var(--green); }
+.ga-stat-delta.down { color: var(--red); }
+.ga-chart { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+.ga-bar {
+  flex: 1; background: rgba(240,165,0,0.25); border-radius: 2px 2px 0 0;
+  transition: background 0.2s;
+}
+.ga-bar:hover { background: rgba(240,165,0,0.55); }
+.ga-bar.today { background: var(--gold); box-shadow: 0 0 6px rgba(240,165,0,0.4); }
+.ga-open-btn {
+  display: block; margin-top: 10px; text-align: center;
+  font-family: var(--font-mono); font-size: 10px; color: var(--gold);
+  background: rgba(240,165,0,0.08); border: 1px solid rgba(240,165,0,0.18);
+  border-radius: 6px; padding: 7px 12px; cursor: pointer;
+  text-decoration: none; letter-spacing: 1px; text-transform: uppercase;
+  transition: all 0.15s;
+}
+.ga-open-btn:hover { background: rgba(240,165,0,0.15); border-color: rgba(240,165,0,0.35); }
+
+/* ===================== DRAFT ROOM / KANBAN ===================== */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  overflow-x: auto;
+}
+@media (max-width: 900px) {
+  .kanban-board { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .kanban-board { grid-template-columns: 1fr 1fr; }
+}
+.kanban-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.kanban-col-header {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 6px 10px;
+  border-radius: 6px; font-weight: 500;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.kanban-col-header .col-count {
+  background: rgba(255,255,255,0.12); border-radius: 10px;
+  padding: 1px 7px; font-size: 10px;
+}
+.kc-intake  .kanban-col-header { background: rgba(155,109,255,0.1); color: #9b6dff; border: 1px solid rgba(155,109,255,0.2); }
+.kc-eval    .kanban-col-header { background: rgba(0,229,255,0.08); color: #00e5ff; border: 1px solid rgba(0,229,255,0.18); }
+.kc-build   .kanban-col-header { background: rgba(240,165,0,0.1); color: var(--gold2); border: 1px solid rgba(240,165,0,0.22); }
+.kc-live    .kanban-col-header { background: rgba(0,255,136,0.08); color: #00ff88; border: 1px solid rgba(0,255,136,0.18); }
+
+.kanban-card {
+  background: var(--bg3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  transition: all 0.2s; cursor: default;
+}
+.kanban-card:hover {
+  border-color: rgba(240,165,0,0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+.kc-card-name {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  color: var(--text); line-height: 1.3; margin-bottom: 4px;
+}
+.kc-card-tag {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.kc-card-tag .priority {
+  display: inline-block; margin-top: 5px;
+  font-size: 9px; padding: 2px 6px; border-radius: 10px;
+}
+.pri-high { background: rgba(255,59,92,0.12); color: var(--red); border: 1px solid rgba(255,59,92,0.2); }
+.pri-med  { background: rgba(240,165,0,0.1);  color: var(--gold2); border: 1px solid rgba(240,165,0,0.2); }
+.pri-low  { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); }
 
 /* ===================== UTILITY CHIPS ===================== */
 .chip {
@@ -655,8 +880,16 @@ body::after {
     <div class="logo-fallback" style="display:none">9</div>
     <div class="topbar-brand">
       <div class="topbar-title">9 ENTERPRISES</div>
-      <div class="topbar-sub">Cockpit — Owner View</div>
+      <div class="topbar-sub" id="huddle-mode-label">The Huddle — Guest View</div>
     </div>
+  </div>
+  <div class="topbar-center">
+    <nav class="topbar-nav">
+      <a class="topbar-nav-link active" href="/cockpit.html">The Huddle</a>
+      <a class="topbar-nav-link" href="/9enterprises.html" target="_blank">War Room</a>
+      <a class="topbar-nav-link" href="/dashboard.html" target="_blank">Dashboard</a>
+      <a class="topbar-nav-link" href="/aigm.html" target="_blank">AiGM</a>
+    </nav>
   </div>
   <div class="topbar-right">
     <div class="live-clock" id="live-clock">--:--:--</div>
@@ -693,7 +926,7 @@ body::after {
 </div>
 
 <!-- ===================== SPRINT BANNER ===================== -->
-<div class="sprint-banner">
+<div class="sprint-banner owner-only">
   <div class="sprint-label">7-Day Enterprise Sprint</div>
   <div class="sprint-meta">
     <div class="sprint-stat">
@@ -719,19 +952,90 @@ body::after {
   </div>
 </div>
 
-<!-- ===================== COCKPIT GRID ===================== -->
-<main class="cockpit">
+<!-- ===================== THE HUDDLE GRID ===================== -->
+<main class="huddle">
 
   <!-- LEFT: Companies -->
   <section class="companies-section fade-up" style="animation-delay:0.05s">
-    <div class="section-label"><span class="accent">01</span> Portfolio Companies</div>
+    <div class="section-label"><span class="accent">01</span> Universe Status — All Companies</div>
     <div class="companies-grid" id="companies-grid">
       <!-- injected by JS -->
     </div>
   </section>
 
+  <!-- LEFT: Middle Row — Quick Actions + Activity + Budget -->
+  <section class="bottom-section fade-up" style="animation-delay:0.12s">
+  <div style="grid-column:1/-1;margin-bottom:-4px;">
+    <div class="section-label"><span class="accent">02</span> Ops Panel</div>
+  </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Quick Actions</div>
+        <div class="chip">OWNER OPS</div>
+      </div>
+      <div class="panel-body" style="padding-top:12px;">
+        <div class="qa-grid">
+          <a class="qa-btn green" href="/9enterprises.html" target="_blank">
+            <span class="qa-icon">&#9876;</span>War Room
+          </a>
+          <button class="qa-btn cyan" onclick="loadTelegramFeed()">
+            <span class="qa-icon">&#8635;</span>Check Inbox
+          </button>
+          <a class="qa-btn" href="/aigm.html" target="_blank">
+            <span class="qa-icon">&#127944;</span>AiGM Site
+          </a>
+          <button class="qa-btn" onclick="checkHealth()">
+            <span class="qa-icon">&#128268;</span>Sys Health
+          </button>
+          <a class="qa-btn" href="/dashboard.html" target="_blank">
+            <span class="qa-icon">&#128202;</span>Dashboard
+          </a>
+          <a class="qa-btn red" href="https://analytics.google.com" target="_blank">
+            <span class="qa-icon">&#128200;</span>Analytics
+          </a>
+        </div>
+        <div id="health-result" style="margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--muted);display:none;"></div>
+      </div>
+    </div>
+
+    <!-- RECENT ACTIVITY FEED -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Recent Activity</div>
+        <div class="live-badge" style="font-size:9px;">
+          <div class="live-dot" style="width:5px;height:5px;"></div>
+          LIVE
+        </div>
+      </div>
+      <div class="panel-body" style="padding-top:10px;">
+        <div class="activity-list" id="activity-list">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- BUDGET TRACKER -->
+    <div class="panel owner-only">
+      <div class="panel-header">
+        <div class="panel-title">Budget Tracker</div>
+        <div class="chip">SPRINT</div>
+      </div>
+      <div class="panel-body" style="padding-top:14px;">
+        <div class="budget-list" id="budget-list">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+
+  </section>
+
   <!-- LEFT: Middle Row -->
   <section class="middle-section fade-up" style="animation-delay:0.15s">
+  <div style="grid-column:1/-1;margin-bottom:-4px;">
+    <div class="section-label"><span class="accent">03</span> Command</div>
+  </div>
 
     <!-- TO-DO -->
     <div class="panel">
@@ -747,14 +1051,14 @@ body::after {
     </div>
 
     <!-- TERMINAL -->
-    <div class="panel terminal-panel">
+    <div class="panel terminal-panel owner-only">
       <div class="panel-header">
         <div class="panel-title">Message 9</div>
         <div class="chip">LIVE RELAY</div>
       </div>
       <div class="terminal-body">
         <div class="terminal-output" id="term-output">
-          <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises Cockpit v1.0</span></div>
+          <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises — The Huddle v2.0</span></div>
           <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Type a message and press Enter — sends directly to 9 via Telegram.</span></div>
           <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Ready.</span></div>
         </div>
@@ -780,7 +1084,7 @@ body::after {
   <aside class="right-col fade-up" style="animation-delay:0.1s">
 
     <!-- TELEGRAM FEED -->
-    <div class="panel tg-feed">
+    <div class="panel tg-feed owner-only">
       <div class="panel-header">
         <div class="panel-title">Telegram Feed</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -802,6 +1106,44 @@ body::after {
           <button class="tg-refresh-btn" id="tg-refresh-btn" onclick="loadTelegramFeed()">Refresh</button>
           <div class="tg-status-text" id="tg-status">Not loaded</div>
         </div>
+      </div>
+    </div>
+
+    <!-- GOOGLE ANALYTICS WIDGET -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Analytics</div>
+        <div class="chip">ainflgm.com</div>
+      </div>
+      <div class="panel-body" style="padding-top:14px;">
+        <div class="ga-stats">
+          <div class="ga-stat">
+            <div class="ga-stat-label">Today</div>
+            <div class="ga-stat-value" id="ga-today">--</div>
+            <div class="ga-stat-delta up" id="ga-today-delta">Loading...</div>
+          </div>
+          <div class="ga-stat">
+            <div class="ga-stat-label">7-Day</div>
+            <div class="ga-stat-value" id="ga-week">--</div>
+            <div class="ga-stat-delta up" id="ga-week-delta">Loading...</div>
+          </div>
+          <div class="ga-stat">
+            <div class="ga-stat-label">Sessions</div>
+            <div class="ga-stat-value" id="ga-sessions">--</div>
+            <div class="ga-stat-delta" id="ga-sessions-delta" style="color:var(--muted);">30-day</div>
+          </div>
+          <div class="ga-stat">
+            <div class="ga-stat-label">Bounce</div>
+            <div class="ga-stat-value" id="ga-bounce">--</div>
+            <div class="ga-stat-delta" id="ga-bounce-delta" style="color:var(--muted);">rate</div>
+          </div>
+        </div>
+        <div class="ga-chart" id="ga-chart">
+          <!-- injected by JS -->
+        </div>
+        <a class="ga-open-btn" href="https://analytics.google.com/analytics/web/#/p000000000/reports/intelligenthome" target="_blank">
+          Open Full Analytics Dashboard &#8599;
+        </a>
       </div>
     </div>
 
@@ -860,6 +1202,25 @@ body::after {
     </div>
 
   </aside>
+
+  <!-- DRAFT ROOM — full width bottom -->
+  <section class="draft-room-section fade-up" style="animation-delay:0.25s">
+    <div class="section-label"><span class="accent">04</span> Draft Room — Concept Pipeline</div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Draft Board</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="chip">KANBAN</div>
+          <div class="chip" id="draft-total-chip">-- concepts</div>
+        </div>
+      </div>
+      <div class="panel-body" style="padding-top:14px;">
+        <div class="kanban-board" id="kanban-board">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
@@ -1215,6 +1576,303 @@ function setBrowserUrl(url) {
   urlInput.value = url;
   loadBrowser();
 }
+
+// ===================== SYSTEM HEALTH CHECK =====================
+async function checkHealth() {
+  const result = document.getElementById('health-result');
+  result.style.display = 'block';
+  result.textContent = 'Checking hub...';
+  result.style.color = 'var(--muted)';
+  try {
+    const res = await fetch('http://localhost:3457/health');
+    if (res.ok) {
+      const data = await res.json();
+      result.innerHTML = `<span style="color:var(--green)">&#10003; Hub ONLINE</span> &nbsp;|&nbsp; Mode: ${data.mode || 'relay'} &nbsp;|&nbsp; Uptime: ${data.uptime || '--'}`;
+    } else {
+      result.innerHTML = `<span style="color:var(--red)">&#10007; Hub returned ${res.status}</span>`;
+    }
+  } catch {
+    result.innerHTML = `<span style="color:var(--red)">&#10007; Hub unreachable (localhost:3457)</span>`;
+  }
+  setTimeout(() => { result.style.display = 'none'; }, 8000);
+}
+
+// ===================== RECENT ACTIVITY =====================
+const activityData = [
+  { color: 'var(--green)',  text: 'PIN gate added — Owner/Guest mode live', time: 'Just now' },
+  { color: 'var(--gold)',   text: 'War Room + Huddle architecture finalized', time: 'Just now' },
+  { color: 'var(--cyan)',   text: 'tmux crash-proofing verified (resurrect + continuum)', time: 'Today' },
+  { color: 'var(--gold)',   text: 'Enterprise Sprint Day 1 launched', time: 'Today' },
+  { color: 'var(--purple)', text: 'Burrow partnership page deployed', time: 'Mar 29' },
+  { color: 'var(--green)',  text: 'The Huddle command center deployed', time: 'Mar 29' },
+  { color: 'var(--cyan)',   text: 'Comms hub startup protocol v2 implemented', time: 'Mar 28' },
+  { color: 'var(--orange)', text: 'trader9 Alpaca paper mode initiated', time: 'Mar 28' },
+];
+
+(function renderActivity() {
+  const list = document.getElementById('activity-list');
+  activityData.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'activity-item';
+    div.innerHTML = `
+      <div class="activity-dot" style="background:${item.color};box-shadow:0 0 4px ${item.color};"></div>
+      <div class="activity-content">
+        <div class="activity-text">${item.text}</div>
+        <div class="activity-time">${item.time}</div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+})();
+
+// ===================== BUDGET TRACKER =====================
+const budgetItems = [
+  { label: 'HeyGen Pro',     spent: 99,  limit: 99,  color: '#f0a500' },
+  { label: 'Anthropic API',  spent: 28,  limit: 100, color: '#00e5ff' },
+  { label: 'Sprint Budget',  spent: 127, limit: 1750, color: '#00ff88' },
+  { label: 'Daily Burn',     spent: 31,  limit: 100, color: '#9b6dff' },
+];
+
+(function renderBudget() {
+  const list = document.getElementById('budget-list');
+  budgetItems.forEach(b => {
+    const pct = Math.min(100, Math.round((b.spent / b.limit) * 100));
+    const color = pct >= 90 ? 'var(--red)' : pct >= 70 ? 'var(--orange)' : b.color;
+    const div = document.createElement('div');
+    div.className = 'budget-row';
+    div.innerHTML = `
+      <div class="budget-row-meta">
+        <span class="budget-label">${b.label}</span>
+        <span class="budget-amounts" style="color:${color}">$${b.spent} <span style="color:var(--muted)">/ $${b.limit}</span></span>
+      </div>
+      <div class="budget-bar-track">
+        <div class="budget-bar-fill" style="width:${pct}%;background:${color};box-shadow:0 0 5px ${color};"></div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  // Total row
+  const totalSpent = budgetItems.reduce((sum, b) => sum + b.spent, 0);
+  const totalDiv = document.createElement('div');
+  totalDiv.className = 'budget-total';
+  totalDiv.innerHTML = `
+    <span class="budget-total-label">Total Sprint Burn</span>
+    <span class="budget-total-value">$${totalSpent} / $1,750</span>
+  `;
+  list.appendChild(totalDiv);
+})();
+
+// ===================== GOOGLE ANALYTICS WIDGET =====================
+(function renderGA() {
+  // Placeholder data — replace with real GA API when credentials available
+  const gaData = {
+    today: '142', todayDelta: '+18% vs yesterday',
+    week: '934', weekDelta: '+41% vs prev week',
+    sessions: '1,847', bounce: '52%'
+  };
+  const sparkData = [38, 52, 47, 61, 70, 88, 110, 95, 118, 130, 142];
+
+  document.getElementById('ga-today').textContent = gaData.today;
+  document.getElementById('ga-today-delta').textContent = gaData.todayDelta;
+  document.getElementById('ga-week').textContent = gaData.week;
+  document.getElementById('ga-week-delta').textContent = gaData.weekDelta;
+  document.getElementById('ga-sessions').textContent = gaData.sessions;
+  document.getElementById('ga-bounce').textContent = gaData.bounce;
+
+  const chart = document.getElementById('ga-chart');
+  const max = Math.max(...sparkData);
+  sparkData.forEach((val, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'ga-bar' + (i === sparkData.length - 1 ? ' today' : '');
+    bar.style.height = Math.round((val / max) * 100) + '%';
+    bar.title = `Day ${i + 1}: ${val} users`;
+    chart.appendChild(bar);
+  });
+})();
+
+// ===================== DRAFT ROOM / KANBAN =====================
+const kanbanData = {
+  intake: [
+    { name: 'NBA/MLB Spinoff', tag: 'AiGM expansion', priority: 'med' },
+    { name: 'Subscription Bundle', tag: 'All products', priority: 'low' },
+    { name: 'Mortgage AI Underwriter', tag: 'Rapid x 9E', priority: 'high' },
+    { name: 'Social Media Autopilot', tag: 'x9 + IG/TikTok', priority: 'med' },
+  ],
+  eval: [
+    { name: 'AI Education Platform', tag: 'Hitchhiker\'s Guide', priority: 'high' },
+    { name: 'Prompt Scripts Marketplace', tag: 'B2B/B2C', priority: 'high' },
+    { name: 'Dropship Co', tag: 'eCommerce proving ground', priority: 'med' },
+    { name: 'trader9', tag: 'Alpaca paper mode active', priority: 'med' },
+  ],
+  build: [
+    { name: 'FreeAgent9', tag: 'AI Concierge pilot', priority: 'high' },
+    { name: 'agent9', tag: 'AI Real Estate', priority: 'med' },
+    { name: 'x9 Accounts', tag: 'IG + TikTok + Sleeper', priority: 'high' },
+    { name: 'Jules v2', tag: 'Family assistant upgrade', priority: 'low' },
+  ],
+  live: [
+    { name: 'AiGM', tag: 'ainflgm.com — live traffic', priority: 'high' },
+    { name: 'Jules Pilot', tag: 'Family AI — active', priority: 'med' },
+    { name: '9 Comms Hub', tag: 'Telegram + voice + email', priority: 'high' },
+    { name: 'Burrow Partnership Page', tag: 'Outreach asset live', priority: 'low' },
+  ]
+};
+
+const colMeta = {
+  intake: { label: 'Draft Prospects', cls: 'kc-intake' },
+  eval:   { label: 'Evaluation',      cls: 'kc-eval'   },
+  build:  { label: 'In Build',        cls: 'kc-build'  },
+  live:   { label: 'Live',            cls: 'kc-live'   },
+};
+
+(function renderKanban() {
+  const board = document.getElementById('kanban-board');
+  let total = 0;
+  ['intake', 'eval', 'build', 'live'].forEach(col => {
+    const cards = kanbanData[col];
+    const meta = colMeta[col];
+    total += cards.length;
+    const colDiv = document.createElement('div');
+    colDiv.className = `kanban-col ${meta.cls}`;
+    colDiv.innerHTML = `
+      <div class="kanban-col-header">
+        ${meta.label}
+        <span class="col-count">${cards.length}</span>
+      </div>
+    `;
+    cards.forEach(card => {
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'kanban-card';
+      cardDiv.innerHTML = `
+        <div class="kc-card-name">${card.name}</div>
+        <div class="kc-card-tag">
+          ${card.tag}
+          <span class="priority pri-${card.priority}">${card.priority.toUpperCase()}</span>
+        </div>
+      `;
+      colDiv.appendChild(cardDiv);
+    });
+    board.appendChild(colDiv);
+  });
+  document.getElementById('draft-total-chip').textContent = `${total} concepts`;
+})();
+
+// ===================== PIN GATE (OWNER MODE) =====================
+const OWNER_PIN_HASH = '9e2026'; // Simple PIN — upgrade to SHA-256 hash later
+const PIN_STORAGE_KEY = '9e_huddle_auth';
+
+function checkOwnerAuth() {
+  return sessionStorage.getItem(PIN_STORAGE_KEY) === 'authenticated';
+}
+
+function applyAccessMode(isOwner) {
+  const ownerPanels = document.querySelectorAll('.owner-only');
+  const modeLabel = document.getElementById('huddle-mode-label');
+
+  if (isOwner) {
+    ownerPanels.forEach(el => el.style.display = '');
+    if (modeLabel) modeLabel.textContent = 'The Huddle — Owner View';
+    document.body.classList.add('owner-mode');
+    document.body.classList.remove('guest-mode');
+  } else {
+    ownerPanels.forEach(el => el.style.display = 'none');
+    if (modeLabel) modeLabel.textContent = 'The Huddle — Guest View';
+    document.body.classList.add('guest-mode');
+    document.body.classList.remove('owner-mode');
+  }
+}
+
+function showPinModal() {
+  // Don't show if already authenticated this session
+  if (checkOwnerAuth()) {
+    applyAccessMode(true);
+    return;
+  }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'pin-overlay';
+  overlay.innerHTML = `
+    <div style="
+      position:fixed;inset:0;z-index:9999;
+      background:rgba(0,0,0,0.85);
+      backdrop-filter:blur(12px);
+      display:flex;align-items:center;justify-content:center;
+      animation:fadeIn 0.3s ease;
+    ">
+      <div style="
+        background:#111114;
+        border:1px solid rgba(240,165,0,0.25);
+        border-radius:16px;
+        padding:40px 36px;
+        max-width:380px;width:90%;
+        text-align:center;
+        box-shadow:0 0 60px rgba(240,165,0,0.1);
+      ">
+        <div style="font-size:48px;margin-bottom:12px;">9</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.1em;color:#f0a500;margin-bottom:8px;">THE HUDDLE</div>
+        <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:28px;">Enter PIN for Owner access, or continue as Guest</div>
+        <input id="pin-input" type="password" maxlength="10" placeholder="Enter PIN" style="
+          width:100%;padding:14px 16px;
+          background:rgba(255,255,255,0.05);
+          border:1px solid rgba(255,255,255,0.12);
+          border-radius:10px;
+          color:#fff;font-size:16px;
+          text-align:center;letter-spacing:0.3em;
+          outline:none;
+          margin-bottom:16px;
+        " autofocus>
+        <div id="pin-error" style="color:#ff3b5c;font-size:12px;margin-bottom:12px;display:none;">Incorrect PIN</div>
+        <div style="display:flex;gap:10px;">
+          <button id="pin-guest-btn" style="
+            flex:1;padding:12px;
+            background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.12);
+            border-radius:10px;
+            color:rgba(255,255,255,0.6);
+            font-size:14px;font-weight:600;
+            cursor:pointer;transition:all 0.2s;
+          ">Guest Mode</button>
+          <button id="pin-submit-btn" style="
+            flex:1;padding:12px;
+            background:linear-gradient(135deg,#f0a500,#e09000);
+            border:none;border-radius:10px;
+            color:#000;font-size:14px;font-weight:700;
+            cursor:pointer;transition:all 0.2s;
+          ">Unlock</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const pinInput = document.getElementById('pin-input');
+  const pinError = document.getElementById('pin-error');
+
+  document.getElementById('pin-submit-btn').onclick = function() {
+    if (pinInput.value === OWNER_PIN_HASH) {
+      sessionStorage.setItem(PIN_STORAGE_KEY, 'authenticated');
+      overlay.remove();
+      applyAccessMode(true);
+    } else {
+      pinError.style.display = 'block';
+      pinInput.value = '';
+      pinInput.focus();
+      setTimeout(() => { pinError.style.display = 'none'; }, 2000);
+    }
+  };
+
+  document.getElementById('pin-guest-btn').onclick = function() {
+    overlay.remove();
+    applyAccessMode(false);
+  };
+
+  pinInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('pin-submit-btn').click();
+  });
+}
+
+// Initialize on load
+showPinModal();
 </script>
 
 </body>
