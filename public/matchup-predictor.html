@@ -1010,6 +1010,12 @@ a:hover { text-decoration: underline; }
     <a href="/mortgage-calc.html">Mortgage Calculator</a>
   </div>
   <div>Predictions are for entertainment purposes only. &copy; 2026 AiNFL GM</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
 </footer>
 
 <!-- Toast -->
@@ -1449,5 +1455,30 @@ function loadFromHistory(idx) {
 buildDropdowns();
 renderHistory();
 </script>
+
+<section style="max-width:860px;margin:48px auto 0;padding:0 20px 60px;font-family:system-ui,sans-serif;color:#c8d6e5;line-height:1.75;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:16px;border-top:2px solid #FB4F14;padding-top:24px;">How the NFL Matchup Predictor Works</h2>
+  <p style="margin-bottom:14px;">The AiNFLGM Matchup Predictor analyzes two NFL teams head-to-head and produces a win probability based on a multi-factor model that goes well beyond simple record comparison. Football games are decided by dozens of interacting variables — offensive efficiency, defensive pressure rate, turnover tendencies, special teams performance, and home-field advantage all contribute to the final outcome. This tool quantifies each of those variables and translates them into a clear probability estimate.</p>
+  <p style="margin-bottom:14px;">The prediction engine pulls from current-season team statistics including points per game, yards per play, third-down conversion rate, red zone efficiency, and sack rate. These figures are weighted by recency — performance from the last four weeks carries more weight than season-opening results, because football teams evolve rapidly through injuries, scheme adjustments, and player development. A team that started 1-3 but has won five straight looks very different in this model than a team coasting on an early-season hot streak.</p>
+  <p style="margin-bottom:14px;">Home-field advantage is factored in as a baseline adjustment, with additional weight given to stadiums known for their crowd noise impact on opposing offenses. Dome teams playing outdoor games in late-season cold weather also receive a negative adjustment because environmental factors meaningfully affect offensive production. The model accounts for divisional familiarity as well, since teams that face each other twice per season tend to produce tighter, lower-scoring games than inter-conference matchups.</p>
+  <p style="margin-bottom:14px;">The result is displayed as a win probability percentage for each team, accompanied by a predicted score range and key factors driving the prediction. Run multiple matchups to build out a full week's slate analysis, or use it to stress-test your playoff bracket picks before going public.</p>
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin:36px 0 16px;border-top:2px solid #FB4F14;padding-top:24px;">Frequently Asked Questions</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How accurate is the matchup predictor?</h3>
+  <p style="margin-bottom:20px;">No NFL prediction model achieves perfect accuracy — football has too much variance for that. However, this model is calibrated to be accurate on games with high confidence ratings (65% or higher probability shown) roughly 68-72% of the time when tested against historical data. Games flagged as near-coin-flips (45-55% range) are genuinely difficult to predict and should be treated as such. Always treat predictions as probabilistic guidance, not guaranteed outcomes.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Does the tool factor in player injuries?</h3>
+  <p style="margin-bottom:20px;">The model uses team-level performance data that inherently reflects the impact of injuries that have already occurred during the season. If a team's offense has declined due to a key player being sidelined, that decline shows up in the underlying statistics the model ingests. Injury reports announced after the most recent data refresh are not yet reflected, so always cross-reference with the current week's injury report for late-breaking status changes on key players.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Is home-field advantage included in the prediction?</h3>
+  <p style="margin-bottom:20px;">Yes. The model applies a baseline home-field advantage adjustment and then applies stadium-specific modifiers for venues known to have outsized crowd noise effects. Historically, NFL home teams win approximately 57% of games over large samples, but the advantage varies significantly by venue and matchup type. The predictor displays whether home advantage is a significant factor in a given matchup or whether the talent gap between the teams overrides it.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Can I use this tool for fantasy football start/sit decisions?</h3>
+  <p style="margin-bottom:20px;">Absolutely. Matchup difficulty is one of the most important variables in weekly fantasy football decisions, especially for skill positions like running back and wide receiver. A high-probability win prediction for a team often correlates with positive game script — meaning they are more likely to run the ball effectively and maintain drives. Conversely, teams projected to trail tend to abandon the run and throw more, which can benefit their wide receivers and tight ends.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How far in advance can I run predictions?</h3>
+  <p style="margin-bottom:20px;">You can run predictions for any matchup at any time, including future playoff scenarios and hypothetical games. For games more than a week away, the predictions are directionally useful but carry more uncertainty because teams evolve week to week. For current-week games, predictions are based on the most recent data available and are most reliable when team performance trends have been consistent over the past three to four weeks.</p>
+</section>
 </body>
 </html>

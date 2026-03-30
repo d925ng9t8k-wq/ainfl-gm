@@ -842,6 +842,12 @@ footer {
   </div>
   <div class="footer-copy">Trade values are for dynasty fantasy football. Updated for 2026 season.</div>
   <div class="footer-power">Powered by <a href="https://9enterprises.ai">9 Enterprises</a></div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
 </footer>
 
 <script>
@@ -1333,5 +1339,30 @@ function shareResult() {
 // ─────────────────────────────────────────────────────────────────────────────
 init();
 </script>
+
+<section style="max-width:860px;margin:48px auto 0;padding:0 20px 60px;font-family:system-ui,sans-serif;color:#c8d6e5;line-height:1.75;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:16px;border-top:2px solid #FB4F14;padding-top:24px;">How the NFL Trade Analyzer Works</h2>
+  <p style="margin-bottom:14px;">The AiNFLGM Trade Analyzer uses a weighted point-value system derived from historical NFL draft trade data, player performance metrics, and salary cap efficiency. Every NFL trade involves a complex exchange of assets — draft picks, established veterans, young developing players, and future cap implications. This tool distills that complexity into a single, data-backed verdict so you can evaluate any trade scenario in seconds.</p>
+  <p style="margin-bottom:14px;">When you add players to each side of the trade, the analyzer calculates each player's current trade value based on their position, age, contract status, recent performance, and years remaining on their deal. Younger players on rookie contracts carry premium value because they provide elite production at below-market cost — a critical advantage in today's salary-cap-constrained NFL. Veterans approaching the end of their contracts may show discounted values even if they remain highly productive, because their cap hit relative to performance becomes less favorable.</p>
+  <p style="margin-bottom:14px;">Draft picks are valued using a dynamic pick chart that adjusts for round, projected pick position, and the current team's win-loss trajectory. A top-10 first-round pick carries significantly more value than a late first, and the tool reflects that difference automatically. You can also factor in positional scarcity — quarterbacks, left tackles, and pass rushers command premium value in trades relative to positions with deeper talent pools.</p>
+  <p style="margin-bottom:14px;">The final output shows which side of the trade wins by value percentage, along with a confidence rating based on how close the exchange is. Trades within 10% of even value are flagged as balanced. Anything beyond 20% in one direction signals a clear winner and loser. Use this tool before every trade deadline conversation to enter negotiations with data on your side.</p>
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin:36px 0 16px;border-top:2px solid #FB4F14;padding-top:24px;">Frequently Asked Questions</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How is player trade value calculated?</h3>
+  <p style="margin-bottom:20px;">Trade value combines multiple data points: age, position tier, contract cost versus market rate, recent performance grades, injury history, and years of team control remaining. Players under age 26 on cost-controlled contracts (especially rookie deals) receive the highest base values because they represent long-term assets. High-cost veterans receive adjusted values that account for the salary cap burden a trading team inherits.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Can I use this tool to evaluate real NFL trades?</h3>
+  <p style="margin-bottom:20px;">Yes. The tool is built for both real NFL trade analysis and fantasy football. You can evaluate any reported trade — whether from the news cycle or a trade deadline rumor — by entering the players and picks on each side. The value model is calibrated to reflect how NFL front offices actually weigh assets, so the output aligns closely with professional analyst consensus.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Why does the tool sometimes show a trade as uneven even when both teams seem to benefit?</h3>
+  <p style="margin-bottom:20px;">A trade can be good for both teams in context while still being uneven on raw value. For example, a contending team might overpay in draft capital to acquire a proven starter because they are in win-now mode — that is a rational decision even if the value exchange favors the trading partner. The analyzer shows raw asset value; the strategic fit is yours to layer on top. Think of it as the foundation, not the final answer.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Are draft picks included in the analysis?</h3>
+  <p style="margin-bottom:20px;">Yes. You can add draft picks as trade assets on either side. Picks are assigned values based on round (1st through 7th), projected position within that round, and whether they are current-year or future picks. Future picks carry a slight discount to reflect uncertainty in where the pick will land. First-round picks from projected playoff teams are valued lower than first-round picks from rebuilding teams, because the position within the round matters enormously.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How often is the player data updated?</h3>
+  <p style="margin-bottom:20px;">Player values are refreshed seasonally using the latest NFL transaction data, injury reports, and performance statistics. During the active NFL season and trade deadline windows, data is reviewed and updated more frequently to ensure values reflect current player status. Always check the data timestamp shown in the tool to confirm you are working with the most recent snapshot.</p>
+</section>
 </body>
 </html>

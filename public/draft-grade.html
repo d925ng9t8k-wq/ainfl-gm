@@ -745,6 +745,12 @@ select {
     <a href="/team-needs.html">Team Needs</a>
   </div>
   <div style="margin-top:8px; color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
 </footer>
 
 <!-- More Tools -->
@@ -1320,5 +1326,29 @@ renderPicks();
 renderOverall();
 </script>
 
+<section style="max-width:860px;margin:48px auto 0;padding:0 20px 60px;font-family:system-ui,sans-serif;color:#c8d6e5;line-height:1.75;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:16px;border-top:2px solid #FB4F14;padding-top:24px;">How the NFL Draft Grader Works</h2>
+  <p style="margin-bottom:14px;">The AiNFLGM Draft Grader scores your team's draft class in real time as you enter picks, giving you an overall letter grade and a breakdown of each selection's value relative to where it was taken. The NFL Draft is the most consequential annual event for building a roster, and understanding value at each pick position is the difference between building a champion and spinning your wheels for a decade.</p>
+  <p style="margin-bottom:14px;">The grading system works by comparing the positional value of each selection against the historical production expected from that draft slot. First-round picks are held to a higher standard because those selections cost the most in terms of draft capital and carry the largest contract obligations on the fifth-year rookie option. A wide receiver taken in the top-10 needs to project as a true number-one target to justify the cost — the tool penalizes reaches and rewards selections where a team gets a player projected higher than the pick number suggests.</p>
+  <p style="margin-bottom:14px;">Team needs are factored into the grading algorithm as well. Selecting a position of high team need at good value earns a bonus in the grade calculation, while selecting a position of minimal need — even at fair value — receives a slight deduction. NFL teams that ignore positional need in the draft often find themselves cap-strapped later when they are forced to address those holes through expensive free agency. The best drafts fill needs with value simultaneously.</p>
+  <p style="margin-bottom:14px;">After all picks are entered, the tool produces an overall class grade, a positional distribution chart, and a needs-met assessment. Use it to grade real NFL draft classes on draft night, evaluate your fantasy league's rookie selections, or test different mock draft scenarios before the actual event.</p>
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin:36px 0 16px;border-top:2px solid #FB4F14;padding-top:24px;">Frequently Asked Questions</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How does the tool determine if a pick is a reach or good value?</h3>
+  <p style="margin-bottom:20px;">Each pick is evaluated against a consensus board that aggregates player rankings from multiple scouting sources. If a player is taken more than half a round earlier than their consensus ranking suggests, it is flagged as a potential reach. If they fall to your pick position, it is flagged as good value. The algorithm accounts for positional run patterns — quarterbacks and pass rushers consistently go earlier than pure value suggests because of positional scarcity and market demand.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Does the grader account for what other teams are doing?</h3>
+  <p style="margin-bottom:20px;">The grader evaluates each team's picks in isolation against the value board, not relative to other teams. This is by design — a team's draft grade should reflect whether they got value at each position they selected, not whether they outperformed other GMs. The full class comparison feature is separate and lets you rank all 32 teams' draft classes against each other after entering all picks.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Can I grade previous NFL draft classes, not just current ones?</h3>
+  <p style="margin-bottom:20px;">Yes. The tool supports entering picks from any historical draft, and when grading past classes, the system can optionally show how those picks actually developed — mapping the grade prediction against real-world outcomes. This retrospective mode is one of the most educational features for understanding how NFL front offices make decisions and where their evaluation processes succeed or fail.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">What positions receive the highest value grades?</h3>
+  <p style="margin-bottom:20px;">Quarterbacks, edge rushers, and left tackles historically generate the highest return on draft investment relative to their pick cost. These are the premium positions in modern football because they directly influence the outcome of every play. Interior defensive linemen, slot corners, and fullbacks tend to generate lower grades even when selected at fair value because their impact is less directly tied to wins and losses on a per-snap basis.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How should I interpret a B+ draft grade versus an A- grade?</h3>
+  <p style="margin-bottom:20px;">Draft grades on the night of the draft are inherently projections — no one truly knows how players will develop. An A grade means the team maximized value at every pick and addressed key needs. A B+ means they did well overall with one or two minor reaches or missed opportunities. Statistically, the difference in outcomes between A and B+ draft classes is minimal over time because development variance is so high. Focus more on whether needs were addressed than on squeezing one additional letter grade point.</p>
+</section>
 </body>
 </html>
