@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
 <meta name="theme-color" content="#0a0a0a">
-<title>9 Huddle</title>
+<title>9 Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,6 +40,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:linea
 @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.3;}}
 @keyframes progress-fill{from{width:0;}to{width:var(--w);}}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 .fade-up{animation:fadeUp .4s ease both;}
 
 /* ===================== PIN OVERLAY ===================== */
@@ -72,13 +73,23 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:linea
 .topbar-nav a:hover,.topbar-nav a.active{color:var(--orange);background:var(--orange-dim);}
 .topbar-right{display:flex;align-items:center;gap:14px;}
 .live-clock{font-family:var(--font-mono);font-size:13px;color:var(--orange);letter-spacing:1px;}
-.status-live{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--green);letter-spacing:1px;text-transform:uppercase;}
+.status-live-indicator{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--green);letter-spacing:1px;text-transform:uppercase;}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 1.5s ease-in-out infinite;}
 @media(max-width:768px){.topbar-nav{display:none;}.topbar-title{font-size:16px;letter-spacing:2px;}.topbar-sub{display:none;}}
 
+/* ===================== 10K FOOT VIEW ===================== */
+.overview-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px 20px 0;max-width:1500px;margin:0 auto;}
+@media(max-width:900px){.overview-bar{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:500px){.overview-bar{grid-template-columns:repeat(2,1fr);}}
+.stat-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:14px 16px;text-align:center;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);opacity:.5;}
+.stat-value{font-family:var(--font-display);font-size:32px;color:var(--orange);line-height:1;}
+.stat-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;}
+
 /* ===================== MAIN LAYOUT ===================== */
-.huddle{display:grid;grid-template-columns:1fr 340px;gap:16px;padding:16px 20px 40px;max-width:1500px;margin:0 auto;}
-@media(max-width:1100px){.huddle{grid-template-columns:1fr;}}
+.cockpit{display:grid;grid-template-columns:1fr 1fr 340px;gap:16px;padding:16px 20px 40px;max-width:1500px;margin:0 auto;}
+@media(max-width:1200px){.cockpit{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.cockpit{grid-template-columns:1fr;}}
 
 /* Sections */
 .section-label{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:12px;}
@@ -98,78 +109,106 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:linea
 body.owner-mode .owner-only{display:block;}
 body.owner-mode .guest-only{display:none;}
 
+/* ===================== PERFORMANCE GAUGES ===================== */
+.gauges-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.gauge{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);padding:12px 14px;display:flex;align-items:center;gap:12px;}
+.gauge-icon{font-size:20px;flex-shrink:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--orange-dim);}
+.gauge-info{flex:1;min-width:0;}
+.gauge-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gauge-value{font-family:var(--font-mono);font-size:13px;font-weight:600;margin-top:2px;}
+.gauge-value.up{color:var(--green);}
+.gauge-value.down{color:var(--red);}
+.gauge-value.pending{color:var(--yellow);}
+.gauge-value.neutral{color:var(--text);}
+
 /* ===================== COMPANIES GRID ===================== */
-.companies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.companies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
 @media(max-width:900px){.companies-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:500px){.companies-grid{grid-template-columns:1fr;}}
-.company-card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s;animation:fadeUp .4s ease both;}
-.company-card:hover{border-color:rgba(249,115,22,.2);transform:translateY(-1px);}
+.company-card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);padding:10px 12px;position:relative;overflow:hidden;transition:border-color .25s;animation:fadeUp .4s ease both;}
+.company-card:hover{border-color:rgba(249,115,22,.2);}
 .company-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-accent,var(--orange));opacity:.7;}
-.cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
-.cc-name{font-family:var(--font-display);font-size:17px;letter-spacing:1.5px;color:var(--text);}
-.cc-tag{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
-.cc-status{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.cc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.cc-name{font-family:var(--font-display);font-size:15px;letter-spacing:1px;color:var(--text);}
+.cc-tag{font-family:var(--font-mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.cc-status{font-family:var(--font-mono);font-size:8px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
 .status-active{background:rgba(0,255,136,.1);color:#00ff88;border:1px solid rgba(0,255,136,.2);}
 .status-building{background:rgba(0,229,255,.1);color:#00e5ff;border:1px solid rgba(0,229,255,.2);}
 .status-research{background:rgba(155,109,255,.1);color:#9b6dff;border:1px solid rgba(155,109,255,.2);}
 .status-live{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.25);}
-.cc-metric{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:8px;}
-.cc-metric span{color:var(--text);font-weight:500;}
-.cc-progress{height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}
-.cc-progress-fill{height:100%;border-radius:3px;background:var(--card-accent,var(--orange));width:var(--w,0);animation:progress-fill 1s ease both;}
-.cc-pct{font-family:var(--font-mono);font-size:10px;color:var(--dim);text-align:right;margin-top:3px;}
+.status-concept{background:rgba(136,136,136,.1);color:#888;border:1px solid rgba(136,136,136,.2);}
 
-/* ===================== QUICK ACTIONS ===================== */
-.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-@media(max-width:500px){.qa-grid{grid-template-columns:repeat(2,1fr);}}
-.qa-btn{display:flex;align-items:center;gap:6px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;transition:all .2s;text-decoration:none !important;}
-.qa-btn:hover{border-color:var(--orange-glow);background:var(--orange-dim);}
-.qa-icon{font-size:14px;}
-
-/* ===================== TO-DO ===================== */
-.todo-list{display:flex;flex-direction:column;gap:2px;}
-.todo-item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:var(--r-sm);cursor:pointer;transition:background .15s;user-select:none;}
-.todo-item:hover{background:rgba(255,255,255,.03);}
-.todo-item.checked{opacity:.4;}
-.todo-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(255,255,255,.2);background:transparent;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
-.todo-item.checked .todo-cb{background:var(--orange);border-color:var(--orange);}
-.todo-item.checked .todo-cb::after{content:'';position:absolute;left:3px;top:1px;width:5px;height:8px;border:2px solid #000;border-top:none;border-left:none;transform:rotate(45deg);}
-.todo-text{font-size:13px;color:var(--text);line-height:1.4;}
-.todo-item.checked .todo-text{text-decoration:line-through;color:var(--muted);}
-.todo-clear{font-family:var(--font-mono);font-size:10px;color:var(--muted);background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:4px 10px;cursor:pointer;transition:all .15s;}
-.todo-clear:hover{color:var(--text);background:rgba(255,255,255,.05);}
+/* ===================== TELEGRAM FEED ===================== */
+.tg-feed{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;}
+.tg-msg{padding:8px 10px;border-radius:var(--r-sm);font-family:var(--font-mono);font-size:11px;line-height:1.4;position:relative;}
+.tg-msg.inbound{background:rgba(0,229,255,.06);border-left:2px solid var(--cyan);}
+.tg-msg.outbound{background:rgba(249,115,22,.06);border-left:2px solid var(--orange);}
+.tg-meta{display:flex;justify-content:space-between;margin-bottom:3px;}
+.tg-channel{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+.tg-time{font-size:9px;color:var(--dim);}
+.tg-text{color:var(--text);word-break:break-word;}
+.tg-empty{font-family:var(--font-mono);font-size:11px;color:var(--dim);text-align:center;padding:20px 0;}
 
 /* ===================== MESSAGE TERMINAL ===================== */
 .terminal-body{padding:0;}
-.terminal-output{height:180px;overflow-y:auto;padding:12px 16px;font-family:var(--font-mono);font-size:11px;background:rgba(0,0,0,.3);}
+.terminal-output{height:140px;overflow-y:auto;padding:10px 14px;font-family:var(--font-mono);font-size:11px;background:rgba(0,0,0,.3);}
 .terminal-output::-webkit-scrollbar{width:3px;}
 .terminal-output::-webkit-scrollbar-thumb{background:var(--bg4);}
-.term-line{display:flex;gap:8px;margin-bottom:4px;line-height:1.5;}
+.term-line{display:flex;gap:8px;margin-bottom:3px;line-height:1.5;}
 .term-prefix{color:var(--orange);flex-shrink:0;}
 .term-text{color:var(--text);}
 .term-text.system{color:var(--orange);}
 .term-text.muted{color:var(--muted);}
 .term-text.sent{color:var(--cyan);}
 .term-text.error{color:var(--red);}
-.term-input-row{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.06);padding:0;}
+.term-input-row{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.06);}
 .term-prompt{padding:10px 8px 10px 14px;color:var(--orange);font-family:var(--font-mono);font-size:13px;}
 .term-input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font-mono);font-size:12px;padding:10px 0;outline:none;}
 .term-send-btn{padding:10px 16px;background:var(--orange);color:#000;font-family:var(--font-mono);font-size:11px;font-weight:600;border:none;cursor:pointer;letter-spacing:1px;transition:background .2s;}
 .term-send-btn:hover{background:#fb923c;}
+
+/* ===================== QUICK ACTIONS ===================== */
+.qa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.qa-btn{display:flex;align-items:center;gap:6px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;transition:all .2s;text-decoration:none !important;border:none;}
+.qa-btn:hover{border-color:var(--orange-glow);background:var(--orange-dim);color:var(--orange);}
+.qa-icon{font-size:14px;}
+
+/* ===================== TO-DO ===================== */
+.todo-list{display:flex;flex-direction:column;gap:2px;max-height:220px;overflow-y:auto;}
+.todo-item{display:flex;align-items:flex-start;gap:10px;padding:6px 8px;border-radius:var(--r-sm);cursor:pointer;transition:background .15s;user-select:none;}
+.todo-item:hover{background:rgba(255,255,255,.03);}
+.todo-item.checked{opacity:.4;}
+.todo-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(255,255,255,.2);background:transparent;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
+.todo-item.checked .todo-cb{background:var(--orange);border-color:var(--orange);}
+.todo-item.checked .todo-cb::after{content:'';position:absolute;left:3px;top:1px;width:5px;height:8px;border:2px solid #000;border-top:none;border-left:none;transform:rotate(45deg);}
+.todo-text{font-size:12px;color:var(--text);line-height:1.4;flex:1;}
+.todo-item.checked .todo-text{text-decoration:line-through;color:var(--muted);}
+.todo-remove{font-size:11px;color:var(--dim);cursor:pointer;padding:0 4px;opacity:0;transition:opacity .15s;flex-shrink:0;}
+.todo-item:hover .todo-remove{opacity:1;}
+.todo-remove:hover{color:var(--red);}
+.todo-add-row{display:flex;gap:6px;margin-top:8px;}
+.todo-add-input{flex:1;padding:7px 10px;background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);color:var(--text);font-family:var(--font-mono);font-size:11px;outline:none;}
+.todo-add-input:focus{border-color:var(--orange);}
+.todo-add-btn{padding:7px 14px;background:var(--orange);color:#000;border:none;border-radius:var(--r-sm);font-family:var(--font-mono);font-size:11px;font-weight:600;cursor:pointer;transition:background .2s;}
+.todo-add-btn:hover{background:#fb923c;}
+.todo-clear{font-family:var(--font-mono);font-size:10px;color:var(--muted);background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:4px 10px;cursor:pointer;transition:all .15s;}
+.todo-clear:hover{color:var(--text);background:rgba(255,255,255,.05);}
+
+/* ===================== BUDGET ===================== */
+.budget-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.budget-item:last-child{border-bottom:none;}
+.budget-label{font-family:var(--font-mono);font-size:12px;color:var(--text);}
+.budget-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);}
+.budget-amount{font-family:var(--font-display);font-size:18px;color:var(--orange);}
+.budget-bar{height:4px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:6px;overflow:hidden;}
+.budget-bar-fill{height:100%;border-radius:3px;background:var(--orange);transition:width .5s ease;}
 
 /* ===================== QUICK LINKS ===================== */
 .quick-links{display:flex;flex-wrap:wrap;gap:6px;}
 .quick-link{font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:5px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);transition:all .2s;text-decoration:none !important;}
 .quick-link:hover{color:var(--orange);border-color:var(--orange-glow);}
 
-/* ===================== ACTIVITY FEED ===================== */
-.activity-list{display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto;}
-.activity-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);}
-.activity-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.activity-text{font-family:var(--font-mono);font-size:11px;color:var(--text);flex:1;}
-.activity-time{font-family:var(--font-mono);font-size:9px;color:var(--dim);white-space:nowrap;}
-
-/* Bottom sections full width */
+/* Full width */
 .full-width{grid-column:1/-1;}
 
 /* Footer */
@@ -182,7 +221,7 @@ body.owner-mode .guest-only{display:none;}
 <div id="pin-overlay">
   <div class="pin-box">
     <div class="pin-logo">9</div>
-    <div class="pin-title">THE HUDDLE</div>
+    <div class="pin-title">COMMAND CENTER</div>
     <div class="pin-sub">Enter PIN for Owner access, or continue as Guest</div>
     <input type="password" class="pin-input" id="pin-input" maxlength="10" placeholder="----" autocomplete="off" autocorrect="off">
     <div class="pin-error" id="pin-error"></div>
@@ -198,70 +237,108 @@ body.owner-mode .guest-only{display:none;}
   <div class="topbar-left">
     <div class="logo-9">9</div>
     <div class="topbar-brand">
-      <div class="topbar-title">THE HUDDLE</div>
+      <div class="topbar-title">COMMAND CENTER</div>
       <div class="topbar-sub" id="mode-label">Guest View</div>
     </div>
   </div>
   <nav class="topbar-nav">
-    <a class="active" href="/cockpit.html">Huddle</a>
+    <a class="active" href="/cockpit.html">Command</a>
     <a href="/dashboard.html">War Room</a>
     <a href="/aigm.html">AiGM</a>
     <a href="/9enterprises.html">Universe</a>
   </nav>
   <div class="topbar-right">
+    <div id="hub-status" class="status-live-indicator"><div class="status-dot" style="background:var(--dim);"></div><span>CHECKING</span></div>
     <div class="live-clock" id="clock">--:--:--</div>
-    <div class="status-live"><div class="status-dot"></div>LIVE</div>
   </div>
 </header>
 
-<!-- ===================== HUDDLE GRID ===================== -->
-<main class="huddle">
+<!-- ===================== 10,000 FOOT VIEW ===================== -->
+<div class="overview-bar" id="overview-bar">
+  <div class="stat-card fade-up">
+    <div class="stat-value" id="stat-companies">11</div>
+    <div class="stat-label">Companies</div>
+  </div>
+  <div class="stat-card fade-up">
+    <div class="stat-value" id="stat-live">3</div>
+    <div class="stat-label">Live Products</div>
+  </div>
+  <div class="stat-card fade-up">
+    <div class="stat-value" id="stat-processes">--</div>
+    <div class="stat-label">Processes</div>
+  </div>
+  <div class="stat-card fade-up">
+    <div class="stat-value" id="stat-messages">--</div>
+    <div class="stat-label">Messages</div>
+  </div>
+  <div class="stat-card fade-up">
+    <div class="stat-value" id="stat-uptime">--</div>
+    <div class="stat-label">Hub Uptime</div>
+  </div>
+</div>
 
-  <!-- LEFT COLUMN -->
+<!-- ===================== MAIN GRID ===================== -->
+<main class="cockpit">
+
+  <!-- COLUMN 1: Telegram + Terminal + Gauges -->
   <div>
 
-    <!-- Companies -->
-    <div class="section-label"><span class="accent">01</span> Universe Status</div>
-    <div class="companies-grid" id="companies-grid"></div>
-
-    <div style="height:16px;"></div>
-
-    <!-- Quick Actions (Owner only) -->
-    <div class="owner-only">
-      <div class="section-label"><span class="accent">02</span> Ops Panel</div>
-
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Quick Actions</div>
-          <div class="chip">OWNER</div>
-        </div>
-        <div class="panel-body">
-          <div class="qa-grid">
-            <a class="qa-btn" href="/dashboard.html"><span class="qa-icon">&#9876;</span>War Room</a>
-            <a class="qa-btn" href="/aigm.html"><span class="qa-icon">&#127944;</span>AiGM</a>
-            <a class="qa-btn" href="/9enterprises.html"><span class="qa-icon">&#127760;</span>Universe</a>
-            <a class="qa-btn" href="/pitch.html"><span class="qa-icon">&#127919;</span>Pitch Deck</a>
-            <a class="qa-btn" href="/underwriter.html"><span class="qa-icon">&#128736;</span>Underwriter</a>
-            <a class="qa-btn" href="/freeagent.html"><span class="qa-icon">&#129302;</span>FreeAgent9</a>
+    <!-- Performance Gauges -->
+    <div class="section-label"><span class="accent">01</span> System Gauges</div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Performance</div>
+        <div class="chip" id="gauges-chip">LIVE</div>
+      </div>
+      <div class="panel-body">
+        <div class="gauges-grid" id="gauges-grid">
+          <div class="gauge">
+            <div class="gauge-icon">&#128200;</div>
+            <div class="gauge-info">
+              <div class="gauge-label">Trader 9</div>
+              <div class="gauge-value pending" id="gauge-trader">Checking...</div>
+            </div>
+          </div>
+          <div class="gauge">
+            <div class="gauge-icon">&#128269;</div>
+            <div class="gauge-info">
+              <div class="gauge-label">Trinity Scans</div>
+              <div class="gauge-value neutral" id="gauge-trinity">--</div>
+            </div>
+          </div>
+          <div class="gauge">
+            <div class="gauge-icon">&#127897;</div>
+            <div class="gauge-info">
+              <div class="gauge-label">Voice Server</div>
+              <div class="gauge-value pending" id="gauge-voice">Checking...</div>
+            </div>
+          </div>
+          <div class="gauge">
+            <div class="gauge-icon">&#128994;</div>
+            <div class="gauge-info">
+              <div class="gauge-label">Comms Hub</div>
+              <div class="gauge-value pending" id="gauge-hub">Checking...</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- To-Do (Owner only) -->
-    <div class="owner-only">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">To-Do List</div>
-          <button class="todo-clear" onclick="clearCompleted()">Clear done</button>
-        </div>
-        <div class="panel-body">
-          <div class="todo-list" id="todo-list"></div>
+    <!-- Telegram Feed -->
+    <div class="section-label owner-only"><span class="accent">02</span> Telegram Feed</div>
+    <div class="panel owner-only">
+      <div class="panel-header">
+        <div class="panel-title">Messages</div>
+        <div class="chip" id="tg-chip">POLLING</div>
+      </div>
+      <div class="panel-body" style="padding:10px 14px;">
+        <div class="tg-feed" id="tg-feed">
+          <div class="tg-empty">Connecting to hub...</div>
         </div>
       </div>
     </div>
 
-    <!-- Message Terminal (Owner only) -->
+    <!-- Terminal Keyboard -->
     <div class="owner-only">
       <div class="panel">
         <div class="panel-header">
@@ -270,9 +347,8 @@ body.owner-mode .guest-only{display:none;}
         </div>
         <div class="terminal-body">
           <div class="terminal-output" id="term-output">
-            <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises &mdash; The Huddle</span></div>
+            <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises &mdash; Command Center</span></div>
             <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Type a message and press Enter to send to 9 via Telegram.</span></div>
-            <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Ready.</span></div>
           </div>
           <div class="term-input-row">
             <span class="term-prompt">&#62;</span>
@@ -285,25 +361,90 @@ body.owner-mode .guest-only{display:none;}
 
   </div>
 
-  <!-- RIGHT COLUMN -->
-  <aside>
+  <!-- COLUMN 2: Companies + Quick Actions -->
+  <div>
 
-    <!-- Recent Activity -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">Activity</div>
-        <div class="status-live" style="font-size:9px;"><div class="status-dot" style="width:5px;height:5px;background:var(--green);"></div>LIVE</div>
-      </div>
-      <div class="panel-body">
-        <div class="activity-list" id="activity-list"></div>
+    <!-- Companies -->
+    <div class="section-label"><span class="accent">03</span> Universe Status</div>
+    <div class="companies-grid" id="companies-grid"></div>
+
+    <div style="height:12px;"></div>
+
+    <!-- Quick Actions (Owner only) -->
+    <div class="owner-only">
+      <div class="section-label"><span class="accent">04</span> Quick Actions</div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Ops Panel</div>
+          <div class="chip">OWNER</div>
+        </div>
+        <div class="panel-body">
+          <div class="qa-grid">
+            <button class="qa-btn" onclick="checkInbox()"><span class="qa-icon">&#128229;</span>Check Inbox</button>
+            <button class="qa-btn" onclick="document.getElementById('term-input').focus()"><span class="qa-icon">&#128172;</span>Send Message</button>
+            <button class="qa-btn" onclick="checkTrader()"><span class="qa-icon">&#128200;</span>Trader 9 Status</button>
+            <a class="qa-btn" href="/dashboard.html"><span class="qa-icon">&#9876;</span>War Room</a>
+            <a class="qa-btn" href="/aigm.html"><span class="qa-icon">&#127944;</span>AiGM</a>
+            <a class="qa-btn" href="/9enterprises.html"><span class="qa-icon">&#127760;</span>Universe</a>
+            <a class="qa-btn" href="/pitch.html"><span class="qa-icon">&#127919;</span>Pitch Deck</a>
+            <a class="qa-btn" href="/underwriter.html"><span class="qa-icon">&#128736;</span>Underwriter</a>
+            <a class="qa-btn" href="/freeagent.html"><span class="qa-icon">&#129302;</span>FreeAgent9</a>
+            <a class="qa-btn" href="/jules-family.html"><span class="qa-icon">&#128106;</span>Jules</a>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Quick Links -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">Quick Links</div>
+    <!-- Quick Links (Guest visible) -->
+    <div class="guest-only">
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">Quick Links</div></div>
+        <div class="panel-body">
+          <div class="quick-links">
+            <a class="quick-link" href="/aigm.html">AiGM</a>
+            <a class="quick-link" href="/freeagent.html">FreeAgent9</a>
+            <a class="quick-link" href="/9enterprises.html">Universe</a>
+            <a class="quick-link" href="/pitch.html">Pitch Deck</a>
+            <a class="quick-link" href="/dashboard.html">War Room</a>
+          </div>
+        </div>
       </div>
+    </div>
+
+  </div>
+
+  <!-- COLUMN 3 (Sidebar): To-Do + Budget + Links -->
+  <aside>
+
+    <!-- To-Do (Owner only) -->
+    <div class="owner-only">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">To-Do List</div>
+          <button class="todo-clear" onclick="clearCompleted()">Clear done</button>
+        </div>
+        <div class="panel-body">
+          <div class="todo-list" id="todo-list"></div>
+          <div class="todo-add-row">
+            <input type="text" class="todo-add-input" id="todo-add-input" placeholder="Add task..." autocomplete="off">
+            <button class="todo-add-btn" onclick="addTodo()">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget Tracker (Owner only) -->
+    <div class="owner-only panel">
+      <div class="panel-header">
+        <div class="panel-title">Budget</div>
+        <div class="chip">TRACKER</div>
+      </div>
+      <div class="panel-body" id="budget-body"></div>
+    </div>
+
+    <!-- Quick Links (Owner) -->
+    <div class="panel">
+      <div class="panel-header"><div class="panel-title">Quick Links</div></div>
       <div class="panel-body">
         <div class="quick-links">
           <a class="quick-link" href="/aigm.html">AiGM</a>
@@ -320,17 +461,6 @@ body.owner-mode .guest-only{display:none;}
           <a class="quick-link" href="/ainba.html">AiNBA</a>
           <a class="quick-link" href="/aimlb.html">AiMLB</a>
         </div>
-      </div>
-    </div>
-
-    <!-- Budget Tracker (Owner only) -->
-    <div class="owner-only panel">
-      <div class="panel-header">
-        <div class="panel-title">Budget</div>
-        <div class="chip">SPRINT</div>
-      </div>
-      <div class="panel-body">
-        <div style="display:flex;flex-direction:column;gap:8px;" id="budget-list"></div>
       </div>
     </div>
 
@@ -353,7 +483,7 @@ setInterval(updateClock,1000);
 
 // ===================== PIN GATE =====================
 const OWNER_PIN='3333';
-const PIN_KEY='9e_huddle_auth';
+const PIN_KEY='9e_command_auth';
 
 function isAuthenticated(){
   return sessionStorage.getItem(PIN_KEY)==='authenticated';
@@ -376,6 +506,7 @@ function enterOwner(){
   document.getElementById('pin-overlay').classList.add('hidden');
   document.body.classList.add('owner-mode');
   document.getElementById('mode-label').textContent='Owner Mode';
+  startLiveFeeds();
 }
 
 function enterGuest(){
@@ -383,100 +514,206 @@ function enterGuest(){
   document.getElementById('mode-label').textContent='Guest View';
 }
 
-// Auto-submit on Enter
 document.getElementById('pin-input').addEventListener('keydown',e=>{
   if(e.key==='Enter') submitPin();
   document.getElementById('pin-error').textContent='';
 });
 
-// Check session
 if(isAuthenticated()){
   enterOwner();
 } else {
   document.getElementById('pin-input').focus();
 }
 
+// ===================== ESCAPE HTML =====================
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
 // ===================== COMPANIES =====================
 const companies=[
-  {name:'AiGM',tag:'Sports AI Platform',status:'live',statusLabel:'Live',metric:'Platform: <span>Live</span>',pct:75,accent:'#f97316',animDelay:0},
-  {name:'freeagent9',tag:'AI Personal Concierge',status:'active',statusLabel:'Pilot',metric:'Pilot: <span>Live</span>',pct:55,accent:'#00e5ff',animDelay:.05},
-  {name:'Jules',tag:'Family AI Assistant',status:'active',statusLabel:'Active',metric:'Pilot: <span>Live</span>',pct:65,accent:'#ff9de2',animDelay:.1},
-  {name:'trader9',tag:'Trading Strategy Marketplace',status:'research',statusLabel:'Research',metric:'Alpaca: <span>Paper Mode</span>',pct:25,accent:'#b060ff',animDelay:.15},
-  {name:'agent9',tag:'AI Real Estate',status:'research',statusLabel:'Research',metric:'Stage: <span>Concept</span>',pct:15,accent:'#b060ff',animDelay:.2},
-  {name:'x9',tag:'Content & Social',status:'building',statusLabel:'Building',metric:'Accounts: <span>Pending</span>',pct:20,accent:'#ffd700',animDelay:.25},
-  {name:'AI Underwriter',tag:'Mortgage Guideline AI',status:'building',statusLabel:'POC',metric:'Stage: <span>FHA MVP</span>',pct:40,accent:'#f97316',animDelay:.3},
-  {name:'Dropship Co',tag:'eCommerce',status:'building',statusLabel:'Building',metric:'Shopify: <span>Pending</span>',pct:30,accent:'#ff7a2f',animDelay:.35},
-  {name:'AI Education',tag:'Hitchhikers Guide to AI',status:'research',statusLabel:'Research',metric:'Concept: <span>In Progress</span>',pct:20,accent:'#9b6dff',animDelay:.4},
-  {name:'Prompt Scripts',tag:'Prompt Marketplace',status:'building',statusLabel:'Building',metric:'Library: <span>Active</span>',pct:25,accent:'#f97316',animDelay:.45}
+  {name:'9 Enterprises',tag:'Parent Company',status:'live',label:'Live',accent:'#f97316'},
+  {name:'AiGM',tag:'Sports AI Platform',status:'live',label:'Live',accent:'#f97316'},
+  {name:'PlayAiGM',tag:'Consumer Sports',status:'live',label:'Live',accent:'#00ff88'},
+  {name:'FreeAgent9',tag:'AI Concierge',status:'active',label:'Pilot',accent:'#00e5ff'},
+  {name:'Jules',tag:'Family AI Assistant',status:'active',label:'Active',accent:'#ff9de2'},
+  {name:'Trader 9',tag:'Trading Marketplace',status:'research',label:'Research',accent:'#b060ff'},
+  {name:'agent9',tag:'AI Real Estate',status:'concept',label:'Concept',accent:'#888'},
+  {name:'x9',tag:'Content & Social',status:'building',label:'Building',accent:'#ffd700'},
+  {name:'AI Underwriter',tag:'Mortgage AI',status:'building',label:'POC',accent:'#f97316'},
+  {name:'Dropship Co',tag:'eCommerce',status:'building',label:'Building',accent:'#ff7a2f'},
+  {name:'AI Education',tag:'Hitchhikers Guide',status:'research',label:'Research',accent:'#9b6dff'}
 ];
 
 function renderCompanies(){
   const grid=document.getElementById('companies-grid');
   grid.innerHTML='';
-  companies.forEach(c=>{
+  let liveCount=0;
+  companies.forEach((c,i)=>{
+    if(c.status==='live'||c.status==='active') liveCount++;
     const card=document.createElement('div');
     card.className='company-card';
-    card.style.cssText=`--card-accent:${c.accent};--w:${c.pct}%;animation-delay:${c.animDelay}s;`;
-    card.innerHTML=`
-      <div class="cc-top">
-        <div>
-          <div class="cc-name">${c.name}</div>
-          <div class="cc-tag">${c.tag}</div>
-        </div>
-        <div class="cc-status status-${c.status}">${c.statusLabel}</div>
-      </div>
-      <div class="cc-metric">${c.metric}</div>
-      <div class="cc-progress"><div class="cc-progress-fill" style="--w:${c.pct}%"></div></div>
-      <div class="cc-pct">${c.pct}%</div>
-    `;
+    card.style.cssText='--card-accent:'+c.accent+';animation-delay:'+(i*0.04)+'s;';
+    card.innerHTML='<div class="cc-top"><div><div class="cc-name">'+c.name+'</div><div class="cc-tag">'+c.tag+'</div></div><div class="cc-status status-'+c.status+'">'+c.label+'</div></div>';
     grid.appendChild(card);
   });
+  document.getElementById('stat-companies').textContent=companies.length;
+  document.getElementById('stat-live').textContent=liveCount;
 }
 renderCompanies();
 
-// ===================== TO-DO =====================
-const TODO_KEY='9e_cockpit_todos';
-const todoItems=[
-  {id:'td1',text:'Transfer PlayAiGM.com domain'},
-  {id:'td2',text:'Complete AdSense phone verification'},
-  {id:'td3',text:'Choose AI Education platform name'},
-  {id:'td4',text:'Set up Shopify account access'},
-  {id:'td5',text:'Approve Alpaca live trading'},
-  {id:'td6',text:'X password recovery'},
-  {id:'td7',text:'Cloudflare API token'},
-  {id:'td8',text:'TikTok / Sleeper account setup'},
-  {id:'td9',text:'Portfolio data export'}
-];
+// ===================== PERFORMANCE GAUGES =====================
+let hubHealthData=null;
 
-function loadTodoState(){try{return JSON.parse(localStorage.getItem(TODO_KEY)||'{}');}catch{return {};}}
-function saveTodoState(s){localStorage.setItem(TODO_KEY,JSON.stringify(s));}
+async function refreshGauges(){
+  // Hub health
+  try{
+    const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});
+    if(res.ok){
+      hubHealthData=await res.json();
+      const g=document.getElementById('gauge-hub');
+      g.textContent='Online';
+      g.className='gauge-value up';
+      // Update hub status indicator
+      const hs=document.getElementById('hub-status');
+      hs.innerHTML='<div class="status-dot"></div><span>LIVE</span>';
+      // Uptime
+      if(hubHealthData.uptime){
+        const hrs=Math.floor(hubHealthData.uptime/3600);
+        const mins=Math.floor((hubHealthData.uptime%3600)/60);
+        document.getElementById('stat-uptime').textContent=hrs+'h '+mins+'m';
+      }
+      // Process count
+      if(hubHealthData.channels){
+        const procs=Object.keys(hubHealthData.channels).length;
+        document.getElementById('stat-processes').textContent=procs;
+      }
+    } else {
+      setGaugeDown('gauge-hub','Error '+res.status);
+    }
+  }catch(e){
+    setGaugeDown('gauge-hub','Offline');
+    const hs=document.getElementById('hub-status');
+    hs.innerHTML='<div class="status-dot" style="background:var(--red);"></div><span>DOWN</span>';
+  }
 
-function renderTodos(){
-  const state=loadTodoState();
-  const list=document.getElementById('todo-list');
-  list.innerHTML='';
-  todoItems.forEach(item=>{
-    const checked=!!state[item.id];
-    const div=document.createElement('div');
-    div.className='todo-item'+(checked?' checked':'');
-    div.onclick=()=>toggleTodo(item.id);
-    div.innerHTML=`<div class="todo-cb"></div><div class="todo-text">${item.text}</div>`;
-    list.appendChild(div);
-  });
+  // Voice server
+  try{
+    const res=await fetch('http://localhost:3456/health',{signal:AbortSignal.timeout(3000)});
+    if(res.ok){
+      const g=document.getElementById('gauge-voice');
+      g.textContent='Online';
+      g.className='gauge-value up';
+    } else {
+      setGaugeDown('gauge-voice','Error');
+    }
+  }catch(e){
+    setGaugeDown('gauge-voice','Offline');
+  }
+
+  // Trader 9 - check via hub state
+  try{
+    if(hubHealthData && hubHealthData.trader9){
+      const g=document.getElementById('gauge-trader');
+      g.textContent=hubHealthData.trader9.status||'Active';
+      g.className='gauge-value up';
+    } else {
+      const g=document.getElementById('gauge-trader');
+      g.textContent='Paper Mode';
+      g.className='gauge-value pending';
+    }
+  }catch(e){
+    setGaugeDown('gauge-trader','Unknown');
+  }
+
+  // Trinity
+  try{
+    if(hubHealthData && hubHealthData.trinity){
+      const g=document.getElementById('gauge-trinity');
+      g.textContent=hubHealthData.trinity.scans||'Active';
+      g.className='gauge-value up';
+    } else {
+      const g=document.getElementById('gauge-trinity');
+      g.textContent='Standby';
+      g.className='gauge-value neutral';
+    }
+  }catch(e){}
 }
-function toggleTodo(id){const s=loadTodoState();s[id]=!s[id];saveTodoState(s);renderTodos();}
-function clearCompleted(){const s=loadTodoState();Object.keys(s).forEach(k=>{if(s[k])delete s[k];});saveTodoState(s);renderTodos();}
-renderTodos();
+
+function setGaugeDown(id,text){
+  const g=document.getElementById(id);
+  g.textContent=text;
+  g.className='gauge-value down';
+}
+
+// Initial gauge check (always runs, even for guests)
+refreshGauges();
+setInterval(refreshGauges,30000);
+
+// ===================== TELEGRAM FEED =====================
+let lastMsgCount=0;
+
+async function refreshTelegramFeed(){
+  try{
+    const res=await fetch('http://localhost:3457/state',{signal:AbortSignal.timeout(5000)});
+    if(!res.ok) return;
+    const data=await res.json();
+    const msgs=data.recentMessages||[];
+
+    // Update message count stat
+    document.getElementById('stat-messages').textContent=msgs.length;
+
+    const feed=document.getElementById('tg-feed');
+    if(msgs.length===0){
+      feed.innerHTML='<div class="tg-empty">No recent messages</div>';
+      return;
+    }
+
+    // Show newest at bottom
+    const sorted=[...msgs].slice(-30);
+    feed.innerHTML='';
+    sorted.forEach(m=>{
+      const dir=(m.direction||'').toLowerCase();
+      const isIn=dir==='in'||dir==='inbound'||dir==='received';
+      const div=document.createElement('div');
+      div.className='tg-msg '+(isIn?'inbound':'outbound');
+      const ch=m.channel||'telegram';
+      const ts=m.timestamp?new Date(m.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+      div.innerHTML='<div class="tg-meta"><span class="tg-channel">'+esc(ch)+' '+(isIn?'IN':'OUT')+'</span><span class="tg-time">'+esc(ts)+'</span></div><div class="tg-text">'+esc(m.text||m.message||'')+'</div>';
+      feed.appendChild(div);
+    });
+
+    // Auto-scroll if new messages
+    if(msgs.length!==lastMsgCount){
+      feed.scrollTop=feed.scrollHeight;
+      lastMsgCount=msgs.length;
+      document.getElementById('tg-chip').textContent='LIVE';
+      setTimeout(()=>{document.getElementById('tg-chip').textContent='POLLING';},2000);
+    }
+  }catch(e){
+    // Hub unreachable - just show status
+    const feed=document.getElementById('tg-feed');
+    if(feed.children.length<=1 && feed.querySelector('.tg-empty')){
+      feed.innerHTML='<div class="tg-empty">Hub unreachable</div>';
+    }
+  }
+}
+
+// ===================== LIVE FEEDS (Owner only) =====================
+let feedInterval=null;
+
+function startLiveFeeds(){
+  refreshTelegramFeed();
+  if(feedInterval) clearInterval(feedInterval);
+  feedInterval=setInterval(refreshTelegramFeed,10000);
+}
 
 // ===================== MESSAGE TERMINAL =====================
 const termOutput=document.getElementById('term-output');
 const termInput=document.getElementById('term-input');
 
-function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function termLog(text,cls){
   const line=document.createElement('div');
   line.className='term-line';
-  line.innerHTML=`<span class="term-prefix">$</span><span class="term-text ${cls||''}">${escHtml(text)}</span>`;
+  line.innerHTML='<span class="term-prefix">$</span><span class="term-text '+(cls||'')+'">'+esc(text)+'</span>';
   termOutput.appendChild(line);
   termOutput.scrollTop=termOutput.scrollHeight;
 }
@@ -500,49 +737,144 @@ async function sendMessage(){
   }
 }
 
-// ===================== ACTIVITY FEED =====================
-const activities=[
-  {color:'var(--green)',text:'Huddle rebuilt clean',time:'Just now'},
-  {color:'var(--orange)',text:'HeyGen videos embedded across pitch pages',time:'Today'},
-  {color:'var(--orange)',text:'Enterprise sprint proposed: 7 days, $1,750',time:'Mar 30'},
-  {color:'var(--purple)',text:'Proving grounds: 9 owns 4 companies',time:'Mar 29'},
-  {color:'var(--orange)',text:'Domain architecture finalized',time:'Mar 28'},
-  {color:'var(--green)',text:'Voice call milestone: 30min flawless',time:'Mar 27'},
-  {color:'var(--cyan)',text:'Dashboard v4 shipped with company silos',time:'Mar 26'},
-  {color:'var(--yellow)',text:'trader9 Alpaca paper mode activated',time:'Mar 26'}
-];
+// ===================== QUICK ACTIONS =====================
+async function checkInbox(){
+  termLog('Checking inbox...','system');
+  try{
+    const res=await fetch('http://localhost:3457/inbox',{signal:AbortSignal.timeout(5000)});
+    if(res.ok){
+      const data=await res.json();
+      const count=(data.messages||[]).length;
+      termLog('Inbox: '+count+' message(s)','');
+      if(count>0){
+        (data.messages||[]).forEach(m=>{
+          termLog('  ['+m.channel+'] '+m.text,'muted');
+        });
+      }
+    } else {
+      termLog('Inbox check failed: '+res.status,'error');
+    }
+  }catch(e){
+    termLog('Hub unreachable','error');
+  }
+}
 
-function renderActivity(){
-  const list=document.getElementById('activity-list');
+async function checkTrader(){
+  termLog('Checking Trader 9...','system');
+  try{
+    const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});
+    if(res.ok){
+      const data=await res.json();
+      if(data.trader9){
+        termLog('Trader 9: '+JSON.stringify(data.trader9),'');
+      } else {
+        termLog('Trader 9: Paper mode (no live data from hub)','muted');
+      }
+    } else {
+      termLog('Hub returned '+res.status,'error');
+    }
+  }catch(e){
+    termLog('Hub unreachable','error');
+  }
+}
+
+// ===================== TO-DO LIST =====================
+const TODO_KEY='9e_cockpit_todos_v2';
+
+function loadTodos(){
+  try{return JSON.parse(localStorage.getItem(TODO_KEY)||'null');}catch{return null;}
+}
+function saveTodos(items){localStorage.setItem(TODO_KEY,JSON.stringify(items));}
+
+function getDefaultTodos(){
+  return [
+    {id:Date.now()+1,text:'Transfer PlayAiGM.com domain',done:false},
+    {id:Date.now()+2,text:'Complete AdSense phone verification',done:false},
+    {id:Date.now()+3,text:'Choose AI Education platform name',done:false},
+    {id:Date.now()+4,text:'Set up Shopify account access',done:false},
+    {id:Date.now()+5,text:'Approve Alpaca live trading',done:false},
+    {id:Date.now()+6,text:'X password recovery',done:false},
+    {id:Date.now()+7,text:'Cloudflare API token',done:false},
+    {id:Date.now()+8,text:'TikTok / Sleeper account setup',done:false},
+    {id:Date.now()+9,text:'Portfolio data export',done:false}
+  ];
+}
+
+function getTodos(){
+  let items=loadTodos();
+  if(!items){items=getDefaultTodos();saveTodos(items);}
+  return items;
+}
+
+function renderTodos(){
+  const items=getTodos();
+  const list=document.getElementById('todo-list');
   list.innerHTML='';
-  activities.forEach(a=>{
-    list.innerHTML+=`<div class="activity-item">
-      <div class="activity-dot" style="background:${a.color};"></div>
-      <div class="activity-text">${a.text}</div>
-      <div class="activity-time">${a.time}</div>
-    </div>`;
+  items.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='todo-item'+(item.done?' checked':'');
+    div.innerHTML='<div class="todo-cb" onclick="toggleTodo('+item.id+')"></div><div class="todo-text" onclick="toggleTodo('+item.id+')">'+esc(item.text)+'</div><div class="todo-remove" onclick="removeTodo('+item.id+')">&times;</div>';
+    list.appendChild(div);
   });
 }
-renderActivity();
+
+function toggleTodo(id){
+  const items=getTodos();
+  const item=items.find(i=>i.id===id);
+  if(item) item.done=!item.done;
+  saveTodos(items);
+  renderTodos();
+}
+
+function removeTodo(id){
+  let items=getTodos();
+  items=items.filter(i=>i.id!==id);
+  saveTodos(items);
+  renderTodos();
+}
+
+function addTodo(){
+  const input=document.getElementById('todo-add-input');
+  const text=input.value.trim();
+  if(!text) return;
+  const items=getTodos();
+  items.push({id:Date.now(),text:text,done:false});
+  saveTodos(items);
+  input.value='';
+  renderTodos();
+}
+
+document.getElementById('todo-add-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter') addTodo();
+});
+
+function clearCompleted(){
+  let items=getTodos();
+  items=items.filter(i=>!i.done);
+  saveTodos(items);
+  renderTodos();
+}
+
+renderTodos();
 
 // ===================== BUDGET =====================
 function renderBudget(){
-  const list=document.getElementById('budget-list');
-  const items=[
-    {label:'Resource Budget',amount:'$300',status:'Approved'},
-    {label:'Trading Budget',amount:'$200',status:'Funded (Alpaca)'},
-    {label:'Sprint Budget',amount:'$1,750',status:'Proposed'}
+  const body=document.getElementById('budget-body');
+  const budgets=[
+    {label:'Resource Budget',approved:300,spent:0,status:'Approved'},
+    {label:'Trading Budget',approved:200,spent:0,status:'Funded (Alpaca)'},
+    {label:'Sprint Budget',approved:1750,spent:0,status:'Proposed'}
   ];
-  list.innerHTML='';
-  items.forEach(b=>{
-    list.innerHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">
-      <div>
-        <div style="font-family:var(--font-mono);font-size:12px;color:var(--text);">${b.label}</div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${b.status}</div>
-      </div>
-      <div style="font-family:var(--font-display);font-size:18px;color:var(--orange);">${b.amount}</div>
-    </div>`;
+  const totalApproved=budgets.reduce((s,b)=>s+b.approved,0);
+  const totalSpent=budgets.reduce((s,b)=>s+b.spent,0);
+  let html='';
+  budgets.forEach(b=>{
+    const pct=b.approved>0?Math.min((b.spent/b.approved)*100,100):0;
+    html+='<div class="budget-item"><div><div class="budget-label">'+b.label+'</div><div class="budget-sub">'+b.status+'</div></div><div class="budget-amount">$'+b.approved.toLocaleString()+'</div></div>';
   });
+  html+='<div class="budget-bar"><div class="budget-bar-fill" style="width:'+Math.min((totalSpent/totalApproved)*100,100)+'%"></div></div>';
+  html+='<div style="display:flex;justify-content:space-between;margin-top:6px;"><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Spent: $'+totalSpent.toLocaleString()+'</span><span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Total: $'+totalApproved.toLocaleString()+'</span></div>';
+  body.innerHTML=html;
 }
 renderBudget();
 </script>
