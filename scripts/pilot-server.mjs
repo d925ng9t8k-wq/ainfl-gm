@@ -213,7 +213,7 @@ function detectGuidelineIntent(text) {
   if ((lower.includes('conventional') || lower.includes('conv')) && (lower.includes('dti') || lower.includes('debt to income'))) return { type: 'guideline', topic: 'conv_dti' };
   if ((lower.includes('conventional') || lower.includes('conv')) && lower.includes('credit score')) return { type: 'guideline', topic: 'conv_credit' };
   if (lower.includes('conforming') && lower.includes('limit')) return { type: 'guideline', topic: 'conforming_limit' };
-  if (lower.includes('loan limit') && (lower.includes('2025') || lower.includes('conforming'))) return { type: 'guideline', topic: 'conforming_limit' };
+  if (lower.includes('loan limit') && (lower.includes('2025') || lower.includes('2026') || lower.includes('conforming') || lower.includes('conventional'))) return { type: 'guideline', topic: 'conforming_limit' };
   // VA — check compensating factors BEFORE credit score to avoid false matches
   if (lower.includes('va') && lower.includes('compensating factor')) return null; // complex question — let AI handle it
   if (lower.includes('va') && lower.includes('funding fee')) return { type: 'guideline', topic: 'va_fee' };
@@ -235,7 +235,7 @@ function handleGuidelineIntent(intent, profile) {
   const usda = g.usda || {};
 
   const answers = {
-    fha_dti:        `FHA DTI: ${fha.dti_standard || '31/43'} standard, up to ${fha.dti_with_compensating_factors || '50%'} with compensating factors. AUS can go ${fha.dti_automated_underwriting || '46.9/56.9'}.`,
+    fha_dti:        `FHA DTI: ${fha.dti_standard || '31/43'} standard, ${fha.dti_with_compensating_factors || 'up to 50%'} with compensating factors. AUS can go ${fha.dti_automated_underwriting || '46.9/56.9'}.`,
     fha_mip:        `FHA MIP: upfront ${fha.mip_upfront || '1.75%'} of base loan, annual ${fha.mip_annual || '~0.55% for 30yr > 95% LTV'}. Life-of-loan unless < 10% down, then 11 years.`,
     fha_credit:     `FHA min credit: ${fha.min_credit_score_35_down || 580} for 3.5% down, ${fha.min_credit_score_10_down || 500} for 10% down. Lender overlays may be higher.`,
     fha_down:       `FHA minimum down is 3.5% at ${fha.min_credit_score_35_down || 580}+ credit, 10% down for ${fha.min_credit_score_10_down || 500}-579. That's the floor — lender overlays may vary.`,
@@ -1118,7 +1118,27 @@ async function handleIncomingMessage(body, from) {
     return response;
   }
 
-  // 7. Food delivery intent (enhanced concierge)
+  // 7. Amazon shopping intent (check BEFORE food — "order X from Amazon" must not match food)
+  const amazonIntent = detectAmazonIntent(body);
+  if (amazonIntent) {
+    const response = buildAmazonResponse(amazonIntent);
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'amazon_shopping');
+    return response;
+  }
+
+  // 8. Grocery delivery intent (check BEFORE food — "I need groceries" must not match food)
+  const groceryIntent = detectGroceryIntent(body);
+  if (groceryIntent) {
+    const response = buildGroceryResponse(groceryIntent);
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'grocery_delivery');
+    return response;
+  }
+
+  // 9. Food delivery intent (enhanced concierge)
   const foodIntent = detectFoodIntent(body);
   if (foodIntent) {
     const response = buildFoodDeliveryResponse(foodIntent, profile);
@@ -1129,26 +1149,6 @@ async function handleIncomingMessage(body, from) {
                        foodIntent.type === 'save_favorite' ? 'food_save_favorite' :
                        'food_delivery';
     logInteraction(from, body, response, intentType);
-    return response;
-  }
-
-  // 8. Grocery delivery intent
-  const groceryIntent = detectGroceryIntent(body);
-  if (groceryIntent) {
-    const response = buildGroceryResponse(groceryIntent);
-    updateMemory(profile, 'user', body);
-    updateMemory(loadProfile(), 'assistant', response);
-    logInteraction(from, body, response, 'grocery_delivery');
-    return response;
-  }
-
-  // 9. Amazon shopping intent
-  const amazonIntent = detectAmazonIntent(body);
-  if (amazonIntent) {
-    const response = buildAmazonResponse(amazonIntent);
-    updateMemory(profile, 'user', body);
-    updateMemory(loadProfile(), 'assistant', response);
-    logInteraction(from, body, response, 'amazon_shopping');
     return response;
   }
 
