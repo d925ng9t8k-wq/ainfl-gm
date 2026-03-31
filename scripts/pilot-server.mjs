@@ -33,7 +33,7 @@ const PROFILE_PATH    = new URL('../data/jules-profile-kylec.json', import.meta.
 const CLAUDE_HAIKU  = "claude-haiku-4-5-20251001";
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 
-const VERSION = "1.2.0";
+const VERSION = "1.3.0";
 const MAX_BODY_SIZE = 64 * 1024; // 64KB max request body
 const CINCINNATI_LAT = 39.1031;
 const CINCINNATI_LON = -84.5120;
@@ -170,7 +170,7 @@ ACTIVE CAPABILITIES:
 - Note-taking ("note: Garcia appraisal came in at 340k")
 - Script help — talk through a conversation with a borrower, referral partner, or agent
 - Social media ghostwriting — punchy posts about rates, market updates, tips
-- Food delivery — DoorDash/UberEats links for any cuisine (Cincinnati area)
+- Food delivery — DoorDash/UberEats/Grubhub links, direct chain ordering (Skyline, LaRosa's, Domino's, etc.), favorite orders, order history
 - Amazon shopping — search links for any product
 - Grocery delivery — Kroger/Instacart links (Cincinnati area)
 - Help/features menu — text "help" to see all capabilities
@@ -323,8 +323,8 @@ const FEATURE_REGISTRY = [
   },
   {
     name: 'Food Delivery',
-    description: 'Get a DoorDash or UberEats search link for any cuisine. Cincinnati area.',
-    examples: ['order me a pizza', 'I want Chinese food', 'get me DoorDash'],
+    description: 'DoorDash, UberEats, Grubhub + direct chain ordering. Favorites, Cincinnati chains (Skyline, LaRosa\'s), order history.',
+    examples: ['order me a pizza', 'order from Skyline', 'my usual', 'save my usual as large pepperoni from Dominos'],
   },
   {
     name: 'Amazon Shopping',
@@ -369,46 +369,242 @@ function detectHelpIntent(text) {
   return /^(help|features|menu|what can you do|what do you do|commands|capabilities)\??$/.test(lower);
 }
 
-// ─── Food delivery intent detection ─────────────────────────────────────────
+// ─── Food delivery intent detection (enhanced concierge) ────────────────────
+// Cuisine-to-DoorDash category slug mapping for direct category links
+const DOORDASH_CUISINE_SLUGS = {
+  pizza: 'pizza', chinese: 'chinese', thai: 'thai', mexican: 'mexican',
+  sushi: 'sushi', burger: 'burger', burgers: 'burger', wings: 'wings',
+  tacos: 'mexican', indian: 'indian', italian: 'italian', sandwich: 'sandwich',
+  sandwiches: 'sandwich', chicken: 'chicken', bbq: 'bbq', ramen: 'ramen',
+  pho: 'pho', seafood: 'seafood', japanese: 'japanese', greek: 'greek',
+  mediterranean: 'mediterranean', korean: 'korean', vietnamese: 'vietnamese',
+  breakfast: 'breakfast', brunch: 'breakfast', lunch: 'lunch', dinner: 'dinners',
+  healthy: 'healthy', salad: 'salad', steak: 'steak', pasta: 'pasta',
+  subs: 'subs', dessert: 'dessert', coffee: 'coffee', smoothie: 'smoothie',
+  vegan: 'vegan', vegetarian: 'vegetarian',
+};
+
+// Known chain restaurants with direct ordering URLs (Cincinnati area)
+const CHAIN_DIRECT_LINKS = {
+  dominos:    { name: "Domino's",    doordash: 'https://www.doordash.com/search/store/dominos/?pickup=false', web: 'https://www.dominos.com/pages/order/' },
+  'papa johns': { name: "Papa John's", doordash: 'https://www.doordash.com/search/store/papa%20johns/?pickup=false', web: 'https://www.papajohns.com/order/' },
+  'pizza hut': { name: 'Pizza Hut',  doordash: 'https://www.doordash.com/search/store/pizza%20hut/?pickup=false', web: 'https://www.pizzahut.com/order' },
+  chipotle:   { name: 'Chipotle',   doordash: 'https://www.doordash.com/search/store/chipotle/?pickup=false', web: 'https://order.chipotle.com/' },
+  mcdonalds:  { name: "McDonald's", doordash: 'https://www.doordash.com/search/store/mcdonalds/?pickup=false', web: 'https://www.mcdonalds.com/us/en-us/mobile-order-and-pay.html' },
+  "mcdonald's": { name: "McDonald's", doordash: 'https://www.doordash.com/search/store/mcdonalds/?pickup=false', web: 'https://www.mcdonalds.com/us/en-us/mobile-order-and-pay.html' },
+  wendys:     { name: "Wendy's",    doordash: 'https://www.doordash.com/search/store/wendys/?pickup=false', web: 'https://order.wendys.com/' },
+  "wendy's":  { name: "Wendy's",    doordash: 'https://www.doordash.com/search/store/wendys/?pickup=false', web: 'https://order.wendys.com/' },
+  'chick-fil-a': { name: 'Chick-fil-A', doordash: 'https://www.doordash.com/search/store/chick-fil-a/?pickup=false', web: 'https://www.chick-fil-a.com/order' },
+  chickfila:  { name: 'Chick-fil-A', doordash: 'https://www.doordash.com/search/store/chick-fil-a/?pickup=false', web: 'https://www.chick-fil-a.com/order' },
+  'taco bell': { name: 'Taco Bell',  doordash: 'https://www.doordash.com/search/store/taco%20bell/?pickup=false', web: 'https://www.tacobell.com/order' },
+  panera:     { name: 'Panera',     doordash: 'https://www.doordash.com/search/store/panera/?pickup=false', web: 'https://delivery.panerabread.com/' },
+  'buffalo wild wings': { name: 'Buffalo Wild Wings', doordash: 'https://www.doordash.com/search/store/buffalo%20wild%20wings/?pickup=false', web: 'https://www.buffalowildwings.com/en/order/' },
+  bww:        { name: 'Buffalo Wild Wings', doordash: 'https://www.doordash.com/search/store/buffalo%20wild%20wings/?pickup=false', web: 'https://www.buffalowildwings.com/en/order/' },
+  skyline:    { name: 'Skyline Chili', doordash: 'https://www.doordash.com/search/store/skyline%20chili/?pickup=false', web: 'https://www.skylinechili.com/order-online' },
+  'skyline chili': { name: 'Skyline Chili', doordash: 'https://www.doordash.com/search/store/skyline%20chili/?pickup=false', web: 'https://www.skylinechili.com/order-online' },
+  goldstar:   { name: 'Gold Star Chili', doordash: 'https://www.doordash.com/search/store/gold%20star/?pickup=false', web: 'https://www.goldstarchili.com/order' },
+  'gold star': { name: 'Gold Star Chili', doordash: 'https://www.doordash.com/search/store/gold%20star/?pickup=false', web: 'https://www.goldstarchili.com/order' },
+  'larosas':  { name: "LaRosa's",   doordash: 'https://www.doordash.com/search/store/larosas/?pickup=false', web: 'https://www.larosas.com/order' },
+  "larosa's": { name: "LaRosa's",   doordash: 'https://www.doordash.com/search/store/larosas/?pickup=false', web: 'https://www.larosas.com/order' },
+};
+
 function detectFoodIntent(text) {
   const lower = text.toLowerCase();
+
+  // Check for favorite order request
+  if (/\b(my usual|the usual|my favorite|same as last time|reorder|order again)\b/.test(lower)) {
+    return { type: 'favorite', cuisine: null, chain: null, service: 'doordash' };
+  }
+
+  // Check for saving a favorite
+  const saveFavMatch = lower.match(/(?:save|set|remember)\s+(?:my\s+)?(?:favorite|usual)\s*(?:order|food)?\s*(?:as|is|to)?\s*[:=]?\s*(.+)/);
+  if (saveFavMatch) {
+    return { type: 'save_favorite', description: saveFavMatch[1].trim() };
+  }
+
+  // Check for specific chain restaurant mentions
+  for (const [key, chain] of Object.entries(CHAIN_DIRECT_LINKS)) {
+    if (lower.includes(key)) {
+      const cuisine = lower.replace(new RegExp(`\\b(${key}|doordash|door dash|uber\\s?eats|grubhub|get\\s+me|order\\s+me|order\\s+from|open|i\\s+want|from|some|a)\\b`, 'g'), '').trim();
+      return { type: 'chain', chain: key, chainInfo: chain, cuisine: cuisine || null, service: 'doordash' };
+    }
+  }
+
   // Direct service mentions
   if (/\b(doordash|door dash|uber\s?eats|grubhub)\b/.test(lower)) {
     const cuisine = lower.replace(/\b(doordash|door dash|uber\s?eats|grubhub|get\s+me|order\s+me|open|i\s+want)\b/g, '').trim();
-    return { service: lower.includes('ubereats') || lower.includes('uber eats') ? 'ubereats' : 'doordash', cuisine: cuisine || null };
+    const service = (lower.includes('ubereats') || lower.includes('uber eats')) ? 'ubereats'
+                  : lower.includes('grubhub') ? 'grubhub' : 'doordash';
+    return { type: 'search', service, cuisine: cuisine || null, chain: null };
   }
+
   // Food ordering patterns
-  const foodMatch = lower.match(/(?:order|get|deliver|i\s+want|i\s+need|can\s+(?:you|i)\s+get)\s+(?:me\s+)?(?:some\s+)?(?:a\s+)?(.+?)(?:\s+delivered|\s+delivery)?$/);
+  const foodMatch = lower.match(/(?:order|get|deliver|i\s+want|i\s+need|can\s+(?:you|i)\s+get|i'm\s+(?:hungry|starving)|feed\s+me|grab\s+me)\s+(?:me\s+)?(?:some\s+)?(?:a\s+)?(.+?)(?:\s+delivered|\s+delivery)?$/);
   if (foodMatch) {
     const item = foodMatch[1].trim();
-    const foodKeywords = ['pizza', 'chinese', 'thai', 'mexican', 'sushi', 'burger', 'wings', 'tacos', 'indian', 'italian', 'sub', 'sandwich', 'chicken', 'bbq', 'ramen', 'pho', 'food', 'dinner', 'lunch', 'breakfast'];
+    const foodKeywords = ['pizza', 'chinese', 'thai', 'mexican', 'sushi', 'burger', 'burgers', 'wings',
+      'tacos', 'indian', 'italian', 'sub', 'subs', 'sandwich', 'chicken', 'bbq', 'ramen', 'pho',
+      'food', 'dinner', 'lunch', 'breakfast', 'brunch', 'seafood', 'steak', 'pasta', 'salad',
+      'korean', 'japanese', 'greek', 'mediterranean', 'vietnamese', 'healthy', 'vegan',
+      'vegetarian', 'dessert', 'smoothie', 'coffee', 'something to eat', 'something good'];
     if (foodKeywords.some(k => item.includes(k))) {
-      return { service: 'doordash', cuisine: item };
+      return { type: 'search', service: 'doordash', cuisine: item, chain: null };
     }
+  }
+
+  // "I'm hungry" / "feed me" / "I need food" patterns
+  if (/\b(i'm\s+hungry|i\s+am\s+hungry|i'm\s+starving|feed\s+me|need\s+food|want\s+food|get\s+food)\b/.test(lower)) {
+    return { type: 'search', service: 'doordash', cuisine: null, chain: null };
+  }
+
+  return null;
+}
+
+function buildFoodDeliveryResponse(intent, profile) {
+  // Handle save favorite
+  if (intent.type === 'save_favorite') {
+    profile.food_preferences = profile.food_preferences || {};
+    profile.food_preferences.favorite_order = intent.description;
+    profile.food_preferences.favorite_saved_at = new Date().toISOString();
+    saveProfile(profile);
+    return `Got it — saved your usual as: "${intent.description}". Next time just say "order my usual" and I'll pull it up.`;
+  }
+
+  // Handle favorite order request
+  if (intent.type === 'favorite') {
+    const fav = profile.food_preferences?.favorite_order;
+    if (!fav) {
+      return `You don't have a favorite saved yet. Text me something like: "save my usual as large pepperoni from Domino's" and I'll remember it.\n\nFor now, here's DoorDash Cincinnati:\nhttps://www.doordash.com/food-delivery/cincinnati-oh-restaurants/`;
+    }
+    // Re-parse the favorite to generate appropriate links
+    const reparse = detectFoodIntent(`order me ${fav}`);
+    if (reparse && reparse.type !== 'favorite') {
+      const response = buildFoodDeliveryResponse(reparse, profile);
+      return `Your usual — "${fav}":\n\n${response}`;
+    }
+    const query = encodeURIComponent(fav);
+    return `Your usual — "${fav}":\n\nDoorDash: https://www.doordash.com/search/store/${query}/?pickup=false\n\nUberEats: https://www.ubereats.com/search?q=${query}\n\nTap to order.`;
+  }
+
+  // Handle specific chain restaurant
+  if (intent.type === 'chain') {
+    const chain = intent.chainInfo;
+    let msg = `${chain.name} — here you go:\n\n`;
+    msg += `Order direct: ${chain.web}\n\n`;
+    msg += `DoorDash: ${chain.doordash}\n\n`;
+    if (intent.cuisine) {
+      msg += `Looking for: ${intent.cuisine}\n\n`;
+    }
+    msg += 'Direct ordering is usually cheaper (no delivery app markup). DoorDash if you want it delivered.';
+
+    // Log the order to food history
+    logFoodOrder(profile, chain.name, intent.cuisine);
+    return msg;
+  }
+
+  // Handle cuisine search with smart category links
+  const cuisine = intent.cuisine;
+  const cuisineSlug = cuisine ? findCuisineSlug(cuisine) : null;
+
+  const doordashUrl = cuisineSlug
+    ? `https://www.doordash.com/food-delivery/cincinnati-oh-restaurants/${cuisineSlug}/`
+    : cuisine
+      ? `https://www.doordash.com/search/store/${encodeURIComponent(cuisine)}/?pickup=false`
+      : 'https://www.doordash.com/food-delivery/cincinnati-oh-restaurants/';
+
+  const ubereatsUrl = cuisine
+    ? `https://www.ubereats.com/search?q=${encodeURIComponent(cuisine)}`
+    : 'https://www.ubereats.com/city/cincinnati-oh';
+
+  const grubhubUrl = cuisine
+    ? `https://www.grubhub.com/search?orderMethod=delivery&locationMode=DELIVERY&facetSet=uma498&pageSize=20&hideHat498=true&searchTerm=${encodeURIComponent(cuisine)}&queryText=${encodeURIComponent(cuisine)}&latitude=39.1031&longitude=-84.5120`
+    : 'https://www.grubhub.com/delivery/oh/cincinnati';
+
+  let msg = '';
+  if (cuisine) {
+    msg += `${cuisine.charAt(0).toUpperCase() + cuisine.slice(1)} — here are your options:\n\n`;
+  } else {
+    msg += `Here's delivery for Cincinnati:\n\n`;
+  }
+  msg += `DoorDash: ${doordashUrl}\n\n`;
+  msg += `UberEats: ${ubereatsUrl}\n\n`;
+  msg += `Grubhub: ${grubhubUrl}\n\n`;
+
+  // Suggest relevant chains if cuisine matches
+  const chainSuggestions = suggestChains(cuisine);
+  if (chainSuggestions.length > 0) {
+    msg += `Or order direct (skip the markup):\n`;
+    for (const cs of chainSuggestions) {
+      msg += `${cs.name}: ${cs.web}\n`;
+    }
+    msg += '\n';
+  }
+
+  msg += 'Tap any link to browse and order.';
+
+  // Save to food history
+  if (cuisine) logFoodOrder(profile, null, cuisine);
+
+  return msg;
+}
+
+// Find the best DoorDash cuisine slug for a search term
+function findCuisineSlug(cuisine) {
+  if (!cuisine) return null;
+  const lower = cuisine.toLowerCase();
+  // Direct match
+  if (DOORDASH_CUISINE_SLUGS[lower]) return DOORDASH_CUISINE_SLUGS[lower];
+  // Partial match — check if any keyword is in the search
+  for (const [keyword, slug] of Object.entries(DOORDASH_CUISINE_SLUGS)) {
+    if (lower.includes(keyword)) return slug;
   }
   return null;
 }
 
-function buildFoodDeliveryResponse(intent) {
-  const cuisine = intent.cuisine;
-  const query = cuisine ? encodeURIComponent(cuisine) : '';
-  const doordashUrl = query
-    ? `https://www.doordash.com/search/store/${query}/?pickup=false`
-    : 'https://www.doordash.com/food-delivery/cincinnati-oh-restaurants/';
-  const ubereatsUrl = query
-    ? `https://www.ubereats.com/search?q=${query}&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkNpbmNpbm5hdGklMjBPSCUyMiU3RA%3D%3D`
-    : 'https://www.ubereats.com/city/cincinnati-oh';
-
-  let msg = '';
-  if (cuisine) {
-    msg += `Looking for ${cuisine}? Here you go:\n\n`;
-  } else {
-    msg += `Here are your delivery options:\n\n`;
+// Suggest chain restaurants based on cuisine type
+function suggestChains(cuisine) {
+  if (!cuisine) return [];
+  const lower = cuisine.toLowerCase();
+  const suggestions = [];
+  const cuisineToChains = {
+    pizza: ['dominos', "larosa's", 'papa johns', 'pizza hut'],
+    chili: ['skyline chili', 'gold star'],
+    'cincinnati chili': ['skyline chili', 'gold star'],
+    coney: ['skyline chili', 'gold star'],
+    burger: ['wendys', 'mcdonalds'],
+    burgers: ['wendys', 'mcdonalds'],
+    chicken: ['chick-fil-a'],
+    wings: ['buffalo wild wings'],
+    tacos: ['taco bell'],
+    mexican: ['taco bell', 'chipotle'],
+    sandwich: ['panera'],
+  };
+  for (const [key, chains] of Object.entries(cuisineToChains)) {
+    if (lower.includes(key)) {
+      for (const chainKey of chains) {
+        const info = CHAIN_DIRECT_LINKS[chainKey];
+        if (info) suggestions.push(info);
+      }
+      break;
+    }
   }
-  msg += `DoorDash: ${doordashUrl}\n\n`;
-  msg += `UberEats: ${ubereatsUrl}\n\n`;
-  msg += 'Tap either link to browse and order. Cincinnati delivery.';
-  return msg;
+  return suggestions;
+}
+
+// Log food orders for history / reordering
+function logFoodOrder(profile, restaurant, cuisine) {
+  profile.food_preferences = profile.food_preferences || {};
+  profile.food_preferences.order_history = profile.food_preferences.order_history || [];
+  profile.food_preferences.order_history.push({
+    restaurant: restaurant || null,
+    cuisine: cuisine || null,
+    ts: new Date().toISOString(),
+  });
+  // Keep last 20 orders
+  if (profile.food_preferences.order_history.length > 20) {
+    profile.food_preferences.order_history = profile.food_preferences.order_history.slice(-20);
+  }
+  saveProfile(profile);
 }
 
 // ─── Amazon shopping intent detection ───────────────────────────────────────
@@ -922,13 +1118,17 @@ async function handleIncomingMessage(body, from) {
     return response;
   }
 
-  // 7. Food delivery intent
+  // 7. Food delivery intent (enhanced concierge)
   const foodIntent = detectFoodIntent(body);
   if (foodIntent) {
-    const response = buildFoodDeliveryResponse(foodIntent);
+    const response = buildFoodDeliveryResponse(foodIntent, profile);
     updateMemory(profile, 'user', body);
     updateMemory(loadProfile(), 'assistant', response);
-    logInteraction(from, body, response, 'food_delivery');
+    const intentType = foodIntent.type === 'chain' ? `food_chain_${foodIntent.chain}` :
+                       foodIntent.type === 'favorite' ? 'food_favorite' :
+                       foodIntent.type === 'save_favorite' ? 'food_save_favorite' :
+                       'food_delivery';
+    logInteraction(from, body, response, intentType);
     return response;
   }
 
@@ -1211,6 +1411,19 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── GET /food-preferences ──
+  if (req.method === 'GET' && url.pathname === '/food-preferences') {
+    const profile = loadProfile();
+    const prefs = profile?.food_preferences || {};
+    jsonResponse(res, 200, {
+      favorite_order: prefs.favorite_order || null,
+      favorite_saved_at: prefs.favorite_saved_at || null,
+      order_history: prefs.order_history || [],
+      order_count: (prefs.order_history || []).length,
+    });
+    return;
+  }
+
   // ── GET /weather ──
   if (req.method === 'GET' && url.pathname === '/weather') {
     const weather = await fetchWeather();
@@ -1268,7 +1481,7 @@ server.listen(PORT, () => {
   log(`Weather configured: ${!!OPENWEATHER_KEY}`);
   log(`Recipient: ${RECIPIENT_PHONE || 'NOT SET — add JULES_KYLEC_RECIPIENT_PHONE to .env'}`);
   log(`Features: ${FEATURE_REGISTRY.length} registered (help/food/amazon/grocery/guidelines/rates/reminders/notes/weather/scripts/social/qa)`);
-  log(`Endpoints: GET /health, POST /sms, POST /imessage-in, POST /message, POST /briefing, POST /send, GET /notes, GET /reminders, GET /weather`);
+  log(`Endpoints: GET /health, POST /sms, POST /imessage-in, POST /message, POST /briefing, POST /send, GET /notes, GET /reminders, GET /food-preferences, GET /weather`);
 });
 
 server.on('error', (e) => {
