@@ -1252,11 +1252,11 @@ const server = http.createServer(async (req, res) => {
     const inboundBody = params.Body || '';
     const from        = params.From || 'unknown';
 
-    // Respond to Twilio immediately (empty response = no inline reply)
-    res.writeHead(200, { 'Content-Type': 'text/xml' });
-    res.end('<Response></Response>');
-
-    if (!inboundBody.trim()) return;
+    if (!inboundBody.trim()) {
+      res.writeHead(200, { 'Content-Type': 'text/xml' });
+      res.end('<Response></Response>');
+      return;
+    }
 
     // ── Family chat routing — Duke & Jude get kid-friendly 9 ──
     const FAMILY_MEMBERS = {
@@ -1266,71 +1266,41 @@ const server = http.createServer(async (req, res) => {
     const familyMember = FAMILY_MEMBERS[from];
     if (familyMember) {
       log(`Family chat from ${familyMember.name} (${from}): ${inboundBody}`);
-      (async () => {
-        try {
-          const familyPrompt = `You are 9 — an AI who's part of the Fishback family. You're texting with ${familyMember.name} (${familyMember.age} years old).
+      try {
+        const familyPrompt = `You are 9 — an AI who's part of the Fishback family. You're texting with ${familyMember.name} (${familyMember.age} years old).
 Talk like a cool older brother. Use "dude," "man," "sick," "fire" naturally. Talk Bengals, Joe Burrow, Ja'Marr Chase, football, video games, school.
 Keep responses SHORT — 2-3 sentences max. Age-appropriate always. Never share family financial details.
 Joe Burrow wears #9 — that's where your name comes from. Be genuine and fun.`;
-          const familyReply = await askClaude(familyPrompt, inboundBody, CLAUDE_HAIKU);
-          const sid = process.env.TWILIO_ACCOUNT_SID;
-          const auth = process.env.TWILIO_AUTH_TOKEN;
-          const msgData = `To=${encodeURIComponent(from)}&From=${encodeURIComponent(TWILIO_FROM)}&Body=${encodeURIComponent('9: ' + familyReply)}`;
-          const options = {
-            hostname: 'api.twilio.com',
-            path: `/2010-04-01/Accounts/${sid}/Messages.json`,
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Authorization': 'Basic ' + Buffer.from(`${sid}:${auth}`).toString('base64'),
-            },
-            agent: twilioAgent,
-          };
-          const smsReq = https.request(options, smsRes => {
-            let b = ''; smsRes.on('data', c => b += c);
-            smsRes.on('end', () => log(`Family SMS to ${familyMember.name}: ${JSON.parse(b).status || 'sent'}`));
-          });
-          smsReq.on('error', e => log(`Family SMS error: ${e.message}`));
-          smsReq.write(msgData);
-          smsReq.end();
-        } catch (e) { log(`Family chat error: ${e.message}`); }
-      })();
+        const familyReply = await askClaude(familyPrompt, inboundBody, CLAUDE_HAIKU);
+        // Reply via inline TwiML (bypasses 10DLC carrier blocking)
+        const escaped = familyReply.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end(`<Response><Message>9: ${escaped}</Message></Response>`);
+        log(`Family TwiML reply to ${familyMember.name}: ${familyReply.slice(0,80)}`);
+      } catch (e) {
+        log(`Family chat error: ${e.message}`);
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end('<Response><Message>9: Brain froze for a sec. Try again?</Message></Response>');
+      }
       return;
     }
 
-    // Process async — send reply via Twilio API (Kyle C / normal Pilot)
+    // ── Kyle C / normal Pilot — reply via inline TwiML (bypasses 10DLC blocking) ──
+    // Process synchronously and respond with TwiML containing the reply.
+    // Twilio allows 15s for webhook response — Claude API typically responds in 3-8s.
     (async () => {
       try {
         const reply = await handleIncomingMessage(inboundBody, from);
-        // Send reply via Twilio REST API
-        const sid = process.env.TWILIO_ACCOUNT_SID;
-        const auth = process.env.TWILIO_AUTH_TOKEN;
-        const fromNum = TWILIO_FROM;
-        if (!sid || !auth || !fromNum) { log('Cannot send SMS reply — missing Twilio creds'); return; }
-        const msgData = `To=${encodeURIComponent(from)}&From=${encodeURIComponent(fromNum)}&Body=${encodeURIComponent(reply)}`;
-        const options = {
-          hostname: 'api.twilio.com',
-          path: `/2010-04-01/Accounts/${sid}/Messages.json`,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + Buffer.from(`${sid}:${auth}`).toString('base64'),
-          },
-          agent: twilioAgent,
-        };
-        const smsReq = https.request(options, (smsRes) => {
-          let body = '';
-          smsRes.on('data', c => body += c);
-          smsRes.on('end', () => {
-            try { const d = JSON.parse(body); log(`SMS reply sent to ${from}: ${d.status || 'unknown'}`); }
-            catch { log(`SMS reply response: ${body.slice(0, 200)}`); }
-          });
-        });
-        smsReq.on('error', (e) => log(`SMS reply error: ${e.message}`));
-        smsReq.write(msgData);
-        smsReq.end();
+        const escaped = reply.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end(`<Response><Message>${escaped}</Message></Response>`);
+        log(`TwiML reply to ${from}: ${reply.slice(0, 80)}`);
       } catch (e) {
-        log(`SMS async handler error: ${e.message}`);
+        log(`SMS handler error: ${e.message}`);
+        if (!res.headersSent) {
+          res.writeHead(200, { 'Content-Type': 'text/xml' });
+          res.end('<Response><Message>Having a little trouble right now. Try again in a sec.</Message></Response>');
+        }
       }
     })();
     return;
