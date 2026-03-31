@@ -442,5 +442,18 @@ footer p{margin-bottom:0.5rem}
   <p><a href="mailto:captain@9enterprises.ai">captain@9enterprises.ai</a></p>
 </footer>
 
+<script>
+// Unregister any cached service workers and clear PWA state
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for (var r of registrations) { r.unregister(); }
+  });
+}
+if ('caches' in window) {
+  caches.keys().then(function(names) {
+    for (var name of names) { caches.delete(name); }
+  });
+}
+</script>
 </body>
 </html>
