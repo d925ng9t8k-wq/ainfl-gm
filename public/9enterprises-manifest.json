@@ -4,7 +4,7 @@
   "description": "The world's first autonomous AI business partner. Not a chatbot. Not a tool. A partner.",
   "theme_color": "#0a0a0a",
   "background_color": "#0a0a0a",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait-primary",
   "start_url": "./9enterprises.html",
   "scope": "/",

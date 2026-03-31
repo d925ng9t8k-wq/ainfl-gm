@@ -4,7 +4,7 @@
   "description": "Owner dashboard for 9 Enterprises — live agent status, comms health, project board",
   "theme_color": "#0f0f1f",
   "background_color": "#0f0f1f",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait-primary",
   "start_url": "./dashboard.html",
   "scope": "/",

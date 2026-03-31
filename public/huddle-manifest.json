@@ -4,7 +4,7 @@
   "description": "The 9 Enterprises command center. Owner and guest access. Live operations, task board, and team feed.",
   "theme_color": "#0a0a0a",
   "background_color": "#0a0a0a",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait-primary",
   "start_url": "./cockpit.html",
   "scope": "/",
