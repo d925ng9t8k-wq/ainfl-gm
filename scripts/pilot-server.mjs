@@ -33,7 +33,7 @@ const PROFILE_PATH    = new URL('../data/jules-profile-kylec.json', import.meta.
 const CLAUDE_HAIKU  = "claude-haiku-4-5-20251001";
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 const MAX_BODY_SIZE = 64 * 1024; // 64KB max request body
 const CINCINNATI_LAT = 39.1031;
 const CINCINNATI_LON = -84.5120;
@@ -170,6 +170,10 @@ ACTIVE CAPABILITIES:
 - Note-taking ("note: Garcia appraisal came in at 340k")
 - Script help — talk through a conversation with a borrower, referral partner, or agent
 - Social media ghostwriting — punchy posts about rates, market updates, tips
+- Food delivery — DoorDash/UberEats links for any cuisine (Cincinnati area)
+- Amazon shopping — search links for any product
+- Grocery delivery — Kroger/Instacart links (Cincinnati area)
+- Help/features menu — text "help" to see all capabilities
 - General mortgage Q&A
 
 REMINDERS (currently set): ${reminders}
@@ -280,6 +284,218 @@ function detectNoteIntent(text) {
   const m = text.match(/^(?:note|save\s+note|jot\s+down|remember(?:\s+that)?)[:\s]+(.+)/i);
   if (m) return m[1].trim();
   return null;
+}
+
+// ─── Feature Registry (auto-discovery for "help" / "features" / "menu") ─────
+// Each feature has a name, description, and example triggers.
+// The help response is generated from this registry, so adding a feature here
+// automatically surfaces it when a user asks for help.
+const FEATURE_REGISTRY = [
+  {
+    name: 'Mortgage Guidelines',
+    description: 'Instant FHA, Conventional, VA, and USDA guideline lookups — DTI, credit scores, fees, loan limits.',
+    examples: ['FHA DTI limits', 'VA funding fee', 'conforming limit'],
+  },
+  {
+    name: 'Rate Tracking',
+    description: 'Text a rate update and I\'ll log it. Referenced in briefings and conversations.',
+    examples: ['rates update: 6.875%'],
+  },
+  {
+    name: 'Reminders',
+    description: 'Set timed reminders. I\'ll text you when it\'s time.',
+    examples: ['remind me to call the Garcias at 3pm', 'list reminders'],
+  },
+  {
+    name: 'Notes',
+    description: 'Quick note-taking. I\'ll remember it for you.',
+    examples: ['note: Garcia appraisal came in at 340k', 'clear notes'],
+  },
+  {
+    name: 'Morning Briefing',
+    description: 'Daily 7AM text with rates, reminders, weather, and one priority action.',
+    examples: ['(automatic daily)'],
+  },
+  {
+    name: 'Weather',
+    description: 'Current Cincinnati weather on demand.',
+    examples: ['what\'s the weather'],
+  },
+  {
+    name: 'Food Delivery',
+    description: 'Get a DoorDash or UberEats search link for any cuisine. Cincinnati area.',
+    examples: ['order me a pizza', 'I want Chinese food', 'get me DoorDash'],
+  },
+  {
+    name: 'Amazon Shopping',
+    description: 'Get an Amazon search link for any item. Quick one-tap shopping.',
+    examples: ['order AirPods from Amazon', 'buy me a phone charger'],
+  },
+  {
+    name: 'Grocery Delivery',
+    description: 'Get an Instacart or Kroger link for grocery orders. Cincinnati area.',
+    examples: ['order groceries', 'I need milk and eggs'],
+  },
+  {
+    name: 'Script Help',
+    description: 'Talk through a conversation with a borrower, referral partner, or agent.',
+    examples: ['help me script a call to a realtor'],
+  },
+  {
+    name: 'Social Media Posts',
+    description: 'Ghostwrite punchy social posts about rates, market updates, or tips.',
+    examples: ['write me a post about rates dropping'],
+  },
+  {
+    name: 'General Q&A',
+    description: 'Anything mortgage or business related — just ask.',
+    examples: ['what\'s the best loan for a first-time buyer'],
+  },
+];
+
+function buildHelpResponse() {
+  let msg = 'Here\'s what I can do:\n\n';
+  for (const f of FEATURE_REGISTRY) {
+    msg += `${f.name} — ${f.description}\n`;
+    msg += `  Try: "${f.examples[0]}"\n\n`;
+  }
+  msg += 'Just text me anytime. No menus needed.';
+  return msg;
+}
+
+// ─── Help / features / menu intent detection ────────────────────────────────
+function detectHelpIntent(text) {
+  const lower = text.toLowerCase().trim();
+  return /^(help|features|menu|what can you do|what do you do|commands|capabilities)\??$/.test(lower);
+}
+
+// ─── Food delivery intent detection ─────────────────────────────────────────
+function detectFoodIntent(text) {
+  const lower = text.toLowerCase();
+  // Direct service mentions
+  if (/\b(doordash|door dash|uber\s?eats|grubhub)\b/.test(lower)) {
+    const cuisine = lower.replace(/\b(doordash|door dash|uber\s?eats|grubhub|get\s+me|order\s+me|open|i\s+want)\b/g, '').trim();
+    return { service: lower.includes('ubereats') || lower.includes('uber eats') ? 'ubereats' : 'doordash', cuisine: cuisine || null };
+  }
+  // Food ordering patterns
+  const foodMatch = lower.match(/(?:order|get|deliver|i\s+want|i\s+need|can\s+(?:you|i)\s+get)\s+(?:me\s+)?(?:some\s+)?(?:a\s+)?(.+?)(?:\s+delivered|\s+delivery)?$/);
+  if (foodMatch) {
+    const item = foodMatch[1].trim();
+    const foodKeywords = ['pizza', 'chinese', 'thai', 'mexican', 'sushi', 'burger', 'wings', 'tacos', 'indian', 'italian', 'sub', 'sandwich', 'chicken', 'bbq', 'ramen', 'pho', 'food', 'dinner', 'lunch', 'breakfast'];
+    if (foodKeywords.some(k => item.includes(k))) {
+      return { service: 'doordash', cuisine: item };
+    }
+  }
+  return null;
+}
+
+function buildFoodDeliveryResponse(intent) {
+  const cuisine = intent.cuisine;
+  const query = cuisine ? encodeURIComponent(cuisine) : '';
+  const doordashUrl = query
+    ? `https://www.doordash.com/search/store/${query}/?pickup=false`
+    : 'https://www.doordash.com/food-delivery/cincinnati-oh-restaurants/';
+  const ubereatsUrl = query
+    ? `https://www.ubereats.com/search?q=${query}&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkNpbmNpbm5hdGklMjBPSCUyMiU3RA%3D%3D`
+    : 'https://www.ubereats.com/city/cincinnati-oh';
+
+  let msg = '';
+  if (cuisine) {
+    msg += `Looking for ${cuisine}? Here you go:\n\n`;
+  } else {
+    msg += `Here are your delivery options:\n\n`;
+  }
+  msg += `DoorDash: ${doordashUrl}\n\n`;
+  msg += `UberEats: ${ubereatsUrl}\n\n`;
+  msg += 'Tap either link to browse and order. Cincinnati delivery.';
+  return msg;
+}
+
+// ─── Amazon shopping intent detection ───────────────────────────────────────
+function detectAmazonIntent(text) {
+  const lower = text.toLowerCase();
+  // "order X from amazon" / "buy me X on amazon" / "amazon X"
+  const m1 = lower.match(/(?:order|buy|get)\s+(?:me\s+)?(?:a\s+|an\s+)?(.+?)\s+(?:from|on|off)\s+amazon/);
+  if (m1) return { item: m1[1].trim() };
+  const m2 = lower.match(/amazon\s+(?:order|search|find|get)\s+(?:a\s+|an\s+)?(.+)/);
+  if (m2) return { item: m2[1].trim() };
+  // "buy me X" (without amazon mention — only if it doesn't match food)
+  const m3 = lower.match(/^(?:buy|purchase)\s+(?:me\s+)?(?:a\s+)?(.+?)(?:\s+on\s+amazon)?$/);
+  if (m3) {
+    const item = m3[1].trim();
+    const foodWords = ['pizza', 'food', 'chinese', 'thai', 'sushi', 'burger', 'tacos', 'wings', 'dinner', 'lunch', 'breakfast', 'chicken', 'groceries'];
+    if (!foodWords.some(f => item.includes(f))) {
+      return { item };
+    }
+  }
+  return null;
+}
+
+function buildAmazonResponse(intent) {
+  const query = encodeURIComponent(intent.item);
+  const url = `https://www.amazon.com/s?k=${query}`;
+  return `Amazon search for "${intent.item}":\n\n${url}\n\nTap to browse and order. Prime should have it to you in a day or two.`;
+}
+
+// ─── Grocery delivery intent detection ──────────────────────────────────────
+function detectGroceryIntent(text) {
+  const lower = text.toLowerCase();
+  // Direct service mentions
+  if (/\b(instacart|kroger|grocery|groceries)\b/.test(lower)) {
+    const items = lower.replace(/\b(instacart|kroger|order|get|deliver|i\s+need|i\s+want|some|groceries|grocery|me)\b/g, '').trim();
+    return { items: items || null };
+  }
+  // Grocery item patterns (milk, eggs, bread, etc.)
+  const groceryItems = ['milk', 'eggs', 'bread', 'butter', 'cheese', 'fruit', 'vegetables', 'cereal', 'juice', 'water', 'snacks', 'rice', 'pasta', 'chicken breast', 'ground beef', 'yogurt', 'coffee', 'creamer'];
+  const mentioned = groceryItems.filter(g => lower.includes(g));
+  if (mentioned.length >= 1 && /\b(need|get|order|pick\s+up|grab)\b/.test(lower)) {
+    return { items: mentioned.join(', ') };
+  }
+  return null;
+}
+
+function buildGroceryResponse(intent) {
+  const items = intent.items;
+  const instacartUrl = items
+    ? `https://www.instacart.com/store/kroger/search/${encodeURIComponent(items)}`
+    : 'https://www.instacart.com/store/kroger/storefront';
+  const krogerUrl = items
+    ? `https://www.kroger.com/search?query=${encodeURIComponent(items)}&searchType=default_search`
+    : 'https://www.kroger.com/';
+
+  let msg = '';
+  if (items) {
+    msg += `Grocery run for ${items}? Here you go:\n\n`;
+  } else {
+    msg += `Grocery delivery options:\n\n`;
+  }
+  msg += `Kroger: ${krogerUrl}\n\n`;
+  msg += `Instacart (Kroger): ${instacartUrl}\n\n`;
+  msg += 'Both deliver in Cincinnati. Tap to shop.';
+  return msg;
+}
+
+// ─── Interaction logger ─────────────────────────────────────────────────────
+const INTERACTION_LOG_PATH = new URL('../logs/pilot-interactions.log', import.meta.url).pathname;
+
+function logInteraction(from, message, response, intent) {
+  const entry = {
+    ts: new Date().toISOString(),
+    from,
+    message: message.slice(0, 500),
+    intent: intent || 'claude_fallthrough',
+    response: response.slice(0, 500),
+  };
+  try {
+    fs.appendFileSync(INTERACTION_LOG_PATH, JSON.stringify(entry) + '\n');
+  } catch (e) {
+    log(`WARN: Could not write interaction log: ${e.message}`);
+  }
+}
+
+// ─── Welcome message for new/unknown users ──────────────────────────────────
+function buildWelcomeMessage() {
+  return `Hey — I'm Jules, your personal assistant from 9 Enterprises. Built specifically for you.\n\nI can help with mortgage guidelines, rate tracking, reminders, food delivery, Amazon orders, groceries, and more.\n\nText "help" anytime to see everything I can do. Or just ask me something — I'll figure it out.`;
 }
 
 // ─── Schedule a reminder ──────────────────────────────────────────────────────
@@ -613,6 +829,15 @@ async function handleIncomingMessage(body, from) {
   const profile = loadProfile();
   if (!profile) return 'Jules is having a moment — try again in a sec.';
 
+  // 0. Help / features / menu
+  if (detectHelpIntent(body)) {
+    const response = buildHelpResponse();
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'help');
+    return response;
+  }
+
   // 1. Rate update shortcut
   const newRate = detectRateUpdate(body);
   if (newRate !== null) {
@@ -625,6 +850,7 @@ async function handleIncomingMessage(body, from) {
     const response = `Got it — logging 30yr conventional at ${newRate}%${delta}.`;
     updateMemory(profile, 'user', body);
     updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'rate_update');
     return response;
   }
 
@@ -641,6 +867,7 @@ async function handleIncomingMessage(body, from) {
     const response = `Noted: "${noteContent}"`;
     updateMemory(profile, 'user', body);
     updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'note');
     return response;
   }
 
@@ -651,6 +878,7 @@ async function handleIncomingMessage(body, from) {
     if (answer) {
       updateMemory(profile, 'user', body);
       updateMemory(loadProfile(), 'assistant', answer);
+      logInteraction(from, body, answer, `guideline_${guidelineIntent.topic}`);
       return answer;
     }
   }
@@ -666,6 +894,7 @@ async function handleIncomingMessage(body, from) {
       const response = `Set. I'll remind you to ${reminderIntent.task} at ${timeStr}.`;
       updateMemory(profile, 'user', body);
       updateMemory(loadProfile(), 'assistant', response);
+      logInteraction(from, body, response, 'reminder');
       return response;
     }
   }
@@ -677,6 +906,7 @@ async function handleIncomingMessage(body, from) {
     const response = 'Notes cleared.';
     updateMemory(profile, 'user', body);
     updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'clear_notes');
     return response;
   }
 
@@ -688,10 +918,41 @@ async function handleIncomingMessage(body, from) {
       : 'No reminders set right now.';
     updateMemory(profile, 'user', body);
     updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'list_reminders');
     return response;
   }
 
-  // 7. Route to Claude
+  // 7. Food delivery intent
+  const foodIntent = detectFoodIntent(body);
+  if (foodIntent) {
+    const response = buildFoodDeliveryResponse(foodIntent);
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'food_delivery');
+    return response;
+  }
+
+  // 8. Grocery delivery intent
+  const groceryIntent = detectGroceryIntent(body);
+  if (groceryIntent) {
+    const response = buildGroceryResponse(groceryIntent);
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'grocery_delivery');
+    return response;
+  }
+
+  // 9. Amazon shopping intent
+  const amazonIntent = detectAmazonIntent(body);
+  if (amazonIntent) {
+    const response = buildAmazonResponse(amazonIntent);
+    updateMemory(profile, 'user', body);
+    updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'amazon_shopping');
+    return response;
+  }
+
+  // 10. Route to Claude (fallthrough)
   updateMemory(profile, 'user', body);
   const freshProfile = loadProfile();
   const systemPrompt = buildSystemPrompt(freshProfile);
@@ -699,10 +960,13 @@ async function handleIncomingMessage(body, from) {
   try {
     const response = await askClaude(systemPrompt, body, CLAUDE_HAIKU);
     updateMemory(loadProfile(), 'assistant', response);
+    logInteraction(from, body, response, 'claude_ai');
     return response;
   } catch (e) {
     log(`Claude error: ${e.message}`);
-    return "Having a little trouble right now. Give me a minute.";
+    const errResponse = "Having a little trouble right now. Give me a minute.";
+    logInteraction(from, body, errResponse, 'claude_error');
+    return errResponse;
   }
 }
 
@@ -1003,6 +1267,7 @@ server.listen(PORT, () => {
   log(`Claude configured: ${!!ANTHROPIC_KEY}`);
   log(`Weather configured: ${!!OPENWEATHER_KEY}`);
   log(`Recipient: ${RECIPIENT_PHONE || 'NOT SET — add JULES_KYLEC_RECIPIENT_PHONE to .env'}`);
+  log(`Features: ${FEATURE_REGISTRY.length} registered (help/food/amazon/grocery/guidelines/rates/reminders/notes/weather/scripts/social/qa)`);
   log(`Endpoints: GET /health, POST /sms, POST /imessage-in, POST /message, POST /briefing, POST /send, GET /notes, GET /reminders, GET /weather`);
 });
 
