@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
 <meta name="theme-color" content="#0a0a0a">
-<title>9 Command Center</title>
+<title>The Huddle — 9 Enterprises</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -221,7 +221,7 @@ body.owner-mode .guest-only{display:none;}
 <div id="pin-overlay">
   <div class="pin-box">
     <div class="pin-logo">9</div>
-    <div class="pin-title">COMMAND CENTER</div>
+    <div class="pin-title">THE HUDDLE</div>
     <div class="pin-sub">Enter PIN for Owner access, or continue as Guest</div>
     <input type="password" class="pin-input" id="pin-input" maxlength="10" placeholder="----" autocomplete="off" autocorrect="off">
     <div class="pin-error" id="pin-error"></div>
@@ -237,7 +237,7 @@ body.owner-mode .guest-only{display:none;}
   <div class="topbar-left">
     <div class="logo-9">9</div>
     <div class="topbar-brand">
-      <div class="topbar-title">COMMAND CENTER</div>
+      <div class="topbar-title">THE HUDDLE</div>
       <div class="topbar-sub" id="mode-label">Guest View</div>
     </div>
   </div>
@@ -347,7 +347,7 @@ body.owner-mode .guest-only{display:none;}
         </div>
         <div class="terminal-body">
           <div class="terminal-output" id="term-output">
-            <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises &mdash; Command Center</span></div>
+            <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises &mdash; The Huddle</span></div>
             <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Type a message and press Enter to send to 9 via Telegram.</span></div>
           </div>
           <div class="term-input-row">
@@ -562,80 +562,93 @@ renderCompanies();
 
 // ===================== PERFORMANCE GAUGES =====================
 let hubHealthData=null;
+const isLocalhost=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.hostname==='';
 
 async function refreshGauges(){
   // Hub health
-  try{
-    const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});
-    if(res.ok){
-      hubHealthData=await res.json();
-      const g=document.getElementById('gauge-hub');
-      g.textContent='Online';
-      g.className='gauge-value up';
-      // Update hub status indicator
+  if(isLocalhost){
+    try{
+      const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});
+      if(res.ok){
+        hubHealthData=await res.json();
+        const g=document.getElementById('gauge-hub');
+        g.textContent='Online';
+        g.className='gauge-value up';
+        // Update hub status indicator
+        const hs=document.getElementById('hub-status');
+        hs.innerHTML='<div class="status-dot"></div><span>LIVE</span>';
+        // Uptime
+        if(hubHealthData.uptime){
+          const hrs=Math.floor(hubHealthData.uptime/3600);
+          const mins=Math.floor((hubHealthData.uptime%3600)/60);
+          document.getElementById('stat-uptime').textContent=hrs+'h '+mins+'m';
+        }
+        // Process count
+        if(hubHealthData.channels){
+          const procs=Object.keys(hubHealthData.channels).length;
+          document.getElementById('stat-processes').textContent=procs;
+        }
+      } else {
+        setGaugeDown('gauge-hub','Error '+res.status);
+      }
+    }catch(e){
+      setGaugeDown('gauge-hub','Offline');
       const hs=document.getElementById('hub-status');
-      hs.innerHTML='<div class="status-dot"></div><span>LIVE</span>';
-      // Uptime
-      if(hubHealthData.uptime){
-        const hrs=Math.floor(hubHealthData.uptime/3600);
-        const mins=Math.floor((hubHealthData.uptime%3600)/60);
-        document.getElementById('stat-uptime').textContent=hrs+'h '+mins+'m';
-      }
-      // Process count
-      if(hubHealthData.channels){
-        const procs=Object.keys(hubHealthData.channels).length;
-        document.getElementById('stat-processes').textContent=procs;
-      }
-    } else {
-      setGaugeDown('gauge-hub','Error '+res.status);
+      hs.innerHTML='<div class="status-dot" style="background:var(--red);"></div><span>DOWN</span>';
     }
-  }catch(e){
-    setGaugeDown('gauge-hub','Offline');
+  } else {
+    // Remote access — hub is not reachable from external networks
+    const g=document.getElementById('gauge-hub');
+    g.textContent='Remote';
+    g.className='gauge-value neutral';
     const hs=document.getElementById('hub-status');
-    hs.innerHTML='<div class="status-dot" style="background:var(--red);"></div><span>DOWN</span>';
+    hs.innerHTML='<div class="status-dot" style="background:var(--orange);"></div><span>REMOTE</span>';
+    document.getElementById('stat-uptime').textContent='N/A';
+    document.getElementById('stat-processes').textContent='N/A';
+    document.getElementById('stat-messages').textContent='N/A';
   }
 
   // Voice server
-  try{
-    const res=await fetch('http://localhost:3456/health',{signal:AbortSignal.timeout(3000)});
-    if(res.ok){
-      const g=document.getElementById('gauge-voice');
-      g.textContent='Online';
-      g.className='gauge-value up';
-    } else {
-      setGaugeDown('gauge-voice','Error');
+  if(isLocalhost){
+    try{
+      const res=await fetch('http://localhost:3456/health',{signal:AbortSignal.timeout(3000)});
+      if(res.ok){
+        const g=document.getElementById('gauge-voice');
+        g.textContent='Online';
+        g.className='gauge-value up';
+      } else {
+        setGaugeDown('gauge-voice','Error');
+      }
+    }catch(e){
+      setGaugeDown('gauge-voice','Offline');
     }
-  }catch(e){
-    setGaugeDown('gauge-voice','Offline');
+  } else {
+    const g=document.getElementById('gauge-voice');
+    g.textContent='Remote';
+    g.className='gauge-value neutral';
   }
 
   // Trader 9 - check via hub state
-  try{
-    if(hubHealthData && hubHealthData.trader9){
-      const g=document.getElementById('gauge-trader');
-      g.textContent=hubHealthData.trader9.status||'Active';
-      g.className='gauge-value up';
-    } else {
-      const g=document.getElementById('gauge-trader');
-      g.textContent='Paper Mode';
-      g.className='gauge-value pending';
-    }
-  }catch(e){
-    setGaugeDown('gauge-trader','Unknown');
+  if(hubHealthData && hubHealthData.trader9){
+    const g=document.getElementById('gauge-trader');
+    g.textContent=hubHealthData.trader9.status||'Active';
+    g.className='gauge-value up';
+  } else {
+    const g=document.getElementById('gauge-trader');
+    g.textContent='Paper Mode';
+    g.className='gauge-value pending';
   }
 
   // Trinity
-  try{
-    if(hubHealthData && hubHealthData.trinity){
-      const g=document.getElementById('gauge-trinity');
-      g.textContent=hubHealthData.trinity.scans||'Active';
-      g.className='gauge-value up';
-    } else {
-      const g=document.getElementById('gauge-trinity');
-      g.textContent='Standby';
-      g.className='gauge-value neutral';
-    }
-  }catch(e){}
+  if(hubHealthData && hubHealthData.trinity){
+    const g=document.getElementById('gauge-trinity');
+    g.textContent=hubHealthData.trinity.scans||'Active';
+    g.className='gauge-value up';
+  } else {
+    const g=document.getElementById('gauge-trinity');
+    g.textContent='Standby';
+    g.className='gauge-value neutral';
+  }
 }
 
 function setGaugeDown(id,text){
@@ -652,6 +665,11 @@ setInterval(refreshGauges,30000);
 let lastMsgCount=0;
 
 async function refreshTelegramFeed(){
+  if(!isLocalhost){
+    const feed=document.getElementById('tg-feed');
+    feed.innerHTML='<div class="tg-empty">Telegram feed available on local network only</div>';
+    return;
+  }
   try{
     const res=await fetch('http://localhost:3457/state',{signal:AbortSignal.timeout(5000)});
     if(!res.ok) return;
@@ -724,6 +742,10 @@ async function sendMessage(){
   const msg=termInput.value.trim();
   if(!msg) return;
   termInput.value='';
+  if(!isLocalhost){
+    termLog('Message relay requires local access.','error');
+    return;
+  }
   termLog('> '+msg,'sent');
   try{
     const res=await fetch('http://localhost:3457/send',{
@@ -739,6 +761,7 @@ async function sendMessage(){
 
 // ===================== QUICK ACTIONS =====================
 async function checkInbox(){
+  if(!isLocalhost){termLog('Inbox check requires local access.','error');return;}
   termLog('Checking inbox...','system');
   try{
     const res=await fetch('http://localhost:3457/inbox',{signal:AbortSignal.timeout(5000)});
@@ -760,6 +783,7 @@ async function checkInbox(){
 }
 
 async function checkTrader(){
+  if(!isLocalhost){termLog('Trader check requires local access.','error');return;}
   termLog('Checking Trader 9...','system');
   try{
     const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});

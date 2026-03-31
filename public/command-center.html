@@ -781,6 +781,7 @@ document.getElementById('term-input').addEventListener('keydown', function(e) {
 
 /* ── TELEGRAM CHAT PANEL ── */
 const HUB = 'http://localhost:3457';
+const _isLocal = location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.hostname==='';
 let tgLastMessages = [];
 
 function fmtTime(ts) {
@@ -811,6 +812,12 @@ function renderTgMessages(msgs) {
 
 async function tgFetch() {
   const lbl = document.getElementById('tg-refresh-lbl');
+  if(!_isLocal){
+    const el=document.getElementById('tg-messages');
+    if(el) el.innerHTML='<div class="tg-empty">Feed available on local network only</div>';
+    if(lbl) lbl.textContent='Remote access';
+    return;
+  }
   try {
     const r = await fetch(HUB + '/state', {signal: AbortSignal.timeout(5000)});
     if (!r.ok) throw new Error('bad status');
@@ -841,6 +848,7 @@ async function tgSend() {
   const btn = document.getElementById('tg-send');
   const text = input.value.trim();
   if (!text) return;
+  if(!_isLocal){return;}
   input.disabled = true;
   btn.disabled = true;
   btn.textContent = '...';
@@ -882,6 +890,13 @@ if (tgInputEl) {
 
 /* ── HUB STATUS FEED ── */
 async function hubStatusFetch() {
+  if(!_isLocal){
+    const statState=document.getElementById('stat-hub-state');
+    const statDetail=document.getElementById('stat-hub-detail');
+    if(statState){statState.textContent='REMOTE';statState.style.color='var(--orange)';}
+    if(statDetail){statDetail.textContent='Local access required for live status';}
+    return;
+  }
   try {
     const r = await fetch(HUB + '/health', {signal: AbortSignal.timeout(5000)});
     if (!r.ok) throw new Error('bad');
