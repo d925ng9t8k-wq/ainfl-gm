@@ -1472,9 +1472,7 @@ if (!profile) {
 }
 
 restoreReminders(profile);
-// DISABLED: Morning briefing was sending unsolicited messages that Kyle found intrusive.
-// Re-enable once Kyle explicitly opts in. — 9, March 30 2026
-// scheduleMorningBriefing(profile);
+scheduleMorningBriefing(profile);
 
 server.listen(PORT, () => {
   log(`Pilot server v${VERSION} (Kyle Cabezas) running on port ${PORT}`);
