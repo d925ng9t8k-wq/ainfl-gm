@@ -17,13 +17,13 @@
 <meta property="og:description" content="Buy and sell homes without a realtor. AI handles listing, marketing, negotiation, and closing. Keep the commission.">
 <meta property="og:image" content="/og-preview.jpg">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://9enterprises.com/agent9">
+<meta property="og:url" content="https://get9.ai/agent9">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="agent9 — No Realtor. No Commission. Just AI.">
 <meta name="twitter:description" content="AI handles everything. You keep the money. Launching soon.">
 <link rel="manifest" href="/dashboard-manifest.json">
 <title>agent9 — Buy and Sell Homes Without a Realtor</title>
-<link rel="canonical" href="https://bengalsoracle.com/agent9.html">
+<link rel="canonical" href="https://get9.ai/agent9.html">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-PLW4H1NNF6");</script>
 <style>
@@ -1153,7 +1153,7 @@ footer {
     <div class="label" style="margin-bottom:16px;">See It In Action</div>
     <h2 style="font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-0.02em;">The Future of Real Estate, Explained</h2>
     <p style="font-size:16px;color:var(--text-dim);margin-bottom:32px;max-width:560px;margin-left:auto;margin-right:auto;">A two-minute overview of how agent9 handles every step of buying or selling a home — without the traditional realtor markup.</p>
-    <div style="position:relative;width:100%;padding-top:177.78%;background:var(--bg-3);border-radius:16px;overflow:hidden;border:1px solid var(--border-glow);box-shadow:var(--shadow-glow);max-width:420px;margin:0 auto;">
+    <div class="heygen-video-wrap" style="position:relative;width:100%;padding-top:177.78%;background:var(--bg-3);border-radius:16px;overflow:hidden;border:1px solid var(--border-glow);box-shadow:var(--shadow-glow);max-width:420px;margin:0 auto;">
       <iframe src="https://app.heygen.com/embeds/c97d2535dba84b9c9b874e4f3d42ea61" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div>
   </div>
@@ -1243,5 +1243,44 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 </script>
 
+<!-- HeyGen Fullscreen Expand -->
+<style>
+.heygen-video-wrap{position:relative;cursor:pointer;transition:all .3s ease}
+.heygen-video-wrap.heygen-fs{position:fixed!important;inset:0!important;z-index:99999!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:#000!important;padding-top:0!important}
+.heygen-video-wrap.heygen-fs iframe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.heygen-fs-close{display:none;position:fixed;top:16px;right:16px;z-index:100000;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;backdrop-filter:blur(8px);line-height:1}
+.heygen-fs-close.active{display:flex}
+</style>
+<button class="heygen-fs-close" id="heygen-fs-close" aria-label="Close fullscreen">&times;</button>
+<script>
+(function(){
+  var wraps=document.querySelectorAll(".heygen-video-wrap");
+  var closeBtn=document.getElementById("heygen-fs-close");
+  var activeWrap=null;
+  wraps.forEach(function(w){
+    w.addEventListener("click",function(e){
+      if(e.target.tagName==="BUTTON")return;
+      if(w.classList.contains("heygen-fs")){return;}
+      w.classList.add("heygen-fs");
+      closeBtn.classList.add("active");
+      activeWrap=w;
+      document.body.style.overflow="hidden";
+    });
+  });
+  closeBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    if(activeWrap){activeWrap.classList.remove("heygen-fs");activeWrap=null;}
+    closeBtn.classList.remove("active");
+    document.body.style.overflow="";
+  });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&activeWrap){
+      activeWrap.classList.remove("heygen-fs");activeWrap=null;
+      closeBtn.classList.remove("active");
+      document.body.style.overflow="";
+    }
+  });
+})();
+<\/script>
 </body>
 </html>

@@ -21,7 +21,7 @@
 <meta name="twitter:description" content="The AI-driven competitive advantage your competitors don't have.">
 <meta name="twitter:image" content="https://ainflgm.com/9e-og-preview.jpg">
 <title>How 9 Enterprises Powers Rapid Mortgage</title>
-<link rel="canonical" href="https://bengalsoracle.com/rapid-pitch.html">
+<link rel="canonical" href="https://9enterprises.ai/rapid-pitch.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -1017,7 +1017,7 @@ footer {
       <p>A full walkthrough of the 9 Enterprises stack and how it integrates with Rapid's operations.</p>
     </div>
     <div class="video-wrap fade-in">
-      <div class="video-container" id="video-container">
+      <div class="video-container heygen-video-wrap" id="video-container">
         <!-- HeyGen video embed — swap HEYGEN_VIDEO_ID when ready -->
         <script>
           const HEYGEN_VIDEO_ID = '59fec472a8fc45dcb837a47ab0375d0c';
@@ -1252,5 +1252,44 @@ async function sendFeedback() {
 }
 </script>
 
+<!-- HeyGen Fullscreen Expand -->
+<style>
+.heygen-video-wrap{position:relative;cursor:pointer;transition:all .3s ease}
+.heygen-video-wrap.heygen-fs{position:fixed!important;inset:0!important;z-index:99999!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:#000!important;padding-top:0!important}
+.heygen-video-wrap.heygen-fs iframe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.heygen-fs-close{display:none;position:fixed;top:16px;right:16px;z-index:100000;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;backdrop-filter:blur(8px);line-height:1}
+.heygen-fs-close.active{display:flex}
+</style>
+<button class="heygen-fs-close" id="heygen-fs-close" aria-label="Close fullscreen">&times;</button>
+<script>
+(function(){
+  var wraps=document.querySelectorAll(".heygen-video-wrap");
+  var closeBtn=document.getElementById("heygen-fs-close");
+  var activeWrap=null;
+  wraps.forEach(function(w){
+    w.addEventListener("click",function(e){
+      if(e.target.tagName==="BUTTON")return;
+      if(w.classList.contains("heygen-fs")){return;}
+      w.classList.add("heygen-fs");
+      closeBtn.classList.add("active");
+      activeWrap=w;
+      document.body.style.overflow="hidden";
+    });
+  });
+  closeBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    if(activeWrap){activeWrap.classList.remove("heygen-fs");activeWrap=null;}
+    closeBtn.classList.remove("active");
+    document.body.style.overflow="";
+  });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&activeWrap){
+      activeWrap.classList.remove("heygen-fs");activeWrap=null;
+      closeBtn.classList.remove("active");
+      document.body.style.overflow="";
+    }
+  });
+})();
+<\/script>
 </body>
 </html>
