@@ -53,6 +53,7 @@ const JASSON_PHONE  = process.env.JASSON_PHONE || '+15134031829';
 const JAMIE_PHONE   = process.env.JAMIE_PHONE || ''; // Jamie Bryant — Jules routing. Set JAMIE_PHONE in .env.
 const KYLEC_PHONE   = process.env.JULES_KYLEC_RECIPIENT_PHONE || '+15132255681'; // Kyle Cabezas — pilot routing
 const PILOT_SERVER_URL = 'http://localhost:3472'; // pilot-server.mjs
+const knownExternalTelegramUsers = new Set(); // Track external users for first-contact notifications
 const JASSON_EMAIL  = 'emailfishback@gmail.com';
 const CAPTAIN_EMAIL = 'captain@ainflgm.com';
 const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD || '';
@@ -1306,6 +1307,49 @@ async function telegramPoll() {
                   await sendTelegram('OC: Covering for 9. ' + reply);
                 }
               }
+            }
+          } else if (msg && msg.text) {
+            // ─── External User Routing → Pilot AI ─────────────────────────
+            const extUserId = String(msg.from?.id);
+            const extUserName = msg.from?.first_name || msg.from?.username || 'Unknown';
+            const extChatId = String(msg.chat.id);
+            const extText = msg.text.trim();
+
+            log(`Telegram IN (external user ${extUserName}/${extUserId}): "${extText.slice(0, 100)}"`);
+
+            // Notify Jasson on first contact from a new user
+            if (!knownExternalTelegramUsers.has(extUserId)) {
+              knownExternalTelegramUsers.add(extUserId);
+              log(`New external Telegram user: ${extUserName} (${extUserId})`);
+              try {
+                await apiReq('sendMessage', { chat_id: CHAT_ID, text: `New user connected: ${extUserName} (${extUserId})` });
+              } catch (e) { log(`Failed to notify Owner of new user: ${e.message}`); }
+            }
+
+            // Route to Pilot AI
+            try {
+              const pilotRes = await fetch(`${PILOT_SERVER_URL}/message`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: extText }),
+              });
+              if (pilotRes.ok) {
+                const pilotData = await pilotRes.json();
+                const pilotReply = pilotData.reply || pilotData.response || pilotData.message || 'I received your message but couldn\'t generate a response.';
+                // Send Pilot's reply back to the external user's chat
+                try {
+                  await apiReq('sendMessage', { chat_id: extChatId, text: pilotReply, parse_mode: 'Markdown' });
+                } catch {
+                  await apiReq('sendMessage', { chat_id: extChatId, text: pilotReply });
+                }
+                log(`Pilot reply sent to ${extUserName}/${extChatId}: "${String(pilotReply).slice(0, 100)}"`);
+              } else {
+                log(`Pilot server returned ${pilotRes.status} — sending fallback`);
+                await apiReq('sendMessage', { chat_id: extChatId, text: 'Sorry, I\'m having trouble processing your request right now. Please try again shortly.' });
+              }
+            } catch (e) {
+              log(`Pilot relay failed: ${e.message}`);
+              await apiReq('sendMessage', { chat_id: extChatId, text: 'Sorry, I\'m temporarily unavailable. Please try again in a moment.' });
             }
           }
           telegramOffset = update.update_id + 1;
