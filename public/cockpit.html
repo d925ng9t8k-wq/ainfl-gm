@@ -3,1835 +3,421 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#0a0a0a">
-<meta name="apple-mobile-web-app-title" content="9 Huddle">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
-<link rel="manifest" href="/huddle-manifest.json">
+<meta name="theme-color" content="#0a0a0a">
 <title>9 Huddle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ===================== RESET & TOKENS ===================== */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg:        #0a0a0a;
-  --bg2:       #111111;
-  --bg3:       #161616;
-  --bg4:       #1a1a1a;
-  --panel:     #111111;
-  --border:    rgba(255,255,255,0.07);
-  --border-glow: rgba(251,79,20,0.35);
-  --gold:      #FB4F14;
-  --gold2:     #FF6B35;
-  --neon:      #FB4F14;
-  --cyan:      #FF6B35;
-  --green:     #00ff88;
-  --red:       #ff3b5c;
-  --orange:    #FB4F14;
-  --purple:    #FB4F14;
-  --accent:    #FB4F14;
-  --accent2:   #FF6B35;
-  --text:      #e2e2e2;
-  --muted:     rgba(255,255,255,0.4);
-  --dim:       rgba(255,255,255,0.12);
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body:    'Inter', sans-serif;
-  --font-mono:    'DM Mono', monospace;
-  --r: 12px;
-  --r-sm: 8px;
-  --r-lg: 16px;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0a;--bg2:#111;--bg3:#161616;--bg4:#1a1a1a;
+  --orange:#f97316;--orange-dim:rgba(249,115,22,0.12);--orange-glow:rgba(249,115,22,0.25);
+  --red:#ff3b5c;--green:#00ff88;--purple:#b060ff;--yellow:#ffd700;--cyan:#00e5ff;
+  --text:#e8e8e8;--muted:#888;--dim:#2a2a2a;
+  --glass:rgba(17,17,17,0.85);--glass-border:rgba(249,115,22,0.1);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --r:12px;--r-sm:8px;
 }
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;}
+a{color:var(--orange);text-decoration:none;}
+a:hover{text-decoration:underline;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(249,115,22,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,0.012) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;}
 
-html { scroll-behavior: smooth; }
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes progress-fill{from{width:0;}to{width:var(--w);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+.fade-up{animation:fadeUp .4s ease both;}
 
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* ===================== BACKGROUND ===================== */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: -1;
-  background-image:
-    linear-gradient(rgba(240,165,0,0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(240,165,0,0.012) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-}
-
-/* gold ambient glow top-left */
-body::after {
-  content: '';
-  position: fixed; top: -20%; left: -10%; width: 50%; height: 50%;
-  background: radial-gradient(ellipse, rgba(240,165,0,0.04) 0%, transparent 70%);
-  pointer-events: none; z-index: -1;
-}
-
-/* ===================== SCROLLBAR ===================== */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
-
-/* ===================== ANIMATIONS ===================== */
-@keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 6px rgba(240,165,0,0.3); }
-  50%       { box-shadow: 0 0 20px rgba(240,165,0,0.7), 0 0 40px rgba(240,165,0,0.2); }
-}
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
-}
-@keyframes scanline {
-  0%   { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-@keyframes progress-fill {
-  from { width: 0%; }
-  to   { width: var(--target-width); }
-}
-@keyframes tick {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-.fade-up { animation: fadeUp 0.4s ease both; }
-
-/* scanline */
-.scanline {
-  position: fixed; top: 0; left: 0; width: 100%; height: 2px;
-  background: linear-gradient(transparent, rgba(240,165,0,0.06), transparent);
-  z-index: 9999; pointer-events: none;
-  animation: scanline 10s linear infinite;
-}
+/* ===================== PIN OVERLAY ===================== */
+#pin-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;}
+#pin-overlay.hidden{display:none;}
+.pin-box{text-align:center;max-width:360px;padding:40px;animation:fadeUp .5s ease;}
+.pin-logo{font-family:var(--font-display);font-size:72px;line-height:1;background:linear-gradient(135deg,#f97316,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.pin-title{font-family:var(--font-display);font-size:24px;letter-spacing:5px;color:var(--text);margin-bottom:6px;}
+.pin-sub{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-bottom:28px;}
+.pin-input{width:200px;padding:12px 16px;background:var(--bg3);border:1px solid var(--glass-border);border-radius:var(--r-sm);color:var(--text);font-family:var(--font-mono);font-size:18px;letter-spacing:8px;text-align:center;outline:none;transition:border-color .2s;}
+.pin-input:focus{border-color:var(--orange);}
+.pin-input.error{border-color:var(--red);animation:shake .3s ease;}
+.pin-error{font-family:var(--font-mono);font-size:11px;color:var(--red);margin-top:10px;min-height:16px;}
+.pin-actions{display:flex;gap:10px;justify-content:center;margin-top:20px;}
+.pin-btn{padding:10px 24px;border-radius:var(--r-sm);font-family:var(--font-mono);font-size:12px;letter-spacing:1px;cursor:pointer;border:none;transition:all .2s;}
+.pin-btn-primary{background:var(--orange);color:#000;font-weight:600;}
+.pin-btn-primary:hover{background:#fb923c;}
+.pin-btn-guest{background:transparent;color:var(--muted);border:1px solid var(--dim);}
+.pin-btn-guest:hover{color:var(--text);border-color:var(--muted);}
 
 /* ===================== TOPBAR ===================== */
-.topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 24px;
-  padding-top: calc(10px + env(safe-area-inset-top));
-  padding-left: calc(24px + env(safe-area-inset-left));
-  padding-right: calc(24px + env(safe-area-inset-right));
-  background: rgba(10,10,10,0.96);
-  border-bottom: 1px solid rgba(240,165,0,0.12);
-  position: sticky; top: 0; z-index: 200;
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-}
-.topbar-left { display: flex; align-items: center; gap: 14px; }
-.logo-img {
-  width: 38px; height: 38px; border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid rgba(240,165,0,0.3);
-  box-shadow: 0 0 12px rgba(240,165,0,0.2);
-}
-.logo-fallback {
-  width: 38px; height: 38px; border-radius: 8px;
-  background: linear-gradient(135deg, #f0a500, #ff6600);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-size: 22px; color: #000;
-  font-weight: 700;
-  border: 1px solid rgba(240,165,0,0.4);
-  box-shadow: 0 0 12px rgba(240,165,0,0.3);
-}
-.topbar-brand { display: flex; flex-direction: column; gap: 1px; }
-.topbar-title {
-  font-family: var(--font-display); font-size: 22px; letter-spacing: 4px;
-  color: var(--text); line-height: 1;
-}
-.topbar-sub {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  letter-spacing: 2px; text-transform: uppercase;
-}
-.topbar-center { display: flex; align-items: center; gap: 20px; }
-.topbar-right { display: flex; align-items: center; gap: 18px; }
-.live-clock {
-  font-family: var(--font-mono); font-size: 13px; color: var(--gold2);
-  letter-spacing: 1.5px;
-}
-.live-badge {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--font-mono); font-size: 10px;
-  color: var(--green); letter-spacing: 1.5px; text-transform: uppercase;
-}
-.live-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
-  animation: pulse-dot 1.5s ease-in-out infinite;
-}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;padding-top:calc(10px + env(safe-area-inset-top));background:rgba(10,10,10,.95);border-bottom:1px solid var(--glass-border);position:sticky;top:0;z-index:200;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.logo-9{font-family:var(--font-display);font-size:40px;line-height:1;background:linear-gradient(135deg,#f97316,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 10px rgba(249,115,22,.4));}
+.topbar-brand{display:flex;flex-direction:column;}
+.topbar-title{font-family:var(--font-display);font-size:20px;letter-spacing:4px;color:var(--text);}
+.topbar-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1.5px;}
+.topbar-nav{display:flex;gap:4px;}
+.topbar-nav a{font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:5px 10px;border-radius:var(--r-sm);transition:all .2s;text-decoration:none !important;}
+.topbar-nav a:hover,.topbar-nav a.active{color:var(--orange);background:var(--orange-dim);}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.live-clock{font-family:var(--font-mono);font-size:13px;color:var(--orange);letter-spacing:1px;}
+.status-live{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--green);letter-spacing:1px;text-transform:uppercase;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 1.5s ease-in-out infinite;}
+@media(max-width:768px){.topbar-nav{display:none;}.topbar-title{font-size:16px;letter-spacing:2px;}.topbar-sub{display:none;}}
 
-@media (max-width: 768px) {
-  .topbar-center { display: none; }
-  .topbar-title { font-size: 18px; letter-spacing: 2px; }
-  .topbar-sub { display: none; }
-}
+/* ===================== MAIN LAYOUT ===================== */
+.huddle{display:grid;grid-template-columns:1fr 340px;gap:16px;padding:16px 20px 40px;max-width:1500px;margin:0 auto;}
+@media(max-width:1100px){.huddle{grid-template-columns:1fr;}}
 
-/* ===================== SPRINT BANNER ===================== */
-.sprint-banner {
-  background: linear-gradient(135deg, rgba(240,165,0,0.06) 0%, rgba(18,18,26,0.95) 60%);
-  border-bottom: 1px solid rgba(240,165,0,0.12);
-  padding: 10px 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  flex-wrap: wrap;
-}
-.sprint-label {
-  font-family: var(--font-display); font-size: 16px; letter-spacing: 3px;
-  color: var(--gold); text-transform: uppercase;
-}
-.sprint-meta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.sprint-stat {
-  display: flex; flex-direction: column; gap: 1px;
-  font-family: var(--font-mono); font-size: 10px;
-}
-.sprint-stat-label { color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-.sprint-stat-value { color: var(--text); font-size: 13px; font-weight: 500; }
-.sprint-stat-value.gold { color: var(--gold2); }
-.sprint-day-pips { display: flex; gap: 4px; align-items: center; }
-.sprint-pip {
-  width: 18px; height: 6px; border-radius: 3px;
-  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.08);
-  transition: background 0.3s;
-}
-.sprint-pip.active { background: var(--gold); box-shadow: 0 0 6px rgba(240,165,0,0.5); }
+/* Sections */
+.section-label{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.06),transparent);}
+.section-label .accent{color:var(--orange);}
 
-@media (max-width: 640px) {
-  .sprint-banner { padding: 10px 14px; }
-  .sprint-meta { gap: 14px; }
-}
+/* Panels */
+.panel{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);overflow:hidden;transition:border-color .2s;margin-bottom:16px;}
+.panel:hover{border-color:rgba(249,115,22,.12);}
+.panel-header{padding:14px 18px 10px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-family:var(--font-display);font-size:16px;letter-spacing:2.5px;color:var(--text);text-transform:uppercase;}
+.panel-body{padding:14px 18px;}
+.chip{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;color:var(--orange);background:var(--orange-dim);padding:3px 8px;border-radius:20px;text-transform:uppercase;}
 
-/* ===================== MAIN GRID ===================== */
-.huddle {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  grid-template-rows: auto auto auto 1fr;
-  gap: 16px;
-  padding: 16px 20px;
-  padding-bottom: 32px;
-  max-width: 1600px;
-  margin: 0 auto;
-}
+/* Owner-only elements */
+.owner-only{display:none;}
+body.owner-mode .owner-only{display:block;}
+body.owner-mode .guest-only{display:none;}
 
-@media (max-width: 1100px) {
-  .huddle {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
-}
-
-/* ===================== SECTION HEADERS ===================== */
-.section-label {
-  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--muted);
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 12px;
-}
-.section-label::after {
-  content: ''; flex: 1; height: 1px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent);
-}
-.section-label .accent { color: var(--gold); }
-
-/* ===================== PANEL BASE ===================== */
-.panel {
-  background: var(--panel);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-.panel:hover { border-color: rgba(240,165,0,0.12); }
-.panel-header {
-  padding: 14px 18px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.panel-title {
-  font-family: var(--font-display); font-size: 16px; letter-spacing: 2.5px;
-  color: var(--text); text-transform: uppercase;
-}
-.panel-body { padding: 16px 18px; }
-
-/* ===================== COMPANIES GRID (left column, top) ===================== */
-.companies-section { grid-column: 1; grid-row: 1; }
-.companies-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-@media (max-width: 900px) {
-  .companies-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 500px) {
-  .companies-grid { grid-template-columns: 1fr; }
-}
-
-/* ===================== COMPANY CARD ===================== */
-.company-card {
-  background: var(--bg3);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r);
-  padding: 16px;
-  position: relative;
-  overflow: hidden;
-  cursor: default;
-  transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
-  animation: fadeUp 0.4s ease both;
-}
-.company-card:hover {
-  border-color: rgba(240,165,0,0.2);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(240,165,0,0.08);
-}
-.company-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: var(--card-accent, var(--gold));
-  opacity: 0.6;
-}
-.cc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
-.cc-name {
-  font-family: var(--font-display); font-size: 17px; letter-spacing: 1.5px;
-  color: var(--text); line-height: 1.2;
-}
-.cc-tag {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px;
-  color: var(--muted); text-transform: uppercase; margin-top: 2px;
-}
-.cc-status {
-  font-family: var(--font-mono); font-size: 9px; font-weight: 500;
-  letter-spacing: 1px; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 20px;
-  white-space: nowrap; margin-left: 8px;
-  flex-shrink: 0;
-}
-.status-active   { background: rgba(0,255,136,0.1); color: #00ff88; border: 1px solid rgba(0,255,136,0.2); }
-.status-building { background: rgba(0,229,255,0.1); color: #00e5ff; border: 1px solid rgba(0,229,255,0.2); }
-.status-research { background: rgba(155,109,255,0.1); color: #9b6dff; border: 1px solid rgba(155,109,255,0.2); }
-.status-live     { background: rgba(240,165,0,0.12); color: var(--gold2); border: 1px solid rgba(240,165,0,0.25); }
-
-.cc-metric {
-  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-  margin-bottom: 8px; min-height: 16px;
-}
-.cc-metric span { color: var(--text); font-weight: 500; }
-
-.cc-progress-track {
-  height: 5px; background: rgba(255,255,255,0.07);
-  border-radius: 3px; overflow: hidden;
-}
-.cc-progress-fill {
-  height: 100%; border-radius: 3px;
-  background: var(--card-accent, var(--gold));
-  width: var(--target-width, 0%);
-  animation: progress-fill 1.2s ease-out both;
-  box-shadow: 0 0 6px var(--card-accent, var(--gold));
-}
-.cc-pct {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  text-align: right; margin-top: 4px;
-}
-
-/* ===================== MIDDLE ROW (left): TODO + TERMINAL ===================== */
-.middle-section {
-  grid-column: 1; grid-row: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 768px) {
-  .middle-section { grid-template-columns: 1fr; }
-}
-
-/* ===================== TODO LIST ===================== */
-.todo-list { display: flex; flex-direction: column; gap: 2px; }
-.todo-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 9px 12px;
-  border-radius: var(--r-sm);
-  cursor: pointer;
-  transition: background 0.15s;
-  user-select: none;
-}
-.todo-item:hover { background: rgba(255,255,255,0.03); }
-.todo-item.checked { opacity: 0.45; }
-.todo-cb {
-  width: 16px; height: 16px; border-radius: 4px;
-  border: 1.5px solid rgba(255,255,255,0.2);
-  background: transparent; flex-shrink: 0; margin-top: 1px;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
-  position: relative;
-}
-.todo-item.checked .todo-cb {
-  background: var(--gold);
-  border-color: var(--gold);
-}
-.todo-item.checked .todo-cb::after {
-  content: '';
-  position: absolute;
-  left: 3px; top: 1px;
-  width: 5px; height: 8px;
-  border: 2px solid #000;
-  border-top: none; border-left: none;
-  transform: rotate(45deg);
-}
-.todo-text {
-  font-family: var(--font-body); font-size: 13px; color: var(--text);
-  line-height: 1.4;
-}
-.todo-item.checked .todo-text {
-  text-decoration: line-through;
-  color: var(--muted);
-}
-.todo-clear {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  background: none; border: none; cursor: pointer; padding: 4px 8px;
-  border-radius: 4px; transition: color 0.15s, background 0.15s;
-  margin-left: auto;
-}
-.todo-clear:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-
-/* ===================== TERMINAL ===================== */
-.terminal-panel { display: flex; flex-direction: column; }
-.terminal-body {
-  padding: 14px 18px;
-  display: flex; flex-direction: column;
-  gap: 10px; flex: 1;
-}
-.terminal-output {
-  background: #0a0a0a;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--r-sm);
-  padding: 12px 14px;
-  height: 160px; overflow-y: auto;
-  font-family: var(--font-mono); font-size: 12px;
-  line-height: 1.7;
-  flex-shrink: 0;
-}
-.terminal-output::-webkit-scrollbar { width: 3px; }
-.terminal-output::-webkit-scrollbar-thumb { background: var(--bg4); }
-.term-line { display: flex; gap: 6px; }
-.term-prefix { color: var(--gold); flex-shrink: 0; }
-.term-text { color: #b8ffb8; }
-.term-text.muted { color: var(--muted); }
-.term-text.sent { color: var(--gold2); }
-.term-text.error { color: var(--red); }
-.term-text.system { color: var(--cyan); }
-.term-input-row {
-  display: flex; align-items: center; gap: 0;
-  background: #0a0a0a;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  transition: border-color 0.15s;
-}
-.term-input-row:focus-within { border-color: rgba(240,165,0,0.35); }
-.term-prompt {
-  font-family: var(--font-mono); font-size: 13px;
-  color: var(--gold); padding: 10px 10px 10px 14px; flex-shrink: 0;
-}
-.term-input {
-  flex: 1; background: transparent; border: none; outline: none;
-  font-family: var(--font-mono); font-size: 12px; color: var(--text);
-  padding: 10px 8px;
-  caret-color: var(--gold);
-}
-.term-input::placeholder { color: rgba(255,255,255,0.2); }
-.term-send-btn {
-  font-family: var(--font-mono); font-size: 11px; color: #000;
-  background: var(--gold); border: none; cursor: pointer;
-  padding: 0 16px; height: 100%; align-self: stretch;
-  transition: background 0.15s; letter-spacing: 1px;
-  font-weight: 600; text-transform: uppercase;
-}
-.term-send-btn:hover { background: var(--gold2); }
-
-/* ===================== RIGHT COLUMN ===================== */
-.right-col {
-  grid-column: 2; grid-row: 1 / 4;
-  display: flex; flex-direction: column; gap: 16px;
-}
-@media (max-width: 1100px) {
-  .right-col { grid-column: 1; grid-row: auto; }
-}
-
-/* ===================== TELEGRAM FEED ===================== */
-.tg-feed {
-  flex: 1 1 auto;
-  display: flex; flex-direction: column;
-  min-height: 0;
-}
-.tg-body {
-  flex: 1; display: flex; flex-direction: column;
-  padding: 14px 18px;
-  gap: 10px;
-  min-height: 0;
-}
-.tg-messages {
-  flex: 1; overflow-y: auto;
-  display: flex; flex-direction: column; gap: 8px;
-  min-height: 240px; max-height: 320px;
-  padding-right: 4px;
-}
-.tg-messages::-webkit-scrollbar { width: 3px; }
-.tg-messages::-webkit-scrollbar-thumb { background: var(--bg4); }
-.tg-msg {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: var(--r-sm);
-  padding: 8px 10px;
-  animation: fadeUp 0.3s ease both;
-}
-.tg-msg-meta {
-  font-family: var(--font-mono); font-size: 9px; color: var(--muted);
-  margin-bottom: 4px; display: flex; gap: 6px; align-items: center;
-}
-.tg-msg-who {
-  color: var(--gold); font-weight: 500;
-}
-.tg-msg-text {
-  font-family: var(--font-body); font-size: 12px; color: var(--text);
-  line-height: 1.5;
-}
-.tg-msg-text.system-msg { color: var(--muted); font-style: italic; }
-.tg-actions {
-  display: flex; gap: 8px; align-items: center;
-}
-.tg-refresh-btn {
-  font-family: var(--font-mono); font-size: 10px; color: var(--gold);
-  background: rgba(240,165,0,0.08); border: 1px solid rgba(240,165,0,0.18);
-  border-radius: 6px; padding: 6px 12px; cursor: pointer;
-  transition: all 0.15s; letter-spacing: 1px; text-transform: uppercase;
-}
-.tg-refresh-btn:hover { background: rgba(240,165,0,0.15); border-color: rgba(240,165,0,0.35); }
-.tg-refresh-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.tg-status-text {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  flex: 1; text-align: right;
-}
-.tg-empty {
-  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-  text-align: center; padding: 24px; line-height: 1.8;
-}
-.tg-spinner {
-  display: inline-block; width: 12px; height: 12px;
-  border: 2px solid rgba(240,165,0,0.2);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle; margin-right: 6px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ===================== BROWSER EMBED ===================== */
-.browser-section { }
-.browser-bar {
-  display: flex; gap: 0;
-  background: #0a0a0a;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  margin-bottom: 10px;
-  transition: border-color 0.15s;
-}
-.browser-bar:focus-within { border-color: rgba(240,165,0,0.35); }
-.browser-url {
-  flex: 1; background: transparent; border: none; outline: none;
-  font-family: var(--font-mono); font-size: 11px; color: var(--text);
-  padding: 9px 12px;
-  caret-color: var(--gold);
-}
-.browser-url::placeholder { color: rgba(255,255,255,0.2); }
-.browser-go {
-  font-family: var(--font-mono); font-size: 11px; color: #000;
-  background: var(--gold); border: none; cursor: pointer;
-  padding: 0 14px;
-  transition: background 0.15s; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.browser-go:hover { background: var(--gold2); }
-.browser-frame-wrap {
-  height: 280px;
-  background: #0a0a0a;
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r-sm);
-  overflow: hidden;
-  position: relative;
-}
-.browser-iframe {
-  width: 100%; height: 100%; border: none; display: block;
-}
-.browser-placeholder {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 10px;
-  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-  text-align: center; padding: 20px;
-}
-.browser-placeholder-icon {
-  font-size: 28px; line-height: 1; opacity: 0.3;
-}
-
-/* ===================== BOTTOM ROW (spanning) ===================== */
-.bottom-section {
-  grid-column: 1; grid-row: 3;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 1100px) {
-  .bottom-section { grid-column: 1; }
-}
-@media (max-width: 900px) {
-  .bottom-section { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-  .bottom-section { grid-template-columns: 1fr; }
-}
-
-/* Draft Room row */
-.draft-room-section {
-  grid-column: 1; grid-row: 4;
-}
-@media (max-width: 1100px) {
-  .draft-room-section { grid-column: 1; grid-row: auto; }
-}
-
-/* ===================== TOPBAR NAV ===================== */
-.topbar-nav { display: flex; align-items: center; gap: 6px; }
-.topbar-nav-link {
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
-  color: var(--muted); text-decoration: none; text-transform: uppercase;
-  padding: 5px 10px; border-radius: 6px;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.03);
-  transition: all 0.15s; white-space: nowrap;
-}
-.topbar-nav-link:hover {
-  color: var(--gold); background: rgba(240,165,0,0.07);
-  border-color: rgba(240,165,0,0.2);
-}
-.topbar-nav-link.active {
-  color: var(--gold2); background: rgba(240,165,0,0.1);
-  border-color: rgba(240,165,0,0.25);
-}
-@media (max-width: 640px) {
-  .topbar-nav { display: none; }
-}
+/* ===================== COMPANIES GRID ===================== */
+.companies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:900px){.companies-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.companies-grid{grid-template-columns:1fr;}}
+.company-card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s;animation:fadeUp .4s ease both;}
+.company-card:hover{border-color:rgba(249,115,22,.2);transform:translateY(-1px);}
+.company-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-accent,var(--orange));opacity:.7;}
+.cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.cc-name{font-family:var(--font-display);font-size:17px;letter-spacing:1.5px;color:var(--text);}
+.cc-tag{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.cc-status{font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.status-active{background:rgba(0,255,136,.1);color:#00ff88;border:1px solid rgba(0,255,136,.2);}
+.status-building{background:rgba(0,229,255,.1);color:#00e5ff;border:1px solid rgba(0,229,255,.2);}
+.status-research{background:rgba(155,109,255,.1);color:#9b6dff;border:1px solid rgba(155,109,255,.2);}
+.status-live{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.25);}
+.cc-metric{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:8px;}
+.cc-metric span{color:var(--text);font-weight:500;}
+.cc-progress{height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}
+.cc-progress-fill{height:100%;border-radius:3px;background:var(--card-accent,var(--orange));width:var(--w,0);animation:progress-fill 1s ease both;}
+.cc-pct{font-family:var(--font-mono);font-size:10px;color:var(--dim);text-align:right;margin-top:3px;}
 
 /* ===================== QUICK ACTIONS ===================== */
-.qa-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-@media (max-width: 500px) {
-  .qa-grid { grid-template-columns: repeat(2, 1fr); }
-}
-.qa-btn {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 6px; padding: 14px 8px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--r);
-  cursor: pointer; text-decoration: none;
-  transition: all 0.2s;
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  letter-spacing: 0.5px; text-align: center; text-transform: uppercase;
-}
-.qa-btn:hover {
-  background: rgba(240,165,0,0.07);
-  border-color: rgba(240,165,0,0.22);
-  color: var(--gold2);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-}
-.qa-icon { font-size: 20px; line-height: 1; }
-.qa-btn.green { border-color: rgba(0,255,136,0.12); }
-.qa-btn.green:hover { background: rgba(0,255,136,0.07); border-color: rgba(0,255,136,0.25); color: var(--green); }
-.qa-btn.cyan { border-color: rgba(0,229,255,0.12); }
-.qa-btn.cyan:hover { background: rgba(0,229,255,0.07); border-color: rgba(0,229,255,0.25); color: var(--cyan); }
-.qa-btn.red { border-color: rgba(255,59,92,0.12); }
-.qa-btn.red:hover { background: rgba(255,59,92,0.07); border-color: rgba(255,59,92,0.25); color: var(--red); }
+.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+@media(max-width:500px){.qa-grid{grid-template-columns:repeat(2,1fr);}}
+.qa-btn{display:flex;align-items:center;gap:6px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);font-family:var(--font-mono);font-size:11px;color:var(--text);cursor:pointer;transition:all .2s;text-decoration:none !important;}
+.qa-btn:hover{border-color:var(--orange-glow);background:var(--orange-dim);}
+.qa-icon{font-size:14px;}
 
-/* ===================== ACTIVITY FEED ===================== */
-.activity-list { display: flex; flex-direction: column; gap: 1px; }
-.activity-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 9px 12px;
-  border-radius: var(--r-sm);
-  transition: background 0.15s;
-}
-.activity-item:hover { background: rgba(255,255,255,0.025); }
-.activity-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  flex-shrink: 0; margin-top: 5px;
-}
-.activity-content { flex: 1; min-width: 0; }
-.activity-text {
-  font-family: var(--font-body); font-size: 12px; color: var(--text);
-  line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.activity-time {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  margin-top: 2px;
-}
+/* ===================== TO-DO ===================== */
+.todo-list{display:flex;flex-direction:column;gap:2px;}
+.todo-item{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:var(--r-sm);cursor:pointer;transition:background .15s;user-select:none;}
+.todo-item:hover{background:rgba(255,255,255,.03);}
+.todo-item.checked{opacity:.4;}
+.todo-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(255,255,255,.2);background:transparent;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
+.todo-item.checked .todo-cb{background:var(--orange);border-color:var(--orange);}
+.todo-item.checked .todo-cb::after{content:'';position:absolute;left:3px;top:1px;width:5px;height:8px;border:2px solid #000;border-top:none;border-left:none;transform:rotate(45deg);}
+.todo-text{font-size:13px;color:var(--text);line-height:1.4;}
+.todo-item.checked .todo-text{text-decoration:line-through;color:var(--muted);}
+.todo-clear{font-family:var(--font-mono);font-size:10px;color:var(--muted);background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:4px 10px;cursor:pointer;transition:all .15s;}
+.todo-clear:hover{color:var(--text);background:rgba(255,255,255,.05);}
 
-/* ===================== BUDGET TRACKER ===================== */
-.budget-list { display: flex; flex-direction: column; gap: 12px; }
-.budget-row { display: flex; flex-direction: column; gap: 4px; }
-.budget-row-meta {
-  display: flex; justify-content: space-between; align-items: center;
-}
-.budget-label {
-  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px;
-}
-.budget-amounts {
-  font-family: var(--font-mono); font-size: 11px; color: var(--text);
-}
-.budget-bar-track {
-  height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden;
-}
-.budget-bar-fill {
-  height: 100%; border-radius: 3px;
-  transition: width 1.2s ease-out;
-}
-.budget-total {
-  display: flex; justify-content: space-between;
-  padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);
-  font-family: var(--font-mono); font-size: 12px;
-}
-.budget-total-label { color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-.budget-total-value { color: var(--gold2); font-weight: 500; }
-
-/* ===================== GA WIDGET ===================== */
-.ga-stats {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  margin-bottom: 14px;
-}
-.ga-stat {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r-sm);
-  padding: 12px 14px;
-}
-.ga-stat-label {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
-}
-.ga-stat-value {
-  font-family: var(--font-display); font-size: 24px; color: var(--text);
-  line-height: 1; letter-spacing: 1px;
-}
-.ga-stat-delta {
-  font-family: var(--font-mono); font-size: 10px; margin-top: 2px;
-}
-.ga-stat-delta.up { color: var(--green); }
-.ga-stat-delta.down { color: var(--red); }
-.ga-chart { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
-.ga-bar {
-  flex: 1; background: rgba(240,165,0,0.25); border-radius: 2px 2px 0 0;
-  transition: background 0.2s;
-}
-.ga-bar:hover { background: rgba(240,165,0,0.55); }
-.ga-bar.today { background: var(--gold); box-shadow: 0 0 6px rgba(240,165,0,0.4); }
-.ga-open-btn {
-  display: block; margin-top: 10px; text-align: center;
-  font-family: var(--font-mono); font-size: 10px; color: var(--gold);
-  background: rgba(240,165,0,0.08); border: 1px solid rgba(240,165,0,0.18);
-  border-radius: 6px; padding: 7px 12px; cursor: pointer;
-  text-decoration: none; letter-spacing: 1px; text-transform: uppercase;
-  transition: all 0.15s;
-}
-.ga-open-btn:hover { background: rgba(240,165,0,0.15); border-color: rgba(240,165,0,0.35); }
-
-/* ===================== DRAFT ROOM / KANBAN ===================== */
-.kanban-board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  overflow-x: auto;
-}
-@media (max-width: 900px) {
-  .kanban-board { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 500px) {
-  .kanban-board { grid-template-columns: 1fr 1fr; }
-}
-.kanban-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.kanban-col-header {
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
-  text-transform: uppercase; padding: 6px 10px;
-  border-radius: 6px; font-weight: 500;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.kanban-col-header .col-count {
-  background: rgba(255,255,255,0.12); border-radius: 10px;
-  padding: 1px 7px; font-size: 10px;
-}
-.kc-intake  .kanban-col-header { background: rgba(155,109,255,0.1); color: #9b6dff; border: 1px solid rgba(155,109,255,0.2); }
-.kc-eval    .kanban-col-header { background: rgba(0,229,255,0.08); color: #00e5ff; border: 1px solid rgba(0,229,255,0.18); }
-.kc-build   .kanban-col-header { background: rgba(240,165,0,0.1); color: var(--gold2); border: 1px solid rgba(240,165,0,0.22); }
-.kc-live    .kanban-col-header { background: rgba(0,255,136,0.08); color: #00ff88; border: 1px solid rgba(0,255,136,0.18); }
-
-.kanban-card {
-  background: var(--bg3);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r-sm);
-  padding: 10px 12px;
-  transition: all 0.2s; cursor: default;
-}
-.kanban-card:hover {
-  border-color: rgba(240,165,0,0.18);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-}
-.kc-card-name {
-  font-family: var(--font-body); font-size: 12px; font-weight: 600;
-  color: var(--text); line-height: 1.3; margin-bottom: 4px;
-}
-.kc-card-tag {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.5px;
-}
-.kc-card-tag .priority {
-  display: inline-block; margin-top: 5px;
-  font-size: 9px; padding: 2px 6px; border-radius: 10px;
-}
-.pri-high { background: rgba(255,59,92,0.12); color: var(--red); border: 1px solid rgba(255,59,92,0.2); }
-.pri-med  { background: rgba(240,165,0,0.1);  color: var(--gold2); border: 1px solid rgba(240,165,0,0.2); }
-.pri-low  { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); }
-
-/* ===================== UTILITY CHIPS ===================== */
-.chip {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px;
-  text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
-  background: rgba(255,255,255,0.05); color: var(--muted);
-  border: 1px solid rgba(255,255,255,0.07);
-}
+/* ===================== MESSAGE TERMINAL ===================== */
+.terminal-body{padding:0;}
+.terminal-output{height:180px;overflow-y:auto;padding:12px 16px;font-family:var(--font-mono);font-size:11px;background:rgba(0,0,0,.3);}
+.terminal-output::-webkit-scrollbar{width:3px;}
+.terminal-output::-webkit-scrollbar-thumb{background:var(--bg4);}
+.term-line{display:flex;gap:8px;margin-bottom:4px;line-height:1.5;}
+.term-prefix{color:var(--orange);flex-shrink:0;}
+.term-text{color:var(--text);}
+.term-text.system{color:var(--orange);}
+.term-text.muted{color:var(--muted);}
+.term-text.sent{color:var(--cyan);}
+.term-text.error{color:var(--red);}
+.term-input-row{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.06);padding:0;}
+.term-prompt{padding:10px 8px 10px 14px;color:var(--orange);font-family:var(--font-mono);font-size:13px;}
+.term-input{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font-mono);font-size:12px;padding:10px 0;outline:none;}
+.term-send-btn{padding:10px 16px;background:var(--orange);color:#000;font-family:var(--font-mono);font-size:11px;font-weight:600;border:none;cursor:pointer;letter-spacing:1px;transition:background .2s;}
+.term-send-btn:hover{background:#fb923c;}
 
 /* ===================== QUICK LINKS ===================== */
-.quick-links { display: flex; flex-wrap: wrap; gap: 6px; }
-.quick-link {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 6px; padding: 5px 10px; cursor: pointer;
-  transition: all 0.15s; text-decoration: none; letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-.quick-link:hover {
-  color: var(--gold); background: rgba(240,165,0,0.07);
-  border-color: rgba(240,165,0,0.2);
-}
+.quick-links{display:flex;flex-wrap:wrap;gap:6px;}
+.quick-link{font-family:var(--font-mono);font-size:11px;color:var(--muted);padding:5px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r-sm);transition:all .2s;text-decoration:none !important;}
+.quick-link:hover{color:var(--orange);border-color:var(--orange-glow);}
 
-/* ===================== TICKER ===================== */
-.ticker-wrap {
-  background: rgba(240,165,0,0.025);
-  border-bottom: 1px solid rgba(240,165,0,0.08);
-  overflow: hidden; height: 26px; display: flex; align-items: center;
-}
-.ticker-track {
-  display: flex; white-space: nowrap;
-  animation: ticker-scroll 60s linear infinite;
-}
-@keyframes ticker-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.ticker-item {
-  font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-  padding: 0 28px; display: flex; align-items: center; gap: 8px;
-}
-.ti-g { color: var(--gold2); font-weight: 500; }
-.ti-sep { color: rgba(255,255,255,0.15); }
+/* ===================== ACTIVITY FEED ===================== */
+.activity-list{display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto;}
+.activity-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.activity-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.activity-text{font-family:var(--font-mono);font-size:11px;color:var(--text);flex:1;}
+.activity-time{font-family:var(--font-mono);font-size:9px;color:var(--dim);white-space:nowrap;}
 
-/* ===================== RESPONSIVE ADJUSTMENTS ===================== */
-@media (max-width: 640px) {
-  .cockpit { padding: 10px 12px; gap: 12px; }
-  .panel-body { padding: 12px 14px; }
-  .panel-header { padding: 10px 14px 8px; }
-  .company-card { padding: 12px; }
-  .tg-messages { min-height: 180px; max-height: 240px; }
-}
+/* Bottom sections full width */
+.full-width{grid-column:1/-1;}
 
-/* ===================== PORTFOLIO SECTION ===================== */
-.portfolio-section {
-  grid-column: 1 / -1;
-  grid-row: auto;
-}
-.portfolio-overview {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
-}
-@media (max-width: 900px) {
-  .portfolio-overview { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 500px) {
-  .portfolio-overview { grid-template-columns: 1fr 1fr; }
-}
-.pf-kpi {
-  background: var(--bg3);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r);
-  padding: 16px 18px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-.pf-kpi::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: var(--kpi-accent, var(--gold));
-  opacity: 0.7;
-}
-.pf-kpi:hover { border-color: rgba(251,79,20,0.18); }
-.pf-kpi-label {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
-}
-.pf-kpi-value {
-  font-family: var(--font-display); font-size: 26px; letter-spacing: 1px;
-  color: var(--text); line-height: 1;
-}
-.pf-kpi-sub {
-  font-family: var(--font-mono); font-size: 10px; margin-top: 4px;
-  color: var(--muted);
-}
-.pf-kpi-sub.up   { color: var(--green); }
-.pf-kpi-sub.down { color: var(--red); }
-
-.portfolio-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media (max-width: 900px) {
-  .portfolio-body { grid-template-columns: 1fr; }
-}
-
-/* Data tables */
-.pf-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-.pf-table th {
-  text-align: left;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 6px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-weight: 500;
-}
-.pf-table th:not(:first-child) { text-align: right; }
-.pf-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  color: var(--text);
-  vertical-align: middle;
-}
-.pf-table td:not(:first-child) { text-align: right; }
-.pf-table tr:last-child td { border-bottom: none; }
-.pf-table tr:hover td { background: rgba(255,255,255,0.025); }
-.pf-table .td-ticker {
-  color: var(--gold2); font-weight: 600; letter-spacing: 0.5px;
-}
-.pf-table .td-total {
-  font-weight: 700; color: var(--text);
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-.pf-table .td-muted { color: var(--muted); font-size: 10px; }
-.td-up   { color: var(--green); }
-.td-down { color: var(--red); }
-
-/* Real estate cards */
-.pf-re-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 0;
-}
-@media (max-width: 600px) {
-  .pf-re-grid { grid-template-columns: 1fr; }
-}
-.pf-re-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: var(--r-sm);
-  padding: 14px 16px;
-}
-.pf-re-addr {
-  font-family: var(--font-body); font-size: 12px; font-weight: 600;
-  color: var(--text); margin-bottom: 4px;
-}
-.pf-re-tag {
-  font-family: var(--font-mono); font-size: 9px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
-}
-.pf-re-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-family: var(--font-mono); font-size: 11px;
-}
-.pf-re-row:last-child { border-bottom: none; }
-.pf-re-row-label { color: var(--muted); }
-.pf-re-row-val   { color: var(--text); font-weight: 500; }
-.pf-re-row-val.total-val { color: var(--red); }
-
-/* Trader9 status card */
-.pf-trader-card {
-  background: rgba(251,79,20,0.04);
-  border: 1px solid rgba(251,79,20,0.18);
-  border-radius: var(--r-sm);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.pf-trader-header {
-  display: flex; align-items: center; justify-content: space-between;
-}
-.pf-trader-title {
-  font-family: var(--font-display); font-size: 18px; letter-spacing: 2px;
-  color: var(--gold);
-}
-.pf-trader-rows {
-  display: flex; flex-direction: column; gap: 6px;
-}
-.pf-trader-row {
-  display: flex; justify-content: space-between;
-  font-family: var(--font-mono); font-size: 11px;
-}
-.pf-trader-row-label { color: var(--muted); }
-.pf-trader-row-val   { color: var(--text); font-weight: 500; }
-.pf-trader-row-val.live { color: var(--green); }
-
-/* Aggression bar */
-.pf-aggression {
-  display: flex; flex-direction: column; gap: 4px;
-}
-.pf-aggression-label {
-  font-family: var(--font-mono); font-size: 9px; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px;
-  display: flex; justify-content: space-between;
-}
-.pf-aggression-bar {
-  height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden;
-}
-.pf-aggression-fill {
-  height: 100%; width: 80%; border-radius: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--red));
-  box-shadow: 0 0 6px rgba(251,79,20,0.5);
-}
-
-.portfolio-bottom {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 16px;
-  margin-top: 16px;
-}
-@media (max-width: 900px) {
-  .portfolio-bottom { grid-template-columns: 1fr; }
-}
+/* Footer */
+.footer{text-align:center;padding:20px;font-family:var(--font-mono);font-size:10px;color:var(--dim);letter-spacing:1px;}
 </style>
 </head>
 <body>
 
-<div class="scanline"></div>
+<!-- ===================== PIN OVERLAY ===================== -->
+<div id="pin-overlay">
+  <div class="pin-box">
+    <div class="pin-logo">9</div>
+    <div class="pin-title">THE HUDDLE</div>
+    <div class="pin-sub">Enter PIN for Owner access, or continue as Guest</div>
+    <input type="password" class="pin-input" id="pin-input" maxlength="10" placeholder="----" autocomplete="off" autocorrect="off">
+    <div class="pin-error" id="pin-error"></div>
+    <div class="pin-actions">
+      <button class="pin-btn pin-btn-guest" onclick="enterGuest()">Guest</button>
+      <button class="pin-btn pin-btn-primary" onclick="submitPin()">Enter</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===================== TOPBAR ===================== -->
 <header class="topbar">
   <div class="topbar-left">
-    <img src="/9-brand.jpg" class="logo-img" alt="9E" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <div class="logo-fallback" style="display:none">9</div>
+    <div class="logo-9">9</div>
     <div class="topbar-brand">
-      <div class="topbar-title">9 ENTERPRISES</div>
-      <div class="topbar-sub" id="huddle-mode-label">The Huddle — Guest View</div>
+      <div class="topbar-title">THE HUDDLE</div>
+      <div class="topbar-sub" id="mode-label">Guest View</div>
     </div>
   </div>
-  <div class="topbar-center">
-    <nav class="topbar-nav">
-      <a class="topbar-nav-link active" href="/cockpit.html">The Huddle</a>
-      <a class="topbar-nav-link" href="/dashboard.html" target="_blank">War Room</a>
-      <a class="topbar-nav-link" href="/dashboard.html" target="_blank">Dashboard</a>
-      <a class="topbar-nav-link" href="/aigm.html" target="_blank">AiGM</a>
-    </nav>
-  </div>
+  <nav class="topbar-nav">
+    <a class="active" href="/cockpit.html">Huddle</a>
+    <a href="/dashboard.html">War Room</a>
+    <a href="/aigm.html">AiGM</a>
+    <a href="/9enterprises.html">Universe</a>
+  </nav>
   <div class="topbar-right">
-    <div class="live-clock" id="live-clock">--:--:--</div>
-    <div class="live-badge">
-      <div class="live-dot"></div>
-      LIVE
-    </div>
+    <div class="live-clock" id="clock">--:--:--</div>
+    <div class="status-live"><div class="status-dot"></div>LIVE</div>
   </div>
 </header>
 
-<!-- ===================== TICKER ===================== -->
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <span class="ticker-item"><span class="ti-g">AiGM</span><span class="ti-sep">|</span> Sports AI Platform</span>
-    <span class="ticker-item"><span class="ti-g">freeagent9</span><span class="ti-sep">|</span> AI Concierge</span>
-    <span class="ticker-item"><span class="ti-g">Jules</span><span class="ti-sep">|</span> Family AI</span>
-    <span class="ticker-item"><span class="ti-g">trader9</span><span class="ti-sep">|</span> Strategy Marketplace</span>
-    <span class="ticker-item"><span class="ti-g">agent9</span><span class="ti-sep">|</span> AI Real Estate</span>
-    <span class="ticker-item"><span class="ti-g">x9</span><span class="ti-sep">|</span> Content &amp; Social</span>
-    <span class="ticker-item"><span class="ti-g">Prompt Scripts</span><span class="ti-sep">|</span> Marketplace</span>
-    <span class="ticker-item"><span class="ti-g">AI Education</span><span class="ti-sep">|</span> Platform TBD</span>
-    <span class="ticker-item"><span class="ti-g">Dropship Co</span><span class="ti-sep">|</span> eCommerce</span>
-    <!-- repeat for seamless scroll -->
-    <span class="ticker-item"><span class="ti-g">AiGM</span><span class="ti-sep">|</span> Sports AI Platform</span>
-    <span class="ticker-item"><span class="ti-g">freeagent9</span><span class="ti-sep">|</span> AI Concierge</span>
-    <span class="ticker-item"><span class="ti-g">Jules</span><span class="ti-sep">|</span> Family AI</span>
-    <span class="ticker-item"><span class="ti-g">trader9</span><span class="ti-sep">|</span> Strategy Marketplace</span>
-    <span class="ticker-item"><span class="ti-g">agent9</span><span class="ti-sep">|</span> AI Real Estate</span>
-    <span class="ticker-item"><span class="ti-g">x9</span><span class="ti-sep">|</span> Content &amp; Social</span>
-    <span class="ticker-item"><span class="ti-g">Prompt Scripts</span><span class="ti-sep">|</span> Marketplace</span>
-    <span class="ticker-item"><span class="ti-g">AI Education</span><span class="ti-sep">|</span> Platform TBD</span>
-    <span class="ticker-item"><span class="ti-g">Dropship Co</span><span class="ti-sep">|</span> eCommerce</span>
-  </div>
-</div>
-
-<!-- ===================== SPRINT BANNER ===================== -->
-<div class="sprint-banner owner-only">
-  <div class="sprint-label">7-Day Enterprise Sprint</div>
-  <div class="sprint-meta">
-    <div class="sprint-stat">
-      <div class="sprint-stat-label">Day</div>
-      <div class="sprint-stat-value gold" id="sprint-day">1 of 7</div>
-    </div>
-    <div class="sprint-stat">
-      <div class="sprint-stat-label">Budget</div>
-      <div class="sprint-stat-value gold">$1,750</div>
-    </div>
-    <div class="sprint-stat">
-      <div class="sprint-stat-label">Start</div>
-      <div class="sprint-stat-value" id="sprint-start">Pending Green Light</div>
-    </div>
-    <div class="sprint-stat">
-      <div class="sprint-stat-label">Progress</div>
-      <div class="sprint-day-pips" id="sprint-pips"></div>
-    </div>
-    <div class="sprint-stat">
-      <div class="sprint-stat-label">Status</div>
-      <div class="sprint-stat-value" style="color:var(--gold2)">READY TO LAUNCH</div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== THE HUDDLE GRID ===================== -->
+<!-- ===================== HUDDLE GRID ===================== -->
 <main class="huddle">
 
-  <!-- LEFT: Companies -->
-  <section class="companies-section fade-up" style="animation-delay:0.05s">
-    <div class="section-label"><span class="accent">01</span> Universe Status — All Companies</div>
-    <div class="companies-grid" id="companies-grid">
-      <!-- injected by JS -->
-    </div>
-  </section>
+  <!-- LEFT COLUMN -->
+  <div>
 
-  <!-- LEFT: Middle Row — Quick Actions + Activity + Budget -->
-  <section class="bottom-section fade-up" style="animation-delay:0.12s">
-  <div style="grid-column:1/-1;margin-bottom:-4px;">
-    <div class="section-label"><span class="accent">02</span> Ops Panel</div>
+    <!-- Companies -->
+    <div class="section-label"><span class="accent">01</span> Universe Status</div>
+    <div class="companies-grid" id="companies-grid"></div>
+
+    <div style="height:16px;"></div>
+
+    <!-- Quick Actions (Owner only) -->
+    <div class="owner-only">
+      <div class="section-label"><span class="accent">02</span> Ops Panel</div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Quick Actions</div>
+          <div class="chip">OWNER</div>
+        </div>
+        <div class="panel-body">
+          <div class="qa-grid">
+            <a class="qa-btn" href="/dashboard.html"><span class="qa-icon">&#9876;</span>War Room</a>
+            <a class="qa-btn" href="/aigm.html"><span class="qa-icon">&#127944;</span>AiGM</a>
+            <a class="qa-btn" href="/9enterprises.html"><span class="qa-icon">&#127760;</span>Universe</a>
+            <a class="qa-btn" href="/pitch.html"><span class="qa-icon">&#127919;</span>Pitch Deck</a>
+            <a class="qa-btn" href="/underwriter.html"><span class="qa-icon">&#128736;</span>Underwriter</a>
+            <a class="qa-btn" href="/freeagent.html"><span class="qa-icon">&#129302;</span>FreeAgent9</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- To-Do (Owner only) -->
+    <div class="owner-only">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">To-Do List</div>
+          <button class="todo-clear" onclick="clearCompleted()">Clear done</button>
+        </div>
+        <div class="panel-body">
+          <div class="todo-list" id="todo-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Terminal (Owner only) -->
+    <div class="owner-only">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Message 9</div>
+          <div class="chip">LIVE RELAY</div>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-output" id="term-output">
+            <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises &mdash; The Huddle</span></div>
+            <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Type a message and press Enter to send to 9 via Telegram.</span></div>
+            <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Ready.</span></div>
+          </div>
+          <div class="term-input-row">
+            <span class="term-prompt">&#62;</span>
+            <input type="text" class="term-input" id="term-input" placeholder="Message 9..." autocomplete="off" autocorrect="off" spellcheck="false">
+            <button class="term-send-btn" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-
-    <!-- QUICK ACTIONS -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">Quick Actions</div>
-        <div class="chip">OWNER OPS</div>
-      </div>
-      <div class="panel-body" style="padding-top:12px;">
-        <div class="qa-grid">
-          <a class="qa-btn green" href="/dashboard.html" target="_blank">
-            <span class="qa-icon">&#9876;</span>War Room
-          </a>
-          <button class="qa-btn cyan" onclick="loadTelegramFeed()">
-            <span class="qa-icon">&#8635;</span>Check Inbox
-          </button>
-          <a class="qa-btn" href="/aigm.html" target="_blank">
-            <span class="qa-icon">&#127944;</span>AiGM Site
-          </a>
-          <button class="qa-btn" onclick="checkHealth()">
-            <span class="qa-icon">&#128268;</span>Sys Health
-          </button>
-          <a class="qa-btn" href="/dashboard.html" target="_blank">
-            <span class="qa-icon">&#128202;</span>Dashboard
-          </a>
-          <a class="qa-btn red" href="https://analytics.google.com" target="_blank">
-            <span class="qa-icon">&#128200;</span>Analytics
-          </a>
-        </div>
-        <div id="health-result" style="margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--muted);display:none;"></div>
-      </div>
-    </div>
-
-    <!-- RECENT ACTIVITY FEED -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">Recent Activity</div>
-        <div class="live-badge" style="font-size:9px;">
-          <div class="live-dot" style="width:5px;height:5px;"></div>
-          LIVE
-        </div>
-      </div>
-      <div class="panel-body" style="padding-top:10px;">
-        <div class="activity-list" id="activity-list">
-          <!-- injected by JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- BUDGET TRACKER -->
-    <div class="panel owner-only">
-      <div class="panel-header">
-        <div class="panel-title">Budget Tracker</div>
-        <div class="chip">SPRINT</div>
-      </div>
-      <div class="panel-body" style="padding-top:14px;">
-        <div class="budget-list" id="budget-list">
-          <!-- injected by JS -->
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- LEFT: Middle Row -->
-  <section class="middle-section fade-up" style="animation-delay:0.15s">
-  <div style="grid-column:1/-1;margin-bottom:-4px;">
-    <div class="section-label"><span class="accent">03</span> Command</div>
-  </div>
-
-    <!-- TO-DO -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">To-Do List</div>
-        <button class="todo-clear" onclick="clearCompleted()">Clear done</button>
-      </div>
-      <div class="panel-body" style="padding-top:10px;">
-        <div class="todo-list" id="todo-list">
-          <!-- injected by JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- TERMINAL -->
-    <div class="panel terminal-panel owner-only">
-      <div class="panel-header">
-        <div class="panel-title">Message 9</div>
-        <div class="chip">LIVE RELAY</div>
-      </div>
-      <div class="terminal-body">
-        <div class="terminal-output" id="term-output">
-          <div class="term-line"><span class="term-prefix">$</span><span class="term-text system">9 Enterprises — The Huddle v2.0</span></div>
-          <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Type a message and press Enter — sends directly to 9 via Telegram.</span></div>
-          <div class="term-line"><span class="term-prefix">$</span><span class="term-text muted">Ready.</span></div>
-        </div>
-        <div class="term-input-row">
-          <span class="term-prompt">&#62;</span>
-          <input
-            type="text"
-            class="term-input"
-            id="term-input"
-            placeholder="Message 9..."
-            autocomplete="off"
-            autocorrect="off"
-            spellcheck="false"
-          >
-          <button class="term-send-btn" id="term-send-btn" onclick="sendMessage()">Send</button>
-        </div>
-      </div>
-    </div>
-
-  </section>
 
   <!-- RIGHT COLUMN -->
-  <aside class="right-col fade-up" style="animation-delay:0.1s">
+  <aside>
 
-    <!-- TELEGRAM FEED -->
-    <div class="panel tg-feed owner-only">
-      <div class="panel-header">
-        <div class="panel-title">Telegram Feed</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div class="live-badge" style="font-size:9px;">
-            <div class="live-dot" style="width:5px;height:5px;"></div>
-            HUB
-          </div>
-        </div>
-      </div>
-      <div class="tg-body">
-        <div class="tg-messages" id="tg-messages">
-          <div class="tg-empty" id="tg-empty">
-            <div style="font-size:22px;opacity:0.3;margin-bottom:8px;">&#9993;</div>
-            Telegram feed will connect here.<br>
-            <span style="color:rgba(255,255,255,0.2);font-size:10px;">Hit Refresh to load latest messages from 9.</span>
-          </div>
-        </div>
-        <div class="tg-actions">
-          <button class="tg-refresh-btn" id="tg-refresh-btn" onclick="loadTelegramFeed()">Refresh</button>
-          <div class="tg-status-text" id="tg-status">Not loaded</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- GOOGLE ANALYTICS WIDGET -->
+    <!-- Recent Activity -->
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">Analytics</div>
-        <div class="chip">ainflgm.com</div>
+        <div class="panel-title">Activity</div>
+        <div class="status-live" style="font-size:9px;"><div class="status-dot" style="width:5px;height:5px;background:var(--green);"></div>LIVE</div>
       </div>
-      <div class="panel-body" style="padding-top:14px;">
-        <div class="ga-stats">
-          <div class="ga-stat">
-            <div class="ga-stat-label">Today</div>
-            <div class="ga-stat-value" id="ga-today">--</div>
-            <div class="ga-stat-delta up" id="ga-today-delta">Loading...</div>
-          </div>
-          <div class="ga-stat">
-            <div class="ga-stat-label">7-Day</div>
-            <div class="ga-stat-value" id="ga-week">--</div>
-            <div class="ga-stat-delta up" id="ga-week-delta">Loading...</div>
-          </div>
-          <div class="ga-stat">
-            <div class="ga-stat-label">Sessions</div>
-            <div class="ga-stat-value" id="ga-sessions">--</div>
-            <div class="ga-stat-delta" id="ga-sessions-delta" style="color:var(--muted);">30-day</div>
-          </div>
-          <div class="ga-stat">
-            <div class="ga-stat-label">Bounce</div>
-            <div class="ga-stat-value" id="ga-bounce">--</div>
-            <div class="ga-stat-delta" id="ga-bounce-delta" style="color:var(--muted);">rate</div>
-          </div>
-        </div>
-        <div class="ga-chart" id="ga-chart">
-          <!-- injected by JS -->
-        </div>
-        <a class="ga-open-btn" href="https://analytics.google.com/analytics/web/#/p000000000/reports/intelligenthome" target="_blank">
-          Open Full Analytics Dashboard &#8599;
-        </a>
+      <div class="panel-body">
+        <div class="activity-list" id="activity-list"></div>
       </div>
     </div>
 
-    <!-- QUICK LINKS -->
+    <!-- Quick Links -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">Quick Links</div>
       </div>
-      <div class="panel-body" style="padding-top:12px;">
+      <div class="panel-body">
         <div class="quick-links">
-          <a class="quick-link" href="/aigm.html" target="_blank">AiGM</a>
-          <a class="quick-link" href="/freeagent.html" target="_blank">FreeAgent9</a>
-          <a class="quick-link" href="/jules-family.html" target="_blank">Jules</a>
-          <a class="quick-link" href="/agent9.html" target="_blank">agent9</a>
-          <a class="quick-link" href="/prompt-scripts.html" target="_blank">Prompts</a>
-          <a class="quick-link" href="/dashboard.html" target="_blank">Dashboard</a>
-          <a class="quick-link" href="/9enterprises.html" target="_blank">The Universe</a>
-          <a class="quick-link" href="/dashboard.html" target="_blank">War Room</a>
-          <a class="quick-link" href="/pitch.html" target="_blank">Pitch Deck</a>
-          <a class="quick-link" href="/underwriter.html" target="_blank">Underwriter</a>
+          <a class="quick-link" href="/aigm.html">AiGM</a>
+          <a class="quick-link" href="/freeagent.html">FreeAgent9</a>
+          <a class="quick-link" href="/jules-family.html">Jules</a>
+          <a class="quick-link" href="/agent9.html">agent9</a>
+          <a class="quick-link" href="/prompt-scripts.html">Prompts</a>
+          <a class="quick-link" href="/dashboard.html">War Room</a>
+          <a class="quick-link" href="/9enterprises.html">Universe</a>
+          <a class="quick-link" href="/pitch.html">Pitch Deck</a>
+          <a class="quick-link" href="/underwriter.html">Underwriter</a>
+          <a class="quick-link" href="/dropshipping.html">Dropship</a>
+          <a class="quick-link" href="/ai-education.html">Education</a>
+          <a class="quick-link" href="/ainba.html">AiNBA</a>
+          <a class="quick-link" href="/aimlb.html">AiMLB</a>
         </div>
       </div>
     </div>
 
-    <!-- BROWSER EMBED -->
-    <div class="panel browser-section">
+    <!-- Budget Tracker (Owner only) -->
+    <div class="owner-only panel">
       <div class="panel-header">
-        <div class="panel-title">Browser</div>
-        <div class="chip">EMBED</div>
+        <div class="panel-title">Budget</div>
+        <div class="chip">SPRINT</div>
       </div>
-      <div class="panel-body" style="padding-top:12px;">
-        <div class="browser-bar">
-          <input
-            type="url"
-            class="browser-url"
-            id="browser-url"
-            placeholder="https://..."
-            onkeydown="if(event.key==='Enter')loadBrowser()"
-          >
-          <button class="browser-go" onclick="loadBrowser()">Go</button>
-        </div>
-        <div class="browser-frame-wrap">
-          <div class="browser-placeholder" id="browser-placeholder">
-            <div class="browser-placeholder-icon">&#127760;</div>
-            Enter a URL above and press Go
-          </div>
-          <iframe class="browser-iframe" id="browser-iframe" style="display:none;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-        </div>
-        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://ainflgm.com')">ainflgm.com</button>
-          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://console.anthropic.com')">Anthropic</button>
-          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://dashboard.cloudflare.com')">Cloudflare</button>
-          <button class="quick-link" style="cursor:pointer;border:none;" onclick="setBrowserUrl('https://analytics.google.com')">Analytics</button>
-        </div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:8px;" id="budget-list"></div>
       </div>
     </div>
 
   </aside>
 
-  <!-- DRAFT ROOM — full width bottom -->
-  <section class="draft-room-section fade-up" style="animation-delay:0.25s">
-    <div class="section-label"><span class="accent">04</span> Draft Room — Concept Pipeline</div>
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">Draft Board</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div class="chip">KANBAN</div>
-          <div class="chip" id="draft-total-chip">-- concepts</div>
-        </div>
-      </div>
-      <div class="panel-body" style="padding-top:14px;">
-        <div class="kanban-board" id="kanban-board">
-          <!-- injected by JS -->
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PORTFOLIO — full width, owner only, PIN protected -->
-  <section class="portfolio-section owner-only fade-up" style="animation-delay:0.3s">
-    <div class="section-label"><span class="accent">05</span> Portfolio — Investment Dashboard</div>
-
-    <!-- KPI Row -->
-    <div class="portfolio-overview">
-      <div class="pf-kpi" style="--kpi-accent:var(--gold)">
-        <div class="pf-kpi-label">Total Investments</div>
-        <div class="pf-kpi-value">$981K+</div>
-        <div class="pf-kpi-sub">All accounts combined</div>
-      </div>
-      <div class="pf-kpi" style="--kpi-accent:var(--red)">
-        <div class="pf-kpi-label">Mortgage Debt</div>
-        <div class="pf-kpi-value">$903K</div>
-        <div class="pf-kpi-sub">2 properties</div>
-      </div>
-      <div class="pf-kpi" style="--kpi-accent:var(--green)">
-        <div class="pf-kpi-label">Est. Net Worth</div>
-        <div class="pf-kpi-value">~$78K+</div>
-        <div class="pf-kpi-sub">Investments minus debt</div>
-      </div>
-      <div class="pf-kpi" style="--kpi-accent:var(--red)">
-        <div class="pf-kpi-label">Today's Change</div>
-        <div class="pf-kpi-value" style="color:var(--red)">-$4,069</div>
-        <div class="pf-kpi-sub down">-0.61% (Chase brokerage)</div>
-      </div>
-    </div>
-
-    <!-- Accounts + Holdings row -->
-    <div class="portfolio-body">
-
-      <!-- Accounts Summary -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Accounts</div>
-          <div class="chip">6 ACCOUNTS</div>
-        </div>
-        <div class="panel-body" style="padding:0 0 4px;">
-          <table class="pf-table">
-            <thead>
-              <tr>
-                <th>Account</th>
-                <th>Institution</th>
-                <th>Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="td-ticker">401k</td>
-                <td class="td-muted">Fidelity Freedom 2040</td>
-                <td>$259,294</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">Brokerage</td>
-                <td class="td-muted">Chase / JP Morgan</td>
-                <td>$665,029</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">Crypto</td>
-                <td class="td-muted">Coinbase — BTC</td>
-                <td>$32,814</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">Brokerage</td>
-                <td class="td-muted">Fidelity / Other</td>
-                <td>$23,805+</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">Trader9</td>
-                <td class="td-muted">Alpaca — Live</td>
-                <td>$333</td>
-              </tr>
-              <tr>
-                <td class="td-ticker td-total">Total</td>
-                <td class="td-total td-muted">All accounts</td>
-                <td class="td-total" style="color:var(--gold2)">~$981,275+</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Top Holdings -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Top Holdings</div>
-          <div class="chip">CHASE — TOP 10</div>
-        </div>
-        <div class="panel-body" style="padding:0 0 4px;">
-          <table class="pf-table">
-            <thead>
-              <tr>
-                <th>Ticker</th>
-                <th>Value</th>
-                <th>Day G/L</th>
-                <th>Total G/L</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="td-ticker">IBIT</td>
-                <td>$146,764</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-4.85%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">TSLA</td>
-                <td>$128,967</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-18.09%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">JPMPD</td>
-                <td>$100,000</td>
-                <td class="td-muted">--</td>
-                <td class="td-muted">0.00%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">IAU</td>
-                <td>$59,706</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-0.96%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">SLV</td>
-                <td>$57,168</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-20.17%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">CPER</td>
-                <td>$53,979</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-9.97%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">NVDA</td>
-                <td>$22,793</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-11.75%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">ORCL</td>
-                <td>$17,350</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-13.25%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">INTC</td>
-                <td>$17,300</td>
-                <td class="td-down">--</td>
-                <td class="td-down">-11.84%</td>
-              </tr>
-              <tr>
-                <td class="td-ticker">PLTR</td>
-                <td>$10,591</td>
-                <td class="td-up">--</td>
-                <td class="td-up">+1.25%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div><!-- /portfolio-body -->
-
-    <!-- Real Estate + Trader9 row -->
-    <div class="portfolio-bottom">
-
-      <!-- Real Estate -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Real Estate</div>
-          <div class="chip">2 PROPERTIES</div>
-        </div>
-        <div class="panel-body" style="padding-top:14px;">
-          <div class="pf-re-grid">
-
-            <div class="pf-re-card">
-              <div class="pf-re-addr">655 Nordyke Rd</div>
-              <div class="pf-re-tag">Primary Residence &mdash; Cincinnati</div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Mortgage (Third Federal)</span>
-                <span class="pf-re-row-val">$494,258</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">HELOC (Third Federal)</span>
-                <span class="pf-re-row-val">$198,826</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Rate (mortgage)</span>
-                <span class="pf-re-row-val">4.74% fixed</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Total Debt</span>
-                <span class="pf-re-row-val total-val">$693,083</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Zillow Value</span>
-                <span class="pf-re-row-val" style="color:var(--muted);">TBD</span>
-              </div>
-            </div>
-
-            <div class="pf-re-card">
-              <div class="pf-re-addr">3059 Jenny Lind Rd</div>
-              <div class="pf-re-tag">Investment Property &mdash; Cincinnati</div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Mortgage (Freedom)</span>
-                <span class="pf-re-row-val">$210,306</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Rate</span>
-                <span class="pf-re-row-val">3.38% fixed</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Account</span>
-                <span class="pf-re-row-val td-muted">&bull;&bull;&bull;9567</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Total Debt</span>
-                <span class="pf-re-row-val total-val">$210,306</span>
-              </div>
-              <div class="pf-re-row">
-                <span class="pf-re-row-label">Zillow Value</span>
-                <span class="pf-re-row-val" style="color:var(--muted);">TBD</span>
-              </div>
-            </div>
-
-          </div><!-- /pf-re-grid -->
-          <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Total Mortgage Debt</span>
-            <span style="font-family:var(--font-mono);font-size:14px;color:var(--red);font-weight:600;">$903,389</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Trader9 Status -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Trader 9</div>
-          <div class="chip status-active">LIVE</div>
-        </div>
-        <div class="panel-body" style="padding-top:14px;">
-          <div class="pf-trader-card">
-            <div class="pf-trader-header">
-              <div class="pf-trader-title">TRADER9</div>
-              <div class="live-badge">
-                <div class="live-dot"></div>
-                ACTIVE
-              </div>
-            </div>
-            <div class="pf-trader-rows">
-              <div class="pf-trader-row">
-                <span class="pf-trader-row-label">Platform</span>
-                <span class="pf-trader-row-val">Alpaca</span>
-              </div>
-              <div class="pf-trader-row">
-                <span class="pf-trader-row-label">Balance</span>
-                <span class="pf-trader-row-val" style="color:var(--gold2)">$333.00</span>
-              </div>
-              <div class="pf-trader-row">
-                <span class="pf-trader-row-label">Status</span>
-                <span class="pf-trader-row-val live">LIVE — Ready to Trade</span>
-              </div>
-              <div class="pf-trader-row">
-                <span class="pf-trader-row-label">Strategy Model</span>
-                <span class="pf-trader-row-val">3-Strategy Blend</span>
-              </div>
-              <div class="pf-trader-row">
-                <span class="pf-trader-row-label">Funded</span>
-                <span class="pf-trader-row-val td-muted">Mar 30, 2026</span>
-              </div>
-            </div>
-            <div class="pf-aggression">
-              <div class="pf-aggression-label">
-                <span>Aggression Level</span>
-                <span style="color:var(--gold2)">8 / 10</span>
-              </div>
-              <div class="pf-aggression-bar">
-                <div class="pf-aggression-fill"></div>
-              </div>
-            </div>
-          </div>
-          <div style="margin-top:12px;">
-            <a href="https://app.alpaca.markets" target="_blank" class="ga-open-btn">Open Alpaca Dashboard &rarr;</a>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /portfolio-bottom -->
-
-  </section>
-
 </main>
 
-<!-- ===================== JS ===================== -->
+<!-- Footer -->
+<div class="footer">&copy; 2026 9 Enterprises LLC. All rights reserved.</div>
+
 <script>
 // ===================== CLOCK =====================
-function updateClock() {
-  const now = new Date();
-  const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'America/New_York' };
-  const time = now.toLocaleTimeString('en-US', opts);
-  const dateOpts = { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/New_York' };
-  const date = now.toLocaleDateString('en-US', dateOpts);
-  document.getElementById('live-clock').textContent = `${time} ET`;
+function updateClock(){
+  const now=new Date();
+  const el=document.getElementById('clock');
+  if(el) el.textContent=[now.getHours(),now.getMinutes(),now.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':');
 }
-setInterval(updateClock, 1000);
 updateClock();
+setInterval(updateClock,1000);
 
-// ===================== SPRINT PIPS =====================
-(function buildPips() {
-  const container = document.getElementById('sprint-pips');
-  for (let i = 1; i <= 7; i++) {
-    const pip = document.createElement('div');
-    pip.className = 'sprint-pip' + (i === 1 ? ' active' : '');
-    pip.title = `Day ${i}`;
-    container.appendChild(pip);
+// ===================== PIN GATE =====================
+const OWNER_PIN='3333';
+const PIN_KEY='9e_huddle_auth';
+
+function isAuthenticated(){
+  return sessionStorage.getItem(PIN_KEY)==='authenticated';
+}
+
+function submitPin(){
+  const input=document.getElementById('pin-input');
+  const error=document.getElementById('pin-error');
+  if(input.value===OWNER_PIN){
+    sessionStorage.setItem(PIN_KEY,'authenticated');
+    enterOwner();
+  } else {
+    error.textContent='Incorrect PIN';
+    input.classList.add('error');
+    setTimeout(()=>input.classList.remove('error'),400);
   }
-})();
+}
+
+function enterOwner(){
+  document.getElementById('pin-overlay').classList.add('hidden');
+  document.body.classList.add('owner-mode');
+  document.getElementById('mode-label').textContent='Owner Mode';
+}
+
+function enterGuest(){
+  document.getElementById('pin-overlay').classList.add('hidden');
+  document.getElementById('mode-label').textContent='Guest View';
+}
+
+// Auto-submit on Enter
+document.getElementById('pin-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter') submitPin();
+  document.getElementById('pin-error').textContent='';
+});
+
+// Check session
+if(isAuthenticated()){
+  enterOwner();
+} else {
+  document.getElementById('pin-input').focus();
+}
 
 // ===================== COMPANIES =====================
-const companies = [
-  {
-    name: 'AiGM',
-    tag: 'PlayAiGM — Sports Platform',
-    status: 'active',
-    statusLabel: 'Active',
-    metric: 'Site: <span>ainflgm.com</span>',
-    pct: 72,
-    accent: '#00ff88',
-    animDelay: 0.05
-  },
-  {
-    name: 'FreeAgent9',
-    tag: 'AI Concierge',
-    status: 'building',
-    statusLabel: 'Building',
-    metric: 'Pilot: <span>Live</span>',
-    pct: 55,
-    accent: '#00e5ff',
-    animDelay: 0.1
-  },
-  {
-    name: 'AI Education',
-    tag: 'Platform — Name TBD',
-    status: 'research',
-    statusLabel: 'Research',
-    metric: 'Concept: <span>In Progress</span>',
-    pct: 20,
-    accent: '#9b6dff',
-    animDelay: 0.15
-  },
-  {
-    name: 'AI Underwriter',
-    tag: 'Mortgage Guideline AI',
-    status: 'building',
-    statusLabel: 'Building',
-    metric: 'Stage: <span>FHA MVP</span>',
-    pct: 40,
-    accent: '#f0a500',
-    animDelay: 0.2
-  },
-  {
-    name: 'Dropship Co',
-    tag: 'eCommerce',
-    status: 'building',
-    statusLabel: 'Building',
-    metric: 'Shopify: <span>Pending</span>',
-    pct: 30,
-    accent: '#ff7a2f',
-    animDelay: 0.25
-  },
-  {
-    name: 'trader9',
-    tag: 'Trading Strategy Marketplace',
-    status: 'research',
-    statusLabel: 'Research',
-    metric: 'Alpaca: <span>Paper Mode</span>',
-    pct: 25,
-    accent: '#fb4f14',
-    animDelay: 0.3
-  },
-  {
-    name: 'agent9',
-    tag: 'AI Real Estate',
-    status: 'research',
-    statusLabel: 'Research',
-    metric: 'Stage: <span>Concept</span>',
-    pct: 15,
-    accent: '#b060ff',
-    animDelay: 0.35
-  },
-  {
-    name: 'Jules',
-    tag: 'Family AI Assistant',
-    status: 'active',
-    statusLabel: 'Active',
-    metric: 'Pilot: <span>Live</span>',
-    pct: 65,
-    accent: '#ff9de2',
-    animDelay: 0.4
-  },
-  {
-    name: 'x9',
-    tag: 'Content & Social',
-    status: 'building',
-    statusLabel: 'Building',
-    metric: 'Accounts: <span>Pending</span>',
-    pct: 20,
-    accent: '#ffd700',
-    animDelay: 0.45
-  }
+const companies=[
+  {name:'AiGM',tag:'Sports AI Platform',status:'live',statusLabel:'Live',metric:'Platform: <span>Live</span>',pct:75,accent:'#f97316',animDelay:0},
+  {name:'freeagent9',tag:'AI Personal Concierge',status:'active',statusLabel:'Pilot',metric:'Pilot: <span>Live</span>',pct:55,accent:'#00e5ff',animDelay:.05},
+  {name:'Jules',tag:'Family AI Assistant',status:'active',statusLabel:'Active',metric:'Pilot: <span>Live</span>',pct:65,accent:'#ff9de2',animDelay:.1},
+  {name:'trader9',tag:'Trading Strategy Marketplace',status:'research',statusLabel:'Research',metric:'Alpaca: <span>Paper Mode</span>',pct:25,accent:'#b060ff',animDelay:.15},
+  {name:'agent9',tag:'AI Real Estate',status:'research',statusLabel:'Research',metric:'Stage: <span>Concept</span>',pct:15,accent:'#b060ff',animDelay:.2},
+  {name:'x9',tag:'Content & Social',status:'building',statusLabel:'Building',metric:'Accounts: <span>Pending</span>',pct:20,accent:'#ffd700',animDelay:.25},
+  {name:'AI Underwriter',tag:'Mortgage Guideline AI',status:'building',statusLabel:'POC',metric:'Stage: <span>FHA MVP</span>',pct:40,accent:'#f97316',animDelay:.3},
+  {name:'Dropship Co',tag:'eCommerce',status:'building',statusLabel:'Building',metric:'Shopify: <span>Pending</span>',pct:30,accent:'#ff7a2f',animDelay:.35},
+  {name:'AI Education',tag:'Hitchhikers Guide to AI',status:'research',statusLabel:'Research',metric:'Concept: <span>In Progress</span>',pct:20,accent:'#9b6dff',animDelay:.4},
+  {name:'Prompt Scripts',tag:'Prompt Marketplace',status:'building',statusLabel:'Building',metric:'Library: <span>Active</span>',pct:25,accent:'#f97316',animDelay:.45}
 ];
 
-function renderCompanies() {
-  const grid = document.getElementById('companies-grid');
-  grid.innerHTML = '';
-  companies.forEach((c, i) => {
-    const card = document.createElement('div');
-    card.className = 'company-card';
-    card.style.cssText = `--card-accent:${c.accent};--target-width:${c.pct}%;animation-delay:${c.animDelay}s;`;
-    card.innerHTML = `
+function renderCompanies(){
+  const grid=document.getElementById('companies-grid');
+  grid.innerHTML='';
+  companies.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='company-card';
+    card.style.cssText=`--card-accent:${c.accent};--w:${c.pct}%;animation-delay:${c.animDelay}s;`;
+    card.innerHTML=`
       <div class="cc-top">
         <div>
           <div class="cc-name">${c.name}</div>
@@ -1840,9 +426,7 @@ function renderCompanies() {
         <div class="cc-status status-${c.status}">${c.statusLabel}</div>
       </div>
       <div class="cc-metric">${c.metric}</div>
-      <div class="cc-progress-track">
-        <div class="cc-progress-fill" style="--target-width:${c.pct}%"></div>
-      </div>
+      <div class="cc-progress"><div class="cc-progress-fill" style="--w:${c.pct}%"></div></div>
       <div class="cc-pct">${c.pct}%</div>
     `;
     grid.appendChild(card);
@@ -1851,510 +435,116 @@ function renderCompanies() {
 renderCompanies();
 
 // ===================== TO-DO =====================
-const TODO_KEY = '9e_cockpit_todos';
-const todoItems = [
-  { id: 'td1', text: 'Transfer PlayAiGM.com domain' },
-  { id: 'td2', text: 'Complete AdSense phone verification' },
-  { id: 'td3', text: 'Choose AI Education platform name' },
-  { id: 'td4', text: 'Set up Shopify account access' },
-  { id: 'td5', text: 'Approve Alpaca live trading' },
-  { id: 'td6', text: 'X password recovery' },
-  { id: 'td7', text: 'Cloudflare API token' },
-  { id: 'td8', text: 'TikTok / Sleeper account setup' },
-  { id: 'td9', text: 'Portfolio data export' }
+const TODO_KEY='9e_cockpit_todos';
+const todoItems=[
+  {id:'td1',text:'Transfer PlayAiGM.com domain'},
+  {id:'td2',text:'Complete AdSense phone verification'},
+  {id:'td3',text:'Choose AI Education platform name'},
+  {id:'td4',text:'Set up Shopify account access'},
+  {id:'td5',text:'Approve Alpaca live trading'},
+  {id:'td6',text:'X password recovery'},
+  {id:'td7',text:'Cloudflare API token'},
+  {id:'td8',text:'TikTok / Sleeper account setup'},
+  {id:'td9',text:'Portfolio data export'}
 ];
 
-function loadTodoState() {
-  try { return JSON.parse(localStorage.getItem(TODO_KEY) || '{}'); } catch { return {}; }
-}
-function saveTodoState(state) {
-  localStorage.setItem(TODO_KEY, JSON.stringify(state));
-}
+function loadTodoState(){try{return JSON.parse(localStorage.getItem(TODO_KEY)||'{}');}catch{return {};}}
+function saveTodoState(s){localStorage.setItem(TODO_KEY,JSON.stringify(s));}
 
-function renderTodos() {
-  const state = loadTodoState();
-  const list = document.getElementById('todo-list');
-  list.innerHTML = '';
-  todoItems.forEach(item => {
-    const checked = !!state[item.id];
-    const div = document.createElement('div');
-    div.className = 'todo-item' + (checked ? ' checked' : '');
-    div.dataset.id = item.id;
-    div.onclick = () => toggleTodo(item.id);
-    div.innerHTML = `
-      <div class="todo-cb"></div>
-      <div class="todo-text">${item.text}</div>
-    `;
+function renderTodos(){
+  const state=loadTodoState();
+  const list=document.getElementById('todo-list');
+  list.innerHTML='';
+  todoItems.forEach(item=>{
+    const checked=!!state[item.id];
+    const div=document.createElement('div');
+    div.className='todo-item'+(checked?' checked':'');
+    div.onclick=()=>toggleTodo(item.id);
+    div.innerHTML=`<div class="todo-cb"></div><div class="todo-text">${item.text}</div>`;
     list.appendChild(div);
   });
 }
-
-function toggleTodo(id) {
-  const state = loadTodoState();
-  state[id] = !state[id];
-  saveTodoState(state);
-  renderTodos();
-}
-
-function clearCompleted() {
-  const state = loadTodoState();
-  Object.keys(state).forEach(k => { if (state[k]) delete state[k]; });
-  saveTodoState(state);
-  renderTodos();
-}
-
+function toggleTodo(id){const s=loadTodoState();s[id]=!s[id];saveTodoState(s);renderTodos();}
+function clearCompleted(){const s=loadTodoState();Object.keys(s).forEach(k=>{if(s[k])delete s[k];});saveTodoState(s);renderTodos();}
 renderTodos();
 
-// ===================== TERMINAL / MESSAGE 9 =====================
-const termOutput = document.getElementById('term-output');
-const termInput = document.getElementById('term-input');
+// ===================== MESSAGE TERMINAL =====================
+const termOutput=document.getElementById('term-output');
+const termInput=document.getElementById('term-input');
 
-function termLog(text, cls) {
-  const line = document.createElement('div');
-  line.className = 'term-line';
-  line.innerHTML = `<span class="term-prefix">$</span><span class="term-text ${cls||''}">${escHtml(text)}</span>`;
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function termLog(text,cls){
+  const line=document.createElement('div');
+  line.className='term-line';
+  line.innerHTML=`<span class="term-prefix">$</span><span class="term-text ${cls||''}">${escHtml(text)}</span>`;
   termOutput.appendChild(line);
-  termOutput.scrollTop = termOutput.scrollHeight;
+  termOutput.scrollTop=termOutput.scrollHeight;
 }
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+termInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage();});
 
-termInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendMessage();
-});
-
-async function sendMessage() {
-  const msg = termInput.value.trim();
-  if (!msg) return;
-
-  const btn = document.getElementById('term-send-btn');
-  termInput.value = '';
-  btn.disabled = true;
-
-  termLog(`> ${msg}`, 'sent');
-
-  try {
-    const res = await fetch('http://localhost:3457/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channel: 'telegram', message: msg })
+async function sendMessage(){
+  const msg=termInput.value.trim();
+  if(!msg) return;
+  termInput.value='';
+  termLog('> '+msg,'sent');
+  try{
+    const res=await fetch('http://localhost:3457/send',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({channel:'telegram',message:msg})
     });
-    if (res.ok) {
-      termLog('Sent to 9 via Telegram.', '');
-    } else {
-      termLog(`Error: Hub returned ${res.status}`, 'error');
-    }
-  } catch (err) {
-    termLog('Could not reach hub (localhost:3457)', 'error');
-  } finally {
-    btn.disabled = false;
-    termInput.focus();
+    if(res.ok){termLog('Sent to 9 via Telegram.','');}
+    else{termLog('Error: Hub returned '+res.status,'error');}
+  }catch(err){
+    termLog('Hub unreachable. Is comms-hub running?','error');
   }
 }
 
-// ===================== TELEGRAM FEED =====================
-async function loadTelegramFeed() {
-  const btn = document.getElementById('tg-refresh-btn');
-  const status = document.getElementById('tg-status');
-  const container = document.getElementById('tg-messages');
-  const empty = document.getElementById('tg-empty');
-
-  btn.disabled = true;
-  btn.innerHTML = '<span class="tg-spinner"></span>Loading...';
-  status.textContent = 'Fetching...';
-
-  try {
-    const res = await fetch('http://localhost:3457/state');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-
-    // Pull messages from state
-    const messages = [];
-
-    // Check recentMessages array
-    if (data.recentMessages && Array.isArray(data.recentMessages)) {
-      data.recentMessages.slice(-20).forEach(m => {
-        messages.push({ who: m.channel || 'System', text: m.message || m.text || '', ts: m.timestamp || '' });
-      });
-    }
-    // Check inbox / last messages
-    if (data.lastTelegramMessage) {
-      messages.push({ who: 'Telegram', text: data.lastTelegramMessage, ts: data.lastTelegramTime || '' });
-    }
-
-    // Render
-    container.innerHTML = '';
-    if (messages.length === 0) {
-      // Show state summary instead
-      const summary = document.createElement('div');
-      summary.className = 'tg-msg';
-      summary.innerHTML = `
-        <div class="tg-msg-meta"><span class="tg-msg-who">HUB STATE</span></div>
-        <div class="tg-msg-text">Hub is online. No buffered messages found.<br>
-          <span style="color:var(--muted);font-size:11px;">Mode: ${data.mode || 'unknown'} &nbsp;|&nbsp; Relay: ${data.terminalActive ? 'Active' : 'DC mode'}</span>
-        </div>
-      `;
-      container.appendChild(summary);
-    } else {
-      messages.forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'tg-msg';
-        const ts = m.ts ? new Date(m.ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'America/New_York' }) : '';
-        div.innerHTML = `
-          <div class="tg-msg-meta">
-            <span class="tg-msg-who">${escHtml(m.who)}</span>
-            ${ts ? `<span>${ts} ET</span>` : ''}
-          </div>
-          <div class="tg-msg-text">${escHtml(m.text)}</div>
-        `;
-        container.appendChild(div);
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-
-    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/New_York' });
-    status.textContent = `Updated ${now} ET`;
-
-  } catch (err) {
-    container.innerHTML = `
-      <div class="tg-msg">
-        <div class="tg-msg-meta"><span class="tg-msg-who" style="color:var(--red)">ERROR</span></div>
-        <div class="tg-msg-text tg-empty-msg" style="color:var(--muted);">Could not reach hub at localhost:3457.<br>
-          <span style="font-size:11px;">Make sure 9 is running.</span>
-        </div>
-      </div>
-    `;
-    status.textContent = 'Connection failed';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Refresh';
-  }
-}
-
-// Auto-load feed on page load
-loadTelegramFeed();
-
-// ===================== BROWSER EMBED =====================
-function loadBrowser() {
-  const urlInput = document.getElementById('browser-url');
-  const iframe = document.getElementById('browser-iframe');
-  const placeholder = document.getElementById('browser-placeholder');
-
-  let url = urlInput.value.trim();
-  if (!url) return;
-  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-  urlInput.value = url;
-
-  iframe.src = url;
-  iframe.style.display = 'block';
-  placeholder.style.display = 'none';
-}
-
-function setBrowserUrl(url) {
-  const urlInput = document.getElementById('browser-url');
-  urlInput.value = url;
-  loadBrowser();
-}
-
-// ===================== SYSTEM HEALTH CHECK =====================
-async function checkHealth() {
-  const result = document.getElementById('health-result');
-  result.style.display = 'block';
-  result.textContent = 'Checking hub...';
-  result.style.color = 'var(--muted)';
-  try {
-    const res = await fetch('http://localhost:3457/health');
-    if (res.ok) {
-      const data = await res.json();
-      result.innerHTML = `<span style="color:var(--green)">&#10003; Hub ONLINE</span> &nbsp;|&nbsp; Mode: ${data.mode || 'relay'} &nbsp;|&nbsp; Uptime: ${data.uptime || '--'}`;
-    } else {
-      result.innerHTML = `<span style="color:var(--red)">&#10007; Hub returned ${res.status}</span>`;
-    }
-  } catch {
-    result.innerHTML = `<span style="color:var(--red)">&#10007; Hub unreachable (localhost:3457)</span>`;
-  }
-  setTimeout(() => { result.style.display = 'none'; }, 8000);
-}
-
-// ===================== RECENT ACTIVITY =====================
-const activityData = [
-  { color: 'var(--green)',  text: 'PIN gate added — Owner/Guest mode live', time: 'Just now' },
-  { color: 'var(--gold)',   text: 'War Room + Huddle architecture finalized', time: 'Just now' },
-  { color: 'var(--cyan)',   text: 'tmux crash-proofing verified (resurrect + continuum)', time: 'Today' },
-  { color: 'var(--gold)',   text: 'Enterprise Sprint Day 1 launched', time: 'Today' },
-  { color: 'var(--purple)', text: 'Burrow partnership page deployed', time: 'Mar 29' },
-  { color: 'var(--green)',  text: 'The Huddle command center deployed', time: 'Mar 29' },
-  { color: 'var(--cyan)',   text: 'Comms hub startup protocol v2 implemented', time: 'Mar 28' },
-  { color: 'var(--orange)', text: 'trader9 Alpaca paper mode initiated', time: 'Mar 28' },
+// ===================== ACTIVITY FEED =====================
+const activities=[
+  {color:'var(--green)',text:'Huddle rebuilt clean',time:'Just now'},
+  {color:'var(--orange)',text:'HeyGen videos embedded across pitch pages',time:'Today'},
+  {color:'var(--orange)',text:'Enterprise sprint proposed: 7 days, $1,750',time:'Mar 30'},
+  {color:'var(--purple)',text:'Proving grounds: 9 owns 4 companies',time:'Mar 29'},
+  {color:'var(--orange)',text:'Domain architecture finalized',time:'Mar 28'},
+  {color:'var(--green)',text:'Voice call milestone: 30min flawless',time:'Mar 27'},
+  {color:'var(--cyan)',text:'Dashboard v4 shipped with company silos',time:'Mar 26'},
+  {color:'var(--yellow)',text:'trader9 Alpaca paper mode activated',time:'Mar 26'}
 ];
 
-(function renderActivity() {
-  const list = document.getElementById('activity-list');
-  activityData.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'activity-item';
-    div.innerHTML = `
-      <div class="activity-dot" style="background:${item.color};box-shadow:0 0 4px ${item.color};"></div>
-      <div class="activity-content">
-        <div class="activity-text">${item.text}</div>
-        <div class="activity-time">${item.time}</div>
-      </div>
-    `;
-    list.appendChild(div);
-  });
-})();
-
-// ===================== BUDGET TRACKER =====================
-const budgetItems = [
-  { label: 'HeyGen Pro',     spent: 99,  limit: 99,  color: '#f0a500' },
-  { label: 'Anthropic API',  spent: 28,  limit: 100, color: '#00e5ff' },
-  { label: 'Sprint Budget',  spent: 127, limit: 1750, color: '#00ff88' },
-  { label: 'Daily Burn',     spent: 31,  limit: 100, color: '#9b6dff' },
-];
-
-(function renderBudget() {
-  const list = document.getElementById('budget-list');
-  budgetItems.forEach(b => {
-    const pct = Math.min(100, Math.round((b.spent / b.limit) * 100));
-    const color = pct >= 90 ? 'var(--red)' : pct >= 70 ? 'var(--orange)' : b.color;
-    const div = document.createElement('div');
-    div.className = 'budget-row';
-    div.innerHTML = `
-      <div class="budget-row-meta">
-        <span class="budget-label">${b.label}</span>
-        <span class="budget-amounts" style="color:${color}">$${b.spent} <span style="color:var(--muted)">/ $${b.limit}</span></span>
-      </div>
-      <div class="budget-bar-track">
-        <div class="budget-bar-fill" style="width:${pct}%;background:${color};box-shadow:0 0 5px ${color};"></div>
-      </div>
-    `;
-    list.appendChild(div);
-  });
-  // Total row
-  const totalSpent = budgetItems.reduce((sum, b) => sum + b.spent, 0);
-  const totalDiv = document.createElement('div');
-  totalDiv.className = 'budget-total';
-  totalDiv.innerHTML = `
-    <span class="budget-total-label">Total Sprint Burn</span>
-    <span class="budget-total-value">$${totalSpent} / $1,750</span>
-  `;
-  list.appendChild(totalDiv);
-})();
-
-// ===================== GOOGLE ANALYTICS WIDGET =====================
-(function renderGA() {
-  // Placeholder data — replace with real GA API when credentials available
-  const gaData = {
-    today: '142', todayDelta: '+18% vs yesterday',
-    week: '934', weekDelta: '+41% vs prev week',
-    sessions: '1,847', bounce: '52%'
-  };
-  const sparkData = [38, 52, 47, 61, 70, 88, 110, 95, 118, 130, 142];
-
-  document.getElementById('ga-today').textContent = gaData.today;
-  document.getElementById('ga-today-delta').textContent = gaData.todayDelta;
-  document.getElementById('ga-week').textContent = gaData.week;
-  document.getElementById('ga-week-delta').textContent = gaData.weekDelta;
-  document.getElementById('ga-sessions').textContent = gaData.sessions;
-  document.getElementById('ga-bounce').textContent = gaData.bounce;
-
-  const chart = document.getElementById('ga-chart');
-  const max = Math.max(...sparkData);
-  sparkData.forEach((val, i) => {
-    const bar = document.createElement('div');
-    bar.className = 'ga-bar' + (i === sparkData.length - 1 ? ' today' : '');
-    bar.style.height = Math.round((val / max) * 100) + '%';
-    bar.title = `Day ${i + 1}: ${val} users`;
-    chart.appendChild(bar);
-  });
-})();
-
-// ===================== DRAFT ROOM / KANBAN =====================
-const kanbanData = {
-  intake: [
-    { name: 'NBA/MLB Spinoff', tag: 'AiGM expansion', priority: 'med' },
-    { name: 'Subscription Bundle', tag: 'All products', priority: 'low' },
-    { name: 'Mortgage AI Underwriter', tag: 'Rapid x 9E', priority: 'high' },
-    { name: 'Social Media Autopilot', tag: 'x9 + IG/TikTok', priority: 'med' },
-  ],
-  eval: [
-    { name: 'AI Education Platform', tag: 'Hitchhiker\'s Guide', priority: 'high' },
-    { name: 'Prompt Scripts Marketplace', tag: 'B2B/B2C', priority: 'high' },
-    { name: 'Dropship Co', tag: 'eCommerce proving ground', priority: 'med' },
-    { name: 'trader9', tag: 'Alpaca paper mode active', priority: 'med' },
-  ],
-  build: [
-    { name: 'FreeAgent9', tag: 'AI Concierge pilot', priority: 'high' },
-    { name: 'agent9', tag: 'AI Real Estate', priority: 'med' },
-    { name: 'x9 Accounts', tag: 'IG + TikTok + Sleeper', priority: 'high' },
-    { name: 'Jules v2', tag: 'Family assistant upgrade', priority: 'low' },
-  ],
-  live: [
-    { name: 'AiGM', tag: 'ainflgm.com — live traffic', priority: 'high' },
-    { name: 'Jules Pilot', tag: 'Family AI — active', priority: 'med' },
-    { name: '9 Comms Hub', tag: 'Telegram + voice + email', priority: 'high' },
-    { name: 'Burrow Partnership Page', tag: 'Outreach asset live', priority: 'low' },
-  ]
-};
-
-const colMeta = {
-  intake: { label: 'Draft Prospects', cls: 'kc-intake' },
-  eval:   { label: 'Evaluation',      cls: 'kc-eval'   },
-  build:  { label: 'In Build',        cls: 'kc-build'  },
-  live:   { label: 'Live',            cls: 'kc-live'   },
-};
-
-(function renderKanban() {
-  const board = document.getElementById('kanban-board');
-  let total = 0;
-  ['intake', 'eval', 'build', 'live'].forEach(col => {
-    const cards = kanbanData[col];
-    const meta = colMeta[col];
-    total += cards.length;
-    const colDiv = document.createElement('div');
-    colDiv.className = `kanban-col ${meta.cls}`;
-    colDiv.innerHTML = `
-      <div class="kanban-col-header">
-        ${meta.label}
-        <span class="col-count">${cards.length}</span>
-      </div>
-    `;
-    cards.forEach(card => {
-      const cardDiv = document.createElement('div');
-      cardDiv.className = 'kanban-card';
-      cardDiv.innerHTML = `
-        <div class="kc-card-name">${card.name}</div>
-        <div class="kc-card-tag">
-          ${card.tag}
-          <span class="priority pri-${card.priority}">${card.priority.toUpperCase()}</span>
-        </div>
-      `;
-      colDiv.appendChild(cardDiv);
-    });
-    board.appendChild(colDiv);
-  });
-  document.getElementById('draft-total-chip').textContent = `${total} concepts`;
-})();
-
-// ===================== PIN GATE (OWNER MODE) =====================
-const OWNER_PIN_HASH = '3333'; // Owner PIN
-const PIN_STORAGE_KEY = '9e_huddle_auth';
-
-function checkOwnerAuth() {
-  return sessionStorage.getItem(PIN_STORAGE_KEY) === 'authenticated';
-}
-
-function applyAccessMode(isOwner) {
-  const ownerPanels = document.querySelectorAll('.owner-only');
-  const modeLabel = document.getElementById('huddle-mode-label');
-
-  if (isOwner) {
-    ownerPanels.forEach(el => el.style.display = '');
-    if (modeLabel) modeLabel.textContent = 'The Huddle — Owner View';
-    document.body.classList.add('owner-mode');
-    document.body.classList.remove('guest-mode');
-  } else {
-    ownerPanels.forEach(el => el.style.display = 'none');
-    if (modeLabel) modeLabel.textContent = 'The Huddle — Guest View';
-    document.body.classList.add('guest-mode');
-    document.body.classList.remove('owner-mode');
-  }
-}
-
-function showPinModal() {
-  // Don't show if already authenticated this session
-  if (checkOwnerAuth()) {
-    applyAccessMode(true);
-    return;
-  }
-
-  const overlay = document.createElement('div');
-  overlay.id = 'pin-overlay';
-  overlay.innerHTML = `
-    <div style="
-      position:fixed;inset:0;z-index:9999;
-      background:rgba(0,0,0,0.85);
-      backdrop-filter:blur(12px);
-      display:flex;align-items:center;justify-content:center;
-      animation:fadeIn 0.3s ease;
-    ">
-      <div style="
-        background:#111114;
-        border:1px solid rgba(251,79,20,0.35);
-        border-radius:16px;
-        padding:40px 36px;
-        max-width:380px;width:90%;
-        text-align:center;
-        box-shadow:0 0 60px rgba(251,79,20,0.15);
-      ">
-        <div style="font-size:48px;margin-bottom:12px;background:linear-gradient(135deg,#FB4F14,#FF6B35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;">9</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.1em;color:#FB4F14;margin-bottom:8px;">THE HUDDLE</div>
-        <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:28px;">Enter PIN for Owner access, or continue as Guest</div>
-        <input id="pin-input" type="password" maxlength="10" placeholder="Enter PIN" style="
-          width:100%;padding:14px 16px;
-          background:rgba(255,255,255,0.05);
-          border:1px solid rgba(255,255,255,0.12);
-          border-radius:10px;
-          color:#fff;font-size:16px;
-          text-align:center;letter-spacing:0.3em;
-          outline:none;
-          margin-bottom:16px;
-        " autofocus>
-        <div id="pin-error" style="color:#ff3b5c;font-size:12px;margin-bottom:12px;display:none;">Incorrect PIN</div>
-        <div style="display:flex;gap:10px;">
-          <button id="pin-guest-btn" style="
-            flex:1;padding:12px;
-            background:rgba(255,255,255,0.05);
-            border:1px solid rgba(255,255,255,0.12);
-            border-radius:10px;
-            color:rgba(255,255,255,0.6);
-            font-size:14px;font-weight:600;
-            cursor:pointer;transition:all 0.2s;
-          ">Guest Mode</button>
-          <button id="pin-submit-btn" style="
-            flex:1;padding:12px;
-            background:linear-gradient(135deg,#FB4F14,#e04412);
-            border:none;border-radius:10px;
-            color:#fff;font-size:14px;font-weight:700;
-            cursor:pointer;transition:all 0.2s;
-          ">Unlock</button>
-        </div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-
-  const pinInput = document.getElementById('pin-input');
-  const pinError = document.getElementById('pin-error');
-
-  document.getElementById('pin-submit-btn').onclick = function() {
-    if (pinInput.value === OWNER_PIN_HASH) {
-      sessionStorage.setItem(PIN_STORAGE_KEY, 'authenticated');
-      overlay.remove();
-      applyAccessMode(true);
-    } else {
-      pinError.style.display = 'block';
-      pinInput.value = '';
-      pinInput.focus();
-      setTimeout(() => { pinError.style.display = 'none'; }, 2000);
-    }
-  };
-
-  document.getElementById('pin-guest-btn').onclick = function() {
-    overlay.remove();
-    applyAccessMode(false);
-  };
-
-  pinInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.getElementById('pin-submit-btn').click();
+function renderActivity(){
+  const list=document.getElementById('activity-list');
+  list.innerHTML='';
+  activities.forEach(a=>{
+    list.innerHTML+=`<div class="activity-item">
+      <div class="activity-dot" style="background:${a.color};"></div>
+      <div class="activity-text">${a.text}</div>
+      <div class="activity-time">${a.time}</div>
+    </div>`;
   });
 }
+renderActivity();
 
-// Initialize on load
-showPinModal();
+// ===================== BUDGET =====================
+function renderBudget(){
+  const list=document.getElementById('budget-list');
+  const items=[
+    {label:'Resource Budget',amount:'$300',status:'Approved'},
+    {label:'Trading Budget',amount:'$200',status:'Funded (Alpaca)'},
+    {label:'Sprint Budget',amount:'$1,750',status:'Proposed'}
+  ];
+  list.innerHTML='';
+  items.forEach(b=>{
+    list.innerHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--text);">${b.label}</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${b.status}</div>
+      </div>
+      <div style="font-family:var(--font-display);font-size:18px;color:var(--orange);">${b.amount}</div>
+    </div>`;
+  });
+}
+renderBudget();
 </script>
-
 </body>
 </html>
