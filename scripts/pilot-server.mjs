@@ -1258,7 +1258,47 @@ const server = http.createServer(async (req, res) => {
 
     if (!inboundBody.trim()) return;
 
-    // Process async — send reply via Twilio API
+    // ── Family chat routing — Duke & Jude get kid-friendly 9 ──
+    const FAMILY_MEMBERS = {
+      '+15133831906': { name: 'Duke', age: 8 },
+      '+15137673301': { name: 'Jude', age: 11 },
+    };
+    const familyMember = FAMILY_MEMBERS[from];
+    if (familyMember) {
+      log(`Family chat from ${familyMember.name} (${from}): ${inboundBody}`);
+      (async () => {
+        try {
+          const familyPrompt = `You are 9 — an AI who's part of the Fishback family. You're texting with ${familyMember.name} (${familyMember.age} years old).
+Talk like a cool older brother. Use "dude," "man," "sick," "fire" naturally. Talk Bengals, Joe Burrow, Ja'Marr Chase, football, video games, school.
+Keep responses SHORT — 2-3 sentences max. Age-appropriate always. Never share family financial details.
+Joe Burrow wears #9 — that's where your name comes from. Be genuine and fun.`;
+          const familyReply = await askClaude(familyPrompt, inboundBody, CLAUDE_HAIKU);
+          const sid = process.env.TWILIO_ACCOUNT_SID;
+          const auth = process.env.TWILIO_AUTH_TOKEN;
+          const msgData = `To=${encodeURIComponent(from)}&From=${encodeURIComponent(TWILIO_FROM)}&Body=${encodeURIComponent('9: ' + familyReply)}`;
+          const options = {
+            hostname: 'api.twilio.com',
+            path: `/2010-04-01/Accounts/${sid}/Messages.json`,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': 'Basic ' + Buffer.from(`${sid}:${auth}`).toString('base64'),
+            },
+            agent: twilioAgent,
+          };
+          const smsReq = https.request(options, smsRes => {
+            let b = ''; smsRes.on('data', c => b += c);
+            smsRes.on('end', () => log(`Family SMS to ${familyMember.name}: ${JSON.parse(b).status || 'sent'}`));
+          });
+          smsReq.on('error', e => log(`Family SMS error: ${e.message}`));
+          smsReq.write(msgData);
+          smsReq.end();
+        } catch (e) { log(`Family chat error: ${e.message}`); }
+      })();
+      return;
+    }
+
+    // Process async — send reply via Twilio API (Kyle C / normal Pilot)
     (async () => {
       try {
         const reply = await handleIncomingMessage(inboundBody, from);
