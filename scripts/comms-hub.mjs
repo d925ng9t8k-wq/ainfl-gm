@@ -1057,6 +1057,12 @@ function checkChannelHealth() {
 const HUB_API_SECRET = process.env.HUB_API_SECRET || '';
 
 const healthServer = createServer((req, res) => {
+  // CORS — allow Command Center from any origin (GitHub Pages, office desktop, etc.)
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-hub-secret');
+  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+
   // Auth check for sensitive endpoints — /context injection is the biggest risk
   if (req.method === 'POST' && req.url === '/context' && HUB_API_SECRET) {
     const authHeader = req.headers['x-hub-secret'] || '';

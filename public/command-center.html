@@ -652,7 +652,22 @@ body {
 /* ═══════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════ */
-const HUB = 'http://localhost:3457';
+// Smart hub detection: try local first, fall back to tunnel
+const TUNNEL = 'https://marathon-strain-workstation-secret.trycloudflare.com';
+const LOCAL  = 'http://localhost:3457';
+let HUB = LOCAL;
+
+// On page load, test local connection. If it fails, switch to tunnel.
+(async () => {
+  try {
+    await fetch(LOCAL + '/health', { signal: AbortSignal.timeout(2000) });
+    HUB = LOCAL;
+    console.log('Hub: connected via localhost');
+  } catch {
+    HUB = TUNNEL;
+    console.log('Hub: using tunnel (remote access)');
+  }
+})();
 let lastMessages = [];
 let hubConnected = false;
 
