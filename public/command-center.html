@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#060810">
 <meta name="apple-mobile-web-app-title" content="9enterprises">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
-<link rel="manifest" href="/dashboard-manifest.json">
+<!-- manifest removed to prevent iOS standalone mode on home screen -->
 <title>9 Enterprises -- Command Center</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -66,7 +66,8 @@ background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='htt
 /* ═══════════════════════════════════════════
 SHELL / NAV
 ═══════════════════════════════════════════ */
-.shell{position:relative;z-index:2;display:flexfont-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+.shell{position:relative;z-index:2;display:flex;}
+.section-title{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
 letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);
 margin-bottom:16px;display:flex;align-items:center;gap:10px;
 }
@@ -404,7 +405,7 @@ ANIMATIONS
 
     <div class="panel-card">
       <div class="section-title">Revenue Streams</div>
-      <div class="revenue-item"><div class="rev-left"><div class="rev-dot" style="background:var(--green)"></div><div><div class="rev-name">Buy Me A Coffee</div><div class="rev-sub">$5/mo · Active</div></div></div><div class="rev-status" style="color:var(--green)"</div>
+      <div class="revenue-item"><div class="rev-left"><div class="rev-dot" style="background:var(--green)"></div><div><div class="rev-name">Buy Me A Coffee</div><div class="rev-sub">$5/mo · Active</div></div></div><div class="rev-status" style="color:var(--green)">Active</div></div>
     </div>
 
   </div>
@@ -503,7 +504,18 @@ ANIMATIONS
     <div class="conn-v conn-gold conn-m"></div>
     <div class="wave-label">▼ &nbsp; Wave 1 -- Current Divisions &nbsp; ▼</div>
 
-    <div class<div class="sub-card"><span class="type-p">Persist</span><div class="sub-name" style="color:var(--green)">MONEY</div><div class="sub-role">Revenue</div></div>
+    <!-- DIV 2: AI Underwriter -->
+      <div class="div-col">
+        <div class="div-card" data-wave="Div 2" style="--dc-bg:rgba(0,255,136,0.04);--dc-border:rgba(0,255,136,0.2);--dc-color:var(--green);--dc-accent:var(--green)">
+          <span class="div-icon">📄</span>
+          <div class="div-name">AI Underwriter</div>
+          <div class="div-led">Led By</div>
+          <div class="div-badge" style="color:var(--green)">MONEY</div>
+          <div class="status-pill s-active" style="margin-top:8px;display:inline-block">POC Live</div>
+        </div>
+        <div class="sub-conn"></div>
+        <div class="sub-agents">
+          <div class="sub-card"><span class="type-p">Persist</span><div class="sub-name" style="color:var(--green)">MONEY</div><div class="sub-role">Revenue</div></div>
           <div class="sub-gap"></div>
           <div class="sub-card"><span class="type-t">Temp</span><div class="sub-name" style="color:var(--muted)">RAG Worker</div><div class="sub-role">Citations</div></div>
         </div>
@@ -533,7 +545,32 @@ ANIMATIONS
         <div class="div-card" data-wave="Div 4" style="--dc-bg:rgba(255,59,92,0.04);--dc-border:rgba(255,59,92,0.2);--dc-color:var(--red);--dc-accent:var(--red)">
           <span class="div-icon">𝕏</span>
           <div class="div-name">X9 Social</div>
-          <div class="div-led<div class="sub-card"><span class="type-t">Temp</span><div class="sub-name" style="color:var(--muted)">Match Worker</div><div class="sub-role">Talent matching</div></div>
+          <div class="div-led">Led By</div>
+          <div class="div-badge" style="color:var(--red)">PRESS</div>
+          <div class="status-pill s-blocked" style="margin-top:8px;display:inline-block">CAPTCHA Blocked</div>
+        </div>
+        <div class="sub-conn"></div>
+        <div class="sub-agents">
+          <div class="sub-card"><span class="type-p">Persist</span><div class="sub-name" style="color:var(--red)">PRESS</div><div class="sub-role">Content</div></div>
+          <div class="sub-gap"></div>
+          <div class="sub-card"><span class="type-t">Temp</span><div class="sub-name" style="color:var(--muted)">Post Worker</div><div class="sub-role">Scheduling</div></div>
+        </div>
+      </div>
+
+      <!-- DIV 5: agent9 -->
+      <div class="div-col">
+        <div class="div-card" data-wave="Div 5" style="--dc-bg:rgba(255,157,226,0.04);--dc-border:rgba(255,157,226,0.2);--dc-color:var(--pink);--dc-accent:var(--pink)">
+          <span class="div-icon">🏠</span>
+          <div class="div-name">agent9</div>
+          <div class="div-led">Led By</div>
+          <div class="div-badge" style="color:var(--pink)">SCOUT</div>
+          <div class="status-pill s-pending" style="margin-top:8px;display:inline-block">Research</div>
+        </div>
+        <div class="sub-conn"></div>
+        <div class="sub-agents">
+          <div class="sub-card"><span class="type-p">Persist</span><div class="sub-name" style="color:var(--pink)">SCOUT</div><div class="sub-role">Research</div></div>
+          <div class="sub-gap"></div>
+          <div class="sub-card"><span class="type-t">Temp</span><div class="sub-name" style="color:var(--muted)">Match Worker</div><div class="sub-role">Talent matching</div></div>
         </div>
       </div>
 
@@ -564,7 +601,20 @@ ANIMATIONS
           <div class="div-led">Led By</div>
           <div class="div-badge" style="color:var(--blue)">CANVAS</div>
           <div class="status-pill s-standby" style="margin-top:8px;display:inline-block">Standby</div>
- </div></div>
+        </div>
+        <div class="sub-conn"></div>
+        <div class="sub-agents">
+          <div class="sub-card"><span class="type-p">Persist</span><div class="sub-name" style="color:var(--blue)">CANVAS</div><div class="sub-role">Design + Branding</div></div>
+          <div class="sub-gap"></div>
+          <div class="sub-card"><span class="type-t">Temp</span><div class="sub-name" style="color:var(--muted)">Video Worker</div><div class="sub-role">HeyGen renders</div></div>
+        </div>
+      </div>
+
+    </div><!-- end div-row -->
+
+    <div class="future-section" style="margin-top:20px">
+      <div class="future-wave-label">Wave 3 -- 60 Days</div>
+      <div class="future-cards">
         <div class="future-card"><div class="future-num">13</div><div class="future-name">AI Recruiting</div><div class="future-desc">Screen resumes · match candidates · 15--25% fee.</div></div>
         <div class="future-card"><div class="future-num">14</div><div class="future-name">DFY AI Agency</div><div class="future-desc">Sell what you built. $3K--15K/mo retainers.</div></div>
         <div class="future-card"><div class="future-num">15</div><div class="future-name">Prediction Markets</div><div class="future-desc">Sports + political markets. AiNFLGM data edge.</div></div>

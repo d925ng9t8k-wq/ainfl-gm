@@ -51,14 +51,17 @@ function saveFindings(data) {
 }
 
 async function sendToHub(message) {
+  // Trinity output redirected to internal log only — removed from Telegram per Owner directive April 1, 2026
+  log(`Trinity report (internal only): ${message.substring(0, 200)}...`);
   try {
-    await fetch(`${HUB_URL}/send`, {
+    // Log to hub state for 9 to review, but do NOT send to Telegram
+    await fetch(`${HUB_URL}/context`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channel: 'telegram', message: `Trinity: ${message}` })
+      body: JSON.stringify({ key: 'trinityLatest', value: message.substring(0, 500) })
     });
   } catch (e) {
-    log(`Hub send failed: ${e.message}`);
+    log(`Hub context update failed: ${e.message}`);
   }
 }
 

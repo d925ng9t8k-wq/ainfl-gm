@@ -23,7 +23,7 @@ function getSystemPrompt(state) {
     : '- All channels: checking...';
 
   const recentMessages = state?.recentMessages
-    ? state.recentMessages.slice(-10).map(m => `[${m.channel}/${m.direction}] ${m.text?.slice(0, 200)}`).join('\n')
+    ? state.recentMessages.slice(-20).map(m => `[${m.channel}/${m.direction}] ${m.text?.slice(0, 300)}`).join('\n')
     : 'None yet.';
 
   const memoryContext = state?.memoryContext || '';
@@ -334,12 +334,50 @@ export default {
     }
 
     // ── Voice fallback — answers calls when Mac tunnel is down ──────────────
+    // Upgraded: gather speech input and respond via Claude instead of just voicemail
     if (url.pathname === '/voice-fallback' && request.method === 'POST') {
+      const formData = await request.formData().catch(() => null);
+      const speechResult = formData?.get('SpeechResult');
+
+      if (speechResult) {
+        // Caller spoke — respond with Claude
+        try {
+          const state = await getState(env.STATE);
+          state.memoryContext = (await env.STATE.get('memory-context')) || '';
+          const history = (await env.STATE.get('conversation-history', 'json')) || [];
+          const systemPrompt = getSystemPrompt(state) + '\n\nYou are on a VOICE CALL. Keep responses under 3 sentences. Be direct and conversational.';
+          const reply = await askClaude(env.ANTHROPIC_API_KEY, speechResult, history, systemPrompt);
+          await saveConversation(env.STATE, `[voice call] ${speechResult}`, reply);
+          await queueMessage(env.STATE, { channel: 'voice', text: `Caller said: ${speechResult} | Backup QB replied: ${reply}` });
+
+          const twiml = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say voice="Google.en-US-Neural2-D" language="en-US">${reply.replace(/[<>&"']/g, '')}</Say>
+  <Gather input="speech" timeout="5" speechTimeout="auto" action="/voice-fallback" method="POST">
+    <Say voice="Google.en-US-Neural2-D">Anything else?</Say>
+  </Gather>
+  <Say voice="Google.en-US-Neural2-D">Alright, I'll let 9 know you called. Take care.</Say>
+</Response>`;
+          return new Response(twiml, { headers: { 'Content-Type': 'text/xml' } });
+        } catch (e) {
+          // Claude API failed — fall back to voicemail
+          const twiml = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say voice="Google.en-US-Neural2-D" language="en-US">Sorry, I'm having trouble thinking right now. Leave a message after the beep and 9 will get back to you.</Say>
+  <Record maxLength="120" playBeep="true" transcribe="true" />
+</Response>`;
+          return new Response(twiml, { headers: { 'Content-Type': 'text/xml' } });
+        }
+      }
+
+      // Initial greeting — gather speech instead of just recording
       const twiml = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="Google.en-US-Neural2-D" language="en-US">Hey, this is the Backup QB covering for 9. The main system is temporarily offline, but I got your call. Leave a message after the beep and 9 will get back to you as soon as the main system is back up. You can also reach out on Telegram.</Say>
+  <Gather input="speech" timeout="5" speechTimeout="auto" action="/voice-fallback" method="POST">
+    <Say voice="Google.en-US-Neural2-D" language="en-US">Hey, this is the Backup QB covering for 9. The main system is temporarily offline, but I'm here and can help. What do you need?</Say>
+  </Gather>
+  <Say voice="Google.en-US-Neural2-D">I didn't catch that. Leave a message after the beep and 9 will get back to you.</Say>
   <Record maxLength="120" playBeep="true" transcribe="true" />
-  <Say voice="Google.en-US-Neural2-D">I didn't get a recording. Try calling back or send me a message on Telegram.</Say>
 </Response>`;
       return new Response(twiml, {
         headers: { 'Content-Type': 'text/xml' },

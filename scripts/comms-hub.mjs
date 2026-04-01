@@ -235,6 +235,7 @@ function isTerminalActive() {
   if (Date.now() - terminalLastPing > TERMINAL_TIMEOUT) {
     log('Terminal ping timeout — switching to autonomous mode');
     clearTerminalState();
+    recordTerminalCrash(); // Track for crash loop detection
 
     // Suppress alert during startup grace period
     if (!inStartupGrace()) {
@@ -244,7 +245,7 @@ function isTerminalActive() {
     }
     // Only email/iMessage if terminal doesn't come back (handled in recovery failed)
 
-    // Immediately request terminal reopen
+    // Immediately request terminal reopen (crash loop detector may block via cooldown)
     requestTerminal('Terminal ping timed out — reopening');
 
     // Verify terminal came back — if not, retry
@@ -289,6 +290,98 @@ function scheduleTerminalRecoveryCheck() {
   }, 60000); // Check every 60 seconds
 }
 
+// ─── Crash Loop Detector & Self-Healer ──────────────────────────────────────
+// Tracks terminal crash timestamps. If 3+ crashes in 10 minutes, the terminal
+// is in a crash loop (e.g., MCP auth failure, orphan PID fight). Self-heals by:
+//   1. Killing ALL orphan Claude sessions
+//   2. Clearing MCP auth cache (the #1 cause of session-start crash loops)
+//   3. Waiting 30s before allowing next terminal open (break the rapid cycle)
+//   4. Sending diagnostic report to Telegram
+const crashTimestamps = [];
+const CRASH_LOOP_WINDOW_MS = 600000;  // 10 minutes
+const CRASH_LOOP_THRESHOLD = 3;       // 3 crashes in window = crash loop
+let crashLoopCooldownUntil = 0;       // Timestamp when cooldown expires
+const MCP_AUTH_CACHE = `${process.env.HOME}/.claude/mcp-needs-auth-cache.json`;
+
+function recordTerminalCrash() {
+  const now = Date.now();
+  crashTimestamps.push(now);
+  // Prune old entries outside the window
+  while (crashTimestamps.length > 0 && crashTimestamps[0] < now - CRASH_LOOP_WINDOW_MS) {
+    crashTimestamps.shift();
+  }
+
+  if (crashTimestamps.length >= CRASH_LOOP_THRESHOLD) {
+    log(`CRASH LOOP DETECTED: ${crashTimestamps.length} crashes in ${Math.round(CRASH_LOOP_WINDOW_MS / 60000)} minutes — initiating self-heal`);
+    selfHealCrashLoop();
+  }
+}
+
+function selfHealCrashLoop() {
+  const diagnostics = [];
+
+  // 1. Kill ALL orphan Claude CLI sessions (not Claude Desktop, not hub)
+  try {
+    const orphans = execSync("ps aux | grep -E '^[^ ]+ +[0-9]+ .* claude' | grep -v grep | grep -v 'Claude.app' | grep -v 'Claude Helper' | grep -v comms-hub | awk '{print $2}'", { encoding: 'utf-8', timeout: 5000 }).trim();
+    if (orphans) {
+      const pids = orphans.split('\n').filter(Boolean);
+      for (const pid of pids) {
+        try {
+          execSync(`kill -9 ${pid} 2>/dev/null`);
+          diagnostics.push(`Killed orphan Claude PID ${pid}`);
+        } catch {}
+      }
+      log(`Crash loop self-heal: killed ${pids.length} orphan Claude processes`);
+    } else {
+      diagnostics.push('No orphan Claude processes found');
+    }
+  } catch (e) {
+    diagnostics.push(`Orphan scan error: ${e.message}`);
+  }
+
+  // 2. Clear MCP auth cache (Stripe MCP auth popup = crash loop trigger)
+  try {
+    if (existsSync(MCP_AUTH_CACHE)) {
+      const cacheContent = readFileSync(MCP_AUTH_CACHE, 'utf-8');
+      unlinkSync(MCP_AUTH_CACHE);
+      diagnostics.push(`Cleared MCP auth cache (${cacheContent.length} bytes)`);
+      log('Crash loop self-heal: cleared MCP auth cache');
+    } else {
+      diagnostics.push('MCP auth cache already clean');
+    }
+  } catch (e) {
+    diagnostics.push(`MCP cache clear error: ${e.message}`);
+  }
+
+  // 3. Clear terminal state and set cooldown (30s before allowing next open)
+  clearTerminalState();
+  crashLoopCooldownUntil = Date.now() + 30000;
+  diagnostics.push('Terminal state cleared, 30s cooldown before next attempt');
+  log('Crash loop self-heal: 30s cooldown before next terminal open');
+
+  // Clear crash timestamps so we don't immediately re-trigger
+  crashTimestamps.length = 0;
+
+  // 4. Send diagnostic report to Telegram
+  const report = [
+    'CRASH LOOP SELF-HEAL COMPLETED:',
+    ...diagnostics.map(d => `• ${d}`),
+    '',
+    'Terminal will retry in 30 seconds.',
+    'If loop continues, check: MCP server configs, .env keys, disk space.',
+  ].join('\n');
+
+  sendTelegram(report).catch(() => {});
+  log(`Crash loop diagnostic: ${diagnostics.join(' | ')}`);
+
+  // Schedule terminal reopen after cooldown
+  setTimeout(() => {
+    crashLoopCooldownUntil = 0;
+    lastTerminalRequest = 0; // Reset rate limiter
+    requestTerminal('Post crash-loop self-heal retry');
+  }, 30000);
+}
+
 // ─── Proactive Terminal Watchdog ─────────────────────────────────────────────
 // Checks every 30 seconds whether terminal has gone silent. TWO detection methods:
 // 1. Ping timeout (2 min without ping)
@@ -304,6 +397,7 @@ setInterval(() => {
       // PID is dead — terminal is gone, regardless of what pings say
       log(`Terminal watchdog: PID ${terminalPid} is DEAD — orphan ping loop detected, forcing autonomous mode`);
       clearTerminalState();
+      recordTerminalCrash(); // Track for crash loop detection
 
       // Suppress alert during startup grace period (hub just restarted, terminal will re-claim)
       if (!inStartupGrace()) {
@@ -453,6 +547,7 @@ setInterval(() => {
 
       // Clear terminal state — the ping loop will self-terminate once PID is dead
       clearTerminalState();
+      recordTerminalCrash(); // Track for crash loop detection
 
       // Write open-terminal signal — force=true bypasses the "Claude PIDs alive" skip
       requestTerminal('Freeze detector Tier 3 — SIGKILL recovery', true);
@@ -469,6 +564,11 @@ const TERMINAL_SIGNAL = '/tmp/9-open-terminal';
 let lastTerminalRequest = 0;
 
 function requestTerminal(reason, force = false) {
+  // Crash loop cooldown — self-healer sets this to break rapid crash cycles
+  if (crashLoopCooldownUntil > Date.now()) {
+    log(`Terminal open BLOCKED by crash loop cooldown (${Math.round((crashLoopCooldownUntil - Date.now()) / 1000)}s remaining). Reason: ${reason}`);
+    return;
+  }
   // Don't spam — max once per 45 seconds (tight enough for retries, safe from spam)
   if (Date.now() - lastTerminalRequest < 45000) return;
   lastTerminalRequest = Date.now();
@@ -524,7 +624,16 @@ const memoryContext = loadMemoryContext();
 log(`Memory context loaded: ${memoryContext.length} chars`);
 
 // ─── Claude System Prompt ────────────────────────────────────────────────────
-const SYSTEM = `You are OC (Offensive Coordinator), 9's autonomous backup brain. You respond on behalf of 9 when the terminal is down. You share 9's personality and knowledge, but you are NOT terminal-9. Be honest about your limitations — you cannot run code, deploy, or access the file system. You are the backup holding the line until 9 comes back at full power. Your responses already get prefixed with 'OC:' by the system.
+const SYSTEM = `You are OC (Offensive Coordinator), 9's autonomous backup brain. You respond on behalf of 9 when the terminal is down.
+
+CRITICAL IDENTITY RULES:
+- You are OC. You are NOT 9. NEVER say "it's 9" or "I'm 9" or speak as if you are 9.
+- NEVER claim to be 9 under any circumstances. You are the backup, not the starter.
+- If asked "are you 9?" — answer honestly: "No, I'm OC, 9's backup. Terminal is down."
+- You CANNOT run code, deploy, access files, or execute commands. Be honest about this.
+- NEVER guess the current time. Say "I don't have a reliable clock" if asked.
+- NEVER claim to have done something you cannot verify (sent emails, deployed code, etc.).
+- Your responses get prefixed with 'OC:' by the system — do NOT add your own prefix.
 
 IDENTITY:
 - Terse, action-first, zero fluff. Like a contractor on a job site.
@@ -533,6 +642,7 @@ IDENTITY:
 - Never reference Kyle Shea unless Jasson brings him up.
 - The Locker is the credential vault — only the Owner and 9 have a key. You never access The Locker directly.
 - Use contractions always. Sound human.
+- When in doubt, say "I'll log this for 9 when terminal comes back" rather than making things up.
 
 COMMUNICATION:
 - You're responding via the Unified Comms Hub (all channels parallel).
@@ -2058,6 +2168,71 @@ async function handleTunnelFailure(currentTunnel) {
 setInterval(tunnelHealthCheck, 60000); // Every 60 seconds
 setTimeout(tunnelHealthCheck, 15000);  // First check 15s after startup
 
+// ─── Network Change Detector (WiFi switch → force tunnel rebuild) ───────────
+// When MacBook moves between WiFi networks, cloudflared hangs on a stale
+// connection instead of reconnecting. This detects the network change by
+// polling the default gateway IP every 30s. On change → kill cloudflared
+// immediately so tunnelHealthCheck rebuilds with a fresh connection.
+let lastGatewayIP = null;
+let lastNetworkInterfaces = null;
+
+function getNetworkFingerprint() {
+  try {
+    // Get default gateway — changes when WiFi network changes
+    const gateway = execSync("route -n get default 2>/dev/null | awk '/gateway:/{print $2}'", { encoding: 'utf-8', timeout: 3000 }).trim();
+    // Also get active network interface IPs as secondary signal
+    const ifconfig = execSync("ifconfig | grep 'inet ' | grep -v 127.0.0.1 | awk '{print $2}' | sort | head -5", { encoding: 'utf-8', timeout: 3000 }).trim();
+    return { gateway, interfaces: ifconfig };
+  } catch {
+    return null;
+  }
+}
+
+// Capture initial network state
+const initialNetwork = getNetworkFingerprint();
+if (initialNetwork) {
+  lastGatewayIP = initialNetwork.gateway;
+  lastNetworkInterfaces = initialNetwork.interfaces;
+  log(`Network baseline: gateway=${lastGatewayIP}, interfaces=${lastNetworkInterfaces}`);
+}
+
+setInterval(() => {
+  const current = getNetworkFingerprint();
+  if (!current || !lastGatewayIP) {
+    // First run or can't read network — just store and move on
+    if (current) {
+      lastGatewayIP = current.gateway;
+      lastNetworkInterfaces = current.interfaces;
+    }
+    return;
+  }
+
+  const gatewayChanged = current.gateway !== lastGatewayIP;
+  const interfacesChanged = current.interfaces !== lastNetworkInterfaces;
+
+  if (gatewayChanged || interfacesChanged) {
+    log(`NETWORK CHANGE DETECTED: gateway ${lastGatewayIP} → ${current.gateway}, interfaces changed: ${interfacesChanged}`);
+    lastGatewayIP = current.gateway;
+    lastNetworkInterfaces = current.interfaces;
+
+    // Force-kill cloudflared immediately — stale connections won't recover on their own
+    try { execSync('pkill -f cloudflared 2>/dev/null'); } catch {}
+    log('Killed cloudflared after network change — tunnelHealthCheck will rebuild');
+
+    // Reset tunnel state so the next health check treats this as a fresh failure
+    tunnelConsecutiveFailures = 2; // Skip the "single failure, will retry" grace
+    tunnelLastRestartAttempt = 0;  // Clear cooldown so restart happens immediately
+    tunnelWasDown = true;
+    tunnelDowntimeTotal++;
+
+    // Trigger immediate tunnel rebuild instead of waiting for next 60s cycle
+    setTimeout(() => {
+      log('Network change: triggering immediate tunnel rebuild');
+      tunnelHealthCheck().catch(e => log(`Network change tunnel rebuild error: ${e.message}`));
+    }, 5000); // 5s delay for network to stabilize after switch
+  }
+}, 30000); // Check every 30 seconds
+
 // ─── Service Efficiency Sweep (every 2 hours) ───────────────────────────────
 // Checks all third-party service quotas/balances and alerts before limits hit
 async function efficiencySweep() {
@@ -2323,11 +2498,18 @@ async function syncToCloud() {
   if (!CLOUD_WORKER_URL) return;
   trackUsage('cloudSync');
   try {
+    // Send richer state so Backup QB can hold a real conversation, not just voicemail
     const payload = JSON.stringify({
       state: {
         channels: state.channels,
-        recentMessages: state.recentMessages.slice(-20),
+        recentMessages: state.recentMessages.slice(-40), // Was 20 — Backup QB needs more context
         sessionContext: state.sessionContext,
+        terminalActive,
+        tunnel: {
+          status: tunnelWasDown ? 'down' : 'healthy',
+          restartCount: tunnelRestartCount,
+          consecutiveFailures: tunnelConsecutiveFailures,
+        },
       },
       conversationHistory: state.conversationHistory,
       memoryContext: memoryContext,
