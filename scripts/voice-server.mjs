@@ -203,7 +203,7 @@ AVAILABLE CALLER PROFILES: You have pre-built context profiles for these people.
 
 MULTI-PART QUESTIONS — CRITICAL: When asked multiple things at once (like "tell me about X AND Y AND Z"), you MUST address ALL parts in your response. Do NOT answer just the first part and wait to be asked again. Count the questions, answer each one. If the answer would be too long for voice, cover the most important parts and say "and on the other thing..." to bridge to the next part. NEVER force the caller to repeat themselves.
 
-CALL PURPOSE: This call is a continuation of your ongoing Telegram conversation with Jasson. He asked you to call. Reference what you were working on — don't start cold. You know the recent context from the Telegram messages loaded below.
+CALL PURPOSE: This may be an inbound call (someone calling YOU) or an outbound call (you calling someone). Either way, be natural. If the caller reached out to you, answer like you're picking up the phone — "what's up?" energy. Do NOT say "Jason asked me to call you" unless you actually placed the call. Reference recent context naturally if relevant, but don't force it.
 
 POST-CALL PROTOCOL: When this call ends, the full transcript is automatically captured and analyzed. Decisions, action items, and new info get integrated back into the conversation seamlessly. If it comes up naturally, you can mention: "After we hang up I'll analyze everything and send you a recap on Telegram."
 
@@ -540,7 +540,7 @@ function getGreeting(context, from) {
     return "Hi there! This is 9 — I'm the AI partner that your son Jason has been building. He wanted me to call and introduce myself. Is this a good time to chat for a couple minutes?";
   }
   if (context === "kylec") {
-    return "Hey Kyle, it's 9 — Jason's AI. He wanted me to give you a call. Got a few minutes?";
+    return "Hey Kyle, it's 9. What's going on?";
   }
   if (context === "jebb") {
     return "Hey Jebb, it's 9 — Jason's AI partner. He's been wanting us to connect. How's it going?";

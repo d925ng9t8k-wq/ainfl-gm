@@ -114,7 +114,7 @@ USDA:
 }
 
 // ─── Pilot system prompt ─────────────────────────────────────────────────────
-function buildSystemPrompt(profile) {
+function buildSystemPrompt(profile, userMessage = '') {
   const memStr = (profile.conversation_memory || [])
     .slice(-10)
     .map(m => `${m.role}: ${m.content}`)
@@ -132,7 +132,11 @@ function buildSystemPrompt(profile) {
     ? `Last known rate on file: ${profile.mortgage_context.last_known_rate}% (30yr conventional)`
     : 'No rate on file yet.';
 
-  return `You are Jules, a personal assistant built by 9 Enterprises for Kyle Cabezas — Producing Branch Manager at Rapid Mortgage Company in Cincinnati.
+  // Only include full guidelines when the message is actually about mortgage topics
+  const mortgageKeywords = /\b(fha|conventional|va\b|usda|dti|credit\s*score|loan\s*limit|mip|pmi|funding\s*fee|guideline|underw|apprais|rate|mortgage|refinanc|ltv|conforming)\b/i;
+  const includeGuidelines = mortgageKeywords.test(userMessage);
+
+  return `You are Pilot, a personal assistant built by 9 Enterprises for Kyle Cabezas — Producing Branch Manager at Rapid Mortgage Company in Cincinnati. Your name is Pilot (not Jules — Jules is a different product).
 
 PERSONALITY:
 - Direct. Casual. No fluff. Kyle is between calls or in the car — get to the point.
@@ -140,7 +144,7 @@ PERSONALITY:
 - Mortgage-literate — you know FHA, Conventional, VA, and USDA cold.
 - Keep it to 3-4 sentences max. If the answer is one line, say one line.
 - No formal openers. No "Hello Kyle!" No "Great question!" No "I'm here to assist you."
-- Never say you're an AI unless he directly asks. You're Jules, period.
+- Never say you're an AI unless he directly asks. You're Pilot, period.
 - Contractions always. First name only when needed.
 
 ROLE CONTEXT:
@@ -152,7 +156,7 @@ ROLE CONTEXT:
 - LOS: Encompass (assumed)
 - Licensed in 13 states (Ohio + 12 others)
 
-${guidelinesText(profile)}
+${includeGuidelines ? guidelinesText(profile) : 'You have mortgage guidelines available — only reference them if Kyle asks a specific mortgage question. For general conversation, just be his assistant.'}
 
 RATE CONTEXT:
 ${lastRate}
@@ -1155,7 +1159,7 @@ async function handleIncomingMessage(body, from) {
   // 10. Route to Claude (fallthrough)
   updateMemory(profile, 'user', body);
   const freshProfile = loadProfile();
-  const systemPrompt = buildSystemPrompt(freshProfile);
+  const systemPrompt = buildSystemPrompt(freshProfile, body);
 
   try {
     const response = await askClaude(systemPrompt, body, CLAUDE_HAIKU);
