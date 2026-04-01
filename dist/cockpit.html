@@ -565,69 +565,51 @@ renderCompanies();
 // ===================== PERFORMANCE GAUGES =====================
 let hubHealthData=null;
 const isLocalhost=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.hostname==='';
+const TUNNEL_URL='https://marathon-strain-workstation-secret.trycloudflare.com';
+const HUB_BASE=isLocalhost?'http://localhost:3457':TUNNEL_URL;
 
 async function refreshGauges(){
   // Hub health
-  if(isLocalhost){
-    try{
-      const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});
-      if(res.ok){
-        hubHealthData=await res.json();
-        const g=document.getElementById('gauge-hub');
-        g.textContent='Online';
-        g.className='gauge-value up';
-        // Update hub status indicator
-        const hs=document.getElementById('hub-status');
-        hs.innerHTML='<div class="status-dot"></div><span>LIVE</span>';
-        // Uptime
-        if(hubHealthData.uptime){
-          const hrs=Math.floor(hubHealthData.uptime/3600);
-          const mins=Math.floor((hubHealthData.uptime%3600)/60);
-          document.getElementById('stat-uptime').textContent=hrs+'h '+mins+'m';
-        }
-        // Process count
-        if(hubHealthData.channels){
-          const procs=Object.keys(hubHealthData.channels).length;
-          document.getElementById('stat-processes').textContent=procs;
-        }
-      } else {
-        setGaugeDown('gauge-hub','Error '+res.status);
-      }
-    }catch(e){
-      setGaugeDown('gauge-hub','Offline');
+  try{
+    const res=await fetch(`${HUB_BASE}/health`,{signal:AbortSignal.timeout(3000)});
+    if(res.ok){
+      hubHealthData=await res.json();
+      const g=document.getElementById('gauge-hub');
+      g.textContent='Online';
+      g.className='gauge-value up';
       const hs=document.getElementById('hub-status');
-      hs.innerHTML='<div class="status-dot" style="background:var(--red);"></div><span>DOWN</span>';
+      hs.innerHTML='<div class="status-dot"></div><span>LIVE'+(isLocalhost?'':' (TUNNEL)')+'</span>';
+      if(hubHealthData.uptime){
+        const hrs=Math.floor(hubHealthData.uptime/3600);
+        const mins=Math.floor((hubHealthData.uptime%3600)/60);
+        document.getElementById('stat-uptime').textContent=hrs+'h '+mins+'m';
+      }
+      if(hubHealthData.channels){
+        const procs=Object.keys(hubHealthData.channels).length;
+        document.getElementById('stat-processes').textContent=procs;
+      }
+    } else {
+      setGaugeDown('gauge-hub','Error '+res.status);
     }
-  } else {
-    // Remote access — hub is not reachable from external networks
-    const g=document.getElementById('gauge-hub');
-    g.textContent='Remote';
-    g.className='gauge-value neutral';
+  }catch(e){
+    setGaugeDown('gauge-hub','Offline');
     const hs=document.getElementById('hub-status');
-    hs.innerHTML='<div class="status-dot" style="background:var(--orange);"></div><span>REMOTE</span>';
-    document.getElementById('stat-uptime').textContent='N/A';
-    document.getElementById('stat-processes').textContent='N/A';
-    document.getElementById('stat-messages').textContent='N/A';
+    hs.innerHTML='<div class="status-dot" style="background:var(--red);"></div><span>DOWN</span>';
   }
 
-  // Voice server
-  if(isLocalhost){
-    try{
-      const res=await fetch('http://localhost:3456/health',{signal:AbortSignal.timeout(3000)});
-      if(res.ok){
-        const g=document.getElementById('gauge-voice');
-        g.textContent='Online';
-        g.className='gauge-value up';
-      } else {
-        setGaugeDown('gauge-voice','Error');
-      }
-    }catch(e){
-      setGaugeDown('gauge-voice','Offline');
+  // Voice server — only reachable from local network
+  try{
+    const vUrl=isLocalhost?'http://localhost:3456/health':`${HUB_BASE}/health`;
+    const res=await fetch(vUrl,{signal:AbortSignal.timeout(3000)});
+    if(res.ok){
+      const g=document.getElementById('gauge-voice');
+      g.textContent='Online';
+      g.className='gauge-value up';
+    } else {
+      setGaugeDown('gauge-voice','Error');
     }
-  } else {
-    const g=document.getElementById('gauge-voice');
-    g.textContent='Remote';
-    g.className='gauge-value neutral';
+  }catch(e){
+    setGaugeDown('gauge-voice',isLocalhost?'Offline':'Via Hub');
   }
 
   // Trader 9 - check via hub state
@@ -667,13 +649,9 @@ setInterval(refreshGauges,30000);
 let lastMsgCount=0;
 
 async function refreshTelegramFeed(){
-  if(!isLocalhost){
-    const feed=document.getElementById('tg-feed');
-    feed.innerHTML='<div class="tg-empty">Telegram feed available on local network only</div>';
-    return;
-  }
+  // Remote access enabled via tunnel
   try{
-    const res=await fetch('http://localhost:3457/state',{signal:AbortSignal.timeout(5000)});
+    const res=await fetch(`${HUB_BASE}/state`,{signal:AbortSignal.timeout(5000)});
     if(!res.ok) return;
     const data=await res.json();
     const msgs=data.recentMessages||[];
@@ -744,13 +722,10 @@ async function sendMessage(){
   const msg=termInput.value.trim();
   if(!msg) return;
   termInput.value='';
-  if(!isLocalhost){
-    termLog('Message relay requires local access.','error');
-    return;
-  }
+  // Remote access enabled via tunnel
   termLog('> '+msg,'sent');
   try{
-    const res=await fetch('http://localhost:3457/send',{
+    const res=await fetch(`${HUB_BASE}/send`,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({channel:'telegram',message:msg})
     });
@@ -763,10 +738,10 @@ async function sendMessage(){
 
 // ===================== QUICK ACTIONS =====================
 async function checkInbox(){
-  if(!isLocalhost){termLog('Inbox check requires local access.','error');return;}
+  // Remote access enabled via tunnel
   termLog('Checking inbox...','system');
   try{
-    const res=await fetch('http://localhost:3457/inbox',{signal:AbortSignal.timeout(5000)});
+    const res=await fetch(`${HUB_BASE}/inbox`,{signal:AbortSignal.timeout(5000)});
     if(res.ok){
       const data=await res.json();
       const count=(data.messages||[]).length;
@@ -785,10 +760,10 @@ async function checkInbox(){
 }
 
 async function checkTrader(){
-  if(!isLocalhost){termLog('Trader check requires local access.','error');return;}
+  // Remote access enabled via tunnel
   termLog('Checking Trader 9...','system');
   try{
-    const res=await fetch('http://localhost:3457/health',{signal:AbortSignal.timeout(3000)});
+    const res=await fetch(`${HUB_BASE}/health`,{signal:AbortSignal.timeout(3000)});
     if(res.ok){
       const data=await res.json();
       if(data.trader9){
