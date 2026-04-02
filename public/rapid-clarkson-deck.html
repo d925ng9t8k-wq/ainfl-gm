@@ -53,13 +53,12 @@
     #deck::-webkit-scrollbar { display: none; }
 
     .slide {
-      height: 100dvh;
-      min-height: 600px;
+      min-height: 100dvh;
       scroll-snap-align: start;
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: visible;
     }
 
     /* ─── LOGO STRIP (every slide) ───────────────────────────────── */
@@ -852,7 +851,7 @@
     @media print {
       body { overflow: visible; }
       #deck { overflow: visible; height: auto; }
-      .slide { height: 100vh; page-break-after: always; }
+      .slide { min-height: 100vh; page-break-after: always; }
       #nav-dots, #slide-counter, #kbd-hint, #progress-bar { display: none; }
     }
   </style>
