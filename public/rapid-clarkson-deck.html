@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rapid Mortgage – Exclusive P&L Branch Opportunity | Austin Clarkson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── BRAND TOKENS ─────────────────────────────────────────── */
+    :root {
+      --rapid-blue:      #2582B5;
+      --rapid-blue-dark: #1a6590;
+      --rapid-blue-light:#3a9fd4;
+      --rapid-red:       #991C1F;
+      --rapid-red-dark:  #7a1518;
+      --charcoal:        #23282D;
+      --charcoal-mid:    #3a3f45;
+      --off-white:       #f7f8fa;
+      --white:           #ffffff;
+      --text-dark:       #1a1d21;
+      --text-mid:        #4a5568;
+      --text-light:      #718096;
+      --border:          #e2e8f0;
+      --gold:            #c9a227;
+      --green-check:     #2d9b6f;
+
+      --font-head: 'Poppins', sans-serif;
+      --font-body: 'Lato', sans-serif;
+
+      --slide-pad: clamp(2rem, 5vw, 5rem);
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--charcoal);
+      color: var(--text-dark);
+      overflow: hidden;
+    }
+
+    /* ─── SLIDE CONTAINER ────────────────────────────────────────── */
+    #deck {
+      height: 100dvh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+    #deck::-webkit-scrollbar { display: none; }
+
+    .slide {
+      height: 100dvh;
+      min-height: 600px;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ─── LOGO STRIP (every slide) ───────────────────────────────── */
+    .logo-strip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      padding: 0.75rem var(--slide-pad);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-strip img {
+      height: clamp(36px, 5vh, 52px);
+      width: auto;
+      object-fit: contain;
+    }
+    .logo-strip .slide-num {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+    /* Logo strip on dark slides */
+    .slide--dark .logo-strip .slide-num { color: var(--white); }
+    /* Logo strip on light slides */
+    .slide--light .logo-strip .slide-num { color: var(--charcoal); }
+
+    /* ─── SLIDE THEMES ───────────────────────────────────────────── */
+    .slide--dark {
+      background: var(--charcoal);
+      color: var(--white);
+    }
+    .slide--blue {
+      background: var(--rapid-blue);
+      color: var(--white);
+    }
+    .slide--blue-dark {
+      background: var(--rapid-blue-dark);
+      color: var(--white);
+    }
+    .slide--light {
+      background: var(--off-white);
+      color: var(--text-dark);
+    }
+    .slide--white {
+      background: var(--white);
+      color: var(--text-dark);
+    }
+    .slide--red {
+      background: var(--rapid-red);
+      color: var(--white);
+    }
+
+    /* ─── ACCENT BARS ────────────────────────────────────────────── */
+    .accent-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6px;
+      height: 100%;
+      background: var(--rapid-blue);
+    }
+    .accent-bar--red { background: var(--rapid-red); }
+    .accent-bar--gold { background: var(--gold); }
+
+    /* ─── CONTENT WRAPPER ────────────────────────────────────────── */
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(4.5rem, 10vh, 7rem) var(--slide-pad) clamp(2rem, 4vh, 3.5rem);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+    .kicker {
+      font-family: var(--font-body);
+      font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 0.75rem;
+    }
+    h1.slide-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 5.5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    h2.slide-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .slide-subtitle {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: 300;
+      line-height: 1.5;
+      opacity: 0.85;
+      max-width: 700px;
+    }
+    .slide-body {
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+      line-height: 1.7;
+      max-width: 750px;
+    }
+
+    /* ─── BULLET LISTS ───────────────────────────────────────────── */
+    .bullet-list {
+      list-style: none;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .bullet-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-family: var(--font-body);
+      font-size: clamp(0.88rem, 1.5vw, 1.05rem);
+      line-height: 1.45;
+    }
+    .bullet-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rapid-blue);
+      margin-top: 0.42em;
+    }
+    .slide--dark .bullet-list li::before,
+    .slide--blue .bullet-list li::before,
+    .slide--blue-dark .bullet-list li::before,
+    .slide--red .bullet-list li::before {
+      background: var(--white);
+    }
+
+    .bullet-list li strong { font-weight: 700; }
+
+    /* Sub-bullets */
+    .bullet-list .sub-list {
+      list-style: none;
+      margin-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding-left: 1.25rem;
+    }
+    .bullet-list .sub-list li {
+      font-size: clamp(0.82rem, 1.35vw, 0.95rem);
+      opacity: 0.8;
+    }
+    .bullet-list .sub-list li::before {
+      width: 5px;
+      height: 5px;
+      background: var(--rapid-blue-light);
+    }
+    .slide--dark .bullet-list .sub-list li::before { background: rgba(255,255,255,0.5); }
+
+    /* ─── DIVIDER ─────────────────────────────────────────────────── */
+    .divider {
+      height: 3px;
+      width: 60px;
+      background: var(--rapid-blue);
+      border-radius: 2px;
+      margin: 1rem 0 1.5rem;
+    }
+    .divider--red { background: var(--rapid-red); }
+    .divider--white { background: var(--white); }
+    .divider--gold { background: var(--gold); }
+
+    /* ─── SLIDE FOOTER ───────────────────────────────────────────── */
+    .slide-footer {
+      padding: 0.6rem var(--slide-pad);
+      font-size: 0.72rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.45;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .slide--light .slide-footer,
+    .slide--white .slide-footer {
+      border-top-color: var(--border);
+      opacity: 0.5;
+    }
+
+    /* ─── NAV DOTS ────────────────────────────────────────────────── */
+    #nav-dots {
+      position: fixed;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      padding: 0;
+    }
+    .nav-dot:hover { background: rgba(255,255,255,0.6); transform: scale(1.3); }
+    .nav-dot.active { background: var(--white); transform: scale(1.4); }
+
+    /* ─── SLIDE COUNTER ──────────────────────────────────────────── */
+    #slide-counter {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.8);
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 0.3rem 0.85rem;
+      border-radius: 20px;
+    }
+
+    /* ─── PROGRESS BAR ────────────────────────────────────────────── */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--rapid-blue);
+      z-index: 200;
+      transition: width 0.35s ease;
+    }
+
+    /* ─── PHOTO PLACEHOLDERS ─────────────────────────────────────── */
+    .photo-placeholder {
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.08);
+      border: 2px dashed rgba(255,255,255,0.2);
+      padding: 1rem;
+      flex-shrink: 0;
+    }
+    .slide--light .photo-placeholder,
+    .slide--white .photo-placeholder {
+      color: var(--text-light);
+      background: var(--border);
+      border-color: #c0cad5;
+    }
+
+    /* ─── CARDS ───────────────────────────────────────────────────── */
+    .card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+    }
+    .card--light {
+      background: var(--white);
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+    .card--blue {
+      background: var(--rapid-blue);
+      border: none;
+      color: var(--white);
+    }
+    .card--red {
+      background: var(--rapid-red);
+      border: none;
+      color: var(--white);
+    }
+
+    /* ─── GRID HELPERS ───────────────────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; gap: 1.25rem; }
+      .three-col { grid-template-columns: 1fr; gap: 0.75rem; }
+    }
+
+    /* ─── TABLE ───────────────────────────────────────────────────── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: clamp(0.72rem, 1.15vw, 0.9rem);
+    }
+    .data-table thead th {
+      background: var(--rapid-blue);
+      color: var(--white);
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: clamp(0.65rem, 1vw, 0.8rem);
+      letter-spacing: 0.04em;
+    }
+    .data-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .data-table thead th:last-child { border-radius: 0 8px 0 0; }
+    .data-table tbody tr:nth-child(odd) { background: rgba(37,130,181,0.06); }
+    .data-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.5); }
+    .data-table td {
+      padding: 0.55rem 0.75rem;
+      color: var(--text-dark);
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td:first-child {
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+    .data-table .highlight-row td {
+      background: rgba(201,162,39,0.12) !important;
+      font-weight: 700;
+      color: var(--charcoal);
+    }
+    .data-table .highlight-row td:first-child { color: var(--rapid-red); }
+
+    /* ─── NUMBERED STEPS ──────────────────────────────────────────── */
+    .step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-top: 1.25rem;
+    }
+    .step-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 1.55vw, 1.08rem);
+      line-height: 1.45;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--rapid-blue);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 0.05em;
+    }
+
+    /* ─── CHECK ITEMS ─────────────────────────────────────────────── */
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: clamp(0.85rem, 1.4vw, 1rem);
+      font-family: var(--font-body);
+      line-height: 1.4;
+    }
+    .check-list li .check-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--green-check);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.15em;
+    }
+    .check-list li .check-icon svg {
+      width: 11px;
+      height: 11px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ─── CONTACT BLOCK ──────────────────────────────────────────── */
+    .contact-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .contact-block .contact-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+    }
+    .contact-block .contact-detail {
+      font-family: var(--font-body);
+      font-size: clamp(0.82rem, 1.35vw, 0.95rem);
+      opacity: 0.8;
+    }
+    .contact-block a { color: inherit; text-decoration: none; opacity: 0.85; }
+    .contact-block a:hover { opacity: 1; text-decoration: underline; }
+
+    /* ─── STAT CALLOUT ────────────────────────────────────────────── */
+    .stat-callout {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .stat-callout .stat-value {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--rapid-blue);
+    }
+    .slide--dark .stat-callout .stat-value,
+    .slide--blue .stat-callout .stat-value { color: var(--white); }
+    .stat-callout .stat-label {
+      font-family: var(--font-body);
+      font-size: clamp(0.75rem, 1.2vw, 0.88rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── FLOWCHART ──────────────────────────────────────────────── */
+    .flowchart {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      row-gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .flow-box {
+      background: var(--white);
+      border: 2px solid var(--rapid-blue);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: clamp(0.72rem, 1.2vw, 0.88rem);
+      color: var(--rapid-blue-dark);
+      text-align: center;
+      min-width: 130px;
+      flex-shrink: 0;
+    }
+    .flow-box--accent {
+      background: var(--rapid-blue);
+      color: var(--white);
+      border-color: var(--rapid-blue);
+    }
+    .flow-box--result {
+      background: var(--green-check);
+      color: var(--white);
+      border-color: var(--green-check);
+    }
+    .flow-arrow {
+      font-size: 1.3rem;
+      color: var(--rapid-blue);
+      padding: 0 0.35rem;
+      flex-shrink: 0;
+    }
+
+    /* ─── ICON GRID ──────────────────────────────────────────────── */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: center;
+      padding: 1rem 0.5rem;
+      background: rgba(37,130,181,0.07);
+      border-radius: 10px;
+      border: 1px solid rgba(37,130,181,0.15);
+    }
+    .icon-item .icon-emoji {
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+    .icon-item .icon-label {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-mid);
+      line-height: 1.3;
+    }
+    .slide--dark .icon-item { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+    .slide--dark .icon-item .icon-label { color: rgba(255,255,255,0.65); }
+
+    /* ─── COMPARISON ──────────────────────────────────────────────── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+    }
+    .compare-table thead th {
+      padding: 0.65rem 1rem;
+      font-weight: 700;
+      font-size: clamp(0.75rem, 1.15vw, 0.9rem);
+      letter-spacing: 0.04em;
+    }
+    .compare-table thead th:nth-child(2) { background: rgba(37,130,181,0.12); color: var(--rapid-blue-dark); border-radius: 8px 8px 0 0; }
+    .compare-table thead th:nth-child(3) { background: rgba(153,28,31,0.08); color: var(--rapid-red); border-radius: 8px 8px 0 0; }
+    .compare-table td {
+      padding: 0.55rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .compare-table td:nth-child(2) { background: rgba(37,130,181,0.06); text-align: center; font-weight: 600; color: var(--rapid-blue-dark); }
+    .compare-table td:nth-child(3) { text-align: center; opacity: 0.6; }
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    /* ─── BACKGROUND PATTERNS ─────────────────────────────────────── */
+    .bg-grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .bg-circle-accent {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ─── QUOTE CALLOUT ──────────────────────────────────────────── */
+    .quote-callout {
+      border-left: 4px solid var(--rapid-blue);
+      padding: 0.75rem 1.25rem;
+      background: rgba(37,130,181,0.08);
+      border-radius: 0 8px 8px 0;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-style: italic;
+      font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+      color: var(--rapid-blue-dark);
+    }
+    .slide--dark .quote-callout { background: rgba(37,130,181,0.18); border-left-color: var(--rapid-blue-light); color: rgba(255,255,255,0.9); }
+
+    /* ─── TAG BADGE ───────────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .badge--blue { background: rgba(37,130,181,0.15); color: var(--rapid-blue-dark); }
+    .badge--gold { background: rgba(201,162,39,0.15); color: #8a6c10; }
+    .badge--green { background: rgba(45,155,111,0.15); color: var(--green-check); }
+
+    /* ─── S1: TITLE SLIDE ─────────────────────────────────────────── */
+    #slide-1 {
+      background: linear-gradient(135deg, var(--charcoal) 0%, #1a2a38 60%, var(--rapid-blue-dark) 100%);
+    }
+    #slide-1 .hero-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      padding: 5.5rem var(--slide-pad) 2rem;
+      position: relative;
+      z-index: 10;
+    }
+    #slide-1 .hero-text { color: var(--white); }
+    #slide-1 .presenter-tag {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    #slide-1 .presenter-tag .presenter-info {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.7);
+    }
+    #slide-1 .presenter-tag .presenter-info strong {
+      display: block;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.1rem;
+    }
+    #slide-1 .hero-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    /* Decorative diagonal stripe */
+    #slide-1::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(37,130,181,0.08) 100%);
+      pointer-events: none;
+    }
+
+    /* ─── AGENDA SLIDE SPECIFICS ──────────────────────────────────── */
+    #slide-2 .agenda-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem 2.5rem;
+      margin-top: 1.25rem;
+    }
+    #slide-2 .agenda-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-body);
+      font-size: clamp(0.88rem, 1.45vw, 1rem);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    #slide-2 .agenda-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--rapid-blue);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+    }
+
+    /* ─── STATS ROW ───────────────────────────────────────────────── */
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .stats-row .stat-box {
+      background: rgba(37,130,181,0.08);
+      border: 1px solid rgba(37,130,181,0.2);
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      flex: 1;
+      min-width: 140px;
+    }
+    .stats-row .stat-box .val {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      color: var(--rapid-blue);
+      letter-spacing: -0.02em;
+    }
+    .stats-row .stat-box .lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-light);
+      margin-top: 0.15rem;
+    }
+    .slide--dark .stats-row .stat-box { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+    .slide--dark .stats-row .stat-box .val { color: var(--rapid-blue-light); }
+    .slide--dark .stats-row .stat-box .lbl { color: rgba(255,255,255,0.5); }
+
+    /* ─── GROWTH CHART (SVG-based) ─────────────────────────────────── */
+    .growth-chart {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* ─── FINAL SLIDE ─────────────────────────────────────────────── */
+    #slide-12 {
+      background: linear-gradient(135deg, var(--charcoal) 0%, #0d1820 50%, var(--rapid-blue-dark) 100%);
+    }
+    #slide-12 .big-closing {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    #slide-12 .closing-sub {
+      font-family: var(--font-body);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 2rem;
+    }
+
+    /* ─── KEYBOARD HINT ──────────────────────────────────────────── */
+    #kbd-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+      opacity: 0.4;
+      font-size: 0.65rem;
+      font-family: var(--font-body);
+      color: white;
+      pointer-events: none;
+    }
+    #kbd-hint kbd {
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.65rem;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      #slide-1 .hero-layout { grid-template-columns: 1fr; }
+      #slide-1 .hero-visual { display: none; }
+      #slide-2 .agenda-grid { grid-template-columns: 1fr; }
+      .flowchart { justify-content: center; }
+      .flow-arrow { transform: rotate(90deg); }
+      #nav-dots { display: none; }
+    }
+
+    /* ─── PRINT / EXPORT HINT ─────────────────────────────────────── */
+    @media print {
+      body { overflow: visible; }
+      #deck { overflow: visible; height: auto; }
+      .slide { height: 100vh; page-break-after: always; }
+      #nav-dots, #slide-counter, #kbd-hint, #progress-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-bar" style="width:8.33%"></div>
+
+<!-- Navigation Dots -->
+<nav id="nav-dots" aria-label="Slide navigation">
+  <!-- Populated by JS -->
+</nav>
+
+<!-- Slide Counter -->
+<div id="slide-counter">1 / 12</div>
+
+<!-- Keyboard hint -->
+<div id="kbd-hint">
+  <kbd>↑</kbd><kbd>↓</kbd>&nbsp;navigate
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- DECK                                                           -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="deck">
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 1 · TITLE                                             -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--dark" id="slide-1" data-slide="1">
+    <!-- Background: stock photo of modern mortgage office / collaboration team | placeholder -->
+    <div class="bg-grid-pattern"></div>
+    <div style="position:absolute;top:-120px;right:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle, rgba(37,130,181,0.18) 0%, transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-100px;left:-60px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle, rgba(153,28,31,0.12) 0%, transparent 70%);pointer-events:none;"></div>
+
+    <div class="logo-strip">
+      <!-- Rapid Mortgage Logo top-left -->
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--white);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num">Confidential · March 2026</span>
+    </div>
+
+    <div class="hero-layout">
+      <div class="hero-text">
+        <div class="kicker" style="color:var(--rapid-blue-light);">Exclusive Opportunity</div>
+        <h1 class="slide-title" style="color:var(--white);">
+          Rapid Mortgage<br />
+          <span style="color:var(--rapid-blue-light);">P&amp;L Branch</span><br />
+          Opportunity
+        </h1>
+        <div class="divider divider--white" style="background:var(--rapid-blue-light);margin-top:1.25rem;"></div>
+        <p class="slide-subtitle" style="margin-bottom:0;">
+          Building a $110M+ Branch Together —<br />
+          <strong style="color:var(--white);">With Real Ownership &amp; Control</strong>
+        </p>
+        <p class="slide-subtitle" style="margin-top:0.5rem;font-size:clamp(0.95rem,1.6vw,1.15rem);">
+          For Austin Clarkson &amp; Team
+        </p>
+
+        <div class="presenter-tag">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--rapid-blue);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;color:white;font-size:1rem;flex-shrink:0;">MJ</div>
+          <div class="presenter-info">
+            <strong>Mark Jaynes</strong>
+            mjaynes@rapidmortgage.com · 614-845-5202
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <!--
+          PHOTO PLACEHOLDER:
+          Replace with professional photo of Austin Clarkson.
+          Recommended: headshot or team photo, 280×340px, rounded 12px corners.
+        -->
+        <div class="photo-placeholder" style="width:210px;height:260px;">
+          Austin Clarkson<br/>Photo Placeholder<br/><span style="font-size:0.65rem;opacity:0.7;">(Replace with actual photo)</span>
+        </div>
+        <div style="text-align:center;font-family:var(--font-body);font-size:0.78rem;color:rgba(255,255,255,0.45);margin-top:0.25rem;">Austin Clarkson</div>
+      </div>
+    </div>
+
+    <div class="slide-footer" style="color:rgba(255,255,255,0.35);">
+      Rapid Mortgage Company · Confidential · Not for Distribution
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 2 · AGENDA                                            -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--white" id="slide-2" data-slide="2">
+    <!-- Background: clean numbered list with subtle mortgage icons and timeline graphic | placeholder -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:linear-gradient(to bottom,var(--rapid-blue),var(--rapid-red));"></div>
+    <div style="position:absolute;top:0;right:0;width:35%;height:100%;background:linear-gradient(135deg,rgba(37,130,181,0.04) 0%,rgba(37,130,181,0.09) 100%);pointer-events:none;"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--charcoal);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num" style="color:var(--charcoal);">2 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="kicker" style="color:var(--rapid-blue);">Overview</div>
+      <h2 class="slide-title">What We'll Cover Today</h2>
+      <div class="divider"></div>
+
+      <div class="agenda-grid">
+        <div class="agenda-item"><div class="agenda-num">1</div>Your Current Success at Lower</div>
+        <div class="agenda-item"><div class="agenda-num">2</div>Rapid Mortgage at a Glance</div>
+        <div class="agenda-item"><div class="agenda-num">3</div>The P&L Branch Manager Model</div>
+        <div class="agenda-item"><div class="agenda-num">4</div>Your Customized Financial Package</div>
+        <div class="agenda-item"><div class="agenda-num">5</div>Operational &amp; Growth Support</div>
+        <div class="agenda-item"><div class="agenda-num">6</div>Seat at the Table – Your Voice Matters</div>
+        <div class="agenda-item"><div class="agenda-num">7</div>Immediate &amp; Long-Term Upside</div>
+        <div class="agenda-item"><div class="agenda-num">8</div>Why This Beats Your Current Offer</div>
+        <div class="agenda-item" style="grid-column:span 2;max-width:300px;"><div class="agenda-num">9</div>Next Steps</div>
+      </div>
+    </div>
+
+    <div class="slide-footer">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 3 · YOUR CURRENT SUCCESS                              -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--light" id="slide-3" data-slide="3">
+    <!-- Background: pie chart breaking down volume by producer + team icons | placeholder -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--rapid-blue);"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--charcoal);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num" style="color:var(--charcoal);">3 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="two-col" style="align-items:start;gap:3rem;">
+        <div>
+          <div class="kicker" style="color:var(--rapid-blue);">Your Team</div>
+          <h2 class="slide-title">Austin Clarkson &amp; Team</h2>
+          <div style="margin-bottom:0.5rem;">
+            <span style="font-family:var(--font-head);font-weight:800;font-size:clamp(1.6rem,3.2vw,2.4rem);color:var(--rapid-blue);letter-spacing:-0.03em;">$110.64M+</span><br/>
+            <span style="font-family:var(--font-body);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-light);">Annualized Volume</span>
+          </div>
+          <div class="divider"></div>
+
+          <ul class="bullet-list">
+            <li>
+              <span><strong>Independent volume producers recognized:</strong>
+                <ul class="sub-list">
+                  <li>Austin + Sam (LO): $108M annualized (Austin core + Sam's $24M)</li>
+                  <li>Everett (LO): $2.64M annualized</li>
+                </ul>
+              </span>
+            </li>
+            <li><strong>Tyler &amp; Brandon:</strong> Loan Officer Assistants — overrides only, no volume brought in</li>
+            <li><strong>Nate:</strong> Support role</li>
+            <li><strong>Net to Austin:</strong> 78 bps after team comp</li>
+            <li><strong>Leah &amp; Shari (LOAs):</strong> Fully company-covered — $65k + $150/file each</li>
+          </ul>
+
+          <div class="quote-callout" style="margin-top:1.25rem;">
+            You've built a high-performing machine.<br/>We want to super-charge it.
+          </div>
+        </div>
+
+        <div>
+          <!--
+            PHOTO PLACEHOLDER: Pie chart breaking down volume by producer.
+            Austin core volume, Sam volume, Everett volume — 3 segments.
+            Also: Austin Clarkson professional headshot below chart.
+          -->
+          <!-- Simple SVG donut chart -->
+          <svg viewBox="0 0 200 200" style="width:100%;max-width:260px;display:block;margin:0 auto 1rem;">
+            <!-- Total circle -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" stroke-width="28"/>
+            <!-- Austin core: 84M / 110.64M = ~76% = 477deg arc -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#2582B5" stroke-width="28"
+                    stroke-dasharray="381 124" stroke-dashoffset="125"
+                    style="transition:stroke-dasharray 1s ease;"/>
+            <!-- Sam: 24M / 110.64M = ~22% -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#3a9fd4" stroke-width="28"
+                    stroke-dasharray="109 396" stroke-dashoffset="-256"
+                    style="transition:stroke-dasharray 1s ease;"/>
+            <!-- Everett: 2.64M / 110.64M = ~2.4% -->
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#991C1F" stroke-width="28"
+                    stroke-dasharray="15 490" stroke-dashoffset="-365"
+                    style="transition:stroke-dasharray 1s ease;"/>
+            <!-- Center label -->
+            <text x="100" y="94" text-anchor="middle" font-family="Poppins,sans-serif" font-weight="800" font-size="20" fill="#23282D">$110.64M</text>
+            <text x="100" y="113" text-anchor="middle" font-family="Lato,sans-serif" font-size="9" fill="#718096" letter-spacing="1">ANNUALIZED</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:0.4rem;max-width:260px;margin:0 auto;">
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;font-family:var(--font-body);">
+              <div style="width:12px;height:12px;border-radius:3px;background:#2582B5;flex-shrink:0;"></div>
+              <span>Austin (core) — $84M+</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;font-family:var(--font-body);">
+              <div style="width:12px;height:12px;border-radius:3px;background:#3a9fd4;flex-shrink:0;"></div>
+              <span>Sam (LO) — $24M</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;font-family:var(--font-body);">
+              <div style="width:12px;height:12px;border-radius:3px;background:#991C1F;flex-shrink:0;"></div>
+              <span>Everett (LO) — $2.64M</span>
+            </div>
+          </div>
+          <!--
+            PHOTO PLACEHOLDER:
+            Austin Clarkson headshot — 160x160px circle, centered.
+          -->
+          <div class="photo-placeholder" style="width:130px;height:130px;border-radius:50%;margin:1.25rem auto 0;">
+            Austin Photo
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 4 · RAPID MORTGAGE AT A GLANCE                        -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--dark" id="slide-4" data-slide="4">
+    <!-- Background: Rapid Mortgage logo + Ohio map highlight, clean timeline | placeholder -->
+    <div class="bg-grid-pattern"></div>
+    <div style="position:absolute;right:0;top:0;width:45%;height:100%;background:linear-gradient(to left,rgba(37,130,181,0.07),transparent);pointer-events:none;"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--white);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num">4 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="two-col" style="align-items:center;">
+        <div>
+          <div class="kicker" style="color:var(--rapid-blue-light);">Why Partner With Us</div>
+          <h2 class="slide-title" style="color:var(--white);">Rapid Mortgage<br/>at a Glance</h2>
+          <div class="divider divider--white"></div>
+
+          <ul class="bullet-list" style="color:rgba(255,255,255,0.85);">
+            <li>Local Ohio-based mortgage lender with proven track record</li>
+            <li>Same strict <strong style="color:white;">24–48 hour UW turn-time mandate</strong> — frequently same-day on strong files</li>
+            <li><strong style="color:white;">$1,700/file</strong> UW/processing fees — matches your current</li>
+            <li>DSCR loans handled in-house <span style="opacity:0.65;">(you already know and like Andy)</span></li>
+          </ul>
+
+          <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:rgba(37,130,181,0.15);border:1px solid rgba(37,130,181,0.3);border-radius:10px;color:rgba(255,255,255,0.85);font-family:var(--font-body);font-size:clamp(0.88rem,1.45vw,1.02rem);line-height:1.5;">
+            We grow by <strong style="color:white;">empowering top producers like you.</strong>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1.25rem;align-items:center;">
+          <!--
+            PHOTO PLACEHOLDER:
+            Ohio state map silhouette with Rapid Mortgage locations pinned.
+            Style: white outline on dark blue background.
+          -->
+          <div class="photo-placeholder" style="width:240px;height:200px;border-radius:12px;">
+            Ohio Map Graphic<br/><span style="font-size:0.65rem;">Local Ohio Lender</span>
+          </div>
+
+          <div class="stats-row" style="width:100%;">
+            <div class="stat-box" style="background:rgba(37,130,181,0.18);border-color:rgba(37,130,181,0.35);">
+              <div class="val" style="color:var(--rapid-blue-light);">24–48hr</div>
+              <div class="lbl">UW Turn Time</div>
+            </div>
+            <div class="stat-box" style="background:rgba(37,130,181,0.18);border-color:rgba(37,130,181,0.35);">
+              <div class="val" style="color:var(--rapid-blue-light);">$1,700</div>
+              <div class="lbl">Per File Fee</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer" style="color:rgba(255,255,255,0.3);">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 5 · THE P&L BRANCH MANAGER MODEL                      -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--white" id="slide-5" data-slide="5">
+    <!-- Background: flowchart: Austin Branch → Your Team → You Control Margins → You Net All Profits | placeholder -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--rapid-red);"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--charcoal);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num" style="color:var(--charcoal);">5 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="kicker" style="color:var(--rapid-red);">The Model</div>
+      <h2 class="slide-title">Your Own Profitable Branch<br/><span style="color:var(--rapid-blue);">Inside Rapid</span></h2>
+      <div class="divider divider--red"></div>
+
+      <div class="two-col" style="gap:2.5rem;align-items:start;">
+        <ul class="bullet-list">
+          <li>You run your full P&amp;L branch — <strong>hire/fire, expenses, profits</strong></li>
+          <li>You control all <strong>branch-level margins and pricing</strong> for your group</li>
+          <li>You net <strong>100% of branch profits</strong> after payroll and expenses as personal income</li>
+          <li>Corporate maintains its standard margin and pricing approach</li>
+          <li>Additional income available through <strong>corporate margin revenue share</strong> and/or <strong>equity position distributions</strong> — aligned to your top priorities</li>
+        </ul>
+
+        <div>
+          <!-- Flowchart -->
+          <div style="font-family:var(--font-body);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-light);margin-bottom:0.75rem;">Your Branch Structure</div>
+          <div style="display:flex;flex-direction:column;gap:0;align-items:flex-start;">
+            <div style="background:var(--rapid-blue);color:white;border-radius:10px 10px 0 0;padding:0.65rem 1.25rem;font-family:var(--font-head);font-weight:700;font-size:0.9rem;width:260px;text-align:center;">Austin's Branch</div>
+            <div style="width:2px;height:22px;background:var(--rapid-blue);margin-left:129px;"></div>
+            <div style="background:rgba(37,130,181,0.1);border:2px solid var(--rapid-blue);border-radius:8px;padding:0.6rem 1.25rem;font-family:var(--font-head);font-weight:600;font-size:0.85rem;width:260px;text-align:center;color:var(--rapid-blue-dark);">Your Team (LOs, LOAs, Support)</div>
+            <div style="width:2px;height:22px;background:var(--rapid-blue);margin-left:129px;"></div>
+            <div style="background:rgba(37,130,181,0.1);border:2px solid var(--rapid-blue);border-radius:8px;padding:0.6rem 1.25rem;font-family:var(--font-head);font-weight:600;font-size:0.85rem;width:260px;text-align:center;color:var(--rapid-blue-dark);">You Control Margins &amp; Pricing</div>
+            <div style="width:2px;height:22px;background:var(--green-check);margin-left:129px;"></div>
+            <div style="background:var(--green-check);color:white;border-radius:0 0 10px 10px;padding:0.65rem 1.25rem;font-family:var(--font-head);font-weight:700;font-size:0.9rem;width:260px;text-align:center;">You Net All Profits After Expenses</div>
+          </div>
+
+          <div style="margin-top:1.25rem;padding:0.75rem 1rem;background:var(--off-white);border-radius:8px;font-family:var(--font-body);font-size:0.82rem;color:var(--text-mid);line-height:1.4;border-left:3px solid var(--rapid-blue);">
+            No change to Rapid's existing operations or protocols.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 6 · YOUR CUSTOMIZED FINANCIAL PACKAGE                 -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--dark" id="slide-6" data-slide="6">
+    <!-- Background: bar chart showing cash vs. equity value, AND/OR icon | placeholder -->
+    <div class="bg-grid-pattern"></div>
+    <div style="position:absolute;bottom:0;right:0;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle, rgba(37,130,181,0.15) 0%, transparent 70%);pointer-events:none;"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--white);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num">6 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="kicker" style="color:var(--rapid-blue-light);">Financial Package</div>
+      <h2 class="slide-title" style="color:var(--white);">Tailored to<br/><span style="color:var(--rapid-blue-light);">Your Priorities</span></h2>
+      <div class="divider divider--white"></div>
+
+      <div style="max-width:680px;">
+        <p class="slide-body" style="color:rgba(255,255,255,0.82);margin-bottom:2rem;">
+          We are open to <strong style="color:white;">cash + equity + corporate margin revenue share</strong> — let's discuss your priorities so the package is financially viable and exactly what you want.
+        </p>
+
+        <!-- Three pillars -->
+        <div class="three-col">
+          <div style="background:rgba(37,130,181,0.18);border:1px solid rgba(37,130,181,0.35);border-radius:12px;padding:1.25rem;text-align:center;">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">💵</div>
+            <div style="font-family:var(--font-head);font-weight:700;font-size:1.05rem;color:var(--white);margin-bottom:0.3rem;">Cash</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.4;">Immediate upfront compensation</div>
+          </div>
+          <div style="background:rgba(201,162,39,0.15);border:1px solid rgba(201,162,39,0.35);border-radius:12px;padding:1.25rem;text-align:center;">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">📈</div>
+            <div style="font-family:var(--font-head);font-weight:700;font-size:1.05rem;color:var(--gold);margin-bottom:0.3rem;">Equity</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.4;">Ownership stake that grows with Rapid</div>
+          </div>
+          <div style="background:rgba(45,155,111,0.15);border:1px solid rgba(45,155,111,0.3);border-radius:12px;padding:1.25rem;text-align:center;">
+            <div style="font-size:1.75rem;margin-bottom:0.5rem;">♻️</div>
+            <div style="font-family:var(--font-head);font-weight:700;font-size:1.05rem;color:var(--green-check);margin-bottom:0.3rem;">Margin Revenue Share</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.4;">Ongoing corporate margin income</div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem;text-align:center;">
+          <div style="display:inline-flex;align-items:center;gap:0.75rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:30px;padding:0.6rem 1.5rem;">
+            <span style="font-family:var(--font-head);font-weight:800;font-size:1rem;color:white;">Mix &amp; Match</span>
+            <span style="font-size:0.78rem;color:rgba(255,255,255,0.5);">—</span>
+            <span style="font-size:0.82rem;color:rgba(255,255,255,0.65);font-family:var(--font-body);">We build it around what matters most to you</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer" style="color:rgba(255,255,255,0.3);">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 7 · OPERATIONAL & GROWTH SUPPORT                      -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--light" id="slide-7" data-slide="7">
+    <!-- Background: icons for office, processor, savings, marketing, two new LO headshots | placeholder -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--rapid-blue);"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--charcoal);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num" style="color:var(--charcoal);">7 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="kicker" style="color:var(--rapid-blue);">Transition Support</div>
+      <h2 class="slide-title">Seamless Transition —<br/><span style="color:var(--rapid-blue);">Tailored to You</span></h2>
+      <div class="divider"></div>
+
+      <div class="icon-grid" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr));">
+        <div class="icon-item">
+          <div class="icon-emoji">🏢</div>
+          <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--charcoal);margin-bottom:0.25rem;">Free Office Space</div>
+          <div class="icon-label">Westerville (Columbus) — eliminates your current rent overhead</div>
+        </div>
+        <div class="icon-item">
+          <div class="icon-emoji">⚙️</div>
+          <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--charcoal);margin-bottom:0.25rem;">Your Processor</div>
+          <div class="icon-label">Bring your processor at your chosen comp plan; corporate handles overflow</div>
+        </div>
+        <div class="icon-item">
+          <div class="icon-emoji">💰</div>
+          <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--charcoal);margin-bottom:0.25rem;">Substantial Savings</div>
+          <div class="icon-label">Savings by not transitioning other current operations staff</div>
+        </div>
+        <div class="icon-item">
+          <div class="icon-emoji">📣</div>
+          <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--charcoal);margin-bottom:0.25rem;">Marketing Budget</div>
+          <div class="icon-label">Your full marketing budget transitions with you — zero disruption</div>
+        </div>
+        <div class="icon-item">
+          <div class="icon-emoji">🤝</div>
+          <div style="font-family:var(--font-head);font-weight:700;font-size:0.88rem;color:var(--charcoal);margin-bottom:0.25rem;">LO Recruiting</div>
+          <div class="icon-label">Support landing your two target LOs (~$25M each)</div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem;padding:0.85rem 1.25rem;background:var(--white);border:1px solid var(--border);border-radius:10px;font-family:var(--font-body);font-size:clamp(0.9rem,1.5vw,1.05rem);color:var(--text-mid);border-left:4px solid var(--green-check);">
+        Everything you need to <strong style="color:var(--charcoal);">hit the ground running.</strong>
+      </div>
+    </div>
+
+    <div class="slide-footer">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 8 · SEAT AT THE TABLE                                  -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--blue-dark" id="slide-8" data-slide="8">
+    <!-- Background: roundtable photo, Mark Jaynes photo placeholder, quote bubble | placeholder -->
+    <div class="bg-grid-pattern"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--white);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num">8 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="two-col" style="align-items:center;gap:3rem;">
+        <div>
+          <div class="kicker" style="color:rgba(255,255,255,0.6);">Partnership</div>
+          <h2 class="slide-title" style="color:var(--white);">Your Voice Shapes<br/>Rapid's Future</h2>
+          <div class="divider divider--white"></div>
+
+          <div style="font-family:var(--font-head);font-weight:700;font-size:clamp(1rem,1.8vw,1.2rem);color:rgba(255,255,255,0.7);margin-bottom:1.25rem;font-style:italic;">
+            "You asked for it — you get it."
+          </div>
+
+          <ul class="bullet-list" style="color:rgba(255,255,255,0.85);">
+            <li><strong style="color:white;">Monthly strategy calls</strong> with ownership</li>
+            <li>Input on company direction and growth initiatives</li>
+            <li><strong style="color:white;">Direct physical office space</strong> shared with Mark in Columbus — massive ongoing value and smoothest possible transition</li>
+          </ul>
+
+          <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;">
+            <div style="font-family:var(--font-head);font-weight:800;font-size:clamp(1rem,1.8vw,1.25rem);color:white;">You're not just a producer —</div>
+            <div style="font-family:var(--font-head);font-weight:400;font-size:clamp(0.9rem,1.6vw,1.1rem);color:rgba(255,255,255,0.7);">you're a <strong style="color:white;font-weight:800;">true partner.</strong></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1.25rem;">
+          <!--
+            PHOTO PLACEHOLDER: Roundtable/boardroom collaboration photo.
+            Professional team meeting image.
+          -->
+          <div class="photo-placeholder" style="width:100%;max-width:280px;height:180px;">
+            Roundtable Photo<br/><span style="font-size:0.65rem;">Team collaboration image</span>
+          </div>
+
+          <!--
+            PHOTO PLACEHOLDER: Mark Jaynes professional headshot.
+          -->
+          <div style="display:flex;align-items:center;gap:0.85rem;">
+            <div class="photo-placeholder" style="width:60px;height:60px;border-radius:50%;padding:0.25rem;font-size:0.6rem;flex-shrink:0;">
+              Mark
+            </div>
+            <div class="contact-block">
+              <div class="contact-name" style="color:white;font-size:1rem;">Mark Jaynes</div>
+              <div class="contact-detail"><a href="mailto:mjaynes@rapidmortgage.com" style="color:rgba(255,255,255,0.7);">mjaynes@rapidmortgage.com</a></div>
+              <div class="contact-detail" style="color:rgba(255,255,255,0.7);">614-845-5202</div>
+            </div>
+          </div>
+
+          <!-- Quote bubble -->
+          <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px 12px 12px 4px;padding:0.85rem 1.1rem;max-width:280px;">
+            <div style="font-family:var(--font-head);font-style:italic;font-size:0.9rem;color:rgba(255,255,255,0.85);">"I want a seat at the table."</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:0.35rem;">— Austin Clarkson</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer" style="color:rgba(255,255,255,0.3);">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 9 · IMMEDIATE & LONG-TERM UPSIDE                       -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--white" id="slide-9" data-slide="9">
+    <!-- Background: growth line chart + color-coded equity table | placeholder -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--gold);"></div>
+    <div style="position:absolute;top:0;right:0;width:30%;height:100%;background:linear-gradient(135deg,rgba(201,162,39,0.04) 0%,rgba(201,162,39,0.08) 100%);pointer-events:none;"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--charcoal);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num" style="color:var(--charcoal);">9 / 12</span>
+    </div>
+
+    <div class="slide-content" style="padding-top:5rem;">
+      <div class="kicker" style="color:var(--gold);">Your Equity Grows With Us</div>
+      <h2 class="slide-title">Immediate &amp; Long-Term Upside</h2>
+      <div class="divider divider--gold"></div>
+
+      <div style="overflow-x:auto;">
+        <table class="data-table" style="min-width:640px;">
+          <thead>
+            <tr>
+              <th style="min-width:200px;">Metric</th>
+              <th style="background:var(--rapid-blue);">After You Join<br/><span style="font-weight:400;font-size:0.75em;opacity:0.85;">($110.64M+)</span></th>
+              <th style="background:#1a6590;">At $1B Company Volume</th>
+              <th style="background:#134d6e;">At $2B Company Volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Company Net Profit</td>
+              <td style="background:rgba(37,130,181,0.08);font-weight:600;">~$3.49M</td>
+              <td style="background:rgba(37,130,181,0.05);">~$8.64M</td>
+              <td style="background:rgba(37,130,181,0.03);">~$16.64M</td>
+            </tr>
+            <tr>
+              <td>Value per 1% Equity</td>
+              <td style="background:rgba(37,130,181,0.08);font-weight:600;">$191,800 – $226,600</td>
+              <td style="background:rgba(37,130,181,0.05);">$475k – $562k</td>
+              <td style="background:rgba(37,130,181,0.03);">$915k – $1.08M</td>
+            </tr>
+            <tr class="highlight-row">
+              <td style="color:var(--rapid-red) !important;">Your 4.99% Value</td>
+              <td style="background:rgba(201,162,39,0.15) !important;font-weight:700;">$957k – $1.13M</td>
+              <td style="background:rgba(201,162,39,0.1) !important;font-weight:700;">$2.37M – $2.81M</td>
+              <td style="background:rgba(201,162,39,0.07) !important;font-weight:700;">$4.57M – $5.40M</td>
+            </tr>
+            <tr>
+              <td>Annual Profit Distribution<br/><span style="font-size:0.8em;opacity:0.65;">per 1% equity</span></td>
+              <td style="background:rgba(37,130,181,0.08);font-weight:600;">$34,865</td>
+              <td style="background:rgba(37,130,181,0.05);">$86,400</td>
+              <td style="background:rgba(37,130,181,0.03);">$166,400</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:1rem;padding:0.75rem 1.25rem;background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.25);border-radius:8px;font-family:var(--font-body);font-size:clamp(0.85rem,1.4vw,1rem);color:var(--charcoal);">
+        <strong>Immediate equity appreciation on Day 1</strong> + growing distributions as Rapid scales.
+      </div>
+    </div>
+
+    <div class="slide-footer">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 10 · WHY THIS BEATS LOWER'S OFFER                      -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--dark" id="slide-10" data-slide="10">
+    <!-- Background: side-by-side comparison with green checkmarks for Rapid | placeholder -->
+    <div class="bg-grid-pattern"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--white);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num">10 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="kicker" style="color:var(--rapid-blue-light);">Why Rapid Wins</div>
+      <h2 class="slide-title" style="color:var(--white);">Better Economics.<br/>More Control. <span style="color:var(--rapid-blue-light);">Real Partnership.</span></h2>
+      <div class="divider divider--white"></div>
+
+      <div style="overflow-x:auto;">
+        <table class="compare-table" style="min-width:580px;background:rgba(255,255,255,0.03);border-radius:12px;overflow:hidden;">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:0.65rem 1rem;color:rgba(255,255,255,0.5);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">Feature</th>
+              <th style="text-align:center;padding:0.65rem 1rem;background:rgba(37,130,181,0.25);color:var(--rapid-blue-light);border-radius:8px 0 0 0;">Rapid Mortgage</th>
+              <th style="text-align:center;padding:0.65rem 1rem;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.4);border-radius:0 8px 0 0;">Lower</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.55rem 1rem;">Branch Margin &amp; Pricing Control</td>
+              <td style="background:rgba(37,130,181,0.1);border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;">
+                <span style="color:var(--green-check);font-weight:700;">✓ Full Control</span>
+              </td>
+              <td style="border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;color:rgba(255,255,255,0.3);">Limited</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.55rem 1rem;">Net All Branch Profits After Expenses</td>
+              <td style="background:rgba(37,130,181,0.1);border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;">
+                <span style="color:var(--green-check);font-weight:700;">✓ 100%</span>
+              </td>
+              <td style="border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;color:rgba(255,255,255,0.3);">Split model</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.55rem 1rem;">Free Columbus Office + Direct Access to Owner</td>
+              <td style="background:rgba(37,130,181,0.1);border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;">
+                <span style="color:var(--green-check);font-weight:700;">✓ Included</span>
+              </td>
+              <td style="border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;color:rgba(255,255,255,0.3);">Remote only</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.55rem 1rem;">Flexible Package (Cash + Equity + Revenue Share)</td>
+              <td style="background:rgba(37,130,181,0.1);border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;">
+                <span style="color:var(--green-check);font-weight:700;">✓ Your Choice</span>
+              </td>
+              <td style="border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;color:rgba(255,255,255,0.3);">Fixed structure</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.55rem 1rem;">Same-Day UW on Strong Files</td>
+              <td style="background:rgba(37,130,181,0.1);border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;">
+                <span style="color:var(--green-check);font-weight:700;">✓ Frequently</span>
+              </td>
+              <td style="border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;color:rgba(255,255,255,0.3);">Standard pace</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.7);padding:0.55rem 1rem;">Seat at the Table — Strategy Input</td>
+              <td style="background:rgba(37,130,181,0.1);text-align:center;">
+                <span style="color:var(--green-check);font-weight:700;">✓ Monthly Calls</span>
+              </td>
+              <td style="text-align:center;color:rgba(255,255,255,0.3);">Not offered</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:1.1rem;font-family:var(--font-body);font-size:clamp(0.85rem,1.4vw,1rem);color:rgba(255,255,255,0.65);">
+        This is the move that <strong style="color:white;">accelerates your growth</strong> while protecting your team.
+      </div>
+    </div>
+
+    <div class="slide-footer" style="color:rgba(255,255,255,0.3);">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 11 · NEXT STEPS                                        -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--light" id="slide-11" data-slide="11">
+    <!-- Background: timeline graphic + handshake photo | placeholder -->
+    <div style="position:absolute;top:0;left:0;width:6px;height:100%;background:var(--rapid-blue);"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--charcoal);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num" style="color:var(--charcoal);">11 / 12</span>
+    </div>
+
+    <div class="slide-content">
+      <div class="two-col" style="align-items:center;gap:3rem;">
+        <div>
+          <div class="kicker" style="color:var(--rapid-blue);">Action Plan</div>
+          <h2 class="slide-title">Let's Make<br/>This Happen</h2>
+          <div class="divider"></div>
+
+          <ol class="step-list">
+            <li>
+              <div class="step-num">1</div>
+              <div>
+                <strong>Review &amp; customize offer details</strong>
+                <div style="font-size:0.82rem;color:var(--text-light);margin-top:0.15rem;">Today — align on cash, equity, and revenue share mix</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div>
+                <strong>Schedule call with CPA / ownership</strong>
+                <div style="font-size:0.82rem;color:var(--text-light);margin-top:0.15rem;">Answer all financial and legal questions</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div>
+                <strong>Sign term sheet &amp; equity agreement</strong>
+                <div style="font-size:0.82rem;color:var(--text-light);margin-top:0.15rem;">Target: within 14 days</div>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div>
+                <strong>Transition plan execution</strong>
+                <div style="font-size:0.82rem;color:var(--text-light);margin-top:0.15rem;">Office, processor, marketing, team announcements</div>
+              </div>
+            </li>
+          </ol>
+
+          <div style="margin-top:1.5rem;padding:0.85rem 1.25rem;background:var(--white);border:1px solid var(--border);border-radius:10px;font-family:var(--font-body);font-size:1rem;color:var(--text-mid);border-left:4px solid var(--rapid-blue);">
+            We move fast — just like you.
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1.5rem;align-items:center;">
+          <!--
+            PHOTO PLACEHOLDER: Timeline/handshake graphic.
+            Suggested: professional handshake or signing photo.
+          -->
+          <div class="photo-placeholder" style="width:100%;max-width:280px;height:180px;">
+            Handshake / Agreement Photo<br/><span style="font-size:0.65rem;">Partnership imagery</span>
+          </div>
+
+          <!-- Mark's contact card -->
+          <div style="width:100%;max-width:280px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;box-shadow:0 4px 20px rgba(0,0,0,0.07);">
+            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
+              <div style="width:42px;height:42px;border-radius:50%;background:var(--rapid-blue);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;color:white;font-size:1rem;flex-shrink:0;">MJ</div>
+              <div>
+                <div style="font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--charcoal);">Mark Jaynes</div>
+                <div style="font-size:0.72rem;color:var(--text-light);letter-spacing:0.04em;">Owner · Rapid Mortgage</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.35rem;">
+              <a href="mailto:mjaynes@rapidmortgage.com" style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:var(--rapid-blue);text-decoration:none;font-family:var(--font-body);">
+                <span>📧</span> mjaynes@rapidmortgage.com
+              </a>
+              <a href="tel:6148455202" style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:var(--rapid-blue);text-decoration:none;font-family:var(--font-body);">
+                <span>📞</span> 614-845-5202
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-footer">Rapid Mortgage Company · Confidential · March 2026</div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- SLIDE 12 · THANK YOU / CLOSING                               -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="slide slide--dark" id="slide-12" data-slide="12">
+    <!-- Background: Inspirational closing image — team celebrating growth. Placeholder for Austin Clarkson and Mark Jaynes photos. -->
+    <div class="bg-grid-pattern"></div>
+    <div style="position:absolute;top:-150px;right:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle, rgba(37,130,181,0.15) 0%, transparent 65%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-120px;left:-80px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle, rgba(153,28,31,0.1) 0%, transparent 70%);pointer-events:none;"></div>
+
+    <div class="logo-strip">
+      <img src="https://rapidmortgage.com//wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage Company"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <div style="display:none;font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--white);">RAPID<span style="color:var(--rapid-blue);">MORTGAGE</span></div>
+      <span class="slide-num">12 / 12</span>
+    </div>
+
+    <div class="slide-content" style="align-items:center;text-align:center;">
+      <div class="kicker" style="color:var(--rapid-blue-light);">The Future</div>
+
+      <div class="big-closing">
+        Austin, let's build<br/>something bigger together.
+      </div>
+      <div class="closing-sub">Questions?</div>
+
+      <!-- Photo placeholders -->
+      <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:2rem;">
+        <!--
+          PHOTO PLACEHOLDER: Austin Clarkson professional photo — 110px circle
+        -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+          <div class="photo-placeholder" style="width:100px;height:100px;border-radius:50%;font-size:0.65rem;padding:0.5rem;">
+            Austin<br/>Photo
+          </div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:var(--font-body);">Austin Clarkson</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:1.5rem;color:rgba(255,255,255,0.2);padding-bottom:1.5rem;">+</div>
+        <!--
+          PHOTO PLACEHOLDER: Mark Jaynes professional photo — 110px circle
+        -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+          <div class="photo-placeholder" style="width:100px;height:100px;border-radius:50%;font-size:0.65rem;padding:0.5rem;">
+            Mark<br/>Photo
+          </div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:var(--font-body);">Mark Jaynes</div>
+        </div>
+      </div>
+
+      <!-- Contact block -->
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:1.5rem 2.5rem;display:inline-flex;flex-direction:column;align-items:center;gap:0.5rem;">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:1.2rem;color:white;">Mark Jaynes</div>
+        <div style="height:1px;width:60px;background:rgba(255,255,255,0.2);margin:0.1rem 0;"></div>
+        <a href="mailto:mjaynes@rapidmortgage.com" style="font-family:var(--font-body);font-size:0.9rem;color:var(--rapid-blue-light);text-decoration:none;">mjaynes@rapidmortgage.com</a>
+        <a href="tel:6148455202" style="font-family:var(--font-body);font-size:0.9rem;color:var(--rapid-blue-light);text-decoration:none;">614-845-5202</a>
+        <div style="font-family:var(--font-body);font-size:0.82rem;color:rgba(255,255,255,0.5);text-align:center;line-height:1.4;">570 Polaris Parkway, Suite 400<br/>Westerville, OH 43082</div>
+      </div>
+    </div>
+
+    <div class="slide-footer" style="color:rgba(255,255,255,0.25);text-align:center;">
+      Rapid Mortgage Company · Confidential · Not for Distribution · March 2026
+    </div>
+  </section>
+
+</div><!-- /deck -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  const deck      = document.getElementById('deck');
+  const counter   = document.getElementById('slide-counter');
+  const progress  = document.getElementById('progress-bar');
+  const navDotsEl = document.getElementById('nav-dots');
+  const slides    = Array.from(document.querySelectorAll('.slide'));
+  const TOTAL     = slides.length;
+
+  // ── Build nav dots ──────────────────────────────────────────
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    navDotsEl.appendChild(dot);
+  });
+
+  const dots = Array.from(navDotsEl.querySelectorAll('.nav-dot'));
+
+  // ── State ────────────────────────────────────────────────────
+  let current = 0;
+
+  // ── Go to slide ──────────────────────────────────────────────
+  function goTo(index) {
+    index = Math.max(0, Math.min(TOTAL - 1, index));
+    slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── Update UI ────────────────────────────────────────────────
+  function update(index) {
+    if (index === current) return;
+    current = index;
+
+    // Counter
+    counter.textContent = (index + 1) + ' / ' + TOTAL;
+
+    // Progress bar
+    const pct = ((index + 1) / TOTAL * 100).toFixed(2);
+    progress.style.width = pct + '%';
+
+    // Dots
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === index);
+    });
+  }
+
+  // ── Intersection Observer for scroll tracking ─────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.intersectionRatio >= 0.5) {
+        const idx = slides.indexOf(entry.target);
+        if (idx !== -1) update(idx);
+      }
+    });
+  }, { root: deck, threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // ── Keyboard navigation ───────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    switch(e.key) {
+      case 'ArrowDown':
+      case 'ArrowRight':
+      case 'PageDown':
+        e.preventDefault();
+        goTo(current + 1);
+        break;
+      case 'ArrowUp':
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault();
+        goTo(current - 1);
+        break;
+      case 'Home':
+        e.preventDefault();
+        goTo(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        goTo(TOTAL - 1);
+        break;
+    }
+  });
+
+  // ── Touch / swipe ────────────────────────────────────────────
+  let touchStartY = 0;
+  deck.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  deck.addEventListener('touchend', (e) => {
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(diff) > 50) {
+      goTo(diff > 0 ? current + 1 : current - 1);
+    }
+  }, { passive: true });
+
+  // ── Initial state ─────────────────────────────────────────────
+  update(0);
+  counter.textContent = '1 / ' + TOTAL;
+
+})();
+</script>
+
+</body>
+</html>
