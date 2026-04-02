@@ -34,12 +34,14 @@
 
     /* ─── RESET ─────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; }
+    html { font-size: 16px; height: 100%; }
     body {
       font-family: var(--font-body);
       background: var(--charcoal);
       color: var(--text-dark);
       overflow: hidden;
+      height: 100%;
+      /* overflow-x is hidden; overflow-y overridden per-breakpoint in mobile query */
     }
 
     /* ─── SLIDE CONTAINER ────────────────────────────────────────── */
@@ -53,12 +55,25 @@
     #deck::-webkit-scrollbar { display: none; }
 
     .slide {
-      min-height: 100dvh;
+      height: 100dvh;
+      min-height: 600px;
       scroll-snap-align: start;
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: visible;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* ─── MOBILE: allow natural scroll within a slide if needed ─── */
+    @media (max-width: 768px) {
+      body { overflow-y: auto; overflow-x: hidden; }
+      #deck { height: auto; overflow-y: auto; scroll-snap-type: none; }
+      .slide { height: auto; min-height: 100vh; overflow: visible; }
+      h2 { font-size: 1.4rem !important; }
+      h3 { font-size: 1.1rem !important; }
+      .two-col, .three-col { grid-template-columns: 1fr !important; }
+      .compare-table { min-width: auto !important; font-size: 0.7rem !important; }
     }
 
     /* ─── LOGO STRIP (every slide) ───────────────────────────────── */
@@ -135,9 +150,11 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: clamp(4.5rem, 10vh, 7rem) var(--slide-pad) clamp(2rem, 4vh, 3.5rem);
+      /* Top pad accounts for logo-strip (~60px). Bottom pad leaves room for footer. */
+      padding: clamp(3.5rem, 8vh, 5.5rem) var(--slide-pad) clamp(1.5rem, 3vh, 2.5rem);
       position: relative;
       z-index: 10;
+      min-height: 0; /* allow flex children to shrink */
     }
 
     /* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
@@ -839,32 +856,109 @@
 
     /* ─── RESPONSIVE ─────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      :root { --slide-pad: 1.25rem; }
-      .slide {
-        min-height: auto;
-        padding-top: 3.5rem;
-        padding-bottom: 2rem;
+      :root { --slide-pad: 1.1rem; }
+
+      /* Logo strip */
+      .logo-strip img { height: 28px; }
+      .logo-strip { padding: 0.6rem var(--slide-pad); }
+
+      /* Content padding — tighter on mobile */
+      .slide-content {
+        padding-top: clamp(3rem, 7vh, 4rem);
+        padding-bottom: clamp(1rem, 2.5vh, 2rem);
+        justify-content: flex-start;
+        overflow-y: auto;
+        overflow-x: hidden;
       }
-      #deck { scroll-snap-type: none; }
-      body { overflow: auto; }
-      #deck { height: auto; overflow: visible; }
-      .slide-content { gap: 0.75rem; }
-      h2 { font-size: 1.3rem !important; }
-      h3 { font-size: 1.1rem !important; }
-      p, li { font-size: 0.9rem !important; }
-      #slide-1 .hero-layout { grid-template-columns: 1fr; }
+
+      /* Typography scale-down on mobile */
+      h1.slide-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
+      h2.slide-title { font-size: clamp(1.4rem, 5.5vw, 2rem); }
+      .slide-subtitle { font-size: clamp(0.88rem, 3.5vw, 1.1rem); }
+      .slide-body { font-size: clamp(0.82rem, 3vw, 0.95rem); }
+      .bullet-list li { font-size: clamp(0.82rem, 3vw, 0.95rem); }
+
+      /* Layout: collapse two/three cols */
+      .two-col { grid-template-columns: 1fr !important; gap: 1rem !important; }
+      .three-col { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
+
+      /* Slide 1 */
+      #slide-1 .hero-layout { grid-template-columns: 1fr !important; padding: 3.5rem var(--slide-pad) 1rem !important; }
       #slide-1 .hero-visual { display: none; }
-      #slide-2 .agenda-grid { grid-template-columns: 1fr; }
-      .two-col, .three-col { grid-template-columns: 1fr !important; }
+      #slide-1 .presenter-tag { margin-top: 1rem; }
+
+      /* Slide 2 agenda */
+      #slide-2 .agenda-grid { grid-template-columns: 1fr; gap: 0; }
+      #slide-2 .agenda-item:last-child { grid-column: span 1 !important; max-width: none !important; }
+
+      /* Flowchart */
       .flowchart { flex-wrap: wrap; justify-content: center; }
       .flow-arrow { transform: rotate(90deg); }
+
+      /* Slide 5 branch structure: full width on mobile */
+      #slide-5 [style*="width:260px"] { width: 100% !important; }
+      #slide-5 [style*="margin-left:129px"] { margin-left: 45% !important; }
+
+      /* Tables — horizontal scroll */
+      .data-table { font-size: 0.68rem; }
+      .data-table td, .data-table th { padding: 0.3rem 0.35rem; }
+      [style*="overflow-x:auto"] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .compare-table { font-size: 0.72rem; }
+      .compare-table td, .compare-table th { padding: 0.4rem 0.6rem; }
+
+      /* Stats row */
+      .stats-row { gap: 0.75rem; }
+      .stats-row .stat-box .val { font-size: clamp(1.1rem, 4.5vw, 1.6rem); }
+
+      /* Icon grid: 2 columns on mobile */
+      .icon-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.6rem !important; }
+      .icon-item { padding: 0.65rem 0.35rem; }
+      .icon-item .icon-emoji { font-size: 1.3rem; }
+      .icon-item .icon-label { font-size: 0.7rem; }
+
+      /* Slide 9 — reduce top padding */
+      #slide-9 .slide-content { padding-top: clamp(2.5rem, 6vh, 3.5rem) !important; }
+      #slide-9 .data-table { font-size: 0.65rem; }
+
+      /* Slide 12 closing */
+      #slide-12 .big-closing { font-size: clamp(1.4rem, 5.5vw, 2rem); }
+      #slide-12 .closing-sub { font-size: clamp(0.9rem, 3.5vw, 1.2rem); margin-bottom: 1rem; }
+      #slide-12 [style*="display:flex;gap:2rem;justify-content:center"] { gap: 1rem !important; }
+      #slide-12 [style*="padding:1.5rem 2.5rem"] { padding: 1rem 1.25rem !important; }
+
+      /* Step list */
+      .step-list li { font-size: clamp(0.82rem, 3vw, 0.95rem); }
+      .step-num { width: 28px; height: 28px; font-size: 0.78rem; }
+
+      /* Nav + hints */
       #nav-dots { display: none; }
       #kbd-hint { display: none; }
-      .data-table { font-size: 0.7rem !important; }
-      .data-table td, .data-table th { padding: 0.35rem 0.4rem !important; }
-      .compare-table { font-size: 0.7rem !important; min-width: auto !important; }
-      .logo-strip img { height: 28px; }
-      .photo-placeholder { width: 70px !important; height: 70px !important; }
+      #slide-counter { font-size: 0.65rem; padding: 0.25rem 0.65rem; bottom: 0.75rem; }
+
+      /* Divider */
+      .divider { margin: 0.6rem 0 1rem; }
+
+      /* Bullet gap reduction */
+      .bullet-list { gap: 0.45rem; margin-top: 0.75rem; }
+      .bullet-list .sub-list li { font-size: clamp(0.75rem, 2.8vw, 0.85rem); }
+
+      /* Stat callout */
+      .stat-callout .stat-value { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+
+      /* Growth chart */
+      .growth-chart { max-width: 90%; }
+
+      /* Contact block */
+      .contact-block .contact-name { font-size: clamp(0.95rem, 3.5vw, 1.2rem); }
+
+      /* Footer */
+      .slide-footer { font-size: 0.62rem; padding: 0.4rem var(--slide-pad); }
+    }
+
+    /* Phones smaller than 390px */
+    @media (max-width: 390px) {
+      .three-col { grid-template-columns: 1fr !important; }
+      .icon-grid { grid-template-columns: 1fr 1fr !important; }
     }
 
     /* ─── PRINT / EXPORT HINT ─────────────────────────────────────── */
@@ -935,7 +1029,7 @@
         </p>
 
         <div class="presenter-tag">
-          <div style="width:44px;height:44px;border-radius:50%;background:var(--rapid-blue);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;color:white;font-size:1rem;flex-shrink:0;">MJ</div>
+          <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div style="width:44px;height:44px;border-radius:50%;background:var(--rapid-blue);align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;color:white;font-size:1rem;flex-shrink:0;display:none;">MJ</div>
           <div class="presenter-info">
             <strong>Mark Jaynes</strong>
             mjaynes@rapidmortgage.com · 614-845-5202
@@ -949,9 +1043,8 @@
           Replace with professional photo of Austin Clarkson.
           Recommended: headshot or team photo, 280×340px, rounded 12px corners.
         -->
-        <div class="photo-placeholder" style="width:210px;height:260px;">
-          Austin Clarkson<br/>Photo Placeholder<br/><span style="font-size:0.65rem;opacity:0.7;">(Replace with actual photo)</span>
-        </div>
+        <img src="https://www.lower.com/hubfs/airtable-imports/profile-pics/lo-austin-clarkson.jpg" alt="Austin Clarkson" style="width:210px;height:260px;object-fit:cover;border-radius:12px;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="photo-placeholder" style="width:210px;height:260px;display:none;">Austin Clarkson</div>
         <div style="text-align:center;font-family:var(--font-body);font-size:0.78rem;color:rgba(255,255,255,0.45);margin-top:0.25rem;">Austin Clarkson</div>
       </div>
     </div>
@@ -1090,9 +1183,8 @@
             PHOTO PLACEHOLDER:
             Austin Clarkson headshot — 160x160px circle, centered.
           -->
-          <div class="photo-placeholder" style="width:130px;height:130px;border-radius:50%;margin:1.25rem auto 0;">
-            Austin Photo
-          </div>
+          <img src="https://www.lower.com/hubfs/airtable-imports/profile-pics/lo-austin-clarkson.jpg" alt="Austin Clarkson" style="width:130px;height:130px;object-fit:cover;border-radius:50%;margin:1.25rem auto 0;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="photo-placeholder" style="width:130px;height:130px;border-radius:50%;margin:1.25rem auto 0;display:none;">Austin Photo</div>
         </div>
       </div>
     </div>
@@ -1186,11 +1278,11 @@
 
       <div class="two-col" style="gap:2.5rem;align-items:start;">
         <ul class="bullet-list">
-          <li>You run your full P&amp;L branch — <strong>hire/fire, expenses, profits</strong></li>
-          <li>You control all <strong>branch-level margins and pricing</strong> for your group</li>
-          <li>You net <strong>100% of branch profits</strong> after payroll and expenses as personal income</li>
-          <li>Corporate maintains its standard margin and pricing approach</li>
-          <li>Additional income available through <strong>corporate margin revenue share</strong> and/or <strong>equity position distributions</strong> — aligned to your top priorities</li>
+          <li><span>You run your full P&amp;L branch — <strong>hire/fire, expenses, profits</strong></span></li>
+          <li><span>You control all <strong>branch-level margins and pricing</strong> for your group</span></li>
+          <li><span>You net <strong>100% of branch profits</strong> after payroll and expenses as personal income</span></li>
+          <li><span>Corporate maintains its standard margin and pricing approach</span></li>
+          <li><span>Additional income available through <strong>corporate margin revenue share</strong> and/or <strong>equity position distributions</strong> — aligned to your top priorities</span></li>
         </ul>
 
         <div>
@@ -1384,9 +1476,8 @@
             PHOTO PLACEHOLDER: Mark Jaynes professional headshot.
           -->
           <div style="display:flex;align-items:center;gap:0.85rem;">
-            <div class="photo-placeholder" style="width:60px;height:60px;border-radius:50%;padding:0.25rem;font-size:0.6rem;flex-shrink:0;">
-              Mark
-            </div>
+            <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes" style="width:60px;height:60px;object-fit:cover;border-radius:50%;flex-shrink:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="photo-placeholder" style="width:60px;height:60px;border-radius:50%;padding:0.25rem;font-size:0.6rem;flex-shrink:0;display:none;">Mark</div>
             <div class="contact-block">
               <div class="contact-name" style="color:white;font-size:1rem;">Mark Jaynes</div>
               <div class="contact-detail"><a href="mailto:mjaynes@rapidmortgage.com" style="color:rgba(255,255,255,0.7);">mjaynes@rapidmortgage.com</a></div>
@@ -1423,7 +1514,7 @@
       <span class="slide-num" style="color:var(--charcoal);">9 / 12</span>
     </div>
 
-    <div class="slide-content" style="padding-top:5rem;">
+    <div class="slide-content">
       <div class="kicker" style="color:var(--gold);">Your Equity Grows With Us</div>
       <h2 class="slide-title">Immediate &amp; Long-Term Upside</h2>
       <div class="divider divider--gold"></div>
@@ -1631,7 +1722,7 @@
           <!-- Mark's contact card -->
           <div style="width:100%;max-width:280px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;box-shadow:0 4px 20px rgba(0,0,0,0.07);">
             <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-              <div style="width:42px;height:42px;border-radius:50%;background:var(--rapid-blue);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;color:white;font-size:1rem;flex-shrink:0;">MJ</div>
+              <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div style="width:42px;height:42px;border-radius:50%;background:var(--rapid-blue);align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;color:white;font-size:1rem;flex-shrink:0;display:none;">MJ</div>
               <div>
                 <div style="font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--charcoal);">Mark Jaynes</div>
                 <div style="font-size:0.72rem;color:var(--text-light);letter-spacing:0.04em;">Owner · Rapid Mortgage</div>
@@ -1685,9 +1776,8 @@
           PHOTO PLACEHOLDER: Austin Clarkson professional photo — 110px circle
         -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
-          <div class="photo-placeholder" style="width:100px;height:100px;border-radius:50%;font-size:0.65rem;padding:0.5rem;">
-            Austin<br/>Photo
-          </div>
+          <img src="https://www.lower.com/hubfs/airtable-imports/profile-pics/lo-austin-clarkson.jpg" alt="Austin Clarkson" style="width:100px;height:100px;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="photo-placeholder" style="width:100px;height:100px;border-radius:50%;font-size:0.65rem;padding:0.5rem;display:none;">Austin<br/>Photo</div>
           <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:var(--font-body);">Austin Clarkson</div>
         </div>
         <div style="display:flex;align-items:center;font-size:1.5rem;color:rgba(255,255,255,0.2);padding-bottom:1.5rem;">+</div>
@@ -1695,9 +1785,8 @@
           PHOTO PLACEHOLDER: Mark Jaynes professional photo — 110px circle
         -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
-          <div class="photo-placeholder" style="width:100px;height:100px;border-radius:50%;font-size:0.65rem;padding:0.5rem;">
-            Mark<br/>Photo
-          </div>
+          <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes" style="width:100px;height:100px;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="photo-placeholder" style="width:100px;height:100px;border-radius:50%;font-size:0.65rem;padding:0.5rem;display:none;">Mark<br/>Photo</div>
           <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:var(--font-body);">Mark Jaynes</div>
         </div>
       </div>
