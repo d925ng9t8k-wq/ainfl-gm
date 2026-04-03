@@ -1,98 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rapid Mortgage | P&L Branch Opportunity | Austin Clarkson</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Rapid Mortgage — Exclusive P&L Branch Opportunity | Austin Clarkson</title>
+  <script>
+  // Access protection — page only renders with correct key
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('key') !== 'rapid2026') {
+      document.documentElement.innerHTML = '<body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f7f8fa"><p style="color:#718096">Access restricted. Please use the link provided to you.</p></body>';
+    }
+  })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <style>
-
-    /* ─────────────────────────────────────────────
-       RESET & BASE
-    ───────────────────────────────────────────── */
+    /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue:    #2582B5;
-      --blue-dk: #1a6391;
-      --blue-lt: #e8f4fb;
-      --red:     #991C1F;
-      --red-lt:  #fdf0f0;
-      --gray:    #4a4a4a;
-      --light:   #f7f8fa;
-      --border:  #dde4ed;
+      --blue:      #2582B5;
+      --blue-dark: #1a6a96;
+      --blue-pale: #e8f4fb;
+      --red:       #991C1F;
+      --red-dark:  #7a1518;
+      --red-pale:  #fdf0f0;
+      --gray-50:   #f9fafb;
+      --gray-100:  #f3f4f6;
+      --gray-200:  #e5e7eb;
+      --gray-400:  #9ca3af;
+      --gray-600:  #4b5563;
+      --gray-800:  #1f2937;
+      --white:     #ffffff;
+      --slide-w:   860px;
     }
 
-    html, body {
+    html { font-size: 16px; }
+
+    body {
       font-family: 'Lato', sans-serif;
-      background: #e8ecf0;
-      color: var(--gray);
+      color: var(--gray-800);
+      background: var(--gray-100);
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
 
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Poppins', sans-serif;
-    }
-
-    /* ─────────────────────────────────────────────
-       PRINT BUTTON (screen only)
-    ───────────────────────────────────────────── */
-    .print-bar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: #1a1a2e;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      z-index: 9999;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
-    }
-    .print-bar .label {
-      color: #aab;
-      font-family: 'Lato', sans-serif;
-      font-size: 13px;
-    }
-    .print-bar button {
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      padding: 8px 22px;
-      border-radius: 6px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      transition: background 0.2s;
-    }
-    .print-bar button:hover { background: var(--blue-dk); }
-    .print-bar .hint {
-      color: #778;
-      font-size: 12px;
-      font-family: 'Lato', sans-serif;
-    }
-    @media print { .print-bar { display: none !important; } }
-
-    /* ─────────────────────────────────────────────
-       SLIDE WRAPPER
-    ───────────────────────────────────────────── */
-    .slide-wrap {
-      padding-top: 52px; /* offset for fixed bar */
-    }
-    @media print { .slide-wrap { padding-top: 0; } }
-
-    /* ─────────────────────────────────────────────
-       SLIDE BASE — letter-size proportions
-    ───────────────────────────────────────────── */
-    .slide {
-      width: 816px;          /* 8.5in @ 96dpi */
-      min-height: 1056px;    /* 11in @ 96dpi */
-      margin: 24px auto;
-      background: #fff;
-      box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-      position: relative;
+    /* ─── Slide Shell ─── */
+    section.slide {
+      width: var(--slide-w);
+      min-height: 540px;
+      margin: 2rem auto;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.10);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -100,1475 +63,983 @@
       break-after: page;
     }
 
-    @media print {
-      .slide {
-        width: 100%;
-        min-height: 100vh;
-        margin: 0;
-        box-shadow: none;
-        page-break-after: always;
-        break-after: page;
-      }
-      .slide:last-child {
-        page-break-after: avoid;
-        break-after: avoid;
-      }
-    }
-
-    /* ─────────────────────────────────────────────
-       SLIDE HEADER BAR (common)
-    ───────────────────────────────────────────── */
+    /* ─── Shared Header Bar ─── */
     .slide-header {
-      background: var(--blue);
-      color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 36px;
-      flex-shrink: 0;
+      padding: 16px 28px;
+      border-bottom: 3px solid var(--blue);
+      background: var(--white);
     }
-    .slide-header .logo img {
+    .slide-header img.logo {
       height: 38px;
-      filter: brightness(0) invert(1);
-      display: block;
+      object-fit: contain;
     }
-    .slide-header .slide-num {
+    .slide-number {
       font-family: 'Poppins', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      opacity: 0.7;
-      letter-spacing: 1px;
-    }
-
-    /* ─────────────────────────────────────────────
-       SLIDE FOOTER BAR (common)
-    ───────────────────────────────────────────── */
-    .slide-footer {
-      background: #f0f4f8;
-      border-top: 2px solid var(--border);
-      padding: 8px 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      margin-top: auto;
-    }
-    .slide-footer .conf {
-      font-size: 10px;
-      color: #999;
-      font-style: italic;
-    }
-    .slide-footer .tagline {
-      font-family: 'Poppins', sans-serif;
-      font-size: 10px;
-      color: var(--blue);
-      font-weight: 600;
-    }
-
-    /* ─────────────────────────────────────────────
-       SLIDE CONTENT AREA
-    ───────────────────────────────────────────── */
-    .slide-body {
-      flex: 1;
-      padding: 36px 42px 28px;
-      display: flex;
-      flex-direction: column;
-    }
-    .slide-body.two-col {
-      flex-direction: row;
-      gap: 32px;
-    }
-    .col { flex: 1; display: flex; flex-direction: column; }
-
-    /* ─────────────────────────────────────────────
-       SECTION TITLES
-    ───────────────────────────────────────────── */
-    .section-label {
-      font-family: 'Poppins', sans-serif;
-      font-size: 10px;
+      font-size: .75rem;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: .12em;
+      color: var(--gray-400);
       text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 6px;
     }
-    .slide-title {
-      font-family: 'Poppins', sans-serif;
-      font-size: 26px;
-      font-weight: 800;
-      color: #1a2a3a;
-      line-height: 1.2;
-      margin-bottom: 6px;
-    }
-    .slide-subtitle {
-      font-size: 14px;
-      color: #6a7a8a;
-      margin-bottom: 24px;
-      font-weight: 400;
-    }
-    .divider {
-      height: 3px;
-      background: linear-gradient(90deg, var(--blue), var(--red));
-      border-radius: 2px;
-      margin-bottom: 24px;
-      width: 64px;
-    }
+    .slide-number span { color: var(--blue); }
 
-    /* ─────────────────────────────────────────────
-       BULLET / CHECKLIST ITEMS
-    ───────────────────────────────────────────── */
-    .check-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .check-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .check-list li .icon {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: #fff;
-      font-size: 11px;
+    /* ─── Slide Body ─── */
+    .slide-body { flex: 1; padding: 36px 40px 32px; }
+
+    /* ─── Typography ─── */
+    h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+    h1 { font-size: 2rem;   font-weight: 800; line-height: 1.18; }
+    h2 { font-size: 1.45rem; font-weight: 700; line-height: 1.25; }
+    h3 { font-size: .95rem;  font-weight: 700; }
+
+    .eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-size: .7rem;
       font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .accent     { color: var(--blue); }
+    .accent-red { color: var(--red); }
+
+    .rule {
+      width: 52px; height: 4px;
+      background: var(--red);
+      border-radius: 2px;
+      margin: 14px 0 20px;
+    }
+
+    /* ─── Footer ─── */
+    .slide-footer {
+      background: var(--gray-50);
+      border-top: 1px solid var(--gray-200);
+      padding: 9px 28px;
+      font-size: .7rem;
+      color: var(--gray-400);
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      margin-top: 1px;
     }
-    .check-list li .icon.red { background: var(--red); }
-    .check-list li strong { color: #1a2a3a; }
+    .slide-footer strong { color: var(--gray-600); }
 
-    /* ─────────────────────────────────────────────
-       STAT CARDS
-    ───────────────────────────────────────────── */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 20px;
+    /* ─── Insight bar ─── */
+    .insight-bar {
+      margin-top: 14px;
+      background: var(--red-pale);
+      border-left: 4px solid var(--red);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      font-size: .88rem;
+      color: var(--red-dark);
+      font-style: italic;
+      font-weight: 700;
     }
-    .stat-card {
-      background: var(--blue-lt);
-      border: 1px solid #c5dff0;
-      border-radius: 10px;
-      padding: 16px 14px;
-      text-align: center;
+
+    /* ════ SLIDE 1 — TITLE ════ */
+    #s1 .slide-body {
+      background: linear-gradient(140deg, var(--blue-pale) 0%, #fff 55%);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 44px 52px;
     }
-    .stat-card .val {
+    #s1 h1 { color: var(--blue-dark); }
+    #s1 .sub {
+      font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 600;
+      color: var(--gray-800); margin-top: 12px; line-height: 1.4;
+    }
+    #s1 .presenter-block {
+      margin-top: 28px; display: flex; gap: 24px; align-items: center;
+    }
+    #s1 .presenter-photo {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: var(--gray-200); border: 3px solid var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .63rem; color: var(--gray-600); text-align: center;
+      flex-shrink: 0; padding: 6px; line-height: 1.4;
+    }
+    #s1 .presenter-info { font-size: .88rem; line-height: 1.65; }
+    #s1 .presenter-info strong {
+      display: block; font-family: 'Poppins', sans-serif;
+      font-size: .98rem; font-weight: 700;
+    }
+    #s1 .date-badge {
+      display: inline-block; margin-top: 24px;
+      background: var(--red); color: #fff;
+      font-family: 'Poppins', sans-serif; font-weight: 700;
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 20px;
+    }
+    #s1 .confidential-note {
+      font-size: .68rem; color: var(--gray-400); margin-top: 8px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    /* ════ SLIDE 2 — AGENDA ════ */
+    .agenda-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px 28px; margin-top: 6px;
+    }
+    .agenda-item { display: flex; align-items: flex-start; gap: 12px; }
+    .agenda-num {
+      width: 30px; height: 30px; min-width: 30px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .78rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .agenda-text { font-size: .93rem; line-height: 1.45; padding-top: 4px; }
+
+    /* ════ SLIDE 3 — YOUR TEAM ════ */
+    .team-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 6px;
+    }
+    .team-card {
+      background: var(--gray-50); border: 1px solid var(--gray-200);
+      border-radius: 10px; padding: 15px; text-align: center;
+    }
+    .team-card .name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .88rem; }
+    .team-card .role { font-size: .76rem; color: var(--gray-400); margin: 2px 0 6px; }
+    .team-card .volume {
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--blue);
+    }
+    .team-card .sub-vol { font-size: .74rem; color: var(--gray-400); }
+    .team-total {
+      margin-top: 16px; background: var(--blue); color: #fff;
+      border-radius: 10px; padding: 16px 22px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .team-total .label { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .95rem; }
+    .team-total .amount { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.55rem; }
+
+    /* ════ SLIDE 4 — AT A GLANCE ════ */
+    .glance-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-top: 6px;
+    }
+    .glance-card { background: var(--blue-pale); border-radius: 10px; padding: 18px; }
+    .glance-card .stat {
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.35rem;
+      color: var(--blue); margin-bottom: 2px;
+    }
+    .glance-card h3 { font-size: .88rem; color: var(--blue-dark); margin-bottom: 4px; }
+    .glance-card p { font-size: .82rem; color: var(--gray-600); line-height: 1.5; }
+    .glance-quote {
+      margin-top: 16px; background: var(--gray-800); color: #fff;
+      border-radius: 10px; padding: 16px 22px;
+      font-size: .88rem; font-style: italic; line-height: 1.5;
+    }
+    .glance-quote strong { color: #a8d8f5; font-style: normal; }
+
+    /* ════ SLIDE 5 — P&L MODEL ════ */
+    .pl-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-top: 6px;
+    }
+    .pl-card {
+      border: 2px solid var(--blue); border-radius: 10px;
+      padding: 20px; text-align: center;
+    }
+    .pl-card .pl-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.15rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .pl-card h3 { font-size: .88rem; color: var(--blue-dark); margin-bottom: 6px; }
+    .pl-card p { font-size: .81rem; color: var(--gray-600); line-height: 1.5; }
+    .pl-highlight {
+      margin-top: 16px;
+      background: linear-gradient(90deg, var(--blue) 0%, var(--blue-dark) 100%);
+      color: #fff; border-radius: 10px; padding: 16px 22px;
+      font-size: .9rem; font-weight: 700; text-align: center;
       font-family: 'Poppins', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--blue);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .stat-card .lbl {
-      font-size: 11px;
-      color: #5a7a9a;
-      line-height: 1.3;
     }
 
-    /* ─────────────────────────────────────────────
-       TABLE
-    ───────────────────────────────────────────── */
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
+    /* ════ SLIDE 6 — FINANCIAL PACKAGE ════ */
+    .fin-row { display: flex; gap: 16px; margin-top: 6px; }
+    .fin-card {
+      flex: 1; border-radius: 10px; padding: 22px;
+      display: flex; flex-direction: column; gap: 8px;
     }
-    .data-table th {
-      background: var(--blue);
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      padding: 9px 12px;
-      text-align: left;
-      font-size: 11.5px;
+    .fin-card.primary { background: var(--blue); color: #fff; }
+    .fin-card.secondary {
+      background: var(--gray-50); border: 2px solid var(--gray-200); color: var(--gray-800);
     }
-    .data-table td {
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
+    .fin-card h3 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
+    .fin-card.primary h3 { color: #fff; }
+    .fin-card.secondary h3 { color: var(--blue-dark); }
+    .fin-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .fin-card ul li {
+      font-size: .86rem; padding-left: 20px; position: relative; line-height: 1.45;
     }
-    .data-table tr:nth-child(even) td { background: var(--light); }
-    .data-table td:first-child { font-weight: 700; color: #1a2a3a; }
-    .data-table td.num {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      color: var(--blue);
+    .fin-card ul li::before { content: '✓'; position: absolute; left: 0; font-weight: 700; }
+    .fin-card.primary ul li::before { color: #a8d8f5; }
+    .fin-card.secondary ul li::before { color: var(--blue); }
+    .fin-note {
+      margin-top: 14px; font-size: .78rem; color: var(--gray-600);
+      font-style: italic; text-align: center;
     }
 
-    /* ─────────────────────────────────────────────
-       CALLOUT / QUOTE BOX
-    ───────────────────────────────────────────── */
-    .callout {
-      background: linear-gradient(135deg, var(--blue-lt), #f0f8ff);
-      border-left: 4px solid var(--blue);
-      border-radius: 0 10px 10px 0;
-      padding: 16px 20px;
-      margin-top: 20px;
-      font-size: 14px;
-      color: #1a2a3a;
-      line-height: 1.6;
+    /* ════ SLIDE 7 — OPS SUPPORT ════ */
+    .ops-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 6px;
     }
-    .callout strong { color: var(--blue); }
-    .callout.red {
-      background: var(--red-lt);
-      border-color: var(--red);
+    .ops-card {
+      background: var(--gray-50); border: 1px solid var(--gray-200);
+      border-radius: 10px; padding: 16px;
     }
-    .callout.red strong { color: var(--red); }
+    .ops-badge {
+      display: inline-block;
+      background: var(--blue-pale); color: var(--blue-dark);
+      font-family: 'Poppins', sans-serif; font-weight: 700;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 12px; margin-bottom: 8px;
+    }
+    .ops-card h3 { font-size: .88rem; color: var(--gray-800); margin-bottom: 4px; }
+    .ops-card p { font-size: .81rem; color: var(--gray-600); line-height: 1.5; }
 
-    /* ─────────────────────────────────────────────
-       QUOTE BLOCK
-    ───────────────────────────────────────────── */
+    /* ════ SLIDE 8 — SEAT AT TABLE ════ */
+    .seat-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-top: 6px;
+    }
+    .seat-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 15px; background: var(--gray-50);
+      border-radius: 10px; border: 1px solid var(--gray-200);
+    }
+    .seat-dot {
+      width: 10px; height: 10px; min-width: 10px;
+      border-radius: 50%; background: var(--blue); margin-top: 5px;
+    }
+    .seat-item h3 { font-size: .88rem; color: var(--blue-dark); margin-bottom: 3px; }
+    .seat-item p { font-size: .81rem; color: var(--gray-600); line-height: 1.45; }
     .quote-block {
-      background: #1a2a3a;
-      color: #fff;
-      border-radius: 10px;
-      padding: 20px 24px;
-      position: relative;
-      margin-top: 18px;
+      margin-top: 16px; background: var(--gray-800); color: #fff;
+      border-radius: 10px; padding: 18px 24px; position: relative;
     }
     .quote-block::before {
-      content: '\201C';
-      font-family: 'Poppins', sans-serif;
-      font-size: 56px;
-      color: var(--blue);
-      opacity: 0.4;
-      position: absolute;
-      top: -4px;
-      left: 16px;
-      line-height: 1;
+      content: '\201C'; position: absolute;
+      top: 6px; left: 14px; font-size: 3.2rem;
+      color: var(--blue); line-height: 1; font-family: Georgia, serif;
     }
-    .quote-block p {
-      font-size: 14px;
-      font-style: italic;
-      line-height: 1.6;
-      padding-left: 12px;
+    .quote-block .quote-text {
+      font-size: 1.05rem; font-style: italic; line-height: 1.45; padding-left: 26px;
     }
-    .quote-block .attribution {
-      font-size: 11px;
-      color: #8a9aaa;
-      margin-top: 8px;
-      padding-left: 12px;
-      font-style: normal;
+    .quote-block .quote-attr {
+      margin-top: 6px; font-size: .76rem; color: var(--gray-400); padding-left: 26px;
     }
 
-    /* ─────────────────────────────────────────────
-       PHOTO BUBBLES
-    ───────────────────────────────────────────── */
-    .photo {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 3px solid var(--blue);
-      background: var(--blue-lt);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* ════ SLIDE 9 — EQUITY TABLE ════ */
+    .equity-table-wrap {
+      margin-top: 12px; border-radius: 10px; border: 2px solid var(--blue); overflow: hidden;
     }
-    .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      display: block;
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    table thead th {
+      background: var(--blue); color: #fff;
+      font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .8rem;
+      padding: 12px 16px; text-align: left; white-space: nowrap;
     }
-    .photo-circle {
-      border-radius: 50%;
-      border: 3px solid var(--blue);
-      overflow: hidden;
-      background: var(--blue-lt);
+    table tbody tr:nth-child(even) { background: var(--blue-pale); }
+    table tbody tr:nth-child(odd)  { background: #fff; }
+    table tbody td {
+      padding: 11px 16px; color: var(--gray-800);
+      border-bottom: 1px solid var(--gray-200); line-height: 1.4;
     }
-    .photo-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
+    table tbody td:first-child {
+      font-weight: 700; font-family: 'Poppins', sans-serif; font-size: .8rem;
+    }
+    tr.highlight-row td {
+      background: #fff8e1 !important;
+    }
+    tr.highlight-row td:first-child { color: var(--red-dark) !important; }
+    tr.highlight-row td { font-weight: 700; color: var(--gray-800) !important; }
+    .equity-note {
+      margin-top: 10px; font-size: .76rem; color: var(--gray-400); font-style: italic;
     }
 
-    /* ─────────────────────────────────────────────
-       AGENDA NUMBER ITEMS
-    ───────────────────────────────────────────── */
-    .agenda-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      flex: 1;
+    /* ════ SLIDE 10 — WHY RAPID BEATS LOWER ════ */
+    .compare-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 6px;
     }
-    .agenda-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--light);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
+    .compare-card {
+      background: var(--blue-pale); border-radius: 10px; padding: 16px;
+      border-top: 4px solid var(--blue);
     }
-    .agenda-num {
-      font-family: 'Poppins', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--blue);
-      opacity: 0.25;
-      min-width: 28px;
-    }
-    .agenda-text {
-      font-size: 13px;
-      font-weight: 700;
-      color: #1a2a3a;
-      line-height: 1.3;
+    .compare-card h3 { font-size: .88rem; color: var(--blue-dark); margin-bottom: 5px; }
+    .compare-card p { font-size: .81rem; color: var(--gray-600); line-height: 1.5; }
+    .compare-cta {
+      margin-top: 16px; background: var(--red); color: #fff;
+      border-radius: 10px; padding: 16px 22px; text-align: center;
+      font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .98rem;
     }
 
-    /* ─────────────────────────────────────────────
-       TEAM ROW
-    ───────────────────────────────────────────── */
-    .team-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .team-member {
-      flex: 1;
-      min-width: 110px;
-      background: var(--light);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 10px;
-      text-align: center;
-    }
-    .team-member .name {
-      font-family: 'Poppins', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: #1a2a3a;
-      margin-bottom: 2px;
-    }
-    .team-member .role {
-      font-size: 10px;
-      color: #7a8a9a;
-      margin-bottom: 4px;
-    }
-    .team-member .vol {
-      font-family: 'Poppins', sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--blue);
-    }
-
-    /* ─────────────────────────────────────────────
-       CONTACT CARD
-    ───────────────────────────────────────────── */
-    .contact-card {
-      background: linear-gradient(135deg, var(--blue), var(--blue-dk));
-      border-radius: 14px;
-      padding: 24px 28px;
-      color: #fff;
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    }
-    .contact-photo {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 3px solid rgba(255,255,255,0.4);
-      overflow: hidden;
-      flex-shrink: 0;
-      background: rgba(255,255,255,0.1);
-    }
-    .contact-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-    }
-    .contact-info { flex: 1; }
-    .contact-info .cname {
-      font-family: 'Poppins', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
-    .contact-info .ctitle {
-      font-size: 12px;
-      opacity: 0.8;
-      margin-bottom: 12px;
-    }
-    .contact-detail {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-    .contact-detail .icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      flex-shrink: 0;
-    }
-
-    /* ─────────────────────────────────────────────
-       HIGHLIGHT ROW
-    ───────────────────────────────────────────── */
-    .highlight-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .highlight-box {
-      flex: 1;
-      background: var(--blue-lt);
-      border: 1px solid #c5dff0;
-      border-radius: 10px;
-      padding: 14px 16px;
-      border-top: 3px solid var(--blue);
-    }
-    .highlight-box.accent { border-top-color: var(--red); background: var(--red-lt); border-color: #f0c5c6; }
-    .highlight-box .hb-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 4px;
-    }
-    .highlight-box.accent .hb-label { color: var(--red); }
-    .highlight-box .hb-val {
-      font-family: 'Poppins', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
-      color: #1a2a3a;
-      line-height: 1.1;
-    }
-    .highlight-box .hb-sub {
-      font-size: 11px;
-      color: #6a7a8a;
-      margin-top: 3px;
-    }
-
-    /* ─────────────────────────────────────────────
-       NEXT STEPS
-    ───────────────────────────────────────────── */
-    .step-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-    .step-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      background: var(--light);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
+    /* ════ SLIDE 11 — NEXT STEPS ════ */
+    .steps-list { margin-top: 6px; display: flex; flex-direction: column; gap: 12px; }
+    .step-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 15px 18px; background: var(--gray-50);
+      border-radius: 10px; border: 1px solid var(--gray-200);
     }
     .step-num {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      background: var(--blue);
-      color: #fff;
-      border-radius: 50%;
-      font-family: 'Poppins', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 34px; height: 34px; min-width: 34px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: .88rem;
+      display: flex; align-items: center; justify-content: center;
     }
-    .step-content .step-title {
-      font-family: 'Poppins', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      color: #1a2a3a;
-      margin-bottom: 2px;
+    .step-text h3 { font-size: .92rem; margin-bottom: 3px; }
+    .step-text p  { font-size: .81rem; color: var(--gray-600); line-height: 1.45; }
+    .contact-box {
+      margin-top: 16px; background: var(--blue); color: #fff;
+      border-radius: 10px; padding: 16px 22px;
+      display: flex; gap: 28px; align-items: center; flex-wrap: wrap;
     }
-    .step-content .step-sub {
-      font-size: 12px;
-      color: #6a7a8a;
+    .contact-label {
+      font-family: 'Poppins', sans-serif; font-weight: 700;
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      opacity: .7; margin-bottom: 3px;
+    }
+    .contact-name {
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.02rem;
+    }
+    .contact-details { font-size: .86rem; opacity: .9; line-height: 1.7; }
+
+    /* ════ SLIDE 12 — THANK YOU ════ */
+    #s12 .slide-header { border-bottom-color: rgba(37,130,181,.25); }
+    #s12 .slide-body {
+      background: linear-gradient(150deg, #0f3d5e 0%, var(--blue-dark) 100%);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center;
+      padding: 52px 48px; color: #fff;
+    }
+    #s12 h1 { color: #fff; font-size: 2.1rem; line-height: 1.22; }
+    #s12 h1 span { color: #a8d8f5; }
+    #s12 .ty-sub {
+      font-size: .95rem; color: rgba(255,255,255,.72);
+      margin-top: 10px; max-width: 500px; line-height: 1.55;
+    }
+    #s12 .ty-divider {
+      width: 56px; height: 4px; background: var(--red);
+      border-radius: 2px; margin: 22px auto;
+    }
+    #s12 .ty-contact {
+      font-size: .9rem; color: rgba(255,255,255,.88); line-height: 1.9;
+    }
+    #s12 .ty-contact strong {
+      font-family: 'Poppins', sans-serif; font-weight: 700;
+      font-size: .98rem; color: #fff;
+    }
+    #s12 .ty-confidential {
+      margin-top: 22px; font-size: .68rem;
+      color: rgba(255,255,255,.35); letter-spacing: .1em; text-transform: uppercase;
     }
 
-    /* ─────────────────────────────────────────────
-       COMPARISON TABLE
-    ───────────────────────────────────────────── */
-    .compare-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-      flex: 1;
-    }
-    .compare-table th {
-      font-family: 'Poppins', sans-serif;
-      font-size: 11.5px;
-      font-weight: 700;
-      padding: 10px 14px;
-      text-align: left;
-    }
-    .compare-table th.rapid-col {
-      background: var(--blue);
-      color: #fff;
-    }
-    .compare-table th.lower-col {
-      background: #e8eaed;
-      color: #4a4a4a;
-    }
-    .compare-table th.feature-col {
-      background: #1a2a3a;
-      color: #fff;
-    }
-    .compare-table td {
-      padding: 9px 14px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
-    .compare-table tr:nth-child(even) td { background: var(--light); }
-    .compare-table td.check { color: #22a06b; font-size: 16px; font-weight: 700; }
-    .compare-table td.cross { color: #cc3333; font-size: 16px; }
-    .compare-table td.feature-name { font-weight: 700; color: #1a2a3a; }
-
-    /* ─────────────────────────────────────────────
-       SLIDE 1 — TITLE SLIDE
-    ───────────────────────────────────────────── */
-    .title-slide {
-      background: linear-gradient(160deg, #0d1f33 0%, #1a3a5c 50%, #0d1f33 100%);
-      display: flex;
-      flex-direction: column;
-    }
-    .title-slide .ts-header {
-      padding: 32px 48px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .title-slide .ts-logo img {
-      height: 48px;
-      display: block;
-    }
-    .title-slide .ts-badge {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 11px;
-      color: rgba(255,255,255,0.6);
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .title-slide .ts-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding: 32px 48px;
-      gap: 48px;
-    }
-    .title-slide .ts-text { flex: 1; }
-    .title-slide .ts-eyebrow {
-      font-family: 'Poppins', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 14px;
-    }
-    .title-slide .ts-headline {
-      font-family: 'Poppins', sans-serif;
-      font-size: 34px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.15;
-      margin-bottom: 16px;
-    }
-    .title-slide .ts-headline span { color: var(--blue); }
-    .title-slide .ts-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-    .title-slide .ts-meta {
-      display: flex;
-      gap: 16px;
-    }
-    .ts-meta-item {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 8px;
-      padding: 10px 16px;
-    }
-    .ts-meta-item .mi-label {
-      font-size: 9px;
-      color: rgba(255,255,255,0.45);
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 3px;
-    }
-    .ts-meta-item .mi-val {
-      font-family: 'Poppins', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .title-slide .ts-photo {
-      width: 230px;
-      height: 280px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 3px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.05);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .title-slide .ts-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-    }
-    .title-slide .ts-footer {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 14px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .title-slide .ts-footer span {
-      font-size: 11px;
-      color: rgba(255,255,255,0.35);
-    }
-    .ts-stripe {
-      height: 5px;
-      background: linear-gradient(90deg, var(--blue), var(--red));
-    }
-
-    /* ─────────────────────────────────────────────
-       SLIDE 12 — THANK YOU SLIDE
-    ───────────────────────────────────────────── */
-    .thanks-slide {
-      background: linear-gradient(160deg, #0d1f33 0%, #1a3a5c 100%);
-    }
-    .thanks-slide .slide-body {
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 24px;
-    }
-    .thanks-headline {
-      font-family: 'Poppins', sans-serif;
-      font-size: 38px;
-      font-weight: 800;
-      color: #fff;
-    }
-    .thanks-headline span { color: var(--blue); }
-    .thanks-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.7);
-    }
-    .thanks-photos {
-      display: flex;
-      gap: 24px;
-      align-items: flex-end;
-      justify-content: center;
-      margin: 10px 0;
-    }
-    .thanks-photo-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    .thanks-photo-wrap .tp-name {
-      font-family: 'Poppins', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.8);
-    }
-    .thanks-photo-wrap .tp-role {
-      font-size: 10px;
-      color: rgba(255,255,255,0.5);
-    }
-
-    /* ─────────────────────────────────────────────
-       MOBILE RESPONSIVE (screen only)
-    ───────────────────────────────────────────── */
-    @media screen and (max-width: 860px) {
-      .slide {
-        width: 100%;
-        min-height: auto;
-        margin: 0 0 8px 0;
-        border-radius: 0;
+    /* ─── Print ─── */
+    @media print {
+      body { background: #fff; }
+      section.slide {
+        width: 100%; margin: 0; border-radius: 0;
+        box-shadow: none; min-height: 100vh;
       }
-      .slide-wrap { padding-top: 52px; }
-      .title-slide .ts-content { flex-direction: column; gap: 24px; }
-      .title-slide .ts-photo { width: 160px; height: 200px; }
-      .title-slide .ts-headline { font-size: 24px; }
-      .title-slide .ts-meta { flex-wrap: wrap; }
-      .slide-body.two-col { flex-direction: column; gap: 20px; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-      .agenda-grid { grid-template-columns: 1fr; }
-      .highlight-row { flex-direction: column; }
-      .data-table { font-size: 11px; }
-      .data-table th, .data-table td { padding: 6px 8px; }
-      .compare-table { font-size: 11px; }
-      .thanks-photos { flex-direction: column; align-items: center; }
-      .contact-card { flex-direction: column; align-items: flex-start; }
-      .team-row { flex-wrap: wrap; }
-      .team-member { min-width: calc(50% - 5px); }
     }
 
+    /* ─── Mobile ─── */
+    @media (max-width: 900px) {
+      :root { --slide-w: 100%; }
+      section.slide { margin: .75rem; width: calc(100% - 1.5rem); }
+      #s1 .slide-body { padding: 28px 22px; }
+      .slide-body { padding: 22px 18px 18px; }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.15rem; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .glance-grid,
+      .pl-cards,
+      .ops-grid,
+      .compare-grid { grid-template-columns: 1fr; }
+      .seat-grid { grid-template-columns: 1fr; }
+      .fin-row { flex-direction: column; }
+      .agenda-grid { grid-template-columns: 1fr; }
+      #s1 .presenter-block { flex-direction: column; gap: 14px; }
+      .contact-box { flex-direction: column; gap: 10px; }
+      #s12 .slide-body { padding: 32px 22px; }
+      #s12 h1 { font-size: 1.55rem; }
+    }
   </style>
 </head>
 <body>
 
-<!-- PRINT BAR (screen only) -->
-<div class="print-bar">
-  <button onclick="window.print()">Save as PDF</button>
-  <span class="label">Rapid Mortgage | Austin Clarkson Opportunity Deck</span>
-  <span class="hint">Chrome: Save as PDF &rarr; set Layout to Portrait, margins to None</span>
-</div>
-
-<div class="slide-wrap">
-
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 1 — TITLE
-  ════════════════════════════════════════════════ -->
-  <div class="slide title-slide">
-    <div class="ts-stripe"></div>
-    <div class="ts-header">
-      <div class="ts-logo">
-        <img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" onerror="this.style.display='none'">
-      </div>
-      <div class="ts-badge">Confidential &amp; Proprietary</div>
-    </div>
-    <div class="ts-content">
-      <div class="ts-text">
-        <div class="ts-eyebrow">Exclusive P&amp;L Branch Opportunity</div>
-        <div class="ts-headline">Building a <span>$110M+</span> Branch Together&mdash;With Real Ownership &amp; Control</div>
-        <div class="ts-sub">A tailored partnership proposal for Austin Clarkson &amp; Team</div>
-        <div class="ts-meta">
-          <div class="ts-meta-item">
-            <div class="mi-label">Presenter</div>
-            <div class="mi-val">Mark Jaynes</div>
-          </div>
-          <div class="ts-meta-item">
-            <div class="mi-label">Date</div>
-            <div class="mi-val">March 2026</div>
-          </div>
-          <div class="ts-meta-item">
-            <div class="mi-label">Company</div>
-            <div class="mi-val">Rapid Mortgage</div>
-          </div>
-        </div>
-      </div>
-      <div class="ts-photo">
-        <img src="https://www.lower.com/hubfs/airtable-imports/profile-pics/lo-austin-clarkson.jpg" alt="Austin Clarkson" onerror="this.style.background='#1a3a5c'; this.style.display='flex'; this.parentElement.innerHTML='<div style=\'color:rgba(255,255,255,0.4);font-family:Poppins,sans-serif;font-size:12px;text-align:center;padding:20px\'>Austin Clarkson<br>Photo</div>'">
+<!-- ════════════════════════════
+     SLIDE 1 — TITLE
+════════════════════════════ -->
+<section class="slide" id="s1">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>01</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">Exclusive Opportunity &mdash; Confidential</p>
+    <h1>Rapid Mortgage<br><span class="accent">P&amp;L Branch Partnership</span><br>for Austin Clarkson &amp; Team</h1>
+    <div class="rule"></div>
+    <p class="sub">Building a $110M+ Branch Together &mdash;<br>With Real Ownership &amp; Control</p>
+    <div class="presenter-block">
+      <div class="presenter-photo">Mark Jaynes<br>Photo Here</div>
+      <div class="presenter-info">
+        <strong>Mark Jaynes</strong>
+        Co-Owner, Rapid Mortgage<br>
+        mjaynes@rapidmortgage.com<br>
+        614-845-5202
       </div>
     </div>
-    <div class="ts-footer">
-      <span>Rapid Mortgage Company &bull; NMLS #196712</span>
-      <span>rapidmortgage.com</span>
+    <span class="date-badge">March 2026</span>
+    <p class="confidential-note">Confidential &mdash; Prepared exclusively for Austin Clarkson</p>
+  </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>This document is confidential and intended solely for the named recipient.</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SLIDE 2 — AGENDA
+════════════════════════════ -->
+<section class="slide" id="s2">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>02</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">What We'll Cover</p>
+    <h2>Agenda</h2>
+    <div class="rule"></div>
+    <div class="agenda-grid">
+      <div class="agenda-item">
+        <div class="agenda-num">1</div>
+        <p class="agenda-text">Your Current Success &amp; Team Metrics</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">2</div>
+        <p class="agenda-text">Rapid Mortgage at a Glance</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">3</div>
+        <p class="agenda-text">The P&amp;L Branch Model</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">4</div>
+        <p class="agenda-text">Your Financial Package</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">5</div>
+        <p class="agenda-text">Operational Support &amp; Resources</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">6</div>
+        <p class="agenda-text">A Seat at the Table</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">7</div>
+        <p class="agenda-text">Equity Upside</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">8</div>
+        <p class="agenda-text">Why This Beats Going Lower</p>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">9</div>
+        <p class="agenda-text">Next Steps</p>
+      </div>
     </div>
   </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
 
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 2 — AGENDA
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">02 / 12</div>
-    </div>
-    <div class="slide-body">
-      <div class="section-label">Overview</div>
-      <div class="slide-title">What We'll Cover Today</div>
-      <div class="divider"></div>
-      <div class="agenda-grid">
-        <div class="agenda-item">
-          <div class="agenda-num">01</div>
-          <div class="agenda-text">Your Current Success at Lower</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">02</div>
-          <div class="agenda-text">Rapid at a Glance</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">03</div>
-          <div class="agenda-text">P&amp;L Branch Manager Model</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">04</div>
-          <div class="agenda-text">Customized Financial Package</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">05</div>
-          <div class="agenda-text">Operational &amp; Growth Support</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">06</div>
-          <div class="agenda-text">Seat at the Table</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">07</div>
-          <div class="agenda-text">Immediate &amp; Long-Term Upside</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">08</div>
-          <div class="agenda-text">Why This Beats Your Current Offer</div>
-        </div>
-        <div class="agenda-item">
-          <div class="agenda-num">09</div>
-          <div class="agenda-text">Next Steps</div>
-        </div>
+<!-- ════════════════════════════
+     SLIDE 3 — YOUR TEAM
+════════════════════════════ -->
+<section class="slide" id="s3">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>03</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">The Machine You've Built</p>
+    <h2>Your Team's Current Production</h2>
+    <div class="rule"></div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="name">Austin Clarkson &amp; Sam</div>
+        <div class="role">Loan Officers</div>
+        <div class="volume">$108M</div>
+        <div class="sub-vol">annualized</div>
+      </div>
+      <div class="team-card">
+        <div class="name">Everett</div>
+        <div class="role">Loan Officer</div>
+        <div class="volume">$2.64M</div>
+        <div class="sub-vol">annualized</div>
+      </div>
+      <div class="team-card">
+        <div class="name">Tyler &amp; Brandon</div>
+        <div class="role">Loan Officer Assistants</div>
+        <div class="volume">LOAs</div>
+        <div class="sub-vol">support roles</div>
+      </div>
+      <div class="team-card">
+        <div class="name">Nate</div>
+        <div class="role">Support</div>
+        <div class="volume" style="font-size:.95rem;">In-House</div>
+        <div class="sub-vol">operations</div>
+      </div>
+      <div class="team-card">
+        <div class="name">Leah &amp; Shari</div>
+        <div class="role">Processing</div>
+        <div class="volume" style="font-size:.88rem;color:var(--red);">Company-Covered</div>
+        <div class="sub-vol">no cost to branch</div>
+      </div>
+      <div class="team-card" style="background:var(--blue-pale);border-color:var(--blue);">
+        <div class="name" style="color:var(--blue-dark);">Net to Austin</div>
+        <div class="role">After branch expenses</div>
+        <div class="volume">78 bps</div>
+        <div class="sub-vol">per funded loan</div>
       </div>
     </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
+    <div class="team-total">
+      <span class="label">Total Team Production</span>
+      <span class="amount">$110.64M+</span>
+    </div>
+    <div class="insight-bar">"You've built a high-performing machine. We want to super-charge it."</div>
+  </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SLIDE 4 — RAPID AT A GLANCE
+════════════════════════════ -->
+<section class="slide" id="s4">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>04</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">Who We Are</p>
+    <h2>Rapid Mortgage at a Glance</h2>
+    <div class="rule"></div>
+    <div class="glance-grid">
+      <div class="glance-card">
+        <div class="stat">Ohio-Based</div>
+        <h3>Home State Advantage</h3>
+        <p>Deep Ohio market roots and relationships. We operate with a local-first mindset — no corporate bureaucracy between you and decisions.</p>
+      </div>
+      <div class="glance-card">
+        <div class="stat">24&ndash;48 Hrs</div>
+        <h3>Underwriting Turnaround</h3>
+        <p>Fast, competitive UW turn times. Win deals other lenders lose on timeline alone. Speed is a real differentiator in today's market.</p>
+      </div>
+      <div class="glance-card">
+        <div class="stat">$1,700 / File</div>
+        <h3>Fixed Lender Fees</h3>
+        <p>Predictable, low per-file cost structure. Know your margin before you price. No surprises at the closing table.</p>
+      </div>
+      <div class="glance-card">
+        <div class="stat">In-House DSCR</div>
+        <h3>Andy &mdash; DSCR Specialist</h3>
+        <p>Investor lending handled in-house by Andy. Expand your product mix and serve more clients without adding operational complexity.</p>
+      </div>
+    </div>
+    <div class="glance-quote">
+      "We grow by empowering <strong>top producers like you</strong> &mdash; not by adding layers and bureaucracy above them."
     </div>
   </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
 
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 3 — TEAM VOLUME
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">03 / 12</div>
-    </div>
-    <div class="slide-body two-col">
-      <div class="col">
-        <div class="section-label">Team Performance</div>
-        <div class="slide-title">Austin Clarkson &amp; Team &mdash; <span style="color:var(--blue)">$110.64M+</span> Annualized Volume</div>
-        <div class="divider"></div>
-        <div class="team-row">
-          <div class="team-member">
-            <div class="name">Austin + Sam</div>
-            <div class="role">Lead LOs</div>
-            <div class="vol">$108M</div>
-          </div>
-          <div class="team-member">
-            <div class="name">Everett</div>
-            <div class="role">Loan Officer</div>
-            <div class="vol">$2.64M</div>
-          </div>
-          <div class="team-member">
-            <div class="name">Tyler &amp; Brandon</div>
-            <div class="role">LOAs</div>
-            <div class="vol">Overrides only</div>
-          </div>
-        </div>
-        <div style="height:12px"></div>
-        <div class="team-row">
-          <div class="team-member">
-            <div class="name">Nate</div>
-            <div class="role">Support</div>
-            <div class="vol">&mdash;</div>
-          </div>
-          <div class="team-member">
-            <div class="name">Leah &amp; Shari</div>
-            <div class="role">LOAs</div>
-            <div class="vol">Corp-covered</div>
-          </div>
-        </div>
-        <div class="callout" style="margin-top:18px">
-          <strong>Net to Austin:</strong> 78 bps after team comp<br>
-          <strong>Leah &amp; Shari:</strong> Company-covered &mdash; $65k + $150/file each
-        </div>
-        <div class="callout" style="margin-top:12px; background:#1a2a3a; border-color:#1a2a3a; color:#fff; border-radius:10px;">
-          <strong style="color:var(--blue)">You've built a high-performing machine.</strong><br>
-          <span style="color:rgba(255,255,255,0.8)">We want to super-charge it.</span>
-        </div>
+<!-- ════════════════════════════
+     SLIDE 5 — P&L MODEL
+════════════════════════════ -->
+<section class="slide" id="s5">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>05</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">How the Model Works</p>
+    <h2>The P&amp;L Branch Structure</h2>
+    <div class="rule"></div>
+    <div class="pl-cards">
+      <div class="pl-card">
+        <div class="pl-num">1</div>
+        <h3>You Run Your Branch</h3>
+        <p>Full autonomy over day-to-day operations. Your team, your culture, your calls. Rapid provides the platform &mdash; you drive the results.</p>
       </div>
-      <div class="col" style="align-items:center; justify-content:center; gap:20px">
-        <div class="photo" style="width:180px;height:220px;">
-          <img src="https://www.lower.com/hubfs/airtable-imports/profile-pics/lo-austin-clarkson.jpg" alt="Austin Clarkson">
-        </div>
-        <!-- Volume breakdown visual -->
-        <div style="width:100%; background:var(--light); border:1px solid var(--border); border-radius:12px; padding:16px 18px;">
-          <div style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:#6a7a8a;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">Volume Breakdown</div>
-          <div style="margin-bottom:8px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
-              <span style="font-weight:700">Austin + Sam</span><span style="color:var(--blue);font-weight:700">$108M</span>
-            </div>
-            <div style="background:#e0e8f0;border-radius:4px;height:8px">
-              <div style="background:var(--blue);border-radius:4px;height:8px;width:97.6%"></div>
-            </div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
-              <span style="font-weight:700">Everett</span><span style="color:var(--red);font-weight:700">$2.64M</span>
-            </div>
-            <div style="background:#e0e8f0;border-radius:4px;height:8px">
-              <div style="background:var(--red);border-radius:4px;height:8px;width:2.4%"></div>
-            </div>
-          </div>
-          <div style="border-top:1px solid var(--border);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between">
-            <span style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700">Total Team</span>
-            <span style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:800;color:var(--blue)">$110.64M+</span>
-          </div>
-        </div>
+      <div class="pl-card">
+        <div class="pl-num">2</div>
+        <h3>Control Margins &amp; Pricing</h3>
+        <p>Set your own pricing strategy. Compete on your terms. No mandated rate sheets that box you in or cost you deals.</p>
+      </div>
+      <div class="pl-card">
+        <div class="pl-num">3</div>
+        <h3>Net 100% of Branch Profits</h3>
+        <p>Revenue after expenses flows directly to you. Additional upside via margin share and equity participation layered on top.</p>
       </div>
     </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
+    <div class="pl-highlight">
+      No change to Rapid's existing operations &mdash; this is additive growth, not a restructure.
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 4 — RAPID AT A GLANCE
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">04 / 12</div>
-    </div>
-    <div class="slide-body">
-      <div class="section-label">Why Partner With Us</div>
-      <div class="slide-title">Rapid Mortgage at a Glance</div>
-      <div class="slide-subtitle">Why Partner with Us?</div>
-      <div class="divider"></div>
-      <div class="highlight-row">
-        <div class="highlight-box">
-          <div class="hb-label">Headquarters</div>
-          <div class="hb-val">Local Ohio Lender</div>
-          <div class="hb-sub">Deep roots. Real decisions made here.</div>
-        </div>
-        <div class="highlight-box">
-          <div class="hb-label">Underwriting</div>
-          <div class="hb-val">24&ndash;48 HR</div>
-          <div class="hb-sub">Same-day on strong files</div>
-        </div>
-        <div class="highlight-box accent">
-          <div class="hb-label">Loan Fees</div>
-          <div class="hb-val">$1,700/file</div>
-          <div class="hb-sub">Matches your current structure</div>
-        </div>
-      </div>
-      <ul class="check-list">
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Local Ohio Lender</strong> &mdash; decisions made by people who know the market, not a call center</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>24&ndash;48 Hour Underwriting Turnaround</strong> &mdash; same-day on strong files &mdash; your clients close faster</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>$1,700/file Fees</strong> &mdash; directly matches your current cost structure, zero disruption</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>DSCR In-House (Andy)</strong> &mdash; investor loans processed internally, no third-party delays</div>
-        </li>
-      </ul>
-      <div class="callout" style="margin-top:auto">
-        <strong>"We grow by empowering top producers like you."</strong>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
-    </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
   </div>
+</section>
 
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 5 — P&L BRANCH MODEL
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">05 / 12</div>
-    </div>
-    <div class="slide-body">
-      <div class="section-label">Structure</div>
-      <div class="slide-title">The P&amp;L Branch Manager Model</div>
-      <div class="slide-subtitle">Your Own Profitable Branch Inside Rapid</div>
-      <div class="divider"></div>
-      <ul class="check-list">
-        <li>
-          <div class="icon">1</div>
-          <div><strong>You run a full P&amp;L branch</strong> &mdash; complete autonomy over your operation, your team, your decisions</div>
-        </li>
-        <li>
-          <div class="icon">2</div>
-          <div><strong>Control margins &amp; pricing</strong> &mdash; set your own rates within the framework, maximize what you keep</div>
-        </li>
-        <li>
-          <div class="icon">3</div>
-          <div><strong>Net 100% of branch profits</strong> after payroll and operating expenses &mdash; your production stays yours</div>
-        </li>
-        <li>
-          <div class="icon">4</div>
-          <div><strong>Corporate maintains standard margin approach</strong> &mdash; full compliance and structure without interference</div>
-        </li>
-        <li>
-          <div class="icon">5</div>
-          <div><strong>Additional income streams:</strong> margin revenue share and/or equity distributions based on company performance</div>
-        </li>
-      </ul>
-      <div class="callout" style="margin-top:auto; background:#1a2a3a; border-color:#1a2a3a; color:#fff; border-radius:10px;">
-        <strong style="color:var(--blue)">"No change to Rapid's existing operations or protocols."</strong><br>
-        <span style="color:rgba(255,255,255,0.75)">You get autonomy. Rapid gets continuity. Everyone wins.</span>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
-    </div>
+<!-- ════════════════════════════
+     SLIDE 6 — FINANCIAL PACKAGE
+════════════════════════════ -->
+<section class="slide" id="s6">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>06</span>&nbsp;/&nbsp;12</span>
   </div>
-
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 6 — FINANCIAL PACKAGE
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">06 / 12</div>
-    </div>
-    <div class="slide-body">
-      <div class="section-label">Compensation</div>
-      <div class="slide-title">Your Customized Financial Package</div>
-      <div class="slide-subtitle">Tailored to Your Priorities</div>
-      <div class="divider"></div>
-      <div class="highlight-row">
-        <div class="highlight-box">
-          <div class="hb-label">Component 1</div>
-          <div class="hb-val">Cash</div>
-          <div class="hb-sub">Upfront compensation designed around your current earnings</div>
-        </div>
-        <div class="highlight-box">
-          <div class="hb-label">Component 2</div>
-          <div class="hb-val">Equity</div>
-          <div class="hb-sub">Real ownership stake in Rapid Mortgage Company</div>
-        </div>
-        <div class="highlight-box accent">
-          <div class="hb-label">Component 3</div>
-          <div class="hb-val">Revenue Share</div>
-          <div class="hb-sub">Corporate margin revenue share on company-wide production</div>
-        </div>
-      </div>
-      <ul class="check-list" style="margin-top:8px">
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Open to all three components</strong> &mdash; cash, equity, and corporate margin revenue share, in any combination</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Your priorities drive the structure</strong> &mdash; we build the package around what matters most to you</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Financially viable for both sides</strong> &mdash; this is a real partnership, not a one-sided offer</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Flexible on timing</strong> &mdash; cash components, vesting schedules, and distributions structured to your preference</div>
-        </li>
-      </ul>
-      <div class="callout" style="margin-top:auto">
-        <strong>Tell us your priorities &mdash;</strong> and we'll build the package that's exactly what you want.
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 7 — OPERATIONAL SUPPORT
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">07 / 12</div>
-    </div>
-    <div class="slide-body">
-      <div class="section-label">Operations</div>
-      <div class="slide-title">Operational &amp; Growth Support</div>
-      <div class="slide-subtitle">Seamless Transition — Everything in Place Day One</div>
-      <div class="divider"></div>
-      <ul class="check-list">
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Free office space in Westerville</strong> &mdash; professional environment, no overhead cost to you</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Bring your processor at your comp plan</strong> &mdash; corporate covers overflow processing, no ops gaps</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Substantial savings on ops staff</strong> &mdash; no cost to transition your existing team structure</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Marketing budget transfers</strong> &mdash; your existing marketing spend comes with you, zero disruption to lead gen</div>
-        </li>
-        <li>
-          <div class="icon">&#10003;</div>
-          <div><strong>Recruiting support</strong> for two target Loan Officers (~$25M volume each) &mdash; we help you grow the bench</div>
-        </li>
-      </ul>
-      <div class="callout" style="margin-top:auto">
-        <strong>"Everything you need to hit the ground running."</strong><br>
-        Day one operational. No ramp-up headaches. No surprises.
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 8 — SEAT AT THE TABLE
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">08 / 12</div>
-    </div>
-    <div class="slide-body two-col">
-      <div class="col">
-        <div class="section-label">Partnership</div>
-        <div class="slide-title">Seat at the Table</div>
-        <div class="slide-subtitle">Your Voice Shapes Rapid's Future</div>
-        <div class="divider"></div>
-        <ul class="check-list">
-          <li>
-            <div class="icon">&#10003;</div>
-            <div><strong>Monthly strategy calls with ownership</strong> &mdash; direct line to the top, every month</div>
-          </li>
-          <li>
-            <div class="icon">&#10003;</div>
-            <div><strong>Input on company direction</strong> &mdash; your perspective shapes how Rapid grows and competes</div>
-          </li>
-          <li>
-            <div class="icon">&#10003;</div>
-            <div><strong>Direct physical office shared with Mark in Columbus</strong> &mdash; proximity to decision-making, every day</div>
-          </li>
+  <div class="slide-body">
+    <p class="eyebrow">Your Compensation Structure</p>
+    <h2>Financial Package</h2>
+    <div class="rule"></div>
+    <div class="fin-row">
+      <div class="fin-card primary">
+        <h3>Core Compensation</h3>
+        <ul>
+          <li>Competitive cash offer &mdash; structured to your priorities</li>
+          <li>P&amp;L net profits: 100% of branch earnings after expenses</li>
+          <li>Margin revenue share &mdash; incremental upside on volume growth</li>
+          <li>78 bps net to Austin at current production levels</li>
+          <li>Leah &amp; Shari processing costs company-covered (direct P&amp;L savings)</li>
         </ul>
-        <div class="quote-block">
-          <p>I want a seat at the table.</p>
-          <div class="attribution">&mdash; Austin Clarkson</div>
-        </div>
-        <div class="callout" style="margin-top:14px">
-          <strong>"You asked for it &mdash; you get it."</strong><br>
-          You're not just a producer. You're a true partner.
-        </div>
       </div>
-      <div class="col" style="align-items:center; justify-content:center; gap:20px">
-        <div class="photo" style="width:200px;height:240px;">
-          <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes">
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:#1a2a3a">Mark Jaynes</div>
-          <div style="font-size:12px;color:#6a7a8a">Co-Owner &bull; Branch Manager</div>
-          <div style="font-size:11px;color:var(--blue);margin-top:2px">Rapid Mortgage Columbus</div>
-        </div>
-        <div style="background:var(--light); border:1px solid var(--border); border-radius:10px; padding:14px 16px; width:100%">
-          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Mark's Direct Line</div>
-          <div style="font-size:12px;color:#1a2a3a;margin-bottom:4px">&#9993; mjaynes@rapidmortgage.com</div>
-          <div style="font-size:12px;color:#1a2a3a;margin-bottom:4px">&#9990; 614-845-5202</div>
-          <div style="font-size:11px;color:#6a7a8a">570 Polaris Parkway, Suite 400<br>Westerville, OH 43082</div>
-        </div>
+      <div class="fin-card secondary">
+        <h3>Equity &amp; Long-Term Upside</h3>
+        <ul>
+          <li>Equity stake in Rapid Mortgage (4.99% discussed)</li>
+          <li>Annual profit distributions tied to your equity share</li>
+          <li>Company valuation grows with production &mdash; your branch drives the value</li>
+          <li>Path to increasing stake as company scales toward $1B and $2B</li>
+        </ul>
       </div>
     </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
+    <p class="fin-note">Full package tailored to Austin's priorities. Cash, equity, and margin share are each flexible and negotiable.</p>
+  </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SLIDE 7 — OPERATIONAL SUPPORT
+════════════════════════════ -->
+<section class="slide" id="s7">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>07</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">Day-One Resources</p>
+    <h2>Operational Support</h2>
+    <div class="rule"></div>
+    <div class="ops-grid">
+      <div class="ops-card">
+        <span class="ops-badge">Office</span>
+        <h3>Free Westerville Space</h3>
+        <p>Fully equipped office at 570 Polaris Pkwy, Suite 400 &mdash; no cost to your branch P&amp;L from day one.</p>
+      </div>
+      <div class="ops-card">
+        <span class="ops-badge">Team</span>
+        <h3>Bring Your Processor</h3>
+        <p>Keep who you trust. Transition your current processor directly &mdash; no forced staffing changes during onboarding.</p>
+      </div>
+      <div class="ops-card">
+        <span class="ops-badge">Cost Savings</span>
+        <h3>Ops Staff Savings</h3>
+        <p>Company-covered processing (Leah &amp; Shari) reduces branch overhead immediately. More profit from day one.</p>
+      </div>
+      <div class="ops-card">
+        <span class="ops-badge">Marketing</span>
+        <h3>Marketing Transfers With You</h3>
+        <p>Your brand presence, co-marketing materials, and realtor relationships transfer seamlessly &mdash; no restart required.</p>
+      </div>
+      <div class="ops-card">
+        <span class="ops-badge">Growth</span>
+        <h3>Recruiting Support</h3>
+        <p>Rapid actively supports recruiting 2 additional LOs targeting ~$25M each &mdash; expanding your team without your distraction.</p>
+      </div>
+      <div class="ops-card" style="background:var(--blue);border-color:var(--blue);">
+        <span class="ops-badge" style="background:rgba(255,255,255,.2);color:#fff;">Ready</span>
+        <h3 style="color:#fff;margin-bottom:4px;">Hit the Ground Running</h3>
+        <p style="color:rgba(255,255,255,.82);">Infrastructure is live. You close loans on day one &mdash; not in 90 days after figuring out logistics.</p>
+      </div>
     </div>
   </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
 
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 9 — EQUITY / UPSIDE TABLE
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">09 / 12</div>
+<!-- ════════════════════════════
+     SLIDE 8 — SEAT AT THE TABLE
+════════════════════════════ -->
+<section class="slide" id="s8">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>08</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">Partnership &mdash; Not Just Employment</p>
+    <h2>A Seat at the Table</h2>
+    <div class="rule"></div>
+    <div class="seat-grid">
+      <div class="seat-item">
+        <div class="seat-dot"></div>
+        <div>
+          <h3>Monthly Strategy Calls</h3>
+          <p>Regular one-on-ones with Mark and leadership. Your voice shapes company direction &mdash; not just your branch metrics.</p>
+        </div>
+      </div>
+      <div class="seat-item">
+        <div class="seat-dot"></div>
+        <div>
+          <h3>Input on Company Direction</h3>
+          <p>Decisions about products, markets, and growth involve you. The influence most LOs never get access to.</p>
+        </div>
+      </div>
+      <div class="seat-item">
+        <div class="seat-dot"></div>
+        <div>
+          <h3>Office Next to Mark</h3>
+          <p>Physical proximity to ownership. Direct access, fast decisions, no layers. The opposite of a large corporate structure.</p>
+        </div>
+      </div>
+      <div class="seat-item">
+        <div class="seat-dot"></div>
+        <div>
+          <h3>True Partner Status</h3>
+          <p>You're not just a top producer with a title. You're a co-builder of something that grows in value with every loan you close.</p>
+        </div>
+      </div>
     </div>
-    <div class="slide-body">
-      <div class="section-label">Financial Upside</div>
-      <div class="slide-title">Immediate &amp; Long-Term Upside</div>
-      <div class="slide-subtitle">Your Equity Grows With Us</div>
-      <div class="divider"></div>
-      <table class="data-table">
+    <div class="quote-block">
+      <p class="quote-text">I want a seat at the table.</p>
+      <p class="quote-attr">&mdash; Austin Clarkson &nbsp;&bull;&nbsp; That seat is exactly what we're offering.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SLIDE 9 — EQUITY TABLE
+════════════════════════════ -->
+<section class="slide" id="s9">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>09</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">Long-Term Value Creation</p>
+    <h2>Equity Upside &mdash; What Ownership Means</h2>
+    <div class="rule"></div>
+    <div class="equity-table-wrap">
+      <table>
         <thead>
           <tr>
             <th>Metric</th>
-            <th>After You Join ($110.64M+)</th>
-            <th>At $1B Volume</th>
-            <th>At $2B Volume</th>
+            <th>After Join ($110.64M+)</th>
+            <th>At $1B</th>
+            <th>At $2B</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Company Net Profit</td>
-            <td class="num">~$3.49M</td>
-            <td class="num">~$8.64M</td>
-            <td class="num">~$16.64M</td>
+            <td>Net Profit</td>
+            <td>~$3.49M</td>
+            <td>~$8.64M</td>
+            <td>~$16.64M</td>
           </tr>
           <tr>
-            <td>Value per 1% Equity</td>
-            <td class="num">$191,800 &ndash; $226,600</td>
-            <td class="num">$475k &ndash; $562k</td>
-            <td class="num">$915k &ndash; $1.08M</td>
+            <td>1% Equity Value</td>
+            <td>$191.8K &ndash; $226.6K</td>
+            <td>$475K &ndash; $562K</td>
+            <td>$915K &ndash; $1.08M</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Your 4.99% Equity</td>
+            <td>$957K &ndash; $1.13M</td>
+            <td>$2.37M &ndash; $2.81M</td>
+            <td>$4.57M &ndash; $5.40M</td>
           </tr>
           <tr>
-            <td>Your 4.99% Value</td>
-            <td class="num" style="color:var(--red);font-weight:800">$957k &ndash; $1.13M</td>
-            <td class="num" style="color:var(--red);font-weight:800">$2.37M &ndash; $2.81M</td>
-            <td class="num" style="color:var(--red);font-weight:800">$4.57M &ndash; $5.40M</td>
-          </tr>
-          <tr>
-            <td>Annual Profit Distribution per 1%</td>
-            <td class="num">$34,865</td>
-            <td class="num">$86,400</td>
-            <td class="num">$166,400</td>
+            <td>Annual Distribution / 1%</td>
+            <td>$34,865</td>
+            <td>$86,400</td>
+            <td>$166,400</td>
           </tr>
         </tbody>
       </table>
-      <div class="callout" style="margin-top:18px">
-        <strong>Immediate equity appreciation on Day 1</strong> + growing distributions as Rapid scales to $1B and beyond.
+    </div>
+    <p class="equity-note">Projections based on current production run rate and industry-standard valuation multiples. Your production directly drives company value. Equity terms subject to final agreement.</p>
+  </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+     SLIDE 10 — WHY RAPID BEATS LOWER
+════════════════════════════ -->
+<section class="slide" id="s10">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>10</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">The Competitive Case</p>
+    <h2>Why Rapid Beats Going Lower</h2>
+    <div class="rule"></div>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h3>Control Your Margins</h3>
+        <p>Set your own pricing. No mandated corporate rate sheets. Compete on terms that actually win business in your market.</p>
       </div>
-      <div class="stat-grid" style="margin-top:14px">
-        <div class="stat-card">
-          <div class="val">4.99%</div>
-          <div class="lbl">Your proposed equity stake</div>
-        </div>
-        <div class="stat-card" style="background:var(--red-lt); border-color:#f0c5c6;">
-          <div class="val" style="color:var(--red)">$957K+</div>
-          <div class="lbl">Equity value at close (Day 1)</div>
-        </div>
-        <div class="stat-card">
-          <div class="val">$5.4M</div>
-          <div class="lbl">Your stake at $2B volume</div>
-        </div>
+      <div class="compare-card">
+        <h3>Net All Branch Profits</h3>
+        <p>Every dollar after expenses is yours &mdash; not split with a franchisor or absorbed into a corporate overhead pool.</p>
+      </div>
+      <div class="compare-card">
+        <h3>Free Office &mdash; Zero Cost</h3>
+        <p>Westerville space at no cost to your P&amp;L. Most shops charge office fees. This is immediate bottom-line savings.</p>
+      </div>
+      <div class="compare-card">
+        <h3>Flexible Compensation</h3>
+        <p>Cash, equity, and margin share structured around your priorities &mdash; not a take-it-or-leave-it corporate package.</p>
+      </div>
+      <div class="compare-card">
+        <h3>Fast Underwriting</h3>
+        <p>24&ndash;48 hour UW turnaround. Win deals other lenders lose on timeline. Speed is a real competitive edge.</p>
+      </div>
+      <div class="compare-card">
+        <h3>Equity That Compounds</h3>
+        <p>Going lower means no ownership. At Rapid, your production builds a company whose value grows with every loan you close.</p>
       </div>
     </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
+    <div class="compare-cta">
+      The move that accelerates your growth &mdash; not just your paycheck.
     </div>
   </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
+  </div>
+</section>
 
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 10 — WHY THIS BEATS LOWER
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">10 / 12</div>
-    </div>
-    <div class="slide-body">
-      <div class="section-label">Competitive Comparison</div>
-      <div class="slide-title">Why This Beats Lower's Offer</div>
-      <div class="slide-subtitle">Better Economics. More Control. Real Partnership.</div>
-      <div class="divider"></div>
-      <table class="compare-table" style="flex:0">
-        <thead>
-          <tr>
-            <th class="feature-col" style="width:35%">What Matters</th>
-            <th class="rapid-col" style="width:32.5%">Rapid Mortgage</th>
-            <th class="lower-col" style="width:32.5%">Your Current Offer</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="feature-name">Branch margin &amp; pricing control</td>
-            <td class="check">&#10003; Full control</td>
-            <td class="cross">&#8901; Limited</td>
-          </tr>
-          <tr>
-            <td class="feature-name">Net 100% branch profits after expenses</td>
-            <td class="check">&#10003; Yes</td>
-            <td class="cross">&#8901; No</td>
-          </tr>
-          <tr>
-            <td class="feature-name">Free Columbus office</td>
-            <td class="check">&#10003; Included</td>
-            <td class="cross">&#8901; Your cost</td>
-          </tr>
-          <tr>
-            <td class="feature-name">Direct access to ownership</td>
-            <td class="check">&#10003; Daily, shared office</td>
-            <td class="cross">&#8901; Corporate chain</td>
-          </tr>
-          <tr>
-            <td class="feature-name">Comp structure</td>
-            <td class="check">&#10003; Cash + equity + margin share</td>
-            <td class="cross">&#8901; Fixed structure</td>
-          </tr>
-          <tr>
-            <td class="feature-name">Underwriting speed</td>
-            <td class="check">&#10003; 24&ndash;48 hrs, same-day strong files</td>
-            <td class="cross">&#8901; Varies</td>
-          </tr>
-          <tr>
-            <td class="feature-name">Real equity ownership</td>
-            <td class="check">&#10003; 4.99% from Day 1</td>
-            <td class="cross">&#8901; None</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="callout" style="margin-top:auto; background:#1a2a3a; border-color:#1a2a3a; color:#fff; border-radius:10px;">
-        <strong style="color:var(--blue)">"This is the move that accelerates your growth while protecting your team."</strong>
+<!-- ════════════════════════════
+     SLIDE 11 — NEXT STEPS
+════════════════════════════ -->
+<section class="slide" id="s11">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>11</span>&nbsp;/&nbsp;12</span>
+  </div>
+  <div class="slide-body">
+    <p class="eyebrow">Moving Forward</p>
+    <h2>Next Steps</h2>
+    <div class="rule"></div>
+    <div class="steps-list">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h3>Review This Offer Today</h3>
+          <p>Take the deck, sit with the numbers, and identify your questions. Mark is available same-day for follow-up calls &mdash; no waiting.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h3>CPA &amp; Ownership Call</h3>
+          <p>Bring your CPA or financial advisor. Rapid will walk through the equity structure, P&amp;L projections, and tax treatment together.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h3>Term Sheet in 14 Days</h3>
+          <p>Rapid delivers a formal written term sheet within two weeks of alignment on core terms. Clean, specific, no ambiguity.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <h3>Transition Plan</h3>
+          <p>A joint transition plan protecting your pipeline, your team, and your relationships through a smooth move.</p>
+        </div>
       </div>
     </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
+    <div class="contact-box">
+      <div>
+        <div class="contact-label">Your Direct Contact</div>
+        <div class="contact-name">Mark Jaynes</div>
+      </div>
+      <div class="contact-details">
+        mjaynes@rapidmortgage.com<br>
+        614-845-5202<br>
+        570 Polaris Pkwy, Suite 400 &mdash; Westerville, OH 43082
+      </div>
     </div>
   </div>
-
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 11 — NEXT STEPS
-  ════════════════════════════════════════════════ -->
-  <div class="slide">
-    <div class="slide-header">
-      <div class="logo"><img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage"></div>
-      <div class="slide-num">11 / 12</div>
-    </div>
-    <div class="slide-body two-col">
-      <div class="col">
-        <div class="section-label">Action Plan</div>
-        <div class="slide-title">Next Steps</div>
-        <div class="slide-subtitle">Let's Make This Happen</div>
-        <div class="divider"></div>
-        <ul class="step-list">
-          <li class="step-item">
-            <div class="step-num">1</div>
-            <div class="step-content">
-              <div class="step-title">Review &amp; Customize Offer Details</div>
-              <div class="step-sub">Today &mdash; discuss priorities, finalize package structure</div>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">2</div>
-            <div class="step-content">
-              <div class="step-title">Schedule Call with CPA &amp; Ownership</div>
-              <div class="step-sub">Validate financials, confirm structure with advisors</div>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">3</div>
-            <div class="step-content">
-              <div class="step-title">Sign Term Sheet &amp; Equity Agreement</div>
-              <div class="step-sub">Target: 14 days &mdash; clean, documented, committed</div>
-            </div>
-          </li>
-          <li class="step-item">
-            <div class="step-num">4</div>
-            <div class="step-content">
-              <div class="step-title">Transition Plan</div>
-              <div class="step-sub">Seamless team migration, operational handoff, Day 1 ready</div>
-            </div>
-          </li>
-        </ul>
-        <div class="callout" style="margin-top:auto">
-          <strong>"We move fast &mdash; just like you."</strong>
-        </div>
-      </div>
-      <div class="col" style="justify-content:center;">
-        <div class="contact-card">
-          <div class="contact-photo">
-            <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes">
-          </div>
-          <div class="contact-info">
-            <div class="cname">Mark Jaynes</div>
-            <div class="ctitle">Co-Owner &amp; Producing Branch Manager &bull; NMLS #12220</div>
-            <div class="contact-detail">
-              <div class="icon">&#9993;</div>
-              <span>mjaynes@rapidmortgage.com</span>
-            </div>
-            <div class="contact-detail">
-              <div class="icon">&#9990;</div>
-              <span>614-845-5202</span>
-            </div>
-            <div class="contact-detail">
-              <div class="icon">&#9679;</div>
-              <span style="font-size:11px">570 Polaris Pkwy, Suite 400<br>Westerville, OH 43082</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span class="conf">Confidential &mdash; Prepared exclusively for Austin Clarkson</span>
-      <span class="tagline">Rapid Mortgage &bull; Building Together</span>
-    </div>
+  <div class="slide-footer">
+    <strong>Rapid Mortgage</strong>
+    <span>Confidential &mdash; March 2026</span>
   </div>
+</section>
 
-  <!-- ═══════════════════════════════════════════════
-       SLIDE 12 — THANK YOU
-  ════════════════════════════════════════════════ -->
-  <div class="slide thanks-slide">
-    <div class="slide-header" style="background:rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.1);">
-      <div class="logo">
-        <img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage">
-      </div>
-      <div class="slide-num" style="color:rgba(255,255,255,0.5)">12 / 12</div>
-    </div>
-    <div class="slide-body" style="align-items:center; justify-content:center; text-align:center; gap:20px;">
-      <div class="thanks-headline">Thank You.<br><span>Let's Build Something Bigger Together.</span></div>
-      <div class="thanks-sub">Questions? Austin, this is your moment. Let's talk.</div>
-      <div class="thanks-photos">
-        <div class="thanks-photo-wrap">
-          <div class="photo" style="width:160px;height:200px;">
-            <img src="https://www.lower.com/hubfs/airtable-imports/profile-pics/lo-austin-clarkson.jpg" alt="Austin Clarkson">
-          </div>
-          <div class="tp-name">Austin Clarkson</div>
-          <div class="tp-role">Branch Manager, Lower &bull; Future Partner</div>
-        </div>
-        <div style="display:flex; align-items:center; padding:0 8px;">
-          <div style="width:50px; height:2px; background:linear-gradient(90deg,var(--blue),var(--red));"></div>
-          <div style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:rgba(255,255,255,0.3);padding:0 12px;">+</div>
-          <div style="width:50px; height:2px; background:linear-gradient(90deg,var(--red),var(--blue));"></div>
-        </div>
-        <div class="thanks-photo-wrap">
-          <div class="photo" style="width:160px;height:200px;">
-            <img src="https://rapidmortgage.com/columbusbranch/wp-content/uploads/sites/3/2017/11/MarkJaynes2.png" alt="Mark Jaynes">
-          </div>
-          <div class="tp-name">Mark Jaynes</div>
-          <div class="tp-role">Co-Owner, Rapid Mortgage &bull; Your Partner</div>
-        </div>
-      </div>
-      <!-- Contact block -->
-      <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:20px 32px;display:inline-flex;gap:36px;flex-wrap:wrap;justify-content:center;">
-        <div style="text-align:left;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Email</div>
-          <div style="font-size:13px;color:#fff;font-weight:600">mjaynes@rapidmortgage.com</div>
-        </div>
-        <div style="text-align:left;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Phone</div>
-          <div style="font-size:13px;color:#fff;font-weight:600">614-845-5202</div>
-        </div>
-        <div style="text-align:left;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Office</div>
-          <div style="font-size:13px;color:#fff;font-weight:600">570 Polaris Pkwy, Suite 400 &bull; Westerville, OH 43082</div>
-        </div>
-      </div>
-    </div>
-    <div style="height:5px;background:linear-gradient(90deg,var(--blue),var(--red));"></div>
+<!-- ════════════════════════════
+     SLIDE 12 — THANK YOU
+════════════════════════════ -->
+<section class="slide" id="s12">
+  <div class="slide-header">
+    <img class="logo" src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png" alt="Rapid Mortgage" />
+    <span class="slide-number">Slide <span>12</span>&nbsp;/&nbsp;12</span>
   </div>
-
-</div><!-- /slide-wrap -->
+  <div class="slide-body">
+    <h1>Austin, let's build<br><span>something bigger</span><br>together.</h1>
+    <div class="ty-divider"></div>
+    <p class="ty-sub">This isn't just a job offer. It's an invitation to co-own something that grows with every loan you close.</p>
+    <div class="ty-contact">
+      <strong>Mark Jaynes</strong><br>
+      Co-Owner, Rapid Mortgage<br>
+      mjaynes@rapidmortgage.com &nbsp;&bull;&nbsp; 614-845-5202<br>
+      570 Polaris Pkwy, Suite 400 &mdash; Westerville, OH 43082
+    </div>
+    <p class="ty-confidential">Confidential &mdash; Prepared exclusively for Austin Clarkson &mdash; March 2026</p>
+  </div>
+</section>
 
 </body>
 </html>
