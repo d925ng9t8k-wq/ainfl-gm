@@ -523,6 +523,35 @@ body::before{
   margin-top:5px;
 }
 
+/* Chase card values */
+.chase-value {
+  font-weight:700;
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:4px;
+  margin-top:3px;
+  align-self:flex-start;
+  flex-shrink:0;
+}
+.chase-value.budget{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,0.2);}
+.chase-value.mid{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(245,197,24,0.2);}
+.chase-value.hot{background:var(--orange-dim);color:var(--orange);border:1px solid var(--orange-border);}
+.chase-value.fire{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
+.chase-value.legendary{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(168,85,247,0.2);}
+
+/* Update chase item to accommodate price */
+.chase-item{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:13px;
+  flex-wrap:wrap;
+}
+.chase-content{
+  flex:1;
+  min-width:0;
+}
+
 /* ============================================================
    HOW TO RIP — INFO SECTION
    ============================================================ */
@@ -764,45 +793,51 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Silver Prizm Rookies</div>
               <div class="chase-note">Base silver parallel — most sought-after rookie insert</div>
             </div>
+            <div class="chase-value hot">$30 — $400+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Gold Prizm /10</div>
               <div class="chase-note">Only 10 printed per player. Big money card</div>
             </div>
+            <div class="chase-value fire">$200 — $2,000+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#ec4899;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Nebula 1/1 Prizm</div>
               <div class="chase-note">True 1-of-1. The ultimate pull from any Prizm box</div>
             </div>
+            <div class="chase-value legendary">$1,000 — $25,000+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#e879f9;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Purple Wave /49</div>
               <div class="chase-note">Fan favorite parallel. Looks fire in hand</div>
             </div>
+            <div class="chase-value hot">$50 — $500+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Color Blast Inserts</div>
               <div class="chase-note">Explosion of color. Collectors go crazy for these</div>
             </div>
+            <div class="chase-value mid">$15 — $150+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Prizm Autographs</div>
               <div class="chase-note">Guaranteed 2 autos per hobby box</div>
             </div>
+            <div class="chase-value hot">$75 — $800+</div>
           </li>
         </ul>
       </div>
@@ -854,38 +889,43 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Caleb Williams Silver Prizm RC</div>
               <div class="chase-note">The #1 rookie card of the 2024 class. Bear down</div>
             </div>
+            <div class="chase-value fire">$75 — $800+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fdba74;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Jayden Daniels Silver Prizm RC</div>
               <div class="chase-note">Commanders QB. ROY winner. Value is climbing</div>
             </div>
+            <div class="chase-value hot">$40 — $400+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Marvin Harrison Jr. RC</div>
               <div class="chase-note">Son of an HOF legend. Star in the making</div>
             </div>
+            <div class="chase-value hot">$20 — $200+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Gold Prizm RCs /10</div>
               <div class="chase-note">Any 2024 QB Gold Prizm = serious money</div>
             </div>
+            <div class="chase-value legendary">$500 — $5,000+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Brock Bowers TE RC</div>
               <div class="chase-note">Record-setting rookie TE season. Underrated pull</div>
             </div>
+            <div class="chase-value mid">$15 — $150+</div>
           </li>
         </ul>
       </div>
@@ -937,31 +977,35 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">C.J. Stroud Silver Prizm RC</div>
               <div class="chase-note">Texans QB. Hottest 2023 rookie card on the market</div>
             </div>
+            <div class="chase-value fire">$60 — $600+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Bryce Young Silver Prizm RC</div>
               <div class="chase-note">#1 overall pick. Panthers QB. High upside card</div>
             </div>
+            <div class="chase-value budget">$8 — $60+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fdba74;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Anthony Richardson RC</div>
               <div class="chase-note">Colts QB. Freaky athleticism. Big arm. Big card</div>
             </div>
+            <div class="chase-value mid">$15 — $120+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Will Levis RC</div>
               <div class="chase-note">Titans QB. Sneaky value pick in 2023 Prizm</div>
             </div>
+            <div class="chase-value budget">$5 — $40+</div>
           </li>
         </ul>
       </div>
@@ -1009,31 +1053,35 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Kenny Pickett Silver RC</div>
               <div class="chase-note">Pittsburgh Steelers QB. Top rookie of the class</div>
             </div>
+            <div class="chase-value budget">$8 — $60+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Desmond Ridder RC</div>
               <div class="chase-note">Falcons QB. Value pick in this set</div>
             </div>
+            <div class="chase-value budget">$3 — $25+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Patrick Mahomes Silver</div>
               <div class="chase-note">Not a rookie but always a great pull</div>
             </div>
+            <div class="chase-value hot">$40 — $300+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f9a8d4;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Color Blast &amp; Prizmania</div>
               <div class="chase-note">Fan-favorite inserts. Wild designs. Highly tradeable</div>
             </div>
+            <div class="chase-value mid">$10 — $80+</div>
           </li>
         </ul>
       </div>
@@ -1081,31 +1129,35 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Trevor Lawrence Silver RC</div>
               <div class="chase-note">Jags QB. #1 pick. Most valuable 2021 RC</div>
             </div>
+            <div class="chase-value mid">$15 — $120+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Justin Fields Silver RC</div>
               <div class="chase-note">Bears QB. Strong arm. Collectors love his cards</div>
             </div>
+            <div class="chase-value mid">$12 — $100+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fdba74;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Mac Jones Silver RC</div>
               <div class="chase-note">Patriots QB. Went top 15. High demand in 2021</div>
             </div>
+            <div class="chase-value budget">$8 — $60+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Trey Lance Silver RC</div>
               <div class="chase-note">49ers QB. High-risk, high-reward card</div>
             </div>
+            <div class="chase-value budget">$5 — $40+</div>
           </li>
         </ul>
       </div>
@@ -1153,31 +1205,35 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Justin Herbert Silver RC</div>
               <div class="chase-note">18,000+ graded copies. The most popular 2020 rookie</div>
             </div>
+            <div class="chase-value hot">$25 — $250+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f97316;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Joe Burrow Silver RC</div>
               <div class="chase-note">Bengals QB. Super Bowl run pushed value huge</div>
             </div>
+            <div class="chase-value fire">$80 — $800+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f9a8d4;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Tua Tagovailoa Silver RC</div>
               <div class="chase-note">Dolphins QB. Solid pull. Moves with his performance</div>
             </div>
+            <div class="chase-value budget">$8 — $60+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Jalen Hurts Silver RC</div>
               <div class="chase-note">Eagles QB. MVP-level card. Huge value increase since 2020</div>
             </div>
+            <div class="chase-value hot">$30 — $300+</div>
           </li>
         </ul>
       </div>
@@ -1225,1544 +1281,45 @@ body::before{
         <ul class="chase-list">
           <li class="chase-item">
             <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Downtown Insert</div>
               <div class="chase-note">City skyline design. Chrome finish. THE card to chase</div>
             </div>
+            <div class="chase-value fire">$75 — $800+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Downtown Gold /10</div>
               <div class="chase-note">Jayden Daniels version sold for $18,000 in 2024</div>
             </div>
+            <div class="chase-value legendary">$5,000 — $30,000+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#a5b4fc;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Rookie Kings Insert</div>
               <div class="chase-note">Neon spray paint design. Holographic shine. Very pop</div>
             </div>
+            <div class="chase-value hot">$25 — $250+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">Downtown Duos</div>
               <div class="chase-note">Two players, one city. Pairs of stars on one card</div>
             </div>
+            <div class="chase-value hot">$40 — $400+</div>
           </li>
           <li class="chase-item">
             <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
+            <div class="chase-content">
               <div class="chase-name">SSP Short Prints</div>
               <div class="chase-note">Super short prints. Rare action photo variants</div>
             </div>
+            <div class="chase-value mid">$15 — $150+</div>
           </li>
         </ul>
       </div>
       <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$25–40</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price premium">~$150–250</span>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px;background:var(--cyan-dim);border-radius:var(--r-xs);border:1px solid rgba(0,212,255,0.15);">
-          <div style="font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:4px;">PRO TIP</div>
-          <div style="font-size:12px;color:var(--text-dim);">Hobby box = 1 auto on average + 4 inserts per box</div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag cool">&#127961; CITY VIBES</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:82%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.2</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2024 OPTIC =================== -->
-  <div class="set-card" data-set="optic" data-year="2024" data-search="optic 2024 downtown caleb williams jayden daniels gold chrome rated rookie">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(6,182,212,0.08),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#0e7490,#0891b2);box-shadow:0 0 18px rgba(14,116,144,0.4);">&#127775;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#67e8f9;">2024 Donruss Optic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; CHROME FINISH</div>
-      </div>
-      <div class="set-year-badge" style="color:#67e8f9;">2024</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Caleb Williams Downtown Gold /10</div>
-              <div class="chase-note">Sold for $25,750. Graded PSA 10. Record-setter</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Jayden Daniels Downtown Gold /10</div>
-              <div class="chase-note">$18,000 sale. One of the hottest 2024 cards period</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
-              <div class="chase-name">Rated Rookie Chrome</div>
-              <div class="chase-note">The classic RR design but in chrome. Always popular</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Downtown Insert (Base)</div>
-              <div class="chase-note">Even the base version is a big pull in this set</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$25–35</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price premium">~$140–220</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#128293; BIG PULLS</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:88%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.8</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2023 OPTIC =================== -->
-  <div class="set-card" data-set="optic" data-year="2023" data-search="optic 2023 cj stroud bryce young downtown rated rookie chrome">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(6,182,212,0.06),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#164e63,#0e7490);box-shadow:0 0 16px rgba(22,78,99,0.4);">&#127775;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#67e8f9;">2023 Donruss Optic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; CHROME FINISH</div>
-      </div>
-      <div class="set-year-badge" style="color:#67e8f9;">2023</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">C.J. Stroud Rated Rookie RC</div>
-              <div class="chase-note">Chrome Rated Rookie is the key to the 2023 set</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Downtown Insert</div>
-              <div class="chase-note">City skyline theme. Stroud and Young are top targets</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
-              <div class="chase-name">Bryce Young RC Chrome</div>
-              <div class="chase-note">#1 overall pick. Panthers QB. Collector favorite</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$20–30</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$100–180</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag cool">&#127944; STROUD ERA</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:75%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.5</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2021 OPTIC =================== -->
-  <div class="set-card" data-set="optic" data-year="2021" data-search="optic 2021 trevor lawrence justin fields rated rookie chrome">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(6,182,212,0.05),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#083344,#164e63);box-shadow:0 0 16px rgba(8,51,68,0.4);">&#127775;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#67e8f9;">2021 Donruss Optic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; CHROME FINISH</div>
-      </div>
-      <div class="set-year-badge" style="color:#67e8f9;">2021</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Trevor Lawrence Rated Rookie RC</div>
-              <div class="chase-note">Jags QB. #1 pick. Top card in this set</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Justin Fields Rated Rookie RC</div>
-              <div class="chase-note">Bears QB. Chrome rated rookie. Very popular</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
-              <div class="chase-name">Pink Prizm Parallels</div>
-              <div class="chase-note">Always popular with collectors regardless of player</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$18–28</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$80–150</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#127957; QB DRAFT CLASS</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:68%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">6.8</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2025 MOSAIC =================== -->
-  <div class="set-card" data-set="mosaic" data-year="2025" data-search="mosaic 2025 stained glass micro mosaic prizm caleb williams jayden daniels">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(234,179,8,0.1),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#a16207,#ca8a04);box-shadow:0 0 20px rgba(161,98,7,0.4);">&#127381;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fde68a;">2025 Panini Mosaic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; MOSAIC TECHNOLOGY</div>
-      </div>
-      <div class="set-year-badge" style="color:#fde68a;">2025 <span class="new-badge">NEW</span></div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fde68a;"></div>
-            <div>
-              <div class="chase-name">Stained Glass Insert</div>
-              <div class="chase-note">Mosaic classic. Bold stained glass artwork. Case hit</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Micro Mosaic</div>
-              <div class="chase-note">BRAND NEW in 2025. Intricate tiny mosaic pattern. Rare</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Silver Prizm Parallels</div>
-              <div class="chase-note">Mosaic's version of silver prizm. Always a top pull</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
-              <div class="chase-name">Will to Win Insert</div>
-              <div class="chase-note">Stars vs legends design. Beautiful artwork</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$20–30</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$80–150</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127765; Intl Hobby Box</span>
-            <span class="box-price premium">~$250–320</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#127383; STAINED GLASS</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:78%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.8</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2024 MOSAIC =================== -->
-  <div class="set-card" data-set="mosaic" data-year="2024" data-search="mosaic 2024 stained glass caleb williams jayden daniels drake maye silver prizm">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(234,179,8,0.08),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#854d0e,#a16207);box-shadow:0 0 18px rgba(133,77,14,0.4);">&#127381;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fde68a;">2024 Panini Mosaic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; MOSAIC TECHNOLOGY</div>
-      </div>
-      <div class="set-year-badge" style="color:#fde68a;">2024</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fde68a;"></div>
-            <div>
-              <div class="chase-name">Stained Glass Rookies</div>
-              <div class="chase-note">Williams and Daniels stained glass are premium pulls</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Silver Prizm Rookie</div>
-              <div class="chase-note">Top parallel in the set. All 2024 QBs are hot targets</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
-              <div class="chase-name">Gold Prizm /10</div>
-              <div class="chase-note">Gold limited parallels go fast on the resale market</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$20–30</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127765; Intl Hobby Box</span>
-            <span class="box-price premium">~$280</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#127383; MOSAIC CLASS</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:74%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.4</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2023 MOSAIC =================== -->
-  <div class="set-card" data-set="mosaic" data-year="2023" data-search="mosaic 2023 cj stroud stained glass silver prizm">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(234,179,8,0.06),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#431407,#854d0e);box-shadow:0 0 16px rgba(67,20,7,0.4);">&#127381;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fde68a;">2023 Panini Mosaic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; MOSAIC TECHNOLOGY</div>
-      </div>
-      <div class="set-year-badge" style="color:#fde68a;">2023</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">C.J. Stroud Stained Glass</div>
-              <div class="chase-note">The standout rookie pull in 2023 Mosaic</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fde68a;"></div>
-            <div>
-              <div class="chase-name">Silver Prizm Parallels</div>
-              <div class="chase-note">All 2023 QBs in silver are solid value holds</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Will to Win Inserts</div>
-              <div class="chase-note">Always a fan favorite. Great artwork style</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$18–25</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127765; Intl Hobby Box</span>
-            <span class="box-price mid">~$180–240</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag cool">&#127944; STROUD ERA</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:70%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.0</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2021 MOSAIC =================== -->
-  <div class="set-card" data-set="mosaic" data-year="2021" data-search="mosaic 2021 trevor lawrence justin fields stained glass silver prizm">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(234,179,8,0.05),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#292524,#44403c);box-shadow:0 0 14px rgba(41,37,36,0.4);">&#127381;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fde68a;">2021 Panini Mosaic</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; MOSAIC TECHNOLOGY</div>
-      </div>
-      <div class="set-year-badge" style="color:#fde68a;">2021</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Trevor Lawrence Stained Glass</div>
-              <div class="chase-note">The signature rookie pull from this set</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Justin Fields Stained Glass</div>
-              <div class="chase-note">Bears QB. Great looking card in stained glass format</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fde68a;"></div>
-            <div>
-              <div class="chase-name">Silver Prizm Rookie</div>
-              <div class="chase-note">Lawrence and Fields silvers are collector staples</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$15–22</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$80–130</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#127957; QB CLASS</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:62%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">6.2</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2025 DONRUSS =================== -->
-  <div class="set-card" data-set="donruss" data-year="2025" data-search="donruss 2025 rated rookie press proof caleb williams jayden daniels">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(220,38,38,0.1),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#991b1b,#dc2626);box-shadow:0 0 20px rgba(153,27,27,0.4);">&#127384;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fca5a5;">2025 Panini Donruss</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; THE ORIGINAL</div>
-      </div>
-      <div class="set-year-badge" style="color:#fca5a5;">2025 <span class="new-badge">NEW</span></div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
-              <div class="chase-name">Rated Rookie Card</div>
-              <div class="chase-note">Classic RR design. Timeless. The OG rookie card</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Press Proof Gold /99</div>
-              <div class="chase-note">Limited to 99 copies. Great value per dollar</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">The Rookies Insert</div>
-              <div class="chase-note">Horizontal design with a different look. Fan favorite</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f9a8d4;"></div>
-            <div>
-              <div class="chase-name">Elite Series Insert</div>
-              <div class="chase-note">Chrome finish on a classic design. Very sharp</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Retail Blaster</span>
-            <span class="box-price budget">~$20–30</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$80–140</span>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px;background:var(--red-dim);border-radius:var(--r-xs);border:1px solid rgba(239,68,68,0.15);">
-          <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">GOOD TO KNOW</div>
-          <div style="font-size:12px;color:var(--text-dim);">Donruss is the most affordable entry point for collectors. Great for beginners</div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#127384; BEGINNER FRIENDLY</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:70%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.0</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2024 DONRUSS =================== -->
-  <div class="set-card" data-set="donruss" data-year="2024" data-search="donruss 2024 rated rookie caleb williams jayden daniels drake maye bo nix malik nabers press proof">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(220,38,38,0.08),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#7f1d1d,#991b1b);box-shadow:0 0 18px rgba(127,29,29,0.4);">&#127384;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fca5a5;">2024 Panini Donruss</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; THE ORIGINAL</div>
-      </div>
-      <div class="set-year-badge" style="color:#fca5a5;">2024</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
-              <div class="chase-name">Caleb Williams Rated Rookie</div>
-              <div class="chase-note">Bears #1 pick. Classic RR design. Affordable RC</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fdba74;"></div>
-            <div>
-              <div class="chase-name">Jayden Daniels Rated Rookie</div>
-              <div class="chase-note">ROY winner. Value on this one is rising fast</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Malik Nabers Rated Rookie</div>
-              <div class="chase-note">Giants WR. Standout rookie WR of the class</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Press Proof Gold /99</div>
-              <div class="chase-note">Numbered. Any 2024 QB in press proof is a solid hold</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Retail Blaster</span>
-            <span class="box-price budget">~$18–25</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$70–120</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#127922; VALUE PLAY</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:73%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.3</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2023 DONRUSS =================== -->
-  <div class="set-card" data-set="donruss" data-year="2023" data-search="donruss 2023 rated rookie cj stroud bryce young press proof">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(220,38,38,0.06),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#450a0a,#7f1d1d);box-shadow:0 0 14px rgba(69,10,10,0.4);">&#127384;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fca5a5;">2023 Panini Donruss</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; THE ORIGINAL</div>
-      </div>
-      <div class="set-year-badge" style="color:#fca5a5;">2023</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">C.J. Stroud Rated Rookie</div>
-              <div class="chase-note">Most valuable rookie in 2023 Donruss</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fca5a5;"></div>
-            <div>
-              <div class="chase-name">Bryce Young Rated Rookie</div>
-              <div class="chase-note">#1 pick. Panthers QB. Great design in Donruss</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Press Proof Parallels</div>
-              <div class="chase-note">Bronze /99, Silver /75, Gold — all numbered</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Retail Blaster</span>
-            <span class="box-price budget">~$15–22</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price budget">~$60–100</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag cool">&#127384; AFFORDABLE</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:63%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">6.3</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2021 DONRUSS =================== -->
-  <div class="set-card" data-set="donruss" data-year="2021" data-search="donruss 2021 rated rookie trevor lawrence justin fields press proof">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(220,38,38,0.04),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#1c0707,#450a0a);box-shadow:0 0 14px rgba(28,7,7,0.4);">&#127384;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fca5a5;">2021 Panini Donruss</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; THE ORIGINAL</div>
-      </div>
-      <div class="set-year-badge" style="color:#fca5a5;">2021</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Trevor Lawrence Rated Rookie</div>
-              <div class="chase-note">Jags QB. #1 pick. Best card in 2021 Donruss</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Justin Fields Rated Rookie</div>
-              <div class="chase-note">Bears QB. Donruss RR is his most affordable rookie card</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Press Proof Gold</div>
-              <div class="chase-note">Numbered to 99. Budget way to get premium parallels</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Retail Blaster</span>
-            <span class="box-price budget">~$12–20</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price budget">~$50–85</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#127922; BUDGET FRIENDLY</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:58%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">5.8</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2020 DONRUSS =================== -->
-  <div class="set-card" data-set="donruss" data-year="2020" data-search="donruss 2020 rated rookie joe burrow justin herbert tua jalen hurts press proof">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(220,38,38,0.04),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#0c0505,#1c0707);box-shadow:0 0 12px rgba(12,5,5,0.4);">&#127384;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#fca5a5;">2020 Panini Donruss</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; THE ORIGINAL</div>
-      </div>
-      <div class="set-year-badge" style="color:#fca5a5;">2020</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f97316;"></div>
-            <div>
-              <div class="chase-name">Joe Burrow Rated Rookie</div>
-              <div class="chase-note">Bengals QB. Great RC. Went up big after Super Bowl run</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Justin Herbert Rated Rookie</div>
-              <div class="chase-note">Chargers QB. Most graded 2020 rookie RC</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Jalen Hurts Rated Rookie</div>
-              <div class="chase-note">Eagles QB. Biggest value jump of the 2020 class</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Retail Blaster</span>
-            <span class="box-price budget">~$10–18</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price budget">~$40–75</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#128293; BENGALS RC</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:74%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.4</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2025 ABSOLUTE =================== -->
-  <div class="set-card" data-set="absolute" data-year="2025" data-search="absolute 2025 kaboom tools of the trade war room caleb williams jayden daniels">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(34,197,94,0.1),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#14532d,#166534);box-shadow:0 0 20px rgba(20,83,45,0.45);">&#9889;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#86efac;">2025 Panini Absolute</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; PREMIUM DESIGN</div>
-      </div>
-      <div class="set-year-badge" style="color:#86efac;">2025 <span class="new-badge">NEW</span></div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Kaboom! Insert</div>
-              <div class="chase-note">Explosion graphic design. Most wanted card in Absolute</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Kaboom! Vertical Gold /10</div>
-              <div class="chase-note">Caleb Williams 2024 version sold for $16,025 (BGS 9)</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Tools of the Trade</div>
-              <div class="chase-note">Memorabilia insert. Jersey piece embedded in card</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#c7d2fe;"></div>
-            <div>
-              <div class="chase-name">War Room Autographs</div>
-              <div class="chase-note">Rookie auto set. Big pulls in hobby configuration</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Gridiron Force</div>
-              <div class="chase-note">Short-printed insert. Multiple tiers of rarity</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$20–30</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127765; Mega Box</span>
-            <span class="box-price mid">~$210</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price premium">~$120–200</span>
-          </div>
-        </div>
-        <div style="margin-top:12px;padding:10px;background:var(--green-dim);border-radius:var(--r-xs);border:1px solid rgba(34,197,94,0.15);">
-          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:4px;">KABOOM! ALERT</div>
-          <div style="font-size:12px;color:var(--text-dim);">Kaboom! inserts are extremely short printed. Most boxes won't have one — that's what makes them special</div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#9889; KABOOM! HUNT</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:85%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.5</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2024 ABSOLUTE =================== -->
-  <div class="set-card" data-set="absolute" data-year="2024" data-search="absolute 2024 kaboom caleb williams jayden daniels drake maye tools of the trade memorabilia">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(34,197,94,0.08),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#052e16,#14532d);box-shadow:0 0 18px rgba(5,46,22,0.45);">&#9889;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#86efac;">2024 Panini Absolute</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; PREMIUM DESIGN</div>
-      </div>
-      <div class="set-year-badge" style="color:#86efac;">2024</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Caleb Williams Kaboom! /10</div>
-              <div class="chase-note">$16,025 sale price. BGS 9 graded. Record pull</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Jayden Daniels Kaboom!</div>
-              <div class="chase-note">ROY winner. Kaboom! demand for him is sky high</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Tools of the Trade Jerseys</div>
-              <div class="chase-note">Relic cards with real jersey swatches inside</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Drake Maye War Room Auto</div>
-              <div class="chase-note">Patriots QB. Rookie auto in Absolute is premium</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$20–28</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127765; Mega Hobby Box</span>
-            <span class="box-price premium">~$210</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#9889; KABOOM! SEASON</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:88%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.8</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2023 ABSOLUTE =================== -->
-  <div class="set-card" data-set="absolute" data-year="2023" data-search="absolute 2023 kaboom cj stroud bryce young tools of the trade memorabilia">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(34,197,94,0.06),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#020f06,#052e16);box-shadow:0 0 14px rgba(2,15,6,0.4);">&#9889;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#86efac;">2023 Panini Absolute</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; PREMIUM DESIGN</div>
-      </div>
-      <div class="set-year-badge" style="color:#86efac;">2023</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">C.J. Stroud Kaboom!</div>
-              <div class="chase-note">Texans QB. Most wanted Kaboom! of 2023 Absolute</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Bryce Young Kaboom!</div>
-              <div class="chase-note">#1 pick Panthers QB. Kaboom! is always the prize</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Tools of the Trade</div>
-              <div class="chase-note">Jersey relics. Nice hits in hobby boxes</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$18–25</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$90–150</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag cool">&#9889; KABOOM! HUNT</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:72%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">7.2</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2022 ABSOLUTE =================== -->
-  <div class="set-card" data-set="absolute" data-year="2022" data-search="absolute 2022 kaboom kenny pickett tools of the trade memorabilia">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(34,197,94,0.04),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#011103,#020f06);box-shadow:0 0 12px rgba(1,17,3,0.4);">&#9889;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#86efac;">2022 Panini Absolute</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; PREMIUM DESIGN</div>
-      </div>
-      <div class="set-year-badge" style="color:#86efac;">2022</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f5c518;"></div>
-            <div>
-              <div class="chase-name">Kenny Pickett Kaboom!</div>
-              <div class="chase-note">Steelers QB. Top rookie Kaboom! of 2022</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Tools of the Trade RPA</div>
-              <div class="chase-note">Rookie patch auto. The best hits in Absolute</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f97316;"></div>
-            <div>
-              <div class="chase-name">Patrick Mahomes Kaboom!</div>
-              <div class="chase-note">Mahomes Kaboom! is always a monster pull</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$15–22</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$80–130</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#9889; CLASSIC RIP</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:62%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">6.2</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2021 ABSOLUTE =================== -->
-  <div class="set-card" data-set="absolute" data-year="2021" data-search="absolute 2021 kaboom trevor lawrence justin fields tools of the trade memorabilia">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(34,197,94,0.03),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#000,#011103);box-shadow:0 0 12px rgba(0,0,0,0.4);">&#9889;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#86efac;">2021 Panini Absolute</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; PREMIUM DESIGN</div>
-      </div>
-      <div class="set-year-badge" style="color:#86efac;">2021</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#67e8f9;"></div>
-            <div>
-              <div class="chase-name">Trevor Lawrence Kaboom!</div>
-              <div class="chase-note">Jags QB #1 pick. Top Kaboom! of 2021</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Justin Fields Kaboom!</div>
-              <div class="chase-note">Bears QB. Strong demand on Kaboom! variant</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Tools of the Trade RPA</div>
-              <div class="chase-note">Rookie patch auto. Biggest non-Kaboom hit</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$12–20</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price budget">~$60–110</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag gold">&#9889; QB DRAFT YEAR</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:66%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">6.6</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =================== 2020 ABSOLUTE =================== -->
-  <div class="set-card" data-set="absolute" data-year="2020" data-search="absolute 2020 kaboom joe burrow justin herbert tua tools of the trade memorabilia">
-    <div class="set-header" style="background:linear-gradient(135deg,rgba(34,197,94,0.05),transparent);">
-      <div class="set-emblem" style="background:linear-gradient(135deg,#022c22,#052e16);box-shadow:0 0 14px rgba(2,44,34,0.4);">&#9889;</div>
-      <div class="set-title-block">
-        <div class="set-name" style="color:#86efac;">2020 Panini Absolute</div>
-        <div class="set-meta">FOOTBALL &bull; NFL &bull; PREMIUM DESIGN</div>
-      </div>
-      <div class="set-year-badge" style="color:#86efac;">2020</div>
-    </div>
-    <div class="set-body">
-      <div>
-        <div class="section-label">Top Chase Cards</div>
-        <ul class="chase-list">
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f97316;"></div>
-            <div>
-              <div class="chase-name">Joe Burrow Kaboom!</div>
-              <div class="chase-note">Bengals QB. Kaboom! value exploded post Super Bowl</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#fbbf24;"></div>
-            <div>
-              <div class="chase-name">Justin Herbert Kaboom!</div>
-              <div class="chase-note">Chargers QB. Most popular 2020 Kaboom! by volume</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#86efac;"></div>
-            <div>
-              <div class="chase-name">Jalen Hurts Kaboom!</div>
-              <div class="chase-note">Eagles QB. His Kaboom! from 2020 is now very valuable</div>
-            </div>
-          </li>
-          <li class="chase-item">
-            <div class="chase-dot" style="background:#f9a8d4;"></div>
-            <div>
-              <div class="chase-name">Tools of the Trade RPA</div>
-              <div class="chase-note">Best relic autos from this set. Burrow version = grail</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-label">Box Types &amp; Prices</div>
-        <div class="box-types">
-          <div class="box-type">
-            <span class="box-name">&#127978; Blaster Box</span>
-            <span class="box-price budget">~$12–18</span>
-          </div>
-          <div class="box-type">
-            <span class="box-name">&#127965; Hobby Box</span>
-            <span class="box-price mid">~$60–100</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#128293; BURROW GRAIL</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:80%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.0</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════ TOPPS ═══════════ -->
-
-  <div class="set-card" data-set="topps" data-year="2025" data-search="topps 2025 chrome bowman caleb williams jayden daniels drake maye refractor">
-    <div class="set-inner">
-      <div class="set-header" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);">
-        <div class="set-brand" style="color:#4cc9f0;">TOPPS</div>
-        <div class="set-name" style="color:#4cc9f0;">2025 Topps Chrome</div>
-        <div class="set-meta">
-          <span class="set-year">2025</span>
-          <span class="set-type">&#127183; Chrome</span>
-        </div>
-      </div>
-      <div class="set-body">
-        <div class="chase-section">
-          <div class="chase-title">&#128293; Top Chase Cards</div>
-          <div class="chase-list">
-            <div class="chase-item">
-              <div class="chase-name">Refractor Rookies</div>
-              <div class="chase-value hot">$20 — $200+</div>
-              <div class="chase-note">Base refractors of top rookies. The bread and butter of Topps Chrome</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">Gold Refractor /50</div>
-              <div class="chase-value fire">$100 — $500+</div>
-              <div class="chase-note">Numbered to 50. Gold parallels are always premium</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">SuperFractor 1/1</div>
-              <div class="chase-value legendary">$1,000 — $10,000+</div>
-              <div class="chase-note">The ultimate Topps pull. One of one. True grail card</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">Chrome Autographs</div>
-              <div class="chase-value fire">$50 — $1,000+</div>
-              <div class="chase-note">On-card autographs. Top QBs command huge premiums</div>
-            </div>
-          </div>
-        </div>
-        <div class="box-section">
-          <div class="box-title">&#128230; Box Types & Prices</div>
-          <div class="box-types">
-            <div class="box-type">
-              <span class="box-name">&#127917; Blaster Box</span>
-              <span class="box-price budget">~$25–40</span>
-            </div>
-            <div class="box-type">
-              <span class="box-name">&#127965; Hobby Box</span>
-              <span class="box-price mid">~$150–250</span>
-            </div>
-            <div class="box-type">
-              <span class="box-name">&#128142; Jumbo Box</span>
-              <span class="box-price premium">~$300–500</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#128293; CHROME SEASON</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:88%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.8</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="set-card" data-set="topps" data-year="2024" data-search="topps 2024 chrome bowman caleb williams jayden daniels refractor auto">
-    <div class="set-inner">
-      <div class="set-header" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);">
-        <div class="set-brand" style="color:#4cc9f0;">TOPPS</div>
-        <div class="set-name" style="color:#4cc9f0;">2024 Topps Chrome</div>
-        <div class="set-meta">
-          <span class="set-year">2024</span>
-          <span class="set-type">&#127183; Chrome</span>
-        </div>
-      </div>
-      <div class="set-body">
-        <div class="chase-section">
-          <div class="chase-title">&#128293; Top Chase Cards</div>
-          <div class="chase-list">
-            <div class="chase-item">
-              <div class="chase-name">Caleb Williams Refractor RC</div>
-              <div class="chase-value fire">$30 — $300+</div>
-              <div class="chase-note">Bears #1 pick. Refractor rookies are the must-have</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">Jayden Daniels Refractor RC</div>
-              <div class="chase-value hot">$25 — $200+</div>
-              <div class="chase-note">Heisman winner. Commanders franchise QB</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">Gold Refractor /50</div>
-              <div class="chase-value fire">$100 — $800+</div>
-              <div class="chase-note">Low numbered gold parallels of any top rookie</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">Rookie Auto Refractors</div>
-              <div class="chase-value fire">$75 — $1,500+</div>
-              <div class="chase-note">Autographed refractors. Combine auto + chrome = premium</div>
-            </div>
-          </div>
-        </div>
-        <div class="box-section">
-          <div class="box-title">&#128230; Box Types & Prices</div>
-          <div class="box-types">
-            <div class="box-type">
-              <span class="box-name">&#127917; Blaster Box</span>
-              <span class="box-price budget">~$25–35</span>
-            </div>
-            <div class="box-type">
-              <span class="box-name">&#127965; Hobby Box</span>
-              <span class="box-price mid">~$130–200</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#128293; ROOKIE CLASS</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:85%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.5</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="set-card" data-set="topps" data-year="2023" data-search="topps 2023 chrome bowman cj stroud bryce young refractor">
-    <div class="set-inner">
-      <div class="set-header" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);">
-        <div class="set-brand" style="color:#4cc9f0;">TOPPS</div>
-        <div class="set-name" style="color:#4cc9f0;">2023 Topps Chrome</div>
-        <div class="set-meta">
-          <span class="set-year">2023</span>
-          <span class="set-type">&#127183; Chrome</span>
-        </div>
-      </div>
-      <div class="set-body">
-        <div class="chase-section">
-          <div class="chase-title">&#128293; Top Chase Cards</div>
-          <div class="chase-list">
-            <div class="chase-item">
-              <div class="chase-name">C.J. Stroud Refractor RC</div>
-              <div class="chase-value fire">$40 — $400+</div>
-              <div class="chase-note">Offensive ROY. Houston franchise QB. Premium rookie</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">Bryce Young Refractor RC</div>
-              <div class="chase-value hot">$10 — $80+</div>
-              <div class="chase-note">#1 overall pick. Buy-low candidate if he turns it around</div>
-            </div>
-            <div class="chase-item">
-              <div class="chase-name">SuperFractor 1/1</div>
-              <div class="chase-value legendary">$2,000 — $15,000+</div>
-              <div class="chase-note">One of one superfractor of any top 2023 rookie = massive</div>
-            </div>
-          </div>
-        </div>
-        <div class="box-section">
-          <div class="box-title">&#128230; Box Types & Prices</div>
-          <div class="box-types">
-            <div class="box-type">
-              <span class="box-name">&#127917; Blaster Box</span>
-              <span class="box-price budget">~$20–30</span>
-            </div>
-            <div class="box-type">
-              <span class="box-name">&#127965; Hobby Box</span>
-              <span class="box-price mid">~$100–180</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="set-footer">
-      <span class="hot-tag fire">&#128293; STROUD SZEASON</span>
-      <div class="invest-meter">
-        <span>Hype Level</span>
-        <div class="meter-bar"><div class="meter-fill" style="width:82%;"></div></div>
-        <span style="color:var(--orange);font-weight:700;">8.2</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- no results placeholder (hidden by default) -->
-  <div class="no-results" id="no-results" style="display:none;">
-    <span>&#128269;</span>
-    No sets matched your search. Try a different player name, set name, or year.
-  </div>
-
-</div>
-
-<!-- ============================================================
-     HOW TO RIP
-     ============================================================ -->
-<div class="info-section">
-  <div class="spotlight-title" style="margin-bottom:14px;">&#128214; Know Before You Rip</div>
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="info-icon">&#127978;</div>
-      <div class="info-title">Blaster Box</div>
-      <div class="info-text">Retail boxes you find at Target or Walmart. Usually 6–8 packs. Best starting point for beginners. Lower price = lower odds of big hits, but still fun to open.</div>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">&#127965;</div>
-      <div class="info-title">Hobby Box</div>
-      <div class="info-text">From card shops or online. More packs, better odds, guaranteed autographs in many sets. These are what you see in break videos on YouTube.</div>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">&#127942;</div>
-      <div class="info-title">Hobby Jumbo</div>
-      <div class="info-text">The big leagues. More cards per pack, better hit odds, guaranteed high-end content. Expensive — usually $500-$1,200+ — but best chance at silver prizms and numbered cards.</div>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">&#128293;</div>
-      <div class="info-title">Chase Cards</div>
-      <div class="info-text">The rare inserts everyone is hunting for. Short prints, numbered parallels, 1-of-1s, autographs. Kaboom!, Downtown, Silver Prizm — these are what make a box worth ripping.</div>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">&#127922;</div>
-      <div class="info-title">Hype Level</div>
-      <div class="info-text">RipRadar's score (1–10) for how hot a set is right now. Based on rookie quality, resale prices, and collector demand. Higher = more people chasing this set.</div>
-    </div>
-    <div class="info-card">
-      <div class="info-icon">&#128081;</div>
-      <div class="info-title">Rookie Cards (RC)</div>
-      <div class="info-text">A player's first official card from their rookie NFL season. These are the most valuable cards for new players. Always look for the RC tag on the card.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<div class="footer">
-  <div style="font-family:var(--font-display);font-size:20px;letter-spacing:2px;margin-bottom:6px;color:var(--orange);">RIPRADAR</div>
-  Built by Duke &bull; Panini Football Card Database &bull; 2020–2025<br>
-  <strong>Note:</strong> Prices are estimates based on market research and will vary by retailer and condition.<br>
-  Panini's NFL license ends after 2025. <strong>2025 sets are the last official Panini NFL releases.</strong>
-</div>
-
-<!-- ============================================================
-     JAVASCRIPT — SEARCH + FILTER LOGIC
-     ============================================================ -->
-<script>
-(function(){
-  const cards = document.querySelectorAll('.set-card');
-  const noResults = document.getElementById('no-results');
-  const showingEl = document.getElementById('showing-count');
-  const searchEl = document.getElementById('search');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-
-  let activeFilter = 'all';
-  let searchTerm = '';
-
-  function applyFilters(){
-    let visible = 0;
-    cards.forEach(function(card, i){
-      const setType = card.dataset.set || '';
-      const year = card.dataset.year || '';
-      const searchData = (card.dataset.search || '').toLowerCase();
-      const cardText = card.innerText.toLowerCase();
-      const combined = searchData + ' ' + cardText;
-
-      const matchesFilter =
-        activeFilter === 'all' ||
-        setType === activeFilter ||
-        year === activeFilter;
-
-      const matchesSearch =
-        searchTerm === '' ||
-        combined.includes(searchTerm);
-
-      const show = matchesFilter && matchesSearch;
-
-      card.style.display = show ? '' : 'none';
-      if(show){
-        card.style.animationDelay = (visible * 0.05) + 's';
-        visible++;
-      }
-    });
-
-    noResults.style.display = visible === 0 ? 'block' : 'none';
-    showingEl.textContent = visible;
-  }
-
-  filterBtns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      filterBtns.forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      applyFilters();
-    });
-  });
-
-  searchEl.addEventListener('input', function(){
-    searchTerm = searchEl.value.trim().toLowerCase();
-    applyFilters();
-  });
-
-  // Initialize count
-  showingEl.textContent = cards.length;
-  document.getElementById('total-count').textContent = cards.length;
-})();
-</script>
-
-</body>
-</html>
+        <div class="section-label">Box Types
