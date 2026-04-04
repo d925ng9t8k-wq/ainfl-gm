@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.101.1",
+    "better-sqlite3": "^12.8.0",
     "dominos": "^3.3.1",
     "html-to-image": "^1.11.13",
     "nodemailer": "^8.0.4",
+    "pg": "^8.20.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.1",
