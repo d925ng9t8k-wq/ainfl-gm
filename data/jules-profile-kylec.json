@@ -164,16 +164,6 @@
   "conversation_memory": [
     {
       "role": "user",
-      "content": "help",
-      "ts": 1774929052516
-    },
-    {
-      "role": "assistant",
-      "content": "Here's what I can do:\n\nMortgage Guidelines — Instant FHA, Conventional, VA, and USDA guideline lookups — DTI, credit scores, fees, loan limits.\n  Try: \"FHA DTI limits\"\n\nRate Tracking — Text a rate update and I'll log it. Referenced in briefings and conversations.\n  Try: \"rates update: 6.875%\"\n\nReminders — Set timed reminders. I'll text you when it's time.\n  Try: \"remind me to call the Garcias at 3pm\"\n\nNotes — Quick note-taking. I'll remember it for you.\n  Try: \"note: Garcia appraisal came in at 340k\"\n\nMorning Briefing — Daily 7AM text with rates, reminders, weather, and one priority action.\n  Try: \"(automatic daily)\"\n\nWeather — Current Cincinnati weather on demand.\n  Try: \"what's the weather\"\n\nFood Delivery — DoorDash, UberEats, Grubhub + direct chain ordering. Favorites, Cincinnati chains (Skyline, LaRosa's), order history.\n  Try: \"order me a pizza\"\n\nAmazon Shopping — Get an Amazon search link for any item. Quick one-tap shopping.\n  Try: \"order AirPods from Amazon\"\n\nGrocery Delivery — Get an Instacart or Kroger link for grocery orders. Cincinnati area.\n  Try: \"order groceries\"\n\nScript Help — Talk through a conversation with a borrower, referral partner, or agent.\n  Try: \"help me script a call to a realtor\"\n\nSocial Media Posts — Ghostwrite punchy social posts about rates, market updates, or tips.\n  Try: \"write me a post about rates dropping\"\n\nGeneral Q&A — Anything mortgage or business related — just ask.\n  Try: \"what's the best loan for a first-time buyer\"\n\nJust text me anytime. No menus needed.",
-      "ts": 1774929052516
-    },
-    {
-      "role": "user",
       "content": "what can you do",
       "ts": 1774929052524
     },
@@ -351,6 +341,26 @@
       "role": "assistant",
       "content": "Morning. \n\nWhat's the rate today? Once you give me that, I'll pull together the briefing — closings, anything hot in the pipeline, and one thing to hit first.",
       "ts": 1774929065832
+    },
+    {
+      "role": "user",
+      "content": "Hey what are you up to?",
+      "ts": 1775072753195
+    },
+    {
+      "role": "assistant",
+      "content": "Waiting on you. \n\nYou need something, or just checking in?",
+      "ts": 1775072754016
+    },
+    {
+      "role": "user",
+      "content": "What is the minimum credit score for FHA?",
+      "ts": 1775072760160
+    },
+    {
+      "role": "assistant",
+      "content": "FHA min credit: 580 for 3.5% down, 500 for 10% down. Lender overlays may be higher.",
+      "ts": 1775072760160
     }
   ],
   "reminders": [],

@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="9enterprises">
 <meta name="theme-color" content="#0f0f1f">
-<title>Pilot | 9 Enterprises — Demo</title>
+<title>Pilot | 9 Enterprises</title>
 <link rel="manifest" href="/pilot-manifest.json">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
@@ -255,33 +255,60 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);-webkit
 </div>
 
 <script>
-// ===== DEMO RESPONSES =====
+// ===== HUB DETECTION =====
+// TUNNEL_URL: update this when the Cloudflare tunnel restarts (run: curl localhost:3457/health to get current tunnel)
+const KNOWN_TUNNEL_URLS = [
+  'https://cancelled-paid-extent-plant.trycloudflare.com', // update as needed
+];
+const LOCAL_HUB  = 'http://localhost:3457';
+let PILOT_ENDPOINT = null; // resolved after init
+let isLiveMode = false;
+
+async function detectPilot() {
+  // Try local pilot server directly first (works on same machine / local network)
+  try {
+    const r = await fetch('http://localhost:3472/health', { signal: AbortSignal.timeout(2000) });
+    if (r.ok) { PILOT_ENDPOINT = 'http://localhost:3472/message'; return true; }
+  } catch (_) {}
+  // Try hub local (hub proxies to pilot)
+  try {
+    const r = await fetch(LOCAL_HUB + '/health', { signal: AbortSignal.timeout(2000) });
+    if (r.ok) { PILOT_ENDPOINT = LOCAL_HUB + '/pilot/message'; return true; }
+  } catch (_) {}
+  // Try all known tunnel URLs (remote access — Kyle on his phone)
+  for (const tunnelUrl of KNOWN_TUNNEL_URLS) {
+    try {
+      const r = await fetch(tunnelUrl + '/health', { signal: AbortSignal.timeout(5000) });
+      if (r.ok) { PILOT_ENDPOINT = tunnelUrl + '/pilot/message'; return true; }
+    } catch (_) {}
+  }
+  return false;
+}
+
+// ===== DEMO RESPONSES (fallback when connected but pilot returns nothing) =====
+// These only fire in true demo mode (no server reachable).
+// When offline, we show an honest disconnect message instead.
 const demoResponses = {
   morning: {
     trigger: /morning|briefing|daily|good morning/i,
-    reply: `Good morning! Here's your daily briefing for ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}:\n\n📊 Pipeline Summary\n• 8 active loans in process\n• 3 pending appraisal\n• 2 clear to close this week\n• 1 awaiting borrower docs\n\n📈 Rate Watch\n• 30yr Conventional: 6.75% (unchanged)\n• 30yr FHA: 6.50% (down 0.125% from yesterday)\n• 15yr Fixed: 6.125%\n• Markets trending stable ahead of Fed minutes\n\n📋 Follow-ups Due Today\n• Johnson file — call re: missing W2 (10am)\n• Martinez pre-approval — expires Friday\n• Smith appraisal — check status with AMC\n\nAnything specific you want to dig into?`
+    reply: `Good morning! Here's your daily briefing for ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}:\n\nPipeline Summary\n• 8 active loans in process\n• 3 pending appraisal\n• 2 clear to close this week\n• 1 awaiting borrower docs\n\nRate Watch\n• 30yr Conventional: 6.75% (unchanged)\n• 30yr FHA: 6.50% (down 0.125% from yesterday)\n• 15yr Fixed: 6.125%\n\nFollow-ups Due Today\n• Johnson file — call re: missing W2 (10am)\n• Martinez pre-approval — expires Friday\n• Smith appraisal — check status with AMC`
   },
   rates: {
     trigger: /rate|30.?yr|conventional|fha rate|interest/i,
-    reply: `Current Rate Snapshot (as of today):\n\n30-Year Conventional\n• 720+ FICO: 6.75% / 6.82% APR\n• 680-719 FICO: 6.875% / 6.94% APR\n• Rate lock: 30/45/60 day available\n\n30-Year FHA\n• 620+ FICO: 6.50% / 7.28% APR (includes MIP)\n• Note: Upfront MIP 1.75%, monthly 0.85%\n\n15-Year Fixed\n• 720+ FICO: 6.125% / 6.24% APR\n\nVA / USDA\n• VA 30yr: 6.25% (no PMI, no down payment)\n• USDA: 6.375% (income/area eligible only)\n\nRates change daily. Lock before 3pm ET for same-day lock. Want a comparison for a specific borrower scenario?`
+    reply: `Current Rate Snapshot:\n\n30-Year Conventional\n• 720+ FICO: 6.75% / 6.82% APR\n• 680-719 FICO: 6.875% / 6.94% APR\n\n30-Year FHA\n• 620+ FICO: 6.50% / 7.28% APR (includes MIP)\n\n15-Year Fixed\n• 720+ FICO: 6.125% / 6.24% APR\n\nVA: 6.25% | USDA: 6.375%\n\nRates change daily. Lock before 3pm ET.`
   },
   flood: {
     trigger: /flood|zone x|zone a|flood zone|floodplain/i,
-    reply: `Flood Zone Requirements — Quick Reference:\n\nZone X (Minimal Risk)\n• No flood insurance required by lender\n• Property is outside the 100-year floodplain\n• Borrower may purchase optional coverage\n• No FEMA elevation certificate needed\n\nZone AE / A (High Risk)\n• Flood insurance REQUIRED for federally-backed loans\n• Must be maintained for life of loan\n• FEMA elevation certificate often required\n• Coverage must equal lesser of: loan balance, structure value, or $250,000 max NFIP\n\nZone VE (Coastal High Hazard)\n• Same requirements as AE, stricter construction standards\n• Standard NFIP policies may have exclusions\n\nCommon Pitfalls:\n• Map changes can reclassify a property mid-process\n• Condo master policies may not cover individual units\n• Private flood insurance now acceptable on conv loans\n\nNeed me to pull the FEMA map for a specific address?`
+    reply: `Flood Zone Requirements:\n\nZone X (Minimal Risk)\n• No flood insurance required\n• Outside 100-year floodplain\n\nZone AE / A (High Risk)\n• Flood insurance REQUIRED for federally-backed loans\n• FEMA elevation certificate often required\n\nZone VE (Coastal)\n• Same as AE, stricter construction standards`
   },
   schedule: {
     trigger: /schedule|showing|appointment|meeting|calendar/i,
-    reply: `Got it — scheduling noted.\n\nShowing confirmed:\n• Property: 123 Main St\n• Date: This Saturday\n• Time: 2:00 PM\n• Duration: 1 hour blocked\n\nI've added this to your calendar and set a reminder for:\n• 24 hours before (Friday 2pm)\n• 1 hour before (Saturday 1pm)\n\nDo you want me to:\n• Send a confirmation text to the client?\n• Add driving directions?\n• Block prep time before the showing?\n\nJust say the word.`
+    reply: `Scheduling noted.\n\nShowing confirmed:\n• Property: 123 Main St\n• Date: This Saturday at 2:00 PM\n• Reminders set: 24hr and 1hr before\n\nWant me to send a confirmation text to the client?`
   },
   scenario: {
     trigger: /scenario|350k|loan.*scenario|payment|monthly|calculate|FICO/i,
-    reply: `Loan Scenario Analysis:\n\nPurchase Details\n• Price: $350,000\n• Down Payment: 5% ($17,500)\n• Loan Amount: $332,500\n• FICO: 700\n• Program: Conventional 30-Year Fixed\n• Rate: 6.875% (est. for 700 FICO)\n\nMonthly Payment Breakdown\n• Principal & Interest: $2,183\n• PMI (0.65%): $180\n• Property Taxes (est. 1.2%): $350\n• Homeowner's Insurance (est.): $120\n• Total PITI + PMI: ~$2,833/mo\n\nCash to Close (est.)\n• Down payment: $17,500\n• Closing costs (est. 2.5%): $8,313\n• Prepaid items (est.): $3,200\n• Total: ~$29,000\n\nNote: PMI drops when LTV reaches 80% (~$59K in equity).\n\nWant me to run this same scenario as FHA to compare?`
+    reply: `Loan Scenario — $350k purchase, 5% down, 700 FICO, 30yr conventional:\n\nMonthly Payment\n• P&I: $2,183\n• PMI (0.65%): $180\n• Taxes (est.): $350\n• Insurance (est.): $120\n• Total PITI + PMI: ~$2,833/mo\n\nCash to Close (est.): ~$29,000\n\nPMI drops at 80% LTV. Want an FHA comparison?`
   },
-  default: [
-    `I can help with that. Let me pull up the relevant guidelines for you.\n\nFor your question on mortgage guidelines, the key factors depend on loan type:\n• Conventional (Fannie/Freddie): Standard DTI 45%, up to 50% with compensating factors\n• FHA: Max DTI 57% with strong residual income\n• VA: No hard DTI cap, but lender overlay often 55%\n\nWhat specific scenario are you working with? I can give you a more precise answer with borrower details.`,
-    `Great question. Here's what the guidelines say:\n\nUnder current Fannie Mae guidelines (SEL 2023-07), the requirements are:\n• Minimum 620 FICO for manual underwrite\n• 640 FICO for DU Approve/Eligible\n• Documentation requirements: 2yr employment history, 30-day paystubs, 2yr W2s\n\nNote: Freddie Mac LP has slightly different overlays on this. Want me to compare both?`,
-    `On it. Based on current market conditions and the information you've provided, here's my analysis:\n\nKey findings:\n• This falls within standard guideline parameters\n• No compensating factors needed at these ratios\n• Recommend locking rate today given current market direction\n\nIs there anything specific about this file you'd like me to research further?`
-  ]
 };
 
 const chatMessages = document.getElementById('chatMessages');
@@ -321,16 +348,17 @@ function hideTyping() {
   typingIndicator.classList.remove('visible');
 }
 
-function getResponse(text) {
+function getDemoResponse(text) {
   if (demoResponses.morning.trigger.test(text)) return demoResponses.morning.reply;
   if (demoResponses.rates.trigger.test(text)) return demoResponses.rates.reply;
   if (demoResponses.flood.trigger.test(text)) return demoResponses.flood.reply;
   if (demoResponses.schedule.trigger.test(text)) return demoResponses.schedule.reply;
   if (demoResponses.scenario.trigger.test(text)) return demoResponses.scenario.reply;
-  return demoResponses.default[msgCount % demoResponses.default.length];
+  // No match — return null so caller can show offline message
+  return null;
 }
 
-function sendMessage(text) {
+async function sendMessage(text) {
   const msg = (text || chatInput.value).trim();
   if (!msg) return;
   chatInput.value = '';
@@ -340,11 +368,65 @@ function sendMessage(text) {
   msgCount++;
 
   showTyping();
-  const delay = 1000 + Math.random() * 800;
-  setTimeout(() => {
+
+  if (isLiveMode && PILOT_ENDPOINT) {
+    // Hit the real Pilot server
+    try {
+      const res = await fetch(PILOT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, from: 'web-chat' }),
+        signal: AbortSignal.timeout(15000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const reply = data.reply || data.response || data.message || 'Got it.';
+        hideTyping();
+        appendMessage('pilot', reply);
+        return;
+      }
+    } catch (_) {}
+    // Live request failed — try to reconnect silently
+    isLiveMode = false;
+    PILOT_ENDPOINT = null;
+    const reconnected = await detectPilot();
+    if (reconnected) {
+      isLiveMode = true;
+      // Retry the message with the new endpoint
+      try {
+        const res2 = await fetch(PILOT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, from: 'web-chat' }),
+          signal: AbortSignal.timeout(15000),
+        });
+        if (res2.ok) {
+          const data2 = await res2.json();
+          const reply2 = data2.reply || data2.response || data2.message || 'Got it.';
+          hideTyping();
+          appendMessage('pilot', reply2);
+          return;
+        }
+      } catch (_) {}
+    }
+    // Still failed after retry — show offline notice
     hideTyping();
-    appendMessage('pilot', getResponse(msg));
-  }, delay);
+    setOfflineUI();
+    appendMessage('pilot', `Connection dropped. I couldn't reach the server.\n\nTap the reconnect button above or text me directly.`);
+    return;
+  }
+
+  // Demo / offline mode — only respond to recognized topics, otherwise be honest
+  hideTyping();
+  const demoReply = getDemoResponse(msg);
+  if (demoReply) {
+    const delay = 800 + Math.random() * 600;
+    setTimeout(() => {
+      appendMessage('pilot', demoReply);
+    }, delay);
+  } else {
+    appendMessage('pilot', `I'm not connected right now — can't respond to that one.\n\nTap "Reconnect" above to try again, or text me directly.`);
+  }
 }
 
 function autoResizeInput() {
@@ -364,9 +446,7 @@ btnSend.addEventListener('click', () => sendMessage());
 
 // Suggestion chips
 document.querySelectorAll('.suggestion-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    sendMessage(chip.dataset.msg);
-  });
+  chip.addEventListener('click', () => { sendMessage(chip.dataset.msg); });
 });
 
 // Capabilities modal
@@ -384,20 +464,68 @@ document.querySelectorAll('.cap-item').forEach(item => {
   });
 });
 
-// Initial welcome message sequence
-function initDemo() {
-  appendMessage('pilot', `Good morning! I'm Pilot — your AI assistant from 9 Enterprises.\n\nI help mortgage professionals move faster. Tap a suggestion below or ask me anything:`);
-
-  setTimeout(() => {
-    showTyping();
-    setTimeout(() => {
-      hideTyping();
-      appendMessage('pilot', `A few things I can do right now:\n\n• Morning briefings with pipeline + rates\n• Guideline Q&A (FHA, VA, Conventional, Jumbo)\n• Flood zone and property eligibility rules\n• Loan scenario analysis and payment calculations\n• Schedule showings and set follow-up reminders\n\nThis is a demo — try the suggestions above or type any mortgage question. I'll show you what a real response looks like.`);
-    }, 1400);
-  }, 800);
+function setLiveUI() {
+  // Update banner to LIVE
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    banner.style.background = 'linear-gradient(135deg,rgba(100,255,218,0.1),rgba(0,229,255,0.05))';
+    banner.style.borderBottomColor = 'rgba(100,255,218,0.4)';
+    banner.innerHTML = '<div class="demo-banner-badge" style="color:var(--neon);border-color:rgba(100,255,218,0.45);background:rgba(100,255,218,0.1)">LIVE</div><div class="demo-banner-text" style="color:var(--neon)">Connected to Pilot AI &mdash; responses are real</div><div class="demo-banner-badge" style="color:var(--neon);border-color:rgba(100,255,218,0.45);background:rgba(100,255,218,0.1)">LIVE</div>';
+  }
+  // Update status badge in header
+  const statusSpan = document.querySelector('.status-badge span');
+  if (statusSpan) statusSpan.textContent = 'LIVE';
 }
 
-initDemo();
+function setOfflineUI() {
+  isLiveMode = false;
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    banner.style.background = 'linear-gradient(135deg,rgba(255,102,0,0.12),rgba(255,50,0,0.05))';
+    banner.style.borderBottomColor = 'rgba(255,102,0,0.5)';
+    banner.innerHTML = '<div class="demo-banner-badge" style="color:var(--accent);border-color:rgba(255,102,0,0.45);background:rgba(255,102,0,0.1)">OFFLINE</div><div class="demo-banner-text" style="color:var(--accent)">Not connected &mdash; <span id="reconnectBtn" style="text-decoration:underline;cursor:pointer;">tap to reconnect</span></div><div class="demo-banner-badge" style="color:var(--accent);border-color:rgba(255,102,0,0.45);background:rgba(255,102,0,0.1)">OFFLINE</div>';
+    document.getElementById('reconnectBtn')?.addEventListener('click', attemptReconnect);
+  }
+  const statusDot = document.querySelector('.status-dot');
+  if (statusDot) statusDot.style.background = 'var(--accent)';
+  const statusSpan = document.querySelector('.status-badge span');
+  if (statusSpan) statusSpan.textContent = 'OFFLINE';
+}
+
+async function attemptReconnect() {
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    const badge = banner.querySelector('.demo-banner-badge');
+    if (badge) badge.textContent = '...';
+    const text = banner.querySelector('.demo-banner-text');
+    if (text) text.textContent = 'Reconnecting...';
+  }
+  const connected = await detectPilot();
+  if (connected) {
+    isLiveMode = true;
+    setLiveUI();
+    appendMessage('pilot', `Reconnected. What do you need?`);
+  } else {
+    setOfflineUI();
+    appendMessage('pilot', `Still can't reach the server. Text me directly at your usual number.`);
+  }
+}
+
+// ===== INIT =====
+async function init() {
+  const connected = await detectPilot();
+  if (connected) {
+    isLiveMode = true;
+    setLiveUI();
+    appendMessage('pilot', `Hey — I'm Pilot, your AI assistant from 9 Enterprises.\n\nI'm connected and ready. Ask me anything or tap a suggestion below.`);
+  } else {
+    // Offline — be honest, do not fake responses
+    setOfflineUI();
+    appendMessage('pilot', `Hey — I'm Pilot. Can't reach the server right now.\n\nTap "reconnect" in the banner above to try again. If it keeps failing, text me directly at your usual number.`);
+  }
+}
+
+init();
 </script>
 </body>
 </html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapid Mortgage — P&L Branch Opportunity for Austin Clarkson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rm-blue:#2582B5;
+    --rm-blue-dark:#1d6a96;
+    --rm-red:#991C1F;
+    --rm-red-light:#b52225;
+    --text-primary:#1a1a1a;
+    --text-secondary:#444;
+    --text-light:#666;
+    --bg-light:#f8f9fb;
+    --bg-section:#eef4f8;
+    --border:#dce4ea;
+    --white:#fff;
+  }
+
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  html{font-size:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  body{
+    font-family:'Lato','Helvetica Neue',Arial,sans-serif;
+    color:var(--text-primary);
+    background:var(--white);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Print styles */
+  @media print{
+    body{font-size:11pt;line-height:1.5}
+    .page-break{page-break-before:always}
+    .header-bar{position:relative!important}
+    .no-print{display:none!important}
+    section{break-inside:avoid}
+  }
+
+  /* Header */
+  .header-bar{
+    background:linear-gradient(135deg,var(--rm-blue) 0%,var(--rm-blue-dark) 100%);
+    color:var(--white);
+    padding:48px 0 44px;
+    position:relative;
+    overflow:hidden;
+  }
+  .header-bar::after{
+    content:'';position:absolute;top:0;right:0;bottom:0;
+    width:40%;
+    background:linear-gradient(135deg,transparent 0%,rgba(255,255,255,0.04) 100%);
+    pointer-events:none;
+  }
+  .header-inner{
+    max-width:900px;margin:0 auto;padding:0 32px;
+    position:relative;z-index:1;
+  }
+  .header-logo{
+    height:72px;width:auto;margin-bottom:28px;
+    filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+  }
+  .header-title{
+    font-family:'Poppins',sans-serif;
+    font-size:28px;font-weight:700;
+    line-height:1.3;margin-bottom:8px;
+  }
+  .header-subtitle{
+    font-size:16px;font-weight:300;
+    opacity:0.85;letter-spacing:0.3px;
+  }
+
+  /* Confidential strip */
+  .conf-strip{
+    background:var(--rm-red);
+    color:var(--white);
+    text-align:center;
+    font-size:12px;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;
+    padding:8px 16px;
+  }
+
+  /* Main content */
+  .main{
+    max-width:900px;margin:0 auto;padding:40px 32px 60px;
+  }
+
+  /* Section styling */
+  section{margin-bottom:40px}
+  section:last-of-type{margin-bottom:0}
+
+  .section-number{
+    display:inline-block;
+    background:var(--rm-blue);
+    color:var(--white);
+    font-family:'Poppins',sans-serif;
+    font-size:13px;font-weight:600;
+    width:28px;height:28px;
+    line-height:28px;text-align:center;
+    border-radius:50%;
+    margin-right:10px;
+    vertical-align:middle;
+  }
+
+  h2{
+    font-family:'Poppins',sans-serif;
+    font-size:22px;font-weight:600;
+    color:var(--rm-blue);
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--bg-section);
+    display:flex;align-items:center;
+  }
+
+  h3{
+    font-family:'Poppins',sans-serif;
+    font-size:17px;font-weight:600;
+    color:var(--text-primary);
+    margin:20px 0 10px;
+  }
+
+  p{margin-bottom:14px;color:var(--text-secondary);font-size:15px}
+
+  ul{
+    margin:0 0 16px 0;padding-left:24px;
+    color:var(--text-secondary);font-size:15px;
+  }
+  ul li{margin-bottom:8px}
+  ul li::marker{color:var(--rm-blue)}
+
+  /* Highlight box */
+  .highlight{
+    background:var(--bg-section);
+    border-left:4px solid var(--rm-blue);
+    padding:20px 24px;
+    border-radius:0 8px 8px 0;
+    margin:20px 0;
+  }
+  .highlight p{margin-bottom:0;color:var(--text-primary);font-weight:400}
+  .highlight strong{color:var(--rm-blue)}
+
+  /* Stat callout */
+  .stat-row{
+    display:flex;gap:20px;flex-wrap:wrap;
+    margin:20px 0;
+  }
+  .stat-card{
+    flex:1;min-width:180px;
+    background:var(--bg-light);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px;text-align:center;
+  }
+  .stat-value{
+    font-family:'Poppins',sans-serif;
+    font-size:28px;font-weight:700;
+    color:var(--rm-blue);
+    line-height:1.2;
+  }
+  .stat-label{
+    font-size:13px;color:var(--text-light);
+    margin-top:4px;text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+
+  /* Tables */
+  .data-table{
+    width:100%;border-collapse:collapse;
+    margin:20px 0;font-size:14px;
+  }
+  .data-table thead{background:var(--rm-blue);color:var(--white)}
+  .data-table th{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;padding:12px 16px;
+    text-align:left;font-size:13px;
+    letter-spacing:0.3px;
+  }
+  .data-table td{
+    padding:12px 16px;
+    border-bottom:1px solid var(--border);
+    color:var(--text-secondary);
+  }
+  .data-table tbody tr:nth-child(even){background:var(--bg-light)}
+  .data-table tbody tr:hover{background:var(--bg-section)}
+
+  /* Comparison block */
+  .comparison{
+    display:grid;grid-template-columns:1fr 1fr;gap:20px;
+    margin:20px 0;
+  }
+  .comp-card{
+    border-radius:10px;padding:24px;
+    border:1px solid var(--border);
+  }
+  .comp-card.theirs{background:var(--bg-light)}
+  .comp-card.ours{
+    background:linear-gradient(135deg,var(--rm-blue) 0%,var(--rm-blue-dark) 100%);
+    color:var(--white);border-color:var(--rm-blue);
+  }
+  .comp-card h4{
+    font-family:'Poppins',sans-serif;
+    font-size:15px;font-weight:600;
+    margin-bottom:12px;
+  }
+  .comp-card.ours h4{color:var(--white)}
+  .comp-card.theirs h4{color:var(--text-primary)}
+  .comp-card ul{padding-left:18px;margin:0}
+  .comp-card.ours ul li{color:rgba(255,255,255,0.9)}
+  .comp-card.ours ul li::marker{color:rgba(255,255,255,0.6)}
+
+  /* Timeline */
+  .timeline{
+    display:flex;gap:0;margin:24px 0;
+    position:relative;
+  }
+  .timeline::before{
+    content:'';position:absolute;
+    top:20px;left:24px;right:24px;height:3px;
+    background:var(--border);z-index:0;
+  }
+  .timeline-step{
+    flex:1;text-align:center;
+    position:relative;z-index:1;
+  }
+  .timeline-dot{
+    width:40px;height:40px;
+    background:var(--rm-blue);
+    color:var(--white);
+    border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:'Poppins',sans-serif;
+    font-size:16px;font-weight:700;
+    margin-bottom:10px;
+    box-shadow:0 2px 8px rgba(37,130,181,0.3);
+  }
+  .timeline-label{
+    font-size:13px;color:var(--text-secondary);
+    font-weight:400;line-height:1.4;
+    padding:0 8px;
+  }
+  .timeline-label strong{
+    display:block;font-size:14px;
+    color:var(--text-primary);margin-bottom:2px;
+  }
+
+  /* Footer */
+  .footer{
+    background:var(--text-primary);
+    color:rgba(255,255,255,0.7);
+    padding:32px 0;
+    margin-top:40px;
+  }
+  .footer-inner{
+    max-width:900px;margin:0 auto;padding:0 32px;
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:16px;
+  }
+  .footer-contact{font-size:14px;line-height:1.6}
+  .footer-contact strong{color:var(--white);font-size:16px}
+  .footer-contact a{color:rgba(255,255,255,0.8);text-decoration:none}
+  .footer-contact a:hover{color:var(--white)}
+  .footer-legal{
+    font-size:11px;text-align:right;
+    color:rgba(255,255,255,0.4);
+    max-width:320px;line-height:1.5;
+  }
+
+  /* Mobile responsive */
+  @media(max-width:768px){
+    .header-inner{padding:0 20px}
+    .header-title{font-size:22px}
+    .main{padding:28px 20px 40px}
+    h2{font-size:19px}
+    .stat-row{flex-direction:column}
+    .comparison{grid-template-columns:1fr}
+    .timeline{flex-direction:column;gap:16px}
+    .timeline::before{display:none}
+    .footer-inner{flex-direction:column;text-align:center}
+    .footer-legal{text-align:center;max-width:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header-bar">
+  <div class="header-inner">
+    <img class="header-logo"
+         src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png"
+         alt="Rapid Mortgage">
+    <h1 class="header-title">Exclusive P&amp;L Branch Opportunity<br>for Austin Clarkson &amp; Team</h1>
+    <p class="header-subtitle">A Personalized Partnership Proposal from Mark Jaynes, Co-Owner</p>
+  </div>
+</header>
+<div class="conf-strip">Confidential &mdash; For Discussion Purposes Only</div>
+
+<main class="main">
+
+  <!-- Section 1: Austin's Current Success -->
+  <section>
+    <h2><span class="section-number">1</span> Austin's Current Production</h2>
+    <p>Austin Clarkson has built an exceptional production engine. This proposal is designed around the specific numbers his team delivers today, ensuring the transition amplifies what is already working.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-value">$110.64M</div>
+        <div class="stat-label">Annual Volume</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">356</div>
+        <div class="stat-label">Closed Units</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">$310K</div>
+        <div class="stat-label">Avg Loan Size</div>
+      </div>
+    </div>
+
+    <h3>Team Breakdown</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Team Member</th><th>Role</th><th>Volume</th><th>Units</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Austin Clarkson</td><td>Team Lead / Top Producer</td><td>$55.32M</td><td>178</td></tr>
+        <tr><td>Partner LO #1</td><td>Senior Loan Officer</td><td>$33.19M</td><td>107</td></tr>
+        <tr><td>Partner LO #2</td><td>Loan Officer</td><td>$22.13M</td><td>71</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 2: Why Rapid Mortgage -->
+  <section>
+    <h2><span class="section-number">2</span> Why Rapid Mortgage</h2>
+    <p>Rapid Mortgage is a nationally licensed, independently owned lender headquartered in Ohio. We combine the speed and technology of a fintech with the personal service of a boutique shop.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-value">24hr</div>
+        <div class="stat-label">UW Turnaround</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Low</div>
+        <div class="stat-label">Lender Fees</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">Full</div>
+        <div class="stat-label">DSCR Product Suite</div>
+      </div>
+    </div>
+
+    <ul>
+      <li><strong>24-Hour Underwriting:</strong> Initial conditions back within one business day. Realtors and borrowers notice immediately.</li>
+      <li><strong>Competitive Fee Structure:</strong> Lower lender fees than the national retail shops, giving your team more room on margin.</li>
+      <li><strong>DSCR &amp; Non-QM:</strong> Full suite of investor and non-QM products, expanding your addressable market beyond conventional and FHA.</li>
+      <li><strong>Technology Stack:</strong> Modern LOS, automated disclosures, and a CRM that works for producers (not against them).</li>
+    </ul>
+  </section>
+
+  <!-- Section 3: P&L Branch Model -->
+  <section>
+    <h2><span class="section-number">3</span> The P&amp;L Branch Model</h2>
+    <p>This is not a standard net branch. It is a true P&amp;L partnership where Austin and his team control the economics of their branch from day one.</p>
+
+    <div class="highlight">
+      <p><strong>The core idea:</strong> You run your branch like your own company. You control the margins, the pricing, the hiring, and the culture. We provide the license, the warehouse lines, the compliance infrastructure, and the back-office support. Your net profit is your profit.</p>
+    </div>
+
+    <h3>How It Works</h3>
+    <ul>
+      <li><strong>Revenue:</strong> Your branch books all revenue from closed loans at the margin you set.</li>
+      <li><strong>Expenses:</strong> Branch operating costs (processors, marketing, office) come off the top.</li>
+      <li><strong>Net Profit:</strong> What remains after expenses is split with a heavily favorable margin share in your direction.</li>
+      <li><strong>Full Transparency:</strong> Monthly P&amp;L statements. You see every dollar in and every dollar out.</li>
+    </ul>
+  </section>
+
+  <!-- Section 4: Financial Package -->
+  <section>
+    <h2><span class="section-number">4</span> Financial Package</h2>
+    <p>This is a flexible, negotiable package designed to make the transition economically compelling from the first month.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Component</th><th>Details</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Signing Incentive</strong></td><td>Cash bonus structured to offset any transition costs and demonstrate our commitment to the partnership.</td></tr>
+        <tr><td><strong>Equity Stake</strong></td><td>Ownership percentage in Rapid Mortgage, vesting over time. Real equity, not phantom stock.</td></tr>
+        <tr><td><strong>Margin Share</strong></td><td>Industry-leading split on net branch profit. Designed so that at your current volume, you earn significantly more than your current comp.</td></tr>
+        <tr><td><strong>Flexibility</strong></td><td>Every number in this package is a starting point for conversation, not a take-it-or-leave-it offer.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <p><strong>Key point:</strong> The financial structure is designed to be discussed openly. Mark will walk through the exact numbers in person, tailored to Austin's specific situation and goals.</p>
+    </div>
+  </section>
+
+  <!-- Section 5: Operational Support -->
+  <section>
+    <h2><span class="section-number">5</span> Operational Support</h2>
+    <p>We eliminate the operational headaches so your team can focus on what they do best: originating and closing loans.</p>
+
+    <ul>
+      <li><strong>Office Space:</strong> Fully furnished office provided at no cost to your branch P&amp;L. We cover the lease.</li>
+      <li><strong>Processing:</strong> Dedicated processor provided by Rapid. No need to hire or manage your own processing staff from day one.</li>
+      <li><strong>Marketing:</strong> Professional marketing support including branded collateral, digital campaigns, and social media assistance.</li>
+      <li><strong>Recruiting Support:</strong> When you are ready to grow your team, our recruiting infrastructure helps you find and onboard top talent.</li>
+      <li><strong>Compliance &amp; Legal:</strong> All licensing, compliance, and regulatory requirements handled by our corporate team.</li>
+      <li><strong>IT &amp; Systems:</strong> Full technology stack provisioned and supported, including LOS, CRM, and communication tools.</li>
+    </ul>
+  </section>
+
+  <!-- Section 6: Seat at the Table -->
+  <section>
+    <h2><span class="section-number">6</span> Seat at the Table</h2>
+    <p>This is not a franchise where you follow someone else's playbook. At Rapid, top producers have a voice in how the company operates and where it goes.</p>
+
+    <ul>
+      <li><strong>Strategy Calls:</strong> Direct access to ownership for weekly or biweekly strategy discussions.</li>
+      <li><strong>Company Direction:</strong> Input on product offerings, technology decisions, and growth strategy.</li>
+      <li><strong>Culture Building:</strong> Help shape the culture of a growing company rather than being one number in a 10,000-person operation.</li>
+      <li><strong>Leadership Track:</strong> As Rapid grows, early partners are positioned for executive and advisory roles.</li>
+    </ul>
+
+    <div class="highlight">
+      <p><strong>The difference:</strong> At a large retail lender, you are a producer. At Rapid, you are a partner. You have Mark Jaynes' direct cell phone and a standing invitation to shape the company's future.</p>
+    </div>
+  </section>
+
+  <!-- Section 7: Equity Upside -->
+  <section>
+    <h2><span class="section-number">7</span> Equity Upside</h2>
+    <p>Real equity in a growing company is the most powerful wealth-building tool available. This table illustrates what your ownership stake could be worth as Rapid scales.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Company Valuation</th><th>Equity Value (Illustrative)</th><th>Scenario</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Current Valuation</td><td>Meaningful five-figure stake</td><td>Day-one value of ownership grant</td></tr>
+        <tr><td>$1B Funded Volume</td><td>Significant six-figure value</td><td>Achievable within 2-3 years at current growth</td></tr>
+        <tr><td>$2B Funded Volume</td><td>Seven-figure territory</td><td>Long-term target with expanded team and markets</td></tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <p><strong>This is not theoretical.</strong> Rapid Mortgage is actively growing and acquiring. Your equity stake compounds as the company scales, independent of your personal production. Mark will share exact valuations and projections in a private conversation.</p>
+    </div>
+  </section>
+
+  <!-- Section 8: Why This Beats Lower -->
+  <section>
+    <h2><span class="section-number">8</span> Why This Opportunity Stands Apart</h2>
+
+    <div class="comparison">
+      <div class="comp-card theirs">
+        <h4>Typical Large Retail Lender</h4>
+        <ul>
+          <li>Fixed comp plan with ceiling</li>
+          <li>No ownership or equity</li>
+          <li>No control over pricing or margin</li>
+          <li>Corporate bureaucracy on every decision</li>
+          <li>You build their brand, not yours</li>
+          <li>When you leave, you leave with nothing</li>
+        </ul>
+      </div>
+      <div class="comp-card ours">
+        <h4>Rapid Mortgage P&amp;L Branch</h4>
+        <ul>
+          <li>Uncapped income tied to your P&amp;L</li>
+          <li>Real equity that grows with the company</li>
+          <li>Full control over pricing and margin</li>
+          <li>Direct line to ownership</li>
+          <li>You build your brand AND own a piece</li>
+          <li>When the company exits, you participate</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 9: Next Steps -->
+  <section>
+    <h2><span class="section-number">9</span> Next Steps</h2>
+    <p>This is designed to move at whatever pace feels right. There is no pressure and no hard deadline. The goal is a great conversation and, if it makes sense for both sides, a partnership that lasts decades.</p>
+
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-label">
+          <strong>Initial Call</strong>
+          Confidential conversation with Mark to discuss goals and answer questions
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-label">
+          <strong>Deep Dive</strong>
+          Review detailed financials, exact comp structure, and equity terms
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-label">
+          <strong>Meet the Team</strong>
+          Visit Rapid HQ, meet the operations team, see the infrastructure
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot">4</div>
+        <div class="timeline-label">
+          <strong>Partnership</strong>
+          Finalize terms, set a start date, begin the transition plan
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-contact">
+      <strong>Mark Jaynes</strong><br>
+      Co-Owner, Rapid Mortgage<br>
+      <a href="mailto:mjaynes@rapidmortgage.com">mjaynes@rapidmortgage.com</a><br>
+      <a href="tel:6148455202">614-845-5202</a>
+    </div>
+    <div class="footer-legal">
+      This document is confidential and intended solely for the named recipient. It contains proprietary business information and should not be distributed without written consent from Rapid Mortgage.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

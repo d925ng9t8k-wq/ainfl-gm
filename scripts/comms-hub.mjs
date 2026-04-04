@@ -17,6 +17,45 @@ import path from 'path';
 import { createServer } from 'http';
 import net from 'net';
 import nodemailer from 'nodemailer';
+import pg from 'pg';
+
+// ─── Cloud Database (Neon) ──────────────────────────────────────────────────
+// Real-time sync of all conversations to cloud. Non-blocking. Never crashes hub.
+let neonPool = null;
+try {
+  const neonUrl = process.env.NEON_DATABASE_URL;
+  if (neonUrl) {
+    neonPool = new pg.Pool({ connectionString: neonUrl, max: 3, idleTimeoutMillis: 30000 });
+    neonPool.on('error', (err) => console.error('[neon] Pool error (non-fatal):', err.message));
+    console.log('[neon] Cloud database pool initialized');
+  }
+} catch (e) {
+  console.error('[neon] Init failed (non-fatal):', e.message);
+}
+
+async function syncToNeon(channel, direction, text, timestamp) {
+  if (!neonPool) return;
+  try {
+    await neonPool.query(
+      'INSERT INTO conversations (channel, direction, message, timestamp) VALUES ($1, $2, $3, $4)',
+      [channel, direction, text.slice(0, 4000), timestamp]
+    );
+  } catch (e) {
+    // Never let cloud sync failure crash the hub
+    console.error('[neon] Sync failed (non-fatal):', e.message);
+  }
+}
+
+// ─── Persistent Memory DB ────────────────────────────────────────────────────
+// Imported as singleton. All db calls are wrapped in try/catch so database
+// errors never crash the hub — logging is purely additive.
+let db = null;
+try {
+  const memoryDb = await import('./memory-db.mjs');
+  db = memoryDb.db;
+} catch (e) {
+  console.error('[comms-hub] memory-db import failed — continuing without DB logging:', e.message);
+}
 
 // ─── Port Guard (check FIRST, before loading anything) ──────────────────────
 // Prevents LaunchAgent restart spam from burning Cloudflare quota
@@ -127,6 +166,8 @@ function addMessage(state, channel, direction, text) {
   state.recentMessages.push(msg);
   // Keep last 50
   if (state.recentMessages.length > 50) state.recentMessages = state.recentMessages.slice(-50);
+  // Sync to Neon cloud DB (non-blocking, fire-and-forget)
+  syncToNeon(channel, direction, text, msg.timestamp).catch(() => {});
 }
 
 function updateChannelStatus(state, channel, status) {
@@ -806,6 +847,7 @@ async function sendTelegram(text) {
     }
   }
   addMessage(state, 'telegram', 'out', text);
+  try { if (db) db.logMessage('telegram', 'out', text); } catch (e) { console.error('DB log failed:', e.message); }
   saveState(state);
 }
 
@@ -815,6 +857,7 @@ function sendIMessage(message) {
     execSync(`osascript -e 'tell application "Messages" to send "${message.replace(/"/g, '\\"').replace(/'/g, "'\\''")}" to buddy "${JASSON_PHONE}"'`);
     log(`iMessage sent: ${message.slice(0, 100)}`);
     addMessage(state, 'imessage', 'out', message);
+    try { if (db) db.logMessage('imessage', 'out', message); } catch (e) { console.error('DB log failed:', e.message); }
     updateChannelStatus(state, 'imessage', 'active');
     saveState(state);
     return true;
@@ -882,7 +925,19 @@ function checkNewIMessages() {
 }
 
 // ─── Email Send (Gmail SMTP via nodemailer) ─────────────────────────────────
-async function sendEmail(subject, body, { to, replyTo, contentType } = {}) {
+
+// Sender identities — all use Gmail SMTP but show different display names and reply-to headers.
+// The transport account (JASSON_EMAIL) never changes; only the presentation layer does.
+const SENDER_IDENTITIES = {
+  default:        { name: '9',             replyTo: '9@9enterprises.ai' },
+  ainflgm:        { name: 'AiNFL GM',      replyTo: '9@ainflgm.com' },
+  '9enterprises': { name: '9 Enterprises', replyTo: '9@9enterprises.ai' },
+  shop9:          { name: 'Shop9',         replyTo: 'shop9@9enterprises.ai' },
+  agent9:         { name: 'agent9',        replyTo: 'agent9@9enterprises.ai' },
+  pilot:          { name: 'Pilot',         replyTo: 'pilot@9enterprises.ai' },
+};
+
+async function sendEmail(subject, body, { to, replyTo, contentType, from } = {}) {
   if (!gmailTransporter) {
     log('Email send skipped: GMAIL_APP_PASSWORD not set in .env');
     addChannelError(state, 'email', 'GMAIL_APP_PASSWORD not configured');
@@ -890,12 +945,13 @@ async function sendEmail(subject, body, { to, replyTo, contentType } = {}) {
     return false;
   }
   try {
+    const identity = SENDER_IDENTITIES[from] || SENDER_IDENTITIES.default;
     const recipient = to || JASSON_EMAIL;
     const mailOpts = {
-      from: `"9 — AiNFL GM" <${JASSON_EMAIL}>`,
+      from: `"${identity.name}" <${JASSON_EMAIL}>`,
       to: recipient,
       subject,
-      replyTo: replyTo || CAPTAIN_EMAIL,
+      replyTo: replyTo || identity.replyTo,
     };
     if (contentType === 'html') {
       mailOpts.html = body;
@@ -905,6 +961,7 @@ async function sendEmail(subject, body, { to, replyTo, contentType } = {}) {
     await gmailTransporter.sendMail(mailOpts);
     log(`Email sent: ${subject} → ${recipient}`);
     addMessage(state, 'email', 'out', `[From 9] ${subject} → ${recipient}: ${body.slice(0, 200)}`);
+    try { if (db) db.logMessage('email', 'out', `[From 9] ${subject} → ${recipient}: ${body.slice(0, 200)}`); } catch (e) { console.error('DB log failed:', e.message); }
     updateChannelStatus(state, 'email', 'active');
     saveState(state);
     return true;
@@ -954,7 +1011,7 @@ async function askClaude(userMessage, channel) {
 
   return new Promise((resolve) => {
     const body = JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 2048,
       system: SYSTEM,
       messages: state.conversationHistory,
@@ -1025,7 +1082,7 @@ function broadcastAlert(message) {
 
   try { sendTelegram(fullMsg); results.telegram = true; } catch { results.telegram = false; }
   try { results.imessage = sendIMessage(fullMsg); } catch { results.imessage = false; }
-  try { results.email = sendEmail('9 Alert', message); } catch { results.email = false; }
+  try { results.email = sendEmail('9 Alert', message, { from: '9enterprises' }); } catch { results.email = false; }
 
   log(`Broadcast alert: ${Object.entries(results).map(([k,v]) => `${k}:${v?'sent':'failed'}`).join(', ')}`);
   return results;
@@ -1225,13 +1282,13 @@ const healthServer = createServer((req, res) => {
     req.on('data', c => body += c);
     req.on('end', async () => {
       try {
-        const { to, subject, body: emailBody, replyTo, contentType } = JSON.parse(body);
+        const { to, subject, body: emailBody, replyTo, contentType, from } = JSON.parse(body);
         if (!to || !subject || !emailBody) {
           res.writeHead(400);
           res.end('missing required fields: to, subject, body');
           return;
         }
-        const ok = await sendEmail(subject, emailBody, { to, replyTo, contentType });
+        const ok = await sendEmail(subject, emailBody, { to, replyTo, contentType, from });
         res.writeHead(ok ? 200 : 500);
         res.end(ok ? 'sent' : 'failed');
       } catch (e) {
@@ -1239,6 +1296,132 @@ const healthServer = createServer((req, res) => {
         res.end(e.message);
       }
     });
+  } else if (req.method === 'POST' && req.url === '/pilot/message') {
+    // Proxy to pilot server (port 3472) — allows remote clients to reach Pilot through the tunnel
+    let body = '';
+    req.on('data', d => { body += d; });
+    req.on('end', async () => {
+      try {
+        const pilotRes = await fetch('http://localhost:3472/message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+        });
+        const data = await pilotRes.json();
+        res.writeHead(pilotRes.status, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(data));
+      } catch (e) {
+        res.writeHead(503, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Pilot server unreachable' }));
+      }
+    });
+
+  // ─── Memory DB endpoints ─────────────────────────────────────────────────
+
+  } else if (req.method === 'GET' && req.url === '/db/context') {
+    // GET /db/context — 24-hour context snapshot from persistent memory
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const context = db ? db.rebuildContext(24) : { error: 'DB not available' };
+      res.end(JSON.stringify(context, null, 2));
+    } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
+  } else if (req.method === 'GET' && req.url === '/actions') {
+    // GET /actions — recent actions from the last 24 hours
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const actions = db ? db.getRecentActions(24) : [];
+      res.end(JSON.stringify(actions, null, 2));
+    } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
+  } else if (req.method === 'POST' && req.url === '/action') {
+    // POST /action — log an action { action_type, description, status, metadata }
+    let body = '';
+    req.on('data', d => { body += d; });
+    req.on('end', () => {
+      try {
+        const { action_type, description, status, metadata } = JSON.parse(body);
+        if (!action_type || !description) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'action_type and description are required' }));
+          return;
+        }
+        const id = db ? db.logAction(action_type, description, status || 'completed', metadata || {}) : null;
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, id }));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+
+  } else if (req.method === 'GET' && req.url === '/authority') {
+    // GET /authority — list all authority records
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const authorities = db ? db.listAuthorities() : [];
+      res.end(JSON.stringify(authorities, null, 2));
+    } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
+  } else if (req.method === 'POST' && req.url === '/authority') {
+    // POST /authority — grant authority { permission, description, context }
+    let body = '';
+    req.on('data', d => { body += d; });
+    req.on('end', () => {
+      try {
+        const { permission, description, context } = JSON.parse(body);
+        if (!permission || !description) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'permission and description are required' }));
+          return;
+        }
+        if (db) db.grantAuthority(permission, description, context || '');
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+
+  } else if (req.method === 'POST' && req.url === '/summarize-long-message') {
+    // POST /summarize-long-message — caps long messages before they bloat context
+    // Body: { text: string, maxLength?: number }
+    // Returns: { original_length, stored_length, text }
+    // If text <= maxLength: returns as-is. If longer: truncates with a trailing note.
+    // This endpoint does NOT call Claude — it's a pure string operation (fast, free, safe).
+    let body = '';
+    req.on('data', d => { body += d; });
+    req.on('end', () => {
+      try {
+        const { text, maxLength = 2000 } = JSON.parse(body);
+        if (typeof text !== 'string') {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'text field is required and must be a string' }));
+          return;
+        }
+        const originalLength = text.length;
+        let stored = text;
+        if (originalLength > maxLength) {
+          // Leave room for the truncation note (~60 chars)
+          const cutAt = maxLength - 60;
+          stored = text.slice(0, cutAt) + `... [truncated — original was ${originalLength} chars]`;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ original_length: originalLength, stored_length: stored.length, text: stored }));
+        log(`/summarize-long-message: ${originalLength} → ${stored.length} chars`);
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+
   } else {
     res.writeHead(404);
     res.end('not found');
@@ -1318,6 +1501,7 @@ async function telegramPoll() {
               const userText = msg.text.trim();
               log(`Telegram IN: "${userText}"`);
               addMessage(state, 'telegram', 'in', userText);
+              try { if (db) db.logMessage('telegram', 'in', userText); } catch (e) { console.error('DB log failed:', e.message); }
               updateChannelStatus(state, 'telegram', 'active');
               state.channels.telegram.messagesHandled++;
               saveState(state);
@@ -1571,6 +1755,7 @@ async function imessageMonitor() {
 
         log(`iMessage IN: "${msg.text}"`);
         addMessage(state, 'imessage', 'in', msg.text);
+        try { if (db) db.logMessage('imessage', 'in', msg.text); } catch (e) { console.error('DB log failed:', e.message); }
         state.channels.imessage.messagesHandled++;
         updateChannelStatus(state, 'imessage', 'active');
         saveState(state);
@@ -1665,6 +1850,7 @@ async function emailMonitor() {
           const userText = body || subject;
           log(`Email IN: "${subject}" — "${userText.slice(0, 200)}"`);
           addMessage(state, 'email', 'in', `[${subject}] ${userText.slice(0, 500)}`);
+          try { if (db) db.logMessage('email', 'in', `[${subject}] ${userText.slice(0, 500)}`); } catch (e) { console.error('DB log failed:', e.message); }
           updateChannelStatus(state, 'email', 'active');
           state.channels.email.messagesHandled++;
           saveState(state);
@@ -1898,7 +2084,7 @@ setInterval(() => {
         if (t <= 5) {
           // Panic — all channels
           sendIMessage(`BATTERY CRITICAL: ${pct}%! Plug in the MacBook NOW!`);
-          sendEmail('9 ALERT — Battery Critical', `MacBook battery at ${pct}%. Everything will shut down if not plugged in immediately.`);
+          sendEmail('9 ALERT — Battery Critical', `MacBook battery at ${pct}%. Everything will shut down if not plugged in immediately.`, { from: '9enterprises' });
         }
       }
     }
@@ -1952,7 +2138,8 @@ async function probeApiHealth() {
         // API is down — alert on ALL channels that don't need API
         sendIMessage(`[9 URGENT] Claude API is down: ${result.error.message}. I can't respond intelligently until this is fixed. Check billing at console.anthropic.com/settings/billing or check if the key is still valid.`);
         sendEmail('[9 URGENT] Claude API Down',
-          `The Claude API has failed ${apiConsecutiveFailures} consecutive health checks.\n\nError: ${result.error.message}\n\nI can still receive your messages on all channels but cannot respond intelligently until the API is restored.\n\nCheck: console.anthropic.com/settings/billing\n\n— 9`);
+          `The Claude API has failed ${apiConsecutiveFailures} consecutive health checks.\n\nError: ${result.error.message}\n\nI can still receive your messages on all channels but cannot respond intelligently until the API is restored.\n\nCheck: console.anthropic.com/settings/billing\n\n— 9`,
+          { from: '9enterprises' });
         // Telegram too (even though it uses API, the send function is just HTTP)
         sendTelegram(`OC: API is down: ${result.error.message}. I can receive messages but can't think. Check billing at console.anthropic.com/settings/billing`).catch(() => {});
         apiAlertSent = true;
