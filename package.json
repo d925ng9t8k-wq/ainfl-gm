@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.101.1",
     "better-sqlite3": "^12.8.0",
     "dominos": "^3.3.1",
+    "dotenv": "^17.4.0",
     "html-to-image": "^1.11.13",
     "nodemailer": "^8.0.4",
     "pg": "^8.20.0",
