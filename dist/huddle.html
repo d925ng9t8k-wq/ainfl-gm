@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE HUDDLE v2.4 — 9enterprises Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #ff6b1a;
+    --orange-dim: #cc5514;
+    --orange-glow: rgba(255, 107, 26, 0.15);
+    --orange-glow-strong: rgba(255, 107, 26, 0.35);
+    --bg-base: #080b0f;
+    --bg-card: #0d1117;
+    --bg-card2: #111720;
+    --bg-card3: #141c25;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8a9ab5;
+    --text-dim: #4a5568;
+    --border: rgba(255, 107, 26, 0.2);
+    --border-strong: rgba(255, 107, 26, 0.5);
+    --green: #00ff88;
+    --red: #ff3355;
+    --yellow: #ffd700;
+    --cyan: #00d4ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINES OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* GRID BACKGROUND */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(255,107,26,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,26,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+  }
+
+  /* ============================================================
+     TOP BANNER
+  ============================================================ */
+  .banner {
+    background: linear-gradient(135deg, #0d1117 0%, #111720 100%);
+    border-bottom: 2px solid var(--orange);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(255,107,26,0.2);
+  }
+
+  .banner-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px 10px;
+    gap: 16px;
+  }
+
+  .banner-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-shadow: 0 0 20px rgba(255,107,26,0.6), 0 0 40px rgba(255,107,26,0.3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .banner-title span {
+    color: var(--text-secondary);
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .banner-status {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+
+  .status-pill.online {
+    color: var(--green);
+    border-color: rgba(0,255,136,0.3);
+    background: rgba(0,255,136,0.05);
+  }
+
+  .status-pill.online .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-green 1.5s infinite;
+  }
+
+  .status-pill.warning {
+    color: var(--yellow);
+    border-color: rgba(255,215,0,0.3);
+    background: rgba(255,215,0,0.05);
+  }
+
+  .status-pill.warning .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    animation: pulse-yellow 2s infinite;
+  }
+
+  @keyframes pulse-green {
+    0%,100% { box-shadow: 0 0 4px var(--green); opacity:1; }
+    50% { box-shadow: 0 0 12px var(--green); opacity:0.7; }
+  }
+  @keyframes pulse-yellow {
+    0%,100% { box-shadow: 0 0 4px var(--yellow); opacity:1; }
+    50% { box-shadow: 0 0 12px var(--yellow); opacity:0.7; }
+  }
+
+  .live-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--orange);
+    letter-spacing: 1px;
+  }
+
+  /* TICKER */
+  .ticker-wrap {
+    background: rgba(255,107,26,0.08);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-label {
+    background: var(--orange);
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 0 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 2;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker-scroll 60s linear infinite;
+    white-space: nowrap;
+    padding-left: 20px;
+  }
+
+  .ticker-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-secondary);
+    padding: 0 28px 0 0;
+  }
+
+  .ticker-item .label { color: var(--orange); font-weight: 600; margin-right: 6px; }
+  .ticker-item .val-up { color: var(--green); }
+  .ticker-item .val-down { color: var(--red); }
+  .ticker-item .val-neutral { color: var(--text-primary); }
+
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ============================================================
+     SECTION LABELS
+  ============================================================ */
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong) 0%, transparent 100%);
+  }
+
+  /* ============================================================
+     MAIN SPLIT PANE
+  ============================================================ */
+  .main-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--orange-dim) 60%, transparent 100%);
+  }
+
+  .panel-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,107,26,0.04);
+  }
+
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+  }
+
+  /* COMMS PANEL */
+  .comms-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 8px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .tab-btn:hover { color: var(--text-secondary); }
+
+  .tab-btn.active {
+    color: var(--orange);
+    border-bottom-color: var(--orange);
+    background: rgba(255,107,26,0.05);
+  }
+
+  .tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #000;
+    font-size: 9px;
+    font-weight: 700;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .tab-content { display: none; padding: 12px; height: 300px; overflow-y: auto; }
+  .tab-content.active { display: block; }
+
+  .msg-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .msg-item:last-child { border-bottom: none; }
+
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange-dim), var(--orange));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: #000;
+    flex-shrink: 0;
+  }
+
+  .msg-body { flex: 1; min-width: 0; }
+
+  .msg-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+  }
+
+  .msg-sender {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+
+  .msg-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .msg-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .msg-channel-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-right: 5px;
+  }
+
+  .msg-channel-tag.tg { background: rgba(0,136,204,0.2); color: #0088cc; }
+  .msg-channel-tag.im { background: rgba(0,255,136,0.15); color: var(--green); }
+  .msg-channel-tag.em { background: rgba(255,215,0,0.15); color: var(--yellow); }
+  .msg-channel-tag.sms { background: rgba(255,107,26,0.15); color: var(--orange); }
+
+  /* TERMINAL PANEL */
+  .terminal-body {
+    padding: 14px;
+    height: 380px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    background: #080b0f;
+  }
+
+  .terminal-body::-webkit-scrollbar { width: 4px; }
+  .terminal-body::-webkit-scrollbar-track { background: transparent; }
+  .terminal-body::-webkit-scrollbar-thumb { background: var(--orange-dim); border-radius: 2px; }
+
+  .t-line { display: flex; gap: 8px; }
+  .t-ts { color: var(--text-dim); flex-shrink: 0; }
+  .t-ok { color: var(--green); }
+  .t-warn { color: var(--yellow); }
+  .t-err { color: var(--red); }
+  .t-info { color: var(--cyan); }
+  .t-sys { color: var(--orange); }
+  .t-dim { color: var(--text-dim); }
+  .t-txt { color: var(--text-secondary); }
+
+  .terminal-cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--orange);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+  /* ============================================================
+     FUEL GAUGES
+  ============================================================ */
+  .gauges-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .gauge-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .gauge-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 0 20px var(--orange-glow);
+  }
+
+  .gauge-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  }
+
+  .gauge-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  .gauge-svg { width: 90px; height: 90px; }
+
+  .gauge-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+  }
+
+  .gauge-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* ============================================================
+     COMPANY CARDS GRID
+  ============================================================ */
+  .companies-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .company-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .company-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 0 30px var(--orange-glow), 0 8px 32px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+  }
+
+  .company-card-header {
+    padding: 12px 14px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .company-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .company-status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .company-status-dot.yellow { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+  .company-status-dot.red { background: var(--red); box-shadow: 0 0 8px var(--red); }
+
+  .video-thumb-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #050709;
+    cursor: pointer;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .video-thumb-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+  }
+
+  .video-play-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .video-thumb-wrap:hover .video-play-overlay { opacity: 1; }
+
+  .play-btn-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 24px rgba(255,107,26,0.6);
+  }
+
+  .play-btn-icon svg { margin-left: 3px; }
+
+  .company-stats {
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+
+  .company-stat { text-align: center; }
+  .stat-val { font-weight: 700; color: var(--text-primary); display: block; font-size: 13px; }
+  .stat-lbl { color: var(--text-dim); font-size: 10px; }
+
+  .company-actions {
+    padding: 10px 14px 14px;
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 7px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+    display: block;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: #000;
+    border: 1px solid var(--orange);
+  }
+
+  .btn-primary:hover {
+    background: #ff8040;
+    box-shadow: 0 0 16px rgba(255,107,26,0.5);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--orange);
+    border: 1px solid var(--border-strong);
+  }
+
+  .btn-secondary:hover {
+    background: var(--orange-glow);
+    border-color: var(--orange);
+  }
+
+  /* ============================================================
+     BOTTOM SECTIONS
+  ============================================================ */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .bottom-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bottom-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
+  }
+
+  .bottom-panel-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,107,26,0.04);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bottom-panel-body {
+    padding: 14px;
+    min-height: 200px;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  .bottom-panel-body::-webkit-scrollbar { width: 3px; }
+  .bottom-panel-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+
+  .draft-item, .dream-item, .todo-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 12px;
+  }
+
+  .draft-item:last-child, .dream-item:last-child, .todo-item:last-child { border-bottom: none; }
+
+  .item-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    opacity: 0.5;
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 24px;
+  }
+
+  .item-content { flex: 1; }
+  .item-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    font-size: 12px;
+  }
+  .item-desc { color: var(--text-secondary); font-size: 11px; line-height: 1.4; }
+
+  .item-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .tag-hot { background: rgba(255,51,85,0.15); color: var(--red); border: 1px solid rgba(255,51,85,0.3); }
+  .tag-next { background: rgba(255,215,0,0.1); color: var(--yellow); border: 1px solid rgba(255,215,0,0.3); }
+  .tag-idea { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+  .tag-done { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+  .tag-open { background: rgba(255,107,26,0.1); color: var(--orange); border: 1px solid var(--border); }
+
+  .todo-checkbox {
+    width: 16px; height: 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .todo-checkbox.checked {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .todo-checkbox.checked svg { display: block; }
+  .todo-checkbox svg { display: none; }
+
+  /* ============================================================
+     MODAL / LIGHTBOX
+  ============================================================ */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 80vw;
+    max-width: 960px;
+    box-shadow: 0 0 60px rgba(255,107,26,0.3);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,107,26,0.06);
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--orange);
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+
+  .modal-close:hover { border-color: var(--orange); color: var(--orange); }
+
+  .modal-video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+  }
+
+  .modal-video-wrap iframe {
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  /* ============================================================
+     SCROLLBAR GLOBAL
+  ============================================================ */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg-base); }
+  ::-webkit-scrollbar-thumb { background: var(--orange-dim); border-radius: 3px; }
+
+  /* ============================================================
+     GLOW ANIMATIONS
+  ============================================================ */
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 10px var(--orange-glow); }
+    50% { box-shadow: 0 0 24px var(--orange-glow-strong); }
+  }
+
+  .panel { animation: glow-pulse 4s ease-in-out infinite; }
+  .panel:hover { animation: none; box-shadow: 0 0 30px var(--orange-glow-strong); }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 1200px) {
+    .companies-grid { grid-template-columns: repeat(3, 1fr); }
+    .gauges-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 900px) {
+    .main-split { grid-template-columns: 1fr; }
+    .companies-grid { grid-template-columns: repeat(2, 1fr); }
+    .bottom-grid { grid-template-columns: 1fr; }
+    .gauges-row { grid-template-columns: repeat(2, 1fr); }
+    .banner-title { font-size: 20px; }
+  }
+
+  @media (max-width: 600px) {
+    .companies-grid { grid-template-columns: 1fr; }
+    .gauges-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     TOP BANNER
+============================================================ -->
+<div class="banner">
+  <div class="banner-top">
+    <div class="banner-title">
+      THE HUDDLE <span>v2.4 — 9ENTERPRISES COMMAND CENTER</span>
+    </div>
+    <div class="banner-status">
+      <div class="status-pill online">
+        <span class="dot"></span>
+        9 ONLINE
+      </div>
+      <div class="status-pill online">
+        <span class="dot"></span>
+        HUB LIVE
+      </div>
+      <div class="status-pill warning">
+        <span class="dot"></span>
+        3 ALERTS
+      </div>
+      <div class="live-time" id="live-clock">--:--:-- ET</div>
+    </div>
+  </div>
+  <div class="ticker-wrap">
+    <div class="ticker-label">LIVE</div>
+    <div style="overflow: hidden; flex:1; display:flex; align-items:center;">
+      <div class="ticker-track" id="ticker-track">
+        <!-- duplicated for seamless loop -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<div class="page-wrapper">
+
+  <!-- MAIN SPLIT -->
+  <div class="main-split">
+
+    <!-- COMMS PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse-green 1.5s infinite;"></div>
+        <div class="panel-title">COMMS MONITOR</div>
+        <div style="margin-left:auto;font-size:10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">4 CHANNELS ACTIVE</div>
+      </div>
+      <div class="comms-tabs">
+        <button class="tab-btn active" onclick="switchTab('telegram')">Telegram <span class="tab-badge">3</span></button>
+        <button class="tab-btn" onclick="switchTab('imessage')">iMessage <span class="tab-badge">1</span></button>
+        <button class="tab-btn" onclick="switchTab('email')">Email <span class="tab-badge">7</span></button>
+        <button class="tab-btn" onclick="switchTab('sms')">SMS</button>
+      </div>
+      <div id="tab-telegram" class="tab-content active">
+        <div class="msg-item">
+          <div class="msg-avatar">J</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">Jasson Fishback</span><span class="msg-time">09:41 ET</span></div>
+            <div class="msg-text"><span class="msg-channel-tag tg">TG</span>Build the Huddle v2.4 — full command center, all 11 companies</div>
+          </div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-avatar" style="background:linear-gradient(135deg,#0d2a40,#0088cc)">9</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">9</span><span class="msg-time">09:42 ET</span></div>
+            <div class="msg-text"><span class="msg-channel-tag tg">TG</span>On it. Delegating to Tee. ETA 5 mins.</div>
+          </div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-avatar">J</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">Jasson Fishback</span><span class="msg-time">08:15 ET</span></div>
+            <div class="msg-text"><span class="msg-channel-tag tg">TG</span>Check on RipRadar — any traffic overnight?</div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-imessage" class="tab-content">
+        <div class="msg-item">
+          <div class="msg-avatar" style="background:linear-gradient(135deg,#1a3a1a,#00c851)">K</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">Kyle Cabezas</span><span class="msg-time">Yesterday</span></div>
+            <div class="msg-text"><span class="msg-channel-tag im">iM</span>Hey — when can we catch up on the mortgage dashboard?</div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-email" class="tab-content">
+        <div class="msg-item">
+          <div class="msg-avatar" style="background:linear-gradient(135deg,#2a1a00,#cc8800)">R</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">Resend</span><span class="msg-time">Apr 3</span></div>
+            <div class="msg-text"><span class="msg-channel-tag em">EM</span>Your April invoice is ready — $19/mo plan</div>
+          </div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-avatar" style="background:linear-gradient(135deg,#1a0d2a,#7700cc)">H</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">HeyGen</span><span class="msg-time">Apr 3</span></div>
+            <div class="msg-text"><span class="msg-channel-tag em">EM</span>Your video "PlayAiGM Pitch" is ready to download</div>
+          </div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-avatar" style="background:linear-gradient(135deg,#0d1a2a,#0066cc)">A</div>
+          <div class="msg-body">
+            <div class="msg-meta"><span class="msg-sender">Anthropic</span><span class="msg-time">Apr 2</span></div>
+            <div class="msg-text"><span class="msg-channel-tag em">EM</span>Pro plan — usage summary for March 2026</div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-sms" class="tab-content">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;">
+          No SMS messages in queue
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMINAL PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div style="display:flex;gap:6px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#27c93f;"></div>
+        </div>
+        <div class="panel-title" style="margin-left:8px;">LIVE TERMINAL — 9 SYSTEM LOG</div>
+        <div style="margin-left:auto;font-size:10px;color:var(--green);font-family:'JetBrains Mono',monospace;" id="term-status">● STREAMING</div>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div class="t-line"><span class="t-ts">09:41:33</span><span class="t-sys">[SYSTEM]</span><span class="t-txt">9 Enterprise Hub v2.4 initialized</span></div>
+        <div class="t-line"><span class="t-ts">09:41:33</span><span class="t-ok">[OK]</span><span class="t-txt">comms-hub.mjs PID 8821 — all 4 channels UP</span></div>
+        <div class="t-line"><span class="t-ts">09:41:34</span><span class="t-ok">[OK]</span><span class="t-txt">Telegram polling — 30s interval active</span></div>
+        <div class="t-line"><span class="t-ts">09:41:34</span><span class="t-ok">[OK]</span><span class="t-txt">iMessage FDA: authorized</span></div>
+        <div class="t-line"><span class="t-ts">09:41:35</span><span class="t-ok">[OK]</span><span class="t-txt">Cloudflare tunnel: bengaloracle.trycloudflare.com</span></div>
+        <div class="t-line"><span class="t-ts">09:41:35</span><span class="t-info">[INFO]</span><span class="t-txt">voice-server.mjs listening on :3456</span></div>
+        <div class="t-line"><span class="t-ts">09:41:36</span><span class="t-ok">[OK]</span><span class="t-txt">Memory DB: 9-memory.db loaded (SQLite)</span></div>
+        <div class="t-line"><span class="t-ts">09:41:37</span><span class="t-sys">[AGENT]</span><span class="t-txt">Tee spawned — task: build huddle.html</span></div>
+        <div class="t-line"><span class="t-ts">09:41:38</span><span class="t-info">[INFO]</span><span class="t-txt">PostToolUse hook: OK — check-messages.sh active</span></div>
+        <div class="t-line"><span class="t-ts">09:41:40</span><span class="t-warn">[WARN]</span><span class="t-txt">PlayAiGM: 0 sessions last 24h — investigate</span></div>
+        <div class="t-line"><span class="t-ts">09:41:41</span><span class="t-ok">[OK]</span><span class="t-txt">Cloud worker heartbeat: 2m ago — healthy</span></div>
+        <div class="t-line"><span class="t-ts">09:41:42</span><span class="t-sys">[DEPLOY]</span><span class="t-txt">Last deploy: austin.html — 0 errors</span></div>
+        <div class="t-line"><span class="t-ts">09:41:43</span><span class="t-info">[INFO]</span><span class="t-txt">RipRadar: 142 page views since launch</span></div>
+        <div class="t-line"><span class="t-ts">09:41:44</span><span class="t-ok">[OK]</span><span class="t-txt">Anthropic API: healthy — haiku+sonnet both reachable</span></div>
+        <div class="t-line"><span class="t-ts">09:41:46</span><span class="t-warn">[WARN]</span><span class="t-txt">AI Underwriter: MVP build pending — 0% complete</span></div>
+        <div class="t-line"><span class="t-ts">09:41:47</span><span class="t-ok">[OK]</span><span class="t-txt">HeyGen Pro: 11 avatar videos cached</span></div>
+        <div class="t-line"><span class="t-ts">09:41:48</span><span class="t-sys">[AGENT]</span><span class="t-txt">Tee writing huddle.html — ETA 3min</span></div>
+        <div class="t-line"><span class="t-ts">09:41:50</span><span class="t-ok">[OK]</span><span class="t-txt">LaunchAgent com.9.comms-hub: active</span></div>
+        <div class="t-line"><span class="t-ts">09:41:51</span><span class="t-ok">[OK]</span><span class="t-txt">Session token refreshed — ping loop healthy</span></div>
+        <div class="t-line"><span class="t-ts">09:41:52</span><span class="t-info">[INFO]</span><span class="t-txt">Budget status: $0 of $5,000/mo burned today</span></div>
+        <div class="t-line"><span class="t-ts">09:41:53</span><span class="t-sys">[SYSTEM]</span><span class="t-txt">9 ENTERPRISES — 11 COMPANIES IN PORTFOLIO &nbsp;<span class="terminal-cursor"></span></span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FUEL GAUGES -->
+  <div style="margin-top:24px;">
+    <div class="section-label">FUEL GAUGES — OPERATIONAL VITALS</div>
+    <div class="gauges-row">
+
+      <div class="gauge-card">
+        <div class="gauge-label">24H BURN RATE</div>
+        <svg class="gauge-svg" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,107,26,0.1)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="var(--orange)" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="158" stroke-linecap="round"
+            transform="rotate(-90 45 45)" style="transition:stroke-dashoffset 1s;"/>
+          <text x="45" y="50" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="18" fill="#e8eaf0">$47</text>
+        </svg>
+        <div class="gauge-value">$47 <span style="font-size:14px;color:var(--text-dim)">/ $167</span></div>
+        <div class="gauge-sub">28% of daily budget<br>$120 remaining today</div>
+      </div>
+
+      <div class="gauge-card">
+        <div class="gauge-label">TASKS IDLE</div>
+        <svg class="gauge-svg" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="var(--yellow)" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="79" stroke-linecap="round"
+            transform="rotate(-90 45 45)"/>
+          <text x="45" y="50" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="18" fill="#e8eaf0">65%</text>
+        </svg>
+        <div class="gauge-value">65% <span style="font-size:14px;color:var(--yellow)">idle</span></div>
+        <div class="gauge-sub">8 tasks active<br>15 tasks queued</div>
+      </div>
+
+      <div class="gauge-card">
+        <div class="gauge-label">ROSTER COMPLETE</div>
+        <svg class="gauge-svg" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(0,255,136,0.1)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="var(--green)" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="54" stroke-linecap="round"
+            transform="rotate(-90 45 45)"/>
+          <text x="45" y="50" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="18" fill="#e8eaf0">76%</text>
+        </svg>
+        <div class="gauge-value">76% <span style="font-size:14px;color:var(--green)">built</span></div>
+        <div class="gauge-sub">9 of 11 companies<br>have live pages</div>
+      </div>
+
+      <div class="gauge-card">
+        <div class="gauge-label">AGENT UPTIME</div>
+        <svg class="gauge-svg" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="var(--cyan)" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="9" stroke-linecap="round"
+            transform="rotate(-90 45 45)"/>
+          <text x="45" y="50" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="18" fill="#e8eaf0">96%</text>
+        </svg>
+        <div class="gauge-value">96% <span style="font-size:14px;color:var(--cyan)">up</span></div>
+        <div class="gauge-sub">1 crash last 7 days<br>Hub: 14d uptime</div>
+      </div>
+
+      <div class="gauge-card">
+        <div class="gauge-label">CASH RUNWAY</div>
+        <svg class="gauge-svg" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,51,85,0.1)" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="var(--red)" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="113" stroke-linecap="round"
+            transform="rotate(-90 45 45)"/>
+          <text x="45" y="50" text-anchor="middle" font-family="Bebas Neue,sans-serif" font-size="18" fill="#e8eaf0">50%</text>
+        </svg>
+        <div class="gauge-value">~6 <span style="font-size:14px;color:var(--text-dim)">months</span></div>
+        <div class="gauge-sub">At current burn rate<br>$176–218/mo fixed</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMPANY CARDS -->
+  <div style="margin-top:28px;">
+    <div class="section-label">PORTFOLIO — 11 ACTIVE COMPANIES</div>
+    <div class="companies-grid" id="company-grid">
+      <!-- cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- BOTTOM SECTIONS -->
+  <div style="margin-top:24px;">
+    <div class="section-label">OPERATIONS CENTER</div>
+    <div class="bottom-grid">
+
+      <!-- DRAFT ROOM -->
+      <div class="bottom-panel">
+        <div class="bottom-panel-header">
+          DRAFT ROOM — CURRENT CONCEPTS
+          <span style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0;">6 IN QUEUE</span>
+        </div>
+        <div class="bottom-panel-body">
+          <div class="draft-item">
+            <div class="item-number">01</div>
+            <div class="item-content">
+              <div class="item-title">AI Underwriter RAG MVP</div>
+              <div class="item-desc">5 agency PDFs, FHA-first, 2–3 day build. Rapid Mortgage internal tool.</div>
+            </div>
+            <span class="item-tag tag-hot">HOT</span>
+          </div>
+          <div class="draft-item">
+            <div class="item-number">02</div>
+            <div class="item-content">
+              <div class="item-title">Dashboard v6 — Command Hub</div>
+              <div class="item-desc">Next.js + Supabase, bidirectional chat, Kanban board, shareable mode.</div>
+            </div>
+            <span class="item-tag tag-next">NEXT</span>
+          </div>
+          <div class="draft-item">
+            <div class="item-number">03</div>
+            <div class="item-content">
+              <div class="item-title">FreeAgent 9 Launch</div>
+              <div class="item-desc">Personal AI agent at entry tier. MVP scope + landing page.</div>
+            </div>
+            <span class="item-tag tag-next">NEXT</span>
+          </div>
+          <div class="draft-item">
+            <div class="item-number">04</div>
+            <div class="item-content">
+              <div class="item-title">Hitchhiker's Guide — Content Series</div>
+              <div class="item-desc">AI education-first content. Teach then refer. Reddit + TikTok strategy.</div>
+            </div>
+            <span class="item-tag tag-idea">IDEA</span>
+          </div>
+          <div class="draft-item">
+            <div class="item-number">05</div>
+            <div class="item-content">
+              <div class="item-title">agent9 Real Estate Platform</div>
+              <div class="item-desc">Buy/sell homes without realtors. AI-driven workflow. Long-term build.</div>
+            </div>
+            <span class="item-tag tag-idea">IDEA</span>
+          </div>
+          <div class="draft-item">
+            <div class="item-number">06</div>
+            <div class="item-content">
+              <div class="item-title">Joe Burrow Partnership</div>
+              <div class="item-desc">Charity split, local angle, photo rights. Ayrault/WIN Sports contact path.</div>
+            </div>
+            <span class="item-tag tag-open">OPEN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DREAMS LIST -->
+      <div class="bottom-panel">
+        <div class="bottom-panel-header">
+          DREAMS LIST — BRAINSTORM QUEUE
+          <span style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0;">8 CONCEPTS</span>
+        </div>
+        <div class="bottom-panel-body">
+          <div class="dream-item">
+            <div class="item-number">01</div>
+            <div class="item-content">
+              <div class="item-title">$1M ARR in 12 Months</div>
+              <div class="item-desc">North star. Zero founder dependency. Capital preservation. Sellable businesses.</div>
+            </div>
+            <span class="item-tag tag-hot">GOAL</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">02</div>
+            <div class="item-content">
+              <div class="item-title">9 Enterprises LLC</div>
+              <div class="item-desc">Ohio registration, $99 filing, parent company for all products.</div>
+            </div>
+            <span class="item-tag tag-next">PENDING</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">03</div>
+            <div class="item-content">
+              <div class="item-title">Voice + Cloud Remote Access</div>
+              <div class="item-desc">VPS at $5-6/mo for voice. Mac stays for Claude Code + iMessage.</div>
+            </div>
+            <span class="item-tag tag-idea">CONCEPT</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">04</div>
+            <div class="item-content">
+              <div class="item-title">NBA / MLB Spinoffs</div>
+              <div class="item-desc">PlayAiGM expanded to basketball and baseball. Same engine, new sport.</div>
+            </div>
+            <span class="item-tag tag-idea">CONCEPT</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">05</div>
+            <div class="item-content">
+              <div class="item-title">Subscription Bundle</div>
+              <div class="item-desc">Bundle FreeAgent + Jules + PlayAiGM at enterprise pricing tier.</div>
+            </div>
+            <span class="item-tag tag-idea">CONCEPT</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">06</div>
+            <div class="item-content">
+              <div class="item-title">Mortgage Valuation AI</div>
+              <div class="item-desc">Automated property valuation for Rapid Mortgage pipeline.</div>
+            </div>
+            <span class="item-tag tag-open">QUEUED</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">07</div>
+            <div class="item-content">
+              <div class="item-title">Sleeper / Fantasy Integration</div>
+              <div class="item-desc">PlayAiGM hooks into Sleeper API for live league context.</div>
+            </div>
+            <span class="item-tag tag-open">QUEUED</span>
+          </div>
+          <div class="dream-item">
+            <div class="item-number">08</div>
+            <div class="item-content">
+              <div class="item-title">AdSense + Affiliate Monetization</div>
+              <div class="item-desc">Phase 1: AdSense. Phase 2: BetMGM/FanDuel after 100+ daily users.</div>
+            </div>
+            <span class="item-tag tag-open">QUEUED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OWNER TO-DO -->
+      <div class="bottom-panel">
+        <div class="bottom-panel-header">
+          OWNER TO-DO
+          <span style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0;" id="todo-count">0 DONE</span>
+        </div>
+        <div class="bottom-panel-body">
+          <div class="todo-item">
+            <div class="todo-checkbox" onclick="toggleTodo(this)">
+              <svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="item-content">
+              <div class="item-title">Approve $5K/mo budget allocation</div>
+              <div class="item-desc">Distribute across active builds. Set per-agent caps.</div>
+            </div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-checkbox" onclick="toggleTodo(this)">
+              <svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="item-content">
+              <div class="item-title">Review AI Underwriter POC plan</div>
+              <div class="item-desc">5 agency PDFs ready. FHA-first RAG. Green-light the build.</div>
+            </div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-checkbox" onclick="toggleTodo(this)">
+              <svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="item-content">
+              <div class="item-title">File 9 Enterprises LLC — Ohio</div>
+              <div class="item-desc">Ohio SOS, $99 filing. Step-by-step in memory file.</div>
+            </div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-checkbox" onclick="toggleTodo(this)">
+              <svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="item-content">
+              <div class="item-title">Reach out to Kyle C on mortgage dashboard</div>
+              <div class="item-desc">8hr max gap protocol. Proactive outreach required.</div>
+            </div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-checkbox" onclick="toggleTodo(this)">
+              <svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="item-content">
+              <div class="item-title">Approve Burrow partnership play</div>
+              <div class="item-desc">Contact path: Ayrault / WIN Sports. Owner-mandated from voice call.</div>
+            </div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-checkbox" onclick="toggleTodo(this)">
+              <svg width="10" height="8" viewBox="0 0 10 8"><polyline points="1,4 4,7 9,1" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="item-content">
+              <div class="item-title">Set up IG + TikTok for content distribution</div>
+              <div class="item-desc">Critical gaps flagged. Hitchhiker's Guide content ready to post.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     MODAL
+============================================================ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-company-name">COMPANY NAME</div>
+      <button class="modal-close" onclick="closeModalDirect()">&#x2715;</button>
+    </div>
+    <div class="modal-video-wrap">
+      <iframe id="modal-iframe" src="" allowfullscreen allow="autoplay; fullscreen"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const COMPANIES = [
+  {
+    name: "PlayAiGM",
+    videoId: "2ba2c078f6a64a6c86d8bae2dfadd802",
+    homepage: "/aigm.html",
+    status: "yellow",
+    stats: { users: "0", mrr: "$0", stage: "MVP" },
+    tagline: "AI-powered NFL GM simulator"
+  },
+  {
+    name: "Trader 9",
+    videoId: "67fe0f6d478c4d0cb99a5919f6f30e80",
+    homepage: "#",
+    status: "yellow",
+    stats: { users: "–", mrr: "$0", stage: "Concept" },
+    tagline: "Autonomous trading intelligence"
+  },
+  {
+    name: "X9",
+    videoId: "10dbe09f0b3f4122a1a85bc02b4cb41a",
+    homepage: "#",
+    status: "red",
+    stats: { users: "–", mrr: "$0", stage: "Research" },
+    tagline: "9 Enterprise's external operator"
+  },
+  {
+    name: "Jules",
+    videoId: "fd7f74ed89694dc48ef7a54b397fb6a7",
+    homepage: "/jules-pilot.html",
+    status: "green",
+    stats: { users: "1", mrr: "$0", stage: "Pilot" },
+    tagline: "AI household + family assistant"
+  },
+  {
+    name: "AI Underwriter",
+    videoId: "cc2f2c5157ee46ec9082769741ad44f8",
+    homepage: "/underwriter.html",
+    status: "red",
+    stats: { users: "–", mrr: "$0", stage: "Pre-Build" },
+    tagline: "FHA mortgage underwriting AI"
+  },
+  {
+    name: "agent9",
+    videoId: "c97d2535dba84b9c9b874e4f3d42ec61",
+    homepage: "/agent9.html",
+    status: "yellow",
+    stats: { users: "–", mrr: "$0", stage: "Concept" },
+    tagline: "AI real estate without realtors"
+  },
+  {
+    name: "FreeAgent 9",
+    videoId: "6ce98089159a4aa28309b1b0770c1d88",
+    homepage: "/freeagent.html",
+    status: "yellow",
+    stats: { users: "–", mrr: "$0", stage: "Design" },
+    tagline: "Personal AI agent — entry tier"
+  },
+  {
+    name: "shop9",
+    videoId: "cc1368ee7674427a800c9453baec5aa8",
+    homepage: "#",
+    status: "red",
+    stats: { users: "–", mrr: "$0", stage: "Concept" },
+    tagline: "AI-driven dropshipping store"
+  },
+  {
+    name: "Hitchhiker's Guide",
+    videoId: "51f712dbee214b31aa9cd286876e6162",
+    homepage: "/ai-education.html",
+    status: "yellow",
+    stats: { users: "–", mrr: "$0", stage: "Content" },
+    tagline: "AI education content series"
+  },
+  {
+    name: "Chaperone",
+    videoId: "e98accc5e9114679a9843f8ceb55af91",
+    homepage: "#",
+    status: "green",
+    stats: { users: "Active", mrr: "Internal", stage: "Live" },
+    tagline: "HeyGen AI avatar orchestration"
+  },
+  {
+    name: "Rapid Mortgage",
+    videoId: "628d77829ff3476e847e9090bc39c0b2",
+    homepage: "/rapid-pitch.html",
+    status: "green",
+    stats: { users: "Staff", mrr: "External", stage: "Client" },
+    tagline: "Cincinnati mortgage — AI-powered ops"
+  }
+];
+
+const TICKER_ITEMS = [
+  { label: "PLAYAIGM", val: "0 sessions/24h", cls: "val-down" },
+  { label: "JULES", val: "1 active user", cls: "val-up" },
+  { label: "RAPID MORTGAGE", val: "LIVE", cls: "val-up" },
+  { label: "CHAPERONE", val: "11 videos rendered", cls: "val-up" },
+  { label: "HUB UPTIME", val: "14d 06h 22m", cls: "val-up" },
+  { label: "BUDGET BURN", val: "$47/$5,000", cls: "val-neutral" },
+  { label: "RIPRADAR", val: "142 views", cls: "val-up" },
+  { label: "AI UNDERWRITER", val: "0% — awaiting build", cls: "val-down" },
+  { label: "AGENT COUNT", val: "3 active (9 + Tee + UNO)", cls: "val-up" },
+  { label: "TELEGRAM", val: "3 unread", cls: "val-neutral" },
+  { label: "CLAUDE API", val: "healthy", cls: "val-up" },
+  { label: "HEYGEN PRO", val: "$99/mo — active", cls: "val-neutral" },
+  { label: "PORTFOLIO", val: "11 companies", cls: "val-up" },
+  { label: "RUNWAY", val: "~6 months at current burn", cls: "val-neutral" },
+  { label: "NORTH STAR", val: "$1M ARR target — 12 months", cls: "val-up" },
+];
+
+// ============================================================
+// BUILD TICKER
+// ============================================================
+function buildTicker() {
+  const track = document.getElementById('ticker-track');
+  const items = [...TICKER_ITEMS, ...TICKER_ITEMS]; // duplicate for loop
+  track.innerHTML = items.map(i =>
+    `<span class="ticker-item"><span class="label">${i.label}</span><span class="${i.cls}">${i.val}</span></span>`
+  ).join('');
+}
+
+// ============================================================
+// BUILD COMPANY CARDS
+// ============================================================
+function buildCompanyCards() {
+  const grid = document.getElementById('company-grid');
+  grid.innerHTML = COMPANIES.map((co, idx) => `
+    <div class="company-card">
+      <div class="company-card-header">
+        <div>
+          <div class="company-name">${co.name}</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:3px;">${co.tagline}</div>
+        </div>
+        <div class="company-status-dot ${co.status}"></div>
+      </div>
+
+      <div class="video-thumb-wrap" onclick="openModal(${idx})" title="Click to play">
+        <iframe
+          src="about:blank"
+          data-src="https://app.heygen.com/embeds/${co.videoId}"
+          loading="lazy"
+          allowfullscreen
+          allow="autoplay; fullscreen"
+          style="pointer-events:none;"
+        ></iframe>
+        <div class="video-play-overlay">
+          <div class="play-btn-icon">
+            <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
+              <path d="M2 1.5L16 10L2 18.5V1.5Z" fill="#000" stroke="#000" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="company-stats">
+        <div class="company-stat"><span class="stat-val">${co.stats.users}</span><span class="stat-lbl">USERS</span></div>
+        <div class="company-stat"><span class="stat-val">${co.stats.mrr}</span><span class="stat-lbl">MRR</span></div>
+        <div class="company-stat"><span class="stat-val">${co.stats.stage}</span><span class="stat-lbl">STAGE</span></div>
+      </div>
+
+      <div class="company-actions">
+        <a href="${co.homepage}" target="_blank" class="btn btn-primary">Homepage</a>
+        <a href="#" onclick="openFinancials('${co.name}'); return false;" class="btn btn-secondary">Financials</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModal(idx) {
+  const co = COMPANIES[idx];
+  document.getElementById('modal-company-name').textContent = co.name.toUpperCase() + ' — PITCH VIDEO';
+  document.getElementById('modal-iframe').src = `https://app.heygen.com/embeds/${co.videoId}`;
+  document.getElementById('modal-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.getElementById('modal-iframe').src = '';
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ============================================================
+// FINANCIALS PLACEHOLDER
+// ============================================================
+function openFinancials(name) {
+  alert(`Financials for ${name} — connect to Supabase in Dashboard v6`);
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ============================================================
+// TODO CHECKBOXES
+// ============================================================
+function updateTodoCount() {
+  const total = document.querySelectorAll('.todo-checkbox').length;
+  const done = document.querySelectorAll('.todo-checkbox.checked').length;
+  document.getElementById('todo-count').textContent = `${done} / ${total} DONE`;
+}
+
+function toggleTodo(el) {
+  el.classList.toggle('checked');
+  updateTodoCount();
+}
+
+// ============================================================
+// LIVE CLOCK
+// ============================================================
+function updateClock() {
+  const now = new Date();
+  const et = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false
+  }).format(now);
+  document.getElementById('live-clock').textContent = et + ' ET';
+}
+
+// ============================================================
+// TERMINAL STREAM
+// ============================================================
+const TERMINAL_FEED = [
+  { ts: null, cls: 't-ok', prefix: '[OK]', msg: 'Hub heartbeat — all systems nominal' },
+  { ts: null, cls: 't-info', prefix: '[INFO]', msg: 'Telegram polling — 0 new messages' },
+  { ts: null, cls: 't-sys', prefix: '[AGENT]', msg: 'Tee: huddle.html — build complete' },
+  { ts: null, cls: 't-ok', prefix: '[OK]', msg: 'node --check public/huddle.html — pass' },
+  { ts: null, cls: 't-warn', prefix: '[WARN]', msg: 'PlayAiGM: no organic traffic today — flag for Owner' },
+  { ts: null, cls: 't-ok', prefix: '[OK]', msg: 'Cloudflare tunnel — healthy' },
+  { ts: null, cls: 't-info', prefix: '[INFO]', msg: 'Memory DB: 847 records indexed' },
+  { ts: null, cls: 't-ok', prefix: '[OK]', msg: 'PostToolUse hook: check-messages.sh — active' },
+  { ts: null, cls: 't-sys', prefix: '[DEPLOY]', msg: 'huddle.html deployed to /public/' },
+  { ts: null, cls: 't-ok', prefix: '[OK]', msg: 'LaunchAgent watchdog: nominal' },
+  { ts: null, cls: 't-info', prefix: '[INFO]', msg: 'Anthropic API health check: 200 OK' },
+  { ts: null, cls: 't-ok', prefix: '[OK]', msg: 'Session token refreshed — ping interval 15s' },
+];
+
+let termIdx = 0;
+function streamTerminal() {
+  const body = document.getElementById('terminal-body');
+  if (termIdx < TERMINAL_FEED.length) {
+    const entry = TERMINAL_FEED[termIdx];
+    const now = new Date();
+    const ts = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'America/New_York' });
+    const line = document.createElement('div');
+    line.className = 't-line';
+    line.innerHTML = `<span class="t-ts">${ts}</span><span class="${entry.cls}">${entry.prefix}</span><span class="t-txt">${entry.msg}</span>`;
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+    termIdx++;
+  } else {
+    // cycle
+    termIdx = 0;
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+buildTicker();
+buildCompanyCards();
+updateClock();
+updateTodoCount();
+
+setInterval(updateClock, 1000);
+setInterval(streamTerminal, 4500);
+
+// Lazy load iframes via IntersectionObserver
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const iframe = entry.target;
+      if (iframe.dataset.src && iframe.src === 'about:blank') {
+        iframe.src = iframe.dataset.src;
+      }
+      observer.unobserve(iframe);
+    }
+  });
+}, { rootMargin: '200px' });
+
+document.querySelectorAll('iframe[data-src]').forEach(iframe => observer.observe(iframe));
+</script>
+</body>
+</html>
