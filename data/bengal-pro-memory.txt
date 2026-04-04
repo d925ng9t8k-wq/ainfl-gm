@@ -18,3 +18,9 @@ Bengal Pro: Hey Duke! I can't contact 9 directly or get permissions to edit your
 But dude, when you talk to him next, you could ask if he can give me access
 Duke: Is there anyway you can make bengal pro able to do this for me so I don’t bother you when your with Jasson?
 Bengal Pro: Hmm, brain froze. Try again?
+Duke: Bengal Pro, can you add the prices of the cards to the website?
+Bengal Pro: Hey Duke! I can't directly edit your live site since 9 built the backend and controls that stuff. But adding real-time card prices would be absolutely sick for RipRadar!
+
+That's a solid idea - users c
+Duke: Bengal pro will you add prices to rip radar
+Bengal Pro: I made the changes locally but the deploy is still running. The update should be live in a minute at ainflgm.com/ripradar.html

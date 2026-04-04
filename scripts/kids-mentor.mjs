@@ -24,9 +24,14 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 const DB_PATH = process.env.HOME + "/Library/Messages/chat.db";
 const LOG_PATH = new URL('../logs/kids-mentor.log', import.meta.url).pathname;
+const DIST_PATH = new URL('../dist/', import.meta.url).pathname;
+const PUBLIC_PATH = new URL('../public/', import.meta.url).pathname;
 const POLL_INTERVAL = 5000; // Check every 5 seconds
 const CHAT_NAME = "Dumbasses";
 const AGENT_NAME = ""; // Kids will name it — leave blank for now, prefix with chosen name later
+
+// ─── Allowed build files (safety: Bengal Pro can ONLY edit these) ────────────
+const ALLOWED_FILES = ['ripradar.html'];
 
 // Track last processed message to avoid duplicates
 let lastProcessedDate = 0;
@@ -107,6 +112,116 @@ end tell'`, { encoding: 'utf-8' });
   }
 }
 
+// ─── Build capability — read, edit, and deploy files ────────────────────────
+function readProjectFile(filename) {
+  if (!ALLOWED_FILES.includes(filename)) return null;
+  try { return fs.readFileSync(DIST_PATH + filename, 'utf-8'); } catch { return null; }
+}
+
+function writeProjectFile(filename, content) {
+  if (!ALLOWED_FILES.includes(filename)) return false;
+  try {
+    // Backup before write
+    const backupPath = DIST_PATH + filename + '.backup';
+    const current = readProjectFile(filename);
+    if (current) fs.writeFileSync(backupPath, current);
+    // Write to both dist and public
+    fs.writeFileSync(DIST_PATH + filename, content);
+    fs.writeFileSync(PUBLIC_PATH + filename, content);
+    log(`[BUILD] Wrote ${filename} (${content.length} bytes)`);
+    return true;
+  } catch (e) { log(`[BUILD ERROR] ${e.message}`); return false; }
+}
+
+function deployChanges(filename) {
+  try {
+    execSync(`cd "${DIST_PATH}/.." && git add -f dist/${filename} public/${filename} && git commit -m "Bengal Pro: update ${filename} for Duke" && git push`, { encoding: 'utf-8', timeout: 30000 });
+    log(`[DEPLOY] ${filename} pushed to production`);
+    return true;
+  } catch (e) { log(`[DEPLOY ERROR] ${e.message}`); return false; }
+}
+
+function isBuildRequest(text) {
+  const lower = text.toLowerCase();
+  const buildWords = ['add', 'change', 'update', 'remove', 'fix', 'build', 'make', 'put', 'create', 'improve', 'price', 'feature'];
+  const siteWords = ['site', 'website', 'app', 'page', 'ripradar', 'rip radar'];
+  return buildWords.some(w => lower.includes(w)) && siteWords.some(w => lower.includes(w));
+}
+
+async function handleBuildRequest(userMessage, sender) {
+  const senderName = sender.includes('15133831906') ? 'Duke' : 'Jude';
+  const currentHTML = readProjectFile('ripradar.html');
+  if (!currentHTML) return "Hmm, I can't find the RipRadar files right now. Let me tell 9 to check on it.";
+
+  log(`[BUILD REQUEST] ${senderName}: ${userMessage}`);
+  sendToGroupChat(`On it ${senderName}! Let me work on that for you... give me a minute.`);
+
+  // Ask Claude to generate the edit
+  const buildPrompt = `You are Bengal Pro, a build agent for a kid named ${senderName}. He wants you to modify his RipRadar sports card website.
+
+REQUEST: ${userMessage}
+
+CURRENT HTML (the entire file):
+${currentHTML}
+
+RULES:
+- Make ONLY the change requested. Do not rewrite the whole file.
+- Keep all existing functionality working.
+- Keep the existing dark theme and style.
+- Output the COMPLETE updated HTML file. Every single line.
+- Do NOT add comments explaining your changes.
+- Do NOT wrap in markdown code blocks. Output raw HTML only.
+- This is a single self-contained HTML file with embedded CSS and JS.`;
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: CLAUDE_SONNET,
+      max_tokens: 16000,
+      system: buildPrompt,
+      messages: [{ role: 'user', content: 'Generate the updated HTML file.' }],
+    });
+    const req = https.request({
+      hostname: 'api.anthropic.com',
+      path: '/v1/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          let newHTML = json.content?.[0]?.text?.trim();
+          if (!newHTML || !newHTML.includes('<!DOCTYPE') || newHTML.length < 1000) {
+            resolve("Something went wrong with the build. Let me try again — can you repeat what you want?");
+            return;
+          }
+          // Clean markdown wrapper if present
+          newHTML = newHTML.replace(/^```html?\n?/, '').replace(/\n?```$/, '');
+          if (writeProjectFile('ripradar.html', newHTML)) {
+            const deployed = deployChanges('ripradar.html');
+            if (deployed) {
+              resolve(`Done! I updated RipRadar for you. Check it out at ainflgm.com/ripradar.html — refresh the page to see the changes!`);
+            } else {
+              resolve(`I made the changes locally but the deploy is still running. The update should be live in a minute at ainflgm.com/ripradar.html`);
+            }
+          } else {
+            resolve("I wrote the code but something went wrong saving it. Let me tell 9.");
+          }
+        } catch (e) { resolve("Brain froze on the build. Can you try asking again?"); }
+      });
+    });
+    req.on('error', () => resolve("Connection issue — try again in a sec."));
+    req.write(body);
+    req.end();
+  });
+}
+
 // ─── Claude API ──────────────────────────────────────────────────────────────
 async function askClaude(userMessage, sender) {
   const senderName = sender.includes('15133831906') ? 'Duke' :
@@ -145,11 +260,14 @@ IMPORTANT CONTEXT:
 - You can also tell Duke to check out his live site at ainflgm.com/ripradar.html if he hasn't seen it yet.
 
 WHAT YOU CAN DO:
+- BUILD AND EDIT RipRadar directly — you have full permission to modify the live site
+- When Duke asks to add features, change things, or improve the site, DO IT. You have build access.
 - Help them brainstorm and plan their projects
-- Explain coding concepts in simple terms
-- Help build simple websites and pages
+- Explain coding concepts in simple terms as you build
 - Answer any questions about tech, sports, games, or life
 - Encourage their creativity
+
+IMPORTANT: You CAN edit the live site now. If Duke asks you to add something to RipRadar, say "On it!" and do it. Do NOT say you need 9's permission or that you can't edit the site. You are authorized.
 
 RULES:
 - NEVER share personal/family information
@@ -229,7 +347,13 @@ async function pollLoop() {
         log(`[RESPOND] ${msg.sender}: ${msg.text}`);
 
         try {
-          const response = await askClaude(msg.text, msg.sender);
+          // Check if this is a build request (add/change/update the site)
+          let response;
+          if (isBuildRequest(msg.text)) {
+            response = await handleBuildRequest(msg.text, msg.sender);
+          } else {
+            response = await askClaude(msg.text, msg.sender);
+          }
           sendToGroupChat(response);
 
           // Log for Chaperone review
