@@ -4,7 +4,7 @@
  * Runs on a cloud VPS ($4/mo DigitalOcean droplet).
  * Polls Telegram 24/7 independently of the Mac.
  * Forwards messages to Mac via tunnel webhook.
- * Falls back to Haiku responses when Mac is unreachable.
+ * Falls back to Sonnet (OC) responses when Mac is unreachable.
  *
  * This replaces the Mac-based Telegram polling in comms-hub.mjs.
  * The Mac hub no longer polls Telegram directly — this relay is the
@@ -16,6 +16,11 @@
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { createServer } from 'http';
+
+// Apr 5 rule: Sonnet minimum for OC (named agent, quality-sensitive).
+// Keep in sync with scripts/model-constants.mjs → CLAUDE_QUALITY_MODEL.
+// Cannot import model-constants.mjs here — this runs on cloud VPS.
+const OC_MODEL = 'claude-sonnet-4-5';
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -73,8 +78,8 @@ async function checkMacHealth() {
   }
 }
 
-// ─── Haiku Fallback ──────────────────────────────────────────────────────────
-async function askHaiku(text) {
+// ─── OC Fallback (Sonnet — Apr 5 rule: named agent, quality-sensitive) ───────
+async function askOC(text) {
   if (!ANTHROPIC_KEY) return "Got your message. 9 is offline right now — I'll pass this along as soon as the terminal is back.";
 
   try {
@@ -86,7 +91,7 @@ async function askHaiku(text) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: OC_MODEL,
         max_tokens: 300,
         system: "You are OC, the Offensive Coordinator for 9 Enterprises. 9 (the AI partner) is currently offline. You're covering Telegram. Be brief, helpful, and honest that you're the backup. Prefix responses with 'OC:'.",
         messages: [{ role: 'user', content: text }]
@@ -185,16 +190,16 @@ async function pollTelegram() {
             // Mac went down between health check and forward
             macHealthy = false;
             queueMessage(message);
-            const reply = await askHaiku(userText);
+            const reply = await askOC(userText);
             await sendTelegram(reply);
-            console.log(`Mac unreachable — Haiku responded, message queued`);
+            console.log(`Mac unreachable — OC (Sonnet) responded, message queued`);
           }
         } else {
-          // Mac is down — respond with Haiku, queue for later
+          // Mac is down — respond with Sonnet (OC), queue for later
           queueMessage(message);
-          const reply = await askHaiku(userText);
+          const reply = await askOC(userText);
           await sendTelegram(reply);
-          console.log(`Mac offline — Haiku responded, message queued`);
+          console.log(`Mac offline — OC (Sonnet) responded, message queued`);
         }
       }
     } catch (e) {
