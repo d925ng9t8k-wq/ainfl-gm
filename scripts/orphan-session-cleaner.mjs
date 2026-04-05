@@ -48,6 +48,10 @@ const PROTECTED_PATTERNS = [
   'open-terminal.mjs',
   'freeze-watchdog',
   'claude-watchdog',
+  'kids-mentor.mjs',
+  'family-chat.mjs',
+  'portfolio-notify.mjs',
+  'underwriter-api.mjs',
 ];
 
 // ─── Logging ──────────────────────────────────────────────────────────────────
