@@ -50,7 +50,7 @@ export default function EmailCapture() {
         textAlign: 'center',
       }}>
         <div style={{ color: '#39FF14', fontWeight: 700, fontSize: 14, fontFamily: "'Oswald', sans-serif" }}>You're in!</div>
-        <div style={{ color: '#94A3B8', fontSize: 12, marginTop: 4 }}>We'll keep you posted on NFL cap updates and new features.</div>
+        <div style={{ color: '#94A3B8', fontSize: 12, marginTop: 4 }}>NFL Draft coverage drops April 23. You're on the list.</div>
       </div>
     );
   }
@@ -71,10 +71,10 @@ export default function EmailCapture() {
         textTransform: 'uppercase',
         marginBottom: 4,
       }}>
-        Get Weekly NFL Cap Updates
+        NFL Draft Starts April 23 — Get the Analysis
       </div>
       <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 10 }}>
-        Free agent signings, trade analysis, and cap projections delivered to your inbox.
+        Round-by-round breakdowns, cap impact, and grade every pick as it happens.
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8 }}>
         <input

@@ -5,6 +5,7 @@ import FloatingMenu from './FloatingMenu';
 import ScenarioManager from './ScenarioManager';
 import ShareButtons from './ShareButtons';
 import EmailCapture from './EmailCapture';
+import AffiliateBanner from './AffiliateBanner';
 
 const navItems = [
   { path: '/', label: 'Roster', iconType: 'roster' },
@@ -410,7 +411,7 @@ export default function Layout({ children }) {
             }}>
               <ins className="adsbygoogle"
                 style={{ display: 'block' }}
-                data-ad-client="ca-pub-4928127931521131"
+                data-ad-client="ca-pub-8928127451532131"
                 data-ad-slot="auto"
                 data-ad-format="vertical"
                 data-full-width-responsive="false"
@@ -426,6 +427,20 @@ export default function Layout({ children }) {
         }}>
           <div style={{ width: '100%', maxWidth: 600 }}>
             <EmailCapture />
+          </div>
+        </div>
+
+        {/* Affiliate Banners — rotated by tab/context.
+            These render below the email capture, above the Buy Me A Coffee strip.
+            UTM params auto-applied. FTC disclosure rendered by AffiliateBanner itself.
+            OWNER: replace placeholder URLs in src/config/affiliates.js after signup. */}
+        <div style={{
+          marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1,
+          padding: '0 16px',
+        }}>
+          <div style={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <AffiliateBanner partner="fanduel" placement="layout-footer" />
+            <AffiliateBanner partner="betmgm" placement="layout-footer" />
           </div>
         </div>
 
@@ -467,7 +482,7 @@ export default function Layout({ children }) {
           }}>
             <ins className="adsbygoogle"
               style={{ display: 'block' }}
-              data-ad-client="ca-pub-4928127931521131"
+              data-ad-client="ca-pub-8928127451532131"
               data-ad-slot="auto"
               data-ad-format="auto"
               data-full-width-responsive="true"

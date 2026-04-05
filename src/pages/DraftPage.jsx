@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useGame } from '../context/GameContext';
 import { allRosters } from '../data/allRosters';
+import AffiliateBanner from '../components/AffiliateBanner';
 
 import { getPickValueByOverall as tradeValue, getPlayerValue as playerTradeValue } from '../utils/tradeValues';
 
@@ -1611,6 +1612,17 @@ export default function DraftPage() {
         }}>
           <h3 style={{ color: '#fff', fontSize: 15, margin: '0 0 10px' }}>Full Draft Board</h3>
           {renderFullBoard()}
+        </div>
+
+        {/* Affiliate CTAs — shown at draft complete, highest intent moment.
+            NFL Draft April 23-25: users who just ran a mock draft are primed for real betting/DFS.
+            OWNER: wire real affiliate URLs in src/config/affiliates.js after signup. */}
+        <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ color: '#64748b', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+            Ready to bet the real draft?
+          </div>
+          <AffiliateBanner partner="draftkings" placement="draft-complete" />
+          <AffiliateBanner partner="fanduel" placement="draft-complete" />
         </div>
       </div>
     );

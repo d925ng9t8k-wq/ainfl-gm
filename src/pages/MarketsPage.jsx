@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getNFLMarkets, clearMarketCache } from '../utils/predictionMarkets';
 import ShareButtons from '../components/ShareButtons';
+import AffiliateBanner from '../components/AffiliateBanner';
 
 function ProbabilityBar({ name, probability, isTop }) {
   const barColor = isTop ? '#00f0ff' : 'rgba(0, 240, 255, 0.4)';
@@ -361,6 +362,17 @@ export default function MarketsPage() {
           fontSize: 14,
         }}>
           No NFL markets available right now. Check back later.
+        </div>
+      )}
+
+      {/* Sportsbook affiliate banners — Markets page is highest-intent placement.
+          Users on this page are actively interested in betting/prediction markets.
+          DraftKings shown here for draft synergy. FanDuel shown second.
+          OWNER: wire real affiliate URLs in src/config/affiliates.js after signup. */}
+      {!loading && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 24 }}>
+          <AffiliateBanner partner="draftkings" placement="markets-page" />
+          <AffiliateBanner partner="fanduel" placement="markets-page" />
         </div>
       )}
 

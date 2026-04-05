@@ -310,7 +310,7 @@ export default function NbaLayout({ children }) {
               borderRadius: 6, overflow: 'hidden',
             }}>
               <ins className="adsbygoogle" style={{ display: 'block' }}
-                data-ad-client="ca-pub-4928127931521131" data-ad-slot="auto"
+                data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto"
                 data-ad-format="vertical" data-full-width-responsive="false" />
             </div>
           </aside>
@@ -320,7 +320,7 @@ export default function NbaLayout({ children }) {
         <div style={{ marginTop: 16, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1, padding: '0 16px' }}>
           <div style={{ width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,15,15,0.5)', border: '1px solid rgba(251,79,20,0.08)', borderRadius: 6, overflow: 'hidden' }}>
             <ins className="adsbygoogle" style={{ display: 'block' }}
-              data-ad-client="ca-pub-4928127931521131" data-ad-slot="auto"
+              data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto"
               data-ad-format="auto" data-full-width-responsive="true" />
           </div>
         </div>

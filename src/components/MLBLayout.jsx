@@ -332,7 +332,7 @@ export default function MLBLayout({ children }) {
             <div style={{ width: 160, minHeight: 600, background: 'rgba(15,15,15,0.5)', border: '1px solid rgba(251,79,20,0.08)', borderRadius: 6, overflow: 'hidden' }}>
               <ins className="adsbygoogle"
                 style={{ display: 'block' }}
-                data-ad-client="ca-pub-4928127931521131"
+                data-ad-client="ca-pub-8928127451532131"
                 data-ad-slot="auto"
                 data-ad-format="vertical"
                 data-full-width-responsive="false"
@@ -346,7 +346,7 @@ export default function MLBLayout({ children }) {
           <div style={{ width: '100%', maxWidth: 728, minHeight: 90, background: 'rgba(15,15,15,0.5)', border: '1px solid rgba(251,79,20,0.08)', borderRadius: 6, overflow: 'hidden' }}>
             <ins className="adsbygoogle"
               style={{ display: 'block' }}
-              data-ad-client="ca-pub-4928127931521131"
+              data-ad-client="ca-pub-8928127451532131"
               data-ad-slot="auto"
               data-ad-format="auto"
               data-full-width-responsive="true"
