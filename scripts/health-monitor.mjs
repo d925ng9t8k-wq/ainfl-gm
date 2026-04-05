@@ -54,7 +54,13 @@ const MONITOR_PORT = 3458;
 const FAST_INTERVAL_MS = 30_000;  // 30s — ports, processes, disk
 const SLOW_INTERVAL_MS = 300_000; // 5m  — ainflgm.com, supabase drift, DB integrity, API key
 
-const DEDUP_WINDOW_MS = 5 * 60 * 1000; // 5 min — same signature = increment, don't re-alert
+const DEDUP_WINDOW_MS   = 5 * 60 * 1000;  // 5 min — same signature = increment, don't re-alert
+const ALERT_COOLDOWN_MS = 15 * 60 * 1000; // 15 min — same signature cannot re-alert within this window
+
+// ─── Alert state map ──────────────────────────────────────────────────────────
+// Keyed by signature. Tracks lastAlertedAt to enforce ALERT_COOLDOWN_MS.
+// Populated at startup from recent SQLite events to survive restarts cleanly.
+const alertState = new Map(); // sig -> { lastAlertedAt: number }
 
 mkdirSync(path.join(PROJECT, 'logs'), { recursive: true });
 
@@ -140,8 +146,8 @@ function recordEvent({ component, status, metricName, metricValue, severity, mes
       db.prepare(`
         UPDATE health_events SET event_count = event_count + 1, last_seen = ? WHERE id = ?
       `).run(now, existing.id);
-      // No Telegram alert for pure dedup — just update
-      return existing.id;
+      // Return object with isNew=false so check() knows not to bypass alert cooldown
+      return { id: existing.id, isNew: false, sig };
     }
 
     // New or different signature — insert fresh row
@@ -151,10 +157,10 @@ function recordEvent({ component, status, metricName, metricValue, severity, mes
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
     `).run(now, component, status, String(metricName), String(metricValue ?? ''), severity, message || '', sig, now);
 
-    return result.lastInsertRowid;
+    return { id: result.lastInsertRowid, isNew: true, sig };
   } catch (e) {
     log(`recordEvent error: ${e.message}`);
-    return null;
+    return { id: null, isNew: true, sig: null };
   }
 }
 
@@ -703,7 +709,7 @@ async function check({ component, metricName, getValue }) {
     checkedAt:   new Date().toISOString(),
   };
 
-  const eventId = recordEvent({
+  const { id: eventId, sig } = recordEvent({
     component,
     status:      result.status,
     metricName,
@@ -716,7 +722,20 @@ async function check({ component, metricName, getValue }) {
     const label = result.severity === 'critical' ? 'CRITICAL' : 'WARNING';
     const alert = `[health] ${label}: ${component} — ${result.message}`;
     log(alert);
-    await alertTelegram(alert);
+
+    // Enforce 15-minute per-signature alert cooldown
+    const now = Date.now();
+    const state = sig ? alertState.get(sig) : null;
+    const lastAlerted = state?.lastAlertedAt ?? 0;
+    const msSinceLast = now - lastAlerted;
+
+    if (msSinceLast >= ALERT_COOLDOWN_MS) {
+      await alertTelegram(alert);
+      if (sig) alertState.set(sig, { lastAlertedAt: now });
+    } else {
+      const remainMin = Math.ceil((ALERT_COOLDOWN_MS - msSinceLast) / 60_000);
+      log(`[dedup] alert suppressed for ${component} (sig ${sig}) — cooldown active, ${remainMin}m remaining`);
+    }
   }
 
   return eventId;
@@ -782,6 +801,32 @@ async function slowLoop() {
   setTimeout(slowLoop, SLOW_INTERVAL_MS);
 }
 
+// ─── Pre-populate alertState from recent SQLite events ───────────────────────
+// On restart, any alert fired in the last 15 minutes should be pre-suppressed
+// so the first poll cycle does not re-flood Owner with known ongoing conditions.
+function preloadAlertState() {
+  try {
+    const db = getDb();
+    const cutoff = new Date(Date.now() - ALERT_COOLDOWN_MS).toISOString();
+    const recentCritical = db.prepare(`
+      SELECT signature, MAX(last_seen) AS last_seen
+      FROM health_events
+      WHERE severity IN ('warning', 'critical')
+        AND last_seen >= ?
+      GROUP BY signature
+    `).all(cutoff);
+    for (const row of recentCritical) {
+      const lastAlertedAt = new Date(row.last_seen).getTime();
+      alertState.set(row.signature, { lastAlertedAt });
+    }
+    if (recentCritical.length > 0) {
+      log(`[dedup] pre-loaded ${recentCritical.length} alert signature(s) from recent events — cooldown active for up to 15m`);
+    }
+  } catch (e) {
+    log(`preloadAlertState error: ${e.message}`);
+  }
+}
+
 // ─── Startup ─────────────────────────────────────────────────────────────────
 log('=== 9 Health Monitor starting ===');
 log(`Fast checks: every ${FAST_INTERVAL_MS / 1000}s | Slow checks: every ${SLOW_INTERVAL_MS / 1000}s`);
@@ -790,6 +835,7 @@ log(`Status API: http://localhost:${MONITOR_PORT}/status`);
 
 // Run immediately, then kick off interval loops
 (async () => {
+  preloadAlertState();
   await runFastChecks();
   await runSlowChecks();
   log('Initial sweep complete — starting loops');
