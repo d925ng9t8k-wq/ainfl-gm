@@ -1577,6 +1577,30 @@ const healthServer = createServer(async (req, res) => {
       }
     });
 
+  } else if (req.method === 'GET' && req.url === '/health-dashboard') {
+    // GET /health-dashboard — current component statuses + last 50 health events.
+    // Consumed by the future Command Center UI and the monitor self-test.
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      // Proxy to health-monitor's /status endpoint if it's running
+      const monRes = await fetch('http://localhost:3458/status', { signal: AbortSignal.timeout(5000) }).catch(() => null);
+      if (monRes && monRes.ok) {
+        const data = await monRes.json();
+        res.end(JSON.stringify(data, null, 2));
+      } else {
+        // Monitor is down — return stub with warning
+        const events = db ? db._db.prepare('SELECT * FROM health_events ORDER BY last_seen DESC LIMIT 50').all() : [];
+        res.end(JSON.stringify({
+          monitor: { status: 'down', message: 'health-monitor process not responding on port 3458' },
+          current: [],
+          recent_events: events,
+          warning: 'health-monitor is not running — data may be stale',
+        }, null, 2));
+      }
+    } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
   } else {
     res.writeHead(404);
     res.end('not found');
@@ -2910,6 +2934,22 @@ async function startupSelfCheck() {
     issues.push('Tunnel unreachable — voice calls will not work');
   }
 
+  // Check health-monitor (sibling monitor watchdog)
+  try {
+    const hmRes = await fetch('http://localhost:3458/health', { signal: AbortSignal.timeout(5000) });
+    if (hmRes.ok) {
+      status.push('Health monitor: running');
+    } else {
+      issues.push('Health monitor returned non-OK status');
+      sendTelegram('[9 watchdog] ALERT: health-monitor process is not healthy. Dashboard data may be stale. Check LaunchAgent com.9.health-monitor.').catch(() => {});
+    }
+  } catch {
+    issues.push('Health monitor not running (port 3458 unreachable)');
+    log('Health monitor not running at startup — LaunchAgent should restart it');
+    // Alert Owner that the monitor itself is down
+    sendTelegram('[9 watchdog] ALERT: health-monitor is not running. Real-time health dashboard is offline. LaunchAgent should auto-restart it within 10 seconds.').catch(() => {});
+  }
+
   // Report
   log('=== STARTUP SELF-CHECK ===');
   status.forEach(s => log(`  OK: ${s}`));
@@ -2989,6 +3029,33 @@ async function syncToCloud() {
 setInterval(syncToCloud, 120000); // Every 2 min (faster cloud failover detection; ~720 KV writes/day, within free tier 1K/day limit)
 // Initial sync on startup (delayed 10s to let everything initialize)
 setTimeout(syncToCloud, 10000);
+
+// ─── Health Monitor Watchdog ─────────────────────────────────────────────────
+// Checks every 5 minutes that health-monitor.mjs is alive on port 3458.
+// If it's dead, alerts Owner immediately. LaunchAgent should auto-restart it,
+// but this alert closes the gap between death and restart detection.
+let _hmWatchdogLastAlert = 0;
+async function healthMonitorWatchdog() {
+  try {
+    const res = await fetch('http://localhost:3458/health', { signal: AbortSignal.timeout(5000) });
+    if (res.ok) return; // All good
+    // Non-OK response
+    if (Date.now() - _hmWatchdogLastAlert > 3600000) { // 1 hr cooldown
+      sendTelegram('[9 watchdog] health-monitor returned non-OK. LaunchAgent should restart it. Checking again in 5 min.').catch(() => {});
+      _hmWatchdogLastAlert = Date.now();
+    }
+  } catch {
+    // Port unreachable — monitor is down
+    if (Date.now() - _hmWatchdogLastAlert > 3600000) {
+      log('Health monitor watchdog: port 3458 unreachable — monitor is down');
+      sendTelegram('[9 watchdog] ALERT: health-monitor is DOWN (port 3458 unreachable). Real-time health data offline. LaunchAgent auto-restarting.').catch(() => {});
+      _hmWatchdogLastAlert = Date.now();
+    }
+  }
+}
+
+setInterval(healthMonitorWatchdog, 300000); // Every 5 min
+setTimeout(healthMonitorWatchdog, 60000);   // First check 60s after hub starts
 
 // ─── Graceful shutdown ───────────────────────────────────────────────────────
 function shutdown(signal) {
