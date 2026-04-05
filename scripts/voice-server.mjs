@@ -31,13 +31,19 @@ const anthropicAgent   = new https.Agent({ keepAlive: true, maxSockets: 5 });
 const elevenLabsAgent  = new https.Agent({ keepAlive: true, maxSockets: 5 });
 
 // ─── Models ─────────────────────────────────────────────────────────────────
-const CLAUDE_MODEL_FAST  = "claude-haiku-4-5-20251001";
-const CLAUDE_MODEL_SMART = "claude-sonnet-4-20250514";
+// Apr 5 reaffirmation: Sonnet minimum for voice. Owner explicit: quality > latency on voice channel.
+// Never downgrade voice to Haiku. The voice channel is how Owner talks to 9 directly —
+// Haiku drops context and produces shallow responses that undermine the entire 9 brand.
+// CLAUDE_MODEL_FAST is a legacy name — it now runs Sonnet. All voice contexts use this model.
+// CLAUDE_QUALITY_MODEL from model-constants.mjs is the canonical source. Hardcoded here
+// as a constant to avoid ESM import overhead in the hot path.
+const CLAUDE_MODEL_FAST  = "claude-sonnet-4-5";
+const CLAUDE_MODEL_SMART = "claude-sonnet-4-5";
 const EL_MODEL      = "eleven_turbo_v2_5"; // Turbo model — 50-60% faster TTS, near-identical quality for English
 // Previous: eleven_multilingual_v2 — caused 4+ second TTS on longer responses, triggering Twilio timeouts
 
-// March 26 fix: Kyle pulled off Sonnet. Haiku is 3x faster (0.9s vs 2.9s avg).
-// The KYLE_SYSTEM prompt already makes Haiku sound natural. Latency > quality for voice.
+// SMART_CONTEXTS previously triggered a model upgrade (Haiku → Sonnet). Now that all contexts
+// run Sonnet, this set is effectively a no-op. Kept for future Opus escalation if needed.
 const SMART_CONTEXTS = new Set(["mark"]);
 
 // Sentence boundary thresholds by context.
@@ -1012,9 +1018,9 @@ const server = http.createServer(async (req, res) => {
       pendingResponses.set(callSid, responsePromise);
 
       // Fast-path: if Claude + TTS finishes in under 1200ms, skip the filler entirely.
-      // Was 800ms — too tight. Haiku averages 700-2700ms for Claude alone, so 800ms meant
+      // Was 800ms — too tight. Sonnet averages 900-3500ms for Claude alone, so 800ms meant
       // almost every response went through the slow filler path, adding unnecessary overhead.
-      // 1200ms catches the fast Haiku responses (simple questions) while still triggering
+      // 1200ms catches fast Sonnet responses (simple questions) while still triggering
       // filler for longer/slower responses.
       const fastResult = await Promise.race([
         responsePromise,
