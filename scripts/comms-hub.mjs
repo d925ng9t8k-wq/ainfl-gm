@@ -916,7 +916,7 @@ CRITICAL RULES:
 async function askDoorman(userMessage, channel) {
   return new Promise((resolve) => {
     const body = JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: 'claude-sonnet-4-5',
       max_tokens: 512,
       system: DOORMAN_SYSTEM,
       messages: [{ role: 'user', content: userMessage }],
@@ -951,7 +951,8 @@ async function askDoorman(userMessage, channel) {
 }
 
 // ─── Complex Request Detection ───────────────────────────────────────────────
-// Haiku handles simple stuff. Anything that needs code changes, debugging,
+// Apr 5 rule: Sonnet minimum for OC autonomous responder. Haiku is banned from any quality role.
+// Doorman runs Sonnet. Anything that needs code changes, debugging,
 // deployments, or multi-step work → request terminal.
 function detectComplexRequest(text) {
   const lower = text.toLowerCase();
@@ -1916,14 +1917,14 @@ async function telegramPoll() {
                     await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
                   }
                 } else {
-                  // Terminal is alive but unresponsive — respond directly with Haiku
+                  // Terminal is alive but unresponsive — respond directly with Sonnet (via askClaude)
                   const needsTerminal = detectComplexRequest(userText);
                   if (needsTerminal) {
                     await sendTelegram('OC: Covering for 9. Terminal is open but not responding. That request needs terminal — I\'ll queue it and keep trying.');
                   } else {
                     await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
                     const reply = await askClaude(userText, 'telegram');
-                    log(`Telegram OUT (terminal unresponsive, Haiku direct): "${reply.slice(0, 100)}..."`);
+                    log(`Telegram OUT (terminal unresponsive, Sonnet direct): "${reply.slice(0, 100)}..."`);
                     await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
                   }
                 }
@@ -1936,7 +1937,7 @@ async function telegramPoll() {
                   appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
                 } catch {}
               } else {
-                // No terminal — check if this needs terminal or Haiku can handle it
+                // No terminal — check if this needs terminal or Sonnet OC can handle it
                 const needsTerminal = detectComplexRequest(userText);
                 if (needsTerminal) {
                   await sendTelegram('OC: That needs terminal — opening it now. Give me a minute.');
