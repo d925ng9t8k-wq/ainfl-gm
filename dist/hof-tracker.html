@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="HOF Tracker">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Hall of Fame Tracker — Active Players | AiNFL GM</title>
+<meta name="description" content="Track active NFL players on pace for the Pro Football Hall of Fame. HOF likelihood scores, stats, Pro Bowls, All-Pros, and rings for 50 top players.">
+<meta property="og:title" content="NFL Hall of Fame Tracker — Active Players | AiNFL GM">
+<meta property="og:description" content="Who's punching their ticket to Canton? HOF likelihood scores for 50 active NFL players based on stats, accolades, and longevity.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/hof-tracker.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Hall of Fame Tracker — Active Players | AiNFL GM">
+<meta name="twitter:description" content="HOF likelihood scores for 50 active NFL players. Locks, Strong Cases, Building Cases, and Long Shots.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(255,214,0,0.3);
+  --gold:       #FFD600;
+  --gold-dim:   rgba(255,214,0,0.12);
+  --gold-glow:  rgba(255,214,0,0.06);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --orange:     #FF6B35;
+  --orange-dim: rgba(255,107,53,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,214,0,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(255,214,0,0.1); }
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--gold); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--gold); text-decoration: none; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--gold); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Main Layout */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* AdSense */
+.ad-slot {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+  margin: 0 0 28px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-mute);
+  font-size: 12px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+
+.search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-mute);
+  pointer-events: none;
+}
+.search-wrap input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 10px 14px 10px 38px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-wrap input:focus { border-color: var(--gold); }
+.search-wrap input::placeholder { color: var(--text-mute); }
+
+select, .btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 14px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+select:focus, .btn:hover { border-color: var(--gold); }
+
+.btn-gold {
+  background: var(--gold);
+  color: #000;
+  font-weight: 700;
+  border-color: var(--gold);
+}
+.btn-gold:hover { background: #ffe033; border-color: #ffe033; }
+
+/* Category tabs */
+.cat-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease 0.15s both;
+}
+.cat-tab {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-dim);
+  transition: all 0.2s;
+}
+.cat-tab:hover { color: #fff; }
+.cat-tab.active-all    { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.cat-tab.active-lock   { background: rgba(57,255,20,0.12); border-color: var(--green); color: var(--green); }
+.cat-tab.active-strong { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+.cat-tab.active-build  { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+.cat-tab.active-long   { background: var(--red-dim); border-color: var(--red); color: var(--red); }
+
+/* Section headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0 16px;
+}
+.section-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+.badge-lock   { background: var(--green-dim); border: 1px solid var(--green); color: var(--green); }
+.badge-strong { background: var(--gold-dim);  border: 1px solid var(--gold);  color: var(--gold);  }
+.badge-build  { background: var(--orange-dim);border: 1px solid var(--orange);color: var(--orange);}
+.badge-long   { background: var(--red-dim);   border: 1px solid var(--red);   color: var(--red);   }
+
+.section-count {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-weight: 500;
+}
+
+/* Player Grid */
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .player-grid { grid-template-columns: 1fr; }
+}
+
+/* Player Card */
+.player-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+  animation: fadeUp 0.4s ease both;
+  position: relative;
+  overflow: hidden;
+}
+.player-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.player-card.lock::before   { background: var(--green); }
+.player-card.strong::before { background: var(--gold); }
+.player-card.build::before  { background: var(--orange); }
+.player-card.longshot::before { background: var(--red); }
+
+.player-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,214,0,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.player-card.selected-compare {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold-dim), 0 8px 32px rgba(255,214,0,0.15);
+  animation: pulse-gold 2s ease infinite;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+  line-height: 1.2;
+}
+.card-meta {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
+.card-meta .pos {
+  display: inline-block;
+  background: var(--bg-3);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  margin-right: 6px;
+  color: var(--gold);
+}
+
+/* HOF Score Ring */
+.hof-ring {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  position: relative;
+}
+.hof-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.hof-ring .ring-bg   { fill: none; stroke: var(--bg-3); stroke-width: 5; }
+.hof-ring .ring-fill { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+.hof-ring .ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+.hof-ring .ring-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+.ring-fill.lock   { stroke: var(--green); }
+.ring-fill.strong { stroke: var(--gold); }
+.ring-fill.build  { stroke: var(--orange); }
+.ring-fill.longshot { stroke: var(--red); }
+
+/* Stats row */
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.stat-box {
+  background: var(--bg-2);
+  border-radius: var(--radius-xs);
+  padding: 7px 8px;
+  text-align: center;
+}
+.stat-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.1;
+}
+.stat-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+/* Accolades */
+.card-accolades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.accolade {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+}
+.accolade.gold  { background: rgba(255,214,0,0.15); color: var(--gold); }
+.accolade.green { background: var(--green-dim); color: var(--green); }
+.accolade.cyan  { background: var(--cyan-dim); color: var(--cyan); }
+
+/* Status note */
+.card-status {
+  font-size: 11px;
+  color: var(--text-mute);
+  font-style: italic;
+}
+.card-status.retired { color: var(--orange); }
+
+/* Compare button on card */
+.compare-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(255,214,0,0.2);
+  color: var(--gold);
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0;
+}
+.player-card:hover .compare-btn,
+.player-card.selected-compare .compare-btn { opacity: 1; }
+.player-card.selected-compare .compare-btn {
+  background: var(--gold);
+  color: #000;
+}
+
+/* Compare Panel */
+.compare-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.35s ease both;
+  display: none;
+}
+.compare-panel.visible { display: block; }
+.compare-panel-header {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 20px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.compare-close {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mute);
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.compare-close:hover { color: var(--red); border-color: var(--red); }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-vs { display: none; }
+}
+.compare-vs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+}
+.compare-side {}
+.compare-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.compare-pos-team {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+.compare-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.compare-stat-row:last-child { border-bottom: none; }
+.compare-stat-lbl { color: var(--text-dim); font-weight: 500; }
+.compare-stat-val { font-weight: 700; color: #fff; }
+.compare-stat-val.winner { color: var(--gold); }
+
+/* My HOF Class */
+.myhof-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.4s ease 0.2s both;
+}
+.myhof-header {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.myhof-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+.myhof-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.myhof-slot {
+  min-width: 150px;
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px dashed rgba(255,214,0,0.25);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-mute);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.myhof-slot.filled {
+  border-style: solid;
+  border-color: rgba(255,214,0,0.4);
+  color: #fff;
+}
+.myhof-slot-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold);
+  min-width: 18px;
+}
+.myhof-slot-name {
+  font-weight: 600;
+  flex: 1;
+}
+.myhof-slot-remove {
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.2s;
+  padding: 2px;
+}
+.myhof-slot-remove:hover { color: var(--red); }
+
+.myhof-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.share-result {
+  display: none;
+  margin-top: 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  word-break: break-all;
+}
+.share-result.visible { display: block; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-mute);
+  font-size: 14px;
+  display: none;
+}
+.empty-state.visible { display: block; }
+
+/* Footer */
+.footer {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  padding: 32px 24px;
+  text-align: center;
+  margin-top: 48px;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-bottom: 16px;
+}
+.footer-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); text-decoration: none; }
+.footer-brand {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.footer-brand span { color: var(--gold); }
+.footer-copy {
+  font-size: 11px;
+  color: var(--text-mute);
+}
+
+/* Tooltip for score */
+.score-tier {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.score-tier.lock   { color: var(--green); }
+.score-tier.strong { color: var(--gold); }
+.score-tier.build  { color: var(--orange); }
+.score-tier.longshot { color: var(--red); }
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .controls { flex-direction: column; }
+  .search-wrap { min-width: unset; }
+  .hero { padding: 32px 16px 24px; }
+  .card-stats { grid-template-columns: repeat(3, 1fr); }
+  .compare-grid { gap: 24px; }
+  .myhof-slots { flex-direction: column; }
+  .myhof-slot { min-width: unset; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="/" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="/tools.html" class="nav-back">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Tools
+  </a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    Canton Bound
+  </div>
+  <h1>NFL Hall of Fame<br><span>Tracker</span></h1>
+  <p>50 active players rated on HOF likelihood. Stats, accolades, rings, and longevity — all baked into one score. Who's punching their ticket to Canton?</p>
+</div>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Ad -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block;width:100%;height:90px" data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto" data-ad-format="horizontal"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- My HOF Class -->
+  <div class="myhof-panel" id="myhofPanel">
+    <div class="myhof-header">My HOF Class</div>
+    <div class="myhof-sub">Pick your predicted next 5 inductees. Click any player card to add them.</div>
+    <div class="myhof-slots" id="myhofSlots">
+      <!-- filled by JS -->
+    </div>
+    <div class="myhof-actions">
+      <button class="btn btn-gold" onclick="shareClass()">Share My Class</button>
+      <button class="btn" onclick="clearClass()">Clear All</button>
+    </div>
+    <div class="share-result" id="shareResult"></div>
+  </div>
+
+  <!-- Compare Panel -->
+  <div class="compare-panel" id="comparePanel">
+    <div class="compare-panel-header">
+      Head-to-Head Compare
+      <span class="compare-close" onclick="clearCompare()">Clear</span>
+    </div>
+    <div class="compare-grid" id="compareGrid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search player..." oninput="applyFilters()">
+    </div>
+    <select id="posFilter" onchange="applyFilters()">
+      <option value="">All Positions</option>
+      <option value="QB">QB</option>
+      <option value="WR">WR</option>
+      <option value="TE">TE</option>
+      <option value="RB">RB</option>
+      <option value="OL">OL</option>
+      <option value="DL">DL</option>
+      <option value="LB">LB</option>
+      <option value="CB">CB</option>
+      <option value="S">S</option>
+      <option value="K">K</option>
+    </select>
+    <select id="sortBy" onchange="applyFilters()">
+      <option value="hof">Sort: HOF Score</option>
+      <option value="probowls">Sort: Pro Bowls</option>
+      <option value="allpros">Sort: All-Pros</option>
+      <option value="rings">Sort: Rings</option>
+      <option value="name">Sort: Name</option>
+    </select>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs">
+    <button class="cat-tab active-all" id="tab-all" onclick="setCategory('all')">All Players</button>
+    <button class="cat-tab" id="tab-lock" onclick="setCategory('lock')">Locks (90%+)</button>
+    <button class="cat-tab" id="tab-strong" onclick="setCategory('strong')">Strong Cases (70-89%)</button>
+    <button class="cat-tab" id="tab-build" onclick="setCategory('build')">Building (50-69%)</button>
+    <button class="cat-tab" id="tab-long" onclick="setCategory('long')">Long Shots (&lt;50%)</button>
+  </div>
+
+  <!-- Player sections -->
+  <div id="playerOutput"></div>
+
+  <div class="empty-state" id="emptyState">
+    No players match your filters. Try adjusting your search or position.
+  </div>
+
+  <!-- Bottom ad -->
+  <div class="ad-slot" style="margin-top:32px">
+    <ins class="adsbygoogle" style="display:block;width:100%;height:90px" data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto" data-ad-format="horizontal"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/tools.html">All Tools</a>
+    <a href="/qb-compare.html">QB Compare</a>
+    <a href="/award-predictions.html">Award Predictions</a>
+    <a href="/draft-trade-calc.html">Trade Calculator</a>
+    <a href="/stat-leaders.html">Stat Leaders</a>
+    <a href="/power-rankings.html">Power Rankings</a>
+    <a href="/superbowl-history.html">Super Bowl History</a>
+    <a href="/privacy.html">Privacy</a>
+  </div>
+  <div class="footer-brand">AiNFL<span>GM</span></div>
+  <div class="footer-copy">HOF scores are editorial estimates based on publicly available stats and accolades. Not affiliated with the Pro Football Hall of Fame.</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ─── Player Data ─────────────────────────────────────────────────────────────
+// Each player: id, name, pos, team, age, status (active/retired), hofScore,
+// keyStats [{val, lbl}], proBowls, allPros, rings, note
+const PLAYERS = [
+  // === LOCKS (90+) ===
+  {
+    id:1, name:"Patrick Mahomes", pos:"QB", team:"Kansas City Chiefs", age:29, status:"active",
+    hofScore:98,
+    keyStats:[{val:"15,xxx",lbl:"Pass Yds"},{val:"113",lbl:"Pass TDs"},{val:"131.6",lbl:"Passer Rtg"}],
+    proBowls:7, allPros:3, rings:3, note:"Already a HOF lock. Best of his generation."
+  },
+  {
+    id:2, name:"Travis Kelce", pos:"TE", team:"Kansas City Chiefs", age:35, status:"active",
+    keyStats:[{val:"11,328",lbl:"Rec Yds"},{val:"71",lbl:"Rec TDs"},{val:"878",lbl:"Rec"}],
+    hofScore:97, proBowls:9, allPros:5, rings:3, note:"Greatest TE of all time. Canton is certain."
+  },
+  {
+    id:3, name:"Aaron Donald", pos:"DL", team:"Retired (LAR)", age:33, status:"retired",
+    keyStats:[{val:"111",lbl:"Sacks"},{val:"99",lbl:"TFL"},{val:"3x",lbl:"DPOY"}],
+    hofScore:99, proBowls:9, allPros:8, rings:1, note:"Retired 2023. Automatic first-ballot."
+  },
+  {
+    id:4, name:"J.J. Watt", pos:"DL", team:"Retired (HOU/ARI)", age:35, status:"retired",
+    keyStats:[{val:"114.5",lbl:"Sacks"},{val:"5x",lbl:"All-Pro"},{val:"3x",lbl:"DPOY"}],
+    hofScore:99, proBowls:5, allPros:5, rings:0, note:"Retired 2022. First-ballot lock."
+  },
+  {
+    id:5, name:"Tyreek Hill", pos:"WR", team:"Miami Dolphins", age:30, status:"active",
+    keyStats:[{val:"10,650+",lbl:"Rec Yds"},{val:"78",lbl:"Rec TDs"},{val:"715",lbl:"Rec"}],
+    hofScore:91, proBowls:7, allPros:3, rings:1, note:"Historic speed, elite production. 3-4 more seasons seals it."
+  },
+  {
+    id:6, name:"Davante Adams", pos:"WR", team:"Las Vegas Raiders", age:32, status:"active",
+    keyStats:[{val:"10,200+",lbl:"Rec Yds"},{val:"89",lbl:"Rec TDs"},{val:"745",lbl:"Rec"}],
+    hofScore:90, proBowls:6, allPros:4, rings:0, note:"Route running master. HOF trajectory secure."
+  },
+  // === STRONG (70-89) ===
+  {
+    id:7, name:"Joe Burrow", pos:"QB", team:"Cincinnati Bengals", age:28, status:"active",
+    keyStats:[{val:"18,875",lbl:"Pass Yds"},{val:"134",lbl:"Pass TDs"},{val:"108.2",lbl:"Passer Rtg"}],
+    hofScore:82, proBowls:3, allPros:1, rings:0, note:"Elite ceiling but must stay healthy. SB win = lock."
+  },
+  {
+    id:8, name:"Derrick Henry", pos:"RB", team:"Baltimore Ravens", age:30, status:"active",
+    keyStats:[{val:"10,300+",lbl:"Rush Yds"},{val:"100",lbl:"Rush TDs"},{val:"5x 1k",lbl:"1000+ Yds"}],
+    hofScore:85, proBowls:5, allPros:2, rings:0, note:"Most dominant back of the era. Needs longevity."
+  },
+  {
+    id:9, name:"Justin Jefferson", pos:"WR", team:"Minnesota Vikings", age:25, status:"active",
+    keyStats:[{val:"6,500+",lbl:"Rec Yds"},{val:"38",lbl:"Rec TDs"},{val:"396",lbl:"Rec"}],
+    hofScore:86, proBowls:4, allPros:3, rings:0, note:"Historic pace. Best receiver in the league."
+  },
+  {
+    id:10, name:"Jalen Hurts", pos:"QB", team:"Philadelphia Eagles", age:26, status:"active",
+    keyStats:[{val:"11,000+",lbl:"Pass Yds"},{val:"94+",lbl:"Total TDs"},{val:"103.8",lbl:"Passer Rtg"}],
+    hofScore:75, proBowls:4, allPros:1, rings:0, note:"Back-to-back SB appearances boost case significantly."
+  },
+  {
+    id:11, name:"Lamar Jackson", pos:"QB", team:"Baltimore Ravens", age:27, status:"active",
+    keyStats:[{val:"15,000+",lbl:"Pass Yds"},{val:"107",lbl:"Pass TDs"},{val:"5,300+",lbl:"Rush Yds"}],
+    hofScore:88, proBowls:5, allPros:3, rings:0, note:"2x MVP. Revolutionary player. Needs SB."
+  },
+  {
+    id:12, name:"Ja'Marr Chase", pos:"WR", team:"Cincinnati Bengals", age:24, status:"active",
+    keyStats:[{val:"4,800+",lbl:"Rec Yds"},{val:"38",lbl:"Rec TDs"},{val:"280",lbl:"Rec"}],
+    hofScore:78, proBowls:4, allPros:2, rings:0, note:"Fastest start ever for a WR. Career trajectory is elite."
+  },
+  {
+    id:13, name:"Chris Jones", pos:"DL", team:"Kansas City Chiefs", age:29, status:"active",
+    keyStats:[{val:"100+",lbl:"Sacks"},{val:"4x",lbl:"All-Pro"},{val:"3",lbl:"Rings"}],
+    hofScore:83, proBowls:7, allPros:4, rings:3, note:"Rings + production + longevity = strong case."
+  },
+  {
+    id:14, name:"T.J. Watt", pos:"LB", team:"Pittsburgh Steelers", age:30, status:"active",
+    keyStats:[{val:"111.5",lbl:"Sacks"},{val:"4x",lbl:"All-Pro"},{val:"DPOY",lbl:"2021"}],
+    hofScore:89, proBowls:6, allPros:4, rings:0, note:"Chasing brother's legacy. Already HOF-caliber."
+  },
+  {
+    id:15, name:"George Kittle", pos:"TE", team:"San Francisco 49ers", age:31, status:"active",
+    keyStats:[{val:"6,700+",lbl:"Rec Yds"},{val:"42",lbl:"Rec TDs"},{val:"465",lbl:"Rec"}],
+    hofScore:79, proBowls:5, allPros:3, rings:0, note:"Elite blocking + receiving combo. Needs more time."
+  },
+  {
+    id:16, name:"Micah Parsons", pos:"LB", team:"Dallas Cowboys", age:25, status:"active",
+    keyStats:[{val:"60+",lbl:"Sacks"},{val:"3x",lbl:"All-Pro"},{val:"DPOY",lbl:"Cand."}],
+    hofScore:82, proBowls:4, allPros:3, rings:0, note:"Best pass rusher in the NFL at 25. Enormous ceiling."
+  },
+  {
+    id:17, name:"Stefon Diggs", pos:"WR", team:"Houston Texans", age:30, status:"active",
+    keyStats:[{val:"9,600+",lbl:"Rec Yds"},{val:"64",lbl:"Rec TDs"},{val:"756",lbl:"Rec"}],
+    hofScore:72, proBowls:5, allPros:1, rings:0, note:"Borderline case. Needs a big finish."
+  },
+  {
+    id:18, name:"Quenton Nelson", pos:"OL", team:"Indianapolis Colts", age:28, status:"active",
+    keyStats:[{val:"6x",lbl:"All-Pro"},{val:"6x",lbl:"Pro Bowl"},{val:"Best",lbl:"Guard Era"}],
+    hofScore:88, proBowls:6, allPros:6, rings:0, note:"May be the greatest guard in NFL history already."
+  },
+  {
+    id:19, name:"Lane Johnson", pos:"OL", team:"Philadelphia Eagles", age:33, status:"active",
+    keyStats:[{val:"5x",lbl:"All-Pro"},{val:"4x",lbl:"Pro Bowl"},{val:"1",lbl:"Ring"}],
+    hofScore:76, proBowls:4, allPros:5, rings:1, note:"Elite RT. Borderline first-ballot."
+  },
+  {
+    id:20, name:"Myles Garrett", pos:"DL", team:"Cleveland Browns", age:28, status:"active",
+    keyStats:[{val:"97.5",lbl:"Sacks"},{val:"3x",lbl:"All-Pro"},{val:"DPOY",lbl:"2023"}],
+    hofScore:84, proBowls:6, allPros:3, rings:0, note:"Best player on a bad team. Sack totals are elite."
+  },
+  // === BUILDING (50-69) ===
+  {
+    id:21, name:"Josh Allen", pos:"QB", team:"Buffalo Bills", age:28, status:"active",
+    keyStats:[{val:"21,000+",lbl:"Pass Yds"},{val:"196",lbl:"Total TDs"},{val:"101.8",lbl:"Passer Rtg"}],
+    hofScore:80, proBowls:5, allPros:1, rings:0, note:"Case is strong but no rings yet. SB changes everything."
+  },
+  {
+    id:22, name:"Sauce Gardner", pos:"CB", team:"New York Jets", age:24, status:"active",
+    keyStats:[{val:"0",lbl:"PBU/Yr High"},{val:"DROY",lbl:"2022"},{val:"2x",lbl:"All-Pro"}],
+    hofScore:62, proBowls:3, allPros:2, rings:0, note:"Best corner in football but needs a decade of dominance."
+  },
+  {
+    id:23, name:"CeeDee Lamb", pos:"WR", team:"Dallas Cowboys", age:25, status:"active",
+    keyStats:[{val:"5,600+",lbl:"Rec Yds"},{val:"37",lbl:"Rec TDs"},{val:"380",lbl:"Rec"}],
+    hofScore:68, proBowls:4, allPros:2, rings:0, note:"Explosive talent. Needs big seasons and postseason success."
+  },
+  {
+    id:24, name:"Dak Prescott", pos:"QB", team:"Dallas Cowboys", age:31, status:"active",
+    keyStats:[{val:"29,000+",lbl:"Pass Yds"},{val:"214",lbl:"Pass TDs"},{val:"98.7",lbl:"Passer Rtg"}],
+    hofScore:58, proBowls:4, allPros:1, rings:0, note:"Volume stats don't overcome playoff failures. Needs a run."
+  },
+  {
+    id:25, name:"Nick Bosa", pos:"DL", team:"San Francisco 49ers", age:27, status:"active",
+    keyStats:[{val:"65+",lbl:"Sacks"},{val:"2x",lbl:"All-Pro"},{val:"DPOY",lbl:"2022"}],
+    hofScore:74, proBowls:4, allPros:2, rings:0, note:"Elite pass rusher. Building a real case if health holds."
+  },
+  {
+    id:26, name:"Christian McCaffrey", pos:"RB", team:"San Francisco 49ers", age:28, status:"active",
+    keyStats:[{val:"9,400+",lbl:"Scrimmage Yds"},{val:"80+",lbl:"TDs"},{val:"OPOY",lbl:"2023"}],
+    hofScore:69, proBowls:4, allPros:2, rings:0, note:"Unique receiving RB. Injuries are the question mark."
+  },
+  {
+    id:27, name:"Trevon Diggs", pos:"CB", team:"Dallas Cowboys", age:25, status:"active",
+    keyStats:[{val:"20",lbl:"Career INT"},{val:"2x",lbl:"All-Pro"},{val:"11",lbl:"INT (2021)"}],
+    hofScore:55, proBowls:3, allPros:2, rings:0, note:"Elite ball hawk but needs more seasons to solidify case."
+  },
+  {
+    id:28, name:"Kyle Pitts", pos:"TE", team:"Atlanta Falcons", age:24, status:"active",
+    keyStats:[{val:"2,800+",lbl:"Rec Yds"},{val:"18",lbl:"Rec TDs"},{val:"1st",lbl:"TE in Rnd 1 Top 4"}],
+    hofScore:52, proBowls:1, allPros:0, rings:0, note:"Immense ceiling but hasn't reached potential yet."
+  },
+  {
+    id:29, name:"Caleb Williams", pos:"QB", team:"Chicago Bears", age:23, status:"active",
+    keyStats:[{val:"3,500+",lbl:"Pass Yds"},{val:"20+",lbl:"Pass TDs"},{val:"Heisman",lbl:"2022"}],
+    hofScore:50, proBowls:0, allPros:0, rings:0, note:"Career just started. Hype is high. Way too early to rate."
+  },
+  {
+    id:30, name:"Mark Andrews", pos:"TE", team:"Baltimore Ravens", age:29, status:"active",
+    keyStats:[{val:"5,200+",lbl:"Rec Yds"},{val:"45",lbl:"Rec TDs"},{val:"360",lbl:"Rec"}],
+    hofScore:60, proBowls:4, allPros:2, rings:0, note:"Elite producer but career stats need more volume."
+  },
+  {
+    id:31, name:"Deebo Samuel", pos:"WR", team:"San Francisco 49ers", age:28, status:"active",
+    keyStats:[{val:"4,600+",lbl:"Rec Yds"},{val:"41",lbl:"Total TDs"},{val:"Swiss",lbl:"Army Knife"}],
+    hofScore:53, proBowls:2, allPros:1, rings:0, note:"Unique weapon but volume stats likely fall short."
+  },
+  {
+    id:32, name:"DeVonta Smith", pos:"WR", team:"Philadelphia Eagles", age:26, status:"active",
+    keyStats:[{val:"4,500+",lbl:"Rec Yds"},{val:"30",lbl:"Rec TDs"},{val:"Heisman",lbl:"2020"}],
+    hofScore:54, proBowls:2, allPros:1, rings:0, note:"Consistent WR1 but needs breakout seasons."
+  },
+  {
+    id:33, name:"Cooper Kupp", pos:"WR", team:"Los Angeles Rams", age:31, status:"active",
+    keyStats:[{val:"8,200+",lbl:"Rec Yds"},{val:"65",lbl:"Rec TDs"},{val:"Super",lbl:"Bowl MVP"}],
+    hofScore:67, proBowls:3, allPros:2, rings:1, note:"SB MVP + Triple Crown 2021. Injuries complicate career."
+  },
+  {
+    id:34, name:"Fred Warner", pos:"LB", team:"San Francisco 49ers", age:27, status:"active",
+    keyStats:[{val:"650+",lbl:"Tackles"},{val:"3x",lbl:"All-Pro"},{val:"Best",lbl:"MLB Today"}],
+    hofScore:63, proBowls:4, allPros:3, rings:0, note:"Best middle linebacker in football. Needs more volume."
+  },
+  {
+    id:35, name:"Maxx Crosby", pos:"DL", team:"Las Vegas Raiders", age:27, status:"active",
+    keyStats:[{val:"64+",lbl:"Sacks"},{val:"2x",lbl:"All-Pro"},{val:"TFL",lbl:"Leader"}],
+    hofScore:61, proBowls:3, allPros:2, rings:0, note:"Elite pass rusher on a bad team. Needs playoff success."
+  },
+  // === LONG SHOTS (<50) ===
+  {
+    id:36, name:"Justin Herbert", pos:"QB", team:"Los Angeles Chargers", age:26, status:"active",
+    keyStats:[{val:"22,000+",lbl:"Pass Yds"},{val:"146",lbl:"Pass TDs"},{val:"98.6",lbl:"Passer Rtg"}],
+    hofScore:48, proBowls:2, allPros:0, rings:0, note:"Insane arm talent but zero postseason success so far."
+  },
+  {
+    id:37, name:"DK Metcalf", pos:"WR", team:"Pittsburgh Steelers", age:27, status:"active",
+    keyStats:[{val:"6,200+",lbl:"Rec Yds"},{val:"48",lbl:"Rec TDs"},{val:"6-4 / 235",lbl:"Size"}],
+    hofScore:45, proBowls:3, allPros:1, rings:0, note:"Physical freak but career arc is inconsistent."
+  },
+  {
+    id:38, name:"Brock Purdy", pos:"QB", team:"San Francisco 49ers", age:24, status:"active",
+    keyStats:[{val:"8,000+",lbl:"Pass Yds"},{val:"66",lbl:"Pass TDs"},{val:"108.3",lbl:"Passer Rtg"}],
+    hofScore:38, proBowls:1, allPros:0, rings:0, note:"Winning QB in great system. HOF unlikely but possible."
+  },
+  {
+    id:39, name:"Jayden Daniels", pos:"QB", team:"Washington Commanders", age:24, status:"active",
+    keyStats:[{val:"3,500+",lbl:"Pass Yds"},{val:"25+",lbl:"Total TDs"},{val:"OROY",lbl:"2024 Winner"}],
+    hofScore:35, proBowls:0, allPros:0, rings:0, note:"Explosive rookie year. Career just beginning."
+  },
+  {
+    id:40, name:"Sam LaPorta", pos:"TE", team:"Detroit Lions", age:23, status:"active",
+    keyStats:[{val:"1,500+",lbl:"Rec Yds"},{val:"10+",lbl:"Rec TDs"},{val:"Rook",lbl:"Record TE"}],
+    hofScore:30, proBowls:1, allPros:0, rings:0, note:"Exciting talent. Need 8+ more seasons of production."
+  },
+  {
+    id:41, name:"Will Anderson Jr.", pos:"DL", team:"Houston Texans", age:22, status:"active",
+    keyStats:[{val:"16+",lbl:"Sacks"},{val:"DROY",lbl:"Cand."},{val:"2nd",lbl:"Overall 2023"}],
+    hofScore:33, proBowls:1, allPros:0, rings:0, note:"Generational edge prospect. Way too early to project."
+  },
+  {
+    id:42, name:"Garrett Wilson", pos:"WR", team:"New York Jets", age:24, status:"active",
+    keyStats:[{val:"3,500+",lbl:"Rec Yds"},{val:"20+",lbl:"Rec TDs"},{val:"OROY",lbl:"2022"}],
+    hofScore:36, proBowls:1, allPros:1, rings:0, note:"Elite talent stuck with poor QB play. Ceiling is high."
+  },
+  {
+    id:43, name:"Tua Tagovailoa", pos:"QB", team:"Miami Dolphins", age:26, status:"active",
+    keyStats:[{val:"12,000+",lbl:"Pass Yds"},{val:"82",lbl:"Pass TDs"},{val:"104.0",lbl:"Passer Rtg"}],
+    hofScore:35, proBowls:2, allPros:0, rings:0, note:"Health concerns and no playoff wins hold back his case."
+  },
+  {
+    id:44, name:"Jake Ferguson", pos:"TE", team:"Dallas Cowboys", age:24, status:"active",
+    keyStats:[{val:"1,800+",lbl:"Rec Yds"},{val:"14+",lbl:"Rec TDs"},{val:"Pro",lbl:"Bowl 2023"}],
+    hofScore:28, proBowls:1, allPros:0, rings:0, note:"Emerging talent. Need consistency over a decade."
+  },
+  {
+    id:45, name:"Dalton Kincaid", pos:"TE", team:"Buffalo Bills", age:24, status:"active",
+    keyStats:[{val:"1,000+",lbl:"Rec Yds"},{val:"8+",lbl:"Rec TDs"},{val:"Solid",lbl:"Young TE"}],
+    hofScore:22, proBowls:0, allPros:0, rings:0, note:"Too early. Developmental trajectory."
+  },
+  {
+    id:46, name:"Jordan Love", pos:"QB", team:"Green Bay Packers", age:26, status:"active",
+    keyStats:[{val:"6,000+",lbl:"Pass Yds"},{val:"48",lbl:"Pass TDs"},{val:"96.1",lbl:"Passer Rtg"}],
+    hofScore:40, proBowls:1, allPros:0, rings:0, note:"Big 2024 season. Needs sustained excellence."
+  },
+  {
+    id:47, name:"Evan McPherson", pos:"K", team:"Cincinnati Bengals", age:24, status:"active",
+    keyStats:[{val:"93%",lbl:"FG Pct"},{val:"Clutch",lbl:"Playoff Run"},{val:"2",lbl:"Super Bowl FG"}],
+    hofScore:25, proBowls:0, allPros:0, rings:0, note:"Elite kicker but HOF is extremely rare for the position."
+  },
+  {
+    id:48, name:"Romeo Doubs", pos:"WR", team:"Green Bay Packers", age:23, status:"active",
+    keyStats:[{val:"1,200+",lbl:"Rec Yds"},{val:"9+",lbl:"Rec TDs"},{val:"Young",lbl:"Talent"}],
+    hofScore:18, proBowls:0, allPros:0, rings:0, note:"Very early career. Long shot at this stage."
+  },
+  {
+    id:49, name:"Drake Maye", pos:"QB", team:"New England Patriots", age:22, status:"active",
+    keyStats:[{val:"2,000+",lbl:"Pass Yds"},{val:"15+",lbl:"Total TDs"},{val:"3rd",lbl:"Overall 2024"}],
+    hofScore:28, proBowls:0, allPros:0, rings:0, note:"High ceiling prospect. Far too early for any projection."
+  },
+  {
+    id:50, name:"Bo Nix", pos:"QB", team:"Denver Broncos", age:24, status:"active",
+    keyStats:[{val:"3,700+",lbl:"Pass Yds"},{val:"30+",lbl:"Total TDs"},{val:"OROY",lbl:"Cand. 2024"}],
+    hofScore:30, proBowls:0, allPros:0, rings:0, note:"Promising rookie season. Long road ahead."
+  }
+];
+
+// Category mapping
+function getCategory(score) {
+  if (score >= 90) return 'lock';
+  if (score >= 70) return 'strong';
+  if (score >= 50) return 'build';
+  return 'longshot';
+}
+
+function getCatLabel(cat) {
+  return {lock:'Lock',strong:'Strong Case',build:'Building',longshot:'Long Shot'}[cat];
+}
+
+function getCatColor(cat) {
+  return {lock:'var(--green)',strong:'var(--gold)',build:'var(--orange)',longshot:'var(--red)'}[cat];
+}
+
+function getRingFillClass(cat) {
+  return cat; // same name as CSS class
+}
+
+// Circumference for ring (r=22)
+const CIRC = 2 * Math.PI * 22;
+
+// ─── State ───────────────────────────────────────────────────────────────────
+let activeCategory = 'all';
+let compareIds = [];
+let myHofClass = [];
+
+// ─── Render ──────────────────────────────────────────────────────────────────
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const pos = document.getElementById('posFilter').value;
+  const sort = document.getElementById('sortBy').value;
+
+  let filtered = PLAYERS.filter(p => {
+    if (search && !p.name.toLowerCase().includes(search)) return false;
+    if (pos && p.pos !== pos) return false;
+    if (activeCategory !== 'all') {
+      const catMap = {lock:'lock',strong:'strong',build:'build',long:'longshot'};
+      if (getCategory(p.hofScore) !== catMap[activeCategory]) return false;
+    }
+    return true;
+  });
+
+  // Sort
+  if (sort === 'probowls') filtered.sort((a,b) => b.proBowls - a.proBowls || b.hofScore - a.hofScore);
+  else if (sort === 'allpros') filtered.sort((a,b) => b.allPros - a.allPros || b.hofScore - a.hofScore);
+  else if (sort === 'rings') filtered.sort((a,b) => b.rings - a.rings || b.hofScore - a.hofScore);
+  else if (sort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+  else filtered.sort((a,b) => b.hofScore - a.hofScore);
+
+  renderPlayers(filtered);
+}
+
+function renderPlayers(list) {
+  const out = document.getElementById('playerOutput');
+  const empty = document.getElementById('emptyState');
+
+  if (list.length === 0) {
+    out.innerHTML = '';
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  // Group by category if showing all
+  if (activeCategory === 'all') {
+    const groups = [
+      {key:'lock',   label:'Locks',          badge:'badge-lock',   min:90, max:100},
+      {key:'strong', label:'Strong Cases',   badge:'badge-strong', min:70, max:89},
+      {key:'build',  label:'Building Cases', badge:'badge-build',  min:50, max:69},
+      {key:'longshot',label:'Long Shots',    badge:'badge-long',   min:0,  max:49},
+    ];
+    let html = '';
+    groups.forEach(g => {
+      const group = list.filter(p => getCategory(p.hofScore) === g.key);
+      if (group.length === 0) return;
+      html += `
+        <div class="section-header">
+          <span class="section-badge ${g.badge}">${g.label}</span>
+          <span class="section-count">${group.length} players</span>
+        </div>
+        <div class="player-grid">
+          ${group.map(p => renderCard(p)).join('')}
+        </div>
+      `;
+    });
+    out.innerHTML = html;
+  } else {
+    out.innerHTML = `<div class="player-grid">${list.map(p => renderCard(p)).join('')}</div>`;
+  }
+
+  // After render, animate rings
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.ring-fill').forEach(el => {
+      const score = parseFloat(el.dataset.score);
+      const offset = CIRC - (score / 100) * CIRC;
+      el.style.strokeDasharray = CIRC;
+      el.style.strokeDashoffset = offset;
+    });
+  });
+}
+
+function renderCard(p) {
+  const cat = getCategory(p.hofScore);
+  const isCompare = compareIds.includes(p.id);
+  const isInClass = myHofClass.includes(p.id);
+
+  const offset = CIRC;
+
+  return `
+    <div class="player-card ${cat} ${isCompare ? 'selected-compare' : ''}"
+         id="card-${p.id}"
+         onclick="handleCardClick(${p.id})">
+      <div class="card-top">
+        <div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-meta">
+            <span class="pos">${p.pos}</span>${p.team}
+          </div>
+        </div>
+        <div class="hof-ring">
+          <svg viewBox="0 0 50 50">
+            <circle class="ring-bg" cx="25" cy="25" r="22"/>
+            <circle class="ring-fill ${cat}" cx="25" cy="25" r="22"
+              data-score="${p.hofScore}"
+              style="stroke-dasharray:${CIRC};stroke-dashoffset:${CIRC}"/>
+          </svg>
+          <div class="ring-text">
+            ${p.hofScore}<span class="ring-label">HOF%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-stats">
+        ${p.keyStats.slice(0,3).map(s => `
+          <div class="stat-box">
+            <div class="stat-val">${s.val}</div>
+            <div class="stat-lbl">${s.lbl}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="card-accolades">
+        <span class="accolade gold">${p.proBowls}x Pro Bowl</span>
+        <span class="accolade gold">${p.allPros}x All-Pro</span>
+        ${p.rings > 0 ? `<span class="accolade green">${p.rings}x SB</span>` : ''}
+        ${isInClass ? '<span class="accolade cyan">My HOF Pick</span>' : ''}
+      </div>
+
+      <div class="card-status ${p.status === 'retired' ? 'retired' : ''}">
+        ${p.status === 'retired' ? 'Retired — awaiting eligibility' : p.note}
+      </div>
+
+      <span class="compare-btn"
+        onclick="event.stopPropagation(); toggleCompare(${p.id})">
+        ${isCompare ? 'Remove' : 'Compare'}
+      </span>
+    </div>
+  `;
+}
+
+// ─── Category Filter ──────────────────────────────────────────────────────────
+function setCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => {
+    t.className = 'cat-tab';
+  });
+  const tab = document.getElementById('tab-' + cat);
+  const classMap = {
+    all:'active-all', lock:'active-lock', strong:'active-strong',
+    build:'active-build', long:'active-long'
+  };
+  if (tab) tab.classList.add(classMap[cat]);
+  applyFilters();
+}
+
+// ─── Compare ─────────────────────────────────────────────────────────────────
+function toggleCompare(id) {
+  if (compareIds.includes(id)) {
+    compareIds = compareIds.filter(x => x !== id);
+  } else {
+    if (compareIds.length >= 2) compareIds.shift();
+    compareIds.push(id);
+  }
+  applyFilters();
+  renderCompare();
+}
+
+function clearCompare() {
+  compareIds = [];
+  applyFilters();
+  document.getElementById('comparePanel').classList.remove('visible');
+}
+
+function renderCompare() {
+  const panel = document.getElementById('comparePanel');
+  if (compareIds.length < 2) {
+    panel.classList.remove('visible');
+    return;
+  }
+  panel.classList.add('visible');
+  panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  const [a, b] = compareIds.map(id => PLAYERS.find(p => p.id === id));
+  const grid = document.getElementById('compareGrid');
+
+  const fields = [
+    {lbl:'HOF Score', ka:'hofScore', kb:'hofScore'},
+    {lbl:'Pro Bowls', ka:'proBowls', kb:'proBowls'},
+    {lbl:'All-Pros',  ka:'allPros',  kb:'allPros'},
+    {lbl:'Rings',     ka:'rings',    kb:'rings'},
+  ];
+
+  function side(player, opp) {
+    return `
+      <div class="compare-side">
+        <div class="compare-name">${player.name}</div>
+        <div class="compare-pos-team">${player.pos} — ${player.team}</div>
+        ${fields.map(f => {
+          const va = player[f.ka];
+          const vb = opp[f.kb];
+          const win = va > vb ? 'winner' : '';
+          return `
+            <div class="compare-stat-row">
+              <span class="compare-stat-lbl">${f.lbl}</span>
+              <span class="compare-stat-val ${win}">${va}</span>
+            </div>
+          `;
+        }).join('')}
+        ${player.keyStats.map(s => `
+          <div class="compare-stat-row">
+            <span class="compare-stat-lbl">${s.lbl}</span>
+            <span class="compare-stat-val">${s.val}</span>
+          </div>
+        `).join('')}
+        <div style="margin-top:10px;font-size:12px;color:var(--text-dim);font-style:italic;">${player.note}</div>
+      </div>
+    `;
+  }
+
+  grid.innerHTML = `
+    ${side(a, b)}
+    <div class="compare-vs">VS</div>
+    ${side(b, a)}
+  `;
+}
+
+// ─── My HOF Class ─────────────────────────────────────────────────────────────
+function handleCardClick(id) {
+  // Primary click: toggle into my class
+  if (myHofClass.includes(id)) {
+    myHofClass = myHofClass.filter(x => x !== id);
+  } else {
+    if (myHofClass.length >= 5) {
+      // Nudge
+      document.getElementById('myhofPanel').style.animation = 'none';
+      requestAnimationFrame(() => {
+        document.getElementById('myhofPanel').style.animation = '';
+      });
+      return;
+    }
+    myHofClass.push(id);
+  }
+  renderMyClass();
+  applyFilters();
+}
+
+function removeFromClass(id) {
+  myHofClass = myHofClass.filter(x => x !== id);
+  renderMyClass();
+  applyFilters();
+}
+
+function clearClass() {
+  myHofClass = [];
+  renderMyClass();
+  applyFilters();
+  document.getElementById('shareResult').classList.remove('visible');
+}
+
+function renderMyClass() {
+  const slots = document.getElementById('myhofSlots');
+  let html = '';
+  for (let i = 0; i < 5; i++) {
+    const id = myHofClass[i];
+    if (id) {
+      const p = PLAYERS.find(x => x.id === id);
+      html += `
+        <div class="myhof-slot filled">
+          <span class="myhof-slot-num">${i+1}</span>
+          <span class="myhof-slot-name">${p.name} <span style="font-size:10px;color:var(--text-dim)">${p.pos}</span></span>
+          <span class="myhof-slot-remove" onclick="removeFromClass(${id})" title="Remove">&#x2715;</span>
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="myhof-slot">
+          <span class="myhof-slot-num">${i+1}</span>
+          <span style="font-style:italic">Click a player to add...</span>
+        </div>
+      `;
+    }
+  }
+  slots.innerHTML = html;
+}
+
+function shareClass() {
+  if (myHofClass.length === 0) return;
+  const names = myHofClass.map(id => PLAYERS.find(p => p.id === id).name);
+  const text = 'My 2026 NFL HOF Class: ' + names.join(', ') + ' | ainflgm.com/hof-tracker.html';
+  const shareDiv = document.getElementById('shareResult');
+  shareDiv.textContent = text;
+  shareDiv.classList.add('visible');
+
+  if (navigator.share) {
+    navigator.share({ title: 'My NFL HOF Class', text, url: 'https://ainflgm.com/hof-tracker.html' });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    shareDiv.textContent = 'Copied to clipboard: ' + text;
+  }
+
+  gtag('event', 'share_hof_class', { event_category: 'engagement', event_label: names.join(',') });
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+renderMyClass();
+applyFilters();
+</script>
+</body>
+</html>

@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Draft Grades">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Draft Grade Calculator 2026 | AiNFL GM</title>
+<meta name="description" content="Grade your NFL team's 2026 draft. Add picks, see if it was a reach or steal, check positional need, and get an overall letter grade. Free tool by AiNFL GM.">
+<meta property="og:title" content="NFL Draft Grade Calculator 2026 | AiNFL GM">
+<meta property="og:description" content="Grade your NFL team's 2026 draft. Add picks, see if it was a reach or steal, and get an overall letter grade. Free tool.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/draft-grade.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Draft Grade Calculator 2026 | AiNFL GM">
+<meta name="twitter:description" content="Grade your NFL team's 2026 draft picks. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Main layout */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* Team selector card */
+.team-selector-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.4s ease 0.05s both;
+}
+.card-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.team-select-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+select, input[type="text"], input[type="number"] {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+select:focus, input[type="text"]:focus {
+  border-color: var(--border-hi);
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+#team-select { flex: 1; min-width: 200px; }
+
+/* Add pick card */
+.add-pick-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--green);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+.add-pick-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr 150px;
+  gap: 10px;
+  align-items: end;
+}
+@media (max-width: 600px) {
+  .add-pick-grid { grid-template-columns: 1fr 1fr; }
+  .add-pick-grid .btn-add-pick { grid-column: 1 / -1; }
+  .player-input-wrap { grid-column: 1 / -1; }
+}
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+.input-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* Autocomplete */
+.player-input-wrap { position: relative; }
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xs);
+  z-index: 50;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+.autocomplete-list.open { display: block; }
+.autocomplete-item {
+  padding: 9px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background 0.15s;
+}
+.autocomplete-item:hover, .autocomplete-item.active { background: var(--bg-3); }
+.ac-name { color: var(--text); font-weight: 500; }
+.ac-pos { color: var(--cyan); font-size: 11px; font-weight: 700; }
+.ac-rank { color: var(--text-mute); font-size: 11px; }
+
+.btn-add-pick {
+  background: var(--green);
+  color: #000;
+  border: none;
+  border-radius: var(--radius-xs);
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-add-pick:hover { opacity: 0.88; }
+.btn-add-pick:active { transform: scale(0.97); }
+
+/* Overall grade panel */
+.overall-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  animation: fadeUp 0.4s ease 0.15s both;
+}
+.overall-grade-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+}
+.overall-letter {
+  font-family: 'Oswald', sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-mute);
+  transition: color 0.4s, text-shadow 0.4s;
+}
+.overall-letter.has-grade { animation: gradeIn 0.35s ease both; }
+.overall-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+.overall-meta {
+  flex: 1;
+}
+.overall-team-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.overall-summary {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.overall-stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.overall-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.overall-stat-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cyan);
+}
+.overall-stat-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.overall-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+@media (max-width: 580px) {
+  .overall-panel { flex-direction: column; align-items: stretch; }
+  .overall-grade-display { flex-direction: row; align-items: center; gap: 12px; }
+  .overall-letter { font-size: 48px; }
+  .overall-actions { flex-direction: row; align-items: center; }
+}
+
+.btn-share {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xs);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-share:hover { background: rgba(0,240,255,0.2); }
+.btn-share:active { transform: scale(0.97); }
+
+.btn-reset {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+/* Picks list */
+.picks-section {
+  animation: fadeUp 0.4s ease 0.2s both;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.pick-count-badge {
+  background: var(--bg-3);
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-mute);
+}
+.picks-empty {
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+.picks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Pick card */
+.pick-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  animation: fadeUp 0.3s ease both;
+  position: relative;
+  overflow: hidden;
+}
+.pick-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+.pick-card.grade-a-plus::before { background: #00FF94; }
+.pick-card.grade-a::before      { background: #39FF14; }
+.pick-card.grade-b::before      { background: #A8FF3E; }
+.pick-card.grade-c::before      { background: var(--yellow); }
+.pick-card.grade-d::before      { background: #FF8C00; }
+.pick-card.grade-f::before      { background: var(--red); }
+
+.pick-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+  line-height: 1;
+}
+.pick-round-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  text-align: center;
+  margin-top: 2px;
+}
+
+.pick-info { min-width: 0; }
+.pick-player {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.pick-pos-tag {
+  display: inline-block;
+  background: var(--bg-3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  margin-right: 6px;
+}
+.pick-meta {
+  font-size: 12px;
+  color: var(--text-mute);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.pick-verdict {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.pick-verdict.steal    { background: var(--green-dim); color: var(--green); }
+.pick-verdict.value    { background: var(--cyan-dim); color: var(--cyan); }
+.pick-verdict.slight-reach { background: var(--yellow-dim); color: var(--yellow); }
+.pick-verdict.reach    { background: var(--red-dim); color: var(--red); }
+.pick-verdict.need-met { background: var(--green-dim); color: var(--green); }
+.pick-verdict.need-miss { background: var(--red-dim); color: var(--red); }
+
+.pick-grade-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.pick-grade-letter {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+.grade-a-plus-c  { color: #00FF94; }
+.grade-a-c       { color: var(--green); }
+.grade-b-c       { color: #A8FF3E; }
+.grade-c-c       { color: var(--yellow); }
+.grade-d-c       { color: #FF8C00; }
+.grade-f-c       { color: var(--red); }
+
+.pick-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  transition: color 0.15s, background 0.15s;
+  align-self: flex-start;
+}
+.pick-remove-btn:hover { color: var(--red); background: var(--red-dim); }
+
+/* Share toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 200;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* Needs legend */
+.needs-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.need-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.need-tag.top { background: var(--red-dim); color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    2026 NFL Draft
+  </div>
+  <h1>Draft <span>Grade</span> Calculator</h1>
+  <p>Select your team, add picks, and see how your draft stacks up. Each pick is graded on value at slot, prospect ranking, and positional need.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Team Selector -->
+  <div class="team-selector-card">
+    <div class="card-label">Step 1 — Select Your Team</div>
+    <div class="team-select-row">
+      <select id="team-select" onchange="onTeamChange()">
+        <option value="">Choose a team...</option>
+      </select>
+      <div id="team-needs-display" style="display:none;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);margin-bottom:4px;">Top Needs</div>
+        <div class="needs-row" id="needs-tags"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Pick -->
+  <div class="add-pick-card">
+    <div class="card-label">Step 2 — Add Picks</div>
+    <div class="add-pick-grid">
+      <div class="input-group">
+        <label class="input-label" for="pick-num-select">Pick #</label>
+        <select id="pick-num-select"></select>
+      </div>
+      <div class="input-group player-input-wrap">
+        <label class="input-label" for="player-input">Player Name</label>
+        <input type="text" id="player-input" placeholder="Type name or search..." autocomplete="off" oninput="onPlayerInput()" onkeydown="onPlayerKeydown(event)">
+        <div class="autocomplete-list" id="autocomplete-list"></div>
+      </div>
+      <div class="input-group">
+        <label class="input-label" for="pos-select">Position</label>
+        <select id="pos-select">
+          <option value="">Position</option>
+          <option>QB</option><option>RB</option><option>WR</option><option>TE</option>
+          <option>OT</option><option>OG</option><option>C</option>
+          <option>EDGE</option><option>DT</option><option>LB</option>
+          <option>CB</option><option>S</option><option>K</option><option>P</option>
+        </select>
+      </div>
+      <button class="btn-add-pick" onclick="addPick()">+ Add Pick</button>
+    </div>
+  </div>
+
+  <!-- Overall Grade Panel -->
+  <div class="overall-panel" id="overall-panel">
+    <div class="overall-grade-display">
+      <div class="overall-letter" id="overall-letter">--</div>
+      <div class="overall-label">Overall</div>
+    </div>
+    <div class="overall-meta">
+      <div class="overall-team-name" id="overall-team-name">No team selected</div>
+      <div class="overall-summary" id="overall-summary">Add picks above to start grading your draft class.</div>
+      <div class="overall-stats" id="overall-stats"></div>
+    </div>
+    <div class="overall-actions">
+      <button class="btn-share" onclick="shareDraft()">Copy Grade Report</button>
+      <button class="btn-reset" onclick="resetDraft()">Reset</button>
+    </div>
+  </div>
+
+  <!-- Picks List -->
+  <div class="picks-section">
+    <div class="section-header">
+      <div class="section-title">Draft Picks</div>
+      <div class="pick-count-badge" id="pick-count-badge">0 picks</div>
+    </div>
+    <div id="picks-container">
+      <div class="picks-empty">No picks added yet. Select your team and start adding picks above.</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>2026 NFL Draft Grade Calculator. Prospect rankings and team needs are pre-season estimates.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="/draft-trade-calc.html">Trade Value Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="/team-needs.html">Team Needs</a>
+  </div>
+  <div style="margin-top:8px; color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<!-- More Tools -->
+<div style="max-width:900px;margin:40px auto 0;padding:0 16px 40px;">
+  <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:12px;">More Free Tools</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="/draft-trade-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Draft Trade Calculator</a>
+    <a href="/trade-analyzer.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Trade Analyzer</a>
+    <a href="/cap-impact.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Cap Impact Tool</a>
+    <a href="/mortgage-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Mortgage Calculator</a>
+    <a href="/name-generator.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">AI Business Name Generator</a>
+    <a href="/" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#00F0FF;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:border-color .2s;">AiNFL GM Simulator</a>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copied to clipboard!</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+// Top 50 prospects for 2026 NFL Draft (pre-draft consensus rankings)
+const TOP_PROSPECTS = [
+  { rank: 1,  name: 'Cam Ward',         pos: 'QB'   },
+  { rank: 2,  name: 'Travis Hunter',    pos: 'WR'   },
+  { rank: 3,  name: 'Abdul Carter',     pos: 'EDGE' },
+  { rank: 4,  name: 'Shedeur Sanders',  pos: 'QB'   },
+  { rank: 5,  name: 'Mason Graham',     pos: 'DT'   },
+  { rank: 6,  name: 'Will Johnson',     pos: 'CB'   },
+  { rank: 7,  name: 'Malaki Starks',    pos: 'S'    },
+  { rank: 8,  name: 'Mykel Williams',   pos: 'EDGE' },
+  { rank: 9,  name: 'Tetairoa McMillan',pos: 'WR'   },
+  { rank: 10, name: 'Kelvin Banks Jr.', pos: 'OT'   },
+  { rank: 11, name: 'Jihaad Campbell',  pos: 'LB'   },
+  { rank: 12, name: 'Luther Burden III',pos: 'WR'   },
+  { rank: 13, name: 'James Pearce Jr.', pos: 'EDGE' },
+  { rank: 14, name: 'Dontay Demus Jr.', pos: 'WR'   },
+  { rank: 15, name: 'Jalon Walker',     pos: 'LB'   },
+  { rank: 16, name: 'Grey Zabel',       pos: 'OG'   },
+  { rank: 17, name: 'Tyler Warren',     pos: 'TE'   },
+  { rank: 18, name: 'Nick Emmanwori',   pos: 'S'    },
+  { rank: 19, name: 'Elic Ayomanor',    pos: 'WR'   },
+  { rank: 20, name: 'Josh Simmons',     pos: 'OT'   },
+  { rank: 21, name: 'Shemar Stewart',   pos: 'DT'   },
+  { rank: 22, name: 'Princely Umanmielen', pos: 'EDGE' },
+  { rank: 23, name: 'Landon Jackson',   pos: 'EDGE' },
+  { rank: 24, name: 'Armand Membou',    pos: 'OT'   },
+  { rank: 25, name: 'Jack Sawyer',      pos: 'EDGE' },
+  { rank: 26, name: 'Maxwell Hairston', pos: 'CB'   },
+  { rank: 27, name: 'Matthew Golden',   pos: 'WR'   },
+  { rank: 28, name: 'Isaiah Campbell',  pos: 'EDGE' },
+  { rank: 29, name: 'Jonah Savaiinaea', pos: 'OG'   },
+  { rank: 30, name: 'Tre Harris',       pos: 'WR'   },
+  { rank: 31, name: 'Will Shipley',     pos: 'RB'   },
+  { rank: 32, name: 'Emeka Egbuka',     pos: 'WR'   },
+  { rank: 33, name: 'Colston Loveland', pos: 'TE'   },
+  { rank: 34, name: 'Kenneth Grant',    pos: 'DT'   },
+  { rank: 35, name: 'Aireontae Ersery', pos: 'OT'   },
+  { rank: 36, name: 'Elic Ayomanor',    pos: 'WR'   },
+  { rank: 37, name: 'Donovan Ezeiruaku',pos: 'EDGE' },
+  { rank: 38, name: 'Omarion Hampton',  pos: 'RB'   },
+  { rank: 39, name: 'Carson Schwesinger',pos:'LB'   },
+  { rank: 40, name: 'Quinshon Judkins', pos: 'RB'   },
+  { rank: 41, name: 'Marcus Mbow',      pos: 'OG'   },
+  { rank: 42, name: 'Tyleik Williams',  pos: 'DT'   },
+  { rank: 43, name: 'Deone Walker',     pos: 'DT'   },
+  { rank: 44, name: 'Azareye\'h Thomas',pos: 'CB'   },
+  { rank: 45, name: 'Jalen Milroe',     pos: 'QB'   },
+  { rank: 46, name: 'Kevin Winston Jr.',pos: 'S'    },
+  { rank: 47, name: 'Jaylen Reed',      pos: 'S'    },
+  { rank: 48, name: 'Kyle Williams',    pos: 'WR'   },
+  { rank: 49, name: 'Darius Alexander', pos: 'DT'   },
+  { rank: 50, name: 'Shemar Turner',    pos: 'DT'   },
+];
+
+// 32 NFL teams with top positional needs (pre-2026 draft estimates)
+const TEAMS = [
+  { name: 'Arizona Cardinals',       abbr: 'ARI', needs: ['OT','WR','LB','S']          },
+  { name: 'Atlanta Falcons',         abbr: 'ATL', needs: ['WR','OT','CB','LB']          },
+  { name: 'Baltimore Ravens',        abbr: 'BAL', needs: ['WR','OT','CB','EDGE']        },
+  { name: 'Buffalo Bills',           abbr: 'BUF', needs: ['OT','DT','LB','S']           },
+  { name: 'Carolina Panthers',       abbr: 'CAR', needs: ['OT','EDGE','WR','LB']        },
+  { name: 'Chicago Bears',           abbr: 'CHI', needs: ['EDGE','OT','CB','DT']        },
+  { name: 'Cincinnati Bengals',      abbr: 'CIN', needs: ['OT','CB','LB','S']           },
+  { name: 'Cleveland Browns',        abbr: 'CLE', needs: ['QB','OT','EDGE','WR']        },
+  { name: 'Dallas Cowboys',          abbr: 'DAL', needs: ['CB','EDGE','OT','WR']        },
+  { name: 'Denver Broncos',          abbr: 'DEN', needs: ['WR','OT','DT','CB']          },
+  { name: 'Detroit Lions',           abbr: 'DET', needs: ['CB','S','EDGE','DT']         },
+  { name: 'Green Bay Packers',       abbr: 'GB',  needs: ['CB','EDGE','OT','S']         },
+  { name: 'Houston Texans',          abbr: 'HOU', needs: ['OT','CB','LB','DT']          },
+  { name: 'Indianapolis Colts',      abbr: 'IND', needs: ['QB','OT','EDGE','WR']        },
+  { name: 'Jacksonville Jaguars',    abbr: 'JAX', needs: ['QB','WR','OT','CB']          },
+  { name: 'Kansas City Chiefs',      abbr: 'KC',  needs: ['WR','OT','CB','EDGE']        },
+  { name: 'Las Vegas Raiders',       abbr: 'LV',  needs: ['QB','OT','WR','EDGE']        },
+  { name: 'Los Angeles Chargers',    abbr: 'LAC', needs: ['OT','DT','LB','CB']          },
+  { name: 'Los Angeles Rams',        abbr: 'LAR', needs: ['OT','S','EDGE','DT']         },
+  { name: 'Miami Dolphins',          abbr: 'MIA', needs: ['OT','CB','LB','DT']          },
+  { name: 'Minnesota Vikings',       abbr: 'MIN', needs: ['OT','EDGE','CB','DT']        },
+  { name: 'New England Patriots',    abbr: 'NE',  needs: ['QB','OT','WR','EDGE']        },
+  { name: 'New Orleans Saints',      abbr: 'NO',  needs: ['QB','OT','WR','CB']          },
+  { name: 'New York Giants',         abbr: 'NYG', needs: ['OT','EDGE','WR','CB']        },
+  { name: 'New York Jets',           abbr: 'NYJ', needs: ['WR','OT','DT','S']           },
+  { name: 'Philadelphia Eagles',     abbr: 'PHI', needs: ['WR','OT','LB','DT']          },
+  { name: 'Pittsburgh Steelers',     abbr: 'PIT', needs: ['QB','OT','WR','CB']          },
+  { name: 'San Francisco 49ers',     abbr: 'SF',  needs: ['OT','CB','EDGE','LB']        },
+  { name: 'Seattle Seahawks',        abbr: 'SEA', needs: ['OT','CB','DT','WR']          },
+  { name: 'Tampa Bay Buccaneers',    abbr: 'TB',  needs: ['OT','CB','EDGE','LB']        },
+  { name: 'Tennessee Titans',        abbr: 'TEN', needs: ['QB','OT','EDGE','WR']        },
+  { name: 'Washington Commanders',   abbr: 'WAS', needs: ['OT','CB','DT','LB']          },
+];
+
+// Expected pick range by overall prospect rank
+// Returns { min, max } overall pick number for a prospect ranked at rank
+function expectedRange(rank) {
+  // Linear approximation: rank 1 expected around pick 1-5, rank 50 around picks 45-65
+  const center = rank * 1.1;
+  const spread = Math.max(8, rank * 0.35);
+  return { min: Math.max(1, Math.round(center - spread)), max: Math.round(center + spread) };
+}
+
+function getRound(pick) {
+  const cuts = [32, 64, 96, 128, 160, 204, 224];
+  const labels = [1, 2, 3, 4, 5, 6, 7];
+  for (let i = 0; i < cuts.length; i++) {
+    if (pick <= cuts[i]) {
+      const prev = i === 0 ? 0 : cuts[i - 1];
+      return `R${labels[i]} Pick ${pick - prev}`;
+    }
+  }
+  return `Pick ${pick}`;
+}
+
+// ============================================================
+// STATE
+// ============================================================
+let selectedTeam = null;
+let picks = [];
+let acIndex = -1;
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  // Populate team dropdown
+  const sel = document.getElementById('team-select');
+  TEAMS.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t.abbr;
+    opt.textContent = t.name;
+    sel.appendChild(opt);
+  });
+
+  // Populate pick number dropdown
+  const pickSel = document.getElementById('pick-num-select');
+  for (let i = 1; i <= 224; i++) {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `#${i} — ${getRound(i)}`;
+    pickSel.appendChild(opt);
+  }
+}
+
+// ============================================================
+// TEAM CHANGE
+// ============================================================
+function onTeamChange() {
+  const abbr = document.getElementById('team-select').value;
+  selectedTeam = TEAMS.find(t => t.abbr === abbr) || null;
+
+  const needsDisplay = document.getElementById('team-needs-display');
+  const needsTags = document.getElementById('needs-tags');
+
+  if (selectedTeam) {
+    needsDisplay.style.display = 'block';
+    needsTags.innerHTML = selectedTeam.needs
+      .map((n, i) => `<span class="need-tag${i < 2 ? ' top' : ''}">${n}</span>`)
+      .join('');
+    document.getElementById('overall-team-name').textContent = selectedTeam.name;
+  } else {
+    needsDisplay.style.display = 'none';
+    document.getElementById('overall-team-name').textContent = 'No team selected';
+  }
+
+  renderOverall();
+}
+
+// ============================================================
+// AUTOCOMPLETE
+// ============================================================
+function onPlayerInput() {
+  const val = document.getElementById('player-input').value.trim().toLowerCase();
+  const list = document.getElementById('autocomplete-list');
+  acIndex = -1;
+
+  if (val.length < 1) {
+    list.classList.remove('open');
+    return;
+  }
+
+  const matches = TOP_PROSPECTS.filter(p =>
+    p.name.toLowerCase().includes(val)
+  ).slice(0, 8);
+
+  if (matches.length === 0) {
+    list.classList.remove('open');
+    return;
+  }
+
+  list.innerHTML = matches.map((p, i) =>
+    `<div class="autocomplete-item" data-idx="${i}" data-name="${p.name}" data-pos="${p.pos}"
+      onmousedown="selectProspect('${p.name}','${p.pos}')">
+      <span class="ac-name">${p.name}</span>
+      <span class="ac-pos">${p.pos}</span>
+      <span class="ac-rank">#${p.rank} prospect</span>
+    </div>`
+  ).join('');
+  list.classList.add('open');
+}
+
+function onPlayerKeydown(e) {
+  const list = document.getElementById('autocomplete-list');
+  const items = list.querySelectorAll('.autocomplete-item');
+  if (!list.classList.contains('open')) {
+    if (e.key === 'Enter') addPick();
+    return;
+  }
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    acIndex = Math.min(acIndex + 1, items.length - 1);
+    items.forEach((el, i) => el.classList.toggle('active', i === acIndex));
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    acIndex = Math.max(acIndex - 1, 0);
+    items.forEach((el, i) => el.classList.toggle('active', i === acIndex));
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (acIndex >= 0 && items[acIndex]) {
+      const el = items[acIndex];
+      selectProspect(el.dataset.name, el.dataset.pos);
+    } else {
+      list.classList.remove('open');
+      addPick();
+    }
+  } else if (e.key === 'Escape') {
+    list.classList.remove('open');
+  }
+}
+
+function selectProspect(name, pos) {
+  document.getElementById('player-input').value = name;
+  document.getElementById('pos-select').value = pos;
+  document.getElementById('autocomplete-list').classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.player-input-wrap')) {
+    document.getElementById('autocomplete-list').classList.remove('open');
+  }
+});
+
+// ============================================================
+// GRADING ENGINE
+// ============================================================
+
+function gradePick(pickNum, playerName, pos) {
+  // 1. Find if player is a known prospect
+  const prospect = TOP_PROSPECTS.find(p => p.name.toLowerCase() === playerName.toLowerCase());
+
+  let valueScore  = 50; // default — unknown player
+  let needScore   = 50;
+  let verdictValue = 'value';
+  let verdictNeed  = null;
+
+  // Value vs pick slot
+  if (prospect) {
+    const range = expectedRange(prospect.rank);
+    if (pickNum < range.min - 5) {
+      // Significant reach
+      const gap = range.min - pickNum;
+      if (gap >= 20) { valueScore = 10; verdictValue = 'reach'; }
+      else if (gap >= 10) { valueScore = 25; verdictValue = 'reach'; }
+      else { valueScore = 40; verdictValue = 'slight-reach'; }
+    } else if (pickNum > range.max + 5) {
+      // Steal — fell further than expected
+      const gap = pickNum - range.max;
+      if (gap >= 20) { valueScore = 100; verdictValue = 'steal'; }
+      else if (gap >= 10) { valueScore = 90; verdictValue = 'steal'; }
+      else { valueScore = 78; verdictValue = 'value'; }
+    } else {
+      // In range — good value
+      valueScore = 72;
+      verdictValue = 'value';
+    }
+  }
+
+  // Positional need
+  if (selectedTeam && pos) {
+    const needIdx = selectedTeam.needs.indexOf(pos);
+    if (needIdx === 0 || needIdx === 1) {
+      needScore = 95; verdictNeed = 'need-met';
+    } else if (needIdx === 2 || needIdx === 3) {
+      needScore = 75; verdictNeed = 'need-met';
+    } else if (needIdx >= 0) {
+      needScore = 65; verdictNeed = 'need-met';
+    } else {
+      needScore = 35; verdictNeed = 'need-miss';
+    }
+  }
+
+  // Composite score
+  const composite = selectedTeam
+    ? Math.round(valueScore * 0.6 + needScore * 0.4)
+    : valueScore;
+
+  const grade = scoreToGrade(composite);
+  return { grade, composite, verdictValue, verdictNeed, prospect };
+}
+
+function scoreToGrade(score) {
+  if (score >= 93) return 'A+';
+  if (score >= 85) return 'A';
+  if (score >= 75) return 'B+';
+  if (score >= 65) return 'B';
+  if (score >= 55) return 'C+';
+  if (score >= 45) return 'C';
+  if (score >= 35) return 'D+';
+  if (score >= 25) return 'D';
+  return 'F';
+}
+
+function gradeToClass(grade) {
+  if (grade === 'A+')       return 'a-plus';
+  if (grade.startsWith('A')) return 'a';
+  if (grade.startsWith('B')) return 'b';
+  if (grade.startsWith('C')) return 'c';
+  if (grade.startsWith('D')) return 'd';
+  return 'f';
+}
+
+function gradeColor(grade) {
+  if (grade === 'A+')        return '#00FF94';
+  if (grade.startsWith('A')) return '#39FF14';
+  if (grade.startsWith('B')) return '#A8FF3E';
+  if (grade.startsWith('C')) return '#FFD600';
+  if (grade.startsWith('D')) return '#FF8C00';
+  return '#FF2D55';
+}
+
+function overallScore(picksArr) {
+  if (picksArr.length === 0) return null;
+  const avg = picksArr.reduce((s, p) => s + p.composite, 0) / picksArr.length;
+  return Math.round(avg);
+}
+
+// ============================================================
+// ADD / REMOVE PICK
+// ============================================================
+function addPick() {
+  const pickNum  = parseInt(document.getElementById('pick-num-select').value);
+  const player   = document.getElementById('player-input').value.trim();
+  const pos      = document.getElementById('pos-select').value;
+
+  if (!player) {
+    document.getElementById('player-input').focus();
+    return;
+  }
+  if (!pos) {
+    document.getElementById('pos-select').focus();
+    return;
+  }
+
+  const result = gradePick(pickNum, player, pos);
+  picks.push({ pickNum, player, pos, ...result, id: Date.now() });
+
+  // Clear inputs
+  document.getElementById('player-input').value = '';
+  document.getElementById('pos-select').value = '';
+  document.getElementById('autocomplete-list').classList.remove('open');
+
+  renderPicks();
+  renderOverall();
+}
+
+function removePick(id) {
+  picks = picks.filter(p => p.id !== id);
+  renderPicks();
+  renderOverall();
+}
+
+// ============================================================
+// RENDER PICKS
+// ============================================================
+function renderPicks() {
+  const container = document.getElementById('picks-container');
+  const badge = document.getElementById('pick-count-badge');
+  badge.textContent = `${picks.length} pick${picks.length !== 1 ? 's' : ''}`;
+
+  if (picks.length === 0) {
+    container.innerHTML = '<div class="picks-empty">No picks added yet. Select your team and start adding picks above.</div>';
+    return;
+  }
+
+  const sorted = [...picks].sort((a, b) => a.pickNum - b.pickNum);
+  container.innerHTML = '';
+  const list = document.createElement('div');
+  list.className = 'picks-list';
+
+  sorted.forEach((p, delay) => {
+    const gc = gradeToClass(p.grade);
+    const col = gradeColor(p.grade);
+    const roundLabel = getRound(p.pickNum);
+    const rankNote = p.prospect ? `#${p.prospect.rank} prospect` : 'Unranked';
+
+    const card = document.createElement('div');
+    card.className = `pick-card grade-${gc}`;
+    card.style.animationDelay = `${delay * 0.04}s`;
+
+    const needHtml = p.verdictNeed
+      ? `<span class="pick-verdict ${p.verdictNeed}">${p.verdictNeed === 'need-met' ? 'Need Met' : 'Off Need'}</span>`
+      : '';
+
+    card.innerHTML = `
+      <div>
+        <div class="pick-num">${p.pickNum}</div>
+        <div class="pick-round-label">${roundLabel.replace(/^R\d+ /, '')}</div>
+      </div>
+      <div class="pick-info">
+        <div class="pick-player">${p.player}</div>
+        <div class="pick-meta">
+          <span class="pick-pos-tag">${p.pos}</span>
+          <span class="pick-verdict ${p.verdictValue}">${labelVerdict(p.verdictValue)}</span>
+          ${needHtml}
+          <span style="color:var(--text-mute)">${rankNote}</span>
+        </div>
+      </div>
+      <div class="pick-grade-col">
+        <div class="pick-grade-letter grade-${gc}-c" style="color:${col}">${p.grade}</div>
+        <button class="pick-remove-btn" onclick="removePick(${p.id})" title="Remove pick">&#x2715;</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  container.appendChild(list);
+}
+
+function labelVerdict(v) {
+  if (v === 'steal')        return 'Steal';
+  if (v === 'value')        return 'Good Value';
+  if (v === 'slight-reach') return 'Slight Reach';
+  if (v === 'reach')        return 'Reach';
+  return v;
+}
+
+// ============================================================
+// RENDER OVERALL
+// ============================================================
+function renderOverall() {
+  const letter = document.getElementById('overall-letter');
+  const summary = document.getElementById('overall-summary');
+  const stats = document.getElementById('overall-stats');
+
+  if (picks.length === 0) {
+    letter.textContent = '--';
+    letter.style.color = 'var(--text-mute)';
+    letter.style.textShadow = 'none';
+    letter.classList.remove('has-grade');
+    summary.textContent = 'Add picks above to start grading your draft class.';
+    stats.innerHTML = '';
+    return;
+  }
+
+  const score = overallScore(picks);
+  const grade = scoreToGrade(score);
+  const color = gradeColor(grade);
+
+  letter.classList.remove('has-grade');
+  void letter.offsetWidth; // reflow to retrigger animation
+  letter.classList.add('has-grade');
+  letter.textContent = grade;
+  letter.style.color = color;
+  letter.style.textShadow = `0 0 24px ${color}55`;
+
+  // Stats
+  const steals  = picks.filter(p => p.verdictValue === 'steal').length;
+  const reaches = picks.filter(p => p.verdictValue === 'reach' || p.verdictValue === 'slight-reach').length;
+  const needsMet = picks.filter(p => p.verdictNeed === 'need-met').length;
+
+  stats.innerHTML = `
+    <div class="overall-stat"><div class="overall-stat-val">${picks.length}</div><div class="overall-stat-lbl">Picks</div></div>
+    <div class="overall-stat"><div class="overall-stat-val" style="color:var(--green)">${steals}</div><div class="overall-stat-lbl">Steals</div></div>
+    <div class="overall-stat"><div class="overall-stat-val" style="color:var(--red)">${reaches}</div><div class="overall-stat-lbl">Reaches</div></div>
+    ${selectedTeam ? `<div class="overall-stat"><div class="overall-stat-val" style="color:var(--cyan)">${needsMet}</div><div class="overall-stat-lbl">Needs Met</div></div>` : ''}
+  `;
+
+  summary.textContent = buildSummary(grade, steals, reaches, needsMet);
+}
+
+function buildSummary(grade, steals, reaches, needsMet) {
+  const team = selectedTeam ? selectedTeam.name : 'This draft class';
+  if (grade === 'A+') return `${team} had a historically great draft. Multiple steals and zero wasted picks.`;
+  if (grade.startsWith('A')) return `${team} earned top marks. Smart picks that filled real needs.`;
+  if (grade.startsWith('B')) return `${team} had a solid draft. A few reaches but overall solid value.`;
+  if (grade.startsWith('C')) return `${team} had a mixed draft. Some good value but notable reaches drag the grade.`;
+  if (grade.startsWith('D')) return `${team} struggled to find value. Several reaches and missed needs.`;
+  return `${team} had a rough draft. High reach count and poor positional fit.`;
+}
+
+// ============================================================
+// SHARE
+// ============================================================
+function shareDraft() {
+  if (picks.length === 0) {
+    showToast('Add picks first!');
+    return;
+  }
+
+  const team = selectedTeam ? selectedTeam.name : 'My Team';
+  const score = overallScore(picks);
+  const grade = scoreToGrade(score);
+  const sorted = [...picks].sort((a, b) => a.pickNum - b.pickNum);
+
+  let text = `${team} 2026 NFL Draft Grade: ${grade}\n`;
+  text += `via AiNFL GM Draft Grade Calculator\n\n`;
+  text += sorted.map(p =>
+    `Pick #${p.pickNum} — ${p.player} (${p.pos}) — ${p.grade} [${labelVerdict(p.verdictValue)}]`
+  ).join('\n');
+  text += `\n\nhttps://ainflgm.com/draft-grade.html`;
+
+  navigator.clipboard.writeText(text).then(() => showToast('Draft report copied!')).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Draft report copied!');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ============================================================
+// RESET
+// ============================================================
+function resetDraft() {
+  picks = [];
+  document.getElementById('team-select').value = '';
+  document.getElementById('player-input').value = '';
+  document.getElementById('pos-select').value = '';
+  document.getElementById('pick-num-select').value = 1;
+  document.getElementById('team-needs-display').style.display = 'none';
+  selectedTeam = null;
+  document.getElementById('overall-team-name').textContent = 'No team selected';
+  renderPicks();
+  renderOverall();
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+init();
+renderPicks();
+renderOverall();
+</script>
+
+<section style="max-width:860px;margin:48px auto 0;padding:0 20px 60px;font-family:system-ui,sans-serif;color:#c8d6e5;line-height:1.75;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:16px;border-top:2px solid #FB4F14;padding-top:24px;">How the NFL Draft Grader Works</h2>
+  <p style="margin-bottom:14px;">The AiNFLGM Draft Grader scores your team's draft class in real time as you enter picks, giving you an overall letter grade and a breakdown of each selection's value relative to where it was taken. The NFL Draft is the most consequential annual event for building a roster, and understanding value at each pick position is the difference between building a champion and spinning your wheels for a decade.</p>
+  <p style="margin-bottom:14px;">The grading system works by comparing the positional value of each selection against the historical production expected from that draft slot. First-round picks are held to a higher standard because those selections cost the most in terms of draft capital and carry the largest contract obligations on the fifth-year rookie option. A wide receiver taken in the top-10 needs to project as a true number-one target to justify the cost — the tool penalizes reaches and rewards selections where a team gets a player projected higher than the pick number suggests.</p>
+  <p style="margin-bottom:14px;">Team needs are factored into the grading algorithm as well. Selecting a position of high team need at good value earns a bonus in the grade calculation, while selecting a position of minimal need — even at fair value — receives a slight deduction. NFL teams that ignore positional need in the draft often find themselves cap-strapped later when they are forced to address those holes through expensive free agency. The best drafts fill needs with value simultaneously.</p>
+  <p style="margin-bottom:14px;">After all picks are entered, the tool produces an overall class grade, a positional distribution chart, and a needs-met assessment. Use it to grade real NFL draft classes on draft night, evaluate your fantasy league's rookie selections, or test different mock draft scenarios before the actual event.</p>
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin:36px 0 16px;border-top:2px solid #FB4F14;padding-top:24px;">Frequently Asked Questions</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How does the tool determine if a pick is a reach or good value?</h3>
+  <p style="margin-bottom:20px;">Each pick is evaluated against a consensus board that aggregates player rankings from multiple scouting sources. If a player is taken more than half a round earlier than their consensus ranking suggests, it is flagged as a potential reach. If they fall to your pick position, it is flagged as good value. The algorithm accounts for positional run patterns — quarterbacks and pass rushers consistently go earlier than pure value suggests because of positional scarcity and market demand.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Does the grader account for what other teams are doing?</h3>
+  <p style="margin-bottom:20px;">The grader evaluates each team's picks in isolation against the value board, not relative to other teams. This is by design — a team's draft grade should reflect whether they got value at each position they selected, not whether they outperformed other GMs. The full class comparison feature is separate and lets you rank all 32 teams' draft classes against each other after entering all picks.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Can I grade previous NFL draft classes, not just current ones?</h3>
+  <p style="margin-bottom:20px;">Yes. The tool supports entering picks from any historical draft, and when grading past classes, the system can optionally show how those picks actually developed — mapping the grade prediction against real-world outcomes. This retrospective mode is one of the most educational features for understanding how NFL front offices make decisions and where their evaluation processes succeed or fail.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">What positions receive the highest value grades?</h3>
+  <p style="margin-bottom:20px;">Quarterbacks, edge rushers, and left tackles historically generate the highest return on draft investment relative to their pick cost. These are the premium positions in modern football because they directly influence the outcome of every play. Interior defensive linemen, slot corners, and fullbacks tend to generate lower grades even when selected at fair value because their impact is less directly tied to wins and losses on a per-snap basis.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How should I interpret a B+ draft grade versus an A- grade?</h3>
+  <p style="margin-bottom:20px;">Draft grades on the night of the draft are inherently projections — no one truly knows how players will develop. An A grade means the team maximized value at every pick and addressed key needs. A B+ means they did well overall with one or two minor reaches or missed opportunities. Statistically, the difference in outcomes between A and B+ draft classes is minimal over time because development variance is so high. Focus more on whether needs were addressed than on squeezing one additional letter grade point.</p>
+</section>
+</body>
+</html>

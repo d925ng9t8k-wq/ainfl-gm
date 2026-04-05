@@ -1,0 +1,6 @@
+SELECT setval(pg_get_serial_sequence('messages', 'id'), COALESCE(MAX(id), 1)) FROM messages;
+SELECT setval(pg_get_serial_sequence('actions', 'id'), COALESCE(MAX(id), 1)) FROM actions;
+SELECT setval(pg_get_serial_sequence('decisions', 'id'), COALESCE(MAX(id), 1)) FROM decisions;
+SELECT setval(pg_get_serial_sequence('memory', 'id'), COALESCE(MAX(id), 1)) FROM memory;
+SELECT setval(pg_get_serial_sequence('tasks', 'id'), COALESCE(MAX(id), 1)) FROM tasks;
+SELECT setval(pg_get_serial_sequence('authority_matrix', 'id'), COALESCE(MAX(id), 1)) FROM authority_matrix;

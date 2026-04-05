@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Futures Odds">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL 2026 Futures Odds Board | AiNFL GM</title>
+<meta name="description" content="Explore 2026 NFL futures betting odds for Super Bowl, MVP, OROY, DROY, conference and division winners, and win totals. Track your picks with the My Bets tracker.">
+<meta property="og:title" content="NFL 2026 Futures Odds Board | AiNFL GM">
+<meta property="og:description" content="2026 NFL futures odds: Super Bowl, MVP, OROY, DROY, conference/division winners, win totals. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/futures-odds.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL 2026 Futures Odds Board | AiNFL GM">
+<meta name="twitter:description" content="2026 NFL futures odds. Track your picks. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF7A00;
+  --orange-dim: rgba(255,122,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Tab Bar ── */
+.tab-bar-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: 24px;
+  padding-bottom: 2px;
+}
+.tab-bar-wrap::-webkit-scrollbar { display: none; }
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  min-width: max-content;
+  padding: 4px 0;
+}
+.tab-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab-pill:hover {
+  border-color: var(--border-hi);
+  color: var(--text);
+}
+.tab-pill.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+/* ── Controls Bar ── */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.sort-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.sort-btn {
+  padding: 6px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sort-btn:hover { border-color: var(--border-hi); color: var(--text); }
+.sort-btn.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.spacer { flex: 1; }
+.my-bets-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.my-bets-toggle:hover { border-color: var(--border-hi); color: var(--text); }
+.my-bets-toggle.active {
+  background: var(--yellow-dim);
+  border-color: rgba(255,214,0,0.35);
+  color: var(--yellow);
+}
+.bet-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: var(--yellow);
+  color: #000;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ── Odds Table ── */
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: fadeUp 0.4s ease both;
+  margin-bottom: 16px;
+}
+.panel-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.panel-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  background: var(--bg-2);
+  border-radius: 100px;
+  padding: 2px 10px;
+}
+
+.odds-table { width: 100%; border-collapse: collapse; }
+.odds-table thead th {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.15);
+}
+.odds-table thead th.right { text-align: right; }
+.odds-table thead th.center { text-align: center; }
+
+.odds-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.odds-table tbody tr:last-child { border-bottom: none; }
+.odds-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.odds-table tbody tr.betted { background: rgba(255,214,0,0.05); }
+.odds-table tbody tr.betted:hover { background: rgba(255,214,0,0.09); }
+
+.odds-table tbody td {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.rank {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-mute);
+  width: 32px;
+  min-width: 32px;
+}
+.team-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+.team-meta {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+.odds-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+.odds-val.fav    { color: var(--red); }
+.odds-val.hot    { color: var(--orange); }
+.odds-val.mid    { color: var(--yellow); }
+.odds-val.long   { color: var(--text-dim); }
+
+.prob-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+.prob-badge.fav  { background: var(--red-dim);    color: var(--red); }
+.prob-badge.hot  { background: var(--orange-dim); color: var(--orange); }
+.prob-badge.mid  { background: var(--yellow-dim); color: var(--yellow); }
+.prob-badge.long { background: rgba(255,255,255,0.04); color: var(--text-mute); }
+
+.td-right { text-align: right; }
+.td-center { text-align: center; }
+
+.bet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-mute);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.bet-btn:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  background: var(--yellow-dim);
+}
+.bet-btn.active {
+  border-color: var(--yellow);
+  color: #000;
+  background: var(--yellow);
+}
+
+/* ── Win Totals: O/U display ── */
+.ou-wrap {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+.ou-pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ou-pill:hover { border-color: var(--border-hi); }
+.ou-pill.active-o { border-color: var(--green); background: var(--green-dim); }
+.ou-pill.active-u { border-color: var(--red);   background: var(--red-dim); }
+.ou-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.ou-pill.active-o .ou-label { color: var(--green); }
+.ou-pill.active-u .ou-label { color: var(--red); }
+.ou-line {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+.ou-odds {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+.ou-pill.active-o .ou-line,
+.ou-pill.active-o .ou-odds { color: var(--green); }
+.ou-pill.active-u .ou-line,
+.ou-pill.active-u .ou-odds { color: var(--red); }
+
+/* ── My Bets Panel ── */
+.mybets-panel {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-top: 3px solid var(--yellow);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+  display: none;
+  animation: fadeUp 0.3s ease both;
+}
+.mybets-panel.visible { display: block; }
+.mybets-header {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.mybets-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+.mybets-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--yellow);
+  cursor: pointer;
+  transition: all 0.18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-share:hover { background: rgba(255,214,0,0.2); }
+.btn-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+  cursor: pointer;
+  transition: all 0.18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-clear:hover { border-color: var(--red); color: var(--red); }
+
+.mybets-empty {
+  padding: 28px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-mute);
+}
+.mybets-list { padding: 8px 0; }
+.mybet-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.mybet-row:last-child { border-bottom: none; }
+.mybet-row:hover { background: rgba(255,255,255,0.02); }
+.mybet-market {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: var(--cyan-dim);
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.mybet-name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+.mybet-odds {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--yellow);
+  white-space: nowrap;
+}
+.mybet-prob {
+  font-size: 11px;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.mybet-remove {
+  background: transparent;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mybet-remove:hover { color: var(--red); }
+
+/* ── AdSense slot ── */
+.ad-slot {
+  margin: 24px 0;
+  text-align: center;
+  min-height: 90px;
+}
+
+/* ── Disclaimer ── */
+.disclaimer {
+  background: rgba(255,122,0,0.06);
+  border: 1px solid rgba(255,122,0,0.18);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.6;
+}
+.disclaimer strong { color: var(--orange); }
+
+/* ── Share toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-2);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 200;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 2;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .controls-bar { gap: 6px; }
+  .odds-table thead th,
+  .odds-table tbody td { padding: 10px 10px; }
+  .odds-table .col-div { display: none; }
+  .odds-val { font-size: 15px; }
+  .mybet-row { gap: 8px; padding: 10px 12px; }
+  .ou-wrap { gap: 5px; }
+  .ou-pill { min-width: 46px; padding: 3px 6px; }
+  .hero { padding: 32px 16px 24px; }
+}
+@media (max-width: 400px) {
+  .odds-table .col-prob { display: none; }
+  .mybet-prob { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    2026 Season Preview
+  </div>
+  <h1>NFL 2026 Futures<br><span>Odds Board</span></h1>
+  <p>Explore pre-season odds across all major markets. Track your picks with the My Bets tracker and share your board.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:1px">
+      <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 5a.75.75 0 110 1.5A.75.75 0 018 5zm0 2.5a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3A.75.75 0 018 7.5z" fill="#FF7A00"/>
+    </svg>
+    <span><strong>For entertainment purposes only.</strong> Odds are pre-season estimates for illustrative use and do not represent actual sportsbook lines. Always gamble responsibly.</span>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar-wrap">
+    <div class="tab-bar" id="tabBar">
+      <button class="tab-pill active" data-tab="superbowl">Super Bowl</button>
+      <button class="tab-pill" data-tab="conference">Conference</button>
+      <button class="tab-pill" data-tab="division">Division</button>
+      <button class="tab-pill" data-tab="mvp">MVP</button>
+      <button class="tab-pill" data-tab="oroy">OROY</button>
+      <button class="tab-pill" data-tab="droy">DROY</button>
+      <button class="tab-pill" data-tab="wintotals">Win Totals</button>
+    </div>
+  </div>
+
+  <!-- Controls Bar -->
+  <div class="controls-bar">
+    <span class="sort-label">Sort:</span>
+    <button class="sort-btn active" data-sort="odds">Odds</button>
+    <button class="sort-btn" data-sort="alpha">A–Z</button>
+    <button class="sort-btn" data-sort="division" id="sortDivBtn">Division</button>
+    <div class="spacer"></div>
+    <button class="my-bets-toggle" id="myBetsToggle" onclick="toggleMyBets()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M6 1L7.545 4.13l3.455.502-2.5 2.437.59 3.44L6 9.895 2.91 11.51l.59-3.441L1 5.632 4.455 5.13 6 1z" fill="currentColor"/>
+      </svg>
+      My Bets
+      <span class="bet-count" id="betCount" style="display:none">0</span>
+    </button>
+  </div>
+
+  <!-- My Bets Panel -->
+  <div class="mybets-panel" id="myBetsPanel">
+    <div class="mybets-header">
+      <span class="mybets-title">My Bets</span>
+      <div class="mybets-actions">
+        <button class="btn-share" onclick="shareMyBets()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M9.5 1.5a1.5 1.5 0 11-2.12 2.12L4.5 5.5a1.5 1.5 0 010 1L7.38 8.38a1.5 1.5 0 11-1.06 1.06L3.44 7.56A1.5 1.5 0 111.5 6a1.5 1.5 0 01.44-.56L4.82 3.56A1.5 1.5 0 019.5 1.5z" fill="currentColor"/>
+          </svg>
+          Share
+        </button>
+        <button class="btn-clear" onclick="clearAllBets()">Clear All</button>
+      </div>
+    </div>
+    <div id="myBetsBody"></div>
+  </div>
+
+  <!-- AdSense -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Odds Board -->
+  <div id="oddsBoard"></div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://ainflgm.com">AiNFL GM</a>
+    <a href="https://ainflgm.com/draft-trade-calc.html">Draft Trade Calc</a>
+    <a href="https://ainflgm.com/cap-space.html">Cap Tracker</a>
+    <a href="https://ainflgm.com/depth-chart.html">Depth Charts</a>
+    <a href="https://ainflgm.com/futures-odds.html">Futures Odds</a>
+  </div>
+  <div>For entertainment purposes only &nbsp;&middot;&nbsp; &copy; 2026 AiNFLGM &nbsp;&middot;&nbsp; Not affiliated with the NFL</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── Data ── */
+const MARKETS = {
+  superbowl: {
+    label: 'Super Bowl Winner',
+    columns: ['Team', 'Conf', 'Division', 'Odds', 'Probability'],
+    hasDivision: true,
+    data: [
+      { name: 'Kansas City Chiefs',      conf: 'AFC', div: 'AFC West',  odds: +600  },
+      { name: 'Philadelphia Eagles',     conf: 'NFC', div: 'NFC East',  odds: +700  },
+      { name: 'Baltimore Ravens',        conf: 'AFC', div: 'AFC North', odds: +900  },
+      { name: 'San Francisco 49ers',     conf: 'NFC', div: 'NFC West',  odds: +1000 },
+      { name: 'Detroit Lions',           conf: 'NFC', div: 'NFC North', odds: +1200 },
+      { name: 'Buffalo Bills',           conf: 'AFC', div: 'AFC East',  odds: +1400 },
+      { name: 'Cincinnati Bengals',      conf: 'AFC', div: 'AFC North', odds: +1600 },
+      { name: 'Dallas Cowboys',          conf: 'NFC', div: 'NFC East',  odds: +1800 },
+      { name: 'Houston Texans',          conf: 'AFC', div: 'AFC South', odds: +2000 },
+      { name: 'Miami Dolphins',          conf: 'AFC', div: 'AFC East',  odds: +2200 },
+      { name: 'Los Angeles Rams',        conf: 'NFC', div: 'NFC West',  odds: +2500 },
+      { name: 'Pittsburgh Steelers',     conf: 'AFC', div: 'AFC North', odds: +2800 },
+      { name: 'Minnesota Vikings',       conf: 'NFC', div: 'NFC North', odds: +3000 },
+      { name: 'Green Bay Packers',       conf: 'NFC', div: 'NFC North', odds: +3000 },
+      { name: 'Jacksonville Jaguars',    conf: 'AFC', div: 'AFC South', odds: +3500 },
+      { name: 'Denver Broncos',          conf: 'AFC', div: 'AFC West',  odds: +4000 },
+      { name: 'Los Angeles Chargers',    conf: 'AFC', div: 'AFC West',  odds: +4000 },
+      { name: 'New Orleans Saints',      conf: 'NFC', div: 'NFC South', odds: +5000 },
+      { name: 'Seattle Seahawks',        conf: 'NFC', div: 'NFC West',  odds: +5000 },
+      { name: 'Tampa Bay Buccaneers',    conf: 'NFC', div: 'NFC South', odds: +5500 },
+      { name: 'Cleveland Browns',        conf: 'AFC', div: 'AFC North', odds: +6000 },
+      { name: 'Atlanta Falcons',         conf: 'NFC', div: 'NFC South', odds: +6000 },
+      { name: 'New York Giants',         conf: 'NFC', div: 'NFC East',  odds: +7000 },
+      { name: 'Indianapolis Colts',      conf: 'AFC', div: 'AFC South', odds: +7000 },
+      { name: 'Las Vegas Raiders',       conf: 'AFC', div: 'AFC West',  odds: +8000 },
+      { name: 'Tennessee Titans',        conf: 'AFC', div: 'AFC South', odds: +9000 },
+      { name: 'New York Jets',           conf: 'AFC', div: 'AFC East',  odds: +9000 },
+      { name: 'Washington Commanders',   conf: 'NFC', div: 'NFC East',  odds: +10000 },
+      { name: 'Carolina Panthers',       conf: 'NFC', div: 'NFC South', odds: +12000 },
+      { name: 'Arizona Cardinals',       conf: 'NFC', div: 'NFC West',  odds: +12000 },
+      { name: 'New England Patriots',    conf: 'AFC', div: 'AFC East',  odds: +15000 },
+      { name: 'Chicago Bears',           conf: 'NFC', div: 'NFC North', odds: +15000 },
+    ]
+  },
+  conference: {
+    label: 'Conference Winner',
+    columns: ['Team', 'Conf', 'Division', 'Odds', 'Probability'],
+    hasDivision: true,
+    subsections: ['AFC', 'NFC'],
+    data: [
+      // AFC
+      { name: 'Kansas City Chiefs',      conf: 'AFC', div: 'AFC West',  odds: +250  },
+      { name: 'Baltimore Ravens',        conf: 'AFC', div: 'AFC North', odds: +350  },
+      { name: 'Buffalo Bills',           conf: 'AFC', div: 'AFC East',  odds: +500  },
+      { name: 'Cincinnati Bengals',      conf: 'AFC', div: 'AFC North', odds: +650  },
+      { name: 'Houston Texans',          conf: 'AFC', div: 'AFC South', odds: +800  },
+      { name: 'Miami Dolphins',          conf: 'AFC', div: 'AFC East',  odds: +900  },
+      { name: 'Pittsburgh Steelers',     conf: 'AFC', div: 'AFC North', odds: +1200 },
+      { name: 'Jacksonville Jaguars',    conf: 'AFC', div: 'AFC South', odds: +1400 },
+      { name: 'Denver Broncos',          conf: 'AFC', div: 'AFC West',  odds: +1800 },
+      { name: 'Los Angeles Chargers',    conf: 'AFC', div: 'AFC West',  odds: +1800 },
+      { name: 'Cleveland Browns',        conf: 'AFC', div: 'AFC North', odds: +2500 },
+      { name: 'Indianapolis Colts',      conf: 'AFC', div: 'AFC South', odds: +3000 },
+      { name: 'Las Vegas Raiders',       conf: 'AFC', div: 'AFC West',  odds: +3500 },
+      { name: 'Tennessee Titans',        conf: 'AFC', div: 'AFC South', odds: +4000 },
+      { name: 'New York Jets',           conf: 'AFC', div: 'AFC East',  odds: +4000 },
+      { name: 'New England Patriots',    conf: 'AFC', div: 'AFC East',  odds: +6500 },
+      // NFC
+      { name: 'Philadelphia Eagles',     conf: 'NFC', div: 'NFC East',  odds: +280  },
+      { name: 'San Francisco 49ers',     conf: 'NFC', div: 'NFC West',  odds: +400  },
+      { name: 'Detroit Lions',           conf: 'NFC', div: 'NFC North', odds: +450  },
+      { name: 'Dallas Cowboys',          conf: 'NFC', div: 'NFC East',  odds: +700  },
+      { name: 'Los Angeles Rams',        conf: 'NFC', div: 'NFC West',  odds: +1000 },
+      { name: 'Minnesota Vikings',       conf: 'NFC', div: 'NFC North', odds: +1200 },
+      { name: 'Green Bay Packers',       conf: 'NFC', div: 'NFC North', odds: +1200 },
+      { name: 'New Orleans Saints',      conf: 'NFC', div: 'NFC South', odds: +2000 },
+      { name: 'Seattle Seahawks',        conf: 'NFC', div: 'NFC West',  odds: +2200 },
+      { name: 'Tampa Bay Buccaneers',    conf: 'NFC', div: 'NFC South', odds: +2500 },
+      { name: 'Atlanta Falcons',         conf: 'NFC', div: 'NFC South', odds: +2800 },
+      { name: 'New York Giants',         conf: 'NFC', div: 'NFC East',  odds: +3000 },
+      { name: 'Washington Commanders',   conf: 'NFC', div: 'NFC East',  odds: +4500 },
+      { name: 'Carolina Panthers',       conf: 'NFC', div: 'NFC South', odds: +5500 },
+      { name: 'Arizona Cardinals',       conf: 'NFC', div: 'NFC West',  odds: +6000 },
+      { name: 'Chicago Bears',           conf: 'NFC', div: 'NFC North', odds: +6500 },
+    ]
+  },
+  division: {
+    label: 'Division Winner',
+    columns: ['Team', 'Division', 'Odds', 'Probability'],
+    hasDivision: true,
+    subsections: ['AFC East','AFC North','AFC South','AFC West','NFC East','NFC North','NFC South','NFC West'],
+    data: [
+      // AFC East
+      { name: 'Miami Dolphins',          conf: 'AFC', div: 'AFC East',  odds: -120 },
+      { name: 'Buffalo Bills',           conf: 'AFC', div: 'AFC East',  odds: +150 },
+      { name: 'New York Jets',           conf: 'AFC', div: 'AFC East',  odds: +600 },
+      { name: 'New England Patriots',    conf: 'AFC', div: 'AFC East',  odds: +1200 },
+      // AFC North
+      { name: 'Baltimore Ravens',        conf: 'AFC', div: 'AFC North', odds: -160 },
+      { name: 'Cincinnati Bengals',      conf: 'AFC', div: 'AFC North', odds: +180 },
+      { name: 'Pittsburgh Steelers',     conf: 'AFC', div: 'AFC North', odds: +400 },
+      { name: 'Cleveland Browns',        conf: 'AFC', div: 'AFC North', odds: +900 },
+      // AFC South
+      { name: 'Houston Texans',          conf: 'AFC', div: 'AFC South', odds: -175 },
+      { name: 'Jacksonville Jaguars',    conf: 'AFC', div: 'AFC South', odds: +250 },
+      { name: 'Indianapolis Colts',      conf: 'AFC', div: 'AFC South', odds: +400 },
+      { name: 'Tennessee Titans',        conf: 'AFC', div: 'AFC South', odds: +700 },
+      // AFC West
+      { name: 'Kansas City Chiefs',      conf: 'AFC', div: 'AFC West',  odds: -200 },
+      { name: 'Los Angeles Chargers',    conf: 'AFC', div: 'AFC West',  odds: +300 },
+      { name: 'Denver Broncos',          conf: 'AFC', div: 'AFC West',  odds: +450 },
+      { name: 'Las Vegas Raiders',       conf: 'AFC', div: 'AFC West',  odds: +800 },
+      // NFC East
+      { name: 'Philadelphia Eagles',     conf: 'NFC', div: 'NFC East',  odds: -145 },
+      { name: 'Dallas Cowboys',          conf: 'NFC', div: 'NFC East',  odds: +200 },
+      { name: 'Washington Commanders',   conf: 'NFC', div: 'NFC East',  odds: +500 },
+      { name: 'New York Giants',         conf: 'NFC', div: 'NFC East',  odds: +800 },
+      // NFC North
+      { name: 'Detroit Lions',           conf: 'NFC', div: 'NFC North', odds: -165 },
+      { name: 'Minnesota Vikings',       conf: 'NFC', div: 'NFC North', odds: +225 },
+      { name: 'Green Bay Packers',       conf: 'NFC', div: 'NFC North', odds: +275 },
+      { name: 'Chicago Bears',           conf: 'NFC', div: 'NFC North', odds: +1000 },
+      // NFC South
+      { name: 'Tampa Bay Buccaneers',    conf: 'NFC', div: 'NFC South', odds: -130 },
+      { name: 'New Orleans Saints',      conf: 'NFC', div: 'NFC South', odds: +200 },
+      { name: 'Atlanta Falcons',         conf: 'NFC', div: 'NFC South', odds: +350 },
+      { name: 'Carolina Panthers',       conf: 'NFC', div: 'NFC South', odds: +700 },
+      // NFC West
+      { name: 'San Francisco 49ers',     conf: 'NFC', div: 'NFC West',  odds: -180 },
+      { name: 'Los Angeles Rams',        conf: 'NFC', div: 'NFC West',  odds: +250 },
+      { name: 'Seattle Seahawks',        conf: 'NFC', div: 'NFC West',  odds: +450 },
+      { name: 'Arizona Cardinals',       conf: 'NFC', div: 'NFC West',  odds: +900 },
+    ]
+  },
+  mvp: {
+    label: 'NFL MVP',
+    columns: ['Player', 'Team', 'Position', 'Odds', 'Probability'],
+    hasDivision: false,
+    data: [
+      { name: 'Lamar Jackson',    team: 'Baltimore Ravens',     pos: 'QB', odds: +300  },
+      { name: 'Patrick Mahomes', team: 'Kansas City Chiefs',   pos: 'QB', odds: +350  },
+      { name: 'Josh Allen',      team: 'Buffalo Bills',         pos: 'QB', odds: +450  },
+      { name: 'Jalen Hurts',     team: 'Philadelphia Eagles',  pos: 'QB', odds: +600  },
+      { name: 'Joe Burrow',      team: 'Cincinnati Bengals',   pos: 'QB', odds: +900  },
+      { name: 'Brock Purdy',     team: 'San Francisco 49ers',  pos: 'QB', odds: +1200 },
+      { name: 'Jayden Daniels',  team: 'Washington Commanders',pos: 'QB', odds: +1500 },
+      { name: 'Jordan Love',     team: 'Green Bay Packers',    pos: 'QB', odds: +1800 },
+      { name: 'Jared Goff',      team: 'Detroit Lions',        pos: 'QB', odds: +2000 },
+      { name: 'Tua Tagovailoa',  team: 'Miami Dolphins',       pos: 'QB', odds: +2200 },
+      { name: 'C.J. Stroud',     team: 'Houston Texans',       pos: 'QB', odds: +2500 },
+      { name: 'Christian McCaffrey', team: 'San Francisco 49ers', pos: 'RB', odds: +3000 },
+      { name: 'Saquon Barkley',  team: 'Philadelphia Eagles',  pos: 'RB', odds: +3500 },
+      { name: 'Dak Prescott',    team: 'Dallas Cowboys',       pos: 'QB', odds: +4000 },
+      { name: 'Anthony Richardson', team: 'Indianapolis Colts', pos: 'QB', odds: +5000 },
+    ]
+  },
+  oroy: {
+    label: 'Offensive Rookie of the Year',
+    columns: ['Player', 'Team', 'Position', 'Odds', 'Probability'],
+    hasDivision: false,
+    data: [
+      { name: 'Ashton Jeanty',       team: 'Las Vegas Raiders',     pos: 'RB', odds: +350  },
+      { name: 'Travis Hunter',       team: 'Jacksonville Jaguars',  pos: 'WR', odds: +400  },
+      { name: 'Cam Ward',            team: 'Tennessee Titans',      pos: 'QB', odds: +500  },
+      { name: 'Dillon Gabriel',      team: 'Cleveland Browns',      pos: 'QB', odds: +700  },
+      { name: 'Tetairoa McMillan',   team: 'Carolina Panthers',     pos: 'WR', odds: +900  },
+      { name: 'Luther Burden III',   team: 'Chicago Bears',         pos: 'WR', odds: +1200 },
+      { name: 'Matthew Golden',      team: 'Green Bay Packers',     pos: 'WR', odds: +1400 },
+      { name: 'Omarion Hampton',     team: 'Los Angeles Chargers',  pos: 'RB', odds: +1600 },
+      { name: 'Tyler Warren',        team: 'Indianapolis Colts',    pos: 'TE', odds: +2000 },
+      { name: 'Emeka Egbuka',        team: 'Tampa Bay Buccaneers',  pos: 'WR', odds: +2500 },
+    ]
+  },
+  droy: {
+    label: 'Defensive Rookie of the Year',
+    columns: ['Player', 'Team', 'Position', 'Odds', 'Probability'],
+    hasDivision: false,
+    data: [
+      { name: 'Abdul Carter',        team: 'New York Giants',       pos: 'EDGE', odds: +300  },
+      { name: 'Mason Graham',        team: 'Cleveland Browns',      pos: 'DT',   odds: +450  },
+      { name: 'Malaki Starks',       team: 'San Francisco 49ers',   pos: 'S',    odds: +700  },
+      { name: 'Will Campbell',       team: 'New England Patriots',  pos: 'OT',   odds: +900  },
+      { name: 'Jalon Walker',        team: 'Atlanta Falcons',       pos: 'LB',   odds: +1100 },
+      { name: 'Mykel Williams',      team: 'San Francisco 49ers',   pos: 'EDGE', odds: +1300 },
+      { name: 'Shemar Stewart',      team: 'Houston Texans',        pos: 'DT',   odds: +1500 },
+      { name: 'Nick Emmanwori',      team: 'Carolina Panthers',     pos: 'S',    odds: +1800 },
+      { name: 'Jihaad Campbell',     team: 'Philadelphia Eagles',   pos: 'LB',   odds: +2200 },
+      { name: 'James Pearce Jr.',    team: 'Tennessee Titans',      pos: 'EDGE', odds: +2500 },
+    ]
+  },
+  wintotals: {
+    label: 'Win Totals (O/U)',
+    columns: ['Team', 'Conf', 'Division', 'Line', 'Over', 'Under'],
+    hasDivision: true,
+    isWinTotals: true,
+    data: [
+      { name: 'Kansas City Chiefs',      conf: 'AFC', div: 'AFC West',  line: 11.5, overOdds: -120, underOdds: +100 },
+      { name: 'Philadelphia Eagles',     conf: 'NFC', div: 'NFC East',  line: 11.0, overOdds: -115, underOdds: -105 },
+      { name: 'Baltimore Ravens',        conf: 'AFC', div: 'AFC North', line: 11.0, overOdds: -110, underOdds: -110 },
+      { name: 'Detroit Lions',           conf: 'NFC', div: 'NFC North', line: 10.5, overOdds: -115, underOdds: -105 },
+      { name: 'San Francisco 49ers',     conf: 'NFC', div: 'NFC West',  line: 10.5, overOdds: -110, underOdds: -110 },
+      { name: 'Buffalo Bills',           conf: 'AFC', div: 'AFC East',  line: 10.0, overOdds: -120, underOdds: +100 },
+      { name: 'Houston Texans',          conf: 'AFC', div: 'AFC South', line: 10.0, overOdds: -110, underOdds: -110 },
+      { name: 'Cincinnati Bengals',      conf: 'AFC', div: 'AFC North', line: 9.5,  overOdds: -115, underOdds: -105 },
+      { name: 'Miami Dolphins',          conf: 'AFC', div: 'AFC East',  line: 9.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Dallas Cowboys',          conf: 'NFC', div: 'NFC East',  line: 9.5,  overOdds: +105, underOdds: -125 },
+      { name: 'Green Bay Packers',       conf: 'NFC', div: 'NFC North', line: 9.5,  overOdds: -115, underOdds: -105 },
+      { name: 'Los Angeles Rams',        conf: 'NFC', div: 'NFC West',  line: 9.0,  overOdds: -110, underOdds: -110 },
+      { name: 'Minnesota Vikings',       conf: 'NFC', div: 'NFC North', line: 9.0,  overOdds: -110, underOdds: -110 },
+      { name: 'Tampa Bay Buccaneers',    conf: 'NFC', div: 'NFC South', line: 8.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Pittsburgh Steelers',     conf: 'AFC', div: 'AFC North', line: 8.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Jacksonville Jaguars',    conf: 'AFC', div: 'AFC South', line: 8.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Los Angeles Chargers',    conf: 'AFC', div: 'AFC West',  line: 8.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Seattle Seahawks',        conf: 'NFC', div: 'NFC West',  line: 8.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Washington Commanders',   conf: 'NFC', div: 'NFC East',  line: 8.0,  overOdds: -115, underOdds: -105 },
+      { name: 'New Orleans Saints',      conf: 'NFC', div: 'NFC South', line: 8.0,  overOdds: +100, underOdds: -120 },
+      { name: 'Denver Broncos',          conf: 'AFC', div: 'AFC West',  line: 8.0,  overOdds: -110, underOdds: -110 },
+      { name: 'Atlanta Falcons',         conf: 'NFC', div: 'NFC South', line: 7.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Indianapolis Colts',      conf: 'AFC', div: 'AFC South', line: 7.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Cleveland Browns',        conf: 'AFC', div: 'AFC North', line: 7.0,  overOdds: +100, underOdds: -120 },
+      { name: 'New York Jets',           conf: 'AFC', div: 'AFC East',  line: 7.0,  overOdds: +100, underOdds: -120 },
+      { name: 'Las Vegas Raiders',       conf: 'AFC', div: 'AFC West',  line: 7.0,  overOdds: -110, underOdds: -110 },
+      { name: 'Tennessee Titans',        conf: 'AFC', div: 'AFC South', line: 6.5,  overOdds: -110, underOdds: -110 },
+      { name: 'New York Giants',         conf: 'NFC', div: 'NFC East',  line: 6.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Arizona Cardinals',       conf: 'NFC', div: 'NFC West',  line: 6.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Carolina Panthers',       conf: 'NFC', div: 'NFC South', line: 5.5,  overOdds: -115, underOdds: -105 },
+      { name: 'New England Patriots',    conf: 'AFC', div: 'AFC East',  line: 5.5,  overOdds: -110, underOdds: -110 },
+      { name: 'Chicago Bears',           conf: 'NFC', div: 'NFC North', line: 7.5,  overOdds: +110, underOdds: -130 },
+    ]
+  }
+};
+
+/* ── State ── */
+let currentTab   = 'superbowl';
+let currentSort  = 'odds';
+let myBets       = JSON.parse(localStorage.getItem('futures_bets') || '{}');
+let myBetsOpen   = false;
+// win totals picks: key -> 'o' | 'u'
+let wtPicks      = JSON.parse(localStorage.getItem('futures_wt') || '{}');
+
+/* ── Utilities ── */
+function oddsToProb(odds) {
+  if (odds < 0) return Math.round((-odds / (-odds + 100)) * 100);
+  return Math.round((100 / (odds + 100)) * 100);
+}
+
+function fmtOdds(odds) {
+  return odds > 0 ? `+${odds}` : `${odds}`;
+}
+
+function tierClass(odds) {
+  if (odds <= 0)     return 'fav';
+  if (odds <= 800)   return 'hot';
+  if (odds <= 3000)  return 'mid';
+  return 'long';
+}
+
+function saveBets() {
+  localStorage.setItem('futures_bets', JSON.stringify(myBets));
+  localStorage.setItem('futures_wt',   JSON.stringify(wtPicks));
+}
+
+function betKey(tab, name) { return `${tab}::${name}`; }
+
+function totalBetCount() {
+  return Object.keys(myBets).length + Object.keys(wtPicks).length;
+}
+
+function updateBetCount() {
+  const c = totalBetCount();
+  const el = document.getElementById('betCount');
+  if (c > 0) { el.style.display = ''; el.textContent = c; }
+  else         el.style.display = 'none';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ── Render Board ── */
+function renderBoard() {
+  const market  = MARKETS[currentTab];
+  const board   = document.getElementById('oddsBoard');
+  const sortDiv = document.getElementById('sortDivBtn');
+
+  if (!market) return;
+
+  // Show/hide division sort
+  sortDiv.style.display = market.hasDivision ? '' : 'none';
+  if (!market.hasDivision && currentSort === 'division') currentSort = 'odds';
+
+  if (market.isWinTotals) {
+    renderWinTotals(market, board);
+    return;
+  }
+
+  // Sort data
+  let rows = [...market.data];
+  if (currentSort === 'alpha')    rows.sort((a,b) => a.name.localeCompare(b.name));
+  else if (currentSort === 'division') rows.sort((a,b) => (a.div||a.conf||'').localeCompare(b.div||b.conf||'') || a.odds - b.odds);
+  else rows.sort((a,b) => a.odds - b.odds);
+
+  // If conference market, group by conf when sorting by division
+  const useSubsections = market.subsections && currentSort === 'division';
+
+  let html = '';
+
+  if (useSubsections) {
+    for (const sec of market.subsections) {
+      const secRows = rows.filter(r => (r.div || r.conf) === sec || r.conf === sec);
+      if (!secRows.length) continue;
+      html += buildPanel(sec, secRows, market);
+    }
+  } else {
+    html = buildPanel(market.label, rows, market);
+  }
+
+  board.innerHTML = html;
+  attachBetListeners();
+}
+
+function buildPanel(title, rows, market) {
+  const isPlayer = !market.hasDivision;
+  let th = '';
+  if (isPlayer) {
+    th = `<th>Rank</th><th>Player</th><th>Team</th><th class="col-div">Pos</th><th class="right">Odds</th><th class="right col-prob">Implied</th><th class="center">Pick</th>`;
+  } else {
+    th = `<th>Rank</th><th>Team</th><th class="col-div">Div</th><th class="right">Odds</th><th class="right col-prob">Implied</th><th class="center">Pick</th>`;
+  }
+
+  let trs = '';
+  rows.forEach((row, i) => {
+    const key      = betKey(currentTab, row.name);
+    const isBet    = !!myBets[key];
+    const tier     = tierClass(row.odds);
+    const prob     = oddsToProb(row.odds);
+    const betClass = isBet ? ' betted' : '';
+
+    let nameCell = '';
+    if (isPlayer) {
+      nameCell = `<td class="team-name">${row.name}<div class="team-meta">${row.team}</div></td><td class="team-meta col-div">${row.pos}</td>`;
+    } else {
+      nameCell = `<td class="team-name">${row.name}<div class="team-meta">${row.conf}</div></td><td class="team-meta col-div">${row.div || row.conf}</td>`;
+    }
+
+    trs += `
+      <tr class="${betClass}" data-key="${key}" data-name="${row.name}" data-odds="${row.odds}" data-market="${currentTab}">
+        <td class="rank">${i + 1}</td>
+        ${nameCell}
+        <td class="odds-val ${tier} td-right">${fmtOdds(row.odds)}</td>
+        <td class="td-right col-prob"><span class="prob-badge ${tier}">${prob}%</span></td>
+        <td class="td-center">
+          <button class="bet-btn ${isBet ? 'active' : ''}" data-key="${key}" aria-label="Track bet">
+            ${isBet ? '&#9733;' : '&#9734;'}
+          </button>
+        </td>
+      </tr>`;
+  });
+
+  return `
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">${title}</span>
+        <span class="panel-count">${rows.length} entries</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="odds-table">
+          <thead><tr>${th}</tr></thead>
+          <tbody>${trs}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function renderWinTotals(market, board) {
+  let rows = [...market.data];
+  if (currentSort === 'alpha')    rows.sort((a,b) => a.name.localeCompare(b.name));
+  else if (currentSort === 'division') rows.sort((a,b) => a.div.localeCompare(b.div) || b.line - a.line);
+  else rows.sort((a,b) => b.line - a.line);
+
+  const useSubsections = market.subsections && currentSort === 'division';
+
+  let html = '';
+  if (useSubsections) {
+    for (const sec of market.subsections) {
+      const secRows = rows.filter(r => r.div === sec);
+      if (!secRows.length) continue;
+      html += buildWTPanel(sec, secRows);
+    }
+  } else {
+    html = buildWTPanel(market.label, rows);
+  }
+
+  board.innerHTML = html;
+  attachWTPickers();
+}
+
+function buildWTPanel(title, rows) {
+  let trs = '';
+  rows.forEach((row, i) => {
+    const pick = wtPicks[row.name];
+    trs += `
+      <tr>
+        <td class="rank">${i + 1}</td>
+        <td class="team-name">${row.name}<div class="team-meta">${row.conf} &middot; ${row.div}</div></td>
+        <td class="td-right" style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--text);">${row.line}</td>
+        <td class="td-right">
+          <div class="ou-wrap">
+            <div class="ou-pill ${pick === 'o' ? 'active-o' : ''}" data-team="${row.name}" data-side="o" data-line="${row.line}" data-odds="${row.overOdds}">
+              <span class="ou-label">Over</span>
+              <span class="ou-line">${row.line}</span>
+              <span class="ou-odds">${fmtOdds(row.overOdds)}</span>
+            </div>
+            <div class="ou-pill ${pick === 'u' ? 'active-u' : ''}" data-team="${row.name}" data-side="u" data-line="${row.line}" data-odds="${row.underOdds}">
+              <span class="ou-label">Under</span>
+              <span class="ou-line">${row.line}</span>
+              <span class="ou-odds">${fmtOdds(row.underOdds)}</span>
+            </div>
+          </div>
+        </td>
+      </tr>`;
+  });
+
+  return `
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">${title}</span>
+        <span class="panel-count">${rows.length} teams</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="odds-table">
+          <thead><tr>
+            <th>Rank</th><th>Team</th><th class="right">Total</th><th class="right">Pick</th>
+          </tr></thead>
+          <tbody>${trs}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+/* ── Event Listeners ── */
+function attachBetListeners() {
+  document.querySelectorAll('.bet-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const key    = btn.dataset.key;
+      const row    = btn.closest('tr');
+      const name   = row.dataset.name;
+      const odds   = parseInt(row.dataset.odds);
+      const market = row.dataset.market;
+      toggleBet(key, name, odds, market, btn, row);
+    });
+  });
+  document.querySelectorAll('.odds-table tbody tr').forEach(tr => {
+    tr.addEventListener('click', () => {
+      const btn = tr.querySelector('.bet-btn');
+      if (btn) btn.click();
+    });
+  });
+}
+
+function attachWTPickers() {
+  document.querySelectorAll('.ou-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const team = pill.dataset.team;
+      const side = pill.dataset.side;
+      const line = pill.dataset.line;
+      const odds = parseInt(pill.dataset.odds);
+      const prev = wtPicks[team];
+
+      if (prev === side) {
+        delete wtPicks[team];
+      } else {
+        wtPicks[team] = side;
+      }
+      saveBets();
+      updateBetCount();
+      renderBoard();
+      if (myBetsOpen) renderMyBets();
+    });
+  });
+}
+
+function toggleBet(key, name, odds, market, btn, row) {
+  if (myBets[key]) {
+    delete myBets[key];
+    btn.classList.remove('active');
+    btn.innerHTML = '&#9734;';
+    if (row) row.classList.remove('betted');
+  } else {
+    myBets[key] = { name, odds, market };
+    btn.classList.add('active');
+    btn.innerHTML = '&#9733;';
+    if (row) row.classList.add('betted');
+    showToast(`${name} added to My Bets`);
+  }
+  saveBets();
+  updateBetCount();
+  if (myBetsOpen) renderMyBets();
+}
+
+/* ── My Bets ── */
+function toggleMyBets() {
+  myBetsOpen = !myBetsOpen;
+  const panel   = document.getElementById('myBetsPanel');
+  const toggle  = document.getElementById('myBetsToggle');
+  panel.classList.toggle('visible', myBetsOpen);
+  toggle.classList.toggle('active', myBetsOpen);
+  if (myBetsOpen) renderMyBets();
+}
+
+function renderMyBets() {
+  const body = document.getElementById('myBetsBody');
+  const allBets = Object.entries(myBets);
+  const allWT   = Object.entries(wtPicks);
+
+  if (!allBets.length && !allWT.length) {
+    body.innerHTML = '<div class="mybets-empty">No bets tracked yet. Click any row or star to add a pick.</div>';
+    return;
+  }
+
+  let html = '<div class="mybets-list">';
+
+  allBets.forEach(([key, bet]) => {
+    const prob = oddsToProb(bet.odds);
+    const marketLabel = MARKETS[bet.market] ? MARKETS[bet.market].label : bet.market;
+    html += `
+      <div class="mybet-row">
+        <span class="mybet-market">${marketLabel.replace('NFL ', '').replace('Offensive ', 'O').replace('Defensive ', 'D')}</span>
+        <span class="mybet-name">${bet.name}</span>
+        <span class="mybet-odds">${fmtOdds(bet.odds)}</span>
+        <span class="mybet-prob">${prob}%</span>
+        <button class="mybet-remove" onclick="removeBet('${key}')" aria-label="Remove">&#215;</button>
+      </div>`;
+  });
+
+  allWT.forEach(([team, side]) => {
+    const mkt  = MARKETS.wintotals;
+    const row  = mkt.data.find(r => r.name === team);
+    if (!row) return;
+    const odds = side === 'o' ? row.overOdds : row.underOdds;
+    const prob = oddsToProb(odds);
+    const label = `${side === 'o' ? 'Over' : 'Under'} ${row.line}`;
+    html += `
+      <div class="mybet-row">
+        <span class="mybet-market">Win Total</span>
+        <span class="mybet-name">${team} &mdash; ${label}</span>
+        <span class="mybet-odds">${fmtOdds(odds)}</span>
+        <span class="mybet-prob">${prob}%</span>
+        <button class="mybet-remove" onclick="removeWT('${team}')" aria-label="Remove">&#215;</button>
+      </div>`;
+  });
+
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function removeBet(key) {
+  delete myBets[key];
+  saveBets();
+  updateBetCount();
+  renderBoard();
+  renderMyBets();
+}
+
+function removeWT(team) {
+  delete wtPicks[team];
+  saveBets();
+  updateBetCount();
+  renderBoard();
+  renderMyBets();
+}
+
+function clearAllBets() {
+  myBets  = {};
+  wtPicks = {};
+  saveBets();
+  updateBetCount();
+  renderBoard();
+  renderMyBets();
+  showToast('All bets cleared');
+}
+
+function shareMyBets() {
+  const allBets = Object.entries(myBets);
+  const allWT   = Object.entries(wtPicks);
+  if (!allBets.length && !allWT.length) { showToast('Add picks first'); return; }
+
+  let lines = ['My 2026 NFL Futures Picks (via AiNFLGM):'];
+  allBets.forEach(([, bet]) => {
+    lines.push(`${bet.name} ${fmtOdds(bet.odds)} — ${MARKETS[bet.market]?.label || bet.market}`);
+  });
+  allWT.forEach(([team, side]) => {
+    const row = MARKETS.wintotals.data.find(r => r.name === team);
+    if (!row) return;
+    const odds = side === 'o' ? row.overOdds : row.underOdds;
+    lines.push(`${team} ${side === 'o' ? 'Over' : 'Under'} ${row.line} (${fmtOdds(odds)}) — Win Total`);
+  });
+  lines.push('ainflgm.com/futures-odds.html');
+
+  const text = lines.join('\n');
+  if (navigator.share) {
+    navigator.share({ title: 'My 2026 NFL Futures', text });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Picks copied to clipboard'));
+  } else {
+    showToast('Share not supported on this browser');
+  }
+}
+
+function shareboard() {
+  const url = window.location.href.split('?')[0] + `?tab=${currentTab}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('Link copied'));
+  } else {
+    showToast('Copy link: ' + url);
+  }
+}
+
+/* ── Init ── */
+document.getElementById('tabBar').addEventListener('click', e => {
+  const pill = e.target.closest('.tab-pill');
+  if (!pill) return;
+  document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  currentTab = pill.dataset.tab;
+  if (currentSort === 'division' && !MARKETS[currentTab].hasDivision) currentSort = 'odds';
+  syncSortBtns();
+  renderBoard();
+});
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentSort = btn.dataset.sort;
+    syncSortBtns();
+    renderBoard();
+  });
+});
+
+function syncSortBtns() {
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === currentSort));
+}
+
+// Load tab from URL if present
+const urlParams = new URLSearchParams(window.location.search);
+const urlTab = urlParams.get('tab');
+if (urlTab && MARKETS[urlTab]) {
+  currentTab = urlTab;
+  document.querySelectorAll('.tab-pill').forEach(p => p.classList.toggle('active', p.dataset.tab === currentTab));
+}
+
+updateBetCount();
+renderBoard();
+</script>
+
+</body>
+</html>

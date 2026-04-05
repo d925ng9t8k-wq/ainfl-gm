@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="NFL Tools">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>Free NFL Tools &amp; Games | AiNFL GM</title>
+<meta name="description" content="All free NFL tools and games in one place. Draft trade calculators, cap impact tools, fantasy analyzers, trivia games, and more. No signup required.">
+<meta property="og:title" content="Free NFL Tools &amp; Games | AiNFL GM">
+<meta property="og:description" content="The ultimate NFL tool hub. Draft calculators, cap tools, fantasy analyzers, trivia games, and more. All free, no signup.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/tools.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free NFL Tools &amp; Games | AiNFL GM">
+<meta name="twitter:description" content="The ultimate NFL tool hub. Draft calculators, cap tools, fantasy analyzers, trivia games, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --purple:     #A78BFA;
+  --purple-dim: rgba(167,139,250,0.12);
+  --orange:     #FB923C;
+  --orange-dim: rgba(251,146,60,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: none; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--text);
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-dim);
+  transition: color .2s;
+}
+.nav-back:hover { color: var(--cyan); }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 56px 24px 40px;
+  animation: fadeUp .5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: .02em;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.hero h1 span {
+  color: var(--cyan);
+}
+.hero p {
+  font-size: 16px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto 28px;
+}
+.hero-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-stat {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+.hero-stat strong {
+  color: var(--cyan);
+  font-weight: 700;
+}
+
+/* ── Search ── */
+.search-wrap {
+  max-width: 480px;
+  margin: 0 auto 48px;
+  padding: 0 24px;
+  animation: fadeUp .5s .1s ease both;
+}
+.search-inner {
+  position: relative;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-mute);
+  pointer-events: none;
+}
+#searchInput {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 16px 13px 42px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+#searchInput::placeholder { color: var(--text-mute); }
+#searchInput:focus {
+  border-color: var(--border-hi);
+  box-shadow: 0 0 0 3px var(--cyan-glow);
+}
+.search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  transition: color .2s;
+}
+.search-clear:hover { color: var(--text); }
+.search-clear.visible { display: flex; }
+
+/* ── Main ── */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Category ── */
+.category {
+  margin-bottom: 52px;
+  animation: fadeUp .5s .15s ease both;
+}
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.category-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.category-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.category-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.category-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ── Grid ── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* ── Card ── */
+.tool-card {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color .2s, transform .2s, box-shadow .2s, background .2s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--card-glow, transparent);
+  opacity: 0;
+  transition: opacity .25s;
+  pointer-events: none;
+}
+.tool-card:hover {
+  border-color: var(--card-border-hi, var(--border-hi));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  text-decoration: none;
+}
+.tool-card:hover::before { opacity: 1; }
+
+/* Color variants */
+.tool-card.c-cyan  { --card-border-hi: rgba(0,240,255,0.3);   --card-glow: radial-gradient(ellipse at top left, rgba(0,240,255,0.06), transparent 60%); }
+.tool-card.c-green { --card-border-hi: rgba(57,255,20,0.3);   --card-glow: radial-gradient(ellipse at top left, rgba(57,255,20,0.06), transparent 60%); }
+.tool-card.c-yellow{ --card-border-hi: rgba(255,214,0,0.3);   --card-glow: radial-gradient(ellipse at top left, rgba(255,214,0,0.06), transparent 60%); }
+.tool-card.c-purple{ --card-border-hi: rgba(167,139,250,0.3); --card-glow: radial-gradient(ellipse at top left, rgba(167,139,250,0.06), transparent 60%); }
+.tool-card.c-orange{ --card-border-hi: rgba(251,146,60,0.3);  --card-glow: radial-gradient(ellipse at top left, rgba(251,146,60,0.06), transparent 60%); }
+.tool-card.c-red   { --card-border-hi: rgba(255,45,85,0.3);   --card-glow: radial-gradient(ellipse at top left, rgba(255,45,85,0.06), transparent 60%); }
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.card-emoji {
+  font-size: 28px;
+  line-height: 1;
+  display: block;
+}
+.card-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+.badge-new {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(57,255,20,0.25);
+}
+.badge-popular {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border: 1px solid rgba(0,240,255,0.25);
+}
+
+.card-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.card-arrow {
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color .2s, gap .2s;
+}
+.tool-card:hover .card-arrow {
+  color: var(--cyan);
+  gap: 8px;
+}
+
+/* ── No results ── */
+#noResults {
+  display: none;
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-dim);
+}
+#noResults.visible { display: block; }
+#noResults h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+/* ── Ad slot ── */
+.ad-slot {
+  margin: 0 auto 40px;
+  max-width: 728px;
+  padding: 0 24px;
+  text-align: center;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .tools-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 720px) {
+  .tools-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .hero { padding: 40px 20px 32px; }
+  .main { padding: 0 16px 60px; }
+  .search-wrap { padding: 0 16px; }
+  .tool-card { padding: 16px; }
+  .card-emoji { font-size: 24px; }
+  .card-name { font-size: 14px; }
+}
+@media (max-width: 380px) {
+  .tools-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Hidden (search filter) ── */
+.tool-card.hidden { display: none; }
+.category.all-hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    All Tools &amp; Games
+  </div>
+  <h1>The AiNFLGM<br><span>Tool Hub</span></h1>
+  <p>Every free NFL tool and game we've built, in one place. No signup. No paywall. Just pick a tool and go.</p>
+  <div class="hero-count">
+    <span class="hero-stat"><strong>18</strong> Free Tools</span>
+    <span class="hero-stat" style="color:var(--border);">|</span>
+    <span class="hero-stat"><strong>5</strong> Categories</span>
+    <span class="hero-stat" style="color:var(--border);">|</span>
+    <span class="hero-stat"><strong>0</strong> Signups Required</span>
+  </div>
+</section>
+
+<!-- Search -->
+<div class="search-wrap">
+  <div class="search-inner">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Search tools..." autocomplete="off" autocorrect="off" spellcheck="false">
+    <button class="search-clear" id="searchClear" aria-label="Clear search">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Ad Slot (top) -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="horizontal"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- Main content -->
+<main class="main">
+
+  <!-- No results message -->
+  <div id="noResults">
+    <h3>No tools found</h3>
+    <p>Try a different search term.</p>
+  </div>
+
+  <!-- ── CALCULATORS ── -->
+  <section class="category" data-category="calculators">
+    <div class="category-header">
+      <span class="category-icon">🧮</span>
+      <h2 class="category-title">Calculators</h2>
+      <div class="category-divider"></div>
+      <span class="category-count" data-count="calculators">4 tools</span>
+    </div>
+    <div class="tools-grid">
+
+      <a href="draft-trade-calc.html" class="tool-card c-cyan"
+         data-name="Draft Trade Value Calculator"
+         data-desc="Analyze any draft pick trade with the Jimmy Johnson chart"
+         data-tags="draft pick trade value jimmy johnson calculator">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F4CA;</span>
+          <span class="card-badge badge-popular">Popular</span>
+        </div>
+        <div class="card-name">Draft Trade Value Calculator</div>
+        <div class="card-desc">Analyze any draft pick trade with the Jimmy Johnson chart</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="cap-impact.html" class="tool-card c-green"
+         data-name="Cap Impact Calculator"
+         data-desc="Break down any NFL contract's cap hit and dead cap"
+         data-tags="salary cap contract hit dead cap calculator nfl">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F4B0;</span>
+        </div>
+        <div class="card-name">Cap Impact Calculator</div>
+        <div class="card-desc">Break down any NFL contract's cap hit and dead cap by year</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="fantasy-trade.html" class="tool-card c-yellow"
+         data-name="Fantasy Trade Analyzer"
+         data-desc="200 players, dynasty and redraft, instant verdicts"
+         data-tags="fantasy trade analyzer dynasty redraft players">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F3C6;</span>
+          <span class="card-badge badge-popular">Popular</span>
+        </div>
+        <div class="card-name">Fantasy Trade Analyzer</div>
+        <div class="card-desc">200 players, dynasty/redraft modes, instant win/loss verdict</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="mortgage-calc.html" class="tool-card c-purple"
+         data-name="Mortgage Calculator"
+         data-desc="Monthly payment estimator with PMI"
+         data-tags="mortgage calculator monthly payment pmi home loan">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F3E0;</span>
+        </div>
+        <div class="card-name">Mortgage Calculator</div>
+        <div class="card-desc">Monthly payment estimator with taxes, insurance &amp; PMI</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── INTERACTIVE TOOLS ── -->
+  <section class="category" data-category="tools">
+    <div class="category-header">
+      <span class="category-icon">&#x2699;&#xFE0F;</span>
+      <h2 class="category-title">Interactive Tools</h2>
+      <div class="category-divider"></div>
+      <span class="category-count" data-count="tools">7 tools</span>
+    </div>
+    <div class="tools-grid">
+
+      <a href="team-needs.html" class="tool-card c-cyan"
+         data-name="Team Needs Ranker"
+         data-desc="Every team's top 10 needs, compare mode"
+         data-tags="team needs ranker nfl all 32 teams compare">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F3AF;</span>
+        </div>
+        <div class="card-name">Team Needs Ranker</div>
+        <div class="card-desc">Every team's top 10 positional needs with side-by-side compare mode</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="power-rankings.html" class="tool-card c-orange"
+         data-name="Power Rankings"
+         data-desc="Drag-and-drop offseason power rankings"
+         data-tags="power rankings drag drop offseason nfl teams">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F4AA;</span>
+        </div>
+        <div class="card-name">Power Rankings</div>
+        <div class="card-desc">Drag-and-drop your own offseason power rankings for all 32 teams</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="qb-compare.html" class="tool-card c-cyan"
+         data-name="QB Comparison"
+         data-desc="32 QBs head-to-head with radar charts"
+         data-tags="qb quarterback comparison radar chart head to head stats">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F3C8;</span>
+          <span class="card-badge badge-popular">Popular</span>
+        </div>
+        <div class="card-name">QB Comparison</div>
+        <div class="card-desc">All 32 starting QBs head-to-head with dynamic radar charts</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="combine-stats.html" class="tool-card c-green"
+         data-name="Combine Stats Explorer"
+         data-desc="75 prospects, sortable, compare"
+         data-tags="combine stats prospects 40 yard dash bench press sortable compare">
+        <div class="card-top">
+          <span class="card-emoji">&#x23F1;&#xFE0F;</span>
+        </div>
+        <div class="card-name">Combine Stats Explorer</div>
+        <div class="card-desc">75 draft prospects — sortable by any combine drill, compare side by side</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="predict-standings.html" class="tool-card c-yellow"
+         data-name="Division Standings Predictor"
+         data-desc="Predict all 8 divisions"
+         data-tags="division standings predictor season forecast all 8">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F4CB;</span>
+        </div>
+        <div class="card-name">Division Standings Predictor</div>
+        <div class="card-desc">Set your predicted final standings for all 8 NFL divisions</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="draft-grade.html" class="tool-card c-purple"
+         data-name="Draft Grade Calculator"
+         data-desc="Grade your team's draft picks"
+         data-tags="draft grade calculator picks class team evaluate">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F393;</span>
+          <span class="card-badge badge-new">New</span>
+        </div>
+        <div class="card-name">Draft Grade Calculator</div>
+        <div class="card-desc">Evaluate your team's draft class pick by pick — get a final grade</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="nfl-countdown.html" class="tool-card c-red"
+         data-name="NFL Key Dates Countdown"
+         data-desc="Live timers to every key date"
+         data-tags="nfl countdown draft free agency deadline key dates timer">
+        <div class="card-top">
+          <span class="card-emoji">&#x23F0;</span>
+          <span class="card-badge badge-new">New</span>
+        </div>
+        <div class="card-name">NFL Key Dates Countdown</div>
+        <div class="card-desc">Live countdown timers to the draft, free agency, preseason &amp; more</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── GAMES & QUIZZES ── -->
+  <section class="category" data-category="games">
+    <div class="category-header">
+      <span class="category-icon">&#x1F3AE;</span>
+      <h2 class="category-title">Games &amp; Quizzes</h2>
+      <div class="category-divider"></div>
+      <span class="category-count" data-count="games">4 games</span>
+    </div>
+    <div class="tools-grid">
+
+      <a href="cap-quiz.html" class="tool-card c-yellow"
+         data-name="Salary Cap Quiz"
+         data-desc="15 questions, grades, shareable"
+         data-tags="salary cap quiz 15 questions grade shareable nfl">
+        <div class="card-top">
+          <span class="card-emoji">&#x2753;</span>
+          <span class="card-badge badge-popular">Popular</span>
+        </div>
+        <div class="card-name">Salary Cap Quiz</div>
+        <div class="card-desc">15 questions about NFL contracts — get graded and share your score</div>
+        <div class="card-arrow">Play now <span>&#x2192;</span></div>
+      </a>
+
+      <a href="who-said-it.html" class="tool-card c-orange"
+         data-name="Who Said It?"
+         data-desc="NFL quote quiz with timer and streaks"
+         data-tags="who said it nfl quotes quiz timer streak coach player">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F5E3;&#xFE0F;</span>
+          <span class="card-badge badge-new">New</span>
+        </div>
+        <div class="card-name">Who Said It?</div>
+        <div class="card-desc">Identify who said famous NFL quotes — beat the clock, build a streak</div>
+        <div class="card-arrow">Play now <span>&#x2192;</span></div>
+      </a>
+
+      <a href="nfl-trivia.html" class="tool-card c-cyan"
+         data-name="NFL History Trivia"
+         data-desc="50 questions across all NFL eras"
+         data-tags="nfl history trivia 50 questions eras super bowl records">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F3C5;</span>
+        </div>
+        <div class="card-name">NFL History Trivia</div>
+        <div class="card-desc">50 questions spanning all NFL eras — from leather helmets to the modern game</div>
+        <div class="card-arrow">Play now <span>&#x2192;</span></div>
+      </a>
+
+      <a href="roster-budget.html" class="tool-card c-green"
+         data-name="Roster Budget Challenge"
+         data-desc="Build your dream team under the cap"
+         data-tags="roster budget challenge dream team salary cap build">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F4B8;</span>
+          <span class="card-badge badge-new">New</span>
+        </div>
+        <div class="card-name">Roster Budget Challenge</div>
+        <div class="card-desc">Build your dream roster without going over the salary cap</div>
+        <div class="card-arrow">Play now <span>&#x2192;</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── GENERATORS ── -->
+  <section class="category" data-category="generators">
+    <div class="category-header">
+      <span class="category-icon">&#x2728;</span>
+      <h2 class="category-title">Generators</h2>
+      <div class="category-divider"></div>
+      <span class="category-count" data-count="generators">2 tools</span>
+    </div>
+    <div class="tools-grid">
+
+      <a href="name-generator.html" class="tool-card c-purple"
+         data-name="AI Business Name Generator"
+         data-desc="AI-powered business name ideas instantly"
+         data-tags="ai business name generator brand ideas domain startup">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F916;</span>
+          <span class="card-badge badge-new">New</span>
+        </div>
+        <div class="card-name">AI Business Name Generator</div>
+        <div class="card-desc">Generate creative, memorable business names instantly with AI</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+      <a href="trade-analyzer.html" class="tool-card c-cyan"
+         data-name="Trade Analyzer"
+         data-desc="NFL trade analysis tool"
+         data-tags="nfl trade analyzer analysis teams picks players">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F501;</span>
+        </div>
+        <div class="card-name">Trade Analyzer</div>
+        <div class="card-desc">Analyze any NFL player or pick trade — who wins and why</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── LIFESTYLE ── -->
+  <section class="category" data-category="lifestyle">
+    <div class="category-header">
+      <span class="category-icon">&#x1F4C5;</span>
+      <h2 class="category-title">Lifestyle</h2>
+      <div class="category-divider"></div>
+      <span class="category-count" data-count="lifestyle">1 tool</span>
+    </div>
+    <div class="tools-grid">
+
+      <a href="jules-family.html" class="tool-card c-orange"
+         data-name="Jules Family Planner"
+         data-desc="Cincinnati family activity ideas"
+         data-tags="jules family planner cincinnati activities kids weekend">
+        <div class="card-top">
+          <span class="card-emoji">&#x1F468;&#x200D;&#x1F469;&#x200D;&#x1F466;</span>
+        </div>
+        <div class="card-name">Jules Family Planner</div>
+        <div class="card-desc">Curated Cincinnati-area family activity ideas for every weekend</div>
+        <div class="card-arrow">Open tool <span>&#x2192;</span></div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div><a href="https://ainflgm.com">AiNFL GM</a> &mdash; Free NFL Tools &amp; Games</div>
+  <div style="margin-top:4px;">No signup required &bull; Mobile friendly &bull; Always free</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&bull;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&bull;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&bull;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+  <div style="margin-top:4px;">&copy; 2026 AiNFL GM. All rights reserved.</div>
+</footer>
+
+<script>
+(function() {
+  const input  = document.getElementById('searchInput');
+  const clear  = document.getElementById('searchClear');
+  const cards  = document.querySelectorAll('.tool-card');
+  const cats   = document.querySelectorAll('.category');
+  const noRes  = document.getElementById('noResults');
+
+  function filterTools(q) {
+    q = q.toLowerCase().trim();
+    let totalVisible = 0;
+
+    cards.forEach(function(card) {
+      const name = (card.getAttribute('data-name') || '').toLowerCase();
+      const desc = (card.getAttribute('data-desc') || '').toLowerCase();
+      const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+      const match = !q || name.includes(q) || desc.includes(q) || tags.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) totalVisible++;
+    });
+
+    cats.forEach(function(cat) {
+      const visibleInCat = cat.querySelectorAll('.tool-card:not(.hidden)').length;
+      cat.classList.toggle('all-hidden', visibleInCat === 0);
+    });
+
+    noRes.classList.toggle('visible', totalVisible === 0);
+    clear.classList.toggle('visible', q.length > 0);
+  }
+
+  input.addEventListener('input', function() {
+    filterTools(this.value);
+  });
+
+  clear.addEventListener('click', function() {
+    input.value = '';
+    filterTools('');
+    input.focus();
+  });
+
+  // Keyboard shortcut: / to focus search
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== input) {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
+    if (e.key === 'Escape' && document.activeElement === input) {
+      input.value = '';
+      filterTools('');
+      input.blur();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

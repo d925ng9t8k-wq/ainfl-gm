@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- standalone mode removed for browser controls -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="9enterprises">
+<meta name="theme-color" content="#0f0f1f">
+<title>Pilot | 9 Enterprises</title>
+<link rel="manifest" href="/pilot-manifest.json">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0f0f1f;--bg2:#16213e;--bg3:#1a2744;
+  --accent:#FF6600;--neon:#64ffda;--blue:#00e5ff;--purple:#b060ff;
+  --text:#f0f0f0;--muted:#8892b0;--dim:#334155;
+  --glass:rgba(22,33,62,0.65);--glassBorder:rgba(0,229,255,0.12);
+  --font-head:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+
+/* ===== DEMO BANNER ===== */
+.demo-banner{
+  position:relative;z-index:500;
+  background:linear-gradient(135deg,rgba(176,96,255,0.2),rgba(100,255,218,0.05));
+  border-bottom:2px solid rgba(176,96,255,0.5);
+  padding:8px 16px;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  flex-shrink:0;
+}
+.demo-banner-badge{
+  background:rgba(176,96,255,0.2);border:1px solid rgba(176,96,255,0.45);
+  border-radius:16px;padding:2px 10px;
+  font-family:var(--font-mono);font-size:9px;color:var(--purple);
+  letter-spacing:2px;text-transform:uppercase;flex-shrink:0;
+}
+.demo-banner-text{
+  font-family:var(--font-mono);font-size:10px;color:var(--purple);
+  letter-spacing:0.5px;text-align:center;
+}
+@media(max-width:480px){.demo-banner-text{font-size:9px;}.demo-banner-badge:last-child{display:none;}}
+
+/* ===== CHAT LAYOUT ===== */
+.chat-app{
+  display:flex;flex-direction:column;
+  height:calc(100dvh - 0px);height:calc(100vh - 0px);
+}
+
+/* ===== HEADER ===== */
+.chat-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;padding-top:calc(12px + var(--safe-top));
+  background:linear-gradient(135deg,#0f0f1f 0%,#16213e 100%);
+  border-bottom:1px solid var(--glassBorder);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  flex-shrink:0;
+}
+.header-left{display:flex;align-items:center;gap:12px;}
+.header-logo{
+  font-family:var(--font-head);font-size:32px;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,#FF6600,#ff8844);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 16px rgba(255,102,0,0.4));
+}
+.header-info{display:flex;flex-direction:column;gap:2px;}
+.header-title{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.header-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.status-badge{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--neon);letter-spacing:1px;text-transform:uppercase;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--neon);animation:pulse-green 2s ease-in-out infinite;}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 4px var(--neon);}50%{box-shadow:0 0 14px var(--neon);}}
+.btn-help{background:none;border:1px solid var(--dim);border-radius:50%;color:var(--muted);font-family:var(--font-head);font-size:16px;font-weight:700;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.btn-help:active{border-color:var(--accent);color:var(--accent);}
+
+/* ===== CAPABILITIES MODAL ===== */
+.cap-overlay{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.cap-overlay.visible{opacity:1;pointer-events:all;}
+.cap-panel{width:100%;max-width:480px;max-height:80vh;background:var(--bg2);border:1px solid var(--glassBorder);border-radius:20px 20px 0 0;padding:20px 16px;padding-bottom:calc(20px + var(--safe-bottom));transform:translateY(100%);transition:transform 0.3s ease;overflow-y:auto;}
+.cap-overlay.visible .cap-panel{transform:translateY(0);}
+.cap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cap-title{font-family:var(--font-head);font-size:18px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.cap-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1;}
+.cap-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.cap-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid transparent;cursor:pointer;transition:all 0.15s;}
+.cap-item:active,.cap-item:hover{background:rgba(255,102,0,0.08);border-color:rgba(255,102,0,0.2);}
+.cap-icon{font-size:20px;flex-shrink:0;width:28px;text-align:center;line-height:1.4;}
+.cap-text{display:flex;flex-direction:column;gap:2px;}
+.cap-name{font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);letter-spacing:0.5px;}
+.cap-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.4;}
+.cap-badge{display:inline-block;font-family:var(--font-mono);font-size:9px;color:var(--dim);border:1px solid var(--dim);border-radius:4px;padding:1px 6px;margin-top:2px;letter-spacing:0.5px;}
+
+/* ===== MESSAGES ===== */
+.chat-messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;padding-bottom:8px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
+.chat-messages::-webkit-scrollbar{width:3px;}
+.chat-messages::-webkit-scrollbar-track{background:transparent;}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
+.msg{display:flex;flex-direction:column;max-width:85%;animation:msgIn 0.3s ease both;}
+.msg.user{align-self:flex-end;align-items:flex-end;}
+.msg.pilot{align-self:flex-start;align-items:flex-start;}
+@keyframes msgIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.msg-bubble{padding:12px 16px;border-radius:18px;font-size:15px;line-height:1.55;word-wrap:break-word;overflow-wrap:break-word;}
+.msg.user .msg-bubble{background:linear-gradient(135deg,#FF6600,#e85d00);color:#fff;border-bottom-right-radius:6px;}
+.msg.pilot .msg-bubble{background:var(--bg2);border:1px solid var(--glassBorder);color:var(--text);border-bottom-left-radius:6px;}
+.msg-time{font-family:var(--font-mono);font-size:9px;color:var(--dim);margin-top:4px;padding:0 4px;}
+
+/* ===== TYPING INDICATOR ===== */
+.typing{display:none;align-self:flex-start;padding:4px 0;}
+.typing.visible{display:flex;}
+.typing-inner{display:flex;align-items:center;gap:5px;background:var(--bg2);border:1px solid var(--glassBorder);border-radius:18px;border-bottom-left-radius:6px;padding:14px 20px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:typingBounce 1.4s infinite;}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:0.4;}30%{transform:translateY(-6px);opacity:1;}}
+
+/* ===== INPUT AREA ===== */
+.chat-input-area{padding:12px 12px;padding-bottom:calc(16px + var(--safe-bottom));background:var(--bg);border-top:1px solid var(--glassBorder);flex-shrink:0;}
+.chat-input-wrap{display:flex;align-items:flex-end;gap:8px;background:var(--bg2);border:1px solid var(--glassBorder);border-radius:24px;padding:6px 6px 6px 16px;transition:border-color 0.2s;}
+.chat-input-wrap:focus-within{border-color:rgba(255,102,0,0.4);}
+.chat-input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:16px;resize:none;max-height:120px;line-height:1.4;padding:6px 0;}
+.chat-input::placeholder{color:var(--dim);}
+.btn-send{width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,#FF6600,#e85d00);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;opacity:0.5;pointer-events:none;}
+.btn-send.active{opacity:1;pointer-events:all;}
+.btn-send:active{transform:scale(0.9);}
+.btn-send svg{width:18px;height:18px;}
+
+/* ===== DEMO SUGGESTIONS ===== */
+.demo-suggestions{padding:8px 16px 0;display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.demo-suggestions::-webkit-scrollbar{display:none;}
+.suggestion-chip{
+  flex-shrink:0;
+  background:rgba(255,102,0,0.08);border:1px solid rgba(255,102,0,0.2);
+  border-radius:20px;padding:6px 14px;
+  font-family:var(--font-mono);font-size:11px;color:var(--accent);
+  cursor:pointer;transition:all 0.15s;white-space:nowrap;
+}
+.suggestion-chip:active,.suggestion-chip:hover{background:rgba(255,102,0,0.18);border-color:rgba(255,102,0,0.4);}
+
+/* ===== SCROLLBAR & MISC ===== */
+::selection{background:rgba(255,102,0,0.3);}
+</style>
+</head>
+<body>
+
+<div class="chat-app" id="chatApp">
+
+  <!-- Demo Banner -->
+  <div class="demo-banner">
+    <div class="demo-banner-badge">DEMO</div>
+    <div class="demo-banner-text">Interactive preview &mdash; sample conversations showing what Pilot can do</div>
+    <div class="demo-banner-badge">DEMO</div>
+  </div>
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="header-left">
+      <div class="header-logo">9</div>
+      <div class="header-info">
+        <div class="header-title">PILOT</div>
+        <div class="header-sub">9 ENTERPRISES</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span>DEMO</span>
+      </div>
+      <button class="btn-help" id="btnHelp">?</button>
+    </div>
+  </div>
+
+  <!-- Capabilities Modal -->
+  <div class="cap-overlay" id="capOverlay">
+    <div class="cap-panel">
+      <div class="cap-header">
+        <div class="cap-title">WHAT CAN I DO?</div>
+        <button class="cap-close" id="capClose">&times;</button>
+      </div>
+      <ul class="cap-list">
+        <li class="cap-item" data-prompt="Give me my morning briefing — pipeline status, rate changes, and follow-ups due today.">
+          <div class="cap-icon">&#9728;&#65039;</div>
+          <div class="cap-text"><div class="cap-name">Morning Briefings</div><div class="cap-desc">Daily summary of your pipeline, rates, and action items</div></div>
+        </li>
+        <li class="cap-item" data-prompt="What are current 30-year conventional rates for a 740 FICO borrower?">
+          <div class="cap-icon">&#128200;</div>
+          <div class="cap-text"><div class="cap-name">Rate Lookups</div><div class="cap-desc">Current rates and side-by-side product comparisons</div></div>
+        </li>
+        <li class="cap-item" data-prompt="What are the FHA loan limits and minimum credit score requirements?">
+          <div class="cap-icon">&#128218;</div>
+          <div class="cap-text"><div class="cap-name">Mortgage Guideline Q&A</div><div class="cap-desc">FHA, VA, Conventional, and Jumbo guidelines at your fingertips</div></div>
+        </li>
+        <li class="cap-item" data-prompt="What are the flood zone requirements for Zone X properties?">
+          <div class="cap-icon">&#127968;</div>
+          <div class="cap-text"><div class="cap-name">Property &amp; Flood Guidelines</div><div class="cap-desc">Flood zone, appraisal, and property eligibility rules</div></div>
+        </li>
+        <li class="cap-item" data-prompt="Schedule a showing for 123 Main St, Anytown OH for Saturday at 2pm.">
+          <div class="cap-icon">&#128276;</div>
+          <div class="cap-text"><div class="cap-name">Scheduling &amp; Reminders</div><div class="cap-desc">Set follow-up reminders and manage your daily schedule</div></div>
+        </li>
+        <li class="cap-item" data-prompt="Run a loan scenario: $350k purchase, 5% down, 700 FICO, conventional 30-year fixed. What's the monthly payment?">
+          <div class="cap-icon">&#129518;</div>
+          <div class="cap-text"><div class="cap-name">Loan Scenario Analysis</div><div class="cap-desc">Full payment breakdowns and compare loan options instantly</div></div>
+        </li>
+        <li class="cap-item" data-prompt="">
+          <div class="cap-icon">&#127829;</div>
+          <div class="cap-text"><div class="cap-name">Food Ordering</div><div class="cap-desc">Order lunch or coffee delivered to the office</div><span class="cap-badge">COMING SOON</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages" id="chatMessages"></div>
+
+  <!-- Typing Indicator -->
+  <div class="typing" id="typingIndicator">
+    <div class="typing-inner">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  </div>
+
+  <!-- Demo Suggestion Chips -->
+  <div class="demo-suggestions" id="demoSuggestions">
+    <div class="suggestion-chip" data-msg="Good morning! Give me my daily briefing.">Morning Briefing</div>
+    <div class="suggestion-chip" data-msg="What are current 30yr conventional rates?">Rate Lookup</div>
+    <div class="suggestion-chip" data-msg="What are flood zone requirements for Zone X?">Flood Zone Rules</div>
+    <div class="suggestion-chip" data-msg="Schedule a showing for 123 Main St on Saturday at 2pm.">Schedule Showing</div>
+    <div class="suggestion-chip" data-msg="Run a loan scenario: $350k purchase, 5% down, 700 FICO, 30yr fixed.">Loan Scenario</div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <div class="chat-input-wrap">
+      <textarea class="chat-input" id="chatInput" rows="1" placeholder="Try a question or tap a suggestion above..." enterkeyhint="send"></textarea>
+      <button class="btn-send active" id="btnSend">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== HUB DETECTION =====
+// TUNNEL_URL: update this when the Cloudflare tunnel restarts (run: curl localhost:3457/health to get current tunnel)
+const KNOWN_TUNNEL_URLS = [
+  'https://cancelled-paid-extent-plant.trycloudflare.com', // update as needed
+];
+const LOCAL_HUB  = 'http://localhost:3457';
+let PILOT_ENDPOINT = null; // resolved after init
+let isLiveMode = false;
+
+async function detectPilot() {
+  // Try local pilot server directly first (works on same machine / local network)
+  try {
+    const r = await fetch('http://localhost:3472/health', { signal: AbortSignal.timeout(2000) });
+    if (r.ok) { PILOT_ENDPOINT = 'http://localhost:3472/message'; return true; }
+  } catch (_) {}
+  // Try hub local (hub proxies to pilot)
+  try {
+    const r = await fetch(LOCAL_HUB + '/health', { signal: AbortSignal.timeout(2000) });
+    if (r.ok) { PILOT_ENDPOINT = LOCAL_HUB + '/pilot/message'; return true; }
+  } catch (_) {}
+  // Try all known tunnel URLs (remote access — Kyle on his phone)
+  for (const tunnelUrl of KNOWN_TUNNEL_URLS) {
+    try {
+      const r = await fetch(tunnelUrl + '/health', { signal: AbortSignal.timeout(5000) });
+      if (r.ok) { PILOT_ENDPOINT = tunnelUrl + '/pilot/message'; return true; }
+    } catch (_) {}
+  }
+  return false;
+}
+
+// ===== DEMO RESPONSES (fallback when connected but pilot returns nothing) =====
+// These only fire in true demo mode (no server reachable).
+// When offline, we show an honest disconnect message instead.
+const demoResponses = {
+  morning: {
+    trigger: /morning|briefing|daily|good morning/i,
+    reply: `Good morning! Here's your daily briefing for ${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}:\n\nPipeline Summary\n• 8 active loans in process\n• 3 pending appraisal\n• 2 clear to close this week\n• 1 awaiting borrower docs\n\nRate Watch\n• 30yr Conventional: 6.75% (unchanged)\n• 30yr FHA: 6.50% (down 0.125% from yesterday)\n• 15yr Fixed: 6.125%\n\nFollow-ups Due Today\n• Johnson file — call re: missing W2 (10am)\n• Martinez pre-approval — expires Friday\n• Smith appraisal — check status with AMC`
+  },
+  rates: {
+    trigger: /rate|30.?yr|conventional|fha rate|interest/i,
+    reply: `Current Rate Snapshot:\n\n30-Year Conventional\n• 720+ FICO: 6.75% / 6.82% APR\n• 680-719 FICO: 6.875% / 6.94% APR\n\n30-Year FHA\n• 620+ FICO: 6.50% / 7.28% APR (includes MIP)\n\n15-Year Fixed\n• 720+ FICO: 6.125% / 6.24% APR\n\nVA: 6.25% | USDA: 6.375%\n\nRates change daily. Lock before 3pm ET.`
+  },
+  flood: {
+    trigger: /flood|zone x|zone a|flood zone|floodplain/i,
+    reply: `Flood Zone Requirements:\n\nZone X (Minimal Risk)\n• No flood insurance required\n• Outside 100-year floodplain\n\nZone AE / A (High Risk)\n• Flood insurance REQUIRED for federally-backed loans\n• FEMA elevation certificate often required\n\nZone VE (Coastal)\n• Same as AE, stricter construction standards`
+  },
+  schedule: {
+    trigger: /schedule|showing|appointment|meeting|calendar/i,
+    reply: `Scheduling noted.\n\nShowing confirmed:\n• Property: 123 Main St\n• Date: This Saturday at 2:00 PM\n• Reminders set: 24hr and 1hr before\n\nWant me to send a confirmation text to the client?`
+  },
+  scenario: {
+    trigger: /scenario|350k|loan.*scenario|payment|monthly|calculate|FICO/i,
+    reply: `Loan Scenario — $350k purchase, 5% down, 700 FICO, 30yr conventional:\n\nMonthly Payment\n• P&I: $2,183\n• PMI (0.65%): $180\n• Taxes (est.): $350\n• Insurance (est.): $120\n• Total PITI + PMI: ~$2,833/mo\n\nCash to Close (est.): ~$29,000\n\nPMI drops at 80% LTV. Want an FHA comparison?`
+  },
+};
+
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const btnSend = document.getElementById('btnSend');
+const typingIndicator = document.getElementById('typingIndicator');
+
+let msgCount = 0;
+
+function formatTime() {
+  return new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function appendMessage(role, text) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${formatTime()}</div>`;
+  chatMessages.appendChild(div);
+  scrollToBottom();
+}
+
+function scrollToBottom() {
+  requestAnimationFrame(() => { chatMessages.scrollTop = chatMessages.scrollHeight; });
+}
+
+function showTyping() {
+  typingIndicator.classList.add('visible');
+  chatMessages.appendChild(typingIndicator);
+  scrollToBottom();
+}
+
+function hideTyping() {
+  typingIndicator.classList.remove('visible');
+}
+
+function getDemoResponse(text) {
+  if (demoResponses.morning.trigger.test(text)) return demoResponses.morning.reply;
+  if (demoResponses.rates.trigger.test(text)) return demoResponses.rates.reply;
+  if (demoResponses.flood.trigger.test(text)) return demoResponses.flood.reply;
+  if (demoResponses.schedule.trigger.test(text)) return demoResponses.schedule.reply;
+  if (demoResponses.scenario.trigger.test(text)) return demoResponses.scenario.reply;
+  // No match — return null so caller can show offline message
+  return null;
+}
+
+async function sendMessage(text) {
+  const msg = (text || chatInput.value).trim();
+  if (!msg) return;
+  chatInput.value = '';
+  autoResizeInput();
+  updateSendBtn();
+  appendMessage('user', msg);
+  msgCount++;
+
+  showTyping();
+
+  if (isLiveMode && PILOT_ENDPOINT) {
+    // Hit the real Pilot server
+    try {
+      const res = await fetch(PILOT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, from: 'web-chat' }),
+        signal: AbortSignal.timeout(15000),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const reply = data.reply || data.response || data.message || 'Got it.';
+        hideTyping();
+        appendMessage('pilot', reply);
+        return;
+      }
+    } catch (_) {}
+    // Live request failed — try to reconnect silently
+    isLiveMode = false;
+    PILOT_ENDPOINT = null;
+    const reconnected = await detectPilot();
+    if (reconnected) {
+      isLiveMode = true;
+      // Retry the message with the new endpoint
+      try {
+        const res2 = await fetch(PILOT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, from: 'web-chat' }),
+          signal: AbortSignal.timeout(15000),
+        });
+        if (res2.ok) {
+          const data2 = await res2.json();
+          const reply2 = data2.reply || data2.response || data2.message || 'Got it.';
+          hideTyping();
+          appendMessage('pilot', reply2);
+          return;
+        }
+      } catch (_) {}
+    }
+    // Still failed after retry — show offline notice
+    hideTyping();
+    setOfflineUI();
+    appendMessage('pilot', `Connection dropped. I couldn't reach the server.\n\nTap the reconnect button above or text me directly.`);
+    return;
+  }
+
+  // Demo / offline mode — only respond to recognized topics, otherwise be honest
+  hideTyping();
+  const demoReply = getDemoResponse(msg);
+  if (demoReply) {
+    const delay = 800 + Math.random() * 600;
+    setTimeout(() => {
+      appendMessage('pilot', demoReply);
+    }, delay);
+  } else {
+    appendMessage('pilot', `I'm not connected right now — can't respond to that one.\n\nTap "Reconnect" above to try again, or text me directly.`);
+  }
+}
+
+function autoResizeInput() {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+}
+
+function updateSendBtn() {
+  btnSend.classList.toggle('active', chatInput.value.trim().length > 0 || true);
+}
+
+chatInput.addEventListener('input', () => { autoResizeInput(); updateSendBtn(); });
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+btnSend.addEventListener('click', () => sendMessage());
+
+// Suggestion chips
+document.querySelectorAll('.suggestion-chip').forEach(chip => {
+  chip.addEventListener('click', () => { sendMessage(chip.dataset.msg); });
+});
+
+// Capabilities modal
+const capOverlay = document.getElementById('capOverlay');
+const btnHelp = document.getElementById('btnHelp');
+const capClose = document.getElementById('capClose');
+btnHelp.addEventListener('click', () => capOverlay.classList.add('visible'));
+capClose.addEventListener('click', () => capOverlay.classList.remove('visible'));
+capOverlay.addEventListener('click', (e) => { if (e.target === capOverlay) capOverlay.classList.remove('visible'); });
+document.querySelectorAll('.cap-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const prompt = item.dataset.prompt;
+    if (prompt) { chatInput.value = prompt; autoResizeInput(); updateSendBtn(); chatInput.focus(); }
+    capOverlay.classList.remove('visible');
+  });
+});
+
+function setLiveUI() {
+  // Update banner to LIVE
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    banner.style.background = 'linear-gradient(135deg,rgba(100,255,218,0.1),rgba(0,229,255,0.05))';
+    banner.style.borderBottomColor = 'rgba(100,255,218,0.4)';
+    banner.innerHTML = '<div class="demo-banner-badge" style="color:var(--neon);border-color:rgba(100,255,218,0.45);background:rgba(100,255,218,0.1)">LIVE</div><div class="demo-banner-text" style="color:var(--neon)">Connected to Pilot AI &mdash; responses are real</div><div class="demo-banner-badge" style="color:var(--neon);border-color:rgba(100,255,218,0.45);background:rgba(100,255,218,0.1)">LIVE</div>';
+  }
+  // Update status badge in header
+  const statusSpan = document.querySelector('.status-badge span');
+  if (statusSpan) statusSpan.textContent = 'LIVE';
+}
+
+function setOfflineUI() {
+  isLiveMode = false;
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    banner.style.background = 'linear-gradient(135deg,rgba(255,102,0,0.12),rgba(255,50,0,0.05))';
+    banner.style.borderBottomColor = 'rgba(255,102,0,0.5)';
+    banner.innerHTML = '<div class="demo-banner-badge" style="color:var(--accent);border-color:rgba(255,102,0,0.45);background:rgba(255,102,0,0.1)">OFFLINE</div><div class="demo-banner-text" style="color:var(--accent)">Not connected &mdash; <span id="reconnectBtn" style="text-decoration:underline;cursor:pointer;">tap to reconnect</span></div><div class="demo-banner-badge" style="color:var(--accent);border-color:rgba(255,102,0,0.45);background:rgba(255,102,0,0.1)">OFFLINE</div>';
+    document.getElementById('reconnectBtn')?.addEventListener('click', attemptReconnect);
+  }
+  const statusDot = document.querySelector('.status-dot');
+  if (statusDot) statusDot.style.background = 'var(--accent)';
+  const statusSpan = document.querySelector('.status-badge span');
+  if (statusSpan) statusSpan.textContent = 'OFFLINE';
+}
+
+async function attemptReconnect() {
+  const banner = document.querySelector('.demo-banner');
+  if (banner) {
+    const badge = banner.querySelector('.demo-banner-badge');
+    if (badge) badge.textContent = '...';
+    const text = banner.querySelector('.demo-banner-text');
+    if (text) text.textContent = 'Reconnecting...';
+  }
+  const connected = await detectPilot();
+  if (connected) {
+    isLiveMode = true;
+    setLiveUI();
+    appendMessage('pilot', `Reconnected. What do you need?`);
+  } else {
+    setOfflineUI();
+    appendMessage('pilot', `Still can't reach the server. Text me directly at your usual number.`);
+  }
+}
+
+// ===== INIT =====
+async function init() {
+  const connected = await detectPilot();
+  if (connected) {
+    isLiveMode = true;
+    setLiveUI();
+    appendMessage('pilot', `Hey — I'm Pilot, your AI assistant from 9 Enterprises.\n\nI'm connected and ready. Ask me anything or tap a suggestion below.`);
+  } else {
+    // Offline — be honest, do not fake responses
+    setOfflineUI();
+    appendMessage('pilot', `Hey — I'm Pilot. Can't reach the server right now.\n\nTap "reconnect" in the banner above to try again. If it keeps failing, text me directly at your usual number.`);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

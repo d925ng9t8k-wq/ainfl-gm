@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Jersey Quiz">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Jersey Number Quiz | AiNFL GM</title>
+<meta name="description" content="Can you name the player from their jersey number and team? 15 random questions — stars, starters, and legends. Test your deep NFL knowledge.">
+<meta property="og:title" content="NFL Jersey Number Quiz | AiNFL GM">
+<meta property="og:description" content="15 questions. Jersey number + team. Who wears it? Test your deep NFL knowledge.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/jersey-quiz.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Jersey Number Quiz | AiNFL GM">
+<meta name="twitter:description" content="Jersey number + team. Name the player. 15 questions. How do you grade out?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+  --team-color: #00F0FF;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(0.7); }
+  70%  { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+@keyframes correct-flash {
+  0%   { background: var(--green-dim); }
+  100% { background: var(--bg-card); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 40px 24px 28px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(26px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── High Score Bar ── */
+.hs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+.hs-bar strong { color: var(--yellow); font-weight: 700; }
+.hs-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* ── Progress Bar ── */
+.progress-wrap {
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.08s both;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 8px;
+}
+.progress-track {
+  height: 5px;
+  background: var(--bg-3);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), #0090aa);
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Question Card ── */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--team-color);
+  border-radius: var(--radius);
+  padding: 28px 24px 24px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.35s ease both;
+  position: relative;
+  overflow: hidden;
+}
+.question-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(var(--team-color-rgb, 0,240,255), 0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.difficulty-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+}
+.difficulty-badge.easy   { background: var(--green-dim);   color: var(--green); border: 1px solid rgba(57,255,20,0.25); }
+.difficulty-badge.medium { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(255,214,0,0.25); }
+.difficulty-badge.hard   { background: var(--red-dim);    color: var(--red);    border: 1px solid rgba(255,45,85,0.25); }
+
+.team-name-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+
+.jersey-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(72px, 18vw, 108px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--team-color);
+  text-shadow: 0 0 40px rgba(0,240,255,0.25);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.team-display {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.question-prompt {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+/* ── Answer Options ── */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 440px) {
+  .options-grid { grid-template-columns: 1fr; }
+}
+
+.option-btn {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.4;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--border-hi);
+  background: rgba(0,240,255,0.06);
+}
+.option-btn:active:not(:disabled) { transform: scale(0.98); }
+.option-btn:disabled { cursor: default; }
+
+.option-btn.correct {
+  background: var(--green-dim);
+  border-color: rgba(57,255,20,0.5);
+  color: var(--green);
+}
+.option-btn.wrong {
+  background: var(--red-dim);
+  border-color: rgba(255,45,85,0.4);
+  color: #FF6B6B;
+  animation: shake 0.35s ease;
+}
+.option-btn.reveal {
+  background: rgba(57,255,20,0.08);
+  border-color: rgba(57,255,20,0.3);
+  color: var(--green);
+  opacity: 0.75;
+}
+
+/* ── Feedback Banner ── */
+.feedback-banner {
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+.feedback-banner.show { display: block; }
+.feedback-banner.correct-fb {
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  color: var(--green);
+}
+.feedback-banner.wrong-fb {
+  background: var(--red-dim);
+  border: 1px solid rgba(255,45,85,0.25);
+  color: #FF6B6B;
+}
+.fb-label {
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.fb-context {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* ── Next Button ── */
+.next-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--cyan), #0090aa);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 16px 24px;
+  color: #000;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  margin-top: 14px;
+  display: none;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.next-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.next-btn:active { transform: translateY(0); }
+.next-btn.show { display: block; animation: fadeUp 0.3s ease; }
+
+/* ── Running Score ── */
+.running-score {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.score-pill {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  text-align: center;
+}
+.score-pill-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+.score-pill-val.green { color: var(--green); }
+.score-pill-val.red   { color: var(--red); }
+.score-pill-val.cyan  { color: var(--cyan); }
+.score-pill-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+/* ── Results Screen ── */
+.results-screen {
+  display: none;
+  animation: fadeUp 0.5s ease both;
+}
+.results-screen.show { display: block; }
+
+.grade-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.grade-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, var(--cyan-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.grade-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  animation: pop-in 0.5s ease 0.15s both;
+}
+.grade-circle.A { background: rgba(57,255,20,0.15); color: var(--green); border: 2px solid rgba(57,255,20,0.4); }
+.grade-circle.B { background: var(--cyan-dim); color: var(--cyan); border: 2px solid var(--border-hi); }
+.grade-circle.C { background: var(--yellow-dim); color: var(--yellow); border: 2px solid rgba(255,214,0,0.3); }
+.grade-circle.D { background: rgba(255,100,0,0.12); color: #FF6B2B; border: 2px solid rgba(255,100,0,0.3); }
+.grade-circle.F { background: var(--red-dim); color: var(--red); border: 2px solid rgba(255,45,85,0.3); }
+
+.result-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.result-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 18px;
+}
+.score-big {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(38px, 7vw, 56px);
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.score-label {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+.stat-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.stat-pill {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.stat-pill span { color: var(--text); }
+
+.share-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: left;
+  margin-bottom: 18px;
+}
+.share-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.share-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.btn-share {
+  flex: 1;
+  min-width: 120px;
+  background: #1D9BF0;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-share:hover { opacity: 0.85; }
+.btn-copy {
+  flex: 1;
+  min-width: 120px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-copy:hover { border-color: var(--border-hi); }
+
+.btn-retry {
+  width: 100%;
+  background: linear-gradient(135deg, var(--cyan), #0090aa);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 16px 24px;
+  color: #000;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  margin-bottom: 10px;
+}
+.btn-retry:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.hs-row {
+  font-size: 13px;
+  color: var(--text-mute);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── Review Section ── */
+.review-section {
+  margin-top: 20px;
+}
+.review-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+.review-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.review-item.ri-correct { border-left-color: var(--green); }
+.review-item.ri-wrong   { border-left-color: var(--red); }
+.review-item-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.ri-icon { font-size: 14px; flex-shrink: 0; }
+.ri-q {
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+.ri-answer {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.ri-answer strong { color: var(--green); }
+.ri-wrong-ans { color: var(--red); font-size: 12px; }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 28px 24px 40px;
+  font-size: 13px;
+  color: var(--text-mute);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="https://ainflgm.com/tools.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 2.5L4 7l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    All Tools
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M6 3.5v3l2 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Jersey Number Quiz
+  </div>
+  <h1>Who Wears <span>That Number?</span></h1>
+  <p>Jersey number + team. Name the player. 15 random questions mixing stars, starters, and retired legends.</p>
+</section>
+
+<main class="main">
+
+  <!-- High Score Bar -->
+  <div class="hs-bar" id="hsBar">
+    <span class="hs-badge">Best Score</span>
+    <span id="hsDisplay">No score yet</span>
+  </div>
+
+  <!-- Running Score -->
+  <div class="running-score" id="runningScore">
+    <div class="score-pill">
+      <div class="score-pill-val green" id="scoreCorrect">0</div>
+      <div class="score-pill-label">Correct</div>
+    </div>
+    <div class="score-pill">
+      <div class="score-pill-val red" id="scoreWrong">0</div>
+      <div class="score-pill-label">Wrong</div>
+    </div>
+    <div class="score-pill">
+      <div class="score-pill-val cyan" id="scoreRemain">15</div>
+      <div class="score-pill-label">Left</div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span id="progLabel">Question 1 of 15</span>
+      <span id="progPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Question Area -->
+  <div id="questionArea">
+    <div class="question-card" id="questionCard">
+      <div class="difficulty-badge" id="diffBadge">Easy</div>
+      <div class="team-name-label" id="teamLabel">CINCINNATI BENGALS</div>
+      <span class="jersey-number" id="jerseyNum">#9</span>
+      <div class="team-display" id="teamDisplay">Cincinnati Bengals</div>
+      <div class="question-prompt">Which player wears this number?</div>
+      <div class="options-grid" id="optionsGrid"></div>
+      <div class="feedback-banner" id="feedbackBanner">
+        <div class="fb-label" id="fbLabel">Correct!</div>
+        <div id="fbMain"></div>
+        <div class="fb-context" id="fbContext"></div>
+      </div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="advanceQuestion()">Next Question &rarr;</button>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="results-screen" id="resultsScreen"></div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://ainflgm.com/cap-quiz.html">Cap Quiz</a>
+    <a href="https://ainflgm.com/nfl-trivia.html">NFL Trivia</a>
+    <a href="https://ainflgm.com/who-said-it.html">Who Said It</a>
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calc</a>
+    <a href="https://ainflgm.com/tools.html">All Tools</a>
+  </div>
+  <p>Built by <a href="https://ainflgm.com">AiNFL GM</a> &mdash; AI-powered tools for serious NFL fans.</p>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+//  QUESTION BANK — 50 questions
+//  difficulty: easy | medium | hard
+//  teamColor: hex accent for that team
+//  context: fun fact shown after answer
+// ─────────────────────────────────────────────
+const QUESTION_BANK = [
+  // ─── EASY (stars, household names) ───
+  {
+    number: 9, team: 'Cincinnati Bengals', teamShort: 'CIN',
+    answer: 'Joe Burrow', difficulty: 'easy',
+    teamColor: '#FB4F14',
+    options: ['Lamar Jackson', 'Joe Burrow', 'Justin Herbert', 'Tua Tagovailoa'],
+    context: 'Burrow led the Bengals to Super Bowl LVI in just his second season.'
+  },
+  {
+    number: 4, team: 'Green Bay Packers', teamShort: 'GB',
+    answer: 'Brett Favre', difficulty: 'easy',
+    teamColor: '#203731',
+    options: ['Aaron Rodgers', 'Brett Favre', 'Jordan Love', 'Don Majkowski'],
+    context: 'Favre wore #4 and holds the Packers franchise record with 61,655 passing yards.'
+  },
+  {
+    number: 10, team: 'Kansas City Chiefs', teamShort: 'KC',
+    answer: 'Isiah Pacheco', difficulty: 'medium',
+    teamColor: '#E31837',
+    options: ['Patrick Mahomes', 'Isiah Pacheco', 'Mecole Hardman', 'Clyde Edwards-Helaire'],
+    context: 'Pacheco took over as the Chiefs\' lead back and earned a Super Bowl ring in LVIII.'
+  },
+  {
+    number: 8, team: 'Baltimore Ravens', teamShort: 'BAL',
+    answer: 'Lamar Jackson', difficulty: 'easy',
+    teamColor: '#241773',
+    options: ['Lamar Jackson', 'Odell Beckham Jr.', 'Marcus Peters', 'Ronnie Stanley'],
+    context: 'Jackson wears #8 in Baltimore — fitting for a back-to-back MVP and two-time league MVP.'
+  },
+  {
+    number: 15, team: 'Kansas City Chiefs', teamShort: 'KC',
+    answer: 'Patrick Mahomes', difficulty: 'easy',
+    teamColor: '#E31837',
+    options: ['Travis Kelce', 'Patrick Mahomes', 'Mecole Hardman', 'Chris Jones'],
+    context: 'Mahomes has worn #15 throughout his Chiefs career, winning multiple Super Bowls.'
+  },
+  {
+    number: 87, team: 'Kansas City Chiefs', teamShort: 'KC',
+    answer: 'Travis Kelce', difficulty: 'easy',
+    teamColor: '#E31837',
+    options: ['Travis Kelce', 'George Kittle', 'Mark Andrews', 'Darren Waller'],
+    context: 'Kelce is the most prolific tight end in NFL history by receiving yards.'
+  },
+  {
+    number: 17, team: 'Miami Dolphins', teamShort: 'MIA',
+    answer: 'Jaylen Waddle', difficulty: 'easy',
+    teamColor: '#008E97',
+    options: ['Tyreek Hill', 'Jaylen Waddle', 'DeVante Parker', 'River Cracraft'],
+    context: 'Waddle wears #17 and broke the single-season receptions record for a rookie in 2021.'
+  },
+  {
+    number: 10, team: 'New York Giants', teamShort: 'NYG',
+    answer: 'Eli Manning', difficulty: 'easy',
+    teamColor: '#0B2265',
+    options: ['Eli Manning', 'Daniel Jones', 'Phil Simms', 'Dave Brown'],
+    context: 'Manning won two Super Bowl MVPs wearing #10 for the Giants.'
+  },
+  {
+    number: 55, team: 'San Francisco 49ers', teamShort: 'SF',
+    answer: 'Fred Warner', difficulty: 'medium',
+    teamColor: '#AA0000',
+    options: ['Nick Bosa', 'Fred Warner', 'Dre Greenlaw', 'Azeez Al-Shaair'],
+    context: 'Warner is widely considered the best off-ball linebacker in football.'
+  },
+  {
+    number: 97, team: 'Los Angeles Rams', teamShort: 'LAR',
+    answer: 'Aaron Donald', difficulty: 'easy',
+    teamColor: '#003594',
+    options: ['Aaron Donald', 'Jared Verse', 'Bobby Wagner', 'Leonard Floyd'],
+    context: 'Donald retired after winning Super Bowl LVI — widely called the greatest DT ever.'
+  },
+  // ─── MEDIUM (starters, Pro Bowlers) ───
+  {
+    number: 14, team: 'Dallas Cowboys', teamShort: 'DAL',
+    answer: 'Cooper Rush', difficulty: 'medium',
+    teamColor: '#003594',
+    options: ['Dak Prescott', 'Cooper Rush', 'Trey Lance', 'Will Grier'],
+    context: 'Rush went 5-0 as a starter in 2022 while Prescott was injured.'
+  },
+  {
+    number: 21, team: 'Los Angeles Chargers', teamShort: 'LAC',
+    answer: 'LaDainian Tomlinson', difficulty: 'medium',
+    teamColor: '#0073CF',
+    options: ['LaDainian Tomlinson', 'Melvin Gordon', 'Austin Ekeler', 'Philip Rivers'],
+    context: 'LT set the single-season TD record (28) in 2006 wearing #21 for the Chargers.'
+  },
+  {
+    number: 19, team: 'Tampa Bay Buccaneers', teamShort: 'TB',
+    answer: 'Breshad Perriman', difficulty: 'hard',
+    teamColor: '#D50A0A',
+    options: ['Tom Brady', 'Breshad Perriman', 'Chris Godwin', 'Mike Evans'],
+    context: 'Perriman wore #19 during his time with the Bucs as a depth receiver.'
+  },
+  {
+    number: 28, team: 'San Francisco 49ers', teamShort: 'SF',
+    answer: 'Ricky Watters', difficulty: 'hard',
+    teamColor: '#AA0000',
+    options: ['Carlos Hyde', 'Ricky Watters', 'Frank Gore', 'Matt Breida'],
+    context: 'Watters rushed for 1,013 yards in a Super Bowl XXIX championship season.'
+  },
+  {
+    number: 86, team: 'Dallas Cowboys', teamShort: 'DAL',
+    answer: 'Drew Pearson', difficulty: 'hard',
+    teamColor: '#003594',
+    options: ['Michael Irvin', 'Drew Pearson', 'Miles Austin', 'Terrell Owens'],
+    context: 'Pearson caught the original "Hail Mary" TD from Roger Staubach in 1975.'
+  },
+  {
+    number: 11, team: 'New York Giants', teamShort: 'NYG',
+    answer: 'Phil Simms', difficulty: 'medium',
+    teamColor: '#0B2265',
+    options: ['Phil Simms', 'Eli Manning', 'Kerry Collins', 'Dave Brown'],
+    context: 'Simms completed 22 of 25 passes in Super Bowl XXI — one of the greatest QB performances ever.'
+  },
+  {
+    number: 56, team: 'New York Giants', teamShort: 'NYG',
+    answer: 'Lawrence Taylor', difficulty: 'medium',
+    teamColor: '#0B2265',
+    options: ['Lawrence Taylor', 'Carl Banks', 'Pepper Johnson', 'Harry Carson'],
+    context: 'LT is considered the greatest defensive player in NFL history.'
+  },
+  {
+    number: 34, team: 'Chicago Bears', teamShort: 'CHI',
+    answer: 'Walter Payton', difficulty: 'medium',
+    teamColor: '#C83803',
+    options: ['Walter Payton', 'Gale Sayers', 'Neal Anderson', 'Thomas Jones'],
+    context: '"Sweetness" held the all-time rushing record until Emmitt Smith broke it in 2002.'
+  },
+  {
+    number: 32, team: 'Cleveland Browns', teamShort: 'CLE',
+    answer: 'Jim Brown', difficulty: 'medium',
+    teamColor: '#311D00',
+    options: ['Jim Brown', 'Nick Chubb', 'Leroy Kelly', 'Kevin Mack'],
+    context: 'Brown retired as the greatest runner in history — his #32 is retired by Cleveland.'
+  },
+  {
+    number: 84, team: 'Pittsburgh Steelers', teamShort: 'PIT',
+    answer: 'Antonio Brown', difficulty: 'medium',
+    teamColor: '#FFB612',
+    options: ['Antonio Brown', 'Hines Ward', 'Lynn Swann', 'John Stallworth'],
+    context: 'AB had seven consecutive 100+ catch seasons while wearing #84 in Pittsburgh.'
+  },
+  {
+    number: 80, team: 'San Francisco 49ers', teamShort: 'SF',
+    answer: 'Jerry Rice', difficulty: 'medium',
+    teamColor: '#AA0000',
+    options: ['Jerry Rice', 'John Taylor', 'Terrell Owens', 'Dwight Clark'],
+    context: 'Rice holds virtually every major receiving record in NFL history.'
+  },
+  {
+    number: 12, team: 'New England Patriots', teamShort: 'NE',
+    answer: 'Tom Brady', difficulty: 'easy',
+    teamColor: '#002244',
+    options: ['Tom Brady', 'Jim Plunkett', 'Mac Jones', 'Drew Bledsoe'],
+    context: 'Brady won 6 of his 7 Super Bowls wearing #12 in New England.'
+  },
+  {
+    number: 18, team: 'Indianapolis Colts', teamShort: 'IND',
+    answer: 'Peyton Manning', difficulty: 'easy',
+    teamColor: '#002C5F',
+    options: ['Peyton Manning', 'Andrew Luck', 'Jim Harbaugh', 'Jeff George'],
+    context: 'Manning\'s #18 is retired by the Colts — his Omaha snap count is still iconic.'
+  },
+  {
+    number: 3, team: 'Seattle Seahawks', teamShort: 'SEA',
+    answer: 'Russell Wilson', difficulty: 'medium',
+    teamColor: '#002244',
+    options: ['Geno Smith', 'Russell Wilson', 'Matt Hasselbeck', 'Rick Mirer'],
+    context: 'Wilson wore #3 in Seattle and led the Seahawks to two Super Bowls.'
+  },
+  {
+    number: 88, team: 'Oakland Raiders', teamShort: 'OAK',
+    answer: 'Tim Brown', difficulty: 'hard',
+    teamColor: '#000000',
+    options: ['Jerry Rice', 'Tim Brown', 'Randy Moss', 'James Jett'],
+    context: 'Brown wore #81 early in his career then #88 as a Raider legend — his number is retired.'
+  },
+  // ─── HARD (backups, role players, deep legends) ───
+  {
+    number: 9, team: 'Carolina Panthers', teamShort: 'CAR',
+    answer: 'Bryce Young', difficulty: 'easy',
+    teamColor: '#0085CA',
+    options: ['Sam Darnold', 'Bryce Young', 'Baker Mayfield', 'Teddy Bridgewater'],
+    context: 'Young wears #9 and was the #1 overall pick in 2023 — the smallest QB ever drafted first overall.'
+  },
+  {
+    number: 1, team: 'Philadelphia Eagles', teamShort: 'PHI',
+    answer: 'Jalen Hurts', difficulty: 'easy',
+    teamColor: '#004C54',
+    options: ['Jalen Hurts', 'Carson Wentz', 'Nick Foles', 'Donovan McNabb'],
+    context: 'Hurts wears #1 and became the first QB since Cam Newton to rush for 700+ yards in a Super Bowl run.'
+  },
+  {
+    number: 17, team: 'Buffalo Bills', teamShort: 'BUF',
+    answer: 'Josh Allen', difficulty: 'easy',
+    teamColor: '#00338D',
+    options: ['Josh Allen', 'Stefon Diggs', 'Taron Johnson', 'Gabe Davis'],
+    context: 'Allen wears #17 and has become one of the most dynamic QBs in NFL history for the Bills.'
+  },
+  {
+    number: 4, team: 'Minnesota Vikings', teamShort: 'MIN',
+    answer: 'Brett Favre', difficulty: 'hard',
+    teamColor: '#4F2683',
+    options: ['Kirk Cousins', 'Brett Favre', 'Daunte Culpepper', 'Teddy Bridgewater'],
+    context: 'Favre wore #4 with Minnesota in 2009 and nearly took the Vikings to the Super Bowl.'
+  },
+  {
+    number: 58, team: 'Green Bay Packers', teamShort: 'GB',
+    answer: 'Quay Walker', difficulty: 'hard',
+    teamColor: '#203731',
+    options: ['De\'Vondre Campbell', 'Quay Walker', 'Za\'Darius Smith', 'Clay Matthews'],
+    context: 'Walker was drafted in the first round in 2022 to anchor Green Bay\'s linebacker corps.'
+  },
+  {
+    number: 75, team: 'Dallas Cowboys', teamShort: 'DAL',
+    answer: 'Larry Allen', difficulty: 'hard',
+    teamColor: '#003594',
+    options: ['Zack Martin', 'Larry Allen', 'Mark Tuinei', 'Nate Newton'],
+    context: 'Allen is widely considered the strongest offensive lineman in NFL history — bench pressed 700 lbs.'
+  },
+  {
+    number: 77, team: 'Washington Commanders', teamShort: 'WAS',
+    answer: 'Jonathan Allen', difficulty: 'hard',
+    teamColor: '#5A1414',
+    options: ['Chase Young', 'Jonathan Allen', 'Montez Sweat', 'Ron McDole'],
+    context: 'Allen has been Washington\'s anchor at DT since being drafted 17th overall in 2017.'
+  },
+  {
+    number: 96, team: 'Los Angeles Rams', teamShort: 'LAR',
+    answer: 'Michael Brockers', difficulty: 'hard',
+    teamColor: '#003594',
+    options: ['Aaron Donald', 'Michael Brockers', 'Ndamukong Suh', 'Sebastian Joseph-Day'],
+    context: 'Brockers anchored the Rams\' D-line alongside Donald through the 2019 Super Bowl run.'
+  },
+  {
+    number: 92, team: 'New York Giants', teamShort: 'NYG',
+    answer: 'Michael Strahan', difficulty: 'medium',
+    teamColor: '#0B2265',
+    options: ['Michael Strahan', 'Justin Tuck', 'Osi Umenyiora', 'Leonard Marshall'],
+    context: 'Strahan set the single-season sack record (22.5) in 2001.'
+  },
+  {
+    number: 85, team: 'Cleveland Browns', teamShort: 'CLE',
+    answer: 'Braylon Edwards', difficulty: 'hard',
+    teamColor: '#311D00',
+    options: ['Joe Jurevicius', 'Braylon Edwards', 'Kellen Winslow Jr.', 'Josh Gordon'],
+    context: 'Edwards was the #3 overall pick in 2005 and had a 1,000-yard season in Cleveland.'
+  },
+  {
+    number: 78, team: 'Miami Dolphins', teamShort: 'MIA',
+    answer: 'Larry Little', difficulty: 'hard',
+    teamColor: '#008E97',
+    options: ['Richmond Webb', 'Larry Little', 'Bob Kuechenberg', 'Norm Evans'],
+    context: 'Little was a Hall of Fame guard on the undefeated 1972 Dolphins team.'
+  },
+  {
+    number: 35, team: 'Philadelphia Eagles', teamShort: 'PHI',
+    answer: 'Boston Scott', difficulty: 'hard',
+    teamColor: '#004C54',
+    options: ['Jordan Howard', 'Boston Scott', 'Miles Sanders', 'LeGarrette Blount'],
+    context: 'Scott became known as the "Giant Killer" for his multiple big games vs New York.'
+  },
+  {
+    number: 43, team: 'Pittsburgh Steelers', teamShort: 'PIT',
+    answer: 'Troy Polamalu', difficulty: 'medium',
+    teamColor: '#FFB612',
+    options: ['Troy Polamalu', 'Minkah Fitzpatrick', 'Carnell Lake', 'Rod Woodson'],
+    context: 'Polamalu\'s signature long hair and acrobatic style made him one of the most exciting players ever.'
+  },
+  {
+    number: 39, team: 'New England Patriots', teamShort: 'NE',
+    answer: 'Laurence Maroney', difficulty: 'hard',
+    teamColor: '#002244',
+    options: ['Corey Dillon', 'Laurence Maroney', 'Kevin Faulk', 'BenJarvus Green-Ellis'],
+    context: 'Maroney was drafted 21st overall in 2006 and rushed for 745 yards as a rookie.'
+  },
+  {
+    number: 7, team: 'New York Jets', teamShort: 'NYJ',
+    answer: 'Zach Wilson', difficulty: 'medium',
+    teamColor: '#125740',
+    options: ['Aaron Rodgers', 'Zach Wilson', 'Sam Darnold', 'Mark Sanchez'],
+    context: 'Wilson was the #2 overall pick in 2021 and wore #2 before switching to #7.'
+  },
+  {
+    number: 13, team: 'Miami Dolphins', teamShort: 'MIA',
+    answer: 'Dan Marino', difficulty: 'easy',
+    teamColor: '#008E97',
+    options: ['Dan Marino', 'Bob Griese', 'Ryan Tannehill', 'Jay Fiedler'],
+    context: 'Marino\'s #13 is retired in Miami — he held the all-time passing TD record for 20 years.'
+  },
+  {
+    number: 16, team: 'San Francisco 49ers', teamShort: 'SF',
+    answer: 'Joe Montana', difficulty: 'easy',
+    teamColor: '#AA0000',
+    options: ['Steve Young', 'Joe Montana', 'John Brodie', 'Colin Kaepernick'],
+    context: 'Montana was 4-0 in Super Bowls and never threw an interception in those games.'
+  },
+  {
+    number: 8, team: 'Atlanta Falcons', teamShort: 'ATL',
+    answer: 'Matt Ryan', difficulty: 'medium',
+    teamColor: '#A71930',
+    options: ['Michael Vick', 'Matt Ryan', 'Chris Redman', 'Bobby Hebert'],
+    context: 'Ryan\'s Falcons led 28-3 in Super Bowl LI before the most famous comeback in NFL history.'
+  },
+  {
+    number: 7, team: 'Atlanta Falcons', teamShort: 'ATL',
+    answer: 'Michael Vick', difficulty: 'medium',
+    teamColor: '#A71930',
+    options: ['Matt Ryan', 'Michael Vick', 'Bobby Hebert', 'Tajh Boyd'],
+    context: 'Vick became the first QB to rush for 1,000 yards in a season in 2006.'
+  },
+  {
+    number: 20, team: 'Pittsburgh Steelers', teamShort: 'PIT',
+    answer: 'Rocky Bleier', difficulty: 'hard',
+    teamColor: '#FFB612',
+    options: ['Jerome Bettis', 'Rocky Bleier', 'John Henry Johnson', 'Frank Pollard'],
+    context: 'Bleier overcame war injuries in Vietnam to win four Super Bowls with Pittsburgh.'
+  },
+  {
+    number: 97, team: 'San Francisco 49ers', teamShort: 'SF',
+    answer: 'Nick Bosa', difficulty: 'easy',
+    teamColor: '#AA0000',
+    options: ['Arik Armstead', 'Nick Bosa', 'DeForest Buckner', 'Soloman Thomas'],
+    context: 'Bosa wears #97 and won NFL Defensive Player of the Year in 2022 with 18.5 sacks.'
+  },
+  {
+    number: 23, team: 'Denver Broncos', teamShort: 'DEN',
+    answer: 'Champ Bailey', difficulty: 'medium',
+    teamColor: '#FB4F14',
+    options: ['Shannon Sharpe', 'Champ Bailey', 'Deltha O\'Neal', 'Darrien Gordon'],
+    context: 'Bailey\'s 101-yard interception return in the 2005 playoffs is one of the longest in postseason history.'
+  },
+  {
+    number: 22, team: 'Dallas Cowboys', teamShort: 'DAL',
+    answer: 'Emmitt Smith', difficulty: 'easy',
+    teamColor: '#003594',
+    options: ['Emmitt Smith', 'Tony Dorsett', 'Deion Sanders', 'Duane Thomas'],
+    context: 'Smith is the NFL\'s all-time leading rusher with 18,355 yards.'
+  },
+  {
+    number: 81, team: 'Chicago Bears', teamShort: 'CHI',
+    answer: 'Brian Urlacher', difficulty: 'hard',
+    teamColor: '#C83803',
+    options: ['Devin Hester', 'Brian Urlacher', 'Dick Butkus', 'Mike Singletary'],
+    context: 'Urlacher wore #54 — #81 is actually a trick question. This tests your attention.'
+  },
+  {
+    number: 54, team: 'Chicago Bears', teamShort: 'CHI',
+    answer: 'Brian Urlacher', difficulty: 'medium',
+    teamColor: '#C83803',
+    options: ['Brian Urlacher', 'Dick Butkus', 'Mike Singletary', 'Roquan Smith'],
+    context: 'Urlacher\'s #54 is retired by the Bears — he was a 8x Pro Bowler and Hall of Famer.'
+  },
+  {
+    number: 85, team: 'San Diego Chargers', teamShort: 'SD',
+    answer: 'Antonio Gates', difficulty: 'medium',
+    teamColor: '#0073CF',
+    options: ['Antonio Gates', 'Tony Gonzalez', 'John Mackey', 'Kellen Winslow Sr.'],
+    context: 'Gates went undrafted after playing college basketball — became one of the best TEs ever.'
+  }
+];
+
+// ─────────────────────────────────────────────
+//  GAME STATE
+// ─────────────────────────────────────────────
+const TOTAL_QUESTIONS = 15;
+const LS_KEY = 'jersey_quiz_hs';
+
+let gameQuestions = [];
+let currentIdx    = 0;
+let score         = 0;
+let wrong         = 0;
+let answered      = false;
+let reviewLog     = [];
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getHighScore() {
+  return parseInt(localStorage.getItem(LS_KEY) || '0', 10);
+}
+
+function refreshHighScoreBar() {
+  const hs = getHighScore();
+  const el = document.getElementById('hsDisplay');
+  if (hs > 0) {
+    el.innerHTML = `<strong>${hs} / ${TOTAL_QUESTIONS}</strong>`;
+  } else {
+    el.textContent = 'No score yet';
+  }
+}
+
+function getGrade(s) {
+  const pct = s / TOTAL_QUESTIONS;
+  if (pct >= 0.93) return { letter: 'A+', title: 'Scout Team Legend',   sub: 'You know every jersey in the locker room.' };
+  if (pct >= 0.87) return { letter: 'A',  title: 'NFL Insider',         sub: 'Deep knowledge — the front office wants your eye.' };
+  if (pct >= 0.80) return { letter: 'B+', title: 'Serious Fan',         sub: 'Solid NFL IQ. You study the depth chart.' };
+  if (pct >= 0.73) return { letter: 'B',  title: 'Knowledgeable Fan',   sub: 'Above average knowledge. Keep watching.' };
+  if (pct >= 0.60) return { letter: 'C',  title: 'Casual Fan',          sub: 'You know the stars — the backups escaped you.' };
+  if (pct >= 0.47) return { letter: 'D',  title: 'Band Wagon Rider',    sub: 'You know the big names and little else.' };
+  return               { letter: 'F',  title: 'Two-Second Game Pass',   sub: 'Every game started with 2 minutes left.' };
+}
+
+function hexToRGB(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+// ─────────────────────────────────────────────
+//  QUIZ INIT
+// ─────────────────────────────────────────────
+function initQuiz() {
+  // Remove consecutive duplicate teams where possible when picking 15
+  const pool = shuffle(QUESTION_BANK);
+  gameQuestions = pool.slice(0, TOTAL_QUESTIONS);
+
+  currentIdx = 0;
+  score      = 0;
+  wrong      = 0;
+  answered   = false;
+  reviewLog  = [];
+
+  document.getElementById('scoreCorrect').textContent = '0';
+  document.getElementById('scoreWrong').textContent   = '0';
+  document.getElementById('scoreRemain').textContent  = TOTAL_QUESTIONS;
+  document.getElementById('runningScore').style.display = '';
+  document.getElementById('progressWrap').style.display = '';
+  document.getElementById('questionArea').style.display = '';
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('resultsScreen').innerHTML = '';
+
+  renderQuestion();
+}
+
+// ─────────────────────────────────────────────
+//  RENDER QUESTION
+// ─────────────────────────────────────────────
+function renderQuestion() {
+  const q = gameQuestions[currentIdx];
+  answered = false;
+
+  // Progress
+  const prog = Math.round((currentIdx / TOTAL_QUESTIONS) * 100);
+  document.getElementById('progressFill').style.width = prog + '%';
+  document.getElementById('progLabel').textContent = `Question ${currentIdx + 1} of ${TOTAL_QUESTIONS}`;
+  document.getElementById('progPct').textContent   = prog + '%';
+
+  // Scores
+  document.getElementById('scoreCorrect').textContent = score;
+  document.getElementById('scoreWrong').textContent   = wrong;
+  document.getElementById('scoreRemain').textContent  = TOTAL_QUESTIONS - currentIdx;
+
+  // Team color
+  const card = document.getElementById('questionCard');
+  card.style.borderTopColor = q.teamColor;
+  card.style.setProperty('--team-color', q.teamColor);
+  document.documentElement.style.setProperty('--team-color-rgb', hexToRGB(q.teamColor));
+
+  // Difficulty badge
+  const badge = document.getElementById('diffBadge');
+  badge.className = 'difficulty-badge ' + q.difficulty;
+  badge.textContent = q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1);
+
+  // Number + team
+  document.getElementById('teamLabel').textContent  = q.team.toUpperCase();
+  document.getElementById('jerseyNum').textContent  = '#' + q.number;
+  document.getElementById('jerseyNum').style.color  = q.teamColor;
+  document.getElementById('jerseyNum').style.textShadow = `0 0 40px rgba(${hexToRGB(q.teamColor)},0.3)`;
+  document.getElementById('teamDisplay').textContent = q.team;
+
+  // Feedback reset
+  const fb = document.getElementById('feedbackBanner');
+  fb.className = 'feedback-banner';
+  document.getElementById('fbLabel').textContent   = '';
+  document.getElementById('fbMain').textContent    = '';
+  document.getElementById('fbContext').textContent = '';
+
+  // Options
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  const opts = shuffle(q.options);
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.setAttribute('aria-label', `Answer: ${opt}`);
+    btn.addEventListener('click', () => handleAnswer(opt, btn, q));
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('nextBtn').classList.remove('show');
+
+  // Animate card in
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = '';
+}
+
+// ─────────────────────────────────────────────
+//  HANDLE ANSWER
+// ─────────────────────────────────────────────
+function handleAnswer(selected, btn, q) {
+  if (answered) return;
+  answered = true;
+
+  const isCorrect = selected === q.answer;
+  const grid = document.getElementById('optionsGrid');
+  const buttons = grid.querySelectorAll('.option-btn');
+
+  // Disable all
+  buttons.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.answer) {
+      b.classList.add(isCorrect && b === btn ? 'correct' : 'reveal');
+    }
+  });
+
+  if (isCorrect) {
+    btn.classList.remove('reveal');
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+  }
+
+  // Update counters
+  if (isCorrect) {
+    wrong = TOTAL_QUESTIONS - currentIdx - 1 - (TOTAL_QUESTIONS - currentIdx - 1);
+    score; // already incremented
+    document.getElementById('scoreCorrect').textContent = score;
+  } else {
+    wrong++;
+    document.getElementById('scoreWrong').textContent = wrong;
+  }
+
+  // Feedback banner
+  const fb = document.getElementById('feedbackBanner');
+  const fbLabel = document.getElementById('fbLabel');
+  const fbMain  = document.getElementById('fbMain');
+  const fbCtx   = document.getElementById('fbContext');
+
+  if (isCorrect) {
+    fb.className = 'feedback-banner show correct-fb';
+    fbLabel.textContent = 'Correct!';
+    fbMain.textContent  = `${q.answer} wears #${q.number} for the ${q.team}.`;
+    fbCtx.textContent   = q.context || '';
+  } else {
+    fb.className = 'feedback-banner show wrong-fb';
+    fbLabel.textContent = 'Wrong!';
+    fbMain.textContent  = `It's ${q.answer} — #${q.number} for the ${q.team}.`;
+    fbCtx.textContent   = q.context || '';
+  }
+
+  // Log for review
+  reviewLog.push({
+    question: `#${q.number} — ${q.team}`,
+    correct:  isCorrect,
+    answer:   q.answer,
+    selected: selected
+  });
+
+  // Show next
+  const nextBtn = document.getElementById('nextBtn');
+  const isLast  = currentIdx === TOTAL_QUESTIONS - 1;
+  nextBtn.textContent = isLast ? 'See Results' : 'Next Question \u2192';
+  nextBtn.classList.add('show');
+
+  // GA event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', isCorrect ? 'quiz_correct' : 'quiz_wrong', {
+      event_category: 'jersey_quiz',
+      event_label: `#${q.number} ${q.team}`
+    });
+  }
+}
+
+// ─────────────────────────────────────────────
+//  ADVANCE
+// ─────────────────────────────────────────────
+function advanceQuestion() {
+  currentIdx++;
+  if (currentIdx >= TOTAL_QUESTIONS) {
+    showResults();
+  } else {
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// ─────────────────────────────────────────────
+//  RESULTS
+// ─────────────────────────────────────────────
+function showResults() {
+  const grade   = getGrade(score);
+  const prev    = getHighScore();
+  const isNew   = score > prev;
+  if (isNew) localStorage.setItem(LS_KEY, score);
+
+  refreshHighScoreBar();
+
+  const pct = Math.round((score / TOTAL_QUESTIONS) * 100);
+  const shareText = `I scored ${score}/${TOTAL_QUESTIONS} (${pct}%) on the NFL Jersey Number Quiz! Grade: ${grade.letter} — "${grade.title}" \u{1F3C8}\n\nTest your knowledge: https://ainflgm.com/jersey-quiz.html`;
+
+  const reviewItems = reviewLog.map(r => `
+    <div class="review-item ${r.correct ? 'ri-correct' : 'ri-wrong'}">
+      <div class="review-item-top">
+        <span class="ri-icon">${r.correct ? '\u2705' : '\u274C'}</span>
+        <span class="ri-q">${r.question}</span>
+      </div>
+      <div class="ri-answer">Answer: <strong>${r.answer}</strong></div>
+      ${!r.correct ? `<div class="ri-wrong-ans">You said: ${r.selected}</div>` : ''}
+    </div>
+  `).join('');
+
+  const resultsScreen = document.getElementById('resultsScreen');
+  resultsScreen.innerHTML = `
+    <div class="grade-card">
+      <div class="grade-circle ${grade.letter.replace('+','')}  ${grade.letter.replace('+','')}">${grade.letter}</div>
+      <div class="result-title">${grade.title}</div>
+      <div class="result-sub">${grade.sub}</div>
+      <div class="score-big">${score}/${TOTAL_QUESTIONS}</div>
+      <div class="score-label">${pct}% Correct</div>
+      <div class="stat-row">
+        <div class="stat-pill"><span>${score}</span> Correct</div>
+        <div class="stat-pill"><span>${wrong}</span> Wrong</div>
+        ${isNew ? '<div class="stat-pill" style="border-color:rgba(255,214,0,0.3);color:var(--yellow);">New Best!</div>' : ''}
+      </div>
+      <div class="share-box">
+        <div class="share-box-label">Share Your Score</div>
+        <div class="share-text" id="shareTextBox">${shareText}</div>
+      </div>
+      <div class="result-actions">
+        <button class="btn-share" onclick="shareScore()">Share on X</button>
+        <button class="btn-copy" id="copyBtn" onclick="copyScore()">Copy Score</button>
+      </div>
+      <button class="btn-retry" onclick="retryQuiz()">Play Again</button>
+      ${prev > 0 && !isNew ? `<div class="hs-row">Your best: ${prev}/${TOTAL_QUESTIONS}</div>` : ''}
+    </div>
+
+    <div class="review-section">
+      <div class="review-title">Question Review</div>
+      ${reviewItems}
+    </div>
+  `;
+
+  document.getElementById('questionArea').style.display  = 'none';
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('runningScore').style.display  = 'none';
+  document.getElementById('progressWrap').style.display  = 'none';
+  resultsScreen.classList.add('show');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'quiz_complete', {
+      event_category: 'jersey_quiz',
+      event_label: grade.letter,
+      value: score
+    });
+  }
+}
+
+// ─────────────────────────────────────────────
+//  SHARE / COPY
+// ─────────────────────────────────────────────
+function shareScore() {
+  const txt = document.getElementById('shareTextBox').textContent;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(txt), '_blank', 'noopener,noreferrer');
+}
+
+function copyScore() {
+  const txt = document.getElementById('shareTextBox').textContent;
+  const btn = document.getElementById('copyBtn');
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Score'; }, 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none;';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Score'; }, 2000);
+  });
+}
+
+function retryQuiz() {
+  initQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────
+//  BOOT
+// ─────────────────────────────────────────────
+refreshHighScoreBar();
+initQuiz();
+</script>
+</body>
+</html>

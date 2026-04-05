@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-title" content="9E Cost Model">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0a0a0a">
+<title>9 Enterprises — Per-User Cost Model</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ccc; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 800px; margin: 0 auto; padding: 48px 24px; }
+  .header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #1a1a1a; }
+  .header .badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; padding: 4px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+  .header h1 { font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .header .subtitle { font-size: 16px; color: #555; font-weight: 400; margin-top: 4px; }
+  .header .meta { font-size: 13px; color: #555; margin-top: 12px; }
+  .intro { font-size: 15px; color: #aaa; margin-bottom: 40px; }
+  .intro strong { color: #fff; }
+
+  /* Scale cards */
+  .scale-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 28px; margin: 24px 0; }
+  .scale-card.current { border-color: rgba(99,102,241,0.35); background: linear-gradient(135deg, #111, #12121f); }
+  .scale-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .scale-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-bottom: 4px; }
+  .scale-title { font-size: 22px; font-weight: 800; color: #fff; }
+  .scale-est { text-align: right; }
+  .scale-est .est-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .scale-est .est-value { font-size: 26px; font-weight: 800; color: #818cf8; }
+  .scale-est .est-unit { font-size: 12px; color: #555; }
+
+  .cost-table { width: 100%; border-collapse: collapse; margin: 4px 0; }
+  .cost-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 1px solid #222; }
+  .cost-table td { padding: 9px 10px; font-size: 13px; color: #aaa; border-bottom: 1px solid #151515; }
+  .cost-table td.amt { text-align: right; color: #ddd; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table tr.total td { border-top: 1px solid #2a2a2a; color: #fff; font-weight: 700; padding-top: 12px; }
+  .cost-table tr.total td.amt { color: #818cf8; font-size: 15px; }
+
+  .scale-note { font-size: 13px; color: #666; margin-top: 16px; font-style: italic; }
+  .scale-note strong { color: #aaa; font-style: normal; }
+
+  /* Section headers */
+  .section-header { margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 1px solid #1a1a1a; }
+  .section-header h2 { font-size: 18px; font-weight: 700; color: #fff; }
+  .section-header p { font-size: 13px; color: #555; margin-top: 4px; }
+
+  /* Product costs */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .product-card { background: #111; border: 1px solid #1e1e1e; border-radius: 10px; padding: 20px; }
+  .product-card .product-name { font-size: 13px; font-weight: 700; color: #818cf8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .product-card .product-price { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .product-card .product-unit { font-size: 11px; color: #555; }
+  .product-card .product-detail { font-size: 12px; color: #666; margin-top: 10px; line-height: 1.5; }
+
+  /* Competitor table */
+  .comp-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  .comp-table th { text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 1px solid #222; }
+  .comp-table td { padding: 11px 12px; font-size: 13px; color: #aaa; border-bottom: 1px solid #151515; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table td.price { font-weight: 700; color: #ddd; white-space: nowrap; }
+  .comp-table td.price.highlight { color: #22c55e; }
+  .comp-table td.verdict { font-size: 12px; }
+  .comp-table tr.ours { background: rgba(99,102,241,0.06); }
+  .comp-table tr.ours td { color: #ccc; }
+  .comp-table tr.ours td.price { color: #818cf8; }
+
+  /* Summary stats */
+  .scorecard { background: linear-gradient(135deg, #111, #1a1a2e); border: 1px solid #222; border-radius: 12px; padding: 28px; margin: 40px 0 32px; }
+  .scorecard h2 { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 20px; text-align: center; }
+  .summary-stats { display: flex; justify-content: center; gap: 40px; margin: 0 0 8px; text-align: center; }
+  .stat-item .num { font-size: 32px; font-weight: 800; }
+  .stat-item .label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .stat-purple .num { color: #818cf8; }
+  .stat-green .num { color: #22c55e; }
+  .stat-yellow .num { color: #eab308; }
+
+  .closing { text-align: center; padding: 32px 0; color: #555; font-size: 14px; border-top: 1px solid #1a1a1a; margin-top: 16px; }
+  .closing strong { color: #aaa; }
+
+  @media (max-width: 640px) {
+    .container { padding: 32px 16px; }
+    .product-grid { grid-template-columns: 1fr; }
+    .scale-header { flex-direction: column; }
+    .scale-est { text-align: left; }
+    .summary-stats { gap: 20px; }
+    .stat-item .num { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="badge">Unit Economics</div>
+  <h1>Per-User Cost Model</h1>
+  <div class="subtitle">Real unit economics at every scale</div>
+  <p class="meta">9 Enterprises &bull; March 26, 2026</p>
+</div>
+
+<p class="intro">
+  This model tracks actual API consumption, infrastructure, and voice costs from production usage and projects them forward at 10x, 100x, and 1,000x user scale.
+  <strong>Margins improve dramatically with volume</strong> — model tiering, caching, and shared infrastructure compress per-user cost from ~$115/month at 1 user down to $8-20/month at 1,000.
+</p>
+
+<!-- Section 1: Single User -->
+<div class="section-header">
+  <h2>Scale Breakdown</h2>
+  <p>Cost per user at each scale tier</p>
+</div>
+
+<div class="scale-card current">
+  <div class="scale-header">
+    <div>
+      <div class="scale-label">Tier 1 — Current</div>
+      <div class="scale-title">Single User (Owner)</div>
+    </div>
+    <div class="scale-est">
+      <div class="est-label">Estimated Total</div>
+      <div class="est-value">$80–150</div>
+      <div class="est-unit">/ month / power user</div>
+    </div>
+  </div>
+  <table class="cost-table">
+    <thead>
+      <tr><th>Line Item</th><th>Basis</th><th class="amt">Cost / Month</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Claude API — Opus (terminal)</td><td>~500K tokens/day</td><td class="amt">$50–80</td></tr>
+      <tr><td>Claude API — Haiku (OC/hub)</td><td>~50K tokens/day</td><td class="amt">$5–10</td></tr>
+      <tr><td>Claude API — Agents &amp; sprints</td><td>Variable</td><td class="amt">$15–30</td></tr>
+      <tr><td>Twilio — Voice</td><td>Calls + number</td><td class="amt">$5–15</td></tr>
+      <tr><td>ElevenLabs — TTS</td><td>Usage-based</td><td class="amt">$5–10</td></tr>
+      <tr><td>Hosting</td><td>Mac (current) or VPS</td><td class="amt">$0–4</td></tr>
+      <tr class="total"><td colspan="2">Total</td><td class="amt">$80–150</td></tr>
+    </tbody>
+  </table>
+  <p class="scale-note">Full-power, no optimization. Founder-mode usage with Opus for all heavy lifting.</p>
+</div>
+
+<div class="scale-card">
+  <div class="scale-header">
+    <div>
+      <div class="scale-label">Tier 2</div>
+      <div class="scale-title">10 Users</div>
+    </div>
+    <div class="scale-est">
+      <div class="est-label">Estimated Total</div>
+      <div class="est-value">$30–60</div>
+      <div class="est-unit">/ user / month</div>
+    </div>
+  </div>
+  <table class="cost-table">
+    <thead>
+      <tr><th>Driver</th><th>Mechanism</th><th class="amt">Impact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Model tiering</td><td>Haiku for 80% of queries</td><td class="amt">-60% API cost</td></tr>
+      <tr><td>Shared infrastructure</td><td>VPS cost split 10 ways</td><td class="amt">-$0.40/user</td></tr>
+      <tr><td>Voice pooling</td><td>Shared Twilio number</td><td class="amt">-$1–3/user</td></tr>
+    </tbody>
+  </table>
+  <p class="scale-note"><strong>Key lever:</strong> Routing 80% of queries to Haiku at $0.0008/1K tokens vs. Opus at $0.015/1K — an 18x cost reduction per token on routine tasks.</p>
+</div>
+
+<div class="scale-card">
+  <div class="scale-header">
+    <div>
+      <div class="scale-label">Tier 3</div>
+      <div class="scale-title">100 Users</div>
+    </div>
+    <div class="scale-est">
+      <div class="est-label">Estimated Total</div>
+      <div class="est-value">$15–35</div>
+      <div class="est-unit">/ user / month</div>
+    </div>
+  </div>
+  <table class="cost-table">
+    <thead>
+      <tr><th>Driver</th><th>Mechanism</th><th class="amt">Impact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Multi-tenant infra</td><td>Single cluster, per-user isolation</td><td class="amt">-80% infra/user</td></tr>
+      <tr><td>API caching</td><td>Semantic cache for repeated queries</td><td class="amt">-25–40% tokens</td></tr>
+      <tr><td>Anthropic volume</td><td>Usage-based discounts begin</td><td class="amt">-10–20% API</td></tr>
+    </tbody>
+  </table>
+  <p class="scale-note"><strong>Key lever:</strong> Semantic caching eliminates redundant API calls. Common queries (guideline lookups, standard Q&amp;A) hit cache instead of the model.</p>
+</div>
+
+<div class="scale-card">
+  <div class="scale-header">
+    <div>
+      <div class="scale-label">Tier 4</div>
+      <div class="scale-title">1,000 Users</div>
+    </div>
+    <div class="scale-est">
+      <div class="est-label">Estimated Total</div>
+      <div class="est-value">$8–20</div>
+      <div class="est-unit">/ user / month</div>
+    </div>
+  </div>
+  <table class="cost-table">
+    <thead>
+      <tr><th>Driver</th><th>Mechanism</th><th class="amt">Impact</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Volume API pricing</td><td>Negotiated enterprise rate</td><td class="amt">-20–30% API</td></tr>
+      <tr><td>Aggressive caching</td><td>Cache hit rate 50–70% at scale</td><td class="amt">-50% tokens</td></tr>
+      <tr><td>Infra amortization</td><td>Fixed costs divided by 1K</td><td class="amt">&lt;$0.10/user</td></tr>
+    </tbody>
+  </table>
+  <p class="scale-note"><strong>Key lever:</strong> At 1,000 users, Anthropic enterprise pricing + 60% cache hit rate brings effective per-token cost below $0.005/1K on average across model tiers.</p>
+</div>
+
+<!-- Section 2: Product-Specific -->
+<div class="section-header">
+  <h2>Product-Specific Cost Breakdown</h2>
+  <p>Each product has a distinct cost profile based on query volume and model usage</p>
+</div>
+
+<div class="product-grid">
+  <div class="product-card">
+    <div class="product-name">AI Underwriter</div>
+    <div class="product-price">$0.01–0.03</div>
+    <div class="product-unit">per query</div>
+    <div class="product-detail">
+      $83–222/lender/month at full utilization (8 hrs/day, 22 days/mo). RAG + Haiku primary, Sonnet for edge cases.
+    </div>
+  </div>
+  <div class="product-card">
+    <div class="product-name">Jules</div>
+    <div class="product-price">$3–5</div>
+    <div class="product-unit">per user / month</div>
+    <div class="product-detail">
+      Haiku for all responses + Twilio SMS/voice. Low token count per interaction. Scales nearly flat.
+    </div>
+  </div>
+  <div class="product-card">
+    <div class="product-name">AiNFL GM</div>
+    <div class="product-price">$0</div>
+    <div class="product-unit">per user</div>
+    <div class="product-detail">
+      Static site. Ad-supported. No per-user API cost. Server cost shared across all traffic.
+    </div>
+  </div>
+</div>
+
+<!-- Section 3: Competitor Comparison -->
+<div class="section-header">
+  <h2>Competitor Pricing Comparison</h2>
+  <p>Where 9 Enterprise sits in the market</p>
+</div>
+
+<table class="comp-table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Category</th>
+      <th>Price / Month</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Devin</strong></td>
+      <td>AI software engineer</td>
+      <td class="price">$500</td>
+      <td class="verdict">500 ACUs included. Usage-based above that.</td>
+    </tr>
+    <tr>
+      <td><strong>ChatGPT Pro</strong></td>
+      <td>AI assistant</td>
+      <td class="price">$200</td>
+      <td class="verdict">Unlimited o1 + advanced features. Consumer-grade.</td>
+    </tr>
+    <tr>
+      <td><strong>Cursor</strong></td>
+      <td>AI code editor</td>
+      <td class="price">$20–40</td>
+      <td class="verdict">Dev tool only. No workflow automation.</td>
+    </tr>
+    <tr>
+      <td><strong>GitHub Copilot</strong></td>
+      <td>AI code completion</td>
+      <td class="price">$19</td>
+      <td class="verdict">Single-purpose. IDE-only context.</td>
+    </tr>
+    <tr class="ours">
+      <td><strong>9 Enterprise (at scale)</strong></td>
+      <td>AI operating system</td>
+      <td class="price">$15–60</td>
+      <td class="verdict">Full workflow automation, voice, comms, domain AI. Multi-product.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Scorecard summary -->
+<div class="scorecard">
+  <h2>Unit Economics at a Glance</h2>
+  <div class="summary-stats">
+    <div class="stat-item stat-purple">
+      <div class="num">7x</div>
+      <div class="label">Cost Reduction<br>1 to 1,000 users</div>
+    </div>
+    <div class="stat-item stat-green">
+      <div class="num">$3–5</div>
+      <div class="label">Jules floor<br>per user/mo</div>
+    </div>
+    <div class="stat-item stat-yellow">
+      <div class="num">$0.02</div>
+      <div class="label">AI Underwriter<br>per query avg</div>
+    </div>
+  </div>
+</div>
+
+<div class="closing">
+  <p>Model tiering, semantic caching, and shared infrastructure are the three levers that make this business viable at scale.</p>
+  <p style="margin-top: 24px;"><strong>Prepared by 9 Enterprises</strong> &bull; March 26, 2026</p>
+</div>
+
+</div>
+</body>
+</html>

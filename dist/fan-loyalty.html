@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Fan Loyalty">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Fan Loyalty Score Quiz | AiNFL GM</title>
+<meta name="description" content="How loyal of an NFL fan are you? Take the 12-question Fan Loyalty Quiz and find out if you're Casual, Diehard, or Legendary. Pick your team and prove it.">
+<meta property="og:title" content="NFL Fan Loyalty Score Quiz | AiNFL GM">
+<meta property="og:description" content="12 questions. One score. Find out how loyal of an NFL fan you really are.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/fan-loyalty.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Fan Loyalty Score Quiz | AiNFL GM">
+<meta name="twitter:description" content="12 questions. One score. How loyal of an NFL fan are you?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+  --team-primary:   #00F0FF;
+  --team-secondary: #1A2540;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(0,240,255,0.10); }
+}
+@keyframes scoreCount {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Team Selector ── */
+.team-select-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.section-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 14px;
+}
+.team-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 8px;
+}
+.team-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 6px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+.team-btn:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+.team-btn.selected {
+  border-color: var(--team-primary);
+  background: rgba(0,0,0,0.3);
+  color: var(--team-primary);
+  box-shadow: 0 0 0 1px var(--team-primary), 0 4px 16px rgba(0,0,0,0.3);
+}
+.team-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--team-primary-btn, #334155);
+  border: 2px solid var(--team-secondary-btn, transparent);
+  flex-shrink: 0;
+}
+
+/* ── Quiz Container ── */
+.quiz-container {
+  display: none;
+}
+.quiz-container.active {
+  display: block;
+  animation: fadeUp 0.4s ease both;
+}
+
+/* ── Score Bar ── */
+.score-bar-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 57px;
+  z-index: 90;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.score-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.score-bar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.score-bar-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--team-primary);
+  transition: color 0.3s ease;
+}
+.score-track {
+  height: 8px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--team-primary), var(--team-primary));
+  border-radius: 100px;
+  width: 0%;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.score-tier-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--team-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  transition: color 0.3s ease;
+}
+.progress-counter {
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: right;
+  margin-top: 6px;
+}
+
+/* ── Question Cards ── */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 22px 18px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s ease;
+  animation: slideIn 0.3s ease both;
+}
+.question-card.answered {
+  border-color: rgba(var(--team-primary-rgb, 0,240,255), 0.25);
+}
+.question-number {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--team-primary);
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+.question-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--text);
+  background: var(--bg-3);
+}
+.option-btn.selected {
+  border-color: var(--team-primary);
+  background: rgba(0,0,0,0.25);
+  color: var(--text);
+}
+.option-btn:disabled { cursor: default; }
+.option-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.option-btn.selected .option-dot {
+  background: var(--team-primary);
+  border-color: var(--team-primary);
+}
+.option-btn.selected .option-dot::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+.option-pts {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  color: var(--text-mute);
+  flex-shrink: 0;
+}
+.option-btn.selected .option-pts {
+  color: var(--team-primary);
+}
+
+/* ── Submit Button ── */
+.submit-wrap {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 40px;
+  background: var(--team-primary);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.btn-submit.ready {
+  opacity: 1;
+  pointer-events: all;
+  animation: pulse-glow 2s ease infinite;
+}
+.btn-submit:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.btn-submit:active { transform: translateY(0); }
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 12px;
+}
+.btn-reset:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+/* ── Result Card ── */
+.result-card {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.result-card.show {
+  display: block;
+  animation: scoreCount 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.result-score-ring {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 4px solid var(--team-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 0 32px rgba(0,0,0,0.4), inset 0 0 0 8px rgba(0,0,0,0.3), 0 0 40px color-mix(in srgb, var(--team-primary) 25%, transparent);
+}
+.result-score-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--team-primary);
+  line-height: 1;
+}
+.result-score-denom {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+}
+.result-tier {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--team-primary);
+  margin-bottom: 8px;
+}
+.result-team-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+}
+.result-desc {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto 24px;
+  line-height: 1.65;
+}
+.result-personal-best {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 20px;
+}
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 24px;
+  background: var(--team-primary);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-share:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-retake {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-retake:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+/* ── Leaderboard ── */
+.leaderboard-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  margin-bottom: 24px;
+}
+.leaderboard-section h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.leaderboard-subtext {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 18px;
+}
+.leaderboard-empty {
+  font-size: 14px;
+  color: var(--text-mute);
+  text-align: center;
+  padding: 20px 0;
+}
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mute);
+  width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.lb-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.lb-team {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.lb-tier {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 1px;
+  letter-spacing: 0.04em;
+}
+.lb-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .hero { padding: 32px 16px 24px; }
+  .team-select-section, .question-card, .leaderboard-section { padding: 18px 16px; }
+  .result-card { padding: 28px 18px; }
+  .team-select-grid { grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); }
+  .score-bar-wrap { top: 53px; }
+  .question-text { font-size: 15px; }
+  .option-btn { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    Viral Fan Quiz
+  </div>
+  <h1>NFL Fan<br><span>Loyalty Score</span> Quiz</h1>
+  <p>12 questions. One score. Find out if you're a Casual, a Diehard, or Legendary. Pick your team and prove it.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Team Selector -->
+  <div class="team-select-section" id="team-select-section">
+    <div class="section-label">Step 1 — Pick Your Team</div>
+    <div class="team-select-grid" id="team-grid"></div>
+  </div>
+
+  <!-- Quiz -->
+  <div class="quiz-container" id="quiz-container">
+
+    <!-- Score Bar -->
+    <div class="score-bar-wrap">
+      <div class="score-bar-header">
+        <div class="score-bar-label">Your Loyalty Score</div>
+        <div class="score-bar-value" id="live-score">0 <span style="font-size:14px;color:var(--text-mute)">/100</span></div>
+      </div>
+      <div class="score-track">
+        <div class="score-fill" id="score-fill"></div>
+      </div>
+      <div class="score-tier-label" id="live-tier">Answer questions to build your score</div>
+      <div class="progress-counter" id="progress-counter">0 / 12 answered</div>
+    </div>
+
+    <!-- Questions injected here -->
+    <div id="questions-wrap"></div>
+
+    <div class="submit-wrap">
+      <button class="btn-submit" id="btn-submit" onclick="submitQuiz()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        See My Score
+      </button>
+      <br>
+      <button class="btn-reset" onclick="resetQuiz()">Change Team</button>
+    </div>
+
+  </div>
+
+  <!-- Result Card -->
+  <div class="result-card" id="result-card">
+    <div class="result-score-ring" id="result-ring">
+      <div class="result-score-number" id="result-score">0</div>
+      <div class="result-score-denom">/100</div>
+    </div>
+    <div class="result-tier" id="result-tier"></div>
+    <div class="result-team-label" id="result-team-label"></div>
+    <div id="personal-best-badge" style="display:none" class="result-personal-best">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M6 1l1.3 2.7 3 .4-2.2 2.1.5 3L6 8l-2.6 1.2.5-3L1.7 4.1l3-.4z" fill="currentColor"/>
+      </svg>
+      New Personal Best
+    </div>
+    <p class="result-desc" id="result-desc"></p>
+    <div class="result-actions">
+      <button class="btn-share" id="btn-share" onclick="shareResult()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <path d="M11 10c-.7 0-1.3.3-1.7.7L5.8 8.3c.1-.2.2-.5.2-.8s-.1-.6-.2-.8l3.5-2.4c.4.4 1 .7 1.7.7 1.2 0 2.2-1 2.2-2.2S12.2.6 11 .6 8.8 1.6 8.8 2.8c0 .3.1.6.2.8L5.5 6c-.4-.4-1-.7-1.7-.7C2.6 5.3 1.6 6.3 1.6 7.5s1 2.2 2.2 2.2c.7 0 1.3-.3 1.7-.7l3.5 2.4c-.1.2-.2.5-.2.8 0 1.2 1 2.2 2.2 2.2s2.2-1 2.2-2.2S12.2 10 11 10z" fill="currentColor"/>
+        </svg>
+        Share Result
+      </button>
+      <button class="btn-retake" onclick="retakeQuiz()">
+        Retake Quiz
+      </button>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="leaderboard-section" id="leaderboard-section">
+    <h2>Team Leaderboard</h2>
+    <div class="leaderboard-subtext">Highest score recorded per team (stored on your device)</div>
+    <div id="leaderboard-body">
+      <div class="leaderboard-empty">No scores recorded yet. Be the first!</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>NFL Fan Loyalty Score Quiz &mdash; How true is your fandom?</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-space.html">Cap Rankings</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/qb-rating-calc.html">QB Rating</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ── NFL Teams ────────────────────────────────────────────────────────────────
+const TEAMS = [
+  { id:'ari', name:'Cardinals',  abbr:'ARI', p:'#97233F', s:'#FFB612' },
+  { id:'atl', name:'Falcons',    abbr:'ATL', p:'#A71930', s:'#000000' },
+  { id:'bal', name:'Ravens',     abbr:'BAL', p:'#241773', s:'#9E7C0C' },
+  { id:'buf', name:'Bills',      abbr:'BUF', p:'#00338D', s:'#C60C30' },
+  { id:'car', name:'Panthers',   abbr:'CAR', p:'#0085CA', s:'#101820' },
+  { id:'chi', name:'Bears',      abbr:'CHI', p:'#0B162A', s:'#C83803' },
+  { id:'cin', name:'Bengals',    abbr:'CIN', p:'#FB4F14', s:'#000000' },
+  { id:'cle', name:'Browns',     abbr:'CLE', p:'#FF3C00', s:'#311D00' },
+  { id:'dal', name:'Cowboys',    abbr:'DAL', p:'#003594', s:'#869397' },
+  { id:'den', name:'Broncos',    abbr:'DEN', p:'#FB4F14', s:'#002244' },
+  { id:'det', name:'Lions',      abbr:'DET', p:'#0076B6', s:'#B0B7BC' },
+  { id:'gb',  name:'Packers',    abbr:'GB',  p:'#203731', s:'#FFB612' },
+  { id:'hou', name:'Texans',     abbr:'HOU', p:'#03202F', s:'#A71930' },
+  { id:'ind', name:'Colts',      abbr:'IND', p:'#002C5F', s:'#A2AAAD' },
+  { id:'jax', name:'Jaguars',    abbr:'JAX', p:'#006778', s:'#D7A22A' },
+  { id:'kc',  name:'Chiefs',     abbr:'KC',  p:'#E31837', s:'#FFB81C' },
+  { id:'lv',  name:'Raiders',    abbr:'LV',  p:'#000000', s:'#A5ACAF' },
+  { id:'lac', name:'Chargers',   abbr:'LAC', p:'#0080C6', s:'#FFC20E' },
+  { id:'lar', name:'Rams',       abbr:'LAR', p:'#003594', s:'#FFA300' },
+  { id:'mia', name:'Dolphins',   abbr:'MIA', p:'#008E97', s:'#FC4C02' },
+  { id:'min', name:'Vikings',    abbr:'MIN', p:'#4F2683', s:'#FFC62F' },
+  { id:'ne',  name:'Patriots',   abbr:'NE',  p:'#002244', s:'#C60C30' },
+  { id:'no',  name:'Saints',     abbr:'NO',  p:'#101820', s:'#D3BC8D' },
+  { id:'nyg', name:'Giants',     abbr:'NYG', p:'#0B2265', s:'#A71930' },
+  { id:'nyj', name:'Jets',       abbr:'NYJ', p:'#125740', s:'#FFFFFF' },
+  { id:'phi', name:'Eagles',     abbr:'PHI', p:'#004C54', s:'#A5ACAF' },
+  { id:'pit', name:'Steelers',   abbr:'PIT', p:'#101820', s:'#FFB612' },
+  { id:'sf',  name:'49ers',      abbr:'SF',  p:'#AA0000', s:'#B3995D' },
+  { id:'sea', name:'Seahawks',   abbr:'SEA', p:'#002244', s:'#69BE28' },
+  { id:'tb',  name:'Buccaneers', abbr:'TB',  p:'#D50A0A', s:'#FF7900' },
+  { id:'ten', name:'Titans',     abbr:'TEN', p:'#0C2340', s:'#4B92DB' },
+  { id:'wsh', name:'Commanders', abbr:'WSH', p:'#5A1414', s:'#FFB612' },
+];
+
+// ── Questions ────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    id: 'q1',
+    text: 'How long have you been a fan of your team?',
+    options: [
+      { label: 'Since birth — no choice in the matter', pts: 10 },
+      { label: '10+ years, since before they were relevant', pts: 8 },
+      { label: '5–10 years, grew into it', pts: 5 },
+      { label: 'Hopped on recently, not gonna lie', pts: 2 },
+    ]
+  },
+  {
+    id: 'q2',
+    text: 'How many jerseys do you own?',
+    options: [
+      { label: '5 or more — closet is basically a merch store', pts: 10 },
+      { label: '3–4 (current starters + a legend)', pts: 8 },
+      { label: '1–2 (at least one)', pts: 5 },
+      { label: 'None, but I rep the colors', pts: 2 },
+    ]
+  },
+  {
+    id: 'q3',
+    text: 'Have you been to a game in person?',
+    options: [
+      { label: 'Yes, multiple times — season ticket holder or close', pts: 10 },
+      { label: 'Yes, been to a few home games', pts: 8 },
+      { label: 'Yes, once or twice', pts: 5 },
+      { label: 'No, but it\'s on the bucket list', pts: 2 },
+    ]
+  },
+  {
+    id: 'q4',
+    text: 'How many regular season games do you watch per year?',
+    options: [
+      { label: 'Every single one — I rearrange my life for the schedule', pts: 10 },
+      { label: 'Most of them, maybe miss 1–2', pts: 8 },
+      { label: 'Half the season or so', pts: 5 },
+      { label: 'When I happen to catch them', pts: 2 },
+    ]
+  },
+  {
+    id: 'q5',
+    text: 'Can you name your team\'s current starting lineup?',
+    options: [
+      { label: 'Yes — offense, defense, and special teams', pts: 10 },
+      { label: 'Most of them, definitely the skill positions', pts: 8 },
+      { label: 'The QB, a couple of stars', pts: 5 },
+      { label: 'I know the QB\'s name, mostly', pts: 2 },
+    ]
+  },
+  {
+    id: 'q6',
+    text: 'Do you follow your team\'s offseason moves (draft, free agency)?',
+    options: [
+      { label: 'Obsessively — I have mock draft takes before February ends', pts: 10 },
+      { label: 'Yes, I follow the major moves and the draft', pts: 8 },
+      { label: 'I catch the highlights and big signings', pts: 5 },
+      { label: 'Not really — I tune in when the season starts', pts: 2 },
+    ]
+  },
+  {
+    id: 'q7',
+    text: 'Have you ever cried, yelled, or lost sleep over a loss?',
+    options: [
+      { label: 'Yes — all three, sometimes in the same night', pts: 10 },
+      { label: 'Yeah, after a playoff loss or a brutal late collapse', pts: 8 },
+      { label: 'Got really upset once or twice', pts: 5 },
+      { label: 'Disappointed sure, but I move on fast', pts: 2 },
+    ]
+  },
+  {
+    id: 'q8',
+    text: 'How much team merch do you have in your home?',
+    options: [
+      { label: 'Entire room — blankets, flags, signed gear, the works', pts: 10 },
+      { label: 'A dedicated game-day setup with gear everywhere', pts: 8 },
+      { label: 'Some — a few items scattered around', pts: 5 },
+      { label: 'A hat somewhere, maybe a magnet on the fridge', pts: 2 },
+    ]
+  },
+  {
+    id: 'q9',
+    text: 'Do you actively avoid wearing or supporting rival colors?',
+    options: [
+      { label: 'I have thrown away food that was the rival\'s color', pts: 10 },
+      { label: 'Yes — rival gear in my presence is disrespectful', pts: 8 },
+      { label: 'Mostly, I don\'t like it but I can tolerate it', pts: 5 },
+      { label: 'I don\'t really care that much about rivals', pts: 2 },
+    ]
+  },
+  {
+    id: 'q10',
+    text: 'Have you ever converted someone else into a fan of your team?',
+    options: [
+      { label: 'Yes — multiple people, including my kids or partner', pts: 10 },
+      { label: 'Yes, at least one confirmed convert', pts: 8 },
+      { label: 'I\'ve tried, results were mixed', pts: 5 },
+      { label: 'Never attempted — fandom is personal', pts: 2 },
+    ]
+  },
+  {
+    id: 'q11',
+    text: 'Do you listen to team podcasts, watch film breakdowns, or read beat reporters?',
+    options: [
+      { label: 'Yes — multiple sources, daily content', pts: 10 },
+      { label: 'Yes, a podcast or two on the regular', pts: 8 },
+      { label: 'Sometimes, during the season', pts: 5 },
+      { label: 'Not really — I just watch the games', pts: 2 },
+    ]
+  },
+  {
+    id: 'q12',
+    text: 'Do you play fantasy football with your team\'s players?',
+    options: [
+      { label: 'I draft my own guys even when it\'s a bad pick', pts: 10 },
+      { label: 'Yes, and I feel guilty when I start a rival player', pts: 8 },
+      { label: 'I play fantasy but keep it separate from my fandom', pts: 5 },
+      { label: 'Don\'t do fantasy — too much heartbreak', pts: 2 },
+    ]
+  },
+];
+
+// ── Tiers ────────────────────────────────────────────────────────────────────
+const TIERS = [
+  {
+    min: 0, max: 30, name: 'Casual Fan',
+    desc: 'You know the team exists and you\'ll throw on the game if it\'s on. No shame — life is busy. But deep down, you know you could be going harder for your squad.'
+  },
+  {
+    min: 31, max: 50, name: 'Dedicated Fan',
+    desc: 'You\'re in it. You watch the games, you know the roster, and you feel the wins and losses. You\'re the kind of fan every team needs more of.'
+  },
+  {
+    min: 51, max: 70, name: 'Diehard',
+    desc: 'Sundays are sacred. The schedule is on your calendar before preseason starts. You\'ve bled for this team and you\'re proud of it. The team is lucky to have you.'
+  },
+  {
+    min: 71, max: 88, name: 'Ride or Die',
+    desc: 'Through the bad seasons, the crushing losses, the cap disasters — you never wavered. Your loyalty is not conditional. It is absolute. That is rare and it is respected.'
+  },
+  {
+    min: 89, max: 100, name: 'Legendary',
+    desc: 'You are not just a fan. You are part of the franchise\'s identity. The coaches don\'t know you, but the energy in that stadium? That\'s you. That\'s people like you. Legendary.'
+  },
+];
+
+// ── State ────────────────────────────────────────────────────────────────────
+let selectedTeam = null;
+let answers = {};
+
+function getTier(score) {
+  return TIERS.find(t => score >= t.min && score <= t.max) || TIERS[0];
+}
+
+function calcScore() {
+  let total = 0;
+  for (const key in answers) total += answers[key];
+  // Max possible = 10 * 12 = 120, min = 2 * 12 = 24. Scale to 0–100.
+  const maxRaw = 10 * QUESTIONS.length;
+  const minRaw = 2 * QUESTIONS.length;
+  const raw = Math.max(0, total - minRaw);
+  const range = maxRaw - minRaw;
+  return Math.round((raw / range) * 100);
+}
+
+// ── Render Teams ──────────────────────────────────────────────────────────────
+function renderTeams() {
+  const grid = document.getElementById('team-grid');
+  grid.innerHTML = TEAMS.map(t => `
+    <button class="team-btn" data-id="${t.id}" onclick="selectTeam('${t.id}')" style="--team-primary-btn:${t.p}; --team-secondary-btn:${t.s}">
+      <div class="team-dot" style="background:${t.p}; border-color:${t.s}"></div>
+      ${t.abbr}
+    </button>
+  `).join('');
+}
+
+// ── Select Team ───────────────────────────────────────────────────────────────
+function selectTeam(id) {
+  selectedTeam = TEAMS.find(t => t.id === id);
+  if (!selectedTeam) return;
+
+  // Highlight selected
+  document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.team-btn[data-id="${id}"]`).classList.add('selected');
+
+  // Apply team colors to CSS vars
+  document.documentElement.style.setProperty('--team-primary', selectedTeam.p);
+  document.documentElement.style.setProperty('--team-secondary', selectedTeam.s);
+
+  // Show quiz
+  document.getElementById('quiz-container').classList.add('active');
+
+  // Render questions if not yet rendered
+  if (!document.getElementById('questions-wrap').hasChildNodes()) {
+    renderQuestions();
+  }
+
+  // Scroll to quiz
+  setTimeout(() => {
+    document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+// ── Render Questions ──────────────────────────────────────────────────────────
+function renderQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  wrap.innerHTML = QUESTIONS.map((q, i) => `
+    <div class="question-card" id="card-${q.id}">
+      <div class="question-number">Question ${i + 1} of ${QUESTIONS.length}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options-grid" id="opts-${q.id}">
+        ${q.options.map((opt, j) => `
+          <button class="option-btn" id="opt-${q.id}-${j}"
+            onclick="selectAnswer('${q.id}', ${opt.pts}, this, '${q.id}-${j}')">
+            <span class="option-dot"></span>
+            <span>${opt.label}</span>
+            <span class="option-pts">${opt.pts}pts</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Select Answer ─────────────────────────────────────────────────────────────
+function selectAnswer(qid, pts, btn, optId) {
+  // Deselect sibling buttons
+  const opts = document.querySelectorAll(`#opts-${qid} .option-btn`);
+  opts.forEach(b => b.classList.remove('selected'));
+
+  // Select clicked
+  btn.classList.add('selected');
+
+  // Store
+  answers[qid] = pts;
+
+  // Mark card answered
+  document.getElementById(`card-${qid}`).classList.add('answered');
+
+  // Update score bar
+  updateScoreBar();
+
+  // Check if all answered
+  checkAllAnswered();
+}
+
+// ── Update Score Bar ──────────────────────────────────────────────────────────
+function updateScoreBar() {
+  const score = calcScore();
+  const answered = Object.keys(answers).length;
+
+  document.getElementById('live-score').innerHTML =
+    `${score} <span style="font-size:14px;color:var(--text-mute)">/100</span>`;
+  document.getElementById('score-fill').style.width = score + '%';
+  document.getElementById('progress-counter').textContent =
+    `${answered} / ${QUESTIONS.length} answered`;
+
+  if (answered > 0) {
+    const tier = getTier(score);
+    document.getElementById('live-tier').textContent = tier.name;
+  }
+}
+
+// ── Check All Answered ────────────────────────────────────────────────────────
+function checkAllAnswered() {
+  const btn = document.getElementById('btn-submit');
+  if (Object.keys(answers).length === QUESTIONS.length) {
+    btn.classList.add('ready');
+  } else {
+    btn.classList.remove('ready');
+  }
+}
+
+// ── Submit Quiz ───────────────────────────────────────────────────────────────
+function submitQuiz() {
+  if (Object.keys(answers).length < QUESTIONS.length) return;
+
+  const score = calcScore();
+  const tier = getTier(score);
+  const team = selectedTeam;
+
+  // Check personal best
+  const storageKey = `loyalty_${team.id}`;
+  const prev = parseInt(localStorage.getItem(storageKey) || '0', 10);
+  const isPersonalBest = score > prev;
+  if (isPersonalBest) localStorage.setItem(storageKey, score);
+
+  // Populate result card
+  document.getElementById('result-score').textContent = score;
+  document.getElementById('result-ring').style.borderColor = team.p;
+  document.getElementById('result-ring').style.boxShadow =
+    `0 0 40px ${team.p}44, inset 0 0 0 8px rgba(0,0,0,0.3)`;
+  document.getElementById('result-score').style.color = team.p;
+  document.getElementById('result-tier').textContent = tier.name;
+  document.getElementById('result-tier').style.color = team.p;
+  document.getElementById('result-team-label').textContent =
+    `${team.name} &bull; ${score}/100 points` .replace('&bull;', '·');
+  document.getElementById('result-desc').textContent = tier.desc;
+
+  const pbBadge = document.getElementById('personal-best-badge');
+  pbBadge.style.display = isPersonalBest ? 'inline-flex' : 'none';
+
+  // Show result card
+  document.getElementById('result-card').classList.add('show');
+
+  // Hide quiz, hide submit
+  document.getElementById('quiz-container').style.display = 'none';
+
+  // Scroll to result
+  setTimeout(() => {
+    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+
+  // Update leaderboard
+  renderLeaderboard();
+
+  // GA event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'quiz_complete', {
+      event_category: 'Fan Loyalty Quiz',
+      event_label: `${team.name} - ${tier.name}`,
+      value: score
+    });
+  }
+}
+
+// ── Share Result ──────────────────────────────────────────────────────────────
+function shareResult() {
+  const score = calcScore();
+  const tier = getTier(score);
+  const team = selectedTeam;
+  const text = `I scored ${score}/100 on the NFL Fan Loyalty Quiz — ${tier.name} ${team.name} fan. What's your score? ainflgm.com/fan-loyalty.html`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'My NFL Fan Loyalty Score', text, url: 'https://ainflgm.com/fan-loyalty.html' })
+      .catch(() => copyToClipboard(text));
+  } else {
+    copyToClipboard(text);
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-share');
+    const orig = btn.innerHTML;
+    btn.innerHTML = 'Copied to clipboard!';
+    btn.style.background = '#39FF14';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2000);
+  }).catch(() => {
+    prompt('Copy this to share:', text);
+  });
+}
+
+// ── Retake Quiz ───────────────────────────────────────────────────────────────
+function retakeQuiz() {
+  answers = {};
+  document.getElementById('result-card').classList.remove('show');
+  document.getElementById('quiz-container').style.display = '';
+  document.getElementById('quiz-container').classList.add('active');
+
+  // Reset all option buttons
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+
+  document.getElementById('live-score').innerHTML =
+    `0 <span style="font-size:14px;color:var(--text-mute)">/100</span>`;
+  document.getElementById('score-fill').style.width = '0%';
+  document.getElementById('live-tier').textContent = 'Answer questions to build your score';
+  document.getElementById('progress-counter').textContent = '0 / 12 answered';
+  document.getElementById('btn-submit').classList.remove('ready');
+
+  document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Reset Quiz (change team) ───────────────────────────────────────────────────
+function resetQuiz() {
+  answers = {};
+  selectedTeam = null;
+
+  document.getElementById('quiz-container').classList.remove('active');
+  document.getElementById('result-card').classList.remove('show');
+  document.getElementById('quiz-container').style.display = '';
+
+  // Clear questions so they re-render on next team pick
+  document.getElementById('questions-wrap').innerHTML = '';
+
+  // Deselect team buttons
+  document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('selected'));
+
+  // Reset CSS vars
+  document.documentElement.style.setProperty('--team-primary', '#00F0FF');
+  document.documentElement.style.setProperty('--team-secondary', '#1A2540');
+
+  // Reset score bar
+  document.getElementById('live-score').innerHTML =
+    `0 <span style="font-size:14px;color:var(--text-mute)">/100</span>`;
+  document.getElementById('score-fill').style.width = '0%';
+  document.getElementById('live-tier').textContent = 'Answer questions to build your score';
+  document.getElementById('progress-counter').textContent = '0 / 12 answered';
+
+  document.getElementById('team-select-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Render Leaderboard ────────────────────────────────────────────────────────
+function renderLeaderboard() {
+  const entries = [];
+  TEAMS.forEach(t => {
+    const stored = localStorage.getItem(`loyalty_${t.id}`);
+    if (stored) {
+      const score = parseInt(stored, 10);
+      entries.push({ team: t, score, tier: getTier(score) });
+    }
+  });
+
+  entries.sort((a, b) => b.score - a.score);
+
+  const body = document.getElementById('leaderboard-body');
+
+  if (entries.length === 0) {
+    body.innerHTML = '<div class="leaderboard-empty">No scores recorded yet. Be the first!</div>';
+    return;
+  }
+
+  body.innerHTML = entries.map((e, i) => `
+    <div class="lb-row">
+      <div class="lb-rank">${i + 1}</div>
+      <div class="lb-dot" style="background:${e.team.p}; border:2px solid ${e.team.s}"></div>
+      <div style="flex:1">
+        <div class="lb-team">${e.team.name}</div>
+        <div class="lb-tier">${e.tier.name}</div>
+      </div>
+      <div class="lb-score" style="color:${e.team.p}">${e.score}</div>
+    </div>
+  `).join('');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderTeams();
+renderLeaderboard();
+</script>
+</body>
+</html>

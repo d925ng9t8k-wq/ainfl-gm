@@ -1,0 +1,19 @@
+{
+  "name": "9 Command Hub",
+  "short_name": "9 Hub",
+  "description": "9 Enterprises command center and communication hub",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/mobile-hub.html",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/9-brand.jpg",
+      "sizes": "180x180",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

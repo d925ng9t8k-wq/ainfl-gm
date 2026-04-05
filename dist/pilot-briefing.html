@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreeAgent 9 Pilot — Status Briefing</title>
+<meta name="description" content="FreeAgent 9 Pilot status briefing for Kyle Cabezas meeting.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<meta name="theme-color" content="#0a0a0a">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --surface:#111111;
+  --surface-alt:#161616;
+  --border:#222222;
+  --text:#f0f0f0;
+  --text-secondary:#999999;
+  --accent:#f97316;
+  --accent-bright:#FB4F14;
+  --green:#22c55e;
+  --yellow:#eab308;
+  --red:#ef4444;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:4rem;
+}
+
+/* Header */
+.header{
+  text-align:center;
+  padding:2rem 1.5rem 1.5rem;
+  border-bottom:1px solid var(--border);
+}
+.header-badge{
+  display:inline-block;
+  padding:0.3rem 1rem;
+  border:1px solid var(--accent);
+  border-radius:999px;
+  font-size:0.7rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:0.75rem;
+}
+.header h1{
+  font-size:1.5rem;
+  font-weight:700;
+  letter-spacing:-0.02em;
+  margin-bottom:0.25rem;
+}
+.header h1 span{color:var(--accent)}
+.header-sub{
+  font-size:0.85rem;
+  color:var(--text-secondary);
+}
+
+/* Sections */
+.content{
+  max-width:640px;
+  margin:0 auto;
+  padding:0 1.25rem;
+}
+section{
+  margin-top:1.75rem;
+}
+.section-label{
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:0.5rem;
+}
+.section-title{
+  font-size:1.1rem;
+  font-weight:700;
+  margin-bottom:0.75rem;
+}
+
+/* Cards */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1rem 1.25rem;
+  margin-bottom:0.75rem;
+}
+.card p{
+  font-size:0.88rem;
+  color:var(--text-secondary);
+  line-height:1.5;
+}
+.card p strong{color:var(--text)}
+
+/* Feature Grid */
+.feature-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.5rem;
+}
+.feature-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0.7rem 0.8rem;
+}
+.feature-num{
+  font-size:0.65rem;
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:0.15rem;
+}
+.feature-name{
+  font-size:0.8rem;
+  font-weight:600;
+}
+.feature-desc{
+  font-size:0.72rem;
+  color:var(--text-secondary);
+  line-height:1.4;
+  margin-top:0.15rem;
+}
+
+/* Status Items */
+.status-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0.8rem 1rem;
+  margin-bottom:0.5rem;
+}
+.status-header{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  margin-bottom:0.3rem;
+}
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.status-dot.red{background:var(--red)}
+.status-dot.green{background:var(--green)}
+.status-dot.yellow{background:var(--yellow)}
+.status-label{
+  font-size:0.82rem;
+  font-weight:600;
+}
+.status-detail{
+  font-size:0.78rem;
+  color:var(--text-secondary);
+  line-height:1.4;
+  padding-left:1.25rem;
+}
+
+/* Roadmap */
+.roadmap-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0.8rem 1rem;
+  margin-bottom:0.5rem;
+  position:relative;
+  border-left:3px solid var(--accent);
+}
+.roadmap-phase{
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.roadmap-title{
+  font-size:0.85rem;
+  font-weight:600;
+  margin:0.15rem 0 0.1rem;
+}
+.roadmap-desc{
+  font-size:0.78rem;
+  color:var(--text-secondary);
+  line-height:1.4;
+}
+
+/* Demo Script */
+.demo-step{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0.7rem 1rem;
+  margin-bottom:0.5rem;
+}
+.demo-input{
+  font-family:'SF Mono',SFMono-Regular,Menlo,monospace;
+  font-size:0.78rem;
+  color:var(--accent);
+  background:var(--surface-alt);
+  padding:0.3rem 0.6rem;
+  border-radius:6px;
+  display:inline-block;
+  margin-bottom:0.25rem;
+  word-break:break-word;
+}
+.demo-output{
+  font-size:0.78rem;
+  color:var(--text-secondary);
+}
+
+/* Architecture */
+.arch-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.5rem;
+}
+.arch-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:0.6rem 0.8rem;
+  text-align:center;
+}
+.arch-label{
+  font-size:0.7rem;
+  color:var(--text-secondary);
+}
+.arch-value{
+  font-size:0.82rem;
+  font-weight:600;
+  color:var(--text);
+}
+
+/* Divider */
+.divider{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:1.75rem 0 0;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Meeting Briefing</div>
+  <h1>FreeAgent <span>9</span> Pilot</h1>
+  <div class="header-sub">Kyle Cabezas Status Update</div>
+</div>
+
+<div class="content">
+
+  <!-- Product Overview -->
+  <section>
+    <div class="section-label">Overview</div>
+    <div class="card">
+      <p><strong>FreeAgent 9 Pilot</strong> is an AI concierge assistant for mortgage professionals. Currently serving <strong>Kyle Cabezas</strong> (Branch Manager, Rapid Mortgage Cincinnati) via <strong>SMS</strong> powered by Twilio. All AI responses generated by <strong>Claude Haiku</strong> for cost efficiency.</p>
+    </div>
+  </section>
+
+  <!-- Current Capabilities -->
+  <section>
+    <div class="section-label">Live Features</div>
+    <div class="section-title">12 Active Capabilities</div>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-num">01</div>
+        <div class="feature-name">Morning Briefing</div>
+        <div class="feature-desc">Automated daily briefing at 7 AM</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">02</div>
+        <div class="feature-name">Mortgage Guidelines</div>
+        <div class="feature-desc">FHA, Conv, VA, USDA lookups</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">03</div>
+        <div class="feature-name">Rate Tracking</div>
+        <div class="feature-desc">Manual rate logging + briefing refs</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">04</div>
+        <div class="feature-name">Food Delivery</div>
+        <div class="feature-desc">DoorDash, UberEats + 18 chains</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">05</div>
+        <div class="feature-name">Amazon Shopping</div>
+        <div class="feature-desc">Product search links</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">06</div>
+        <div class="feature-name">Grocery Delivery</div>
+        <div class="feature-desc">Kroger, Instacart</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">07</div>
+        <div class="feature-name">Reminders</div>
+        <div class="feature-desc">"Remind me to call the Garcias at 3pm"</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">08</div>
+        <div class="feature-name">Note-taking</div>
+        <div class="feature-desc">"Note: Williams appraisal at 340k"</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">09</div>
+        <div class="feature-name">Script Help</div>
+        <div class="feature-desc">Role-play borrower conversations</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">10</div>
+        <div class="feature-name">Social Media</div>
+        <div class="feature-desc">Ghostwrite rate/market posts</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">11</div>
+        <div class="feature-name">Weather</div>
+        <div class="feature-desc">Cincinnati weather in briefings</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">12</div>
+        <div class="feature-name">General Q&A</div>
+        <div class="feature-desc">Anything else, powered by Claude</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Known Challenges -->
+  <section>
+    <div class="section-label">Status</div>
+    <div class="section-title">Known Challenges</div>
+
+    <div class="status-item">
+      <div class="status-header">
+        <div class="status-dot yellow"></div>
+        <div class="status-label">SMS Delivery (10DLC)</div>
+      </div>
+      <div class="status-detail">Outbound messages blocked (error 30034). Carrier registration (10DLC) in progress — takes 1-3 business days. Inbound replies work fine via TwiML.</div>
+    </div>
+
+    <div class="status-item">
+      <div class="status-header">
+        <div class="status-dot green"></div>
+        <div class="status-label">Response Quality</div>
+      </div>
+      <div class="status-detail">Stress tested 18/20 PASS. Amazon/food intent conflict FIXED. Grocery response enrichment in progress.</div>
+    </div>
+
+    <div class="status-item">
+      <div class="status-header">
+        <div class="status-dot green"></div>
+        <div class="status-label">Morning Briefing</div>
+      </div>
+      <div class="status-detail">Initially perceived as "going rogue" — actually a designed feature. Preserved and working as intended.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Feature Roadmap -->
+  <section>
+    <div class="section-label">Roadmap</div>
+    <div class="section-title">What's Next</div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-phase">Phase 1 — Now</div>
+      <div class="roadmap-title">Deep-Link Concierge</div>
+      <div class="roadmap-desc">DoorDash, Amazon, Instacart direct links. One text, one tap.</div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-phase">Phase 2 — Next</div>
+      <div class="roadmap-title">Full DoorDash Ordering</div>
+      <div class="roadmap-desc">Uber Consumer Delivery API integration. Application submitted.</div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-phase">Phase 3 — Future</div>
+      <div class="roadmap-title">Payment Integration</div>
+      <div class="roadmap-desc">Stripe tokenization for secure transactions.</div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-phase">Phase 4 — Vision</div>
+      <div class="roadmap-title">Full Concierge</div>
+      <div class="roadmap-desc">Kyle says what he wants, Pilot makes it happen. Food delivered, packages ordered, groceries at the door.</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Demo Script -->
+  <section>
+    <div class="section-label">Live Demo</div>
+    <div class="section-title">Demo Script</div>
+
+    <div class="demo-step">
+      <div class="demo-input">"help"</div>
+      <div class="demo-output">Returns full feature menu</div>
+    </div>
+
+    <div class="demo-step">
+      <div class="demo-input">"What is the FHA minimum credit score?"</div>
+      <div class="demo-output">Instant mortgage guideline answer</div>
+    </div>
+
+    <div class="demo-step">
+      <div class="demo-input">"Order me a pizza"</div>
+      <div class="demo-output">DoorDash + chain links for nearby pizza</div>
+    </div>
+
+    <div class="demo-step">
+      <div class="demo-input">"Remind me to call the Garcias at 3pm"</div>
+      <div class="demo-output">Confirmation + reminder set</div>
+    </div>
+
+    <div class="demo-step">
+      <div class="demo-input">"Write me a social media post about rates"</div>
+      <div class="demo-output">Ready-to-post content generated</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Architecture -->
+  <section>
+    <div class="section-label">Architecture</div>
+    <div class="section-title">Technical Stack</div>
+    <div class="arch-grid">
+      <div class="arch-item">
+        <div class="arch-value">Node.js</div>
+        <div class="arch-label">Server (port 3472)</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-value">Twilio</div>
+        <div class="arch-label">SMS Webhook</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-value">Claude Haiku</div>
+        <div class="arch-label">AI Engine</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-value">12 Handlers</div>
+        <div class="arch-label">Intent Pipeline</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-value">Profile System</div>
+        <div class="arch-label">Conversation Memory</div>
+      </div>
+      <div class="arch-item">
+        <div class="arch-value">Interaction Log</div>
+        <div class="arch-label">QC Tracking</div>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align:center;margin-top:2.5rem;padding:1rem;">
+    <div style="font-size:0.7rem;color:var(--text-secondary);letter-spacing:0.1em;text-transform:uppercase;">9 Enterprises</div>
+  </div>
+
+</div>
+
+</body>
+</html>

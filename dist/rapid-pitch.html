@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#050508">
+<meta name="apple-mobile-web-app-title" content="Rapid Pitch">
+<meta name="description" content="How 9 Enterprises powers Rapid Mortgage with AI-driven tools, automation, and competitive infrastructure.">
+<meta property="og:title" content="How 9 Enterprises Powers Rapid Mortgage">
+<meta property="og:description" content="The AI-driven competitive advantage your competitors don't have. Built by 9 Enterprises.">
+<meta property="og:image" content="https://ainflgm.com/9e-og-preview.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/rapid-pitch.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How 9 Enterprises Powers Rapid Mortgage">
+<meta name="twitter:description" content="The AI-driven competitive advantage your competitors don't have.">
+<meta name="twitter:image" content="https://ainflgm.com/9e-og-preview.jpg">
+<title>How 9 Enterprises Powers Rapid Mortgage</title>
+<link rel="canonical" href="https://9enterprises.ai/rapid-pitch.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<style>
+/* ─── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:          #0a0a0a;
+  --bg-2:        #111111;
+  --bg-3:        #161616;
+  --bg-card:     #111111;
+  --border:      rgba(255,255,255,0.07);
+  --border-glow: rgba(251,79,20,0.35);
+  --orange:      #FB4F14;
+  --orange-2:    #e04412;
+  --orange-3:    #FF6B35;
+  --text:        #e2e2e2;
+  --text-dim:    #888888;
+  --text-mute:   #444444;
+  --white:       #ffffff;
+  --radius:      16px;
+  --radius-sm:   10px;
+  --shadow-glow: 0 0 40px rgba(251,79,20,0.15);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────── */
+.label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange-3);
+  margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1.15;
+}
+
+h2 { font-size: clamp(32px, 5vw, 52px); }
+h3 { font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; }
+
+p { color: var(--text-dim); font-size: 16px; }
+
+/* ─── Layout ────────────────────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { padding: 96px 0; }
+
+/* ─── Nav ───────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(5,5,8,0.8);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--orange); }
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  background: var(--orange);
+  color: var(--white);
+  text-decoration: none;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: var(--orange-2); transform: translateY(-1px); }
+
+.nav-mobile { display: none; }
+
+@media (max-width: 700px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-mobile {
+    display: block;
+    background: var(--orange);
+    color: var(--white);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+/* ─── Hero ──────────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 140px 24px 96px;
+}
+
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: orbFloat 14s ease-in-out infinite;
+}
+.hero-orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(251,79,20,0.16) 0%, transparent 70%);
+  top: -150px; left: -150px;
+}
+.hero-orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(251,79,20,0.12) 0%, transparent 70%);
+  bottom: -80px; right: -100px;
+  animation-delay: -7s;
+}
+.hero-orb-3 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(251,79,20,0.08) 0%, transparent 70%);
+  top: 45%; left: 50%;
+  transform: translateX(-50%);
+  animation-delay: -3.5s;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-28px) scale(1.04); }
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 840px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(251,79,20,0.10);
+  border: 1px solid rgba(251,79,20,0.30);
+  color: var(--orange-3);
+  padding: 7px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+.hero-eyebrow .dot {
+  width: 6px; height: 6px;
+  background: var(--orange-3);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+.hero-headline {
+  font-size: clamp(42px, 8vw, 80px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s ease 0.25s both;
+}
+.hero-headline .accent {
+  background: linear-gradient(135deg, #FB4F14 0%, #FF6B35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  filter: drop-shadow(0 0 30px rgba(251,79,20,0.4));
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2.5vw, 22px);
+  color: var(--text-dim);
+  font-weight: 400;
+  max-width: 640px;
+  margin: 0 auto 52px;
+  line-height: 1.6;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.55s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange);
+  color: var(--white);
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(251,79,20,0.35);
+}
+.btn-primary:hover {
+  background: var(--orange-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(251,79,20,0.45);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.btn-secondary:hover {
+  border-color: rgba(251,79,20,0.4);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Stats Strip ───────────────────────────────────────────────────────── */
+#stats {
+  padding: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-item {
+  padding: 40px 32px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.stat-item:last-child { border-right: none; }
+.stat-item:hover { background: rgba(251,79,20,0.04); }
+.stat-number {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #FB4F14 0%, #FF6B35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+@media (max-width: 700px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-item { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .stat-item:nth-child(2n) { border-right: none; }
+  .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+  .stat-item { padding: 28px 20px; }
+}
+
+/* ─── Bridge Section ────────────────────────────────────────────────────── */
+#bridge {
+  background: var(--bg);
+}
+.bridge-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.bridge-quote {
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  padding: 40px 48px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--orange);
+  border-radius: var(--radius);
+  text-align: left;
+}
+.bridge-quote .highlight { color: var(--orange-3); }
+.bridge-body {
+  font-size: 17px;
+  color: var(--text-dim);
+  line-height: 1.75;
+  text-align: left;
+}
+.bridge-body strong { color: var(--text); }
+
+@media (max-width: 600px) {
+  .bridge-quote { padding: 28px 24px; }
+}
+
+/* ─── Value Props ────────────────────────────────────────────────────────── */
+#value {
+  background: var(--bg-2);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.section-header p {
+  max-width: 560px;
+  margin: 16px auto 0;
+  font-size: 17px;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.value-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+}
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--orange-3) 100%);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.value-card:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+.value-card:hover::before { opacity: 1; }
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(251,79,20,0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.card-pilot {
+  display: inline-block;
+  background: rgba(251,79,20,0.15);
+  border: 1px solid rgba(251,79,20,0.35);
+  color: var(--orange-3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 12px;
+}
+
+.value-card h3 {
+  font-size: 19px;
+  margin-bottom: 10px;
+  color: var(--white);
+}
+
+.value-card p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.card-metric {
+  font-size: 13px;
+  color: var(--orange-3);
+  font-weight: 600;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .value-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .value-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── ROI Section ────────────────────────────────────────────────────────── */
+#roi {
+  background: var(--bg);
+}
+.roi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.roi-left {}
+.roi-left h2 { margin-bottom: 20px; }
+.roi-left p { font-size: 17px; margin-bottom: 36px; }
+
+.roi-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.roi-table tr {
+  border-bottom: 1px solid var(--border);
+}
+.roi-table tr:last-child { border-bottom: none; }
+.roi-table td {
+  padding: 16px 0;
+  font-size: 15px;
+  color: var(--text-dim);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.roi-table td:first-child {
+  color: var(--text);
+  font-weight: 600;
+  width: 55%;
+  padding-right: 20px;
+}
+.roi-table td:last-child {
+  color: var(--orange-3);
+  font-weight: 700;
+  text-align: right;
+}
+
+.roi-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.roi-highlight {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.roi-highlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(251,79,20,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.roi-highlight-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange-3);
+  margin-bottom: 10px;
+}
+.roi-highlight-value {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.roi-highlight-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 800px) {
+  .roi-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* ─── Video Section ─────────────────────────────────────────────────────── */
+#video {
+  background: var(--bg-2);
+}
+.video-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.video-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0d0d0d;
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 60px rgba(251,79,20,0.15);
+  border: 1px solid rgba(251,79,20,0.2);
+}
+.video-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  color: rgba(255,255,255,0.45);
+  font-size: 14px;
+  font-family: inherit;
+}
+.video-placeholder .play-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(251,79,20,0.15);
+  border: 2px solid rgba(251,79,20,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.video-caption {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--text-mute);
+}
+
+/* ─── Timeline ───────────────────────────────────────────────────────────── */
+#timeline {
+  background: var(--bg);
+}
+.timeline-list {
+  max-width: 740px;
+  margin: 0 auto;
+  position: relative;
+}
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+  align-items: start;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-dot {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--orange-3);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.timeline-content {}
+.timeline-phase {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange-3);
+  margin-bottom: 6px;
+}
+.timeline-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.timeline-content p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ─── CTA Section ────────────────────────────────────────────────────────── */
+#cta-section {
+  background: var(--bg-2);
+  text-align: center;
+}
+.cta-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+.cta-inner h2 { margin-bottom: 20px; }
+.cta-inner p { font-size: 18px; margin-bottom: 44px; }
+.cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ─── Footer ─────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 48px 24px;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-logo {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  text-decoration: none;
+}
+.footer-logo span { color: var(--orange); }
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+.footer-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--text); }
+.footer-copy {
+  color: var(--text-mute);
+  font-size: 13px;
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-links { flex-wrap: wrap; gap: 16px; }
+  .footer-copy { text-align: left; }
+}
+
+/* ─── Scroll Animation ───────────────────────────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ─────────────────────────────────────────────────────────────── -->
+<nav>
+  <a href="/9enterprises.html" class="nav-logo"><span>9</span> Enterprises</a>
+  <ul class="nav-links">
+    <li><a href="#value">The Stack</a></li>
+    <li><a href="#roi">ROI</a></li>
+    <li><a href="#timeline">Roadmap</a></li>
+    <li><a href="#video">Walkthrough</a></li>
+  </ul>
+  <a href="#cta-section" class="nav-cta">Get Started</a>
+  <a href="#cta-section" class="nav-mobile">Get Started</a>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      Confidential — For Mark Jaynes
+    </div>
+    <h1 class="hero-headline">
+      How <span class="accent">9 Enterprises</span><br>Powers Rapid Mortgage
+    </h1>
+    <p class="hero-sub">
+      The AI-driven competitive advantage your competitors don't have — already being built, already in pilot, already delivering results.
+    </p>
+    <div class="hero-actions">
+      <a href="#video" class="btn-primary">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg>
+        Watch the Walkthrough
+      </a>
+      <a href="#value" class="btn-secondary">
+        Explore the Universe
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Stats Strip ───────────────────────────────────────────────────────── -->
+<div id="stats">
+  <div class="stats-grid">
+    <div class="stat-item fade-in">
+      <div class="stat-number">6+</div>
+      <div class="stat-label">AI tools built for Rapid's stack</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-number">10+</div>
+      <div class="stat-label">Hours/week returned per loan officer</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Autonomous client response capability</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-number">$0</div>
+      <div class="stat-label">Additional headcount required</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Bridge Section ────────────────────────────────────────────────────── -->
+<section id="bridge">
+  <div class="container">
+    <div class="bridge-inner fade-in">
+      <div class="label">The Connection</div>
+      <blockquote class="bridge-quote">
+        "Every hour invested in building 9 returns value to Rapid — through <span class="highlight">better tools</span>, <span class="highlight">faster processes</span>, and <span class="highlight">first-mover advantage</span> in an industry where AI will separate the winners from everyone else."
+      </blockquote>
+      <p class="bridge-body">
+        9 Enterprises is not a side project. It is an operating infrastructure being built in parallel with Rapid Mortgage's growth. The tools, automations, and systems developed through 9 are designed from day one to be white-labeled, integrated, and scaled into Rapid's operations.<br><br>
+        <strong>This is not theoretical.</strong> The AI Underwriter is already in pilot with Kyle Cabezas. The video production pipeline is live. The 24/7 autonomous operations layer is running. What you're looking at is a preview of what Rapid's competitive position looks like when this stack is fully deployed across the company.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Value Props ────────────────────────────────────────────────────────── -->
+<section id="value">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">The Stack</div>
+      <h2>Seven Ways 9 Moves the Needle for Rapid</h2>
+      <p>Each tool is built to address a real cost or revenue gap in Rapid's current operations.</p>
+    </div>
+    <div class="value-grid">
+
+      <!-- AI Underwriter -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#128196;</div>
+        <div class="card-pilot">In Pilot</div>
+        <h3>AI Underwriter</h3>
+        <p>Instant guideline answers for FHA, VA, USDA, and Conventional. Processors and LOs stop waiting hours for answers — they get them in seconds. White-label ready under Rapid branding.</p>
+        <div class="card-metric">Already live with Kyle C — expanding now</div>
+      </div>
+
+      <!-- freeagent9 -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#129302;</div>
+        <h3>freeagent9 for Loan Officers</h3>
+        <p>Personal AI concierge for each LO. Handles client follow-up, scheduling, document reminders, birthday and anniversary outreach — automatically. Every LO gets a full-time assistant at $29/month.</p>
+        <div class="card-metric">~$29/mo per LO vs. $4,000+/mo for a human assistant</div>
+      </div>
+
+      <!-- Video Marketing -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#127916;</div>
+        <h3>Automated Video Marketing</h3>
+        <p>AI-generated listing videos, rate update videos, and LO introduction videos at production quality. Rapid can produce 50+ videos per month at near-zero cost — content that currently takes days and costs hundreds per video.</p>
+        <div class="card-metric">50+ videos/month. Near-zero variable cost.</div>
+      </div>
+
+      <!-- AI Training -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#127891;</div>
+        <h3>AI Education &amp; Training</h3>
+        <p>Train Rapid's team on AI tools before competitors figure out what to Google. First-mover advantage in mortgage industry AI adoption translates directly to production gains and reduced onboarding time.</p>
+        <div class="card-metric">Team fluency = first-mover moat in Ohio</div>
+      </div>
+
+      <!-- agent9 Real Estate -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#127968;</div>
+        <h3>agent9 Real Estate Integration</h3>
+        <p>AI-facilitated real estate transactions that feed directly into Rapid's mortgage pipeline. Buy-side referrals without a realtor middleman. This is the long game — a pipeline source no competitor can replicate.</p>
+        <div class="card-metric">Buy-side leads with no referral fee split</div>
+      </div>
+
+      <!-- 24/7 Ops -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#9889;</div>
+        <h3>24/7 Autonomous Operations</h3>
+        <p>The 9 infrastructure — comms hub, agent orchestration, monitoring, after-hours response — adapted for Rapid's operations. Clients get answered at 11pm. Rate alerts go out in real time. Competitive intelligence runs overnight.</p>
+        <div class="card-metric">Zero-gap client response. No overtime. No missed leads.</div>
+      </div>
+
+      <!-- Kyle Shea — Technology Leadership -->
+      <div class="value-card fade-in">
+        <div class="card-icon">&#128736;</div>
+        <h3>Expert Technology Leadership — Kyle Shea</h3>
+        <p>Rapid's CIO Kyle Shea is the bridge between 9 Enterprises' AI capabilities and Rapid Mortgage's infrastructure. Kyle is already engaged — reviewing the architecture, validating the technical approach, and ensuring every tool integrates properly with Rapid's existing systems. His oversight guarantees enterprise-grade implementation, not a science experiment.</p>
+        <div class="card-metric">Trusted CIO validation. Architecture reviewed. Implementation path clear.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── ROI Section ───────────────────────────────────────────────────────── -->
+<section id="roi">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">The Business Case</div>
+      <h2>What This Is Worth to Rapid</h2>
+      <p>Real numbers. No tech jargon. This is what the stack returns to the bottom line.</p>
+    </div>
+    <div class="roi-grid">
+      <div class="roi-left fade-in">
+        <h2>Time + Cost Savings</h2>
+        <p>Based on current Rapid operational patterns and conservative estimates per LO per week.</p>
+        <table class="roi-table">
+          <tr>
+            <td>Underwriting guideline lookups</td>
+            <td>2–3 hrs/week saved per processor</td>
+          </tr>
+          <tr>
+            <td>Client follow-up and outreach</td>
+            <td>4–5 hrs/week per LO returned</td>
+          </tr>
+          <tr>
+            <td>Video content production</td>
+            <td>$300–500/video saved vs. agency</td>
+          </tr>
+          <tr>
+            <td>After-hours lead response</td>
+            <td>Leads that would otherwise go cold</td>
+          </tr>
+          <tr>
+            <td>Staff hiring (assistant-level tasks)</td>
+            <td>1–2 FTE equivalent per branch</td>
+          </tr>
+        </table>
+      </div>
+      <div class="roi-right fade-in">
+        <div class="roi-highlight">
+          <div class="roi-highlight-label">Revenue Potential</div>
+          <div class="roi-highlight-value">+8–12</div>
+          <div class="roi-highlight-desc">Additional closed loans per month across Cincinnati branch from better follow-up alone</div>
+        </div>
+        <div class="roi-highlight">
+          <div class="roi-highlight-label">Cost Avoidance</div>
+          <div class="roi-highlight-value">$80K+</div>
+          <div class="roi-highlight-desc">Annual equivalent of 2 FTE positions replaced by AI operations across the branch</div>
+        </div>
+        <div class="roi-highlight">
+          <div class="roi-highlight-label">Competitive Moat</div>
+          <div class="roi-highlight-value">12–18 mo</div>
+          <div class="roi-highlight-desc">Head start on competitors before the industry catches up to where Rapid will already be</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Video Embed ────────────────────────────────────────────────────────── -->
+<section id="video">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">Walkthrough</div>
+      <h2>See It in Action</h2>
+      <p>A full walkthrough of the 9 Enterprises stack and how it integrates with Rapid's operations.</p>
+    </div>
+    <div class="video-wrap fade-in">
+      <div class="video-container heygen-video-wrap" id="video-container">
+        <!-- HeyGen video embed — swap HEYGEN_VIDEO_ID when ready -->
+        <script>
+          const HEYGEN_VIDEO_ID = '628d77829ff3476e847e9090bc39c0b2';
+          const vc = document.getElementById('video-container');
+          if (HEYGEN_VIDEO_ID && HEYGEN_VIDEO_ID !== 'PENDING') {
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://app.heygen.com/embeds/' + HEYGEN_VIDEO_ID;
+            iframe.allow = 'autoplay; fullscreen';
+            iframe.allowFullscreen = true;
+            vc.appendChild(iframe);
+          }
+        </script>
+        <div class="video-placeholder" id="video-placeholder" style="display:none;">
+          <div class="play-icon">&#9654;</div>
+          <span>Walkthrough video — loading</span>
+        </div>
+      </div>
+      <p class="video-caption">Produced by 9 Enterprises. Runtime approx. 4–6 minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Timeline ─────────────────────────────────────────────────────────── -->
+<section id="timeline">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">Deployment Roadmap</div>
+      <h2>From Pilot to Full Integration</h2>
+      <p>A phased approach that delivers value immediately and scales without disruption.</p>
+    </div>
+    <div class="timeline-list">
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot">&#10003;</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">Now — Active</div>
+          <h3>AI Underwriter Pilot</h3>
+          <p>Live with Kyle Cabezas. FHA, VA, USDA, and Conventional guideline queries answered in seconds. Feedback loop running. Accuracy improving weekly.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot">30</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">30 Days</div>
+          <h3>freeagent9 Pilot — 2 to 3 LOs</h3>
+          <p>Deploy personal AI concierge for a small group of Rapid LOs. Automate follow-up sequences, document reminders, and client outreach. Measure response rate improvements and hours returned.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot">90</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">90 Days</div>
+          <h3>Full Cincinnati Integration</h3>
+          <p>Roll out full stack across Rapid Cincinnati. AI Underwriter for all processors. freeagent9 for all LOs. Video production pipeline live. 24/7 response layer active. First performance report to ownership.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot">180</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">180 Days</div>
+          <h3>Columbus Expansion + White-Label</h3>
+          <p>Expand full stack to Rapid Columbus. All tools white-labeled under Rapid Mortgage branding. Begin agent9 real estate pipeline integration. Full competitive intelligence layer running across both branches.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────────────────────────────────────────── -->
+<section id="cta-section">
+  <div class="container">
+    <div class="cta-inner fade-in">
+      <div class="label">Next Step</div>
+      <h2>Ready to Put This to Work?</h2>
+      <p>This is already being built. The question is how fast Rapid captures the advantage before competitors start asking the same questions.</p>
+      <div class="cta-actions">
+        <a href="#timeline" class="btn-primary">
+          Review the Roadmap
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="/9enterprises.html" class="btn-secondary">
+          Explore 9 Enterprises
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <a href="/9enterprises.html" class="footer-logo"><span>9</span> Enterprises</a>
+    <ul class="footer-links">
+      <li><a href="/9enterprises.html">The Universe</a></li>
+      <li><a href="/tools.html">Tools</a></li>
+      <li><a href="/privacy.html">Privacy</a></li>
+    </ul>
+  </div>
+  <div class="footer-inner" style="margin-top: 12px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+    <p class="footer-copy">Built by 9 Enterprises. Confidential — For Mark Jaynes.</p>
+    <p class="footer-copy" style="margin-top:8px;">&copy; 2026 9 Enterprises LLC. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ─── Scripts ────────────────────────────────────────────────────────────── -->
+<script>
+/* ── Particle canvas ─────────────────────────────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const COUNT = 55;
+  const ORANGE = 'rgba(251,79,20,';
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < COUNT; i++) {
+      particles.push({
+        x: rand(0, W), y: rand(0, H),
+        vx: rand(-0.25, 0.25), vy: rand(-0.35, -0.1),
+        r: rand(1, 2.2),
+        a: rand(0.15, 0.5),
+        life: rand(0, 1)
+      });
+    }
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.life += 0.003;
+      if (p.life > 1) { p.life = 0; p.x = rand(0, W); p.y = H + 10; }
+      const alpha = p.a * Math.sin(p.life * Math.PI);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = ORANGE + alpha + ')';
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+    });
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+  resize();
+  initParticles();
+  tick();
+})();
+
+/* ── Scroll fade-in ─────────────────────────────────────────────────────── */
+(function() {
+  const els = document.querySelectorAll('.fade-in');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ── Video placeholder hide on load ────────────────────────────────────── */
+(function() {
+  const HEYGEN_VIDEO_ID = '628d77829ff3476e847e9090bc39c0b2';
+  const placeholder = document.getElementById('video-placeholder');
+  if (HEYGEN_VIDEO_ID && HEYGEN_VIDEO_ID !== 'PENDING' && placeholder) {
+    placeholder.style.display = 'none';
+  }
+})();
+</script>
+
+<!-- ── Interactive Feedback Widget ──────────────────────────────────────── -->
+<div id="feedback-fab" style="position:fixed;bottom:24px;right:24px;z-index:9999;cursor:pointer;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#FB4F14,#e04412);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(251,79,20,0.4);transition:transform 0.2s" onclick="document.getElementById('feedback-modal').style.display='flex'" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">
+  <svg width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</div>
+
+<div id="feedback-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#111;border:1px solid rgba(251,79,20,0.3);border-radius:16px;padding:28px;max-width:460px;width:100%;position:relative">
+    <button onclick="document.getElementById('feedback-modal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;color:#888;font-size:24px;cursor:pointer">&times;</button>
+    <h3 style="color:#fff;font-size:20px;font-weight:700;margin-bottom:4px">Talk to 9</h3>
+    <p style="color:#888;font-size:13px;margin-bottom:20px">Ask a question, give feedback, or request a deeper dive. 9 responds directly.</p>
+    <input id="fb-name" type="text" placeholder="Your name (optional)" style="width:100%;padding:12px 14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:inherit">
+    <textarea id="fb-msg" rows="4" placeholder="What's on your mind?" style="width:100%;padding:12px 14px;background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:14px;resize:none;outline:none;font-family:inherit;margin-bottom:14px"></textarea>
+    <button id="fb-send" onclick="sendFeedback()" style="width:100%;padding:14px;background:linear-gradient(135deg,#FB4F14,#e04412);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.02em">Send to 9</button>
+    <div id="fb-status" style="text-align:center;margin-top:10px;font-size:13px;color:#888"></div>
+  </div>
+</div>
+
+<script>
+async function sendFeedback() {
+  const name = document.getElementById('fb-name').value.trim() || 'Anonymous';
+  const msg = document.getElementById('fb-msg').value.trim();
+  const status = document.getElementById('fb-status');
+  const btn = document.getElementById('fb-send');
+  if (!msg) { status.textContent = 'Please type a message.'; status.style.color = '#FB4F14'; return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    const resp = await fetch('https://ainflgm.com/api/feedback', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({name, message: msg, source: 'rapid-pitch'})
+    });
+    if (!resp.ok) throw new Error('Network error');
+    status.textContent = '9 got your message. Expect a response soon.';
+    status.style.color = '#4ade80';
+    document.getElementById('fb-msg').value = '';
+    document.getElementById('fb-name').value = '';
+    setTimeout(() => { document.getElementById('feedback-modal').style.display = 'none'; status.textContent = ''; }, 3000);
+  } catch(e) {
+    const mailLink = 'mailto:captain@ainflgm.com?subject=Rapid Pitch Feedback from ' + encodeURIComponent(name) + '&body=' + encodeURIComponent(msg);
+    window.location.href = mailLink;
+    status.textContent = 'Opening email as fallback...';
+    status.style.color = '#fbbf24';
+  }
+  btn.disabled = false; btn.textContent = 'Send to 9';
+}
+</script>
+
+<!-- HeyGen Fullscreen Expand -->
+<style>
+.heygen-video-wrap{position:relative;cursor:pointer;transition:all .3s ease}
+.heygen-video-wrap.heygen-fs{position:fixed!important;inset:0!important;z-index:99999!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:#000!important;padding-top:0!important}
+.heygen-video-wrap.heygen-fs iframe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.heygen-fs-close{display:none;position:fixed;top:16px;right:16px;z-index:100000;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;backdrop-filter:blur(8px);line-height:1}
+.heygen-fs-close.active{display:flex}
+</style>
+<button class="heygen-fs-close" id="heygen-fs-close" aria-label="Close fullscreen">&times;</button>
+<script>
+(function(){
+  var wraps=document.querySelectorAll(".heygen-video-wrap");
+  var closeBtn=document.getElementById("heygen-fs-close");
+  var activeWrap=null;
+  wraps.forEach(function(w){
+    w.addEventListener("click",function(e){
+      if(e.target.tagName==="BUTTON")return;
+      if(w.classList.contains("heygen-fs")){return;}
+      w.classList.add("heygen-fs");
+      closeBtn.classList.add("active");
+      activeWrap=w;
+      document.body.style.overflow="hidden";
+    });
+  });
+  closeBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    if(activeWrap){activeWrap.classList.remove("heygen-fs");activeWrap=null;}
+    closeBtn.classList.remove("active");
+    document.body.style.overflow="";
+  });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&activeWrap){
+      activeWrap.classList.remove("heygen-fs");activeWrap=null;
+      closeBtn.classList.remove("active");
+      document.body.style.overflow="";
+    }
+  });
+})();
+<\/script>
+</body>
+</html>

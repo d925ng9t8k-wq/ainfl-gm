@@ -1,0 +1,19 @@
+{
+  "name": "Pilot | 9 Enterprises",
+  "short_name": "Pilot",
+  "description": "Your AI Pilot assistant from 9 Enterprises",
+  "theme_color": "#0f0f1f",
+  "background_color": "#0f0f1f",
+  "display": "browser",
+  "orientation": "portrait",
+  "start_url": "/pilot-chat.html",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

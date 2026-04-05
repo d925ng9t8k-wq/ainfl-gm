@@ -1,0 +1,72 @@
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+CREATE TABLE IF NOT EXISTS messages (
+  id BIGSERIAL PRIMARY KEY,
+  timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
+  channel TEXT NOT NULL,
+  direction TEXT NOT NULL,
+  text TEXT,
+  read BOOLEAN NOT NULL DEFAULT false,
+  metadata JSONB NOT NULL DEFAULT '{}',
+  session_id TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_messages_timestamp ON messages(timestamp DESC);
+CREATE INDEX IF NOT EXISTS idx_messages_channel ON messages(channel);
+
+CREATE TABLE IF NOT EXISTS actions (
+  id BIGSERIAL PRIMARY KEY,
+  timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
+  action_type TEXT NOT NULL,
+  description TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'completed',
+  metadata JSONB NOT NULL DEFAULT '{}',
+  session_id TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_actions_timestamp ON actions(timestamp DESC);
+
+CREATE TABLE IF NOT EXISTS decisions (
+  id BIGSERIAL PRIMARY KEY,
+  timestamp TIMESTAMPTZ NOT NULL DEFAULT now(),
+  decision TEXT NOT NULL,
+  context TEXT,
+  outcome TEXT,
+  session_id TEXT
+);
+
+CREATE TABLE IF NOT EXISTS authority_matrix (
+  id BIGSERIAL PRIMARY KEY,
+  action_type TEXT NOT NULL UNIQUE,
+  permission_level TEXT NOT NULL DEFAULT 'active',
+  description TEXT,
+  granted_date TIMESTAMPTZ NOT NULL DEFAULT now(),
+  granted_context TEXT,
+  conditions JSONB NOT NULL DEFAULT '{}',
+  last_verified TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS memory (
+  id BIGSERIAL PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  type TEXT NOT NULL,
+  description TEXT,
+  content TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_memory_name ON memory(name);
+CREATE INDEX IF NOT EXISTS idx_memory_type ON memory(type);
+
+CREATE TABLE IF NOT EXISTS tasks (
+  id BIGSERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'queued',
+  assigned_to TEXT NOT NULL DEFAULT 'unassigned',
+  priority TEXT NOT NULL DEFAULT 'medium',
+  project TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  started_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  result TEXT
+);

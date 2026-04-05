@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Who Said It?">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>Who Said It? NFL Quote Quiz | AiNFL GM</title>
+<meta name="description" content="Can you match the famous NFL quotes to the coach or player who said them? Test your NFL knowledge with this viral quote quiz.">
+<meta property="og:title" content="Who Said It? NFL Quote Quiz | AiNFL GM">
+<meta property="og:description" content="Famous NFL quotes, 4 choices, 15 seconds. Think you know your coaches and players? Prove it.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/who-said-it.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Who Said It? NFL Quote Quiz | AiNFL GM">
+<meta name="twitter:description" content="Famous NFL quotes, 4 choices, 15 seconds. Think you know your coaches and players? Prove it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes timer-drain {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+@keyframes streak-flash {
+  0%   { background: var(--yellow-dim); border-color: rgba(255,214,0,0.4); }
+  100% { background: transparent; border-color: var(--border); }
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Main */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* Start Screen */
+.start-screen {
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.start-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+}
+.start-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1;
+}
+.start-card h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.start-card p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0 auto 28px;
+}
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+@media (max-width: 480px) {
+  .rules-grid { grid-template-columns: 1fr; }
+}
+.rule-item {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.rule-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.rule-text {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.rule-text strong {
+  color: var(--text);
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.high-score-note {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin-bottom: 24px;
+  min-height: 18px;
+}
+.high-score-note span { color: var(--yellow); font-weight: 700; }
+
+/* Buttons */
+.btn-primary {
+  background: var(--cyan);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 14px 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+.btn-primary:hover { background: #33f4ff; transform: translateY(-1px); }
+.btn-primary:active { transform: scale(0.98) translateY(0); }
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.18); color: var(--text); }
+.btn-secondary:active { transform: scale(0.98); }
+
+/* Quiz Screen */
+.quiz-screen { display: none; }
+.quiz-screen.active { display: block; animation: fadeUp 0.4s ease both; }
+
+/* HUD */
+.quiz-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  min-width: 70px;
+}
+.hud-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 3px;
+}
+.hud-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.hud-value.cyan { color: var(--cyan); }
+.hud-value.green { color: var(--green); }
+.hud-value.yellow { color: var(--yellow); }
+
+/* Progress bar */
+.progress-wrap {
+  height: 4px;
+  background: var(--bg-3);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--cyan);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* Timer */
+.timer-wrap {
+  height: 5px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.timer-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--green);
+  width: 100%;
+  transition: background 0.5s;
+}
+.timer-bar.warning { background: var(--yellow); }
+.timer-bar.danger  { background: var(--red); }
+.timer-bar.animating {
+  animation: timer-drain linear forwards;
+}
+.timer-seconds {
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+.timer-seconds.warning { color: var(--yellow); }
+.timer-seconds.danger  { color: var(--red); }
+
+/* Question Card */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px 24px;
+  margin-bottom: 16px;
+  animation: glow-in 0.35s ease both;
+}
+.q-meta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 14px;
+}
+.q-quote {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(18px, 4vw, 26px);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 6px;
+}
+.q-quote::before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: -4px;
+  font-size: 40px;
+  color: var(--cyan);
+  line-height: 1;
+  opacity: 0.5;
+  font-family: Georgia, serif;
+}
+.q-context {
+  font-size: 12px;
+  color: var(--text-mute);
+  padding-left: 20px;
+  margin-top: 8px;
+}
+
+/* Answer Options */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+@media (max-width: 480px) {
+  .options-grid { grid-template-columns: 1fr; }
+}
+.option-btn {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+  min-height: 54px;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--border-hi);
+  background: var(--bg-3);
+  color: var(--cyan);
+}
+.option-btn:active:not(:disabled) { transform: scale(0.98); }
+.option-btn:disabled { cursor: default; }
+
+.option-btn.correct {
+  background: var(--green-dim);
+  border-color: rgba(57,255,20,0.4);
+  color: var(--green);
+  animation: pop 0.3s ease;
+}
+.option-btn.wrong {
+  background: var(--red-dim);
+  border-color: rgba(255,45,85,0.4);
+  color: var(--red);
+  animation: shake 0.35s ease;
+}
+.option-btn.reveal {
+  background: var(--green-dim);
+  border-color: rgba(57,255,20,0.3);
+  color: var(--green);
+  opacity: 0.7;
+}
+
+.option-letter {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.03em;
+  color: var(--text-mute);
+  transition: all 0.18s;
+}
+.option-btn:hover:not(:disabled) .option-letter {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.option-btn.correct .option-letter {
+  background: rgba(57,255,20,0.2);
+  border-color: rgba(57,255,20,0.4);
+  color: var(--green);
+}
+.option-btn.wrong .option-letter {
+  background: rgba(255,45,85,0.2);
+  border-color: rgba(255,45,85,0.4);
+  color: var(--red);
+}
+.option-btn.reveal .option-letter {
+  background: rgba(57,255,20,0.15);
+  border-color: rgba(57,255,20,0.3);
+  color: var(--green);
+}
+
+/* Feedback bar */
+.feedback-bar {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.25s ease;
+  margin-bottom: 0;
+}
+.feedback-bar.visible {
+  height: 52px;
+  margin-bottom: 16px;
+}
+.feedback-inner {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.feedback-inner.correct { border-color: rgba(57,255,20,0.3); }
+.feedback-inner.wrong   { border-color: rgba(255,45,85,0.3); }
+.feedback-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+.feedback-text strong { color: var(--green); }
+.feedback-text strong.wrong-name { color: var(--red); }
+.feedback-next {
+  background: var(--cyan);
+  border: none;
+  border-radius: var(--radius-xs);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 7px 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  text-transform: uppercase;
+}
+.feedback-next:hover { background: #33f4ff; }
+
+/* End Screen */
+.end-screen { display: none; }
+.end-screen.active { display: block; animation: fadeUp 0.4s ease both; }
+
+.end-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.end-card.grade-s { border-top: 3px solid var(--cyan); }
+.end-card.grade-a { border-top: 3px solid var(--green); }
+.end-card.grade-b { border-top: 3px solid var(--yellow); }
+.end-card.grade-c { border-top: 3px solid #FF8C00; }
+.end-card.grade-f { border-top: 3px solid var(--red); }
+
+.end-grade {
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.end-grade.grade-s { color: var(--cyan); }
+.end-grade.grade-a { color: var(--green); }
+.end-grade.grade-b { color: var(--yellow); }
+.end-grade.grade-c { color: #FF8C00; }
+.end-grade.grade-f { color: var(--red); }
+
+.end-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.end-subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.end-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+@media (max-width: 400px) {
+  .end-stats { grid-template-columns: 1fr 1fr; }
+}
+.end-stat {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+}
+.end-stat-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.end-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.end-new-best {
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 24px;
+  display: none;
+}
+.end-new-best.show { display: block; }
+
+.end-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.share-text-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-align: left;
+  white-space: pre-line;
+  line-height: 1.6;
+  display: none;
+}
+.share-text-box.show { display: block; }
+.share-copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.share-copy-btn:hover { border-color: var(--border-hi); color: var(--cyan); }
+.share-copy-btn.copied { color: var(--green); border-color: rgba(57,255,20,0.3); }
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 2;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* AdSense slot */
+.ad-slot {
+  margin: 24px 0;
+  text-align: center;
+  min-height: 90px;
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Tools
+  </a>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">&#127942; NFL Quote Quiz</div>
+  <h1>Who <span>Said It?</span></h1>
+  <p>Famous words from coaches and players. Match the quote to the legend. 15 questions, 15 seconds each.</p>
+</header>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Ad -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Start Screen -->
+  <div class="start-screen" id="start-screen">
+    <div class="start-card">
+      <span class="start-icon">&#128483;</span>
+      <h2>Test Your NFL IQ</h2>
+      <p>30 iconic quotes from the greatest minds in football. You get 15 random questions per game. Pick fast — the clock is ticking.</p>
+      <div class="rules-grid">
+        <div class="rule-item">
+          <span class="rule-icon">&#128197;</span>
+          <div class="rule-text">
+            <strong>15 Questions</strong>
+            Random pool each game
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">&#9201;</span>
+          <div class="rule-text">
+            <strong>15 Seconds</strong>
+            Per question timer
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">&#128293;</span>
+          <div class="rule-text">
+            <strong>Streak Bonus</strong>
+            Chain correct answers
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">&#127941;</span>
+          <div class="rule-text">
+            <strong>Letter Grade</strong>
+            Earn your title
+          </div>
+        </div>
+      </div>
+      <div class="high-score-note" id="high-score-note">Loading best score...</div>
+      <button class="btn-primary" onclick="startGame()">
+        Start Quiz
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5 3l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="quiz-screen" id="quiz-screen">
+
+    <!-- HUD -->
+    <div class="quiz-hud">
+      <div class="hud-stat">
+        <div class="hud-label">Question</div>
+        <div class="hud-value cyan" id="hud-qnum">1</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Score</div>
+        <div class="hud-value" id="hud-score">0</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Streak</div>
+        <div class="hud-value yellow" id="hud-streak">0</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Correct</div>
+        <div class="hud-value green" id="hud-correct">0</div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progress-bar" style="width: 6.67%"></div>
+    </div>
+
+    <!-- Timer -->
+    <div class="timer-seconds" id="timer-seconds">15</div>
+    <div class="timer-wrap">
+      <div class="timer-bar" id="timer-bar"></div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card" id="question-card">
+      <div class="q-meta" id="q-meta">Question 1 of 15</div>
+      <div class="q-quote" id="q-quote"></div>
+      <div class="q-context" id="q-context"></div>
+    </div>
+
+    <!-- Options -->
+    <div class="options-grid" id="options-grid"></div>
+
+    <!-- Feedback -->
+    <div class="feedback-bar" id="feedback-bar">
+      <div class="feedback-inner" id="feedback-inner">
+        <div class="feedback-text" id="feedback-text"></div>
+        <button class="feedback-next" id="feedback-next" onclick="nextQuestion()">Next &rarr;</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- End Screen -->
+  <div class="end-screen" id="end-screen">
+    <div class="end-card" id="end-card">
+      <div class="end-grade" id="end-grade">A</div>
+      <div class="end-title" id="end-title">Football Genius</div>
+      <div class="end-subtitle" id="end-subtitle">You know your NFL quotes cold.</div>
+      <div class="end-stats">
+        <div class="end-stat">
+          <div class="end-stat-value" id="end-correct">0</div>
+          <div class="end-stat-label">Correct</div>
+        </div>
+        <div class="end-stat">
+          <div class="end-stat-value" id="end-pct">0%</div>
+          <div class="end-stat-label">Accuracy</div>
+        </div>
+        <div class="end-stat">
+          <div class="end-stat-value" id="end-streak">0</div>
+          <div class="end-stat-label">Best Streak</div>
+        </div>
+      </div>
+      <div class="end-new-best" id="end-new-best">New High Score!</div>
+      <div class="share-text-box" id="share-text-box"></div>
+      <div class="end-actions">
+        <button class="btn-primary" onclick="startGame()">
+          Play Again
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1.5 7A5.5 5.5 0 1 0 3 3.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M1.5 1.5V4H4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="btn-secondary" onclick="toggleShare()">
+          Share Result
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/qb-comparison.html">QB Comparison</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/contract-negotiator.html">Contract Negotiator</a>
+  </div>
+  <div style="margin-top: 8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ── Quote Bank (30 quotes) ─────────────────────────────────────────────────
+const QUOTES = [
+  {
+    quote: "Just win, baby.",
+    answer: "Al Davis",
+    context: "Legendary Raiders owner and GM",
+    decoys: ["Don Shula", "George Halas", "Tex Schramm"]
+  },
+  {
+    quote: "I'm just here so I won't get fined.",
+    answer: "Marshawn Lynch",
+    context: "2015 Super Bowl media day",
+    decoys: ["Terrell Owens", "Randy Moss", "Chad Ochocinco"]
+  },
+  {
+    quote: "We're on to Cincinnati.",
+    answer: "Bill Belichick",
+    context: "After a loss to Kansas City, 2014",
+    decoys: ["Nick Saban", "Pete Carroll", "Mike Tomlin"]
+  },
+  {
+    quote: "Do your job.",
+    answer: "Bill Belichick",
+    context: "New England Patriots team mantra",
+    decoys: ["Tom Coughlin", "Jon Gruden", "Sean Payton"]
+  },
+  {
+    quote: "Winning isn't everything, it's the only thing.",
+    answer: "Vince Lombardi",
+    context: "Hall of Fame Packers head coach",
+    decoys: ["Paul Brown", "Chuck Noll", "Don Shula"]
+  },
+  {
+    quote: "If it doesn't matter who wins or loses, then why do they keep score?",
+    answer: "Vince Lombardi",
+    context: "Legendary Packers coach and author",
+    decoys: ["George Allen", "Bear Bryant", "Tom Landry"]
+  },
+  {
+    quote: "Hey, I'm John Madden — I don't know nothin' about football.",
+    answer: "John Madden",
+    context: "Self-deprecating quote from the broadcasting legend",
+    decoys: ["Pat Summerall", "Al Michaels", "Frank Gifford"]
+  },
+  {
+    quote: "I can't wait to start hitting people in the mouth.",
+    answer: "Terrell Owens",
+    context: "Known for memorable pre-game trash talk",
+    decoys: ["Chad Ochocinco", "Ray Lewis", "Brian Urlacher"]
+  },
+  {
+    quote: "I want to be the best. Simple and plain.",
+    answer: "Jerry Rice",
+    context: "Wide receiver, greatest of all time",
+    decoys: ["Randy Moss", "Cris Carter", "Lynn Swann"]
+  },
+  {
+    quote: "Champions keep playing until they get it right.",
+    answer: "Billie Jean King",
+    context: "Sports legend — made famous in NFL motivational culture",
+    decoys: ["Vince Lombardi", "Joe Montana", "Mike Singletary"]
+  },
+  {
+    quote: "I'm the best corner in the game. When you try me with a sorry receiver like Crabtree, that's the result you're gonna get.",
+    answer: "Richard Sherman",
+    context: "After the 2013 NFC Championship game",
+    decoys: ["Darrelle Revis", "Deion Sanders", "Patrick Peterson"]
+  },
+  {
+    quote: "Nobody circles the wagons like the Buffalo Bills.",
+    answer: "Van Miller",
+    context: "Bills radio play-by-play voice",
+    decoys: ["Jim Kelly", "Marv Levy", "Bruce Smith"]
+  },
+  {
+    quote: "You play to win the game.",
+    answer: "Herm Edwards",
+    context: "2002 postgame press conference, New York Jets",
+    decoys: ["Tony Dungy", "Marty Schottenheimer", "Bill Cowher"]
+  },
+  {
+    quote: "How 'bout them Cowboys!",
+    answer: "Jimmy Johnson",
+    context: "After Super Bowl XXVII victory",
+    decoys: ["Tom Landry", "Jerry Jones", "Roger Staubach"]
+  },
+  {
+    quote: "I feel like the luckiest man in the world.",
+    answer: "Joe Montana",
+    context: "Hall of Fame quarterback, San Francisco 49ers",
+    decoys: ["Terry Bradshaw", "Roger Staubach", "Jim Kelly"]
+  },
+  {
+    quote: "There's no traffic on the extra mile.",
+    answer: "Roger Staubach",
+    context: "Cowboys legend and Naval Academy graduate",
+    decoys: ["Troy Aikman", "Emmitt Smith", "Deion Sanders"]
+  },
+  {
+    quote: "Football is like life — it requires perseverance, self-denial, hard work, sacrifice, dedication, and respect for authority.",
+    answer: "Vince Lombardi",
+    context: "Hall of Fame head coach, Green Bay Packers",
+    decoys: ["Tom Landry", "Chuck Noll", "Don Shula"]
+  },
+  {
+    quote: "I'm not the same person I was. I know that.",
+    answer: "Joe Burrow",
+    context: "After recovering from a knee injury, 2022",
+    decoys: ["Patrick Mahomes", "Josh Allen", "Lamar Jackson"]
+  },
+  {
+    quote: "Pressure is a privilege.",
+    answer: "Patrick Mahomes",
+    context: "Kansas City Chiefs quarterback",
+    decoys: ["Tom Brady", "Joe Burrow", "Justin Herbert"]
+  },
+  {
+    quote: "I am the greatest.",
+    answer: "Deion Sanders",
+    context: "Prime Time, Hall of Fame cornerback and return specialist",
+    decoys: ["Jerry Rice", "Lawrence Taylor", "Randy Moss"]
+  },
+  {
+    quote: "If you're not cheating, you're not trying.",
+    answer: "Bill Parcells",
+    context: "Head coach known for hard-nosed approach",
+    decoys: ["Jimmy Johnson", "Dennis Green", "Mike Ditka"]
+  },
+  {
+    quote: "I want to be remembered as the guy who gave everything he had.",
+    answer: "Brett Favre",
+    context: "Hall of Fame quarterback, record 297 consecutive starts",
+    decoys: ["Dan Marino", "John Elway", "Jim Kelly"]
+  },
+  {
+    quote: "I'm trying to win a championship. That's it.",
+    answer: "Josh Allen",
+    context: "Buffalo Bills quarterback on his mission",
+    decoys: ["Lamar Jackson", "Tua Tagovailoa", "Dak Prescott"]
+  },
+  {
+    quote: "If you don't have confidence, you'll always find a way not to win.",
+    answer: "Carl Lewis",
+    context: "Sports legend — widely cited in NFL locker rooms",
+    decoys: ["Mike Tyson", "Jerry Rice", "Michael Jordan"]
+  },
+  {
+    quote: "This is what we do. We find a way.",
+    answer: "Andy Reid",
+    context: "Kansas City Chiefs head coach",
+    decoys: ["Sean McVay", "Kyle Shanahan", "John Harbaugh"]
+  },
+  {
+    quote: "Go deep.",
+    answer: "John Madden",
+    context: "Iconic broadcaster and Hall of Fame head coach",
+    decoys: ["Dick Vermeil", "Don Coryell", "Sid Gillman"]
+  },
+  {
+    quote: "I hate to lose more than I love to win.",
+    answer: "Jimmy Connors",
+    context: "Often cited by Bill Belichick and Tom Brady in interviews",
+    decoys: ["Tom Brady", "Bill Belichick", "Nick Saban"]
+  },
+  {
+    quote: "When you have an opportunity to make history, you have to take advantage of it.",
+    answer: "Lamar Jackson",
+    context: "Back-to-back MVP, Baltimore Ravens",
+    decoys: ["Patrick Mahomes", "Josh Allen", "Jalen Hurts"]
+  },
+  {
+    quote: "The only way to prove that you're a good sport is to lose.",
+    answer: "Ernie Banks",
+    context: "Baseball legend — echoed throughout NFL culture",
+    decoys: ["Vince Lombardi", "Tom Landry", "Chuck Noll"]
+  },
+  {
+    quote: "Winning is not a sometime thing; it's an all-time thing.",
+    answer: "Vince Lombardi",
+    context: "Opening speech to the Green Bay Packers, 1959",
+    decoys: ["Don Shula", "Paul Brown", "Sid Gillman"]
+  }
+];
+
+// ── Game State ─────────────────────────────────────────────────────────────
+const QUESTIONS_PER_GAME = 15;
+const TIME_PER_QUESTION  = 15;
+
+let gameQuestions  = [];
+let currentIdx     = 0;
+let score          = 0;
+let correctCount   = 0;
+let streak         = 0;
+let bestStreak     = 0;
+let answered       = false;
+let timerInterval  = null;
+let timerStart     = null;
+let timeLeft       = TIME_PER_QUESTION;
+let shareVisible   = false;
+
+// ── LocalStorage helpers ───────────────────────────────────────────────────
+function getHighScore() {
+  return parseInt(localStorage.getItem('nfl-quiz-highscore') || '0', 10);
+}
+function setHighScore(val) {
+  localStorage.setItem('nfl-quiz-highscore', String(val));
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+(function init() {
+  const hs = getHighScore();
+  const el = document.getElementById('high-score-note');
+  if (hs > 0) {
+    el.innerHTML = 'Your best: <span>' + hs + '/15 correct</span>';
+  } else {
+    el.textContent = 'No score yet — set your first record.';
+  }
+})();
+
+// ── Shuffle utility ────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── Build game question list ───────────────────────────────────────────────
+function buildGameQuestions() {
+  const pool = shuffle(QUOTES).slice(0, QUESTIONS_PER_GAME);
+  return pool.map(q => {
+    const wrongPool = shuffle(q.decoys).slice(0, 3);
+    const options   = shuffle([q.answer, ...wrongPool]);
+    return { ...q, options };
+  });
+}
+
+// ── Start game ─────────────────────────────────────────────────────────────
+function startGame() {
+  gameQuestions = buildGameQuestions();
+  currentIdx    = 0;
+  score         = 0;
+  correctCount  = 0;
+  streak        = 0;
+  bestStreak    = 0;
+  answered      = false;
+  shareVisible  = false;
+
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('end-screen').classList.remove('active');
+  document.getElementById('end-screen').style.display   = '';
+
+  const qs = document.getElementById('quiz-screen');
+  qs.classList.add('active');
+
+  updateHUD();
+  renderQuestion();
+}
+
+// ── Render current question ────────────────────────────────────────────────
+function renderQuestion() {
+  answered = false;
+  const q  = gameQuestions[currentIdx];
+
+  // Meta
+  document.getElementById('q-meta').textContent    = 'Question ' + (currentIdx + 1) + ' of ' + QUESTIONS_PER_GAME;
+  document.getElementById('q-quote').textContent   = q.quote;
+  document.getElementById('q-context').textContent = q.context || '';
+
+  // Progress
+  const pct = ((currentIdx + 1) / QUESTIONS_PER_GAME) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+
+  // Feedback bar — hide
+  const fb = document.getElementById('feedback-bar');
+  fb.classList.remove('visible');
+
+  // Options
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML =
+      '<span class="option-letter">' + letters[i] + '</span>' +
+      '<span class="option-name">' + opt + '</span>';
+    btn.addEventListener('click', () => handleAnswer(opt, btn));
+    grid.appendChild(btn);
+  });
+
+  // Timer
+  startTimer();
+}
+
+// ── Timer ──────────────────────────────────────────────────────────────────
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = TIME_PER_QUESTION;
+  updateTimerDisplay();
+
+  const bar = document.getElementById('timer-bar');
+  bar.style.animation = 'none';
+  bar.style.width     = '100%';
+  bar.classList.remove('warning', 'danger');
+  // Force reflow
+  void bar.offsetWidth;
+  bar.style.animation = 'timer-drain ' + TIME_PER_QUESTION + 's linear forwards';
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleTimeout();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const el   = document.getElementById('timer-seconds');
+  const bar  = document.getElementById('timer-bar');
+  el.textContent = timeLeft + 's';
+  el.classList.remove('warning', 'danger');
+  bar.classList.remove('warning', 'danger');
+  if (timeLeft <= 5) {
+    el.classList.add('danger');
+    bar.classList.add('danger');
+  } else if (timeLeft <= 8) {
+    el.classList.add('warning');
+    bar.classList.add('warning');
+  }
+}
+
+function handleTimeout() {
+  if (answered) return;
+  answered = true;
+  streak   = 0;
+
+  // Freeze buttons
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.querySelector('.option-name').textContent === gameQuestions[currentIdx].answer) {
+      btn.classList.add('reveal');
+    }
+  });
+
+  showFeedback(false, null);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  const bar = document.getElementById('timer-bar');
+  // Freeze bar visually
+  const computed = getComputedStyle(bar);
+  bar.style.width     = computed.width;
+  bar.style.animation = 'none';
+}
+
+// ── Handle answer ──────────────────────────────────────────────────────────
+function handleAnswer(selected, btn) {
+  if (answered) return;
+  answered = true;
+  stopTimer();
+
+  const q       = gameQuestions[currentIdx];
+  const correct = selected === q.answer;
+
+  if (correct) {
+    score++;
+    correctCount++;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
+    btn.classList.add('correct');
+  } else {
+    streak = 0;
+    btn.classList.add('wrong');
+    // Reveal correct
+    const buttons = document.querySelectorAll('.option-btn');
+    buttons.forEach(b => {
+      if (b.querySelector('.option-name').textContent === q.answer) {
+        b.classList.add('reveal');
+      }
+    });
+  }
+
+  // Disable all
+  document.querySelectorAll('.option-btn').forEach(b => (b.disabled = true));
+
+  updateHUD();
+  showFeedback(correct, q.answer);
+}
+
+function showFeedback(correct, correctAnswer) {
+  const bar   = document.getElementById('feedback-bar');
+  const inner = document.getElementById('feedback-inner');
+  const text  = document.getElementById('feedback-text');
+
+  inner.className = 'feedback-inner ' + (correct ? 'correct' : 'wrong');
+
+  if (correct) {
+    text.innerHTML = '<strong>Correct!</strong> That one\'s locked in.';
+  } else if (correctAnswer) {
+    text.innerHTML = 'Not quite. That was <strong>' + correctAnswer + '</strong>.';
+  } else {
+    text.innerHTML = 'Time\'s up! The answer was <strong>' + gameQuestions[currentIdx].answer + '</strong>.';
+  }
+
+  bar.classList.add('visible');
+
+  // Auto-advance if last question
+  if (currentIdx >= QUESTIONS_PER_GAME - 1) {
+    document.getElementById('feedback-next').textContent = 'See Results';
+  } else {
+    document.getElementById('feedback-next').textContent = 'Next \u2192';
+  }
+}
+
+// ── Next question ──────────────────────────────────────────────────────────
+function nextQuestion() {
+  currentIdx++;
+  if (currentIdx >= QUESTIONS_PER_GAME) {
+    endGame();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ── HUD update ─────────────────────────────────────────────────────────────
+function updateHUD() {
+  document.getElementById('hud-qnum').textContent    = currentIdx + 1;
+  document.getElementById('hud-score').textContent   = score;
+  document.getElementById('hud-streak').textContent  = streak;
+  document.getElementById('hud-correct').textContent = correctCount;
+}
+
+// ── End game ───────────────────────────────────────────────────────────────
+function endGame() {
+  clearInterval(timerInterval);
+
+  document.getElementById('quiz-screen').classList.remove('active');
+
+  const pct     = Math.round((correctCount / QUESTIONS_PER_GAME) * 100);
+  const { grade, title, subtitle, cssClass } = getGrade(pct);
+
+  // Update end card
+  const card = document.getElementById('end-card');
+  card.className = 'end-card ' + cssClass;
+
+  const gradeEl = document.getElementById('end-grade');
+  gradeEl.className = 'end-grade ' + cssClass;
+  gradeEl.textContent = grade;
+
+  document.getElementById('end-title').textContent    = title;
+  document.getElementById('end-subtitle').textContent = subtitle;
+  document.getElementById('end-correct').textContent  = correctCount + '/15';
+  document.getElementById('end-pct').textContent      = pct + '%';
+  document.getElementById('end-streak').textContent   = bestStreak;
+
+  // High score check
+  const prevBest = getHighScore();
+  const newBest  = document.getElementById('end-new-best');
+  if (correctCount > prevBest) {
+    setHighScore(correctCount);
+    newBest.classList.add('show');
+  } else {
+    newBest.classList.remove('show');
+  }
+
+  // Pre-build share text (hidden until toggled)
+  const shareBox = document.getElementById('share-text-box');
+  shareBox.classList.remove('show');
+  shareBox.innerHTML =
+    'I scored ' + correctCount + '/15 (' + pct + '%) on the AiNFLGM NFL Quote Quiz!\n' +
+    'Grade: ' + grade + ' — "' + title + '"\n' +
+    'Best streak: ' + bestStreak + '\n\n' +
+    'Think you can beat me? ainflgm.com/who-said-it.html';
+
+  // Add copy button if not already there
+  if (!shareBox.querySelector('.share-copy-btn')) {
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'share-copy-btn';
+    copyBtn.textContent = 'Copy to Clipboard';
+    copyBtn.addEventListener('click', copyShare);
+    shareBox.appendChild(copyBtn);
+  }
+
+  shareVisible = false;
+
+  const endScreen = document.getElementById('end-screen');
+  endScreen.classList.add('active');
+
+  // Update high score note for next play
+  const hs = getHighScore();
+  const hsEl = document.getElementById('high-score-note');
+  if (hs > 0) {
+    hsEl.innerHTML = 'Your best: <span>' + hs + '/15 correct</span>';
+  }
+
+  // Track with GA
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'quiz_complete', {
+      event_category: 'Who Said It',
+      event_label: grade,
+      value: correctCount
+    });
+  }
+}
+
+// ── Grade logic ────────────────────────────────────────────────────────────
+function getGrade(pct) {
+  if (pct === 100) return {
+    grade: 'S',
+    title: 'NFL Oracle',
+    subtitle: 'Perfect score. You know these quotes better than the people who said them.',
+    cssClass: 'grade-s'
+  };
+  if (pct >= 87) return {
+    grade: 'A',
+    title: 'Football Genius',
+    subtitle: 'Elite knowledge. You live and breathe NFL history.',
+    cssClass: 'grade-a'
+  };
+  if (pct >= 73) return {
+    grade: 'B',
+    title: 'Film Room Regular',
+    subtitle: 'Solid. You know your football — a few quotes slipped past you.',
+    cssClass: 'grade-b'
+  };
+  if (pct >= 53) return {
+    grade: 'C',
+    title: 'Casual Fan',
+    subtitle: 'You know the big names but some of these stumped you.',
+    cssClass: 'grade-c'
+  };
+  if (pct >= 33) return {
+    grade: 'D',
+    title: 'Practice Squad',
+    subtitle: 'Rough outing. Time to study the playbook.',
+    cssClass: 'grade-f'
+  };
+  return {
+    grade: 'F',
+    title: 'Cut Day',
+    subtitle: 'You got cut. Hit the playbook and come back stronger.',
+    cssClass: 'grade-f'
+  };
+}
+
+// ── Share ──────────────────────────────────────────────────────────────────
+function toggleShare() {
+  shareVisible = !shareVisible;
+  const box = document.getElementById('share-text-box');
+  if (shareVisible) {
+    box.classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+function copyShare() {
+  const box  = document.getElementById('share-text-box');
+  const text = box.childNodes[0].textContent.trim();
+  const btn  = box.querySelector('.share-copy-btn');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy to Clipboard';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy to Clipboard';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

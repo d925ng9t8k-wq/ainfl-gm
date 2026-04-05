@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="apple-mobile-web-app-title" content="Burrow Pitch">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="Joe Burrow x PlayAiGM — The AI-powered sports platform, endorsed by #9 himself.">
+<meta property="og:title" content="Joe Burrow x PlayAiGM">
+<meta property="og:description" content="Joe Burrow introduces PlayAiGM — the AI-powered sports GM platform.">
+<meta property="og:type" content="video.other">
+<meta property="og:url" content="https://ainflgm.com/burrow-pitch.html">
+<title>Burrow Pitch — Joe Burrow x PlayAiGM</title>
+<link rel="canonical" href="https://9enterprises.ai/burrow-pitch.html">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PLW4H1NNF6');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #0a0a0a;
+  color: #e2e2e2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.video-container {
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16/9;
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 60px rgba(251,79,20,0.15);
+  border: 1px solid rgba(251,79,20,0.2);
+}
+.video-container video,
+.video-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+}
+.video-placeholder .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(251,79,20,0.2);
+  border-top-color: #FB4F14;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.title-bar {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.title-bar h1 {
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.title-bar h1 span { color: #FB4F14; }
+.title-bar a {
+  color: #FB4F14;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+.title-bar a:hover { opacity: 0.8; }
+.cta {
+  max-width: 900px;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cta a:hover { transform: translateY(-2px); }
+.cta-primary {
+  background: linear-gradient(135deg, #FB4F14, #e04412);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(251,79,20,0.4);
+}
+.cta-ghost {
+  background: transparent;
+  color: #e2e2e2;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.cta-ghost:hover { border-color: rgba(251,79,20,0.4); }
+</style>
+</head>
+<body>
+
+<div class="title-bar">
+  <h1>Joe Burrow x <span>PlayAiGM</span></h1>
+  <a href="/9enterprises.html">9 Enterprises Universe &rarr;</a>
+</div>
+
+<div class="video-container" id="video-wrap">
+  <div class="video-placeholder" id="video-placeholder">
+    <div class="spinner"></div>
+    <span>Loading video...</span>
+  </div>
+  <video id="burrow-video" controls playsinline preload="auto" poster="" style="width:100%;height:100%;position:absolute;inset:0;object-fit:cover;border-radius:16px;z-index:2;">
+    <source src="/burrow-v7.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+<script>
+(function(){
+  var v = document.getElementById('burrow-video');
+  var p = document.getElementById('video-placeholder');
+  function hideLoader(){p.style.display='none';}
+  v.addEventListener('loadeddata', hideLoader);
+  v.addEventListener('canplay', hideLoader);
+  // Fallback: hide after 3 seconds regardless
+  setTimeout(hideLoader, 3000);
+})();
+</script>
+
+<div class="cta">
+  <a href="/aigm.html" class="cta-primary">Try PlayAiGM &rarr;</a>
+  <a href="/9enterprises.html" class="cta-ghost">Explore the Universe</a>
+  <a href="/cockpit.html" class="cta-ghost">The Huddle</a>
+</div>
+
+</body>
+</html>

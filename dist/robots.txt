@@ -2,16 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /austin.html
 Disallow: /rapid-clarkson-deck-v2.html
-Disallow: /owner.html
-Disallow: /cockpit.html
-Disallow: /grok-proposal.html
-Disallow: /kyle-response.html
-Disallow: /kyle-response-v2.html
-Disallow: /kyle-response-v3.html
-Disallow: /kyle-response-v4.html
-Disallow: /kyle-response-v5.html
-Disallow: /kyle-response-v5b.html
-Disallow: /rapid-clarkson-deck.html
-Disallow: /rapid-clarkson-summary.html
-Disallow: /mistress-deck.html
 Sitemap: https://ainflgm.com/sitemap.xml

@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Gameday Plan">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Game Day Checklist & Watch Party Planner | AiNFL GM</title>
+<meta name="description" content="Plan the ultimate NFL watch party. Get a custom game day checklist, regional food picks, team superstitions, and drinking game rules for all 32 NFL teams.">
+<meta property="og:title" content="NFL Game Day Checklist & Watch Party Planner | AiNFL GM">
+<meta property="og:description" content="Pick your team. Get a custom game day checklist, regional food recs, superstitions, and more. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/gameday-planner.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Game Day Checklist & Watch Party Planner | AiNFL GM">
+<meta name="twitter:description" content="Pick your team and get the ultimate game day plan. Free NFL watch party tool.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF6B2B;
+  --orange-dim: rgba(255,107,43,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes checkPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Team Selector ── */
+.team-selector-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease both 0.05s;
+}
+.selector-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+.team-selector-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.team-select {
+  flex: 1;
+  min-width: 220px;
+  appearance: none;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 12px 16px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.team-select:focus { border-color: var(--cyan); }
+.team-select option { background: var(--bg-2); color: var(--text); }
+
+.btn-generate {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cyan);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 24px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-generate:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-generate:active { transform: translateY(0); }
+
+/* ── AdSense slot ── */
+.ad-slot {
+  text-align: center;
+  margin: 0 0 24px;
+  min-height: 90px;
+}
+
+/* ── Plan Container ── */
+#plan-container { display: none; }
+#plan-container.visible {
+  display: block;
+  animation: glow-in 0.35s ease both;
+}
+
+/* ── Team Banner ── */
+.team-banner {
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--border);
+}
+.team-banner-emoji {
+  font-size: 40px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.team-banner-info {}
+.team-banner-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+.team-banner-city {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* ── Sections grid ── */
+.plan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 640px) {
+  .plan-grid { grid-template-columns: 1fr; }
+  .team-banner { flex-direction: column; text-align: center; }
+}
+
+/* ── Card ── */
+.plan-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.plan-card.full-width { grid-column: 1 / -1; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.card-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.card-body {
+  padding: 16px 18px;
+}
+
+/* ── Checklist ── */
+.checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 0;
+  border-radius: var(--radius-xs);
+  transition: opacity 0.2s;
+  user-select: none;
+}
+.checklist-item.checked { opacity: 0.45; }
+.checklist-item.checked .check-label { text-decoration: line-through; }
+
+.check-box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-hi);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.checklist-item.checked .check-box {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  animation: checkPop 0.25s ease;
+}
+.check-tick {
+  display: none;
+  width: 10px;
+  height: 10px;
+}
+.checklist-item.checked .check-tick { display: block; }
+
+.check-label {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.check-label span {
+  font-size: 11px;
+  color: var(--text-mute);
+  display: block;
+}
+
+/* ── Food list ── */
+.food-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.food-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.food-emoji {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.food-info {}
+.food-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.food-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+
+/* ── Superstitions ── */
+.superstition-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.superstition-item {
+  font-size: 13px;
+  color: var(--text);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.superstition-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+
+/* ── Drinking game ── */
+.drink-rule-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.drink-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+}
+.drink-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.drink-badge.sip { background: var(--green-dim); color: var(--green); }
+.drink-badge.chug { background: var(--yellow-dim); color: var(--yellow); }
+.drink-badge.shot { background: var(--red-dim); color: var(--red); }
+
+.drink-rule-text { color: var(--text); line-height: 1.5; }
+
+.drink-disclaimer {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(255,214,0,0.06);
+  border: 1px solid rgba(255,214,0,0.15);
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  color: var(--text-mute);
+  line-height: 1.5;
+}
+
+/* ── Score Predictor ── */
+.score-predictor {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.score-team-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  width: 90px;
+  flex-shrink: 0;
+}
+.score-input {
+  width: 70px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.score-input:focus { border-color: var(--cyan); }
+.score-vs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+.score-opp-input {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.score-opp-input:focus { border-color: var(--border-hi); }
+
+.btn-predict {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.3);
+  color: var(--green);
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  width: 100%;
+}
+.btn-predict:hover { background: rgba(57,255,20,0.2); transform: translateY(-1px); }
+
+/* ── Mood result ── */
+#mood-result {
+  display: none;
+  margin-top: 14px;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+  animation: glow-in 0.3s ease both;
+}
+#mood-result.visible { display: block; }
+.mood-emoji-big {
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.mood-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.mood-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── Share Button ── */
+.share-wrap {
+  margin-top: 20px;
+}
+.btn-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border-hi);
+  color: var(--cyan);
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.btn-share:hover { background: var(--cyan-dim); transform: translateY(-1px); }
+.btn-share:active { transform: translateY(0); }
+.share-toast {
+  text-align: center;
+  font-size: 12px;
+  color: var(--green);
+  margin-top: 8px;
+  height: 16px;
+  transition: opacity 0.3s;
+}
+
+/* ── Progress bar ── */
+.progress-wrap {
+  background: var(--bg-2);
+  border-radius: 100px;
+  height: 6px;
+  margin-top: 14px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--cyan);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 6px;
+  text-align: right;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Responsive tweaks ── */
+@media (max-width: 480px) {
+  .team-selector-row { flex-direction: column; }
+  .btn-generate { width: 100%; justify-content: center; }
+  .score-team-label { width: 70px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    Game Day Central
+  </div>
+  <h1>NFL Watch Party<br><span>Planner</span></h1>
+  <p>Pick your team and we'll build your entire game day — food, rituals, checklist, drinking game rules, and more.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Team Selector -->
+  <div class="team-selector-wrap">
+    <div class="selector-label">Select Your Team</div>
+    <div class="team-selector-row">
+      <select id="team-select" class="team-select" aria-label="Select your NFL team">
+        <option value="">-- Pick your team --</option>
+        <option value="ARI">Arizona Cardinals</option>
+        <option value="ATL">Atlanta Falcons</option>
+        <option value="BAL">Baltimore Ravens</option>
+        <option value="BUF">Buffalo Bills</option>
+        <option value="CAR">Carolina Panthers</option>
+        <option value="CHI">Chicago Bears</option>
+        <option value="CIN">Cincinnati Bengals</option>
+        <option value="CLE">Cleveland Browns</option>
+        <option value="DAL">Dallas Cowboys</option>
+        <option value="DEN">Denver Broncos</option>
+        <option value="DET">Detroit Lions</option>
+        <option value="GB">Green Bay Packers</option>
+        <option value="HOU">Houston Texans</option>
+        <option value="IND">Indianapolis Colts</option>
+        <option value="JAX">Jacksonville Jaguars</option>
+        <option value="KC">Kansas City Chiefs</option>
+        <option value="LV">Las Vegas Raiders</option>
+        <option value="LAC">Los Angeles Chargers</option>
+        <option value="LAR">Los Angeles Rams</option>
+        <option value="MIA">Miami Dolphins</option>
+        <option value="MIN">Minnesota Vikings</option>
+        <option value="NE">New England Patriots</option>
+        <option value="NO">New Orleans Saints</option>
+        <option value="NYG">New York Giants</option>
+        <option value="NYJ">New York Jets</option>
+        <option value="PHI">Philadelphia Eagles</option>
+        <option value="PIT">Pittsburgh Steelers</option>
+        <option value="SF">San Francisco 49ers</option>
+        <option value="SEA">Seattle Seahawks</option>
+        <option value="TB">Tampa Bay Buccaneers</option>
+        <option value="TEN">Tennessee Titans</option>
+        <option value="WSH">Washington Commanders</option>
+      </select>
+      <button class="btn-generate" onclick="generatePlan()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Build My Plan
+      </button>
+    </div>
+  </div>
+
+  <!-- AdSense Top -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Plan Output -->
+  <div id="plan-container">
+
+    <!-- Team Banner -->
+    <div class="team-banner" id="team-banner">
+      <div class="team-banner-emoji" id="banner-emoji">🏈</div>
+      <div class="team-banner-info">
+        <div class="team-banner-name" id="banner-name">Team Name</div>
+        <div class="team-banner-city" id="banner-city">City, State</div>
+      </div>
+    </div>
+
+    <!-- Top Grid: Checklist + Food -->
+    <div class="plan-grid">
+
+      <!-- Checklist -->
+      <div class="plan-card">
+        <div class="card-header">
+          <span class="card-icon">✅</span>
+          <span class="card-title">Pre-Game Checklist</span>
+        </div>
+        <div class="card-body">
+          <ul class="checklist" id="checklist-list"></ul>
+          <div class="progress-wrap">
+            <div class="progress-bar" id="checklist-bar" style="width:0%"></div>
+          </div>
+          <div class="progress-label" id="progress-label">0 of 0 complete</div>
+        </div>
+      </div>
+
+      <!-- Food -->
+      <div class="plan-card">
+        <div class="card-header">
+          <span class="card-icon">🍔</span>
+          <span class="card-title">Game Day Food</span>
+        </div>
+        <div class="card-body">
+          <ul class="food-list" id="food-list"></ul>
+        </div>
+      </div>
+
+      <!-- Superstitions -->
+      <div class="plan-card">
+        <div class="card-header">
+          <span class="card-icon">🤞</span>
+          <span class="card-title">Rituals & Superstitions</span>
+        </div>
+        <div class="card-body">
+          <ul class="superstition-list" id="superstition-list"></ul>
+        </div>
+      </div>
+
+      <!-- Drinking Game -->
+      <div class="plan-card">
+        <div class="card-header">
+          <span class="card-icon">🍺</span>
+          <span class="card-title">Drinking Game Rules</span>
+        </div>
+        <div class="card-body">
+          <ul class="drink-rule-list" id="drink-list"></ul>
+          <div class="drink-disclaimer">Drink responsibly. Non-alcoholic substitutions always encouraged.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Score Predictor full width -->
+    <div class="plan-card full-width" style="margin-bottom:16px;">
+      <div class="card-header">
+        <span class="card-icon">🎯</span>
+        <span class="card-title">Score Prediction & Mood Generator</span>
+      </div>
+      <div class="card-body">
+        <div class="score-predictor">
+          <div class="score-row">
+            <div class="score-team-label" id="score-team-label">My Team</div>
+            <input type="number" id="score-mine" class="score-input" value="24" min="0" max="99" aria-label="Your team's predicted score">
+            <div class="score-vs">VS</div>
+            <input type="text" id="score-opp-name" class="score-opp-input" placeholder="Opponent team name" aria-label="Opponent name">
+            <input type="number" id="score-opp" class="score-input" value="17" min="0" max="99" aria-label="Opponent predicted score">
+          </div>
+          <button class="btn-predict" onclick="generateMood()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M6.5 1L8.2 4.5L12 5.1L9.25 7.8L9.9 11.6L6.5 9.8L3.1 11.6L3.75 7.8L1 5.1L4.8 4.5L6.5 1Z" fill="currentColor"/>
+            </svg>
+            Generate Post-Game Mood
+          </button>
+          <div id="mood-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Share -->
+    <div class="share-wrap">
+      <button class="btn-share" onclick="shareGameDay()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M10 1L13 4L10 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M1 10V8.5C1 6.29 2.79 4.5 5 4.5H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Share My Game Day Plan
+      </button>
+      <div class="share-toast" id="share-toast"></div>
+    </div>
+
+  </div><!-- end plan-container -->
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <a href="https://ainflgm.com">Draft Room</a> &nbsp;&middot;&nbsp;
+    <a href="/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="/cap-space.html">Cap Space</a> &nbsp;&middot;&nbsp;
+    <a href="/name-generator.html">Name Generator</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ── Team Data ────────────────────────────────────────────────────────────────
+
+const TEAMS = {
+  ARI: {
+    name: 'Arizona Cardinals',
+    city: 'Glendale, AZ',
+    emoji: '🔴',
+    color: '#97233F',
+    food: [
+      { emoji: '🌮', name: 'Sonoran Hot Dog', desc: 'Bacon-wrapped dog with pinto beans, tomato, and mayo — an AZ staple' },
+      { emoji: '🥙', name: 'Carne Asada Nachos', desc: 'Loaded street-style nachos with grilled steak and salsa verde' },
+      { emoji: '🍋', name: 'Chile Verde Dip', desc: 'Roasted green chile dip with warm flour tortillas' },
+      { emoji: '🍺', name: 'Craft Beer', desc: 'Four Peaks Brewing or SanTan Brewing — local AZ picks' }
+    ],
+    superstitions: [
+      'Wear your red jersey — every single time, even in July',
+      'Don\'t change seats if the team scores on a drive',
+      'Say nothing about a winning streak out loud — ever',
+      'Keep a Cardinal bobblehead visible on the TV stand'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Every time Kyler scrambles out of the pocket' },
+      { badge: 'sip', text: 'Any third-down conversion' },
+      { badge: 'chug', text: 'Cards score a touchdown from inside the 5-yard line' },
+      { badge: 'chug', text: 'A big red zone turnover happens' },
+      { badge: 'shot', text: 'The Cardinals force a fumble and recover it' }
+    ]
+  },
+  ATL: {
+    name: 'Atlanta Falcons',
+    city: 'Atlanta, GA',
+    emoji: '🦅',
+    color: '#A71930',
+    food: [
+      { emoji: '🍑', name: 'Chick-fil-A Platter', desc: 'The official snack of Georgia — nuggets, waffle fries, the whole spread' },
+      { emoji: '🍖', name: 'Smoked Ribs', desc: 'Atlanta BBQ style with a sweet and tangy sauce' },
+      { emoji: '🧁', name: 'Peach Cobbler', desc: 'Georgia peaches. Enough said.' },
+      { emoji: '🍺', name: 'Sweetwater 420', desc: 'Atlanta\'s legendary local craft beer' }
+    ],
+    superstitions: [
+      'Never mention 28-3 — the curse is still real',
+      'Wear red AND black together for maximum power',
+      'If the Falcons go up big, switch seats immediately',
+      'Light a scented candle before kickoff — prosperity ritual'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any completion over 15 yards' },
+      { badge: 'sip', text: 'Every time Julio Jones or Ridley highlights play on screen' },
+      { badge: 'chug', text: 'Falcons score a touchdown' },
+      { badge: 'chug', text: 'Someone in the room references 28-3' },
+      { badge: 'shot', text: 'Defensive turnover inside the red zone' }
+    ]
+  },
+  BAL: {
+    name: 'Baltimore Ravens',
+    city: 'Baltimore, MD',
+    emoji: '🐦‍⬛',
+    color: '#241773',
+    food: [
+      { emoji: '🦀', name: 'Maryland Crab Dip', desc: 'Baked Old Bay crab dip with toasted bread rounds — Baltimore\'s finest' },
+      { emoji: '🌭', name: 'Pit Beef Sandwiches', desc: 'Thinly sliced charcoal pit beef on Kaiser roll with horseradish' },
+      { emoji: '🍟', name: 'Old Bay Fries', desc: 'Thick-cut fries seasoned heavy with Old Bay' },
+      { emoji: '🍺', name: 'Natty Boh', desc: 'National Bohemian — Baltimore\'s hometown brew' }
+    ],
+    superstitions: [
+      'Shout "POE!" on every third-down defense — it summons the spirit',
+      'Never bet against Lamar on a scramble',
+      'Purple everything — shirt, hat, socks, at minimum',
+      'Tap the TV twice before kickoff for good luck'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Lamar Jackson runs for a first down' },
+      { badge: 'sip', text: 'Ravens force a three-and-out' },
+      { badge: 'chug', text: 'A Ravens touchdown of 20+ yards' },
+      { badge: 'chug', text: 'Defense gets a sack' },
+      { badge: 'shot', text: 'Pick-six or defensive TD' }
+    ]
+  },
+  BUF: {
+    name: 'Buffalo Bills',
+    city: 'Buffalo, NY',
+    emoji: '🦬',
+    color: '#00338D',
+    food: [
+      { emoji: '🍗', name: 'Original Buffalo Wings', desc: 'Anchor Bar style — these were invented here. Frank\'s RedHot only.' },
+      { emoji: '🥪', name: 'Beef on Weck', desc: 'Shaved roast beef on a kummelweck roll — the true Buffalo sandwich' },
+      { emoji: '🍕', name: 'Loganberry Punch', desc: 'Buffalo\'s favorite local drink, pairs perfectly with wings' },
+      { emoji: '🍺', name: 'Flying Bison Brewing', desc: 'Buffalo\'s original craft brewery — grab a Rusty Chain' }
+    ],
+    superstitions: [
+      'Fold a full table before the game starts — Bills Mafia tradition',
+      'Wear the same jersey you wore during the last win',
+      'No "Super Bowl" talk — you know why',
+      'Jump through a table at least once per postseason (with padding)'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Every completed pass to Diggs (or whoever\'s the #1 WR)' },
+      { badge: 'sip', text: 'Josh Allen scrambles for 5+ yards' },
+      { badge: 'chug', text: 'Bills score a TD and the crowd at Highmark goes insane' },
+      { badge: 'chug', text: 'A Bills player does a celebratory snow angel' },
+      { badge: 'shot', text: 'Josh Allen throws a dart on 4th down conversion' }
+    ]
+  },
+  CAR: {
+    name: 'Carolina Panthers',
+    city: 'Charlotte, NC',
+    emoji: '🐆',
+    color: '#0085CA',
+    food: [
+      { emoji: '🍖', name: 'Lexington BBQ Pork', desc: 'Smoky pulled pork with Carolina vinegar-based red slaw' },
+      { emoji: '🍗', name: 'Country Ham Biscuits', desc: 'Southern comfort — flaky biscuits with salty country ham' },
+      { emoji: '🌽', name: 'Fried Okra & Hush Puppies', desc: 'Southern fry basket to go with the game' },
+      { emoji: '🍺', name: 'NoDa Brewing', desc: 'Charlotte\'s award-winning craft beer — try the Hop Drop \'N Roll' }
+    ],
+    superstitions: [
+      'Do the Cam Newton Superman pose after every Panthers TD',
+      'Don\'t wear blue and black together — pick a side',
+      'Keep a panthers claw scratch somewhere in the room',
+      'No social media trash talk until the clock hits zero'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Every time the QB runs a designed run' },
+      { badge: 'sip', text: 'Panthers force a punt' },
+      { badge: 'chug', text: 'Panthers score 14+ points in a quarter' },
+      { badge: 'chug', text: 'A massive sack with a big celebration' },
+      { badge: 'shot', text: 'Panthers return a kick for a touchdown' }
+    ]
+  },
+  CHI: {
+    name: 'Chicago Bears',
+    city: 'Chicago, IL',
+    emoji: '🐻',
+    color: '#0B162A',
+    food: [
+      { emoji: '🌭', name: 'Chicago Style Hot Dog', desc: 'Vienna beef, yellow mustard, neon relish, sport peppers — never ketchup' },
+      { emoji: '🥩', name: 'Italian Beef Sandwich', desc: 'Giardiniera, sweet peppers, dunked in the juice — messy perfection' },
+      { emoji: '🍕', name: 'Deep Dish Pizza', desc: 'Lou Malnati\'s or Giordano\'s — plan ahead, it takes 45 minutes' },
+      { emoji: '🍺', name: 'Old Style Beer', desc: 'Chicago\'s heritage lager — the official unofficial beer of Soldier Field' }
+    ],
+    superstitions: [
+      'Say "Da Bears" at least once every quarter — it\'s required by law',
+      'No watching from inside if the Bears are on a win streak',
+      'Wear navy, never the alternate uniform matchday',
+      'Keep Mike Ditka\'s face somewhere visible in the room'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any time the announcer says "Bears defense"' },
+      { badge: 'sip', text: 'Caleb Williams makes a scramble play' },
+      { badge: 'chug', text: 'Bears score on a trick play' },
+      { badge: 'chug', text: 'A turnover that directly leads to Bears points' },
+      { badge: 'shot', text: 'Bears win a game they had no business winning' }
+    ]
+  },
+  CIN: {
+    name: 'Cincinnati Bengals',
+    city: 'Cincinnati, OH',
+    emoji: '🐯',
+    color: '#FB4F14',
+    food: [
+      { emoji: '🍝', name: 'Skyline Chili 5-Way', desc: 'Cincinnati style: chili over spaghetti, beans, onions, and mound of cheddar' },
+      { emoji: '🌭', name: 'Cheese Coney', desc: 'Classic Cincinnati hot dog — Gold Star or Skyline, the debate is eternal' },
+      { emoji: '🍕', name: 'LaRosa\'s Pizza', desc: 'Cincinnati\'s legendary local pizza chain — thick cut and loaded' },
+      { emoji: '🍺', name: 'Rhinegeist Brewery', desc: 'OTR craft beer — Truth IPA is the one. Who Dey!' }
+    ],
+    superstitions: [
+      'Who Dey chant at kickoff — mandatory, no exceptions',
+      'Eat Skyline before noon on game day for max luck',
+      'Never switch seats during a Bengal scoring drive',
+      'Wear stripes head to toe — the more bengal-patterned, the better'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Joe Burrow slings a strike over 20 yards' },
+      { badge: 'sip', text: 'Ja\'Marr Chase makes a contested catch' },
+      { badge: 'chug', text: 'Bengals score a TD — shout WHO DEY first' },
+      { badge: 'chug', text: 'Defense forces a turnover' },
+      { badge: 'shot', text: 'Joe Burrow does the icy stare after a big play' }
+    ]
+  },
+  CLE: {
+    name: 'Cleveland Browns',
+    city: 'Cleveland, OH',
+    emoji: '🟤',
+    color: '#311D00',
+    food: [
+      { emoji: '🌭', name: 'Cleveland Polish Boy', desc: 'Kielbasa on a bun, layered with fries, BBQ sauce, and coleslaw' },
+      { emoji: '🥩', name: 'West Side Market Finds', desc: 'Anything from the legendary Cleveland market — pierogi, kielbasa, the works' },
+      { emoji: '🍕', name: 'Melt Bar & Grilled', desc: 'Cleveland\'s iconic over-the-top grilled cheese sandwiches' },
+      { emoji: '🍺', name: 'Great Lakes Brewing', desc: 'Cleveland\'s flagship — Burning River Pale Ale all day' }
+    ],
+    superstitions: [
+      'Wear the Brownie Elf somewhere on your body for good juju',
+      'No mention of The Drive, The Fumble, or The Decision',
+      'Bang a trash can lid when the Browns score',
+      'The Dog Pound barks on every third down — start it yourself if no one else does'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any completion to a Browns tight end' },
+      { badge: 'sip', text: 'Nick Chubb (or whoever\'s running it) gets a first down on the ground' },
+      { badge: 'chug', text: 'Browns score any points' },
+      { badge: 'chug', text: 'Myles Garrett does something physically impossible' },
+      { badge: 'shot', text: 'The Browns somehow win a game everyone counted them out of' }
+    ]
+  },
+  DAL: {
+    name: 'Dallas Cowboys',
+    city: 'Dallas, TX',
+    emoji: '⭐',
+    color: '#003594',
+    food: [
+      { emoji: '🥩', name: 'Texas Brisket', desc: 'Slow-smoked overnight — slice thick, sauce on the side' },
+      { emoji: '🌮', name: 'Tex-Mex Queso', desc: 'Velveeta + Rotel is Texas law. Serve with chips, do not argue.' },
+      { emoji: '🌭', name: 'Texas Sausage Links', desc: 'Jalapeño cheddar links on the grill — simple and perfect' },
+      { emoji: '🍺', name: 'Shiner Bock', desc: 'The Texas beer. Cold Shiner, cold day, hot Cowboys game.' }
+    ],
+    superstitions: [
+      'America\'s Team needs America\'s full attention — no distractions',
+      'Dallas stars tattoo or star sticker visible somewhere in the room',
+      'Don\'t turn off the game at halftime even if it looks bad',
+      'Channel Jerry Jones energy — believe it\'s already won'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Every passing touchdown by Dallas' },
+      { badge: 'sip', text: 'CeeDee Lamb runs a route so crispy it makes you emotional' },
+      { badge: 'chug', text: 'Cowboys score on special teams' },
+      { badge: 'chug', text: 'Someone references the glory years of Aikman/Emmitt/Irvin' },
+      { badge: 'shot', text: 'Dak Prescott pulls off a 4th quarter comeback' }
+    ]
+  },
+  DEN: {
+    name: 'Denver Broncos',
+    city: 'Denver, CO',
+    emoji: '🐴',
+    color: '#FB4F14',
+    food: [
+      { emoji: '🥩', name: 'Rocky Mountain Oysters', desc: 'Colorado dare food — if you know, you know' },
+      { emoji: '🌯', name: 'Green Chile Burrito', desc: 'Colorado style green chile smothered burrito — hot and loaded' },
+      { emoji: '🍔', name: 'Denver Burger', desc: 'Green Hatch chile, fried egg, cheddar — mile-high style' },
+      { emoji: '🍺', name: 'Coors Banquet', desc: 'Born in the Rockies. Drink it cold, drink it fast.' }
+    ],
+    superstitions: [
+      'Orange everything — if it\'s not orange, it doesn\'t count',
+      'Stand up for every third-and-long play and stay standing until they convert',
+      'Mile High Salute after every Broncos TD',
+      'Point to the mountains before kickoff — it\'s tradition'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any Broncos run play of 8+ yards' },
+      { badge: 'sip', text: 'Defense holds to a field goal instead of TD' },
+      { badge: 'chug', text: 'Broncos score any kind of TD' },
+      { badge: 'chug', text: 'Punt lands inside the 5-yard line' },
+      { badge: 'shot', text: 'Broncos win at home in a snowstorm' }
+    ]
+  },
+  DET: {
+    name: 'Detroit Lions',
+    city: 'Detroit, MI',
+    emoji: '🦁',
+    color: '#0076B6',
+    food: [
+      { emoji: '🍕', name: 'Detroit Style Pizza', desc: 'Square, thick, crispy bottom — Buddy\'s or Shield\'s are the OGs' },
+      { emoji: '🌭', name: 'Coney Island Dog', desc: 'American Coney Island vs Lafayette Coney — pick your side' },
+      { emoji: '🥩', name: 'Vernors Float', desc: 'Iconic Michigan ginger ale with vanilla ice cream — must have' },
+      { emoji: '🍺', name: 'Founders Brewing', desc: 'Grand Rapids craft pride — All Day IPA is the game day staple' }
+    ],
+    superstitions: [
+      'Thanksgiving game is sacred — be at the TV by noon, no excuses',
+      'The Honolulu Blue jersey is lucky — wear it on home games',
+      'Scream "GOFF" dramatically on any big play, even bad ones',
+      'Believe. For the first time in decades, actually believe.'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Jared Goff makes a clean pocket throw on 3rd down' },
+      { badge: 'sip', text: 'Amon-Ra St. Brown makes a tough catch over the middle' },
+      { badge: 'chug', text: 'Lions score a touchdown in the 4th quarter' },
+      { badge: 'chug', text: 'Dan Campbell headbutts something' },
+      { badge: 'shot', text: 'Lions win on a late game-winning drive — pour one out for the journey' }
+    ]
+  },
+  GB: {
+    name: 'Green Bay Packers',
+    city: 'Green Bay, WI',
+    emoji: '🧀',
+    color: '#203731',
+    food: [
+      { emoji: '🧀', name: 'Cheese Curds', desc: 'Fresh Wisconsin cheese curds — fried if you\'re going all in' },
+      { emoji: '🍺', name: 'Spotted Cow', desc: 'New Glarus Brewing — can only get it in Wisconsin, which makes it sacred' },
+      { emoji: '🥩', name: 'Bratwurst on the Grill', desc: 'Johnsonville brats, boiled in Spotted Cow, then grilled — Lambeau style' },
+      { emoji: '🥧', name: 'Kringle Pastry', desc: 'Wisconsin\'s state pastry — almond or pecan for game day' }
+    ],
+    superstitions: [
+      'Wear the cheesehead hat — always, without irony',
+      'Aaron Rodgers or Jordan Love: pick your era and commit',
+      'Never bet against Lambeau Field in January',
+      'Do the Lambeau Leap couch dive when the Packers score'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any completion to the #1 receiver' },
+      { badge: 'sip', text: 'QB scrambles for a first down' },
+      { badge: 'chug', text: 'Packers score a rushing TD' },
+      { badge: 'chug', text: 'Anyone mentions Aaron Rodgers' },
+      { badge: 'shot', text: 'Green Bay wins a game in below-freezing temperatures' }
+    ]
+  },
+  HOU: {
+    name: 'Houston Texans',
+    city: 'Houston, TX',
+    emoji: '🤘',
+    color: '#03202F',
+    food: [
+      { emoji: '🦐', name: 'Gulf Shrimp & Grits', desc: 'Houston Gulf Coast seafood at its finest' },
+      { emoji: '🌮', name: 'Houston-Style Tacos', desc: 'Carne guisada or fajita tacos from your favorite taqueria' },
+      { emoji: '🍗', name: 'Cajun Fried Chicken', desc: 'Louisiana influence meets Texas seasoning — double crispy' },
+      { emoji: '🍺', name: 'Saint Arnold Brewing', desc: 'Houston\'s oldest craft brewery — Divine Reserve or Fancy Lawnmower' }
+    ],
+    superstitions: [
+      'C.J. Stroud gets good energy from the room — speak positivity',
+      'Bull head logo must face the TV, not away from it',
+      'Wear deep steel blue for away wins — proven by superstition science',
+      'Shake someone\'s hand at kickoff — Texan hospitality is good luck'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'C.J. Stroud threads a needle between two defenders' },
+      { badge: 'sip', text: 'Any Texans sack' },
+      { badge: 'chug', text: 'Texans score a TD pass' },
+      { badge: 'chug', text: 'A big special teams play' },
+      { badge: 'shot', text: 'Texans beat a team with a better record' }
+    ]
+  },
+  IND: {
+    name: 'Indianapolis Colts',
+    city: 'Indianapolis, IN',
+    emoji: '🐴',
+    color: '#002C5F',
+    food: [
+      { emoji: '🥩', name: 'Pork Tenderloin Sandwich', desc: 'Indiana state sandwich — breaded pork loin bigger than the bun' },
+      { emoji: '🌽', name: 'Sugar Cream Pie', desc: 'Indiana\'s state pie — custard-style, rich, and surprisingly addictive' },
+      { emoji: '🍔', name: 'Double Stack Smash Burger', desc: 'Indiana comfort food — smash it thin and stack it high' },
+      { emoji: '🍺', name: 'Sun King Brewing', desc: 'Indy\'s beloved local — Cream Ale is the game day staple' }
+    ],
+    superstitions: [
+      'Manning legacy energy — ask yourself what Peyton would do',
+      'Blue horseshoe visible somewhere in the watch party setup',
+      'No bathroom breaks during Colts red zone plays',
+      'Honk a car horn when the Colts score — Indy 500 tradition carried over'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any run game play of 6+ yards' },
+      { badge: 'sip', text: 'The offensive line gets a push blocking mention from announcers' },
+      { badge: 'chug', text: 'Colts score any touchdown' },
+      { badge: 'chug', text: 'Comeback win looking likely' },
+      { badge: 'shot', text: 'Colts pull off an upset at Lucas Oil Stadium' }
+    ]
+  },
+  JAX: {
+    name: 'Jacksonville Jaguars',
+    city: 'Jacksonville, FL',
+    emoji: '🐆',
+    color: '#006778',
+    food: [
+      { emoji: '🦐', name: 'Florida Shrimp Boil', desc: 'Old Bay shrimp, corn, sausage — spread on the table and dive in' },
+      { emoji: '🐊', name: 'Gator Bites', desc: 'Fried alligator tail — Florida tradition that\'s actually delicious' },
+      { emoji: '🥭', name: 'Mango Habanero Wings', desc: 'Florida heat + tropical sweetness — Jacksonville flavor profile' },
+      { emoji: '🍺', name: 'Intuition Ale Works', desc: 'Jacksonville\'s go-to — Jon Boat Coastal Ale for a beach game vibe' }
+    ],
+    superstitions: [
+      'Gold helmet gleam is real — the more gold in the room, the better',
+      'Jags win when it\'s hot — crank up the heat inside too',
+      'Do the Jaguars roar after every score. Full commitment.',
+      'Trevor Lawrence\'s hair is a weather vane — long and flowing = win'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Trevor Lawrence hits a crossing route for 10+ yards' },
+      { badge: 'sip', text: 'Any defensive stop on 4th down' },
+      { badge: 'chug', text: 'Jaguars score a TD and the stadium goes crazy' },
+      { badge: 'chug', text: 'Someone brings up the Jags\' potential London relocation' },
+      { badge: 'shot', text: 'Jags blow out a divisional opponent' }
+    ]
+  },
+  KC: {
+    name: 'Kansas City Chiefs',
+    city: 'Kansas City, MO',
+    emoji: '⚡',
+    color: '#E31837',
+    food: [
+      { emoji: '🥩', name: 'KC Burnt Ends', desc: 'Joe\'s Kansas City, Gates, Jack Stack — smoky beef candy, full stop' },
+      { emoji: '🍗', name: 'Chicken & Waffles', desc: 'Stroud\'s restaurant classic — a KC Sunday tradition' },
+      { emoji: '🌮', name: 'BBQ Brisket Tacos', desc: 'KC BBQ meets taco culture — smoked brisket, pickled onion, jalapeño' },
+      { emoji: '🍺', name: 'Boulevard Brewing', desc: 'KC\'s iconic craft beer — Unfiltered Wheat on game day' }
+    ],
+    superstitions: [
+      'The Arrowhead Chop — do it in the living room at full volume',
+      'Patrick Mahomes watches from a different dimension — channel his energy',
+      'Never turn off a Chiefs game no matter the score (they\'ve seen it all)',
+      'Travis Kelce TD celebration — everyone in the room does it together'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Mahomes makes an impossible throw — you\'ll know it when you see it' },
+      { badge: 'sip', text: 'Travis Kelce catches a pass' },
+      { badge: 'chug', text: 'Chiefs score from behind with 2 minutes left' },
+      { badge: 'chug', text: 'Andy Reid is shown on the sideline looking unimpressed' },
+      { badge: 'shot', text: 'Chiefs win in overtime (happens constantly, prep now)' }
+    ]
+  },
+  LV: {
+    name: 'Las Vegas Raiders',
+    city: 'Las Vegas, NV',
+    emoji: '☠️',
+    color: '#000000',
+    food: [
+      { emoji: '🎰', name: 'Casino-Style Buffet Spread', desc: 'Go big — multiple apps, proteins, desserts. It\'s Vegas. Go buffet mode.' },
+      { emoji: '🥩', name: 'Prime Rib Sliders', desc: 'Las Vegas strip steakhouse in your living room — mini format' },
+      { emoji: '🌮', name: 'Street Tacos Trio', desc: 'Al pastor, carnitas, carne asada — the full spread' },
+      { emoji: '🍸', name: 'Blackout Cocktail', desc: 'Something dark and strong — Raiders energy only' }
+    ],
+    superstitions: [
+      'Black and silver ONLY — no exceptions for Raiders game day',
+      'The Commitment to Excellence mantra before kickoff',
+      'A skull or pirate flag visible somewhere in the room',
+      'If it starts bad, stay in your seat — the Raiders always come back in weird ways'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any Raider gives a look at the camera like they\'re planning something' },
+      { badge: 'sip', text: 'Run play up the middle for a first down' },
+      { badge: 'chug', text: 'Raiders score a touchdown' },
+      { badge: 'chug', text: 'A big controversial penalty benefits the Raiders' },
+      { badge: 'shot', text: 'Wildcard win on the road against a heavy favorite' }
+    ]
+  },
+  LAC: {
+    name: 'Los Angeles Chargers',
+    city: 'Los Angeles, CA',
+    emoji: '⚡',
+    color: '#0080C6',
+    food: [
+      { emoji: '🌮', name: 'Cali Fish Tacos', desc: 'Baja-style beer battered fish, cabbage slaw, crema — SoCal perfection' },
+      { emoji: '🥑', name: 'Guacamole Bar', desc: 'Fresh guac with all the add-ins — because it\'s LA' },
+      { emoji: '🍜', name: 'Ramen Nachos', desc: 'LA fusion — crispy ramen noodle nachos with Korean toppings' },
+      { emoji: '🍺', name: 'Ballast Point', desc: 'San Diego craft origin — Sculpin IPA is iconic' }
+    ],
+    superstitions: [
+      'Powder blue is the lucky color — vintage vibes only',
+      'Justin Herbert manifests wins from calm energy — keep the room calm',
+      'Never count the Chargers out of anything (but also never count them in)',
+      'Ocean sound playlist before kickoff — it\'s a vibe thing'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Justin Herbert completes a pass over 25 yards' },
+      { badge: 'sip', text: 'Any mention of the Chargers possibly moving (again)' },
+      { badge: 'chug', text: 'Chargers score a TD' },
+      { badge: 'chug', text: 'SoFi crowd has more opposing fans than Chargers fans' },
+      { badge: 'shot', text: 'Chargers win a game they definitely should have lost' }
+    ]
+  },
+  LAR: {
+    name: 'Los Angeles Rams',
+    city: 'Los Angeles, CA',
+    emoji: '🐏',
+    color: '#003594',
+    food: [
+      { emoji: '🌮', name: 'LA Street Tacos', desc: 'Al pastor from a real taqueria — not a chain, never a chain' },
+      { emoji: '🥗', name: 'Kale & Quinoa Bowl', desc: 'Because it\'s LA and someone at your party is on a cleanse' },
+      { emoji: '🍔', name: 'In-N-Out Animal Style', desc: 'Double double, animal style — that\'s it, that\'s the order' },
+      { emoji: '🍺', name: 'Angel City Brewery', desc: 'Arts District craft beer — the Eureka Wit for LA sunny vibes' }
+    ],
+    superstitions: [
+      'Matthew Stafford does better when people believe in him — project confidence',
+      'Super Bowl trophy location: somewhere in the room for energy transfer',
+      'Blue and gold together — the Rams\' royal color combination',
+      'Cooper Kupp celebration mimicry after every TD catch'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any Rams completion of 15+ yards' },
+      { badge: 'sip', text: 'Aaron Donald gets mentioned even though he\'s retired' },
+      { badge: 'chug', text: 'Rams score a touchdown from outside the 20' },
+      { badge: 'chug', text: 'A screen pass goes for big yards against everyone\'s expectations' },
+      { badge: 'shot', text: 'Rams win at SoFi with an actual home crowd energy' }
+    ]
+  },
+  MIA: {
+    name: 'Miami Dolphins',
+    city: 'Miami, FL',
+    emoji: '🐬',
+    color: '#008E97',
+    food: [
+      { emoji: '🥑', name: 'Cuban Sandwich', desc: 'Pressed pork, ham, pickles, Swiss, mustard on Cuban bread — Miami staple' },
+      { emoji: '🦞', name: 'Stone Crab Claws', desc: 'Florida season permitting — Joe\'s Stone Crab style with mustard sauce' },
+      { emoji: '🌮', name: 'Ceviche Tostadas', desc: 'Miami Latin flavor — fresh lime ceviche on crispy tostadas' },
+      { emoji: '🍺', name: 'Wynwood Brewing', desc: 'Miami craft beer from the arts district — Pop\'s Porter or La Rubia' }
+    ],
+    superstitions: [
+      'Aqua and orange — both colors required, no excuses in South Florida',
+      'Open a window or door — Dolphins play better when there\'s ocean air nearby',
+      'Tyreek Hill speed energy — stand up every time Hill runs a route',
+      'Dan Marino\'s photo must be visible somewhere in any Miami watch party'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Tyreek Hill catches a pass and you don\'t see it until the replay' },
+      { badge: 'sip', text: 'Any Dolphins score in the first quarter' },
+      { badge: 'chug', text: 'Dolphins score any kind of TD' },
+      { badge: 'chug', text: 'Tua makes a throw no one expected him to complete' },
+      { badge: 'shot', text: 'Dolphins beat a cold-weather team in a cold-weather game' }
+    ]
+  },
+  MIN: {
+    name: 'Minnesota Vikings',
+    city: 'Minneapolis, MN',
+    emoji: '⚔️',
+    color: '#4F2683',
+    food: [
+      { emoji: '🍔', name: 'Juicy Lucy Burger', desc: 'Minneapolis original — cheese stuffed INSIDE the patty. Matt\'s Bar vs. 5-8 Club is war.' },
+      { emoji: '🥣', name: 'Wild Rice Soup', desc: 'Minnesota staple — creamy, hearty, and perfect for a cold game day' },
+      { emoji: '🍩', name: 'Lefse', desc: 'Norwegian flatbread with butter and brown sugar — Scandinavian Minnesota is real' },
+      { emoji: '🍺', name: 'Surly Brewing', desc: 'Minnesota craft institution — Furious is the game day go-to' }
+    ],
+    superstitions: [
+      'SKOL CHANT — clap pattern must be done at kickoff. No excuses.',
+      'Purple and gold visible in every corner of the room',
+      'The Minnesota Goodbye takes too long — don\'t leave the game early',
+      'Admit you\'re nervous. The Vikings always do something unexpected.'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Justin Jefferson runs a route that makes defenders look confused' },
+      { badge: 'sip', text: 'Kirk Cousins (or current QB) runs a sneak' },
+      { badge: 'chug', text: 'Vikings score a TD' },
+      { badge: 'chug', text: 'Someone in the room brings up the Minneapolis Miracle unprompted' },
+      { badge: 'shot', text: 'Vikings win a playoff game — rare enough to warrant a full shot' }
+    ]
+  },
+  NE: {
+    name: 'New England Patriots',
+    city: 'Foxborough, MA',
+    emoji: '🦅',
+    color: '#002244',
+    food: [
+      { emoji: '🦞', name: 'New England Lobster Roll', desc: 'Cold, mayo-based, on a buttered split-top roll — Cape style' },
+      { emoji: '🥣', name: 'Clam Chowder', desc: 'New England style — thick, creamy, full of clams in a bread bowl' },
+      { emoji: '🍩', name: 'Boston Cream Pie', desc: 'Massachusetts state dessert — custard-filled, chocolate glazed' },
+      { emoji: '🍺', name: 'Sam Adams Boston Lager', desc: 'Brewed in Boston, drunk in New England — the Patriots brew' }
+    ],
+    superstitions: [
+      'Post-Brady era is a new era — fresh superstitions required',
+      'Flying Elvis logo on display — he watches over Foxborough',
+      'Never celebrate a lead until the game clock hits zero (Pats fans know why)',
+      'Wear navy blue — Flying Elvis shows up differently in other colors'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any third-down conversion by the offense' },
+      { badge: 'sip', text: 'Patriots defense holds to a field goal attempt' },
+      { badge: 'chug', text: 'Patriots score a TD' },
+      { badge: 'chug', text: 'Someone brings up the dynasty in a wistful tone' },
+      { badge: 'shot', text: 'Patriots win in weather that would shut down lesser cities' }
+    ]
+  },
+  NO: {
+    name: 'New Orleans Saints',
+    city: 'New Orleans, LA',
+    emoji: '⚜️',
+    color: '#D3BC8D',
+    food: [
+      { emoji: '🍤', name: 'Shrimp Po\'Boy', desc: 'Fried gulf shrimp, dressed with lettuce and tomato on French bread — dressed means DRESSED' },
+      { emoji: '🥘', name: 'Jambalaya', desc: 'One pot rice, andouille sausage, chicken, shrimp — make a big pot, eat all game' },
+      { emoji: '🍞', name: 'Muffuletta', desc: 'Central Grocery style — giant Italian sandwich with olive salad' },
+      { emoji: '🍺', name: 'NOLA Brewing', desc: 'New Orleans craft — Hopitoulas IPA or 7th Street Wheat' }
+    ],
+    superstitions: [
+      'WHO DAT chant must be done before kickoff — it\'s basically a prayer',
+      'Wear black and gold — together, always together',
+      'Mardi Gras beads visible somewhere in the watch party setup',
+      'Never whistle indoors during a Saints game — old New Orleans superstition'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any Saints third-down conversion' },
+      { badge: 'sip', text: 'The crowd at the Superdome is SO loud the opposing QB calls timeout' },
+      { badge: 'chug', text: 'Saints score a TD' },
+      { badge: 'chug', text: 'Someone mentions the 2009 Super Bowl run' },
+      { badge: 'shot', text: 'Saints win a divisional game in the Superdome' }
+    ]
+  },
+  NYG: {
+    name: 'New York Giants',
+    city: 'East Rutherford, NJ',
+    emoji: '🗽',
+    color: '#0B2265',
+    food: [
+      { emoji: '🍕', name: 'NYC Pizza Slice', desc: 'Fold it. Eat it. Don\'t ask for ranch. This is New York.' },
+      { emoji: '🥯', name: 'Everything Bagel Dip', desc: 'Everything bagel seasoning cream cheese dip with bagel chips — NY classic' },
+      { emoji: '🌭', name: 'Dirty Water Dog', desc: 'NYC street cart style hot dog — sport peppers and yellow mustard only' },
+      { emoji: '🍺', name: 'Brooklyn Brewery', desc: 'New York craft royalty — Brooklyn Lager for the game' }
+    ],
+    superstitions: [
+      'Big Blue energy — complain about everything but believe in the team',
+      'Wear blue jersey regardless of how bad the current season looks',
+      'Two Super Bowl wins with Eli Manning means miracles are real — internalize this',
+      'Giants fans stand through everything — no sitting until the final whistle'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any big run play that gets the stadium going' },
+      { badge: 'sip', text: 'Giants defense forces an incompletion on 3rd down' },
+      { badge: 'chug', text: 'Giants score a TD' },
+      { badge: 'chug', text: 'A Saquon Barkley highlight plays — even if he\'s with another team' },
+      { badge: 'shot', text: 'Giants win a game with a QB no one believed in' }
+    ]
+  },
+  NYJ: {
+    name: 'New York Jets',
+    city: 'East Rutherford, NJ',
+    emoji: '✈️',
+    color: '#125740',
+    food: [
+      { emoji: '🍕', name: 'NYC Grandma Pizza', desc: 'Thick square crust, good sauce, fresh mozz — Italian-American Jersey style' },
+      { emoji: '🌭', name: 'Jersey Pork Roll', desc: 'Pork roll, egg, cheese on a hard roll — the real Jersey breakfast sandwich' },
+      { emoji: '🥩', name: 'Italian Beef Sliders', desc: 'Newark influence — Italian beef mini sandwiches with hot peppers' },
+      { emoji: '🍺', name: 'Other Half Brewing', desc: 'NYC\'s top craft brewery — All Green Everything DIPA for a big game' }
+    ],
+    superstitions: [
+      'Being a Jets fan is itself a superstition — you believe in spite of evidence',
+      'Aaron Rodgers healing energy — send good thoughts to his Achilles',
+      'Green everything — Sauce Gardner jersey is the move right now',
+      'No cursing at the TV until the 4th quarter — save it'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any Jets first down on offense' },
+      { badge: 'sip', text: 'Aaron Rodgers makes a throw that reminds you it\'s still him' },
+      { badge: 'chug', text: 'Jets score a touchdown — celebrate harder than feels rational' },
+      { badge: 'chug', text: 'Sauce Gardner gets a pass breakup or INT' },
+      { badge: 'shot', text: 'Jets win a game that matters — which year is THIS the year?' }
+    ]
+  },
+  PHI: {
+    name: 'Philadelphia Eagles',
+    city: 'Philadelphia, PA',
+    emoji: '🦅',
+    color: '#004C54',
+    food: [
+      { emoji: '🥩', name: 'Philly Cheesesteak', desc: 'Pat\'s or Geno\'s? Wiz wit — that\'s Cheez Whiz, with onions. No debate.' },
+      { emoji: '🥨', name: 'Soft Pretzel', desc: 'Philadelphia soft pretzel — mustard dip, eaten by the bag' },
+      { emoji: '🍕', name: 'Tomato Pie', desc: 'Room temp, thick sauce, no cheese — classic Philly Italian bakery style' },
+      { emoji: '🍺', name: 'Yards Brewing', desc: 'Philadelphia craft institution — Brawler Ale for game day' }
+    ],
+    superstitions: [
+      'E-A-G-L-E-S chant — mandatory at kickoff, mandatory at TD, mandatory at the end',
+      'Crisco the poles if anyone gets too excited (old Philly tradition)',
+      'Green jersey no matter what — away games, road trips, everything',
+      'Jalen Hurts does not need your negative energy. Keep it positive.'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Jalen Hurts runs a designed quarterback run' },
+      { badge: 'sip', text: 'A.J. Brown goes up over a defender for a catch' },
+      { badge: 'chug', text: 'Eagles score any TD' },
+      { badge: 'chug', text: 'Someone in the room boos something even when it\'s good (Philly instinct)' },
+      { badge: 'shot', text: 'Eagles win a game in a way that makes the whole city erupt' }
+    ]
+  },
+  PIT: {
+    name: 'Pittsburgh Steelers',
+    city: 'Pittsburgh, PA',
+    emoji: '⚙️',
+    color: '#FFB612',
+    food: [
+      { emoji: '🥗', name: 'Primanti Brothers Sandwich', desc: 'Fries and coleslaw ON the sandwich — Pittsburgh\'s most famous export' },
+      { emoji: '🍕', name: 'Strip District Pierogi', desc: 'Potato and cheese pierogi from Pittsburgh\'s legendary Strip District' },
+      { emoji: '🥩', name: 'Kielbasa with Peppers', desc: 'Pittsburgh Polish heritage — grilled kielbasa with onions and peppers' },
+      { emoji: '🍺', name: 'Iron City Beer', desc: 'Pittsburgh\'s hometown lager since 1861 — the one true game day beer' }
+    ],
+    superstitions: [
+      'Terrible Towel must be present and waived at EVERY score',
+      'Black and gold head to toe — anything else is disrespectful to the stadium',
+      'Steelers Nation doesn\'t lose at home. Believe it.',
+      'T.J. Watt is a force of nature — stand up every time he lines up'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'T.J. Watt blows up a play in the backfield' },
+      { badge: 'sip', text: 'Any Steelers run of 7+ yards' },
+      { badge: 'chug', text: 'Steelers score a TD — wave the Terrible Towel until your arm gives out' },
+      { badge: 'chug', text: 'Big Ben highlights play on ESPN (will happen)' },
+      { badge: 'shot', text: 'Steelers win a gritty, ugly, physical game — the Pittsburgh way' }
+    ]
+  },
+  SF: {
+    name: 'San Francisco 49ers',
+    city: 'Santa Clara, CA',
+    emoji: '🏆',
+    color: '#AA0000',
+    food: [
+      { emoji: '🌮', name: 'Mission Style Burrito', desc: 'La Taqueria or El Farolito — foil-wrapped, bean and rice inside, enormous' },
+      { emoji: '🦀', name: 'Dungeness Crab', desc: 'Bay Area seafood tradition — cracked crab on butcher paper with sourdough' },
+      { emoji: '🍞', name: 'Boudin Sourdough Bowl', desc: 'SF sourdough bread bowl with clam chowder or any hot dip' },
+      { emoji: '🍺', name: 'Anchor Steam Beer', desc: 'San Francisco\'s historic steam beer — the original Bay Area brew' }
+    ],
+    superstitions: [
+      'Red and gold from head to toe — no half measures at Levi\'s',
+      'Faithful Energy — the Faithful are in Santa Clara, not just the Bay',
+      'Kyle Shanahan has a plan even when it doesn\'t look like it — trust it',
+      'George Kittle celebration re-enactment is required after every TE touchdown'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Christian McCaffrey runs an outside zone to the left' },
+      { badge: 'sip', text: 'George Kittle gets a first down and celebrates like it\'s the Super Bowl' },
+      { badge: 'chug', text: '49ers score a TD' },
+      { badge: 'chug', text: 'The defense forces a three-and-out from a juggernaut offense' },
+      { badge: 'shot', text: '49ers win the NFC Championship and Santa Clara loses its mind' }
+    ]
+  },
+  SEA: {
+    name: 'Seattle Seahawks',
+    city: 'Seattle, WA',
+    emoji: '🌊',
+    color: '#002244',
+    food: [
+      { emoji: '🐟', name: 'Pike Place Salmon', desc: 'Cedar-plank or smoked — Seattle-style Pacific salmon with lemon and dill' },
+      { emoji: '🦀', name: 'Dungeness Crab Dip', desc: 'Pacific Northwest crab artichoke dip — warm, creamy, perfect' },
+      { emoji: '☕', name: 'Seattle Coffee & Donuts', desc: 'Starbucks Pike Place + Top Pot doughnuts — the full Seattle experience' },
+      { emoji: '🍺', name: 'Elysian Brewing', desc: 'Seattle craft staple — Space Dust IPA for game day' }
+    ],
+    superstitions: [
+      'The 12th Man energy — you ARE part of the defense. Noise matters.',
+      'Blue and green together — never separate the colors',
+      'If Marshawn Lynch highlights play, stand up and stomp your feet',
+      'Russell Wilson era is over but the Seahawks win comes from chaos energy'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Seahawks offense picks up 10+ yards on first down' },
+      { badge: 'sip', text: 'Rain or overcast weather mentioned during the broadcast' },
+      { badge: 'chug', text: 'Seahawks score a TD' },
+      { badge: 'chug', text: 'The crowd at Lumen Field causes a false start' },
+      { badge: 'shot', text: 'Seahawks make it to the NFC Championship game' }
+    ]
+  },
+  TB: {
+    name: 'Tampa Bay Buccaneers',
+    city: 'Tampa, FL',
+    emoji: '☠️',
+    color: '#D50A0A',
+    food: [
+      { emoji: '🍖', name: 'Cuban Sandwich', desc: 'Tampa invented the Cuban sandwich — Ybor City style with salami added' },
+      { emoji: '🦐', name: 'Gulf Shrimp Nachos', desc: 'Florida gulf shrimp over queso nachos — Tampa Bay seafood vibes' },
+      { emoji: '🍗', name: 'Columbia Restaurant Deviled Crab', desc: 'Tampa\'s famous Cuban restaurant — deviled crab cakes are the move' },
+      { emoji: '🍺', name: 'Cigar City Brewing', desc: 'Tampa craft royalty — Jai Alai IPA is the definitive Florida craft beer' }
+    ],
+    superstitions: [
+      'Pirate ship cannons are the sound of victory — play a cannon sound at every TD',
+      'Brady\'s legacy energy still hovers over Raymond James — honor it',
+      'Red shirt, pewter pants combo = max luck configuration',
+      'Baker Mayfield thrives on chaos — let the room get loud and weird'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Baker Mayfield completes a pass on a designed rollout' },
+      { badge: 'sip', text: 'Mike Evans runs a route that just looks different from everyone else\'s' },
+      { badge: 'chug', text: 'Buccaneers score a TD' },
+      { badge: 'chug', text: 'Someone brings up the Brady era wistfully' },
+      { badge: 'shot', text: 'Bucs make the playoffs — Ybor City is about to go crazy' }
+    ]
+  },
+  TEN: {
+    name: 'Tennessee Titans',
+    city: 'Nashville, TN',
+    emoji: '⚡',
+    color: '#4B92DB',
+    food: [
+      { emoji: '🍗', name: 'Nashville Hot Chicken', desc: 'Prince\'s or Hattie B\'s — blister-level spice on a white bread slice with pickles' },
+      { emoji: '🍖', name: 'Tennessee BBQ Ribs', desc: 'Dry rub or wet — both are valid, both are incredible, don\'t argue' },
+      { emoji: '🎸', name: 'Meat & Three', desc: 'Nashville tradition: one meat + three sides — cornbread, greens, mac, you pick' },
+      { emoji: '🍺', name: 'Tennessee Brew Works', desc: 'Nashville craft — State Park Blonde for a sunny game day' }
+    ],
+    superstitions: [
+      'Derrick Henry energy — run the ball, commit to the physical, trust it',
+      'Nashville is Music City — put some music on before kickoff for good energy',
+      'Wear two-tone blue and wear it proudly',
+      'The Titans win on grit — match their energy with yours'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Any Titans rushing play of 8+ yards' },
+      { badge: 'sip', text: 'The Titans score any points in the second half' },
+      { badge: 'chug', text: 'Titans score a TD' },
+      { badge: 'chug', text: 'Music City Miracle gets referenced on a highlight show' },
+      { badge: 'shot', text: 'Titans win a game in which they were a two-score underdog' }
+    ]
+  },
+  WSH: {
+    name: 'Washington Commanders',
+    city: 'Landover, MD',
+    emoji: '🪖',
+    color: '#5A1414',
+    food: [
+      { emoji: '🦀', name: 'Maryland Blue Crab', desc: 'Old Bay steamed crab — this is DMV territory and crabs are non-negotiable' },
+      { emoji: '🥩', name: 'Half Smoke', desc: 'Ben\'s Chili Bowl half-smoke on a bun — Washington D.C.\'s greatest food' },
+      { emoji: '🧆', name: 'Mumbo Sauce Wings', desc: 'D.C.\'s legendary mumbo sauce on crispy wings — you can\'t get it anywhere else' },
+      { emoji: '🍺', name: 'DC Brau', desc: 'Washington D.C.\'s first craft brewery — The Public Pale Ale for game day' }
+    ],
+    superstitions: [
+      'Burgundy and gold together — the DMV\'s colors for over 80 years',
+      'The team has gone through many names — honor the current chapter',
+      'Jayden Daniels has generational talent — treat this era with excitement',
+      'The Commanders win when D.C. is loud — turn up the volume'
+    ],
+    drinks: [
+      { badge: 'sip', text: 'Jayden Daniels scrambles for double-digit yards' },
+      { badge: 'sip', text: 'Any Washington defensive sack' },
+      { badge: 'chug', text: 'Commanders score a TD' },
+      { badge: 'chug', text: 'Someone says the old team name instead of Commanders' },
+      { badge: 'shot', text: 'Commanders win a prime-time game in D.C.' }
+    ]
+  }
+};
+
+// ── Checklist Template ───────────────────────────────────────────────────────
+
+const BASE_CHECKLIST = [
+  { id: 'tv', label: 'TV ready', note: 'Check input, HDMI, sound bar connected' },
+  { id: 'streaming', label: 'Streaming / antenna confirmed', note: 'NFL+, Peacock, ESPN+, or local channel' },
+  { id: 'seating', label: 'Seating arranged', note: 'Everyone has a spot with a view' },
+  { id: 'food-prep', label: 'Food prepped or ordered', note: 'Game kicks off — food needs to be ready at kickoff' },
+  { id: 'drinks', label: 'Drinks stocked', note: 'Beer, soda, water — full fridge rule' },
+  { id: 'cups-ice', label: 'Cups, ice, napkins out', note: 'The small stuff matters' },
+  { id: 'plates', label: 'Plates and utensils set', note: 'No paper towel plates — we have standards' },
+  { id: 'phone-charged', label: 'Phone fully charged', note: 'Live tweeting requires juice' },
+  { id: 'fantasy', label: 'Fantasy lineup locked in', note: 'Deadline is usually an hour before kickoff' },
+  { id: 'jersey', label: 'Jersey on', note: 'Never watch without it. Science.' },
+  { id: 'snacks', label: 'Snacks accessible at seat', note: 'No getting up during drives' },
+  { id: 'blanket', label: 'Game day blanket on couch', note: 'The lucky blanket stays until they lose with it' }
+];
+
+// ── State ────────────────────────────────────────────────────────────────────
+
+let currentTeam = null;
+let checkedItems = {};
+
+function loadChecked(teamKey) {
+  try {
+    const raw = localStorage.getItem('gd-checked-' + teamKey);
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+
+function saveChecked(teamKey) {
+  try {
+    localStorage.setItem('gd-checked-' + teamKey, JSON.stringify(checkedItems));
+  } catch(e) {}
+}
+
+// ── Generate Plan ────────────────────────────────────────────────────────────
+
+function generatePlan() {
+  const sel = document.getElementById('team-select');
+  const teamKey = sel.value;
+  if (!teamKey) {
+    sel.style.borderColor = 'var(--red)';
+    setTimeout(() => { sel.style.borderColor = ''; }, 1200);
+    return;
+  }
+
+  const team = TEAMS[teamKey];
+  if (!team) return;
+
+  currentTeam = teamKey;
+  checkedItems = loadChecked(teamKey);
+
+  // Banner
+  document.getElementById('banner-emoji').textContent = team.emoji;
+  document.getElementById('banner-name').textContent = team.name;
+  document.getElementById('banner-city').textContent = team.city;
+  document.getElementById('team-banner').style.background =
+    'linear-gradient(135deg, ' + hexToRgba(team.color, 0.18) + ', var(--bg-card))';
+  document.getElementById('team-banner').style.borderColor = hexToRgba(team.color, 0.5);
+
+  // Score predictor label
+  document.getElementById('score-team-label').textContent = team.name.split(' ').pop();
+
+  // Checklist
+  renderChecklist();
+
+  // Food
+  const foodList = document.getElementById('food-list');
+  foodList.innerHTML = team.food.map(f => `
+    <li class="food-item">
+      <span class="food-emoji">${f.emoji}</span>
+      <div class="food-info">
+        <div class="food-name">${f.name}</div>
+        <div class="food-desc">${f.desc}</div>
+      </div>
+    </li>
+  `).join('');
+
+  // Superstitions
+  const supList = document.getElementById('superstition-list');
+  supList.innerHTML = team.superstitions.map(s => `
+    <li class="superstition-item">${s}</li>
+  `).join('');
+
+  // Drinking game
+  const drinkList = document.getElementById('drink-list');
+  drinkList.innerHTML = team.drinks.map(d => `
+    <li class="drink-rule">
+      <span class="drink-badge ${d.badge}">${d.badge}</span>
+      <span class="drink-rule-text">${d.text}</span>
+    </li>
+  `).join('');
+
+  // Reset mood
+  const moodEl = document.getElementById('mood-result');
+  moodEl.classList.remove('visible');
+  moodEl.innerHTML = '';
+
+  // Show plan
+  const container = document.getElementById('plan-container');
+  container.classList.add('visible');
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderChecklist() {
+  const list = document.getElementById('checklist-list');
+  list.innerHTML = BASE_CHECKLIST.map(item => {
+    const checked = !!checkedItems[item.id];
+    return `
+      <li class="checklist-item${checked ? ' checked' : ''}" onclick="toggleCheck('${item.id}')" data-id="${item.id}">
+        <div class="check-box">
+          <svg class="check-tick" viewBox="0 0 10 10" fill="none">
+            <path d="M1.5 5L4 7.5L8.5 2.5" stroke="#0F172A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="check-label">${item.label}<span>${item.note}</span></div>
+      </li>
+    `;
+  }).join('');
+  updateProgress();
+}
+
+function toggleCheck(id) {
+  checkedItems[id] = !checkedItems[id];
+  if (currentTeam) saveChecked(currentTeam);
+  const item = document.querySelector(`.checklist-item[data-id="${id}"]`);
+  if (item) {
+    item.classList.toggle('checked', !!checkedItems[id]);
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = BASE_CHECKLIST.length;
+  const done = BASE_CHECKLIST.filter(i => checkedItems[i.id]).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('checklist-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = done + ' of ' + total + ' complete';
+}
+
+// ── Mood Generator ───────────────────────────────────────────────────────────
+
+const WIN_MOODS = [
+  { emoji: '🥳', title: 'ABSOLUTE EUPHORIA', desc: 'You\'re texting everyone you know. The street is your stadium. Life is good.' },
+  { emoji: '😤', title: 'VINDICATED', desc: 'You knew all along. You called it. Don\'t let anyone forget it.' },
+  { emoji: '🏆', title: 'CHAMPIONSHIP ENERGY', desc: 'This feels like the beginning of something. Save this feeling.' },
+  { emoji: '💪', title: 'RIDE OR DIE CONFIRMED', desc: 'You believed when it was hard. Wins like this are for fans like you.' },
+  { emoji: '🔥', title: 'UNSTOPPABLE SEASON INCOMING', desc: 'The boys looked GOOD today. Mark the calendar — this team is for real.' }
+];
+const LOSE_MOODS = [
+  { emoji: '😤', title: 'CONTROLLED RAGE', desc: 'Fine. We\'ll get them next week. But today was unacceptable and everyone needs to know.' },
+  { emoji: '😔', title: 'DEEP SADNESS', desc: 'Put on some sad music. Text your most understanding friend. Let it out.' },
+  { emoji: '😂', title: 'TRAGICOMEDY MODE', desc: 'It hurts too much to cry so you\'re just laughing. The sports gods hate your team specifically.' },
+  { emoji: '🗑️', title: 'TRASH EVERYTHING', desc: 'The season is a simulation. You refuse to feel feelings about football anymore (until next week).' },
+  { emoji: '🧊', title: 'ICE COLD COPE', desc: 'It\'s fine. The draft position is better now. This is strategic. You\'re fine.' }
+];
+const CLOSE_MOODS = [
+  { emoji: '😰', title: 'STRESS TEST SURVIVOR', desc: 'You need to lie down. That game took years off your life. Absolutely zero chill.' },
+  { emoji: '🫀', title: 'HEART STILL RACING', desc: 'Someone check your pulse. That was genuinely dangerous for your health.' }
+];
+
+function generateMood() {
+  const mine = parseInt(document.getElementById('score-mine').value, 10) || 0;
+  const opp = parseInt(document.getElementById('score-opp').value, 10) || 0;
+  const diff = mine - opp;
+  const moodEl = document.getElementById('mood-result');
+
+  let pool;
+  let bg;
+  if (diff > 7) {
+    pool = WIN_MOODS;
+    bg = 'rgba(57,255,20,0.08)';
+    moodEl.style.border = '1px solid rgba(57,255,20,0.25)';
+  } else if (diff < -7) {
+    pool = LOSE_MOODS;
+    bg = 'rgba(255,45,85,0.08)';
+    moodEl.style.border = '1px solid rgba(255,45,85,0.25)';
+  } else if (diff > 0) {
+    pool = [...WIN_MOODS, ...CLOSE_MOODS];
+    bg = 'rgba(57,255,20,0.06)';
+    moodEl.style.border = '1px solid rgba(57,255,20,0.2)';
+  } else if (diff < 0) {
+    pool = [...LOSE_MOODS, ...CLOSE_MOODS];
+    bg = 'rgba(255,45,85,0.06)';
+    moodEl.style.border = '1px solid rgba(255,45,85,0.2)';
+  } else {
+    pool = CLOSE_MOODS;
+    bg = 'rgba(255,214,0,0.06)';
+    moodEl.style.border = '1px solid rgba(255,214,0,0.2)';
+  }
+
+  const mood = pool[Math.floor(Math.random() * pool.length)];
+  const oppName = document.getElementById('score-opp-name').value.trim() || 'opponent';
+  const outcomeText = diff > 0
+    ? 'Your predicted final: ' + mine + '-' + opp + ' WIN over ' + oppName
+    : diff < 0
+    ? 'Your predicted final: ' + mine + '-' + opp + ' LOSS to ' + oppName
+    : 'Your predicted final: ' + mine + '-' + opp + ' — It\'s a tie, somehow';
+
+  moodEl.style.background = bg;
+  moodEl.innerHTML = `
+    <div class="mood-emoji-big">${mood.emoji}</div>
+    <div class="mood-title">${mood.title}</div>
+    <div class="mood-desc">${outcomeText}</div>
+    <div class="mood-desc" style="margin-top:6px;">${mood.desc}</div>
+  `;
+  moodEl.classList.add('visible');
+  moodEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── Share ────────────────────────────────────────────────────────────────────
+
+function shareGameDay() {
+  if (!currentTeam) return;
+  const team = TEAMS[currentTeam];
+  const mine = document.getElementById('score-mine').value || '?';
+  const opp = document.getElementById('score-opp').value || '?';
+  const oppName = document.getElementById('score-opp-name').value.trim() || 'opponent';
+
+  const done = BASE_CHECKLIST.filter(i => checkedItems[i.id]).length;
+  const total = BASE_CHECKLIST.length;
+
+  const text = [
+    'My ' + team.name + ' Game Day Plan',
+    'Predicted Score: ' + mine + ' - ' + opp + ' vs ' + oppName,
+    '',
+    'Game Day Food:',
+    ...team.food.map(f => '  ' + f.emoji + ' ' + f.name),
+    '',
+    'Checklist: ' + done + '/' + total + ' ready',
+    '',
+    'Built with AiNFL GM - ainflgm.com/gameday-planner.html',
+    '#NFLGameDay #' + team.name.replace(/\s+/g, '') + ' #WatchParty'
+  ].join('\n');
+
+  try {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard!');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('share-toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2500);
+}
+
+// ── Util ─────────────────────────────────────────────────────────────────────
+
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Injury Impact">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Injury Impact Simulator | AiNFL GM</title>
+<meta name="description" content="Simulate losing a key NFL player to injury and see the projected impact on your team's win total, playoff odds, and more. Free tool by AiNFL GM.">
+<meta property="og:title" content="NFL Injury Impact Simulator | AiNFL GM">
+<meta property="og:description" content="See how losing any key player affects your team's wins, playoff odds, cap situation, and backup quality. Free NFL injury simulator.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/injury-impact.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Injury Impact Simulator | AiNFL GM">
+<meta name="twitter:description" content="Simulate losing a key NFL player to injury. See projected win total change, playoff odds, and more. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --red-border: rgba(255,45,85,0.28);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF8C00;
+  --orange-dim: rgba(255,140,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--red); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Selector Panel ── */
+.selector-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+.selector-panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 14px;
+}
+.selector-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 500px) {
+  .selector-row { grid-template-columns: 1fr; }
+}
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.select-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.styled-select {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 11px 36px 11px 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+.styled-select:focus {
+  outline: none;
+  border-color: rgba(255,45,85,0.4);
+}
+.styled-select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Active Injuries ── */
+.active-section {
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.active-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.active-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.active-count {
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.injuries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.injury-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: slide-in 0.25s ease both;
+}
+@media (max-width: 500px) {
+  .injury-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+.injury-card-info { flex: 1; min-width: 0; }
+.injury-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.injury-card-meta {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.injury-card-wins {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--red);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-remove-injury {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-mute);
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+.btn-remove-injury:hover { color: var(--red); background: var(--red-dim); }
+
+.empty-injuries {
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.empty-icon { font-size: 28px; display: block; margin-bottom: 8px; opacity: 0.4; }
+
+/* ── Impact Panel ── */
+.impact-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+.impact-panel-header {
+  background: var(--bg-3);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.impact-panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.impact-team-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.impact-empty {
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 14px;
+}
+.impact-content { display: none; }
+.impact-content.visible { display: block; }
+
+/* ── Win Total Bar ── */
+.wins-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.wins-cell {
+  background: var(--bg-card);
+  padding: 20px 20px 16px;
+  text-align: center;
+}
+.wins-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.wins-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.wins-value.healthy { color: var(--green); }
+.wins-value.injured { color: var(--red); }
+.wins-sub {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+/* ── Change Banner ── */
+.change-banner {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,45,85,0.06);
+}
+.change-banner.positive { background: rgba(57,255,20,0.06); }
+.change-icon {
+  font-size: 20px;
+}
+.change-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--red);
+}
+.change-banner.positive .change-text { color: var(--green); }
+.change-detail {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.stat-cell {
+  background: var(--bg-card);
+  padding: 16px 14px;
+  text-align: center;
+}
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.stat-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.stat-value.good  { color: var(--green); }
+.stat-value.warn  { color: var(--yellow); }
+.stat-value.bad   { color: var(--red); }
+.stat-value.cyan  { color: var(--cyan); }
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-mute);
+}
+
+/* ── Backup + Historical ── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 560px) {
+  .detail-grid { grid-template-columns: 1fr; }
+}
+.detail-cell {
+  background: var(--bg-card);
+  padding: 18px 20px;
+}
+.detail-cell-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.backup-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.backup-rating-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.backup-rating-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.backup-rating-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.backup-rating-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: right;
+}
+.backup-note {
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.5;
+}
+
+.hist-comp {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.hist-player {
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.hist-result {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.5s ease 0.2s both;
+  flex-wrap: wrap;
+}
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-reset:hover {
+  border-color: rgba(255,255,255,0.18);
+  color: var(--text);
+}
+.btn-reset:active { transform: scale(0.98); }
+
+.btn-share {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-share:hover { background: rgba(0,240,255,0.2); }
+.btn-share:active { transform: scale(0.98); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 999;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── AdSense ── */
+.ad-slot {
+  margin: 0 auto 20px;
+  max-width: 728px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#FF2D55" opacity="0.9"/>
+    </svg>
+    Injury Simulator
+  </div>
+  <h1>NFL Injury <span>Impact</span> Simulator</h1>
+  <p>Stack injuries and see exactly how they reshape your team's win total, playoff odds, cap situation, and backup depth.</p>
+</section>
+
+<!-- AdSense -->
+<div class="ad-slot">
+  <ins class="adsbygoogle" style="display:block;width:100%;max-width:728px;height:90px;" data-ad-client="ca-pub-8928127451532131" data-ad-slot="auto"></ins>
+</div>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Selectors -->
+  <div class="selector-panel">
+    <div class="selector-panel-title">Select Team &amp; Player</div>
+    <div class="selector-row">
+      <div class="select-group">
+        <div class="select-label">NFL Team</div>
+        <select class="styled-select" id="team-select" onchange="onTeamChange()">
+          <option value="">-- Choose a Team --</option>
+        </select>
+      </div>
+      <div class="select-group">
+        <div class="select-label">Key Player</div>
+        <select class="styled-select" id="player-select" disabled onchange="onPlayerChange()">
+          <option value="">-- Choose a Player --</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Injuries -->
+  <div class="active-section">
+    <div class="active-header">
+      <div class="active-title">Active Simulated Injuries</div>
+      <div class="active-count" id="injury-count">0</div>
+    </div>
+    <div class="injuries-list" id="injuries-list">
+      <div class="empty-injuries">
+        <span class="empty-icon">&#129657;</span>
+        No injuries simulated yet. Pick a team and player above.
+      </div>
+    </div>
+  </div>
+
+  <!-- Impact Results -->
+  <div class="impact-panel" id="impact-panel">
+    <div class="impact-panel-header">
+      <div class="impact-panel-title">Cumulative Impact</div>
+      <div class="impact-team-name" id="impact-team-label">—</div>
+    </div>
+
+    <div class="impact-empty" id="impact-empty">
+      <span style="font-size:32px;opacity:0.3;display:block;margin-bottom:10px;">&#128200;</span>
+      Add an injury above to see projected impact
+    </div>
+
+    <div class="impact-content" id="impact-content">
+
+      <!-- Win Totals -->
+      <div class="wins-grid">
+        <div class="wins-cell">
+          <div class="wins-label">Healthy Win Total</div>
+          <div class="wins-value healthy" id="wins-healthy">—</div>
+          <div class="wins-sub">projected wins</div>
+        </div>
+        <div class="wins-cell">
+          <div class="wins-label">With Injuries</div>
+          <div class="wins-value injured" id="wins-injured">—</div>
+          <div class="wins-sub">projected wins</div>
+        </div>
+      </div>
+
+      <!-- Change Banner -->
+      <div class="change-banner" id="change-banner">
+        <span class="change-icon">&#128204;</span>
+        <span class="change-text" id="change-text">—</span>
+        <span class="change-detail" id="change-detail">—</span>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="stat-label">Playoff Odds (Healthy)</div>
+          <div class="stat-value good" id="stat-odds-before">—%</div>
+          <div class="stat-sub">base odds</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Playoff Odds (Injured)</div>
+          <div class="stat-value bad" id="stat-odds-after">—%</div>
+          <div class="stat-sub">adjusted odds</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Dead Cap Hit</div>
+          <div class="stat-value warn" id="stat-dead-cap">—</div>
+          <div class="stat-sub">IR dead money</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Total Impact Score</div>
+          <div class="stat-value cyan" id="stat-impact">—</div>
+          <div class="stat-sub">out of 100</div>
+        </div>
+      </div>
+
+      <!-- Backup + Historical (last injured player) -->
+      <div class="detail-grid">
+        <div class="detail-cell">
+          <div class="detail-cell-title">Best Available Backup</div>
+          <div class="backup-name" id="backup-name">—</div>
+          <div class="backup-rating-bar-wrap">
+            <div class="backup-rating-bar-bg">
+              <div class="backup-rating-bar-fill" id="backup-bar" style="width:0%"></div>
+            </div>
+            <div class="backup-rating-num" id="backup-rating-num">—</div>
+          </div>
+          <div class="backup-note" id="backup-note">—</div>
+        </div>
+        <div class="detail-cell">
+          <div class="detail-cell-title">Historical Comparison</div>
+          <div class="hist-comp">
+            <div class="hist-player" id="hist-player">—</div>
+            <div id="hist-result">—</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn-reset" onclick="resetAll()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1.5 7A5.5 5.5 0 1 0 3 3.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M1.5 1.5V4H4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Reset All
+    </button>
+    <button class="btn-share" onclick="shareReport()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="11" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="11" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="3"  cy="7"   r="1.5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M4.3 6.2L9.8 3.2M4.3 7.8L9.8 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      Share Impact Report
+    </button>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>Projections are simulated estimates for entertainment and analysis purposes only.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-impact.html">Cap Impact</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/fantasy-trade.html">Fantasy Trade</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/power-rankings.html">Power Rankings</a>
+  </div>
+  <div style="margin-top:8px;color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Team + Player Data ──────────────────────────────────────────────────────
+// Each player: { name, pos, impact (win impact per full season out),
+//   cap (dead money string), backupName, backupRating (0-100), backupNote,
+//   histPlayer, histResult }
+const TEAMS = {
+  "ARI": { name: "Arizona Cardinals",   wins: 7.5,  odds: 28, players: [
+    { name:"Kyler Murray",    pos:"QB", impact:3.2, cap:"$22M", backupName:"Clayton Tune",      backupRating:42, backupNote:"Developmental QB, limited NFL starts.", histPlayer:"Tua Tagovailoa (2023)", histResult:"Dolphins went 11-6 vs 13-4 projected — missed #1 seed." },
+    { name:"Marvin Harrison Jr.", pos:"WR", impact:1.8, cap:"$4M",  backupName:"Zay Jones",          backupRating:55, backupNote:"Veteran slot option, no deep threat.", histPlayer:"Odell Beckham Jr. (2017)", histResult:"Giants fell from 8-8 projection to 3-13 finish." },
+    { name:"James Conner",    pos:"RB", impact:1.2, cap:"$3M",  backupName:"Emari Demercado",    backupRating:48, backupNote:"Capable backup, lacks receiving ability.", histPlayer:"David Johnson (2017)",   histResult:"Cardinals sputtered to 8-8 from 10-6 projection." },
+  ]},
+  "ATL": { name: "Atlanta Falcons",     wins: 9.0,  odds: 48, players: [
+    { name:"Kirk Cousins",    pos:"QB", impact:2.6, cap:"$18M", backupName:"Michael Penix Jr.",  backupRating:65, backupNote:"High-ceiling rookie but raw in NFL system.", histPlayer:"Deshaun Watson (2021)",  histResult:"Texans dropped from 10-win pace to 4-13." },
+    { name:"Bijan Robinson",  pos:"RB", impact:2.0, cap:"$5M",  backupName:"Tyler Allgeier",     backupRating:60, backupNote:"Proven backup, lower ceiling on big plays.", histPlayer:"Christian McCaffrey (2020)", histResult:"Panthers went 5-11, missed playoffs entirely." },
+    { name:"Kyle Pitts",      pos:"TE", impact:1.4, cap:"$4M",  backupName:"Charlie Woerner",    backupRating:40, backupNote:"Blocking TE, limited receiving role.", histPlayer:"Travis Kelce (2015)",    histResult:"Chiefs went 11-5 but offense dropped 4 pts/game." },
+  ]},
+  "BAL": { name: "Baltimore Ravens",    wins: 11.5, odds: 68, players: [
+    { name:"Lamar Jackson",   pos:"QB", impact:4.0, cap:"$26M", backupName:"Josh Johnson",       backupRating:38, backupNote:"Veteran journeyman, stop-gap only.", histPlayer:"Patrick Mahomes (2019 — wrist)", histResult:"Chiefs went 9-7 vs 12-4 pace, barely made playoffs." },
+    { name:"Derrick Henry",   pos:"RB", impact:1.9, cap:"$4M",  backupName:"Justice Hill",       backupRating:54, backupNote:"Speed back, can contribute in passing game.", histPlayer:"Adrian Peterson (2016)", histResult:"Vikings fell to 8-8 from 11-5 projection." },
+    { name:"Zay Flowers",     pos:"WR", impact:1.5, cap:"$3M",  backupName:"Rashod Bateman",     backupRating:52, backupNote:"Health has been an ongoing concern.", histPlayer:"A.J. Green (2016)",       histResult:"Bengals dipped to 6-9-1, losing a division title run." },
+    { name:"Roquan Smith",    pos:"LB", impact:1.6, cap:"$8M",  backupName:"Patrick Queen (gone)", backupRating:50, backupNote:"Replacement-level depth at MLB.", histPlayer:"Luke Kuechly (2019)",    histResult:"Panthers defense ranked 28th without him." },
+  ]},
+  "BUF": { name: "Buffalo Bills",       wins: 11.0, odds: 65, players: [
+    { name:"Josh Allen",      pos:"QB", impact:4.2, cap:"$28M", backupName:"Mitchell Trubisky",  backupRating:44, backupNote:"Former starter, known ceiling is modest.", histPlayer:"Patrick Mahomes (2019 — wrist)", histResult:"Chiefs barely held on at 9-7 without full season." },
+    { name:"Stefon Diggs (gone)", pos:"WR", impact:1.6, cap:"$3M",  backupName:"Khalil Shakir",      backupRating:62, backupNote:"Emerging slot threat with solid YAC.", histPlayer:"Julio Jones (2019)",     histResult:"Falcons went 7-9 vs 10-6 projection." },
+    { name:"Von Miller",      pos:"EDGE", impact:1.3, cap:"$6M", backupName:"Greg Rousseau",      backupRating:60, backupNote:"High-upside pass rusher with inconsistency.", histPlayer:"Khalil Mack (2018)",     histResult:"Raiders collapsed to 4-12 after trade." },
+  ]},
+  "CAR": { name: "Carolina Panthers",   wins: 6.0,  odds: 18, players: [
+    { name:"Bryce Young",     pos:"QB", impact:2.8, cap:"$10M", backupName:"Andy Dalton",        backupRating:48, backupNote:"Veteran game manager, playoff experience.", histPlayer:"Cam Newton (2019)",      histResult:"Panthers went 5-11, missed playoffs." },
+    { name:"Diontae Johnson", pos:"WR", impact:1.3, cap:"$3M",  backupName:"Jonathan Mingo",     backupRating:46, backupNote:"Raw receiver, not ready to be WR1.", histPlayer:"Sammy Watkins (2018)",    histResult:"Rams WR corps struggled through 8-8 season." },
+    { name:"Miles Sanders",   pos:"RB", impact:1.0, cap:"$2M",  backupName:"Raheem Blackshear",  backupRating:42, backupNote:"Practice squad talent, unproven.", histPlayer:"Jonathan Stewart (2016)", histResult:"Panthers split the difference, went 6-10." },
+  ]},
+  "CHI": { name: "Chicago Bears",       wins: 8.5,  odds: 40, players: [
+    { name:"Caleb Williams",  pos:"QB", impact:3.5, cap:"$12M", backupName:"Tyson Bagent",       backupRating:45, backupNote:"Won a start in 2023, limited sample size.", histPlayer:"Justin Fields (2023)",   histResult:"Bears went 7-10, no playoffs." },
+    { name:"DJ Moore",        pos:"WR", impact:1.7, cap:"$4M",  backupName:"Keenan Allen",       backupRating:64, backupNote:"Veteran, Hall-of-Fame caliber slot option.", histPlayer:"DeAndre Hopkins (2021)", histResult:"Cardinals went 11-6 with reduced Hopkins." },
+    { name:"Cole Kmet",       pos:"TE", impact:1.1, cap:"$2M",  backupName:"Tommy Swanson",      backupRating:36, backupNote:"Blocking specialist, minimal receiving.", histPlayer:"Greg Olsen (2017)",      histResult:"Panthers offense ranked 25th without him." },
+  ]},
+  "CIN": { name: "Cincinnati Bengals",  wins: 10.0, odds: 58, players: [
+    { name:"Joe Burrow",      pos:"QB", impact:4.0, cap:"$24M", backupName:"Joe Flacco",         backupRating:46, backupNote:"Veteran presence, playoff experience, limited upside.", histPlayer:"Joe Burrow (2021 — wrist)", histResult:"Bengals went 4-11-1, dramatic drop from playoff contender." },
+    { name:"Ja'Marr Chase",   pos:"WR", impact:2.2, cap:"$5M",  backupName:"Tee Higgins",        backupRating:76, backupNote:"Elite WR2 who could step into lead role.", histPlayer:"A.J. Green (2019)",      histResult:"Bengals fell to 2-14, Chase immediately elevated the offense." },
+    { name:"Tee Higgins",     pos:"WR", impact:1.4, cap:"$4M",  backupName:"Tyler Boyd",         backupRating:65, backupNote:"Veteran slot, won't replicate Higgins' size/jump-ball ability.", histPlayer:"Emmanuel Sanders (2015)", histResult:"Broncos won Super Bowl but offense was more conservative." },
+    { name:"Orlando Brown Jr.", pos:"OT", impact:1.3, cap:"$7M", backupName:"Devin Cochran",     backupRating:44, backupNote:"Developmental tackle, would be a liability vs elite rushers.", histPlayer:"David Bakhtiari (2021)", histResult:"Packers went 13-4 but offense dropped in red zone efficiency." },
+  ]},
+  "CLE": { name: "Cleveland Browns",    wins: 7.0,  odds: 24, players: [
+    { name:"Deshaun Watson",  pos:"QB", impact:2.4, cap:"$46M", backupName:"Dorian Thompson-Robinson", backupRating:48, backupNote:"Mobile QB with inconsistent reads.", histPlayer:"Deshaun Watson (2023 — season-ending)", histResult:"Browns went 11-6 with Joe Flacco — rare upside case." },
+    { name:"Myles Garrett",   pos:"EDGE", impact:2.0, cap:"$12M", backupName:"Ogbo Okoronkwo",   backupRating:46, backupNote:"Rotational pass rusher, no star upside.", histPlayer:"Myles Garrett (2022 — car crash)", histResult:"Browns defense ranked 18th vs 4th prior season." },
+    { name:"Amari Cooper",    pos:"WR", impact:1.5, cap:"$4M",  backupName:"Elijah Moore",       backupRating:54, backupNote:"Quick slot receiver, better as complement.", histPlayer:"Odell Beckham Jr. (2020)", histResult:"Browns declined after his departure mid-season." },
+  ]},
+  "DAL": { name: "Dallas Cowboys",      wins: 9.5,  odds: 50, players: [
+    { name:"Dak Prescott",    pos:"QB", impact:3.2, cap:"$22M", backupName:"Cooper Rush",        backupRating:52, backupNote:"Went 4-1 as starter in 2022, solid but limited.", histPlayer:"Dak Prescott (2020 — ankle)", histResult:"Cowboys went 6-10, missing the playoffs." },
+    { name:"CeeDee Lamb",     pos:"WR", impact:2.4, cap:"$5M",  backupName:"Brandin Cooks",      backupRating:60, backupNote:"Veteran speedster, good YAC, not a true WR1.", histPlayer:"Julio Jones (2021)",     histResult:"Titans went 12-5 but offense sputtered in playoffs." },
+    { name:"Micah Parsons",   pos:"LB/EDGE", impact:2.1, cap:"$9M", backupName:"Dorance Armstrong", backupRating:50, backupNote:"Rotational pass rusher, can't replicate Parsons' versatility.", histPlayer:"Luke Kuechly (2019)",    histResult:"Panthers defense ranked 22nd without him." },
+  ]},
+  "DEN": { name: "Denver Broncos",      wins: 9.0,  odds: 45, players: [
+    { name:"Bo Nix",          pos:"QB", impact:2.8, cap:"$8M",  backupName:"Jarrett Stidham",    backupRating:42, backupNote:"Limited NFL action, backup role only.", histPlayer:"Trevor Lawrence (2023)", histResult:"Jags went 9-8 vs 11-6 with healthy Trevor." },
+    { name:"Courtland Sutton", pos:"WR", impact:1.5, cap:"$4M", backupName:"Marvin Mims Jr.",   backupRating:56, backupNote:"Electric gadget player, developing as route runner.", histPlayer:"Davante Adams (2021)",   histResult:"Packers went 13-4 but Adams' absence cost them key games." },
+    { name:"Nik Bonitto",     pos:"EDGE", impact:1.4, cap:"$3M", backupName:"Jonathon Cooper",  backupRating:44, backupNote:"Rotational rusher, inconsistent motor.", histPlayer:"Von Miller (2013)",      histResult:"Broncos still won Super Bowl — elite team cushion." },
+  ]},
+  "DET": { name: "Detroit Lions",       wins: 12.0, odds: 72, players: [
+    { name:"Jared Goff",      pos:"QB", impact:3.0, cap:"$20M", backupName:"Hendon Hooker",      backupRating:50, backupNote:"Recovered from torn ACL, unproven at NFL level.", histPlayer:"Matthew Stafford (2017)", histResult:"Lions went 9-7 vs 11-5 projection." },
+    { name:"Amon-Ra St. Brown", pos:"WR", impact:2.0, cap:"$5M", backupName:"Jameson Williams",  backupRating:62, backupNote:"Speed threat, YAC machine, needs route refinement.", histPlayer:"Tyreek Hill (2022)",     histResult:"Chiefs went 14-3 but lost offensive diversity." },
+    { name:"Sam LaPorta",     pos:"TE", impact:1.4, cap:"$3M",  backupName:"Brock Wright",       backupRating:40, backupNote:"Run-first blocker, minimal receiving.", histPlayer:"Travis Kelce (2015)",    histResult:"Chiefs offense ranked 9th vs 2nd — measurable drop." },
+    { name:"Aidan Hutchinson", pos:"EDGE", impact:2.0, cap:"$10M", backupName:"Marcus Davenport", backupRating:52, backupNote:"Injury-prone veteran, high ceiling on good days.", histPlayer:"Aaron Donald (2016)",    histResult:"Rams defense still ranked top-10 — depth carried them." },
+  ]},
+  "GB":  { name: "Green Bay Packers",   wins: 10.5, odds: 60, players: [
+    { name:"Jordan Love",     pos:"QB", impact:3.3, cap:"$20M", backupName:"Sean Clifford",      backupRating:36, backupNote:"Practice squad level, NFL exposure minimal.", histPlayer:"Aaron Rodgers (2023 — week 1)", histResult:"Jets went 7-10 despite massive expectations." },
+    { name:"Jayden Reed",     pos:"WR", impact:1.6, cap:"$2M",  backupName:"Romeo Doubs",        backupRating:58, backupNote:"Big-play upside, inconsistent routes.", histPlayer:"Randall Cobb (2013)",     histResult:"Packers still went 8-7-1, Cobb's absence hurt third downs." },
+    { name:"Christian Watson", pos:"WR", impact:1.4, cap:"$2M", backupName:"Malik Heath",        backupRating:40, backupNote:"Undrafted, practice squad development.", histPlayer:"Devante Parker (2018)",  histResult:"Dolphins went 7-9 vs 10-6 projection." },
+  ]},
+  "HOU": { name: "Houston Texans",      wins: 10.5, odds: 60, players: [
+    { name:"C.J. Stroud",     pos:"QB", impact:3.6, cap:"$10M", backupName:"Case Keenum",        backupRating:44, backupNote:"Career backup with playoff experience in 2017.", histPlayer:"Deshaun Watson (2021)", histResult:"Texans went 4-13 without him — dramatic collapse." },
+    { name:"Nico Collins",    pos:"WR", impact:1.8, cap:"$4M",  backupName:"Tank Dell",          backupRating:62, backupNote:"Speedy slot weapon, bouncing back from injury.", histPlayer:"A.J. Brown (2021)",     histResult:"Titans still made playoffs but offense ranked 15th." },
+    { name:"Will Anderson Jr.", pos:"EDGE", impact:1.7, cap:"$5M", backupName:"Danielle Hunter",  backupRating:70, backupNote:"Veteran pass rusher, still elite in right system.", histPlayer:"Micah Parsons (2023 — knee)", histResult:"Cowboys D ranked 12th vs 6th — noticeable dip." },
+  ]},
+  "IND": { name: "Indianapolis Colts",  wins: 8.5,  odds: 40, players: [
+    { name:"Anthony Richardson", pos:"QB", impact:3.0, cap:"$10M", backupName:"Joe Flacco",      backupRating:46, backupNote:"Stop-gap veteran, best-case 8-9 wins.", histPlayer:"Andrew Luck (2019 — retirement)", histResult:"Colts went 2-14, complete collapse." },
+    { name:"Jonathan Taylor",  pos:"RB", impact:2.0, cap:"$4M",  backupName:"Trey Sermon",       backupRating:44, backupNote:"Limited receiver, best as short-yardage option.", histPlayer:"Derrick Henry (2022)", histResult:"Titans went 7-10 vs 11-6 projection." },
+    { name:"Michael Pittman Jr.", pos:"WR", impact:1.5, cap:"$3M", backupName:"Josh Downs",       backupRating:56, backupNote:"Quick slot option with good football IQ.", histPlayer:"T.Y. Hilton (2018)",     histResult:"Colts went 10-6 with Andrew Luck carrying the load." },
+  ]},
+  "JAX": { name: "Jacksonville Jaguars", wins: 8.0, odds: 35, players: [
+    { name:"Trevor Lawrence",  pos:"QB", impact:3.4, cap:"$16M", backupName:"Mac Jones",         backupRating:50, backupNote:"Former Patriot, capable starter in limited system.", histPlayer:"Trevor Lawrence (2023 — shoulder)", histResult:"Jags fell to 9-8, lost division title in final week." },
+    { name:"Travis Etienne Jr.", pos:"RB", impact:1.8, cap:"$3M", backupName:"Tank Bigsby",       backupRating:58, backupNote:"Physical runner with good vision, developing receiver.", histPlayer:"Derrick Henry (2021)", histResult:"Titans went 12-5 — Henry's absence cost them momentum." },
+    { name:"Brian Thomas Jr.", pos:"WR", impact:1.6, cap:"$2M",  backupName:"Gabe Davis",         backupRating:54, backupNote:"Boom-or-bust deep threat, limited route tree.", histPlayer:"D.J. Chark (2020)",     histResult:"Jags went 1-15, offense was non-functional." },
+  ]},
+  "KC":  { name: "Kansas City Chiefs",  wins: 12.5, odds: 80, players: [
+    { name:"Patrick Mahomes",  pos:"QB", impact:4.5, cap:"$32M", backupName:"Carson Wentz",      backupRating:50, backupNote:"Former #1 pick, still capable, but can't replicate Mahomes magic.", histPlayer:"Patrick Mahomes (2019 — dislocated kneecap)", histResult:"Chiefs went 9-7 without him in those weeks." },
+    { name:"Travis Kelce",     pos:"TE", impact:2.4, cap:"$8M",  backupName:"Noah Gray",          backupRating:50, backupNote:"Solid blocker and receiver, nowhere near Kelce's tier.", histPlayer:"Rob Gronkowski (2012 — back)", histResult:"Patriots went 12-4 but offense lost 6 pts/game." },
+    { name:"Chris Jones",      pos:"DT", impact:1.8, cap:"$12M", backupName:"Derrick Nnadi",      backupRating:50, backupNote:"Two-down run stopper, can't generate pass rush.", histPlayer:"Aaron Donald (2022)",    histResult:"Rams still won Super Bowl — Jones' absence would be more damaging." },
+  ]},
+  "LAC": { name: "Los Angeles Chargers", wins: 9.5, odds: 52, players: [
+    { name:"Justin Herbert",   pos:"QB", impact:3.8, cap:"$24M", backupName:"Taylor Heinicke",   backupRating:52, backupNote:"Scrappy game manager, beloved by teammates.", histPlayer:"Herbert (2020 — debut mid-season)", histResult:"Chargers went 7-9 that year, Herbert's emergence changed everything." },
+    { name:"Keenan Allen",     pos:"WR", impact:1.5, cap:"$4M",  backupName:"Quentin Johnston",   backupRating:56, backupNote:"Athletic wideout, developing precision in routes.", histPlayer:"Wes Welker (2012)",      histResult:"Patriots still went 12-4 — deep WR helped absorb loss." },
+    { name:"Joey Bosa",        pos:"EDGE", impact:1.6, cap:"$9M", backupName:"Khalil Mack",       backupRating:72, backupNote:"Still an elite pass rusher if healthy.", histPlayer:"Von Miller (2021 — trade)", histResult:"Broncos D ranked 20th rest of season." },
+  ]},
+  "LAR": { name: "Los Angeles Rams",    wins: 10.0, odds: 56, players: [
+    { name:"Matthew Stafford",  pos:"QB", impact:3.2, cap:"$22M", backupName:"Brett Rypien",     backupRating:36, backupNote:"Career backup with limited starts.", histPlayer:"Matthew Stafford (2021 — elbow)", histResult:"Rams went 10-7 with backup and still made Super Bowl — remarkable." },
+    { name:"Cooper Kupp",       pos:"WR", impact:2.0, cap:"$6M",  backupName:"Puka Nacua",        backupRating:68, backupNote:"Breakout 2023 season, legit WR1 production.", histPlayer:"Cooper Kupp (2022 — ankle)", histResult:"Rams went 5-12, Kupp's absence was devastating." },
+    { name:"Puka Nacua",        pos:"WR", impact:1.6, cap:"$2M",  backupName:"Tyler Johnson",     backupRating:42, backupNote:"Limited NFL production.", histPlayer:"Tyler Boyd (2022)",       histResult:"Bengals went 12-4 — Boyd absorbed role successfully." },
+  ]},
+  "LV":  { name: "Las Vegas Raiders",   wins: 7.0,  odds: 25, players: [
+    { name:"Gardner Minshew",   pos:"QB", impact:2.0, cap:"$8M",  backupName:"Aidan O'Connell",   backupRating:46, backupNote:"Mobile QB with developing NFL reads.", histPlayer:"Derek Carr (2023 — trade)", histResult:"Raiders went 8-9 vs 10-7 projection." },
+    { name:"Davante Adams",     pos:"WR", impact:2.2, cap:"$5M",  backupName:"Jakobi Meyers",     backupRating:60, backupNote:"Reliable slot option, no true WR1 ability.", histPlayer:"Antonio Brown (2019 — cut)", histResult:"Raiders went 7-9 after AB drama." },
+    { name:"Maxx Crosby",       pos:"EDGE", impact:2.0, cap:"$9M", backupName:"Malcolm Koonce",   backupRating:48, backupNote:"Young rusher with flashes, inconsistent.", histPlayer:"Khalil Mack (2019 — Bears)", histResult:"Raiders defense ranked 28th after his trade." },
+  ]},
+  "MIA": { name: "Miami Dolphins",      wins: 10.0, odds: 55, players: [
+    { name:"Tua Tagovailoa",    pos:"QB", impact:3.4, cap:"$22M", backupName:"Skylar Thompson",   backupRating:40, backupNote:"Stop-gap option, Dolphins have limited depth.", histPlayer:"Tua Tagovailoa (2023 — concussions)", histResult:"Dolphins went 11-6 but looked vulnerable in playoffs." },
+    { name:"Tyreek Hill",       pos:"WR", impact:2.6, cap:"$6M",  backupName:"Jaylen Waddle",     backupRating:72, backupNote:"Elite WR2 who can produce as a WR1.", histPlayer:"Tyreek Hill (2020 — Chiefs)", histResult:"Chiefs still went 14-2, Hill's loss was cushioned by depth." },
+    { name:"Jaylen Waddle",     pos:"WR", impact:1.8, cap:"$4M",  backupName:"River Cracraft",    backupRating:42, backupNote:"Special teams value, limited offensive role.", histPlayer:"DeVante Parker (2021)",  histResult:"Dolphins went 9-8 vs 11-6 projection." },
+  ]},
+  "MIN": { name: "Minnesota Vikings",   wins: 10.0, odds: 55, players: [
+    { name:"Sam Darnold",       pos:"QB", impact:2.4, cap:"$10M", backupName:"Nick Mullens",      backupRating:42, backupNote:"Stop-gap veteran, limited ceiling.", histPlayer:"Sam Bradford (2017 — benched)", histResult:"Vikings went 13-3 with Case Keenum — surprise story." },
+    { name:"Justin Jefferson",  pos:"WR", impact:2.5, cap:"$5M",  backupName:"Jordan Addison",    backupRating:64, backupNote:"Emerging WR2 with yards-after-catch ability.", histPlayer:"Calvin Johnson (2012 — injuries)", histResult:"Lions went 4-12 without full Megatron." },
+    { name:"Jordan Addison",    pos:"WR", impact:1.4, cap:"$2M",  backupName:"Jalen Nailor",      backupRating:44, backupNote:"Limited experience, practice squad level.", histPlayer:"Stefon Diggs (2020)",    histResult:"Bills overcame loss with Josh Allen carrying the offense." },
+  ]},
+  "NE":  { name: "New England Patriots", wins: 8.0, odds: 35, players: [
+    { name:"Drake Maye",        pos:"QB", impact:3.2, cap:"$10M", backupName:"Jacoby Brissett",   backupRating:50, backupNote:"Veteran starter experience, solid game manager.", histPlayer:"Cam Newton (2021 — cut)",  histResult:"Patriots went 7-9 vs 10-7 projection." },
+    { name:"Kendrick Bourne",   pos:"WR", impact:1.2, cap:"$2M",  backupName:"JuJu Smith-Schuster", backupRating:58, backupNote:"Short-area option, won't replicate Bourne's big plays.", histPlayer:"Brandin Cooks (2017)",   histResult:"Patriots went 13-3 — legendary depth absorbed it." },
+    { name:"Christian Barmore",  pos:"DT", impact:1.4, cap:"$5M", backupName:"Daniel Ekuale",     backupRating:42, backupNote:"Run-stopper, can't generate interior pass rush.", histPlayer:"Vince Wilfork (2013 — torn ACL)", histResult:"Patriots went 12-4 but defense ranked lower than expected." },
+  ]},
+  "NO":  { name: "New Orleans Saints",  wins: 8.5,  odds: 42, players: [
+    { name:"Derek Carr",        pos:"QB", impact:2.6, cap:"$16M", backupName:"Jake Haener",       backupRating:44, backupNote:"Developmental QB, unproven in sustained play.", histPlayer:"Drew Brees (2020 — rib)",  histResult:"Saints went 12-4 but lacked Brees magic late." },
+    { name:"Chris Olave",       pos:"WR", impact:1.7, cap:"$3M",  backupName:"Rashid Shaheed",    backupRating:56, backupNote:"Deep-ball threat, limited route tree.", histPlayer:"Michael Thomas (2021 — ankle)", histResult:"Saints went 9-8 vs 12-5 projection." },
+    { name:"Alvin Kamara",      pos:"RB", impact:1.9, cap:"$4M",  backupName:"Jamaal Williams",   backupRating:52, backupNote:"Power back, useful in goal-line situations.", histPlayer:"Alvin Kamara (2022 — knee)", histResult:"Saints went 7-10, lost out on playoffs by one game." },
+  ]},
+  "NYG": { name: "New York Giants",     wins: 7.5,  odds: 28, players: [
+    { name:"Daniel Jones",      pos:"QB", impact:2.4, cap:"$14M", backupName:"Tommy DeVito",      backupRating:48, backupNote:"Fan favorite, won 4 games as starter in 2023.", histPlayer:"Eli Manning (2017 — broken hand)", histResult:"Giants went 3-13 without full-health Eli." },
+    { name:"Malik Nabers",      pos:"WR", impact:2.0, cap:"$3M",  backupName:"Darius Slayton",    backupRating:52, backupNote:"Deep threat, needs a QB to unlock his ability.", histPlayer:"Odell Beckham Jr. (2017)", histResult:"Giants went 3-13, catastrophic wide receiver void." },
+    { name:"Dexter Lawrence",   pos:"DT", impact:1.6, cap:"$7M",  backupName:"D.J. Davidson",     backupRating:44, backupNote:"Decent run stopper, can't generate pass rush.", histPlayer:"Aaron Donald (2023 — retirement)", histResult:"Rams fell to 10-7 and missed first-round bye." },
+  ]},
+  "NYJ": { name: "New York Jets",       wins: 9.0,  odds: 46, players: [
+    { name:"Aaron Rodgers",     pos:"QB", impact:3.6, cap:"$20M", backupName:"Tyrod Taylor",      backupRating:48, backupNote:"Mobile veteran, best suited as game manager.", histPlayer:"Aaron Rodgers (2023 — torn Achilles, week 1)", histResult:"Jets went 7-10 — massive drop from expectations." },
+    { name:"Garrett Wilson",    pos:"WR", impact:1.8, cap:"$3M",  backupName:"Allen Lazard",      backupRating:52, backupNote:"Blocking WR, limited route tree.", histPlayer:"Davante Adams (2022 — toe)", histResult:"Packers went 8-9, first miss in years." },
+    { name:"Sauce Gardner",     pos:"CB", impact:1.9, cap:"$6M",  backupName:"Michael Carter II", backupRating:48, backupNote:"Slot corner only, can't match up outside.", histPlayer:"Darrelle Revis (2014 — Patriots)", histResult:"Jets immediately ranked 20th in pass D." },
+  ]},
+  "PHI": { name: "Philadelphia Eagles", wins: 11.5, odds: 68, players: [
+    { name:"Jalen Hurts",       pos:"QB", impact:3.8, cap:"$22M", backupName:"Kenny Pickett",     backupRating:58, backupNote:"Former #20 pick, capable but lacks Hurts' rushing dimension.", histPlayer:"Jalen Hurts (2022 — shoulder)", histResult:"Eagles went 14-3 after MNF return — near miss with backup." },
+    { name:"A.J. Brown",        pos:"WR", impact:2.2, cap:"$5M",  backupName:"DeVonta Smith",     backupRating:74, backupNote:"Elite route runner who can be a true WR1.", histPlayer:"Julio Jones (2021 — trade)", histResult:"Titans still made 12 wins, Smith would help absorb Brown's loss." },
+    { name:"DeVonta Smith",     pos:"WR", impact:1.8, cap:"$3M",  backupName:"Britain Covey",     backupRating:42, backupNote:"Punt returner first, receiver second.", histPlayer:"Nelson Agholor (2019)",   histResult:"Eagles went 9-7 vs 11-5 projection." },
+    { name:"Jalen Carter",      pos:"DT", impact:1.8, cap:"$5M",  backupName:"Milton Williams",   backupRating:56, backupNote:"Pass-rush specialist, flashes elite ceiling.", histPlayer:"Aaron Donald (2018)",    histResult:"Rams won Super Bowl, Donald was the cornerstone." },
+  ]},
+  "PIT": { name: "Pittsburgh Steelers", wins: 9.5,  odds: 52, players: [
+    { name:"Russell Wilson",    pos:"QB", impact:2.8, cap:"$18M", backupName:"Kyle Allen",        backupRating:44, backupNote:"NFL starter experience, limited upside.", histPlayer:"Big Ben (2010 — suspension)", histResult:"Steelers went 3-1 with Byron Leftwich — surprisingly solid." },
+    { name:"George Pickens",    pos:"WR", impact:1.8, cap:"$3M",  backupName:"Van Jefferson",     backupRating:50, backupNote:"Deep-ball threat only, inconsistent route runner.", histPlayer:"Antonio Brown (2020 — TB)", histResult:"Steelers went 8-8 without him on a weaker roster." },
+    { name:"T.J. Watt",         pos:"EDGE", impact:2.4, cap:"$10M", backupName:"Alex Highsmith",  backupRating:64, backupNote:"Solid complementary rusher, won't replicate Watt's dominance.", histPlayer:"T.J. Watt (2021 — pec)", histResult:"Steelers fell to 9-7-1 with Watt missing two months." },
+  ]},
+  "SEA": { name: "Seattle Seahawks",    wins: 9.0,  odds: 46, players: [
+    { name:"Geno Smith",        pos:"QB", impact:2.6, cap:"$14M", backupName:"Sam Howell",        backupRating:46, backupNote:"Athletic QB with inconsistent decision-making.", histPlayer:"Geno Smith (2022 — emergence)", histResult:"Seahawks went 9-8 vs 12-5 projection — Geno was a surprise." },
+    { name:"DK Metcalf",        pos:"WR", impact:2.0, cap:"$5M",  backupName:"Tyler Lockett",     backupRating:68, backupNote:"Precise route runner, WR2 who can handle a WR1 role in year end.", histPlayer:"Calvin Johnson (2015 — retirement)", histResult:"Lions fell to 7-9, Lockett is much better backup than Lions had." },
+    { name:"Kenneth Walker III", pos:"RB", impact:1.6, cap:"$3M", backupName:"Zach Charbonnet",   backupRating:62, backupNote:"Strong runner with improved route running.", histPlayer:"Marshawn Lynch (2016 — retirement)", histResult:"Seahawks went 10-5-1 without Lynch, went 10-6 next year." },
+  ]},
+  "SF":  { name: "San Francisco 49ers", wins: 12.0, odds: 72, players: [
+    { name:"Brock Purdy",       pos:"QB", impact:3.4, cap:"$6M",  backupName:"Brandon Allen",     backupRating:36, backupNote:"Stop-gap only, system would carry him but wins drop significantly.", histPlayer:"Brock Purdy (2023 — elbow)", histResult:"49ers still went 12-5, Sam Darnold stepped up effectively." },
+    { name:"Christian McCaffrey", pos:"RB", impact:2.8, cap:"$6M", backupName:"Jordan Mason",     backupRating:60, backupNote:"Proved himself in 2023, capable starter, no McCaffrey ceiling.", histPlayer:"CMC (2020 — injuries)",   histResult:"Panthers went 5-11, starkest injury impact in modern NFL." },
+    { name:"Deebo Samuel",      pos:"WR", impact:1.8, cap:"$5M",  backupName:"Brandon Aiyuk",     backupRating:74, backupNote:"True WR1 who ranked top-8 in receiving last season.", histPlayer:"Davante Adams (2022 — toe)", histResult:"Packers still productive, Aiyuk is a superior backup option." },
+    { name:"Nick Bosa",         pos:"EDGE", impact:2.2, cap:"$12M", backupName:"Robert Beal Jr.", backupRating:40, backupNote:"Rotational rusher, limited production.", histPlayer:"Nick Bosa (2020 — ACL)",   histResult:"49ers went 6-10, defense ranked 22nd without him." },
+  ]},
+  "TB":  { name: "Tampa Bay Buccaneers", wins: 9.5, odds: 52, players: [
+    { name:"Baker Mayfield",    pos:"QB", impact:3.0, cap:"$16M", backupName:"Kyle Trask",        backupRating:40, backupNote:"Developmental QB, limited NFL experience.", histPlayer:"Tom Brady (2022 — retirement scare)", histResult:"Brady came back, Bucs went 8-9." },
+    { name:"Mike Evans",        pos:"WR", impact:1.8, cap:"$4M",  backupName:"Chris Godwin",      backupRating:72, backupNote:"High-volume slot receiver who can handle a WR1 role.", histPlayer:"Randy Moss (2010 — trade)", histResult:"Patriots went 14-2 that year — Moss was not the key." },
+    { name:"Chris Godwin",      pos:"WR", impact:1.5, cap:"$4M",  backupName:"Trey Palmer",       backupRating:44, backupNote:"Speed threat, unproven in full role.", histPlayer:"Wes Welker (2013 — concussions)", histResult:"Patriots went 12-4 but lost key third-down conversion rate." },
+  ]},
+  "TEN": { name: "Tennessee Titans",    wins: 7.5,  odds: 28, players: [
+    { name:"Will Levis",        pos:"QB", impact:2.6, cap:"$8M",  backupName:"Mason Rudolph",     backupRating:46, backupNote:"Won two playoff games with Steelers in 2023.", histPlayer:"Ryan Tannehill (2022 — injury)", histResult:"Titans went 7-10, season derailed." },
+    { name:"Calvin Ridley",     pos:"WR", impact:1.6, cap:"$4M",  backupName:"DeAndre Hopkins",   backupRating:66, backupNote:"Still producing at high level despite age.", histPlayer:"Calvin Ridley (2021 — mental health)", histResult:"Falcons went 7-10 vs 10-7 projection." },
+    { name:"Chigoziem Okonkwo", pos:"TE", impact:1.2, cap:"$2M",  backupName:"Josh Whyle",        backupRating:40, backupNote:"Developmental TE, blocking only.", histPlayer:"Jonnu Smith (2021 — trade)", histResult:"Titans went 12-5, absorbed the loss well." },
+  ]},
+  "WAS": { name: "Washington Commanders", wins: 10.0, odds: 56, players: [
+    { name:"Jayden Daniels",    pos:"QB", impact:3.8, cap:"$10M", backupName:"Sam Hartman",       backupRating:40, backupNote:"College standout, no NFL starts.", histPlayer:"Josh Allen (2018 — rookie year)", histResult:"Bills went 6-10, Daniels' upside mirrors Allen's." },
+    { name:"Terry McLaurin",    pos:"WR", impact:1.7, cap:"$4M",  backupName:"Olamide Zaccheaus", backupRating:48, backupNote:"Slot specialist, limited contested-catch ability.", histPlayer:"DeSean Jackson (2014 — injury)", histResult:"Eagles went 10-6 vs 12-4 projection." },
+    { name:"Brian Robinson Jr.", pos:"RB", impact:1.4, cap:"$2M", backupName:"Jeremy McNichols",  backupRating:44, backupNote:"Change-of-pace back, limited featured-back ability.", histPlayer:"Adrian Peterson (2017)", histResult:"Saints went 11-5 but leaned more pass-heavy." },
+  ]},
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+let activeInjuries = []; // [{ teamKey, teamName, player }]
+let lastPlayer = null;   // for detail panel
+
+// ── Init ──────────────────────────────────────────────────────────────────
+(function init() {
+  const teamSel = document.getElementById('team-select');
+  Object.keys(TEAMS).sort().forEach(key => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = TEAMS[key].name;
+    teamSel.appendChild(opt);
+  });
+})();
+
+function onTeamChange() {
+  const teamKey = document.getElementById('team-select').value;
+  const playerSel = document.getElementById('player-select');
+  playerSel.innerHTML = '<option value="">-- Choose a Player --</option>';
+  if (!teamKey) { playerSel.disabled = true; return; }
+  const team = TEAMS[teamKey];
+  team.players.forEach((p, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${p.name} (${p.pos}) — ${p.impact > 0 ? '-' : '+'}${Math.abs(p.impact)} wins`;
+    playerSel.appendChild(opt);
+  });
+  playerSel.disabled = false;
+}
+
+function onPlayerChange() {
+  const teamKey = document.getElementById('team-select').value;
+  const playerIdx = document.getElementById('player-select').value;
+  if (!teamKey || playerIdx === '') return;
+
+  const team = TEAMS[teamKey];
+  const player = team.players[parseInt(playerIdx)];
+
+  // Prevent duplicate
+  const already = activeInjuries.find(inj => inj.teamKey === teamKey && inj.player.name === player.name);
+  if (already) { showToast('Player already injured'); return; }
+
+  activeInjuries.push({ teamKey, teamName: team.name, player });
+  lastPlayer = player;
+  renderInjuries();
+  renderImpact();
+
+  // Reset selects
+  document.getElementById('team-select').value = '';
+  document.getElementById('player-select').innerHTML = '<option value="">-- Choose a Player --</option>';
+  document.getElementById('player-select').disabled = true;
+}
+
+function removeInjury(idx) {
+  activeInjuries.splice(idx, 1);
+  lastPlayer = activeInjuries.length > 0 ? activeInjuries[activeInjuries.length - 1].player : null;
+  renderInjuries();
+  renderImpact();
+}
+
+function renderInjuries() {
+  const list = document.getElementById('injuries-list');
+  const countEl = document.getElementById('injury-count');
+  countEl.textContent = activeInjuries.length;
+
+  if (activeInjuries.length === 0) {
+    list.innerHTML = `<div class="empty-injuries"><span class="empty-icon">&#129657;</span>No injuries simulated yet. Pick a team and player above.</div>`;
+    return;
+  }
+  list.innerHTML = activeInjuries.map((inj, i) => `
+    <div class="injury-card">
+      <div class="injury-card-info">
+        <div class="injury-card-name">${inj.player.name}</div>
+        <div class="injury-card-meta">${inj.teamName} &middot; ${inj.player.pos} &middot; Cap hit: ${inj.player.cap}</div>
+      </div>
+      <div class="injury-card-wins">-${inj.player.impact}W</div>
+      <button class="btn-remove-injury" onclick="removeInjury(${i})" aria-label="Remove injury">&#10005;</button>
+    </div>
+  `).join('');
+}
+
+function renderImpact() {
+  const impactEmpty = document.getElementById('impact-empty');
+  const impactContent = document.getElementById('impact-content');
+  const panelTeamLabel = document.getElementById('impact-team-label');
+
+  if (activeInjuries.length === 0) {
+    impactEmpty.style.display = 'block';
+    impactContent.classList.remove('visible');
+    panelTeamLabel.textContent = '—';
+    return;
+  }
+
+  impactEmpty.style.display = 'none';
+  impactContent.classList.add('visible');
+
+  // Determine primary team (most injuries)
+  const teamCounts = {};
+  activeInjuries.forEach(inj => {
+    teamCounts[inj.teamKey] = (teamCounts[inj.teamKey] || 0) + 1;
+  });
+  const primaryTeamKey = Object.keys(teamCounts).sort((a, b) => teamCounts[b] - teamCounts[a])[0];
+  const primaryTeam = TEAMS[primaryTeamKey];
+  panelTeamLabel.textContent = primaryTeam.name;
+
+  // Win calculation (cap at 0 floor / 17 ceiling)
+  const totalWinImpact = activeInjuries.reduce((sum, inj) => sum + inj.player.impact, 0);
+  const winsHealthy = primaryTeam.wins;
+  const winsInjured = Math.max(0, Math.min(17, winsHealthy - totalWinImpact));
+  const winChange = winsHealthy - winsInjured;
+
+  // Playoff odds (diminishing returns per injury stacked)
+  const oddsHealthy = primaryTeam.odds;
+  const oddsInjured = Math.max(2, Math.round(oddsHealthy - (totalWinImpact * 8.5)));
+  const oddsDelta = oddsHealthy - oddsInjured;
+
+  // Dead cap (sum all)
+  const deadCapList = activeInjuries.map(inj => inj.player.cap);
+  const deadCapStr = deadCapList.join(' + ');
+
+  // Impact score (0-100, higher = more damaging)
+  const impactScore = Math.min(100, Math.round((totalWinImpact / 8) * 100));
+
+  // Wins display
+  document.getElementById('wins-healthy').textContent = winsHealthy.toFixed(1);
+  document.getElementById('wins-injured').textContent = winsInjured.toFixed(1);
+
+  // Change banner
+  const banner = document.getElementById('change-banner');
+  const changeText = document.getElementById('change-text');
+  const changeDetail = document.getElementById('change-detail');
+  banner.classList.remove('positive');
+  changeText.textContent = `-${winChange.toFixed(1)} projected wins`;
+  changeDetail.textContent = `${(winsHealthy).toFixed(1)}W → ${winsInjured.toFixed(1)}W season projection`;
+
+  // Stats
+  document.getElementById('stat-odds-before').textContent = `${oddsHealthy}%`;
+  document.getElementById('stat-odds-after').textContent  = `${oddsInjured}%`;
+  document.getElementById('stat-dead-cap').textContent    = deadCapStr;
+  document.getElementById('stat-impact').textContent      = impactScore;
+
+  // Color impact score
+  const impactEl = document.getElementById('stat-impact');
+  impactEl.className = 'stat-value';
+  if (impactScore >= 70) impactEl.classList.add('bad');
+  else if (impactScore >= 40) impactEl.classList.add('warn');
+  else impactEl.classList.add('good');
+
+  // Backup + historical — use last injured player
+  const lp = lastPlayer || activeInjuries[activeInjuries.length - 1].player;
+  document.getElementById('backup-name').textContent = lp.backupName;
+  document.getElementById('backup-rating-num').textContent = lp.backupRating;
+  document.getElementById('backup-note').textContent = lp.backupNote;
+
+  const bar = document.getElementById('backup-bar');
+  const rating = lp.backupRating;
+  bar.style.width = rating + '%';
+  bar.style.background = rating >= 70 ? '#39FF14' : rating >= 50 ? '#FFD600' : '#FF2D55';
+  document.getElementById('backup-rating-num').style.color = rating >= 70 ? '#39FF14' : rating >= 50 ? '#FFD600' : '#FF2D55';
+
+  document.getElementById('hist-player').textContent = lp.histPlayer;
+  document.getElementById('hist-result').textContent = lp.histResult;
+}
+
+function resetAll() {
+  activeInjuries = [];
+  lastPlayer = null;
+  document.getElementById('team-select').value = '';
+  document.getElementById('player-select').innerHTML = '<option value="">-- Choose a Player --</option>';
+  document.getElementById('player-select').disabled = true;
+  renderInjuries();
+  renderImpact();
+  showToast('Reset complete');
+}
+
+function shareReport() {
+  if (activeInjuries.length === 0) {
+    showToast('Add an injury first');
+    return;
+  }
+  const lines = activeInjuries.map(inj => `${inj.player.name} (${inj.teamName}): -${inj.player.impact}W`);
+  const text = `NFL Injury Impact Simulation:\n${lines.join('\n')}\n\nSim yours: https://ainflgm.com/injury-impact.html`;
+  if (navigator.share) {
+    navigator.share({ title: 'NFL Injury Impact Simulator', text }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Report copied to clipboard'));
+  } else {
+    showToast('Copy: ainflgm.com/injury-impact.html');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+</script>
+
+</body>
+</html>

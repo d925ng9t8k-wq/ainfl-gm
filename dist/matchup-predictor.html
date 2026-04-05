@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Matchup Pred.">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Game Matchup Predictor | AiNFL GM</title>
+<meta name="description" content="Predict any NFL game outcome. Pick two teams and get win probability, predicted score, and key matchup advantages. Free tool by AiNFL GM.">
+<meta property="og:title" content="NFL Game Matchup Predictor | AiNFL GM">
+<meta property="og:description" content="Pick two NFL teams and get a predicted game outcome based on team ratings, home field advantage, and key matchup breakdowns.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/matchup-predictor.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Game Matchup Predictor | AiNFL GM">
+<meta name="twitter:description" content="Predict any NFL game outcome. Win probability, predicted score, and key matchup breakdowns. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes bar-fill {
+  from { width: 0; }
+}
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main Layout ── */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Team Selectors ── */
+.matchup-setup {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+@media (max-width: 640px) {
+  .matchup-setup {
+    grid-template-columns: 1fr;
+  }
+  .vs-divider { order: 2; text-align: center; }
+  .team-away-col { order: 3; }
+}
+
+.team-col {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.team-home-col { border-top: 3px solid var(--cyan); }
+.team-away-col { border-top: 3px solid var(--yellow); }
+
+.col-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.team-home-col .col-label { color: var(--cyan); }
+.team-away-col .col-label { color: var(--yellow); }
+
+.team-select-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+.team-select {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 40px 12px 14px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition: border-color 0.2s;
+}
+.team-home-col .team-select:focus { outline: none; border-color: var(--border-hi); }
+.team-away-col .team-select:focus { outline: none; border-color: rgba(255,214,0,0.35); }
+
+.team-ratings {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rating-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.rating-label {
+  color: var(--text-mute);
+  font-weight: 500;
+  min-width: 80px;
+}
+.rating-bar-wrap {
+  flex: 1;
+  height: 5px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  margin: 0 10px;
+  overflow: hidden;
+}
+.rating-bar {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+.team-home-col .rating-bar { background: var(--cyan); }
+.team-away-col .rating-bar { background: var(--yellow); }
+.rating-val {
+  font-weight: 700;
+  min-width: 28px;
+  text-align: right;
+  font-size: 12px;
+}
+.team-home-col .rating-val { color: var(--cyan); }
+.team-away-col .rating-val { color: var(--yellow); }
+
+/* ── VS Divider ── */
+.vs-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 56px;
+}
+.vs-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.home-tag {
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Predict Button ── */
+.predict-row {
+  text-align: center;
+  margin-bottom: 32px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.btn-predict {
+  background: linear-gradient(135deg, #00C8D4, #0080FF);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 16px 40px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(0,200,212,0.25);
+}
+.btn-predict:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-predict:active { transform: scale(0.98); }
+.btn-predict:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+/* ── Result Panel ── */
+.result-panel {
+  display: none;
+  animation: glow-in 0.35s ease both;
+  margin-bottom: 28px;
+}
+.result-panel.visible { display: block; }
+
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+/* Score Banner */
+.score-banner {
+  background: linear-gradient(135deg, #0F2040 0%, #1A2F50 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 24px 20px;
+  text-align: center;
+}
+.score-teams {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 6px;
+}
+.score-team {
+  flex: 1;
+  text-align: center;
+}
+.score-team-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(14px, 3vw, 18px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.score-team-name.winner { color: #fff; }
+.score-pts {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(36px, 8vw, 60px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-dim);
+}
+.score-pts.winner { color: var(--cyan); }
+.score-away .score-pts.winner { color: var(--yellow); }
+.score-divider {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-mute);
+  padding: 0 12px;
+  margin-top: 20px;
+}
+.score-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 8px;
+}
+.winner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0,240,255,0.1);
+  border: 1px solid rgba(0,240,255,0.2);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-top: 12px;
+}
+.winner-badge.away {
+  background: rgba(255,214,0,0.1);
+  border-color: rgba(255,214,0,0.2);
+  color: var(--yellow);
+}
+
+/* Win Probability Bar */
+.prob-section {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.prob-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.prob-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.prob-bar-wrap {
+  height: 22px;
+  border-radius: 100px;
+  overflow: hidden;
+  display: flex;
+  background: var(--bg-3);
+}
+.prob-bar-home {
+  height: 100%;
+  background: linear-gradient(90deg, #00C8D4, #00F0FF);
+  border-radius: 100px 0 0 100px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0F172A;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 30px;
+  overflow: hidden;
+}
+.prob-bar-away {
+  height: 100%;
+  background: linear-gradient(90deg, #C8A800, #FFD600);
+  border-radius: 0 100px 100px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0F172A;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 30px;
+  overflow: hidden;
+}
+.prob-teams-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.prob-team-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.prob-pct {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+.prob-pct.home { color: var(--cyan); }
+.prob-pct.away { color: var(--yellow); }
+
+/* Key Matchups */
+.matchups-section {
+  padding: 20px 24px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 14px;
+}
+.matchup-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.matchup-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+.matchup-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+.matchup-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+.matchup-text strong { color: var(--text); }
+.matchup-edge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.edge-home {
+  color: var(--cyan);
+  background: var(--cyan-dim);
+  border: 1px solid rgba(0,240,255,0.2);
+}
+.edge-away {
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.2);
+}
+.edge-even {
+  color: var(--text-mute);
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+}
+
+/* ── Simulation Panel ── */
+.sim-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.btn-simulate {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.btn-simulate:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+.sim-results { display: none; }
+.sim-results.visible { display: block; }
+
+.sim-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.sim-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sim-bar-label {
+  font-size: 12px;
+  font-weight: 600;
+  width: 90px;
+  flex-shrink: 0;
+  color: var(--text-dim);
+}
+.sim-bar-track {
+  flex: 1;
+  height: 18px;
+  background: var(--bg-3);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.sim-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  animation: bar-fill 0.5s ease both;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0F172A;
+  min-width: 2px;
+}
+.sim-bar-fill.home-fill { background: linear-gradient(90deg, #00C8D4, #00F0FF); }
+.sim-bar-fill.away-fill { background: linear-gradient(90deg, #C8A800, #FFD600); }
+.sim-bar-fill.tie-fill  { background: var(--bg-2); color: var(--text-mute); }
+.sim-bar-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  width: 56px;
+  text-align: right;
+  color: var(--text);
+}
+
+.sim-note {
+  font-size: 12px;
+  color: var(--text-mute);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Action Row ── */
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.btn-action {
+  flex: 1;
+  min-width: 120px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.btn-action:hover { border-color: var(--border-hi); color: var(--cyan); }
+.btn-action.share-btn:hover { border-color: rgba(57,255,20,0.3); color: var(--green); }
+
+/* ── History ── */
+.history-section {
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.history-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.btn-clear-hist {
+  font-size: 12px;
+  color: var(--text-mute);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.btn-clear-hist:hover { color: var(--red); }
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.history-empty {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-mute);
+  padding: 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+}
+.history-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  animation: glow-in 0.2s ease both;
+}
+.history-item:hover { border-color: var(--border-hi); }
+.history-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+.history-meta {
+  flex: 1;
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.5;
+}
+.history-prob {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cyan);
+  white-space: nowrap;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Shared toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cyan);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 999;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    AI-Powered Predictor
+  </div>
+  <h1>NFL Game<br><span>Matchup</span> Predictor</h1>
+  <p>Pick any two teams and get a predicted score, win probability, and key matchup breakdowns. Home field advantage included.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Team Selectors -->
+  <div class="matchup-setup">
+
+    <!-- Home Team -->
+    <div class="team-col team-home-col">
+      <div class="col-label">Home Team</div>
+      <div class="team-select-wrap">
+        <select class="team-select" id="home-select" onchange="onTeamChange('home')">
+          <option value="">Select Home Team...</option>
+        </select>
+      </div>
+      <div class="team-ratings" id="home-ratings">
+        <div style="font-size:12px;color:var(--text-mute);text-align:center;padding:8px 0;">Select a team to see ratings</div>
+      </div>
+    </div>
+
+    <!-- VS -->
+    <div class="vs-divider">
+      <div class="vs-circle">VS</div>
+      <div class="home-tag">+3 pts<br>home<br>field</div>
+    </div>
+
+    <!-- Away Team -->
+    <div class="team-col team-away-col">
+      <div class="col-label">Away Team</div>
+      <div class="team-select-wrap">
+        <select class="team-select" id="away-select" onchange="onTeamChange('away')">
+          <option value="">Select Away Team...</option>
+        </select>
+      </div>
+      <div class="team-ratings" id="away-ratings">
+        <div style="font-size:12px;color:var(--text-mute);text-align:center;padding:8px 0;">Select a team to see ratings</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Predict Button -->
+  <div class="predict-row">
+    <button class="btn-predict" id="predict-btn" onclick="runPrediction()" disabled>
+      Predict This Matchup
+    </button>
+  </div>
+
+  <!-- Result Panel -->
+  <div class="result-panel" id="result-panel">
+
+    <!-- Score Card -->
+    <div class="result-card">
+
+      <!-- Score Banner -->
+      <div class="score-banner">
+        <div class="score-teams">
+          <div class="score-team score-home">
+            <div class="score-team-name" id="res-home-name">HOME</div>
+            <div class="score-pts" id="res-home-pts">0</div>
+            <div class="score-label">HOME</div>
+          </div>
+          <div class="score-divider">-</div>
+          <div class="score-team score-away">
+            <div class="score-team-name" id="res-away-name">AWAY</div>
+            <div class="score-pts" id="res-away-pts">0</div>
+            <div class="score-label">AWAY</div>
+          </div>
+        </div>
+        <div id="winner-badge" class="winner-badge"></div>
+      </div>
+
+      <!-- Win Probability -->
+      <div class="prob-section">
+        <div class="prob-label">Win Probability</div>
+        <div style="margin-top:10px;">
+          <div class="prob-bar-wrap">
+            <div class="prob-bar-home" id="prob-bar-home">0%</div>
+            <div class="prob-bar-away" id="prob-bar-away">0%</div>
+          </div>
+          <div class="prob-teams-row">
+            <div>
+              <div class="prob-pct home" id="prob-pct-home">0%</div>
+              <div class="prob-team-label" id="prob-name-home">Home</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="prob-pct away" id="prob-pct-away">0%</div>
+              <div class="prob-team-label" id="prob-name-away">Away</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Matchups -->
+      <div class="matchups-section">
+        <div class="section-title">Key Matchup Advantages</div>
+        <div class="matchup-rows" id="matchup-rows"></div>
+      </div>
+
+    </div>
+
+    <!-- Simulation -->
+    <div class="sim-section">
+      <div class="sim-header">
+        <div>
+          <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:#fff;letter-spacing:0.04em;">Simulate 100 Games</div>
+          <div style="font-size:12px;color:var(--text-mute);margin-top:2px;">Run a Monte Carlo simulation with variance</div>
+        </div>
+        <button class="btn-simulate" id="sim-btn" onclick="runSimulation()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1L9 5H13L9.5 8L11 13L7 10L3 13L4.5 8L1 5H5L7 1Z" fill="currentColor" opacity="0.8"/>
+          </svg>
+          Run Simulation
+        </button>
+      </div>
+      <div class="sim-results" id="sim-results">
+        <div class="sim-bars">
+          <div class="sim-bar-row">
+            <div class="sim-bar-label" id="sim-label-home">Home Wins</div>
+            <div class="sim-bar-track">
+              <div class="sim-bar-fill home-fill" id="sim-bar-home" style="width:0%"></div>
+            </div>
+            <div class="sim-bar-count" id="sim-count-home">0</div>
+          </div>
+          <div class="sim-bar-row">
+            <div class="sim-bar-label" id="sim-label-away">Away Wins</div>
+            <div class="sim-bar-track">
+              <div class="sim-bar-fill away-fill" id="sim-bar-away" style="width:0%"></div>
+            </div>
+            <div class="sim-bar-count" id="sim-count-away">0</div>
+          </div>
+          <div class="sim-bar-row">
+            <div class="sim-bar-label">Ties</div>
+            <div class="sim-bar-track">
+              <div class="sim-bar-fill tie-fill" id="sim-bar-tie" style="width:0%"></div>
+            </div>
+            <div class="sim-bar-count" id="sim-count-tie">0</div>
+          </div>
+        </div>
+        <div class="sim-note" id="sim-note"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-row">
+      <button class="btn-action share-btn" onclick="sharePrediction()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="11" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="11" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="3" cy="7" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M4.3 6.2L9.8 3.2M4.3 7.8L9.8 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Share Prediction
+      </button>
+      <button class="btn-action" onclick="resetPrediction()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7a5 5 0 1 0 1-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M2 2v3h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        New Prediction
+      </button>
+    </div>
+
+  </div>
+
+  <!-- History -->
+  <div class="history-section">
+    <div class="history-header">
+      <div class="history-title">Prediction History</div>
+      <button class="btn-clear-hist" onclick="clearHistory()">Clear All</button>
+    </div>
+    <div class="history-list" id="history-list">
+      <div class="history-empty">No predictions yet. Make your first pick!</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div style="margin-bottom:6px;">
+    <a href="https://ainflgm.com">AiNFLGM Home</a> &nbsp;&middot;&nbsp;
+    <a href="/draft-trade-calc.html">Draft Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="/trade-analyzer.html">Trade Analyzer</a> &nbsp;&middot;&nbsp;
+    <a href="/cap-space.html">Salary Cap Rankings</a> &nbsp;&middot;&nbsp;
+    <a href="/mortgage-calc.html">Mortgage Calculator</a>
+  </div>
+  <div>Predictions are for entertainment purposes only. &copy; 2026 AiNFL GM</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- More Tools -->
+<div style="max-width:900px;margin:40px auto 0;padding:0 16px 40px;">
+  <div style="font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:12px;">More Free Tools</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="/draft-trade-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Draft Trade Calculator</a>
+    <a href="/trade-analyzer.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Trade Analyzer</a>
+    <a href="/cap-space.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Salary Cap Tracker</a>
+    <a href="/mortgage-calc.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#E2E8F0;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;transition:border-color .2s;">Mortgage Calculator</a>
+    <a href="/" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:#00F0FF;text-decoration:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:border-color .2s;">AiNFL GM Simulator</a>
+  </div>
+</div>
+
+<script>
+// ── Team Data ─────────────────────────────────────────────────────────────────
+// Ratings: offense, defense, specialTeams, coaching (1-100 scale)
+const TEAMS = {
+  "Arizona Cardinals":    { off: 68, def: 66, st: 72, cch: 65 },
+  "Atlanta Falcons":      { off: 72, def: 69, st: 70, cch: 68 },
+  "Baltimore Ravens":     { off: 84, def: 87, st: 82, cch: 88 },
+  "Buffalo Bills":        { off: 90, def: 85, st: 78, cch: 87 },
+  "Carolina Panthers":    { off: 60, def: 62, st: 68, cch: 58 },
+  "Chicago Bears":        { off: 66, def: 70, st: 74, cch: 65 },
+  "Cincinnati Bengals":   { off: 83, def: 76, st: 72, cch: 79 },
+  "Cleveland Browns":     { off: 70, def: 78, st: 73, cch: 71 },
+  "Dallas Cowboys":       { off: 82, def: 80, st: 76, cch: 78 },
+  "Denver Broncos":       { off: 69, def: 75, st: 74, cch: 68 },
+  "Detroit Lions":        { off: 87, def: 78, st: 76, cch: 85 },
+  "Green Bay Packers":    { off: 82, def: 77, st: 75, cch: 80 },
+  "Houston Texans":       { off: 80, def: 76, st: 73, cch: 79 },
+  "Indianapolis Colts":   { off: 71, def: 72, st: 71, cch: 69 },
+  "Jacksonville Jaguars": { off: 69, def: 70, st: 72, cch: 67 },
+  "Kansas City Chiefs":   { off: 92, def: 83, st: 84, cch: 96 },
+  "Las Vegas Raiders":    { off: 65, def: 66, st: 70, cch: 62 },
+  "Los Angeles Chargers": { off: 76, def: 74, st: 71, cch: 74 },
+  "Los Angeles Rams":     { off: 80, def: 81, st: 77, cch: 82 },
+  "Miami Dolphins":       { off: 82, def: 73, st: 74, cch: 76 },
+  "Minnesota Vikings":    { off: 83, def: 76, st: 77, cch: 80 },
+  "New England Patriots": { off: 62, def: 67, st: 78, cch: 60 },
+  "New Orleans Saints":   { off: 71, def: 72, st: 75, cch: 68 },
+  "New York Giants":      { off: 63, def: 68, st: 70, cch: 64 },
+  "New York Jets":        { off: 70, def: 80, st: 76, cch: 70 },
+  "Philadelphia Eagles":  { off: 88, def: 84, st: 79, cch: 87 },
+  "Pittsburgh Steelers":  { off: 73, def: 82, st: 78, cch: 78 },
+  "San Francisco 49ers":  { off: 84, def: 86, st: 80, cch: 88 },
+  "Seattle Seahawks":     { off: 74, def: 73, st: 75, cch: 73 },
+  "Tampa Bay Buccaneers": { off: 77, def: 74, st: 72, cch: 75 },
+  "Tennessee Titans":     { off: 67, def: 71, st: 73, cch: 66 },
+  "Washington Commanders":{ off: 78, def: 76, st: 74, cch: 77 }
+};
+
+const TEAM_NAMES = Object.keys(TEAMS).sort();
+
+// Home field advantage = +3 pts added to home team projected score
+const HOME_FIELD_PTS = 3;
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let currentResult = null;
+
+// ── Build Dropdowns ───────────────────────────────────────────────────────────
+function buildDropdowns() {
+  ['home-select', 'away-select'].forEach(id => {
+    const sel = document.getElementById(id);
+    TEAM_NAMES.forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+  });
+
+  // Set defaults: Chiefs (home) vs Bills (away)
+  document.getElementById('home-select').value = 'Kansas City Chiefs';
+  document.getElementById('away-select').value = 'Buffalo Bills';
+  onTeamChange('home');
+  onTeamChange('away');
+  document.getElementById('predict-btn').disabled = false;
+}
+
+// ── Render Ratings ────────────────────────────────────────────────────────────
+function onTeamChange(side) {
+  const selectId = side === 'home' ? 'home-select' : 'away-select';
+  const ratingsId = side === 'home' ? 'home-ratings' : 'away-ratings';
+  const teamName = document.getElementById(selectId).value;
+  const container = document.getElementById(ratingsId);
+
+  if (!teamName || !TEAMS[teamName]) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--text-mute);text-align:center;padding:8px 0;">Select a team to see ratings</div>';
+    checkPredictReady();
+    return;
+  }
+
+  const r = TEAMS[teamName];
+  const ratingDefs = [
+    { key: 'off', label: 'Offense' },
+    { key: 'def', label: 'Defense' },
+    { key: 'st',  label: 'Sp. Teams' },
+    { key: 'cch', label: 'Coaching' }
+  ];
+
+  container.innerHTML = ratingDefs.map(({ key, label }) => `
+    <div class="rating-row">
+      <div class="rating-label">${label}</div>
+      <div class="rating-bar-wrap">
+        <div class="rating-bar" style="width:${r[key]}%"></div>
+      </div>
+      <div class="rating-val">${r[key]}</div>
+    </div>
+  `).join('');
+
+  checkPredictReady();
+}
+
+function checkPredictReady() {
+  const home = document.getElementById('home-select').value;
+  const away = document.getElementById('away-select').value;
+  document.getElementById('predict-btn').disabled = !(home && away && home !== away);
+}
+
+// ── Prediction Engine ─────────────────────────────────────────────────────────
+/*
+  Score model:
+    Base points = (offense / 100) * 38 + (opponent_defense / 100) * -12 + noise
+    Home gets +HOME_FIELD_PTS
+    Minimum score = 6 (safety/FG floor)
+    Rounds to nearest integer
+
+  Win probability:
+    Uses point spread → converted to win% via normal distribution approximation
+    std dev of NFL scores ~ 13.5 pts
+*/
+
+function projectScore(offRating, oppDefRating, isHome) {
+  // Points generated by offense vs opponent defense
+  const offContrib   = (offRating  / 100) * 36;
+  const defPenalty   = ((100 - oppDefRating) / 100) * 12;
+  const coachBonus   = 0; // coaching factored into win prob separately
+  let pts = offContrib + defPenalty;
+  if (isHome) pts += HOME_FIELD_PTS;
+  return Math.max(6, Math.round(pts));
+}
+
+function spreadToWinPct(spread) {
+  // spread = homeScore - awayScore
+  // Normal CDF approximation (Bhattacharya)
+  const z = spread / 13.5;
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+  const phi  = 1 - (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * z * z) * poly;
+  return z >= 0 ? phi : 1 - phi;
+}
+
+function getMatchupAdvantages(homeName, awayName, homeRatings, awayRatings) {
+  const H = homeRatings;
+  const A = awayRatings;
+  const rows = [];
+
+  const offEdge = H.off - A.off;
+  const defEdge = H.def - A.def;
+  const stEdge  = H.st  - A.st;
+  const cchEdge = H.cch - A.cch;
+
+  // Passing offense vs pass defense (using off + def proxy)
+  rows.push({
+    icon: '🏈',
+    text: `<strong>${offEdge > 2 ? homeName : offEdge < -2 ? awayName : 'Evenly matched'}</strong>${Math.abs(offEdge) > 2 ? ' passing offense holds the edge' : ' — passing offenses are closely matched'}`,
+    edge: offEdge > 5 ? 'home' : offEdge < -5 ? 'away' : 'even',
+    diff: Math.abs(offEdge)
+  });
+
+  rows.push({
+    icon: '🛡️',
+    text: `<strong>${defEdge > 2 ? homeName : defEdge < -2 ? awayName : 'Evenly matched'}</strong>${Math.abs(defEdge) > 2 ? ' defense is the stronger unit' : ' — defenses are similar quality'}`,
+    edge: defEdge > 5 ? 'home' : defEdge < -5 ? 'away' : 'even',
+    diff: Math.abs(defEdge)
+  });
+
+  rows.push({
+    icon: '⚡',
+    text: `<strong>${stEdge > 2 ? homeName : stEdge < -2 ? awayName : 'Equal'}</strong> special teams${Math.abs(stEdge) > 2 ? ' — field position battle favors them' : ' — field position is a wash'}`,
+    edge: stEdge > 4 ? 'home' : stEdge < -4 ? 'away' : 'even',
+    diff: Math.abs(stEdge)
+  });
+
+  rows.push({
+    icon: '📋',
+    text: `<strong>${cchEdge > 2 ? homeName : cchEdge < -2 ? awayName : 'Coaching is even'}</strong>${Math.abs(cchEdge) > 2 ? ' coaching staff has the edge in game planning' : ' — both staffs are well-matched'}`,
+    edge: cchEdge > 5 ? 'home' : cchEdge < -5 ? 'away' : 'even',
+    diff: Math.abs(cchEdge)
+  });
+
+  return rows;
+}
+
+// ── Run Prediction ────────────────────────────────────────────────────────────
+function runPrediction() {
+  const homeName = document.getElementById('home-select').value;
+  const awayName = document.getElementById('away-select').value;
+  if (!homeName || !awayName || homeName === awayName) return;
+
+  const H = TEAMS[homeName];
+  const A = TEAMS[awayName];
+
+  const homeScore = projectScore(H.off, A.def, true);
+  const awayScore = projectScore(A.off, H.def, false);
+  const spread    = homeScore - awayScore;
+
+  // Incorporate coaching into win probability via small modifier
+  const coachMod  = ((H.cch - A.cch) / 100) * 0.04;
+  let homeWinPct  = spreadToWinPct(spread) + coachMod;
+  homeWinPct      = Math.min(0.96, Math.max(0.04, homeWinPct));
+  const awayWinPct = 1 - homeWinPct;
+
+  const homeWinPctDisp = Math.round(homeWinPct * 100);
+  const awayWinPctDisp = 100 - homeWinPctDisp;
+
+  const homeWins = homeScore > awayScore;
+
+  // Update Score Banner
+  document.getElementById('res-home-name').textContent = homeName.split(' ').slice(-1)[0].toUpperCase();
+  document.getElementById('res-away-name').textContent = awayName.split(' ').slice(-1)[0].toUpperCase();
+  document.getElementById('res-home-pts').textContent  = homeScore;
+  document.getElementById('res-away-pts').textContent  = awayScore;
+
+  const homeScoreEl = document.getElementById('res-home-pts');
+  const awayScoreEl = document.getElementById('res-away-pts');
+  const homeNameEl  = document.getElementById('res-home-name');
+  const awayNameEl  = document.getElementById('res-away-name');
+
+  homeScoreEl.className = 'score-pts' + (homeWins ? ' winner' : '');
+  awayScoreEl.className = 'score-pts' + (!homeWins ? ' winner' : '');
+  homeNameEl.className  = 'score-team-name' + (homeWins ? ' winner' : '');
+  awayNameEl.className  = 'score-team-name' + (!homeWins ? ' winner' : '');
+
+  const winnerBadge = document.getElementById('winner-badge');
+  if (homeScore === awayScore) {
+    winnerBadge.textContent = 'Predicted Tie';
+    winnerBadge.className = 'winner-badge';
+  } else {
+    const winnerName = homeWins ? homeName : awayName;
+    winnerBadge.textContent = `${winnerName} Predicted Winner`;
+    winnerBadge.className = 'winner-badge' + (homeWins ? '' : ' away');
+  }
+
+  // Update Probability Bar
+  const probBarHome = document.getElementById('prob-bar-home');
+  const probBarAway = document.getElementById('prob-bar-away');
+  probBarHome.style.width = homeWinPctDisp + '%';
+  probBarAway.style.width = awayWinPctDisp + '%';
+  probBarHome.textContent = homeWinPctDisp >= 15 ? homeWinPctDisp + '%' : '';
+  probBarAway.textContent = awayWinPctDisp >= 15 ? awayWinPctDisp + '%' : '';
+
+  document.getElementById('prob-pct-home').textContent = homeWinPctDisp + '%';
+  document.getElementById('prob-pct-away').textContent = awayWinPctDisp + '%';
+  document.getElementById('prob-name-home').textContent = homeName;
+  document.getElementById('prob-name-away').textContent = awayName;
+
+  // Key Matchups
+  const advantages = getMatchupAdvantages(homeName, awayName, H, A);
+  const matchupRows = document.getElementById('matchup-rows');
+  matchupRows.innerHTML = advantages.map(adv => `
+    <div class="matchup-row">
+      <div class="matchup-icon">${adv.icon}</div>
+      <div class="matchup-text">${adv.text}</div>
+      <div class="matchup-edge ${adv.edge === 'home' ? 'edge-home' : adv.edge === 'away' ? 'edge-away' : 'edge-even'}">
+        ${adv.edge === 'home' ? homeName.split(' ').slice(-1)[0] : adv.edge === 'away' ? awayName.split(' ').slice(-1)[0] : 'Even'}
+      </div>
+    </div>
+  `).join('');
+
+  // Show result panel
+  document.getElementById('result-panel').classList.add('visible');
+
+  // Reset simulation
+  document.getElementById('sim-results').classList.remove('visible');
+
+  // Store current result for simulation + sharing
+  currentResult = {
+    homeName, awayName, homeScore, awayScore,
+    homeWinPct, awayWinPct, homeWinPctDisp, awayWinPctDisp,
+    H, A
+  };
+
+  // Save to history
+  saveHistory(homeName, awayName, homeScore, awayScore, homeWinPctDisp);
+
+  // Scroll to result
+  document.getElementById('result-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // GA event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'predict_matchup', { home_team: homeName, away_team: awayName });
+  }
+}
+
+// ── Simulation ────────────────────────────────────────────────────────────────
+function runSimulation() {
+  if (!currentResult) return;
+  const { homeName, awayName, homeWinPct, H, A } = currentResult;
+
+  const N = 100;
+  let homeWins = 0, awayWins = 0, ties = 0;
+
+  for (let i = 0; i < N; i++) {
+    // Add Gaussian noise (Box-Muller)
+    const u1 = Math.random(), u2 = Math.random();
+    const noise = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    const gameVariance = noise * 6; // ~6 pt std dev per game
+
+    const hPts = Math.max(0, projectScore(H.off, A.def, true)  + Math.round(gameVariance));
+    const aPts = Math.max(0, projectScore(A.off, H.def, false) + Math.round(gameVariance * -0.7));
+
+    if (hPts > aPts)       homeWins++;
+    else if (aPts > hPts)  awayWins++;
+    else                   ties++;
+  }
+
+  document.getElementById('sim-label-home').textContent = homeName.split(' ').slice(-1)[0] + ' Wins';
+  document.getElementById('sim-label-away').textContent = awayName.split(' ').slice(-1)[0] + ' Wins';
+
+  document.getElementById('sim-bar-home').style.width  = homeWins + '%';
+  document.getElementById('sim-bar-away').style.width  = awayWins + '%';
+  document.getElementById('sim-bar-tie').style.width   = ties + '%';
+
+  document.getElementById('sim-bar-home').textContent  = homeWins >= 10 ? homeWins + '%' : '';
+  document.getElementById('sim-bar-away').textContent  = awayWins >= 10 ? awayWins + '%' : '';
+  document.getElementById('sim-bar-tie').textContent   = '';
+
+  document.getElementById('sim-count-home').textContent = homeWins + '/100';
+  document.getElementById('sim-count-away').textContent = awayWins + '/100';
+  document.getElementById('sim-count-tie').textContent  = ties + '/100';
+
+  const leader = homeWins > awayWins ? homeName : awayName;
+  document.getElementById('sim-note').textContent =
+    `${leader} won ${Math.max(homeWins, awayWins)} of 100 simulations. Ties: ${ties}.`;
+
+  document.getElementById('sim-results').classList.add('visible');
+
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'simulate_matchup', { home_team: homeName, away_team: awayName });
+  }
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+function sharePrediction() {
+  if (!currentResult) return;
+  const { homeName, awayName, homeScore, awayScore, homeWinPctDisp } = currentResult;
+  const text = `${homeName} ${homeScore} - ${awayScore} ${awayName} | ${homeName} wins ${homeWinPctDisp}% of the time | AiNFLGM Matchup Predictor: https://ainflgm.com/matchup-predictor.html`;
+  if (navigator.share) {
+    navigator.share({ title: 'NFL Matchup Prediction', text });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Prediction copied to clipboard!'));
+  } else {
+    showToast('Share not supported on this browser.');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+function resetPrediction() {
+  document.getElementById('result-panel').classList.remove('visible');
+  document.getElementById('sim-results').classList.remove('visible');
+  currentResult = null;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── History ───────────────────────────────────────────────────────────────────
+const HIST_KEY = 'matchup_predictor_history';
+
+function saveHistory(homeName, awayName, homeScore, awayScore, homeWinPct) {
+  let hist = loadHistory();
+  hist.unshift({
+    homeName, awayName, homeScore, awayScore, homeWinPct,
+    ts: Date.now()
+  });
+  if (hist.length > 15) hist = hist.slice(0, 15);
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(hist)); } catch(e) {}
+  renderHistory();
+}
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(HIST_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function clearHistory() {
+  try { localStorage.removeItem(HIST_KEY); } catch(e) {}
+  renderHistory();
+}
+
+function renderHistory() {
+  const hist = loadHistory();
+  const list = document.getElementById('history-list');
+  if (!hist.length) {
+    list.innerHTML = '<div class="history-empty">No predictions yet. Make your first pick!</div>';
+    return;
+  }
+  list.innerHTML = hist.map((item, idx) => {
+    const homeAbr = item.homeName.split(' ').slice(-1)[0];
+    const awayAbr = item.awayName.split(' ').slice(-1)[0];
+    const winner  = item.homeScore >= item.awayScore ? homeAbr : awayAbr;
+    const diff    = Math.abs(item.homeScore - item.awayScore);
+    return `
+      <div class="history-item" onclick="loadFromHistory(${idx})">
+        <div class="history-score">${homeAbr} ${item.homeScore}-${item.awayScore} ${awayAbr}</div>
+        <div class="history-meta">${item.homeName} vs ${item.awayName}<br>${winner} by ${diff}</div>
+        <div class="history-prob">${item.homeWinPct}% home</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function loadFromHistory(idx) {
+  const hist = loadHistory();
+  const item = hist[idx];
+  if (!item) return;
+  document.getElementById('home-select').value = item.homeName;
+  document.getElementById('away-select').value = item.awayName;
+  onTeamChange('home');
+  onTeamChange('away');
+  setTimeout(() => runPrediction(), 50);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+buildDropdowns();
+renderHistory();
+</script>
+
+<section style="max-width:860px;margin:48px auto 0;padding:0 20px 60px;font-family:system-ui,sans-serif;color:#c8d6e5;line-height:1.75;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:16px;border-top:2px solid #FB4F14;padding-top:24px;">How the NFL Matchup Predictor Works</h2>
+  <p style="margin-bottom:14px;">The AiNFLGM Matchup Predictor analyzes two NFL teams head-to-head and produces a win probability based on a multi-factor model that goes well beyond simple record comparison. Football games are decided by dozens of interacting variables — offensive efficiency, defensive pressure rate, turnover tendencies, special teams performance, and home-field advantage all contribute to the final outcome. This tool quantifies each of those variables and translates them into a clear probability estimate.</p>
+  <p style="margin-bottom:14px;">The prediction engine pulls from current-season team statistics including points per game, yards per play, third-down conversion rate, red zone efficiency, and sack rate. These figures are weighted by recency — performance from the last four weeks carries more weight than season-opening results, because football teams evolve rapidly through injuries, scheme adjustments, and player development. A team that started 1-3 but has won five straight looks very different in this model than a team coasting on an early-season hot streak.</p>
+  <p style="margin-bottom:14px;">Home-field advantage is factored in as a baseline adjustment, with additional weight given to stadiums known for their crowd noise impact on opposing offenses. Dome teams playing outdoor games in late-season cold weather also receive a negative adjustment because environmental factors meaningfully affect offensive production. The model accounts for divisional familiarity as well, since teams that face each other twice per season tend to produce tighter, lower-scoring games than inter-conference matchups.</p>
+  <p style="margin-bottom:14px;">The result is displayed as a win probability percentage for each team, accompanied by a predicted score range and key factors driving the prediction. Run multiple matchups to build out a full week's slate analysis, or use it to stress-test your playoff bracket picks before going public.</p>
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin:36px 0 16px;border-top:2px solid #FB4F14;padding-top:24px;">Frequently Asked Questions</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How accurate is the matchup predictor?</h3>
+  <p style="margin-bottom:20px;">No NFL prediction model achieves perfect accuracy — football has too much variance for that. However, this model is calibrated to be accurate on games with high confidence ratings (65% or higher probability shown) roughly 68-72% of the time when tested against historical data. Games flagged as near-coin-flips (45-55% range) are genuinely difficult to predict and should be treated as such. Always treat predictions as probabilistic guidance, not guaranteed outcomes.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Does the tool factor in player injuries?</h3>
+  <p style="margin-bottom:20px;">The model uses team-level performance data that inherently reflects the impact of injuries that have already occurred during the season. If a team's offense has declined due to a key player being sidelined, that decline shows up in the underlying statistics the model ingests. Injury reports announced after the most recent data refresh are not yet reflected, so always cross-reference with the current week's injury report for late-breaking status changes on key players.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Is home-field advantage included in the prediction?</h3>
+  <p style="margin-bottom:20px;">Yes. The model applies a baseline home-field advantage adjustment and then applies stadium-specific modifiers for venues known to have outsized crowd noise effects. Historically, NFL home teams win approximately 57% of games over large samples, but the advantage varies significantly by venue and matchup type. The predictor displays whether home advantage is a significant factor in a given matchup or whether the talent gap between the teams overrides it.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Can I use this tool for fantasy football start/sit decisions?</h3>
+  <p style="margin-bottom:20px;">Absolutely. Matchup difficulty is one of the most important variables in weekly fantasy football decisions, especially for skill positions like running back and wide receiver. A high-probability win prediction for a team often correlates with positive game script — meaning they are more likely to run the ball effectively and maintain drives. Conversely, teams projected to trail tend to abandon the run and throw more, which can benefit their wide receivers and tight ends.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How far in advance can I run predictions?</h3>
+  <p style="margin-bottom:20px;">You can run predictions for any matchup at any time, including future playoff scenarios and hypothetical games. For games more than a week away, the predictions are directionally useful but carry more uncertainty because teams evolve week to week. For current-week games, predictions are based on the most recent data available and are most reliable when team performance trends have been consistent over the past three to four weeks.</p>
+</section>
+</body>
+</html>

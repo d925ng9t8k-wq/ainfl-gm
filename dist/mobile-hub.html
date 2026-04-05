@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="9 Hub">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest-hub.json">
+<title>9 Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0a;--bg2:#111;--bg3:#161616;--bg4:#1a1a1a;
+  --orange:#f97316;--orange-dim:rgba(249,115,22,0.12);--orange-glow:rgba(249,115,22,0.25);
+  --red:#ff3b5c;--green:#00ff88;--yellow:#ffd700;--cyan:#00e5ff;--purple:#b060ff;
+  --text:#e8e8e8;--muted:#888;--dim:#2a2a2a;
+  --glass:rgba(17,17,17,0.85);--glass-border:rgba(249,115,22,0.1);
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --r:14px;--r-sm:10px;
+  --safe-top:env(safe-area-inset-top);
+  --safe-bottom:env(safe-area-inset-bottom);
+}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);background:var(--bg);color:var(--text);
+  line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  min-height:100vh;min-height:100dvh;
+  padding-top:var(--safe-top);padding-bottom:calc(72px + var(--safe-bottom));
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;
+  background-image:linear-gradient(rgba(249,115,22,0.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(249,115,22,0.015) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;
+}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+.fade-up{animation:fadeUp .4s ease both;}
+
+/* ==================== HEADER ==================== */
+.header{
+  position:sticky;top:0;z-index:100;
+  padding:12px 16px;
+  padding-top:calc(12px + var(--safe-top));
+  background:rgba(10,10,10,.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.header-left{display:flex;align-items:center;gap:10px;}
+.logo-9{
+  font-family:var(--font-display);font-size:42px;line-height:1;
+  background:linear-gradient(135deg,#f97316,#fb923c);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 10px rgba(249,115,22,.4));
+}
+.header-brand{display:flex;flex-direction:column;}
+.header-title{font-family:var(--font-display);font-size:18px;letter-spacing:3px;color:var(--text);}
+.header-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:1.5px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.header-time{font-family:var(--font-mono);font-size:12px;color:var(--orange);letter-spacing:.5px;}
+.header-status{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--font-mono);font-size:9px;color:var(--green);
+  letter-spacing:1px;text-transform:uppercase;
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-dot 1.5s ease-in-out infinite;}
+.status-dot.offline{background:var(--red);}
+.status-dot.degraded{background:var(--yellow);}
+
+/* ==================== TABS ==================== */
+.tab-bar{
+  display:flex;gap:0;padding:0 4px;
+  background:var(--bg2);border-bottom:1px solid var(--glass-border);
+  position:sticky;top:66px;z-index:99;
+  overflow-x:auto;scrollbar-width:none;
+}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab{
+  flex:1;min-width:0;
+  font-family:var(--font-display);font-size:13px;letter-spacing:1.5px;
+  padding:11px 6px;border:none;background:transparent;
+  color:var(--muted);cursor:pointer;text-align:center;
+  border-bottom:2px solid transparent;transition:all .2s;
+  white-space:nowrap;text-transform:uppercase;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab:active{background:rgba(249,115,22,.06);}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange);background:rgba(249,115,22,.04);}
+.tab .tab-badge{
+  display:inline-block;min-width:16px;height:16px;line-height:16px;
+  font-family:var(--font-mono);font-size:9px;font-weight:600;
+  background:var(--orange);color:#000;border-radius:8px;
+  margin-left:4px;padding:0 4px;vertical-align:middle;
+}
+
+/* ==================== PAGES ==================== */
+.page{display:none;padding:16px;padding-bottom:20px;}
+.page.active{display:block;}
+
+/* ==================== STATUS PAGE ==================== */
+.sys-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.sys-card{
+  background:var(--bg2);border:1px solid var(--glass-border);border-radius:var(--r);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  transition:border-color .2s;
+}
+.sys-card:active{border-color:rgba(249,115,22,.3);}
+.sys-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.sys-icon.hub{background:rgba(0,255,136,.1);}
+.sys-icon.terminal{background:rgba(249,115,22,.1);}
+.sys-icon.voice{background:rgba(0,229,255,.1);}
+.sys-icon.cloud{background:rgba(176,96,255,.1);}
+.sys-info{flex:1;min-width:0;}
+.sys-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+.sys-value{font-size:14px;font-weight:600;color:var(--text);margin-top:1px;}
+.sys-badge{
+  font-family:var(--font-mono);font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:6px;letter-spacing:.5px;
+  white-space:nowrap;
+}
+.sys-badge.online{background:rgba(0,255,136,.12);color:var(--green);}
+.sys-badge.offline{background:rgba(255,59,92,.12);color:var(--red);}
+.sys-badge.degraded{background:rgba(255,215,0,.12);color:var(--yellow);}
+
+/* ==================== PROJECTS PAGE ==================== */
+.section-title{
+  font-family:var(--font-display);font-size:16px;letter-spacing:3px;
+  color:var(--muted);margin-bottom:12px;padding-left:2px;
+}
+.project-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.project-card{
+  background:var(--bg2);border:1px solid var(--glass-border);border-radius:var(--r);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  transition:all .2s;
+}
+.project-card:active{border-color:rgba(249,115,22,.3);transform:scale(.99);}
+.project-emoji{font-size:22px;width:36px;text-align:center;flex-shrink:0;}
+.project-info{flex:1;min-width:0;}
+.project-name{font-size:14px;font-weight:600;color:var(--text);}
+.project-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.project-status{
+  font-family:var(--font-mono);font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:6px;letter-spacing:.5px;
+  white-space:nowrap;flex-shrink:0;
+}
+.project-status.live{background:rgba(0,255,136,.12);color:var(--green);}
+.project-status.building{background:rgba(249,115,22,.12);color:var(--orange);}
+.project-status.discussed{background:rgba(136,136,136,.15);color:var(--muted);}
+.project-status.agreed{background:rgba(176,96,255,.12);color:var(--purple);}
+.project-status.verified{background:rgba(0,229,255,.12);color:var(--cyan);}
+
+/* ==================== MESSAGES PAGE ==================== */
+.msg-feed{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.msg-bubble{
+  max-width:85%;padding:10px 14px;border-radius:16px;
+  font-size:14px;line-height:1.45;
+  animation:fadeUp .3s ease both;
+}
+.msg-bubble.inbound{
+  background:var(--bg3);border:1px solid var(--glass-border);
+  align-self:flex-start;border-bottom-left-radius:4px;
+}
+.msg-bubble.outbound{
+  background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(249,115,22,.08));
+  border:1px solid rgba(249,115,22,.2);
+  align-self:flex-end;border-bottom-right-radius:4px;
+}
+.msg-meta{
+  font-family:var(--font-mono);font-size:9px;color:var(--muted);
+  margin-top:4px;letter-spacing:.3px;
+}
+.msg-sender{
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  color:var(--orange);margin-bottom:3px;letter-spacing:.3px;
+}
+.msg-input-row{
+  display:flex;gap:8px;padding:12px 0;
+  position:sticky;bottom:calc(72px + var(--safe-bottom));
+  background:var(--bg);padding-bottom:8px;
+}
+.msg-input{
+  flex:1;padding:12px 14px;
+  background:var(--bg2);border:1px solid var(--glass-border);
+  border-radius:var(--r);color:var(--text);
+  font-family:var(--font-body);font-size:14px;
+  outline:none;transition:border-color .2s;
+  -webkit-appearance:none;
+}
+.msg-input:focus{border-color:var(--orange);}
+.msg-input::placeholder{color:var(--dim);}
+.msg-send-btn{
+  width:46px;height:46px;border-radius:var(--r);
+  background:var(--orange);border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:all .15s;
+  color:#000;font-size:18px;font-weight:700;
+}
+.msg-send-btn:active{transform:scale(.92);background:#fb923c;}
+
+/* ==================== ACTIONS PAGE ==================== */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.action-btn{
+  background:var(--bg2);border:1px solid var(--glass-border);border-radius:var(--r);
+  padding:16px 14px;display:flex;flex-direction:column;align-items:center;
+  gap:8px;cursor:pointer;transition:all .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.action-btn:active{
+  border-color:var(--orange);background:rgba(249,115,22,.06);transform:scale(.97);
+}
+.action-icon{font-size:24px;}
+.action-label{
+  font-family:var(--font-mono);font-size:11px;color:var(--text);
+  text-align:center;letter-spacing:.3px;
+}
+.action-sub{
+  font-family:var(--font-mono);font-size:9px;color:var(--muted);
+  text-align:center;
+}
+
+.action-section-title{
+  font-family:var(--font-display);font-size:14px;letter-spacing:2px;
+  color:var(--muted);margin-bottom:10px;margin-top:8px;
+}
+
+/* Quick command pills */
+.cmd-list{display:flex;flex-direction:column;gap:8px;}
+.cmd-pill{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;background:var(--bg2);
+  border:1px solid var(--glass-border);border-radius:var(--r);
+  cursor:pointer;transition:all .2s;
+}
+.cmd-pill:active{border-color:var(--orange);transform:scale(.98);}
+.cmd-pill-icon{font-size:16px;flex-shrink:0;}
+.cmd-pill-text{font-size:13px;color:var(--text);flex:1;}
+.cmd-pill-arrow{color:var(--dim);font-size:14px;}
+
+/* ==================== BOTTOM NAV ==================== */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,10,.95);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--glass-border);
+  display:flex;justify-content:space-around;
+  padding:6px 0;padding-bottom:calc(6px + var(--safe-bottom));
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px 12px;border-radius:10px;
+  cursor:pointer;transition:all .2s;min-width:60px;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-item:active{background:rgba(249,115,22,.08);}
+.nav-item.active .nav-icon{color:var(--orange);}
+.nav-item.active .nav-label{color:var(--orange);}
+.nav-icon{font-size:20px;color:var(--muted);transition:color .2s;line-height:1;}
+.nav-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.5px;transition:color .2s;}
+.nav-badge{
+  position:absolute;top:2px;right:8px;
+  min-width:14px;height:14px;line-height:14px;
+  font-family:var(--font-mono);font-size:8px;font-weight:700;
+  background:var(--orange);color:#000;border-radius:7px;
+  text-align:center;padding:0 3px;
+}
+.nav-item{position:relative;}
+
+/* ==================== TOAST ==================== */
+.toast{
+  position:fixed;top:calc(20px + var(--safe-top));left:50%;transform:translateX(-50%) translateY(-100px);
+  background:var(--bg3);border:1px solid var(--orange);border-radius:var(--r);
+  padding:10px 20px;font-family:var(--font-mono);font-size:12px;
+  color:var(--orange);z-index:999;transition:transform .3s ease;
+  box-shadow:0 4px 20px rgba(249,115,22,.2);
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ==================== PULL TO REFRESH ==================== */
+.pull-indicator{
+  text-align:center;padding:0;height:0;overflow:hidden;
+  transition:height .2s,padding .2s;
+  font-family:var(--font-mono);font-size:11px;color:var(--muted);
+}
+.pull-indicator.active{height:40px;padding:10px 0;}
+
+/* ==================== EMPTY STATES ==================== */
+.empty-state{
+  text-align:center;padding:40px 20px;
+  font-family:var(--font-mono);font-size:12px;color:var(--dim);
+}
+
+/* ==================== LAST UPDATED ==================== */
+.last-updated{
+  text-align:center;padding:12px;
+  font-family:var(--font-mono);font-size:10px;color:var(--dim);
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo-9">9</div>
+    <div class="header-brand">
+      <div class="header-title">COMMAND HUB</div>
+      <div class="header-sub">9 ENTERPRISES</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-time" id="live-clock"></div>
+    <div class="header-status">
+      <div class="status-dot" id="global-status-dot"></div>
+      <span id="global-status-text">LIVE</span>
+    </div>
+  </div>
+</header>
+
+<!-- Pull to refresh indicator -->
+<div class="pull-indicator" id="pull-indicator">Pull to refresh</div>
+
+<!-- ==================== STATUS PAGE ==================== -->
+<div class="page active" id="page-status">
+  <div class="section-title">SYSTEM STATUS</div>
+  <div class="sys-grid">
+    <div class="sys-card fade-up" style="animation-delay:.05s">
+      <div class="sys-icon hub">&#x1F7E2;</div>
+      <div class="sys-info">
+        <div class="sys-label">Comms Hub</div>
+        <div class="sys-value">Port 3457</div>
+      </div>
+      <div class="sys-badge online" id="hub-status">ONLINE</div>
+    </div>
+    <div class="sys-card fade-up" style="animation-delay:.1s">
+      <div class="sys-icon terminal">&#x1F4BB;</div>
+      <div class="sys-info">
+        <div class="sys-label">Terminal</div>
+        <div class="sys-value" id="terminal-mode">Relay Mode</div>
+      </div>
+      <div class="sys-badge online" id="terminal-status">ACTIVE</div>
+    </div>
+    <div class="sys-card fade-up" style="animation-delay:.15s">
+      <div class="sys-icon voice">&#x1F399;</div>
+      <div class="sys-info">
+        <div class="sys-label">Voice Server</div>
+        <div class="sys-value">Port 3456</div>
+      </div>
+      <div class="sys-badge online" id="voice-status">ONLINE</div>
+    </div>
+    <div class="sys-card fade-up" style="animation-delay:.2s">
+      <div class="sys-icon cloud">&#x2601;</div>
+      <div class="sys-info">
+        <div class="sys-label">Cloud Worker</div>
+        <div class="sys-value">Cloudflare</div>
+      </div>
+      <div class="sys-badge online" id="cloud-status">SYNCED</div>
+    </div>
+  </div>
+
+  <!-- Projects inline on status page -->
+  <div class="section-title" style="margin-top:24px">PORTFOLIO</div>
+  <div class="project-list" id="project-list"></div>
+
+  <div class="last-updated" id="last-updated">Last updated: just now</div>
+</div>
+
+<!-- ==================== MESSAGES PAGE ==================== -->
+<div class="page" id="page-messages">
+  <div class="section-title">TELEGRAM</div>
+  <div class="msg-feed" id="msg-feed"></div>
+  <div class="msg-input-row">
+    <input class="msg-input" id="msg-input" type="text" placeholder="Message 9..." autocomplete="off" autocorrect="off" enterkeyhint="send">
+    <button class="msg-send-btn" id="msg-send" aria-label="Send">&#x2191;</button>
+  </div>
+</div>
+
+<!-- ==================== ACTIONS PAGE ==================== -->
+<div class="page" id="page-actions">
+  <div class="section-title">QUICK ACTIONS</div>
+  <div class="action-grid">
+    <div class="action-btn" data-action="status">
+      <div class="action-icon">&#x1F4CA;</div>
+      <div class="action-label">Full Status</div>
+      <div class="action-sub">System health check</div>
+    </div>
+    <div class="action-btn" data-action="sweep">
+      <div class="action-icon">&#x1F9F9;</div>
+      <div class="action-label">System Sweep</div>
+      <div class="action-sub">Processes &amp; ports</div>
+    </div>
+    <div class="action-btn" data-action="deploy">
+      <div class="action-icon">&#x1F680;</div>
+      <div class="action-label">Deploy</div>
+      <div class="action-sub">Push to production</div>
+    </div>
+    <div class="action-btn" data-action="voice-test">
+      <div class="action-icon">&#x1F399;</div>
+      <div class="action-label">Voice Test</div>
+      <div class="action-sub">Check voice server</div>
+    </div>
+    <div class="action-btn" data-action="restart-hub">
+      <div class="action-icon">&#x1F504;</div>
+      <div class="action-label">Restart Hub</div>
+      <div class="action-sub">Bounce comms-hub</div>
+    </div>
+    <div class="action-btn" data-action="cloud-sync">
+      <div class="action-icon">&#x2601;</div>
+      <div class="action-label">Cloud Sync</div>
+      <div class="action-sub">Force state sync</div>
+    </div>
+  </div>
+
+  <div class="action-section-title">COMMANDS</div>
+  <div class="cmd-list">
+    <div class="cmd-pill" data-cmd="What's the current status of everything?">
+      <div class="cmd-pill-icon">&#x1F4CB;</div>
+      <div class="cmd-pill-text">Request full SITREP</div>
+      <div class="cmd-pill-arrow">&#x203A;</div>
+    </div>
+    <div class="cmd-pill" data-cmd="Show me the P&L">
+      <div class="cmd-pill-icon">&#x1F4B0;</div>
+      <div class="cmd-pill-text">View P&L summary</div>
+      <div class="cmd-pill-arrow">&#x203A;</div>
+    </div>
+    <div class="cmd-pill" data-cmd="What are you working on right now?">
+      <div class="cmd-pill-icon">&#x1F6E0;</div>
+      <div class="cmd-pill-text">Current task status</div>
+      <div class="cmd-pill-arrow">&#x203A;</div>
+    </div>
+    <div class="cmd-pill" data-cmd="Run a full system sweep">
+      <div class="cmd-pill-icon">&#x1F50D;</div>
+      <div class="cmd-pill-text">Full system sweep</div>
+      <div class="cmd-pill-arrow">&#x203A;</div>
+    </div>
+    <div class="cmd-pill" data-cmd="Deploy everything to production">
+      <div class="cmd-pill-icon">&#x1F4E6;</div>
+      <div class="cmd-pill-text">Deploy all to prod</div>
+      <div class="cmd-pill-arrow">&#x203A;</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <div class="nav-item active" data-page="status">
+    <div class="nav-icon">&#x1F3E0;</div>
+    <div class="nav-label">Status</div>
+  </div>
+  <div class="nav-item" data-page="messages">
+    <div class="nav-icon">&#x1F4AC;</div>
+    <div class="nav-label">Messages</div>
+    <div class="nav-badge" id="msg-badge" style="display:none">0</div>
+  </div>
+  <div class="nav-item" data-page="actions">
+    <div class="nav-icon">&#x26A1;</div>
+    <div class="nav-label">Actions</div>
+  </div>
+</nav>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ==================== CONFIG ====================
+  const HUB_BASE = 'http://localhost:3457';
+  const USE_MOCK = true; // flip to false when connected via tunnel
+
+  // ==================== PROJECTS DATA ====================
+  const PROJECTS = [
+    { name: 'PlayAiGM', desc: 'AI NFL GM simulator', emoji: '\uD83C\uDFC8', status: 'live' },
+    { name: '9 Enterprises', desc: 'Parent company & brand', emoji: '\uD83C\uDFE2', status: 'live' },
+    { name: 'Chaperone', desc: 'AI video production platform', emoji: '\uD83C\uDFAC', status: 'live' },
+    { name: 'Trader 9', desc: 'AI-powered paper trading', emoji: '\uD83D\uDCC8', status: 'building' },
+    { name: 'Dropshipping', desc: '9-owned e-commerce venture', emoji: '\uD83D\uDCE6', status: 'building' },
+    { name: 'Jules', desc: 'Personal AI assistant for Jamie', emoji: '\uD83E\uDDD1\u200D\uD83D\uDCBB', status: 'discussed' },
+    { name: 'agent9', desc: 'AI real estate — no realtors', emoji: '\uD83C\uDFE0', status: 'discussed' },
+    { name: 'AI Education', desc: 'Hitchhiker\'s Guide to AI', emoji: '\uD83D\uDCDA', status: 'discussed' },
+    { name: 'AI Underwriter', desc: 'Automated mortgage underwriting', emoji: '\uD83C\uDFE6', status: 'discussed' },
+    { name: 'X9', desc: 'Autonomous X/Twitter agent', emoji: '\uD83E\uDD16', status: 'discussed' },
+  ];
+
+  // ==================== MOCK MESSAGES ====================
+  const MOCK_MESSAGES = [
+    { dir: 'in', sender: 'Owner', text: 'What\'s the status on Trader 9?', time: '10:42 AM' },
+    { dir: 'out', sender: '9', text: 'Paper trading is live. Running 3 strategies in parallel. Up 2.4% this week on simulated trades. Ready to present the P&L dashboard when you want it.', time: '10:42 AM' },
+    { dir: 'in', sender: 'Owner', text: 'Good. What about the dropshipping store?', time: '10:45 AM' },
+    { dir: 'out', sender: '9', text: 'Supplier sourced, Shopify configured, 12 products loaded. Need your call on the brand name before we go live. Two options in the Draft Room.', time: '10:45 AM' },
+    { dir: 'in', sender: 'Owner', text: 'Send me the options', time: '10:47 AM' },
+    { dir: 'out', sender: '9', text: 'Sent to your email. Both mockups attached. Recommend Option B — cleaner logo, better margins on the hero product.', time: '10:47 AM' },
+    { dir: 'in', sender: 'Owner', text: 'Deploy the Chaperone pitch page update', time: '11:15 AM' },
+    { dir: 'out', sender: '9', text: 'Done. Live at chaperone page. Verified — loads in 1.2s, mobile-optimized, all links working.', time: '11:15 AM' },
+  ];
+
+  // ==================== STATE ====================
+  let currentPage = 'status';
+  let unreadCount = 3;
+
+  // ==================== DOM HELPERS ====================
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+
+  // ==================== CLOCK ====================
+  function updateClock(){
+    const now = new Date();
+    const h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const h12 = h % 12 || 12;
+    $('#live-clock').textContent = h12 + ':' + m + ' ' + ampm;
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+
+  // ==================== NAVIGATION ====================
+  $$('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const page = item.dataset.page;
+      if(page === currentPage) return;
+      currentPage = page;
+      $$('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      $$('.page').forEach(p => p.classList.remove('active'));
+      $(`#page-${page}`).classList.add('active');
+      if(page === 'messages'){
+        unreadCount = 0;
+        updateBadge();
+        setTimeout(() => scrollMessagesToBottom(), 100);
+      }
+    });
+  });
+
+  function updateBadge(){
+    const badge = $('#msg-badge');
+    if(unreadCount > 0){
+      badge.style.display = 'block';
+      badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+  updateBadge();
+
+  // ==================== RENDER PROJECTS ====================
+  function renderProjects(){
+    const list = $('#project-list');
+    const statusOrder = { live: 0, building: 1, agreed: 2, discussed: 3, verified: 0 };
+    const sorted = [...PROJECTS].sort((a,b) => (statusOrder[a.status]||5) - (statusOrder[b.status]||5));
+    const statusLabels = {
+      live: 'LIVE', building: 'BUILDING', discussed: 'IDEA',
+      agreed: 'AGREED', verified: 'VERIFIED'
+    };
+    list.innerHTML = sorted.map((p, i) => `
+      <div class="project-card fade-up" style="animation-delay:${i*0.04}s">
+        <div class="project-emoji">${p.emoji}</div>
+        <div class="project-info">
+          <div class="project-name">${p.name}</div>
+          <div class="project-desc">${p.desc}</div>
+        </div>
+        <div class="project-status ${p.status}">${statusLabels[p.status]||p.status.toUpperCase()}</div>
+      </div>
+    `).join('');
+  }
+  renderProjects();
+
+  // ==================== RENDER MESSAGES ====================
+  function renderMessages(){
+    const feed = $('#msg-feed');
+    feed.innerHTML = MOCK_MESSAGES.map((m, i) => {
+      const cls = m.dir === 'in' ? 'inbound' : 'outbound';
+      const senderHtml = m.dir === 'in' ? `<div class="msg-sender">${m.sender}</div>` : '';
+      return `
+        <div class="msg-bubble ${cls}" style="animation-delay:${i*0.05}s">
+          ${senderHtml}
+          <div>${m.text}</div>
+          <div class="msg-meta">${m.time}</div>
+        </div>
+      `;
+    }).join('');
+  }
+  renderMessages();
+
+  function scrollMessagesToBottom(){
+    const feed = $('#msg-feed');
+    if(feed) feed.lastElementChild?.scrollIntoView({behavior:'smooth',block:'end'});
+  }
+
+  // ==================== SEND MESSAGE ====================
+  const msgInput = $('#msg-input');
+  const msgSend = $('#msg-send');
+
+  function sendMessage(){
+    const text = msgInput.value.trim();
+    if(!text) return;
+
+    const now = new Date();
+    const h = now.getHours() % 12 || 12;
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+    const timeStr = h + ':' + m + ' ' + ampm;
+
+    MOCK_MESSAGES.push({ dir:'in', sender:'Owner', text, time: timeStr });
+    renderMessages();
+    scrollMessagesToBottom();
+    msgInput.value = '';
+
+    if(!USE_MOCK){
+      fetch(HUB_BASE + '/send', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({channel:'telegram', message: text})
+      }).catch(() => showToast('Failed to send'));
+    } else {
+      // Mock auto-reply
+      setTimeout(() => {
+        MOCK_MESSAGES.push({ dir:'out', sender:'9', text:'Copy. On it.', time: timeStr });
+        renderMessages();
+        scrollMessagesToBottom();
+        if(currentPage !== 'messages'){
+          unreadCount++;
+          updateBadge();
+        }
+      }, 800);
+    }
+  }
+
+  msgSend.addEventListener('click', sendMessage);
+  msgInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); sendMessage(); }
+  });
+
+  // ==================== ACTIONS ====================
+  $$('.action-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.action;
+      showToast('Sending: ' + action);
+      if(!USE_MOCK){
+        fetch(HUB_BASE + '/send', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({channel:'telegram', message: '/' + action})
+        }).catch(() => showToast('Action failed'));
+      }
+    });
+  });
+
+  $$('.cmd-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const cmd = pill.dataset.cmd;
+      // Switch to messages tab and pre-fill
+      currentPage = 'messages';
+      $$('.nav-item').forEach(n => n.classList.remove('active'));
+      $$('.nav-item')[1].classList.add('active');
+      $$('.page').forEach(p => p.classList.remove('active'));
+      $('#page-messages').classList.add('active');
+      msgInput.value = cmd;
+      msgInput.focus();
+    });
+  });
+
+  // ==================== TOAST ====================
+  function showToast(msg){
+    const toast = $('#toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ==================== DATA FETCHING ====================
+  async function fetchStatus(){
+    if(USE_MOCK) return;
+    try {
+      const res = await fetch(HUB_BASE + '/health', {signal: AbortSignal.timeout(5000)});
+      const data = await res.json();
+      $('#hub-status').textContent = 'ONLINE';
+      $('#hub-status').className = 'sys-badge online';
+      $('#global-status-dot').className = 'status-dot';
+      $('#global-status-text').textContent = 'LIVE';
+
+      if(data.terminal){
+        $('#terminal-status').textContent = data.terminal === 'active' ? 'ACTIVE' : 'OFFLINE';
+        $('#terminal-status').className = 'sys-badge ' + (data.terminal === 'active' ? 'online' : 'offline');
+        $('#terminal-mode').textContent = data.terminal === 'active' ? 'Relay Mode' : 'DC Mode';
+      }
+    } catch(e){
+      $('#hub-status').textContent = 'OFFLINE';
+      $('#hub-status').className = 'sys-badge offline';
+      $('#global-status-dot').className = 'status-dot offline';
+      $('#global-status-text').textContent = 'OFFLINE';
+    }
+    $('#last-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+  }
+
+  async function fetchMessages(){
+    if(USE_MOCK) return;
+    try {
+      const res = await fetch(HUB_BASE + '/inbox', {signal: AbortSignal.timeout(5000)});
+      const data = await res.json();
+      // Parse real messages and merge into feed
+      if(data.messages && Array.isArray(data.messages)){
+        // Real implementation would go here
+      }
+    } catch(e){}
+  }
+
+  // Poll every 30s when not using mock
+  if(!USE_MOCK){
+    fetchStatus();
+    fetchMessages();
+    setInterval(fetchStatus, 30000);
+    setInterval(fetchMessages, 15000);
+  }
+
+  // ==================== PULL TO REFRESH ====================
+  let touchStartY = 0;
+  let isPulling = false;
+  document.addEventListener('touchstart', e => {
+    if(window.scrollY === 0) touchStartY = e.touches[0].clientY;
+  }, {passive:true});
+
+  document.addEventListener('touchmove', e => {
+    if(touchStartY === 0) return;
+    const diff = e.touches[0].clientY - touchStartY;
+    if(diff > 60 && window.scrollY === 0){
+      isPulling = true;
+      $('#pull-indicator').classList.add('active');
+      $('#pull-indicator').textContent = 'Release to refresh';
+    }
+  }, {passive:true});
+
+  document.addEventListener('touchend', () => {
+    if(isPulling){
+      $('#pull-indicator').textContent = 'Refreshing...';
+      fetchStatus();
+      fetchMessages();
+      showToast('Refreshed');
+      setTimeout(() => {
+        $('#pull-indicator').classList.remove('active');
+      }, 800);
+    }
+    touchStartY = 0;
+    isPulling = false;
+  });
+
+  // ==================== HAPTIC FEEDBACK (if available) ====================
+  function haptic(){
+    if(navigator.vibrate) navigator.vibrate(10);
+  }
+  $$('.action-btn, .cmd-pill, .nav-item, .project-card').forEach(el => {
+    el.addEventListener('click', haptic);
+  });
+
+})();
+</script>
+</body>
+</html>

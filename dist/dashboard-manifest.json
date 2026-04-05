@@ -1,0 +1,24 @@
+{
+  "name": "9 War Room",
+  "short_name": "9 War Room",
+  "description": "Owner dashboard for 9 Enterprises — live agent status, comms health, project board",
+  "theme_color": "#0f0f1f",
+  "background_color": "#0f0f1f",
+  "display": "browser",
+  "orientation": "portrait-primary",
+  "start_url": "./dashboard.html",
+  "scope": "/",
+  "id": "/dashboard.html",
+  "icons": [
+    {
+      "src": "9-brand.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "9-brand.jpg",
+      "sizes": "any",
+      "type": "image/jpeg"
+    }
+  ]
+}

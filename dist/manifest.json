@@ -1,0 +1,19 @@
+{
+  "name": "AINFL GM",
+  "short_name": "AINFLGM",
+  "description": "NFL offseason simulator for the Cincinnati Bengals",
+  "theme_color": "#FB4F14",
+  "background_color": "#000000",
+  "display": "browser",
+  "orientation": "portrait",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/bengals-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

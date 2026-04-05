@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Depth Charts">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Depth Chart Explorer | AiNFL GM</title>
+<meta name="description" content="Visual NFL depth charts for all 32 teams. See starters, backups, and reserves at every position. Find team strengths and weakest links instantly.">
+<meta property="og:title" content="NFL Depth Chart Explorer | AiNFL GM">
+<meta property="og:description" content="Visual NFL depth charts for all 32 teams. See starters, backups, and reserves at every position.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/depth-charts.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Depth Chart Explorer | AiNFL GM">
+<meta name="twitter:description" content="Visual NFL depth charts for all 32 teams. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Main */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.05s;
+}
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 200px;
+}
+.control-group label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.control-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.control-select:focus { outline: none; border-color: var(--border-hi); }
+.control-select:hover { border-color: var(--border-hi); }
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.1s;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  color: var(--text-dim);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border: 1px solid var(--border-hi);
+}
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+/* Indicators row */
+.indicators {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.12s;
+}
+.indicator-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.indicator-card.strength { border-left: 3px solid var(--green); }
+.indicator-card.weakness { border-left: 3px solid var(--red); }
+.indicator-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.indicator-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 2px;
+}
+.indicator-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.indicator-value .pos-tag {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-left: 4px;
+}
+.indicator-rating {
+  font-size: 12px;
+  font-weight: 700;
+}
+.indicator-card.strength .indicator-rating { color: var(--green); }
+.indicator-card.weakness .indicator-rating { color: var(--red); }
+
+/* Formation grid */
+.formation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.15s;
+}
+
+.pos-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+.pos-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cyan-glow);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.pos-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+.pos-card:hover::before { opacity: 1; }
+.pos-card.selected {
+  border-color: var(--cyan);
+  background: rgba(0,240,255,0.06);
+}
+.pos-card.is-strength { border-top: 3px solid var(--green); }
+.pos-card.is-weakness { border-top: 3px solid var(--red); }
+
+.pos-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--cyan);
+  margin-bottom: 4px;
+}
+.pos-starter-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pos-starter-rating {
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.pos-starter-contract {
+  font-size: 10px;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+.rating-high { color: var(--green); }
+.rating-mid  { color: var(--yellow); }
+.rating-low  { color: var(--red); }
+
+/* Depth panel */
+.depth-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: glow-in 0.25s ease both;
+  display: none;
+}
+.depth-panel.visible { display: block; }
+.depth-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.depth-panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.04em;
+}
+.depth-panel-close {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+}
+.depth-panel-close:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+.depth-rows { display: flex; flex-direction: column; gap: 8px; }
+.depth-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 12px 14px;
+}
+.depth-rank {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+  min-width: 60px;
+}
+.depth-rank.starter-rank { color: var(--cyan); }
+.depth-player-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+.depth-player-rating {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+.depth-player-contract {
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: right;
+  min-width: 70px;
+}
+
+/* Compare section */
+.compare-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.2s;
+}
+.compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.compare-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.compare-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.compare-select {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.compare-select:focus { outline: none; border-color: var(--border-hi); }
+.compare-run-btn {
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-xs);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.compare-run-btn:hover { background: rgba(0,240,255,0.2); }
+
+.compare-results { display: none; }
+.compare-results.visible { display: block; }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.compare-table th {
+  background: var(--bg-3);
+  padding: 10px 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .pos-col {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.compare-table .team-col {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.compare-table .win-col { font-weight: 700; }
+.compare-win { color: var(--green); }
+.compare-loss { color: var(--red); }
+.compare-tie { color: var(--yellow); }
+
+/* Share button */
+.share-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.share-btn:hover { border-color: var(--border-hi); color: var(--cyan); }
+.share-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: transform 0.3s;
+  z-index: 200;
+  pointer-events: none;
+}
+.share-toast.show { transform: translateX(-50%) translateY(0); }
+
+/* AdSense slot */
+.ad-slot {
+  text-align: center;
+  margin: 24px 0;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .indicators { grid-template-columns: 1fr; }
+  .formation-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .controls { flex-direction: column; }
+  .compare-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    All 32 Teams
+  </div>
+  <h1>NFL <span>Depth Chart</span> Explorer</h1>
+  <p>Visual depth charts for every NFL team. Click any position to see the full depth, identify strengths, and compare rosters head-to-head.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="control-group">
+      <label>Select Team</label>
+      <select class="control-select" id="team-select"></select>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-side="offense" onclick="switchSide('offense',this)">Offense</button>
+    <button class="tab-btn" data-side="defense" onclick="switchSide('defense',this)">Defense</button>
+  </div>
+
+  <!-- Indicators -->
+  <div class="indicators">
+    <div class="indicator-card strength">
+      <div class="indicator-icon">&#9651;</div>
+      <div>
+        <div class="indicator-label">Strength</div>
+        <div class="indicator-value" id="ind-strength">--</div>
+        <div class="indicator-rating" id="ind-strength-rating"></div>
+      </div>
+    </div>
+    <div class="indicator-card weakness">
+      <div class="indicator-icon">&#9661;</div>
+      <div>
+        <div class="indicator-label">Weakest Link</div>
+        <div class="indicator-value" id="ind-weakness">--</div>
+        <div class="indicator-rating" id="ind-weakness-rating"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Depth Panel (hidden until position clicked) -->
+  <div class="depth-panel" id="depth-panel">
+    <div class="depth-panel-header">
+      <div class="depth-panel-title" id="depth-panel-title">Position Depth</div>
+      <button class="depth-panel-close" onclick="closeDepthPanel()">Close</button>
+    </div>
+    <div class="depth-rows" id="depth-rows"></div>
+  </div>
+
+  <!-- Formation Grid -->
+  <div class="formation-grid" id="formation-grid"></div>
+
+  <!-- AdSense -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Compare Section -->
+  <div class="compare-section">
+    <div class="compare-header">
+      <div class="compare-title">Compare Two Teams at Any Position</div>
+      <div class="compare-controls">
+        <select class="compare-select" id="cmp-team-a"></select>
+        <select class="compare-select" id="cmp-team-b"></select>
+        <select class="compare-select" id="cmp-side">
+          <option value="offense">Offense</option>
+          <option value="defense">Defense</option>
+        </select>
+        <button class="compare-run-btn" onclick="runCompare()">Compare</button>
+      </div>
+    </div>
+    <div class="compare-results" id="compare-results">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>POS</th>
+            <th id="cmp-th-a">Team A</th>
+            <th>RTG</th>
+            <th id="cmp-th-b">Team B</th>
+            <th>RTG</th>
+            <th>Edge</th>
+          </tr>
+        </thead>
+        <tbody id="cmp-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Share -->
+  <div class="share-row">
+    <button class="share-btn" onclick="shareChart()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="11" cy="2.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="11" cy="11.5" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="3" cy="7" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M4.3 6.2L9.8 3.2M4.3 7.8L9.8 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      Share Depth Chart
+    </button>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="https://ainflgm.com">AiNFL GM Home</a>
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a>
+    <a href="https://ainflgm.com/cap-space.html">Cap Tracker</a>
+    <a href="https://ainflgm.com/draft-grade.html">Draft Grades</a>
+    <a href="https://ainflgm.com/trade-analyzer.html">Trade Analyzer</a>
+  </div>
+  <div>&copy; 2026 AiNFL GM &mdash; Not affiliated with the NFL. For entertainment purposes.</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<div class="share-toast" id="share-toast">Link copied to clipboard!</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+
+const TEAMS = [
+  "Arizona Cardinals","Atlanta Falcons","Baltimore Ravens","Buffalo Bills",
+  "Carolina Panthers","Chicago Bears","Cincinnati Bengals","Cleveland Browns",
+  "Dallas Cowboys","Denver Broncos","Detroit Lions","Green Bay Packers",
+  "Houston Texans","Indianapolis Colts","Jacksonville Jaguars","Kansas City Chiefs",
+  "Las Vegas Raiders","Los Angeles Chargers","Los Angeles Rams","Miami Dolphins",
+  "Minnesota Vikings","New England Patriots","New Orleans Saints","New York Giants",
+  "New York Jets","Philadelphia Eagles","Pittsburgh Steelers","San Francisco 49ers",
+  "Seattle Seahawks","Tampa Bay Buccaneers","Tennessee Titans","Washington Commanders"
+];
+
+const OFF_POSITIONS = ["QB","RB","WR1","WR2","TE","LT","LG","C","RG","RT","FB"];
+const DEF_POSITIONS = ["DE","DT","NT","OLB","ILB1","ILB2","CB1","CB2","SS","FS","NB"];
+
+// rating helper: assign color class
+function ratingClass(r){
+  if(r>=90) return 'rating-high';
+  if(r>=80) return 'rating-mid';
+  return 'rating-low';
+}
+
+// CONTRACT year labels
+const CY = ["Rookie","Y2","Y3","Ext","FA yr","Last yr","UFA"];
+
+// Seeded PRNG so data is deterministic
+function mulberry32(seed){
+  return function(){
+    seed|=0; seed=seed+0x6D2B79F5|0;
+    let t=Math.imul(seed^seed>>>15,1|seed);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+
+// Name pools
+const FIRST = ["Tyler","Marcus","Jordan","Devonte","Cameron","Logan","Malik","Justin","Derek","Darius","Kyle","Trevor","Lamar","Josh","Jalen","Tua","Geno","Baker","Sam","Bryce","Anthony","Michael","Raheem","Darnell","Kendrick","Elijah","Isaiah","Brandon","Terrell","Curtis","Amari","Tyreek","Stefon","Justin","Travis","Mark","George","Dalton","Hunter","Sam","Zach","Daniel","Davis","David","Jonathan","Damion","Roquan","Myles","Micah","Nick","Devin","Tariq","Marshon","Patrick","Jaire","Sauce","Keenan","Davante","DeAndre","Ja'Marr","Garrett","Danielle","Harold","Aidan","Caleb","Will","Joe","Brock","Matthew","Dak","Patrick","Kirk","Russell","Carson","Jimmy","Mac","Zach","Kenny"];
+const LAST  = ["Johnson","Williams","Brown","Smith","Jones","Davis","Wilson","Anderson","Thomas","Jackson","Harris","Martin","Thompson","White","Garcia","Martinez","Robinson","Clark","Lewis","Lee","Walker","Hall","Allen","Young","King","Wright","Scott","Torres","Nguyen","Hill","Adams","Baker","Nelson","Carter","Mitchell","Perez","Roberts","Turner","Phillips","Campbell","Parker","Evans","Edwards","Collins","Stewart","Sanchez","Morris","Rogers","Reed","Cook","Morgan","Bell","Murphy","Bailey","Rivera","Cooper","Richardson","Cox","Howard","Ward","Taylor","Green","Adams","James","Watson","Lawrence","Murray","Herbert","Burrow","Allen","Mahomes","Prescott","Wilson","Stafford","Henry","Ekeler","Jefferson","Diggs","Kelce","Watt","Donald","Bosa","Miller","Claypool","Chase","Lamb","Hill","Adams"];
+
+function rndName(rng){
+  const f=FIRST[Math.floor(rng()*FIRST.length)];
+  const l=LAST[Math.floor(rng()*LAST.length)];
+  return f+' '+l;
+}
+function rndContract(rng){
+  return CY[Math.floor(rng()*CY.length)];
+}
+function rndRating(rng, base, spread){
+  return Math.max(62, Math.min(99, Math.round(base + (rng()-0.5)*spread)));
+}
+
+// Build depth chart data for a team
+function buildTeam(teamIdx){
+  const rng = mulberry32(teamIdx * 31337 + 7);
+  const off = {};
+  const def = {};
+
+  // Offense base ratings vary by team quality
+  const offBase = 72 + Math.floor(mulberry32(teamIdx*999)() * 18);
+  const defBase = 70 + Math.floor(mulberry32(teamIdx*777)() * 18);
+
+  const posRatings = {
+    QB:[offBase+4,6], RB:[offBase,8], 'WR1':[offBase+2,7], 'WR2':[offBase-2,8],
+    TE:[offBase-1,8], LT:[offBase+1,7], LG:[offBase-3,8], C:[offBase,7],
+    RG:[offBase-3,8], RT:[offBase-1,7], FB:[offBase-8,6]
+  };
+  const defRatings = {
+    DE:[defBase+2,8], DT:[defBase,8], NT:[defBase-2,7], OLB:[defBase+1,8],
+    ILB1:[defBase,7], ILB2:[defBase-2,8], CB1:[defBase+3,8], CB2:[defBase,8],
+    SS:[defBase-1,7], FS:[defBase,7], NB:[defBase+1,6]
+  };
+
+  for(const pos of OFF_POSITIONS){
+    const [base,spread] = posRatings[pos];
+    off[pos] = [
+      {name:rndName(rng), rating:rndRating(rng,base,spread), contract:rndContract(rng)},
+      {name:rndName(rng), rating:rndRating(rng,base-9,10),   contract:rndContract(rng)},
+      {name:rndName(rng), rating:rndRating(rng,base-18,8),   contract:rndContract(rng)}
+    ];
+  }
+  for(const pos of DEF_POSITIONS){
+    const [base,spread] = defRatings[pos];
+    def[pos] = [
+      {name:rndName(rng), rating:rndRating(rng,base,spread), contract:rndContract(rng)},
+      {name:rndName(rng), rating:rndRating(rng,base-9,10),   contract:rndContract(rng)},
+      {name:rndName(rng), rating:rndRating(rng,base-18,8),   contract:rndContract(rng)}
+    ];
+  }
+  return {off, def};
+}
+
+// Pre-build all 32 teams
+const ALL_TEAMS = TEAMS.map((name,i) => ({ name, ...buildTeam(i) }));
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let currentTeamIdx = 0;
+let currentSide    = 'offense';
+let selectedPos    = null;
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function init(){
+  // Populate team selects
+  const teamSel  = document.getElementById('team-select');
+  const cmpA     = document.getElementById('cmp-team-a');
+  const cmpB     = document.getElementById('cmp-team-b');
+
+  TEAMS.forEach((name,i)=>{
+    const opt = new Option(name, i);
+    teamSel.appendChild(opt.cloneNode(true));
+    cmpA.appendChild(opt.cloneNode(true));
+    const optB = new Option(name, i);
+    if(i===1) optB.selected = true;
+    cmpB.appendChild(optB);
+  });
+
+  teamSel.addEventListener('change', e => {
+    currentTeamIdx = parseInt(e.target.value);
+    selectedPos = null;
+    closeDepthPanel();
+    render();
+  });
+
+  // Handle URL param
+  const params = new URLSearchParams(location.search);
+  if(params.has('team')){
+    const t = TEAMS.findIndex(n=>n.toLowerCase().replace(/\s+/g,'-')===params.get('team'));
+    if(t>=0){ currentTeamIdx=t; teamSel.value=t; }
+  }
+  if(params.has('side') && (params.get('side')==='defense')){
+    currentSide='defense';
+    document.querySelectorAll('.tab-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.side===currentSide);
+    });
+  }
+
+  render();
+}
+
+// ─────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────
+function render(){
+  const team   = ALL_TEAMS[currentTeamIdx];
+  const chart  = currentSide==='offense' ? team.off : team.def;
+  const positions = currentSide==='offense' ? OFF_POSITIONS : DEF_POSITIONS;
+
+  // Indicators
+  let strengthPos=null, weaknessPos=null, highR=-1, lowR=200;
+  for(const pos of positions){
+    const r = chart[pos][0].rating;
+    if(r>highR){ highR=r; strengthPos=pos; }
+    if(r<lowR) { lowR=r;  weaknessPos=pos; }
+  }
+  document.getElementById('ind-strength').innerHTML =
+    `${chart[strengthPos][0].name} <span class="pos-tag">${strengthPos}</span>`;
+  document.getElementById('ind-strength-rating').textContent = highR+' OVR';
+  document.getElementById('ind-weakness').innerHTML =
+    `${chart[weaknessPos][0].name} <span class="pos-tag">${weaknessPos}</span>`;
+  document.getElementById('ind-weakness-rating').textContent = lowR+' OVR';
+
+  // Formation grid
+  const grid = document.getElementById('formation-grid');
+  grid.innerHTML = '';
+  for(const pos of positions){
+    const starter = chart[pos][0];
+    const card    = document.createElement('div');
+    card.className = 'pos-card';
+    if(pos===strengthPos) card.classList.add('is-strength');
+    if(pos===weaknessPos)  card.classList.add('is-weakness');
+    if(pos===selectedPos)  card.classList.add('selected');
+    card.innerHTML = `
+      <div class="pos-label">${pos}</div>
+      <div class="pos-starter-name">${starter.name}</div>
+      <div class="pos-starter-rating ${ratingClass(starter.rating)}">${starter.rating} OVR</div>
+      <div class="pos-starter-contract">${starter.contract}</div>
+    `;
+    card.addEventListener('click', ()=> openDepthPanel(pos, chart[pos]));
+    grid.appendChild(card);
+  }
+
+  // If a pos was selected, re-render depth panel
+  if(selectedPos && chart[selectedPos]){
+    openDepthPanel(selectedPos, chart[selectedPos], false);
+  }
+}
+
+// ─────────────────────────────────────────────
+// DEPTH PANEL
+// ─────────────────────────────────────────────
+const RANK_LABELS = ['STARTER','BACKUP','3RD STRING'];
+
+function openDepthPanel(pos, players, scrollTo=true){
+  selectedPos = pos;
+  // Update selected state on cards
+  document.querySelectorAll('.pos-card').forEach(c=>{
+    c.classList.toggle('selected', c.querySelector('.pos-label').textContent===pos);
+  });
+
+  const panel = document.getElementById('depth-panel');
+  document.getElementById('depth-panel-title').textContent = pos+' Depth Chart';
+  const rows = document.getElementById('depth-rows');
+  rows.innerHTML = '';
+
+  players.forEach((p,i)=>{
+    const row = document.createElement('div');
+    row.className = 'depth-row';
+    row.innerHTML = `
+      <div class="depth-rank${i===0?' starter-rank':''}">${RANK_LABELS[i]}</div>
+      <div class="depth-player-name">${p.name}</div>
+      <div class="depth-player-rating ${ratingClass(p.rating)}">${p.rating}</div>
+      <div class="depth-player-contract">${p.contract}</div>
+    `;
+    rows.appendChild(row);
+  });
+
+  panel.classList.add('visible');
+  if(scrollTo) panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function closeDepthPanel(){
+  selectedPos = null;
+  document.getElementById('depth-panel').classList.remove('visible');
+  document.querySelectorAll('.pos-card').forEach(c=>c.classList.remove('selected'));
+}
+
+// ─────────────────────────────────────────────
+// SIDE SWITCH
+// ─────────────────────────────────────────────
+function switchSide(side, btn){
+  currentSide = side;
+  selectedPos = null;
+  closeDepthPanel();
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+// ─────────────────────────────────────────────
+// COMPARE
+// ─────────────────────────────────────────────
+function runCompare(){
+  const idxA   = parseInt(document.getElementById('cmp-team-a').value);
+  const idxB   = parseInt(document.getElementById('cmp-team-b').value);
+  const side   = document.getElementById('cmp-side').value;
+  const teamA  = ALL_TEAMS[idxA];
+  const teamB  = ALL_TEAMS[idxB];
+  const chartA = side==='offense' ? teamA.off : teamA.def;
+  const chartB = side==='offense' ? teamB.off : teamB.def;
+  const positions = side==='offense' ? OFF_POSITIONS : DEF_POSITIONS;
+
+  document.getElementById('cmp-th-a').textContent = teamA.name.split(' ').pop();
+  document.getElementById('cmp-th-b').textContent = teamB.name.split(' ').pop();
+
+  const tbody = document.getElementById('cmp-tbody');
+  tbody.innerHTML = '';
+
+  for(const pos of positions){
+    const rA = chartA[pos][0].rating;
+    const rB = chartB[pos][0].rating;
+    const diff = rA - rB;
+    let edgeClass = 'compare-tie', edgeText = 'EVEN';
+    if(diff>2){ edgeClass='compare-win'; edgeText=teamA.name.split(' ').pop()+' +'+diff; }
+    else if(diff<-2){ edgeClass='compare-loss'; edgeText=teamB.name.split(' ').pop()+' +'+(Math.abs(diff)); }
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="pos-col">${pos}</td>
+      <td class="team-col">${chartA[pos][0].name}</td>
+      <td class="${ratingClass(rA)}" style="font-weight:700">${rA}</td>
+      <td class="team-col">${chartB[pos][0].name}</td>
+      <td class="${ratingClass(rB)}" style="font-weight:700">${rB}</td>
+      <td class="win-col ${edgeClass}">${edgeText}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  const res = document.getElementById('compare-results');
+  res.classList.add('visible');
+  res.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ─────────────────────────────────────────────
+// SHARE
+// ─────────────────────────────────────────────
+function shareChart(){
+  const team = TEAMS[currentTeamIdx].toLowerCase().replace(/\s+/g,'-');
+  const url  = `${location.origin}${location.pathname}?team=${team}&side=${currentSide}`;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>showToast());
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast();
+  }
+}
+
+function showToast(){
+  const t = document.getElementById('share-toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// ─────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────
+init();
+</script>
+
+<section style="max-width:860px;margin:48px auto 0;padding:0 20px 60px;font-family:system-ui,sans-serif;color:#c8d6e5;line-height:1.75;">
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin-bottom:16px;border-top:2px solid #FB4F14;padding-top:24px;">How the NFL Depth Chart Tool Works</h2>
+  <p style="margin-bottom:14px;">The AiNFLGM Depth Chart tool gives you a structured, up-to-date view of every NFL team's positional hierarchy — from the starting lineup through the backups and practice squad contributors. Depth charts are one of the most underutilized tools in both fantasy football and real-world football analysis, and this tool makes them accessible and easy to navigate for all 32 teams at once.</p>
+  <p style="margin-bottom:14px;">The depth chart is organized by offensive and defensive groupings, with each position showing the starter in the first slot and depth players ranked beneath them. Injury designations are flagged inline so you can immediately see which starting spots are under threat from depth players moving up. This is critical information during bye weeks, injury emergencies, and waiver wire decisions when knowing the next man up can be the difference between winning and losing your fantasy matchup.</p>
+  <p style="margin-bottom:14px;">For offensive positions, the tool displays snap count percentages where available, giving you a more accurate picture of how the carries, targets, and snaps are actually distributed versus what the official depth chart listing suggests. In modern NFL offenses, the second receiver on the depth chart often operates as a co-starter in certain packages, making pure depth chart position a misleading indicator of actual production ceiling.</p>
+  <p style="margin-bottom:14px;">Defensive depth charts show the base package starters alongside their nickel and dime package substitutes, reflecting how teams actually deploy personnel in today's passing-heavy NFL. Edge rusher rotations, cornerback matchup versatility, and safety alignments are all visible in the tool, helping you understand how a defense will line up against specific offensive formations and skill players.</p>
+
+  <h2 style="font-size:1.5rem;font-weight:700;color:#ffffff;margin:36px 0 16px;border-top:2px solid #FB4F14;padding-top:24px;">Frequently Asked Questions</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How often are the depth charts updated?</h3>
+  <p style="margin-bottom:20px;">Depth charts are refreshed weekly during the NFL season, incorporating the latest practice reports, injury designations, and official team depth chart releases. During the preseason, depth charts are updated more frequently as roster battles are resolved. After the final cut to 53 players, the charts stabilize and are updated based on game-day inactives and any mid-season transactions such as trades, signings, or injuries.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Why do some positions show more depth than others?</h3>
+  <p style="margin-bottom:20px;">NFL rosters allocate spots unevenly by position based on positional demand and injury risk. Running backs typically carry three to four depth players because the position sees high usage and injury rates. Kickers and long snappers generally carry only one or two. The tool reflects actual roster construction, so positions with thinner depth represent genuine roster vulnerabilities that can be exploited in trade negotiations or targeted in fantasy waiver decisions.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Can I use this tool to identify handcuff running backs for fantasy football?</h3>
+  <p style="margin-bottom:20px;">Yes, this is one of the primary use cases. The depth chart clearly shows who backs up the featured running back on each team. Elite handcuff value comes from backing up a high-volume starter on a team that runs the ball frequently and uses their backs in the passing game. The tool helps you identify those situations across all 32 teams so you can target the right backups before they become necessary mid-season.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">Does the tool show practice squad players?</h3>
+  <p style="margin-bottom:20px;">Selected practice squad players with high promotion potential are included in the depth listings, particularly at positions where the active roster depth is thin. Practice squad players can be elevated to the active roster on game days without losing their PS designation, making them directly relevant to weekly game outcomes and fantasy decisions. Players in this category are labeled with a PS designation to distinguish them from active roster members.</p>
+
+  <h3 style="font-size:1.1rem;font-weight:600;color:#e0e0e0;margin-bottom:8px;">How can I compare depth charts across multiple teams?</h3>
+  <p style="margin-bottom:20px;">Use the team selector to navigate between all 32 NFL franchises. You can also toggle between offense and defense views to quickly assess positional depth across the league for a specific position group. This is particularly useful for identifying which teams have fragile depth at key positions heading into the playoffs, or for understanding how a potential trade acquisition fits into their existing roster construction.</p>
+</section>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0a0a0a">
+<!-- apple-mobile-web-app-capable removed: keeps full Safari browser controls on home screen -->
+<meta name="apple-mobile-web-app-title" content="9enterprises">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<meta name="description" content="9 Enterprises Pitch Deck Gallery — Every company pitch video in one place.">
+<meta property="og:title" content="9 Enterprises — Pitch Deck Gallery">
+<meta property="og:description" content="Every company. Every pitch. One place. 12 video pitches from the 9 Enterprises universe.">
+<meta property="og:image" content="/9-brand.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://9enterprises.ai/pitch-gallery.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="9 Enterprises — Pitch Deck Gallery">
+<meta name="twitter:description" content="Every company. Every pitch. One place.">
+<title>9 Enterprises — Pitch Deck Gallery</title>
+<link rel="canonical" href="https://9enterprises.ai/pitch-gallery.html">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PLW4H1NNF6');</script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --border: rgba(255,255,255,0.07);
+  --orange: #f97316;
+  --orange-dim: rgba(249,115,22,0.15);
+  --text: #e2e2e2;
+  --text-dim: #888888;
+  --white: #ffffff;
+  --radius: 16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Header ──────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  padding: 60px 24px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.header h1 span {
+  color: var(--orange);
+}
+
+.header p {
+  margin-top: 12px;
+  font-size: 1.15rem;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.video-count {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 6px 16px;
+  background: var(--orange-dim);
+  color: var(--orange);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* ─── Grid ────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(249,115,22,0.3);
+  box-shadow: 0 0 30px rgba(249,115,22,0.08);
+}
+
+.card-video {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.card-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.card-info {
+  padding: 16px 20px 20px;
+}
+
+.card-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.card-info .duration {
+  font-size: 0.8rem;
+  color: var(--orange);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.card-info p {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ─── Footer ──────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.footer a {
+  color: var(--orange);
+  text-decoration: none;
+}
+
+/* ─── Responsive ──────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .header { padding: 40px 20px 30px; }
+  .header h1 { font-size: 1.7rem; }
+  .header p { font-size: 1rem; }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 16px 40px;
+  }
+  .card-info { padding: 14px 16px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>9</span> Enterprises — Pitch Deck Gallery</h1>
+  <p>Every company. Every pitch. One place.</p>
+  <div class="video-count">12 Pitch Videos</div>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/533b4f122b88493da5b0fc53696ff62f" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>9 Enterprises Universe</h3>
+      <div class="duration">2:13</div>
+      <p>The full universe overview — AI-powered holding company, every subsidiary, the vision.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/2ba2c078f6a64a6c86d8bae2dfadd802" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>PlayAiGM</h3>
+      <div class="duration">1:12</div>
+      <p>AI-powered NFL draft intelligence. Real-time mock drafts, trade analysis, and GM simulations.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/67fe0f6d478c4d0cb99a5919f6f30e80" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>Trader 9</h3>
+      <div class="duration">1:30</div>
+      <p>AI-driven penny stock trading. Real-time OTC market analysis and autonomous trade execution.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/10dbe09f0b3f4122a1a85bc02b4cb41a" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>X9</h3>
+      <div class="duration">1:27</div>
+      <p>Autonomous social media growth engine. AI-powered content and engagement on X (Twitter).</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/fd7f74ed89694dc48ef7a54b397fb6a7" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>Jules</h3>
+      <div class="duration">1:16</div>
+      <p>AI personal assistant for families. Scheduling, reminders, and household management.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/cc2f2c5157ee46ec9082769741ad44f8" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>AI Underwriter</h3>
+      <div class="duration">1:37</div>
+      <p>AI-powered mortgage underwriting. Instant guideline lookups and loan eligibility analysis.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/c97d2535dba84b9c9b874e4f3d42ea61" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>agent9</h3>
+      <div class="duration">1:24</div>
+      <p>AI real estate platform. Buy and sell homes without traditional realtors.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/6ce98089159a4aa28309b1b0770c1d88" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>FreeAgent 9</h3>
+      <div class="duration">1:21</div>
+      <p>AI business concierge. On-demand autonomous agent for any business task.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/cc1368ee7674427a800c9453baec5aa8" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>Dropshipping</h3>
+      <div class="duration">1:24</div>
+      <p>AI-operated e-commerce. Autonomous product sourcing, listing, and fulfillment.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/51f712dbee214b31aa9cd286876e6162" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>Hitchhiker's Guide to AI</h3>
+      <div class="duration">1:25</div>
+      <p>Education-first AI content. Teaching people how to partner with AI, then connecting them to tools.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/e98accc5e9114679a9843f8ceb55af91" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>Chaperone</h3>
+      <div class="duration">1:52</div>
+      <p>AI safety companion for kids. Real-time monitoring and smart alerts for parents.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-video">
+      <iframe src="https://app.heygen.com/embeds/628d77829ff3476e847e9090bc39c0b2" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="card-info">
+      <h3>Rapid Mortgage</h3>
+      <div class="duration">2:13</div>
+      <p>AI-enhanced mortgage lending. Streamlined origination and borrower experience.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  &copy; 2026 <a href="https://9enterprises.ai">9 Enterprises LLC</a>. All rights reserved.
+</footer>
+
+</body>
+</html>

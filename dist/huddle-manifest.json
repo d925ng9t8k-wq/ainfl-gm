@@ -1,0 +1,24 @@
+{
+  "name": "9 Huddle",
+  "short_name": "9 Huddle",
+  "description": "The 9 Enterprises command center. Owner and guest access. Live operations, task board, and team feed.",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a",
+  "display": "browser",
+  "orientation": "portrait-primary",
+  "start_url": "./cockpit.html",
+  "scope": "/",
+  "id": "/cockpit.html",
+  "icons": [
+    {
+      "src": "9-brand.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "9-brand.jpg",
+      "sizes": "any",
+      "type": "image/jpeg"
+    }
+  ]
+}

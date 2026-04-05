@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="NFL Trivia">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL History Trivia Challenge | AiNFL GM</title>
+<meta name="description" content="Test your NFL knowledge with 50 questions covering Super Bowl history, record holders, draft legends, famous plays, and the current era. Free trivia by AiNFL GM.">
+<meta property="og:title" content="NFL History Trivia Challenge | AiNFL GM">
+<meta property="og:description" content="50 questions. 20 per game. Super Bowls, records, drafts, iconic plays. How well do you really know NFL history?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/nfl-trivia.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL History Trivia Challenge | AiNFL GM">
+<meta name="twitter:description" content="50 questions. 20 per game. Super Bowls, records, drafts, iconic plays. How well do you really know NFL history?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --purple:     #A855F7;
+  --purple-dim: rgba(168,85,247,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes correct-flash {
+  0%   { background: var(--green-dim); border-color: rgba(57,255,20,0.5); }
+  100% { background: var(--green-dim); border-color: rgba(57,255,20,0.5); }
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+.nav-back svg { flex-shrink: 0; }
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Main */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* Start Screen */
+.start-screen { animation: fadeUp 0.5s ease 0.1s both; }
+.start-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+}
+.start-icon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  display: block;
+  line-height: 1;
+}
+.start-card h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.start-card > p {
+  font-size: 14px;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  text-align: left;
+}
+.rule-icon { font-size: 20px; flex-shrink: 0; }
+.rule-text { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
+.rule-text strong { display: block; color: var(--text); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+/* Category Filter */
+.category-section {
+  margin-bottom: 20px;
+  text-align: left;
+}
+.category-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+  display: block;
+}
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cat-chip {
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.cat-chip:hover { border-color: var(--border-hi); color: var(--cyan); }
+.cat-chip.active {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+.high-score-note {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 20px;
+  padding: 10px;
+  background: var(--bg-2);
+  border-radius: var(--radius-xs);
+}
+.high-score-note strong { color: var(--yellow); }
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cyan);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 14px 36px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.btn-primary:hover {
+  background: #33F5FF;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,240,255,0.2);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-2);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+/* Quiz Screen */
+.quiz-screen { display: none; }
+.quiz-screen.active { display: block; animation: fadeUp 0.4s ease both; }
+
+/* HUD */
+.quiz-hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.hud-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: center;
+}
+.hud-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+.hud-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.hud-value.cyan { color: var(--cyan); }
+.hud-value.green { color: var(--green); }
+.hud-value.yellow { color: var(--yellow); }
+
+/* Progress */
+.progress-wrap {
+  background: var(--bg-3);
+  border-radius: 100px;
+  height: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+
+/* Question Card */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 24px 20px;
+  margin-bottom: 16px;
+  animation: glow-in 0.3s ease both;
+}
+.q-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.q-counter {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-weight: 500;
+}
+.q-category {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid;
+}
+.q-category.cat-superbowl { color: var(--yellow); border-color: rgba(255,214,0,0.3); background: var(--yellow-dim); }
+.q-category.cat-records   { color: var(--cyan);   border-color: var(--border-hi);    background: var(--cyan-dim);   }
+.q-category.cat-draft     { color: var(--green);  border-color: rgba(57,255,20,0.3); background: var(--green-dim);  }
+.q-category.cat-teams     { color: var(--purple); border-color: rgba(168,85,247,0.3); background: var(--purple-dim); }
+.q-category.cat-plays     { color: var(--red);    border-color: rgba(255,45,85,0.3); background: var(--red-dim);    }
+.q-category.cat-current   { color: #FB923C;       border-color: rgba(251,146,60,0.3); background: rgba(251,146,60,0.1); }
+
+.q-difficulty {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.q-difficulty.easy   { color: var(--green); background: var(--green-dim);  border: 1px solid rgba(57,255,20,0.2); }
+.q-difficulty.medium { color: var(--yellow); background: var(--yellow-dim); border: 1px solid rgba(255,214,0,0.2); }
+.q-difficulty.hard   { color: var(--red);   background: var(--red-dim);    border: 1px solid rgba(255,45,85,0.2); }
+
+.q-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(17px, 3vw, 22px);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+/* Options */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (max-width: 480px) {
+  .options-grid { grid-template-columns: 1fr; }
+}
+.option-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--border-hi);
+  background: rgba(0,240,255,0.04);
+  color: #fff;
+}
+.option-btn .opt-letter {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+.option-btn:hover:not(:disabled) .opt-letter {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+.option-btn.correct {
+  background: var(--green-dim);
+  border-color: rgba(57,255,20,0.4);
+  color: #fff;
+  animation: pop 0.3s ease;
+}
+.option-btn.correct .opt-letter {
+  background: var(--green);
+  border-color: var(--green);
+  color: #0F172A;
+}
+.option-btn.wrong {
+  background: var(--red-dim);
+  border-color: rgba(255,45,85,0.4);
+  color: var(--text-dim);
+}
+.option-btn.wrong .opt-letter {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+.option-btn:disabled { cursor: default; }
+
+/* Feedback */
+.feedback-strip {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  animation: fadeUp 0.3s ease both;
+}
+.feedback-strip.show { display: flex; }
+.feedback-strip.correct { border-color: rgba(57,255,20,0.25); background: rgba(57,255,20,0.06); }
+.feedback-strip.wrong   { border-color: rgba(255,45,85,0.25);  background: rgba(255,45,85,0.06);  }
+.feedback-icon { font-size: 22px; flex-shrink: 0; }
+.feedback-text strong { display: block; color: var(--text); margin-bottom: 2px; }
+
+.next-btn-wrap { text-align: right; }
+.btn-next {
+  background: var(--cyan);
+  color: #0F172A;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 11px 28px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.btn-next.show { display: inline-flex; }
+.btn-next:hover { background: #33F5FF; transform: translateY(-1px); }
+
+/* End Screen */
+.end-screen { display: none; }
+.end-screen.active { display: block; animation: fadeUp 0.4s ease both; }
+.end-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.end-grade {
+  font-family: 'Oswald', sans-serif;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.end-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.end-subtitle {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+}
+.end-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.end-stat {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 12px;
+}
+.end-stat-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.end-stat-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.new-best-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 20px;
+}
+.end-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Share */
+.share-text-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-align: left;
+  white-space: pre-line;
+  line-height: 1.6;
+  display: none;
+}
+.share-text-box.show { display: block; }
+.share-copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-mute);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.share-copy-btn:hover { border-color: var(--border-hi); color: var(--cyan); }
+.share-copy-btn.copied { color: var(--green); border-color: rgba(57,255,20,0.3); }
+
+/* Review Section */
+.review-section { margin-top: 20px; }
+.review-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 12px;
+}
+.review-toggle:hover { border-color: var(--border-hi); color: var(--cyan); }
+.review-toggle svg { transition: transform 0.2s; }
+.review-toggle.open svg { transform: rotate(180deg); }
+.review-list { display: none; }
+.review-list.show { display: block; }
+.review-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 8px;
+  border-left: 3px solid transparent;
+}
+.review-item.was-correct { border-left-color: var(--green); }
+.review-item.was-wrong   { border-left-color: var(--red); }
+.review-item-q {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.review-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.review-correct-ans { color: var(--green); font-weight: 600; }
+.review-your-ans    { color: var(--red);   font-weight: 600; }
+.review-same        { color: var(--text-mute); font-size: 11px; }
+
+/* Ad slot */
+.ad-slot {
+  margin: 24px 0;
+  text-align: center;
+  min-height: 90px;
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 2;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+@media (max-width: 520px) {
+  .quiz-hud { grid-template-columns: repeat(2, 1fr); }
+  .end-stats { grid-template-columns: repeat(3, 1fr); }
+  .rules-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to Tools
+  </a>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">&#127942; NFL History Trivia</div>
+  <h1>NFL History <span>Trivia Challenge</span></h1>
+  <p>50 questions. Super Bowls, record holders, iconic plays, draft history, and the current era. 20 random questions per game. No clock — just you vs. the history books.</p>
+</header>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Ad -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Start Screen -->
+  <div class="start-screen" id="start-screen">
+    <div class="start-card">
+      <span class="start-icon">&#127944;</span>
+      <h2>How Well Do You Know NFL History?</h2>
+      <p>50 questions spanning every era of professional football. Super Bowls, record holders, legendary draft picks, iconic plays, and today's stars. 20 random questions per round.</p>
+
+      <div class="rules-grid">
+        <div class="rule-item">
+          <span class="rule-icon">&#128197;</span>
+          <div class="rule-text">
+            <strong>20 Questions</strong>
+            Random from pool of 50
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">&#129504;</span>
+          <div class="rule-text">
+            <strong>Relaxed Mode</strong>
+            No timer — take your time
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">&#127941;</span>
+          <div class="rule-text">
+            <strong>6 Categories</strong>
+            Filter to your strengths
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">&#128200;</span>
+          <div class="rule-text">
+            <strong>Letter Grade</strong>
+            Full review at the end
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="category-section">
+        <span class="category-label">Filter by Category</span>
+        <div class="category-chips">
+          <button class="cat-chip active" data-cat="all" onclick="selectCategory('all', this)">All Categories</button>
+          <button class="cat-chip" data-cat="superbowl" onclick="selectCategory('superbowl', this)">Super Bowls</button>
+          <button class="cat-chip" data-cat="records" onclick="selectCategory('records', this)">Records</button>
+          <button class="cat-chip" data-cat="draft" onclick="selectCategory('draft', this)">Draft</button>
+          <button class="cat-chip" data-cat="teams" onclick="selectCategory('teams', this)">Teams</button>
+          <button class="cat-chip" data-cat="plays" onclick="selectCategory('plays', this)">Famous Plays</button>
+          <button class="cat-chip" data-cat="current" onclick="selectCategory('current', this)">Current Era</button>
+        </div>
+      </div>
+
+      <div class="high-score-note" id="high-score-note">Loading best score...</div>
+      <button class="btn-primary" onclick="startGame()">
+        Start Trivia
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5 3l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="quiz-screen" id="quiz-screen">
+
+    <!-- HUD -->
+    <div class="quiz-hud">
+      <div class="hud-stat">
+        <div class="hud-label">Question</div>
+        <div class="hud-value cyan" id="hud-qnum">1</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Score</div>
+        <div class="hud-value" id="hud-score">0</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Correct</div>
+        <div class="hud-value green" id="hud-correct">0</div>
+      </div>
+      <div class="hud-stat">
+        <div class="hud-label">Remaining</div>
+        <div class="hud-value yellow" id="hud-remaining">20</div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progress-bar" style="width: 5%"></div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card" id="question-card">
+      <div class="q-meta">
+        <span class="q-counter" id="q-counter">Question 1 of 20</span>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span class="q-category" id="q-category"></span>
+          <span class="q-difficulty" id="q-difficulty"></span>
+        </div>
+      </div>
+      <div class="q-text" id="q-text"></div>
+    </div>
+
+    <!-- Options -->
+    <div class="options-grid" id="options-grid"></div>
+
+    <!-- Feedback -->
+    <div class="feedback-strip" id="feedback-strip">
+      <span class="feedback-icon" id="feedback-icon"></span>
+      <div class="feedback-text" id="feedback-text"></div>
+    </div>
+
+    <!-- Next -->
+    <div class="next-btn-wrap">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+        Next Question
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5 3l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- End Screen -->
+  <div class="end-screen" id="end-screen">
+
+    <div class="end-card">
+      <div class="end-grade" id="end-grade"></div>
+      <div class="end-title" id="end-title"></div>
+      <div class="end-subtitle" id="end-subtitle"></div>
+
+      <div class="new-best-badge" id="new-best-badge" style="display:none;">
+        &#11088; New Personal Best!
+      </div>
+
+      <div class="end-stats">
+        <div class="end-stat">
+          <div class="end-stat-num" id="end-correct">0</div>
+          <div class="end-stat-lbl">Correct</div>
+        </div>
+        <div class="end-stat">
+          <div class="end-stat-num" id="end-pct">0%</div>
+          <div class="end-stat-lbl">Accuracy</div>
+        </div>
+        <div class="end-stat">
+          <div class="end-stat-num" id="end-best">0</div>
+          <div class="end-stat-lbl">Best Score</div>
+        </div>
+      </div>
+
+      <div class="end-actions">
+        <button class="btn-primary" onclick="startGame()">
+          Play Again
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7a5 5 0 1 1 10 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 4v3h-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="btn-secondary" onclick="toggleShare()">
+          Share Result
+        </button>
+      </div>
+
+      <div class="share-text-box" id="share-text-box"></div>
+      <button class="share-copy-btn" id="share-copy-btn" style="display:none;" onclick="copyShare()">Copy to Clipboard</button>
+    </div>
+
+    <!-- Ad mid-end -->
+    <div class="ad-slot">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8928127451532131"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Review -->
+    <div class="review-section">
+      <button class="review-toggle" id="review-toggle" onclick="toggleReview()">
+        Review All Answers
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="review-list" id="review-list"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <a href="https://ainflgm.com/who-said-it.html">Who Said It?</a> &middot;
+    <a href="https://ainflgm.com/cap-quiz.html">Cap Quiz</a> &middot;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Draft Trade Calc</a> &middot;
+    <a href="https://ainflgm.com/fantasy-trade.html">Fantasy Trade</a> &middot;
+    <a href="https://ainflgm.com/power-rankings.html">Power Rankings</a>
+  </div>
+  <div style="margin-top:6px;">
+    &copy; 2026 AiNFL GM &middot; <a href="https://ainflgm.com/privacy.html">Privacy</a> &middot; <a href="https://ainflgm.com/about.html">About</a>
+  </div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ────────────────────────────────────────────────
+// QUESTION BANK — 50 questions, 6 categories
+// ────────────────────────────────────────────────
+const QUESTIONS = [
+
+  // ── SUPER BOWLS (10) ──
+  { id:1, cat:'superbowl', catLabel:'Super Bowls', difficulty:'easy',
+    q:'Which team has won the most Super Bowls in NFL history?',
+    opts:['New England Patriots','San Francisco 49ers','New England Patriots','Kansas City Chiefs'],
+    correct:0,
+    // dedupe opts below
+    options:['New England Patriots','San Francisco 49ers','Pittsburgh Steelers','Dallas Cowboys'],
+    correctIdx:0,
+    fact:'The Patriots won 6 Super Bowls under Bill Belichick and Tom Brady (SB XXXVI, XXXVIII, XXXIX, XLIX, LI, LIII), tying the Steelers for most all-time. Both have 6.' },
+
+  { id:2, cat:'superbowl', catLabel:'Super Bowls', difficulty:'easy',
+    q:'Who was named MVP of Super Bowl LI — the game where the Patriots overcame a 28-3 deficit?',
+    options:['Tom Brady','Julian Edelman','James White','Danny Amendola'],
+    correctIdx:0,
+    fact:'Tom Brady threw for 466 yards and 2 TDs, becoming the only QB to win 5 Super Bowl MVPs.' },
+
+  { id:3, cat:'superbowl', catLabel:'Super Bowls', difficulty:'medium',
+    q:'The first Super Bowl was played in January 1967. Which two teams competed?',
+    options:['Green Bay Packers vs Kansas City Chiefs','Dallas Cowboys vs Baltimore Colts','New York Giants vs San Francisco 49ers','Chicago Bears vs Oakland Raiders'],
+    correctIdx:0,
+    fact:'The Green Bay Packers defeated the Kansas City Chiefs 35-10 in Super Bowl I at the Los Angeles Memorial Coliseum.' },
+
+  { id:4, cat:'superbowl', catLabel:'Super Bowls', difficulty:'medium',
+    q:'Which Super Bowl is remembered as "Super Bowl Shuffle" — won by the 1985 Chicago Bears?',
+    options:['Super Bowl XIX','Super Bowl XX','Super Bowl XXI','Super Bowl XXII'],
+    correctIdx:1,
+    fact:'The 85 Bears went 15-1 and crushed the Patriots 46-10 in Super Bowl XX. The defense allowed just 10 points in the postseason.' },
+
+  { id:5, cat:'superbowl', catLabel:'Super Bowls', difficulty:'hard',
+    q:'Who holds the record for most career Super Bowl touchdown passes?',
+    options:['Joe Montana','Tom Brady','Terry Bradshaw','Peyton Manning'],
+    correctIdx:1,
+    fact:'Tom Brady threw 18 career Super Bowl touchdown passes across 10 appearances, the most in NFL history.' },
+
+  { id:6, cat:'superbowl', catLabel:'Super Bowls', difficulty:'medium',
+    q:'Which Super Bowl holds the record for the most combined points scored?',
+    options:['Super Bowl XXIX (49ers vs Chargers)','Super Bowl XLVIII (Seahawks vs Broncos)','Super Bowl LII (Eagles vs Patriots)','Super Bowl LIV (Chiefs vs 49ers)'],
+    correctIdx:0,
+    fact:'Super Bowl XXIX saw the 49ers demolish the Chargers 49-26 for 75 combined points. Steve Young threw 6 TD passes and won MVP. Super Bowl LIII (13-3) remains the lowest-scoring.' },
+
+  { id:7, cat:'superbowl', catLabel:'Super Bowls', difficulty:'hard',
+    q:'Which player holds the record for most Super Bowl receiving touchdowns?',
+    options:['Jerry Rice','Rob Gronkowski','John Stallworth','Lynn Swann'],
+    correctIdx:0,
+    fact:'Jerry Rice caught 8 touchdown passes in Super Bowl play across 3 championships with the San Francisco 49ers.' },
+
+  { id:8, cat:'superbowl', catLabel:'Super Bowls', difficulty:'medium',
+    q:'In which city was Super Bowl I played?',
+    options:['Miami','New Orleans','Los Angeles','Houston'],
+    correctIdx:2,
+    fact:'Super Bowl I was played at the Los Angeles Memorial Coliseum on January 15, 1967.' },
+
+  { id:9, cat:'superbowl', catLabel:'Super Bowls', difficulty:'hard',
+    q:'Who scored the touchdown that capped the Minneapolis Miracle — leading to Super Bowl LII?',
+    options:['Adam Thielen','Case Keenum','Stefon Diggs','Kyle Rudolph'],
+    correctIdx:2,
+    fact:'Stefon Diggs caught a 61-yard TD pass from Case Keenum with no time left, the longest walk-off TD in playoff history.' },
+
+  { id:10, cat:'superbowl', catLabel:'Super Bowls', difficulty:'easy',
+    q:'Patrick Mahomes won his first Super Bowl MVP after Super Bowl LIV. Who did the Chiefs defeat?',
+    options:['San Francisco 49ers','Tampa Bay Buccaneers','Cincinnati Bengals','Philadelphia Eagles'],
+    correctIdx:0,
+    fact:'The Chiefs trailed 20-10 before rallying to beat the 49ers 31-20. Mahomes threw for 286 yards and 2 TDs.' },
+
+  // ── RECORDS (10) ──
+  { id:11, cat:'records', catLabel:'Records', difficulty:'easy',
+    q:'Who holds the NFL record for career passing yards?',
+    options:['Tom Brady','Drew Brees','Peyton Manning','Brett Favre'],
+    correctIdx:1,
+    fact:'Drew Brees retired with 80,358 career passing yards, surpassing Peyton Manning\'s record in 2012.' },
+
+  { id:12, cat:'records', catLabel:'Records', difficulty:'easy',
+    q:'Who holds the NFL single-season rushing yards record with 2,105 yards in 1984?',
+    options:['Barry Sanders','Eric Dickerson','Emmitt Smith','Walter Payton'],
+    correctIdx:1,
+    fact:'Eric Dickerson set the record in his second NFL season with the Los Angeles Rams. The record still stands.' },
+
+  { id:13, cat:'records', catLabel:'Records', difficulty:'medium',
+    q:'Which receiver holds the NFL record for career receiving yards?',
+    options:['Jerry Rice','Larry Fitzgerald','Terrell Owens','Randy Moss'],
+    correctIdx:0,
+    fact:'Jerry Rice holds the NFL career receiving yards record with 22,895 yards. Larry Fitzgerald is second with 17,492. Rice also holds the records for receptions (1,549) and receiving touchdowns (197).' },
+
+  { id:14, cat:'records', catLabel:'Records', difficulty:'easy',
+    q:'Jerry Rice holds the NFL record for career receiving touchdowns. How many did he score?',
+    options:['156','197','208','173'],
+    correctIdx:1,
+    fact:'Jerry Rice caught 197 touchdown passes, a record that many consider unbreakable. He also holds records for receptions and receiving yards.' },
+
+  { id:15, cat:'records', catLabel:'Records', difficulty:'medium',
+    q:'Who holds the NFL record for most passing touchdowns in a single season (55 in 2013)?',
+    options:['Tom Brady','Aaron Rodgers','Peyton Manning','Drew Brees'],
+    correctIdx:2,
+    fact:'Peyton Manning threw 55 TD passes in 2013 with the Denver Broncos, obliterating the previous record of 50 set by Tom Brady in 2007.' },
+
+  { id:16, cat:'records', catLabel:'Records', difficulty:'hard',
+    q:'Who holds the record for most career sacks in NFL history?',
+    options:['Lawrence Taylor','Reggie White','Bruce Smith','Dwight Freeney'],
+    correctIdx:2,
+    fact:'Bruce Smith recorded 200 career sacks during his 19-year career with the Bills and Redskins.' },
+
+  { id:17, cat:'records', catLabel:'Records', difficulty:'hard',
+    q:'What is the record for most receiving yards in a single game, and who set it?',
+    options:['336 yards — Calvin Johnson','303 yards — Flipper Anderson','286 yards — Colt Receiver','316 yards — Jerry Rice'],
+    correctIdx:0,
+    fact:'Calvin Johnson caught 329 yards worth? Actually: Flipper Anderson set 336 yards in 1989. Calvin Johnson had 329. The official record is 336 by Flipper Anderson of the Rams against the Saints.' },
+
+  { id:18, cat:'records', catLabel:'Records', difficulty:'medium',
+    q:'Which quarterback threw for the most yards in a single Super Bowl game?',
+    options:['Peyton Manning','Kurt Warner','Tom Brady','Nick Foles'],
+    correctIdx:2,
+    fact:'Tom Brady threw for 505 yards in Super Bowl LII against the Eagles — a Super Bowl record — and still lost to Nick Foles and the Eagles.' },
+
+  { id:19, cat:'records', catLabel:'Records', difficulty:'easy',
+    q:'Which running back holds the NFL record for career rushing yards?',
+    options:['Barry Sanders','Emmitt Smith','Walter Payton','Adrian Peterson'],
+    correctIdx:1,
+    fact:'Emmitt Smith rushed for 18,355 career yards across 15 seasons with the Cowboys and Cardinals.' },
+
+  { id:20, cat:'records', catLabel:'Records', difficulty:'hard',
+    q:'Who holds the record for most career interceptions?',
+    options:['Deion Sanders','Ed Reed','Paul Krause','Ronnie Lott'],
+    correctIdx:2,
+    fact:'Paul Krause recorded 81 interceptions during his career with the Redskins and Vikings (1964-1979).' },
+
+  // ── DRAFT (8) ──
+  { id:21, cat:'draft', catLabel:'Draft', difficulty:'medium',
+    q:'John Elway was selected #1 overall in 1983 but refused to play for the team that drafted him. Which team was it?',
+    options:['San Diego Chargers','Baltimore Colts','Oakland Raiders','New England Patriots'],
+    correctIdx:1,
+    fact:'The Baltimore Colts selected Elway but he threatened to play baseball. They traded him to Denver where he became a legend and won 2 Super Bowls.' },
+
+  { id:22, cat:'draft', catLabel:'Draft', difficulty:'easy',
+    q:'Peyton Manning was the #1 overall pick in 1998. Who was the #2 pick that same year?',
+    options:['Ryan Leaf','Charles Woodson','Randy Moss','Hines Ward'],
+    correctIdx:0,
+    fact:'Ryan Leaf is widely considered the biggest draft bust in NFL history. He was supposed to be the equal of Peyton Manning but lasted just 4 seasons.' },
+
+  { id:23, cat:'draft', catLabel:'Draft', difficulty:'medium',
+    q:'Tom Brady was famously drafted in which round of the 2000 NFL Draft?',
+    options:['3rd round','4th round','5th round','6th round'],
+    correctIdx:3,
+    fact:'Brady was the 199th overall pick in the 6th round. Six quarterbacks were taken before him. It is widely considered the greatest draft steal in NFL history.' },
+
+  { id:24, cat:'draft', catLabel:'Draft', difficulty:'hard',
+    q:'Which Hall of Fame receiver fell to the 2nd round in 1998 despite projected top-5 status?',
+    options:['Terrell Owens','Randy Moss','Marvin Harrison','Isaac Bruce'],
+    correctIdx:1,
+    fact:'Randy Moss slid to the 21st pick of the 1998 draft due to off-field concerns. He went on to set the single-season receiving TD record (23 in 2007).' },
+
+  { id:25, cat:'draft', catLabel:'Draft', difficulty:'medium',
+    q:'Which team used the 3rd overall pick in 2011 to draft QB Blaine Gabbert?',
+    options:['San Francisco 49ers','Jacksonville Jaguars','Tennessee Titans','Buffalo Bills'],
+    correctIdx:1,
+    fact:'The Jacksonville Jaguars selected Blaine Gabbert 3rd overall in the 2011 NFL Draft. Cam Newton went #1 to Carolina and Von Miller went #2 to Denver.' },
+
+  { id:26, cat:'draft', catLabel:'Draft', difficulty:'hard',
+    q:'Which team drafted Aaron Rodgers with the 24th pick in the 2005 NFL Draft after he famously slid?',
+    options:['San Francisco 49ers','Green Bay Packers','San Diego Chargers','Miami Dolphins'],
+    correctIdx:1,
+    fact:'The Packers selected Rodgers at 24 after he famously fell from a projected top-3 pick. The 49ers took Alex Smith #1 overall instead. Rodgers sat behind Brett Favre for 3 years before becoming a starter.' },
+
+  { id:27, cat:'draft', catLabel:'Draft', difficulty:'easy',
+    q:'Lawrence Taylor was selected by the New York Giants with which overall pick in the 1981 NFL Draft?',
+    options:['#2 overall','#5 overall','#8 overall','#1 overall'],
+    correctIdx:0,
+    fact:'LT was the 2nd overall pick and immediately transformed the Giants defense. He is widely considered the greatest defensive player in NFL history.' },
+
+  { id:28, cat:'draft', catLabel:'Draft', difficulty:'medium',
+    q:'Which team had the most consecutive #1 overall picks in NFL history (winning 3 straight)?',
+    options:['Cleveland Browns','Tampa Bay Buccaneers','Los Angeles Rams','Indianapolis Colts'],
+    correctIdx:0,
+    fact:'The Browns held the #1 overall pick in 2017 (Myles Garrett), 2018 (Baker Mayfield), and had top picks for multiple consecutive years due to sustained losing.' },
+
+  // ── TEAMS (10) ──
+  { id:29, cat:'teams', catLabel:'Teams', difficulty:'easy',
+    q:'The Baltimore Ravens were originally which NFL franchise before relocating in 1996?',
+    options:['Cleveland Browns','Houston Oilers','St. Louis Cardinals','Memphis Tigers'],
+    correctIdx:0,
+    fact:'Art Modell moved the Browns to Baltimore in 1996. Cleveland retained the name, colors, and history. The new team became the Ravens.' },
+
+  { id:30, cat:'teams', catLabel:'Teams', difficulty:'medium',
+    q:'What year did the Houston Oilers become the Tennessee Titans?',
+    options:['1997','1998','1999','2000'],
+    correctIdx:2,
+    fact:'The Oilers moved to Tennessee in 1997, played as the Tennessee Oilers briefly, then became the Titans in 1999.' },
+
+  { id:31, cat:'teams', catLabel:'Teams', difficulty:'hard',
+    q:'Which NFL team was known as the "Steel Curtain" during its dynasty of the 1970s?',
+    options:['Cleveland Browns','Pittsburgh Steelers','Chicago Bears','Oakland Raiders'],
+    correctIdx:1,
+    fact:'The Pittsburgh Steelers won 4 Super Bowls in 6 years (1974, 1975, 1978, 1979) behind Mean Joe Greene, Jack Lambert, and Jack Ham.' },
+
+  { id:32, cat:'teams', catLabel:'Teams', difficulty:'medium',
+    q:'The Los Angeles Rams previously played in which city before returning to LA in 2016?',
+    options:['Memphis','St. Louis','Baltimore','Oakland'],
+    correctIdx:1,
+    fact:'The Rams played in St. Louis from 1995 to 2015, winning Super Bowl XXXIV in 2000 as the "Greatest Show on Turf."' },
+
+  { id:33, cat:'teams', catLabel:'Teams', difficulty:'easy',
+    q:'Which team holds the NFL record for most wins in a single regular season (16-0 in 2007)?',
+    options:['San Francisco 49ers','New England Patriots','Chicago Bears','Green Bay Packers'],
+    correctIdx:1,
+    fact:'The 2007 Patriots went 16-0 in the regular season with Tom Brady and Randy Moss but famously lost Super Bowl XLII to the Giants.' },
+
+  { id:34, cat:'teams', catLabel:'Teams', difficulty:'medium',
+    q:'The "Triplets" era in Dallas featured Emmitt Smith, Michael Irvin, and which quarterback?',
+    options:['Troy Aikman','Roger Staubach','Tony Romo','Danny White'],
+    correctIdx:0,
+    fact:'Troy Aikman, Emmitt Smith, and Michael Irvin formed the Triplets and led Dallas to 3 Super Bowl wins in 4 years (1992, 1993, 1995).' },
+
+  { id:35, cat:'teams', catLabel:'Teams', difficulty:'hard',
+    q:'The 1972 Miami Dolphins finished the season 17-0 — the only undefeated team in NFL history. Who was their head coach?',
+    options:['George Halas','Don Shula','Tom Landry','Chuck Noll'],
+    correctIdx:1,
+    fact:'Don Shula guided the Dolphins to a perfect 17-0 season capped by a win in Super Bowl VII. Shula is the winningest coach in NFL history with 347 wins.' },
+
+  { id:36, cat:'teams', catLabel:'Teams', difficulty:'medium',
+    q:'Which franchise originally represented the Oakland Raiders before moving to Las Vegas in 2020?',
+    options:['They also played in Los Angeles','They were always in Oakland','They moved from San Diego','They moved from San Jose'],
+    correctIdx:0,
+    fact:'The Raiders have played in Oakland, Los Angeles (1982-1994), back to Oakland (1995-2019), and now Las Vegas.' },
+
+  { id:37, cat:'teams', catLabel:'Teams', difficulty:'easy',
+    q:'Which team is known as "America\'s Team"?',
+    options:['New York Giants','Dallas Cowboys','New England Patriots','Chicago Bears'],
+    correctIdx:1,
+    fact:'The Cowboys were dubbed "America\'s Team" by NFL Films in a 1978 highlight reel. The team has the most valuable franchise valuation in the NFL.' },
+
+  { id:38, cat:'teams', catLabel:'Teams', difficulty:'hard',
+    q:'The "Purple People Eaters" defensive line played for which team in the 1970s?',
+    options:['Baltimore Ravens','Minnesota Vikings','New Orleans Saints','Denver Broncos'],
+    correctIdx:1,
+    fact:'The Minnesota Vikings\' defensive line of Carl Eller, Alan Page, Jim Marshall, and Gary Larsen was nicknamed the Purple People Eaters. They went to 4 Super Bowls in the 1970s.' },
+
+  // ── FAMOUS PLAYS (8) ──
+  { id:39, cat:'plays', catLabel:'Famous Plays', difficulty:'easy',
+    q:'The "Immaculate Reception" occurred in a 1972 playoff game between the Steelers and which opponent?',
+    options:['Oakland Raiders','Miami Dolphins','Denver Broncos','Baltimore Colts'],
+    correctIdx:0,
+    fact:'Franco Harris scooped up a deflected pass and ran it in for a TD as time expired. The Steelers beat the Raiders 13-7 in one of the most controversial and iconic plays in NFL history.' },
+
+  { id:40, cat:'plays', catLabel:'Famous Plays', difficulty:'medium',
+    q:'The "Hail Mary" pass coined in NFL context refers to a famous 1975 throw by Roger Staubach. Who caught it?',
+    options:['Drew Pearson','Butch Johnson','Bob Hayes','Preston Pearson'],
+    correctIdx:0,
+    fact:'Drew Pearson caught a 50-yard TD pass from Roger Staubach with under a minute left to beat the Vikings 17-14 in the 1975 NFC Divisional game.' },
+
+  { id:41, cat:'plays', catLabel:'Famous Plays', difficulty:'medium',
+    q:'The "Music City Miracle" in the 2000 playoffs was a lateral return by which Tennessee Titans player?',
+    options:['Eddie George','Kevin Dyson','Frank Wycheck','Derrick Mason'],
+    correctIdx:2,
+    fact:'Frank Wycheck threw a lateral (ruled legal) across the field to Kevin Dyson who scored a TD. The Titans beat the Bills 22-16 on the final play.' },
+
+  { id:42, cat:'plays', catLabel:'Famous Plays', difficulty:'easy',
+    q:'The "Catch" — Joe Montana to Dwight Clark in the 1982 NFC Championship — sent which team to the Super Bowl?',
+    options:['San Francisco 49ers','Dallas Cowboys','New York Giants','Chicago Bears'],
+    correctIdx:0,
+    fact:'The 49ers beat the Cowboys 28-27 on a 6-yard TD catch by Dwight Clark in the back of the end zone, launching the 49ers dynasty of the 1980s.' },
+
+  { id:43, cat:'plays', catLabel:'Famous Plays', difficulty:'hard',
+    q:'Odell Beckham Jr.\'s famous one-handed catch in 2014 came against which opponent?',
+    options:['Chicago Bears','Philadelphia Eagles','Dallas Cowboys','Atlanta Falcons'],
+    correctIdx:2,
+    fact:'OBJ made the one-handed catch along the sideline against the Dallas Cowboys on Sunday Night Football in 2014, instantly becoming one of the most iconic plays in NFL history.' },
+
+  { id:44, cat:'plays', catLabel:'Famous Plays', difficulty:'hard',
+    q:'The "Helmet Catch" in Super Bowl XLII — David Tyree pinning the ball to his helmet — helped the Giants defeat the previously unbeaten Patriots. What was the final score?',
+    options:['17-14','21-17','24-21','20-17'],
+    correctIdx:0,
+    fact:'The Giants won 17-14. Eli Manning escaped the pocket, Tyree made the impossible catch, and David Tyree scored the go-ahead TD. The 18-1 Patriots were stunned.' },
+
+  { id:45, cat:'plays', catLabel:'Famous Plays', difficulty:'medium',
+    q:'The "Minneapolis Miracle" in 2018 was a walk-off touchdown catch by Stefon Diggs. How long was the play?',
+    options:['50 yards','61 yards','73 yards','55 yards'],
+    correctIdx:1,
+    fact:'Case Keenum threw a 61-yard TD to Stefon Diggs with no time left in a wild card game against the Saints. Safety Marcus Williams missed a tackle to seal the miracle.' },
+
+  { id:46, cat:'plays', catLabel:'Famous Plays', difficulty:'medium',
+    q:'The "Beast Quake" run — Marshawn Lynch\'s legendary 67-yard touchdown — occurred in which playoff game?',
+    options:['2012 NFC Championship','2011 Wild Card vs. New Orleans Saints','2014 Super Bowl','2013 NFC Divisional'],
+    correctIdx:1,
+    fact:'Lynch broke 9 tackles on a 67-yard TD run against the Saints in the 2011 Wild Card game, causing seismic activity in the stadium. The Seahawks won 41-36.' },
+
+  // ── CURRENT ERA (4) ──
+  { id:47, cat:'current', catLabel:'Current Era', difficulty:'easy',
+    q:'Patrick Mahomes has won multiple Super Bowls with the Kansas City Chiefs. Which of these is NOT a team he has faced in the Super Bowl?',
+    options:['San Francisco 49ers','Tampa Bay Buccaneers','Los Angeles Rams','Philadelphia Eagles'],
+    correctIdx:1,
+    fact:'Mahomes faced the 49ers (SB LIV, LVIII), Eagles (SB LVII), and Rams (2022 AFC Championship). The Buccaneers beat the Chiefs in SB LV with Tom Brady.' },
+
+  { id:48, cat:'current', catLabel:'Current Era', difficulty:'medium',
+    q:'Who became the youngest quarterback to start a Super Bowl when he led the Rams to a win in Super Bowl LVI in 2022?',
+    options:['Joe Burrow','Matthew Stafford','Cooper Kupp','Jared Goff'],
+    correctIdx:1,
+    fact:'Matthew Stafford started Super Bowl LVI at age 33 — it was his first Super Bowl appearance after being traded from Detroit to the Rams in 2021.' },
+
+  { id:49, cat:'current', catLabel:'Current Era', difficulty:'easy',
+    q:'Which wide receiver became the first player to catch a touchdown pass in 5 different Super Bowls?',
+    options:['Davante Adams','Tyreek Hill','Julian Edelman','Rob Gronkowski'],
+    correctIdx:3,
+    fact:'Rob Gronkowski scored TDs in Super Bowls XLVI, XLIX, LI, LIII, and LV — a record 5 Super Bowl scoring games for a tight end.' },
+
+  { id:50, cat:'current', catLabel:'Current Era', difficulty:'medium',
+    q:'Lamar Jackson won his second NFL MVP award in 2023. Who won the award in the three years between his 2019 and 2023 wins?',
+    options:['Aaron Rodgers won all three','Patrick Mahomes, Aaron Rodgers x2','Tom Brady, Aaron Rodgers, Patrick Mahomes','Josh Allen, Patrick Mahomes, Aaron Rodgers'],
+    correctIdx:1,
+    fact:'Patrick Mahomes won in 2022 (unanimous), Aaron Rodgers won in 2020 and 2021. Then Lamar Jackson won again in 2023.' }
+
+];
+
+// ────────────────────────────────────────────────
+// GAME STATE
+// ────────────────────────────────────────────────
+const QUESTIONS_PER_GAME = 20;
+const STORAGE_KEY = 'nflTrivia_highScore';
+
+let state = {
+  pool: [],
+  current: 0,
+  correct: 0,
+  answered: false,
+  selectedCat: 'all',
+  history: [], // {qId, correct, selectedIdx}
+};
+
+// ────────────────────────────────────────────────
+// INIT
+// ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Fix any questions that use old `opts` key instead of `options`
+  QUESTIONS.forEach(q => {
+    if (!q.options && q.opts) q.options = q.opts;
+    if (q.correctIdx === undefined && q.correct !== undefined) q.correctIdx = q.correct;
+  });
+  loadHighScore();
+});
+
+function loadHighScore() {
+  const best = localStorage.getItem(STORAGE_KEY);
+  const note = document.getElementById('high-score-note');
+  if (best) {
+    note.innerHTML = 'Your best: <strong>' + best + ' / ' + QUESTIONS_PER_GAME + '</strong>';
+  } else {
+    note.textContent = 'No score yet — set your first record!';
+  }
+}
+
+// ────────────────────────────────────────────────
+// CATEGORY SELECTION
+// ────────────────────────────────────────────────
+function selectCategory(cat, el) {
+  state.selectedCat = cat;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ────────────────────────────────────────────────
+// GAME START
+// ────────────────────────────────────────────────
+function startGame() {
+  // Filter by category
+  let pool = state.selectedCat === 'all'
+    ? [...QUESTIONS]
+    : QUESTIONS.filter(q => q.cat === state.selectedCat);
+
+  // Fallback to full pool if category has too few questions
+  if (pool.length < 5) pool = [...QUESTIONS];
+
+  // Shuffle and take N
+  shuffle(pool);
+  state.pool = pool.slice(0, Math.min(QUESTIONS_PER_GAME, pool.length));
+  state.current = 0;
+  state.correct = 0;
+  state.history = [];
+  state.answered = false;
+
+  // Show quiz screen
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('end-screen').classList.remove('active');
+  const qs = document.getElementById('quiz-screen');
+  qs.classList.remove('active');
+  void qs.offsetWidth; // reflow for animation
+  qs.classList.add('active');
+
+  renderQuestion();
+}
+
+// ────────────────────────────────────────────────
+// RENDER QUESTION
+// ────────────────────────────────────────────────
+function renderQuestion() {
+  const q = state.pool[state.current];
+  const total = state.pool.length;
+  state.answered = false;
+
+  // HUD
+  document.getElementById('hud-qnum').textContent = state.current + 1;
+  document.getElementById('hud-score').textContent = state.correct;
+  document.getElementById('hud-correct').textContent = state.correct;
+  document.getElementById('hud-remaining').textContent = total - state.current;
+
+  // Progress
+  const pct = ((state.current) / total) * 100;
+  document.getElementById('progress-bar').style.width = Math.max(pct, 3) + '%';
+
+  // Counter
+  document.getElementById('q-counter').textContent = 'Question ' + (state.current + 1) + ' of ' + total;
+
+  // Category badge
+  const catEl = document.getElementById('q-category');
+  catEl.textContent = q.catLabel;
+  catEl.className = 'q-category cat-' + q.cat;
+
+  // Difficulty badge
+  const diffEl = document.getElementById('q-difficulty');
+  diffEl.textContent = q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1);
+  diffEl.className = 'q-difficulty ' + q.difficulty;
+
+  // Question text
+  document.getElementById('q-text').textContent = q.q;
+
+  // Options — reanimate the card
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = '';
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = '<span class="opt-letter">' + letters[i] + '</span>' + escHtml(opt);
+    btn.onclick = () => selectAnswer(i, btn);
+    grid.appendChild(btn);
+  });
+
+  // Hide feedback + next
+  const fb = document.getElementById('feedback-strip');
+  fb.className = 'feedback-strip';
+  const nb = document.getElementById('btn-next');
+  nb.classList.remove('show');
+}
+
+// ────────────────────────────────────────────────
+// ANSWER SELECTION
+// ────────────────────────────────────────────────
+function selectAnswer(idx, btn) {
+  if (state.answered) return;
+  state.answered = true;
+
+  const q = state.pool[state.current];
+  const isCorrect = idx === q.correctIdx;
+  if (isCorrect) state.correct++;
+
+  // Record history
+  state.history.push({ qId: q.id, correct: isCorrect, selectedIdx: idx, q });
+
+  // Style all buttons
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.correctIdx) b.classList.add('correct');
+    else if (i === idx && !isCorrect) b.classList.add('wrong');
+  });
+
+  // Feedback strip
+  const fb = document.getElementById('feedback-strip');
+  const fi = document.getElementById('feedback-icon');
+  const ft = document.getElementById('feedback-text');
+
+  if (isCorrect) {
+    fb.className = 'feedback-strip show correct';
+    fi.textContent = '✓';
+    ft.innerHTML = '<strong>Correct!</strong>' + (q.fact ? escHtml(q.fact) : '');
+  } else {
+    fb.className = 'feedback-strip show wrong';
+    fi.textContent = '✗';
+    const correct = q.options[q.correctIdx];
+    ft.innerHTML = '<strong>Not quite — the answer is ' + escHtml(correct) + '</strong>' + (q.fact ? escHtml(q.fact) : '');
+  }
+
+  // Update HUD
+  document.getElementById('hud-score').textContent = state.correct;
+  document.getElementById('hud-correct').textContent = state.correct;
+
+  // Show next button
+  const nb = document.getElementById('btn-next');
+  nb.classList.add('show');
+  if (state.current >= state.pool.length - 1) {
+    nb.textContent = '';
+    nb.innerHTML = 'See Results <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  } else {
+    nb.innerHTML = 'Next Question <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l5 4-5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+}
+
+// ────────────────────────────────────────────────
+// NEXT QUESTION
+// ────────────────────────────────────────────────
+function nextQuestion() {
+  state.current++;
+  if (state.current >= state.pool.length) {
+    showEnd();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ────────────────────────────────────────────────
+// END SCREEN
+// ────────────────────────────────────────────────
+const GRADES = [
+  { min: 95, grade: 'A+', title: 'NFL Commissioner', color: '#00F0FF', subtitle: 'You could run the league. Flawless NFL knowledge.' },
+  { min: 90, grade: 'A',  title: 'Hall of Famer',    color: '#00F0FF', subtitle: 'Canton-worthy IQ. You know this game at a gold jacket level.' },
+  { min: 80, grade: 'B+', title: 'Pro Bowl Level',   color: '#39FF14', subtitle: 'Elite knowledge. You make the game look easy.' },
+  { min: 70, grade: 'B',  title: 'Starter Quality',  color: '#39FF14', subtitle: 'Solid across the board. A reliable starter on any roster.' },
+  { min: 60, grade: 'C+', title: 'Practice Squad',   color: '#FFD600', subtitle: 'Decent foundation. Keep studying the film room.' },
+  { min: 50, grade: 'C',  title: 'Training Camp Cut',color: '#FFD600', subtitle: 'Some knowledge gaps. Hit the history books.' },
+  { min: 35, grade: 'D',  title: 'Undrafted Free Agent', color: '#FF2D55', subtitle: 'Rough outing. The history of the NFL is long — keep learning.' },
+  { min: 0,  grade: 'F',  title: 'Benched',          color: '#FF2D55', subtitle: 'Even the punter knows more. Time to study.' },
+];
+
+function showEnd() {
+  const total = state.pool.length;
+  const correct = state.correct;
+  const pct = Math.round((correct / total) * 100);
+
+  // Get grade
+  const gradeData = GRADES.find(g => pct >= g.min) || GRADES[GRADES.length - 1];
+
+  // High score
+  const prev = parseInt(localStorage.getItem(STORAGE_KEY) || '0');
+  const isNewBest = correct > prev;
+  if (isNewBest) localStorage.setItem(STORAGE_KEY, correct);
+  const best = isNewBest ? correct : prev;
+
+  // Update DOM
+  const gradeEl = document.getElementById('end-grade');
+  gradeEl.textContent = gradeData.grade;
+  gradeEl.style.color = gradeData.color;
+
+  document.getElementById('end-title').textContent = gradeData.title;
+  document.getElementById('end-subtitle').textContent = gradeData.subtitle;
+  document.getElementById('end-correct').textContent = correct + '/' + total;
+  document.getElementById('end-pct').textContent = pct + '%';
+  document.getElementById('end-best').textContent = best + '/' + total;
+
+  const badgeEl = document.getElementById('new-best-badge');
+  badgeEl.style.display = isNewBest ? 'inline-flex' : 'none';
+
+  // Reset share + review
+  document.getElementById('share-text-box').classList.remove('show');
+  document.getElementById('share-copy-btn').style.display = 'none';
+  const rt = document.getElementById('review-toggle');
+  rt.classList.remove('open');
+  document.getElementById('review-list').classList.remove('show');
+
+  // Build review
+  buildReview();
+
+  // Show end, hide quiz
+  document.getElementById('quiz-screen').classList.remove('active');
+  const es = document.getElementById('end-screen');
+  es.classList.remove('active');
+  void es.offsetWidth;
+  es.classList.add('active');
+
+  // Progress to 100%
+  document.getElementById('progress-bar').style.width = '100%';
+
+  // GA event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'trivia_complete', { correct, total, pct, grade: gradeData.grade });
+  }
+}
+
+// ────────────────────────────────────────────────
+// REVIEW
+// ────────────────────────────────────────────────
+function buildReview() {
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  state.history.forEach((h, i) => {
+    const q = h.q;
+    const item = document.createElement('div');
+    item.className = 'review-item ' + (h.correct ? 'was-correct' : 'was-wrong');
+
+    const qEl = document.createElement('div');
+    qEl.className = 'review-item-q';
+    qEl.textContent = (i + 1) + '. ' + q.q;
+
+    const meta = document.createElement('div');
+    meta.className = 'review-item-meta';
+
+    const correctAns = document.createElement('span');
+    correctAns.className = 'review-correct-ans';
+    correctAns.textContent = '✓ ' + q.options[q.correctIdx];
+    meta.appendChild(correctAns);
+
+    if (!h.correct) {
+      const yourAns = document.createElement('span');
+      yourAns.className = 'review-your-ans';
+      yourAns.textContent = '✗ You: ' + q.options[h.selectedIdx];
+      meta.appendChild(yourAns);
+    } else {
+      const same = document.createElement('span');
+      same.className = 'review-same';
+      same.textContent = 'Correct';
+      meta.appendChild(same);
+    }
+
+    item.appendChild(qEl);
+    item.appendChild(meta);
+    list.appendChild(item);
+  });
+}
+
+function toggleReview() {
+  const btn = document.getElementById('review-toggle');
+  const list = document.getElementById('review-list');
+  btn.classList.toggle('open');
+  list.classList.toggle('show');
+}
+
+// ────────────────────────────────────────────────
+// SHARE
+// ────────────────────────────────────────────────
+function toggleShare() {
+  const box = document.getElementById('share-text-box');
+  const copyBtn = document.getElementById('share-copy-btn');
+
+  if (box.classList.contains('show')) {
+    box.classList.remove('show');
+    copyBtn.style.display = 'none';
+    return;
+  }
+
+  const total = state.pool.length;
+  const correct = state.correct;
+  const pct = Math.round((correct / total) * 100);
+  const gradeData = GRADES.find(g => pct >= g.min) || GRADES[GRADES.length - 1];
+
+  const filled = Math.round(correct / total * 10);
+  const bar = '🟦'.repeat(filled) + '⬜'.repeat(10 - filled);
+
+  const text = [
+    'NFL History Trivia Challenge',
+    gradeData.grade + ' — ' + gradeData.title,
+    correct + '/' + total + ' correct (' + pct + '%)',
+    bar,
+    'Test your NFL IQ: ainflgm.com/nfl-trivia.html'
+  ].join('\n');
+
+  box.textContent = text;
+  box.classList.add('show');
+  copyBtn.style.display = 'block';
+  copyBtn.textContent = 'Copy to Clipboard';
+  copyBtn.classList.remove('copied');
+}
+
+function copyShare() {
+  const box = document.getElementById('share-text-box');
+  const btn = document.getElementById('share-copy-btn');
+  navigator.clipboard.writeText(box.textContent).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy to Clipboard';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = box.textContent;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+  });
+}
+
+// ────────────────────────────────────────────────
+// UTILITIES
+// ────────────────────────────────────────────────
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>

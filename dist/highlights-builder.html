@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Highlights">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Weekly Highlights Newsletter Builder | AiNFL GM</title>
+<meta name="description" content="Build a custom NFL weekly highlights newsletter. Pick top games, standout performances, and shocking stats — then copy and share with your league or social.">
+<meta property="og:title" content="NFL Weekly Highlights Newsletter Builder | AiNFL GM">
+<meta property="og:description" content="Create your own NFL weekly recap newsletter. Select highlights, reorder them, preview, and share. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/highlights-builder.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Weekly Highlights Newsletter Builder | AiNFL GM">
+<meta name="twitter:description" content="Build your own NFL weekly highlights newsletter and share with friends, leagues, or social. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF6B35;
+  --orange-dim: rgba(255,107,53,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── AdSense slot ── */
+.ad-slot {
+  text-align: center;
+  margin: 0 0 24px;
+  min-height: 90px;
+}
+
+/* ── Section label ── */
+.section-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+
+/* ── Week Picker ── */
+.week-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.05s;
+}
+.week-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
+}
+.week-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.week-select {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  appearance: none;
+  cursor: pointer;
+  min-width: 120px;
+}
+.week-select:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+.newsletter-title-input {
+  flex: 2;
+  min-width: 200px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 9px 14px;
+}
+.newsletter-title-input:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+.newsletter-title-input::placeholder { color: var(--text-mute); font-weight: 400; }
+
+/* ── Builder Layout ── */
+.builder-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .builder-layout { grid-template-columns: 1fr; }
+}
+
+/* ── Builder Panel ── */
+.builder-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  border-radius: var(--radius);
+  padding: 20px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.1s;
+}
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+}
+.panel-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mute);
+  background: var(--bg-2);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+/* ── Template Strips ── */
+.template-strip {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.tpl-btn {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.tpl-btn:hover {
+  background: var(--cyan-dim);
+  border-color: var(--border-hi);
+  color: var(--cyan);
+}
+
+/* ── Add Highlight Form ── */
+.add-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.highlight-type-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.type-btn {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.type-btn.active, .type-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-dim);
+}
+.type-btn[data-type="game"].active   { color: var(--cyan);   border-color: var(--cyan);   background: var(--cyan-dim); }
+.type-btn[data-type="player"].active { color: var(--green);  border-color: var(--green);  background: var(--green-dim); }
+.type-btn[data-type="stat"].active   { color: var(--yellow); border-color: var(--yellow); background: var(--yellow-dim); }
+.type-btn[data-type="injury"].active { color: var(--red);    border-color: var(--red);    background: var(--red-dim); }
+.type-btn[data-type="moment"].active { color: var(--orange); border-color: var(--orange); background: var(--orange-dim); }
+
+textarea.highlight-input {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  resize: none;
+  line-height: 1.5;
+  min-height: 70px;
+  transition: border-color 0.2s;
+}
+textarea.highlight-input:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+textarea.highlight-input::placeholder { color: var(--text-mute); }
+
+.btn-add-highlight {
+  background: var(--cyan);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  align-self: end;
+  white-space: nowrap;
+}
+.btn-add-highlight:hover { opacity: 0.88; transform: scale(0.98); }
+.btn-add-highlight:active { transform: scale(0.95); }
+
+/* ── Highlights List ── */
+.highlights-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.highlight-empty {
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 13px;
+  padding: 28px 0;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: grab;
+  animation: slideIn 0.2s ease both;
+  transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+.highlight-item:active { cursor: grabbing; }
+.highlight-item.drag-over {
+  border-color: var(--cyan);
+  background: var(--cyan-glow);
+}
+.highlight-item.dragging {
+  opacity: 0.5;
+}
+
+.drag-handle {
+  color: var(--text-mute);
+  flex-shrink: 0;
+  padding-top: 2px;
+  touch-action: none;
+}
+
+.highlight-type-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.dot-game    { background: var(--cyan); }
+.dot-player  { background: var(--green); }
+.dot-stat    { background: var(--yellow); }
+.dot-injury  { background: var(--red); }
+.dot-moment  { background: var(--orange); }
+
+.highlight-body {
+  flex: 1;
+  min-width: 0;
+}
+.highlight-type-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.tag-game    { color: var(--cyan); }
+.tag-player  { color: var(--green); }
+.tag-stat    { color: var(--yellow); }
+.tag-injury  { color: var(--red); }
+.tag-moment  { color: var(--orange); }
+
+.highlight-text {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.highlight-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 13px;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+.btn-icon:hover { background: var(--bg-3); color: var(--text); }
+.btn-icon.del:hover { color: var(--red); }
+
+/* ── Preview Panel ── */
+.preview-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--yellow);
+  border-radius: var(--radius);
+  padding: 20px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.15s;
+  position: sticky;
+  top: 72px;
+}
+.preview-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preview-panel-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--yellow);
+}
+.btn-copy {
+  background: var(--yellow);
+  color: #0F172A;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-copy:hover { opacity: 0.88; }
+.btn-copy.copied { background: var(--green); }
+
+.newsletter-preview {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+  min-height: 200px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 420px;
+  overflow-y: auto;
+}
+.preview-placeholder {
+  color: var(--text-mute);
+  text-align: center;
+  padding: 32px 16px;
+  font-size: 13px;
+}
+
+/* ── Draft Actions ── */
+.draft-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.btn-draft {
+  flex: 1;
+  min-width: 120px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-draft:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn-draft.danger:hover { border-color: var(--red); color: var(--red); }
+
+/* ── Saved Drafts ── */
+.drafts-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 20px;
+  animation: fadeUp 0.4s ease both;
+  animation-delay: 0.2s;
+}
+.drafts-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.drafts-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.saved-drafts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.draft-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  gap: 10px;
+  flex-wrap: wrap;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.draft-card:hover { border-color: var(--border-hi); }
+.draft-card-info { flex: 1; min-width: 0; }
+.draft-card-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.draft-card-meta {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+.draft-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.drafts-empty {
+  font-size: 13px;
+  color: var(--text-mute);
+  text-align: center;
+  padding: 16px 0;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--bg-3);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 20px;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    Content Creator Tool
+  </div>
+  <h1>NFL Weekly <span>Highlights</span><br>Newsletter Builder</h1>
+  <p>Build a custom recap for any NFL week. Add top games, standout performances, and wild stats — then share with your league, social, or group chat.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- AdSense -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Week Bar -->
+  <div class="week-bar">
+    <div class="week-bar-left">
+      <span class="week-label">NFL</span>
+      <select class="week-select" id="week-select" onchange="onWeekChange()" aria-label="Select NFL week">
+        <option value="1">Week 1</option>
+        <option value="2">Week 2</option>
+        <option value="3">Week 3</option>
+        <option value="4">Week 4</option>
+        <option value="5">Week 5</option>
+        <option value="6">Week 6</option>
+        <option value="7">Week 7</option>
+        <option value="8">Week 8</option>
+        <option value="9">Week 9</option>
+        <option value="10">Week 10</option>
+        <option value="11">Week 11</option>
+        <option value="12">Week 12</option>
+        <option value="13">Week 13</option>
+        <option value="14">Week 14</option>
+        <option value="15">Week 15</option>
+        <option value="16">Week 16</option>
+        <option value="17">Week 17</option>
+        <option value="18">Week 18</option>
+      </select>
+      <span class="week-label" style="font-size:13px; color:var(--text-mute);">2026 Season</span>
+    </div>
+    <input
+      type="text"
+      class="newsletter-title-input"
+      id="newsletter-title"
+      placeholder="Newsletter title (e.g. The Weekly Blitz — Week 1)"
+      maxlength="100"
+      aria-label="Newsletter title"
+      oninput="renderPreview()"
+    >
+  </div>
+
+  <!-- Builder Layout -->
+  <div class="builder-layout">
+
+    <!-- Left: Builder -->
+    <div>
+      <div class="builder-panel">
+        <div class="panel-head">
+          <div class="panel-title">Add Highlights</div>
+          <div class="panel-count" id="count-badge">0 highlights</div>
+        </div>
+
+        <!-- Type selector -->
+        <div class="highlight-type-row" id="type-row">
+          <button class="type-btn active" data-type="game"   onclick="setType('game')">Game Result</button>
+          <button class="type-btn"        data-type="player" onclick="setType('player')">Player Perf</button>
+          <button class="type-btn"        data-type="stat"   onclick="setType('stat')">Wild Stat</button>
+          <button class="type-btn"        data-type="injury" onclick="setType('injury')">Injury Update</button>
+          <button class="type-btn"        data-type="moment" onclick="setType('moment')">Top Moment</button>
+        </div>
+
+        <!-- Templates -->
+        <div class="section-label">Quick Templates</div>
+        <div class="template-strip" id="template-strip"></div>
+
+        <!-- Input -->
+        <div class="add-form">
+          <textarea
+            id="highlight-input"
+            class="highlight-input"
+            placeholder="Type your highlight..."
+            maxlength="500"
+            rows="2"
+            aria-label="Highlight text"
+          ></textarea>
+          <button class="btn-add-highlight" onclick="addHighlight()" aria-label="Add highlight">+ Add</button>
+        </div>
+        <div style="font-size:11px; color:var(--text-mute); margin-bottom:16px;">Press Enter to add &nbsp;|&nbsp; Drag items to reorder</div>
+
+        <!-- List -->
+        <div class="highlights-list" id="highlights-list">
+          <div class="highlight-empty" id="highlights-empty">No highlights yet. Add your first one above.</div>
+        </div>
+      </div>
+
+      <!-- Saved Drafts -->
+      <div class="drafts-section">
+        <div class="drafts-head">
+          <div class="drafts-title">Saved Drafts</div>
+          <button class="btn-draft" style="flex:0; min-width:auto;" onclick="saveDraft()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2 2h7l2 2v7H2V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <rect x="4" y="7" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="4" y="2" width="4" height="3" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            Save Draft
+          </button>
+        </div>
+        <div class="saved-drafts-list" id="drafts-list">
+          <div class="drafts-empty" id="drafts-empty">No saved drafts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Preview -->
+    <div>
+      <div class="preview-panel">
+        <div class="preview-title-row">
+          <div class="preview-panel-title">Newsletter Preview</div>
+          <button class="btn-copy" id="copy-btn" onclick="copyNewsletter()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M3 9H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+            Copy
+          </button>
+        </div>
+        <div class="newsletter-preview" id="newsletter-preview">
+          <div class="preview-placeholder">Add highlights to see your newsletter preview here.</div>
+        </div>
+        <div class="draft-actions">
+          <button class="btn-draft" onclick="saveDraft()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2 2h7l2 2v7H2V2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+              <rect x="4" y="7" width="5" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            Save Draft
+          </button>
+          <button class="btn-draft danger" onclick="clearAll()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="M2 4h9M5 4V3h3v1M10 4l-.8 7H3.8L3 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Clear All
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>NFL Weekly Highlights Newsletter Builder. For entertainment and content creation purposes only.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/depth-chart-viz.html">Depth Charts</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/contract-negotiator.html">Contract Negotiator</a>
+  </div>
+  <div style="margin-top:8px; color: #334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────────
+let highlights = [];
+let selectedType = 'game';
+let dragSrcIndex = null;
+
+// ── Templates per type ───────────────────────────────────────────────────────
+const TEMPLATES = {
+  game: [
+    '[Team A] def. [Team B] [Score] — [Top Player] led the way',
+    'Comeback of the week: [Team] overcame a [X]-point deficit',
+    'Overtime thriller: [Team A] edges [Team B] [Score]',
+    '[Team] dominates [Team B] in a blowout — [Score]',
+    'Primetime showdown: [Team A] vs [Team B] ends [Score]',
+  ],
+  player: [
+    '[Player] threw for [X] yards and [Y] TDs against [Team]',
+    '[Player] rushed for [X] yards on [N] carries — season high',
+    '[Player] caught [X] passes for [Y] yards and [Z] TDs',
+    '[Player] posted [X] sacks and forced [Y] fumbles',
+    '[Player] returned a kickoff / punt [X] yards for a TD',
+  ],
+  stat: [
+    '[Team] converted [X]% on 3rd down — best in the league this week',
+    '[Player]\'s [X] rushing yards were the most since [Year]',
+    '[Team] held opponents to just [X] points — 4th shutout since [Year]',
+    'First time in NFL history: [Feat]',
+    '[Team] went [X]-for-[Y] on red zone trips — most efficient in Week [N]',
+  ],
+  injury: [
+    '[Player] ([Position], [Team]) left in Q[X] with a [injury type] — status TBD',
+    '[Player] placed on IR — out for the season',
+    '[Player] expected to miss [X] weeks with [injury]',
+    '[Player] returned from injury, played [X] snaps',
+    'Key loss: [Team] loses [Player] for Monday night\'s matchup',
+  ],
+  moment: [
+    'Play of the week: [Player]\'s [X]-yard catch in double coverage',
+    'That lateral/trick play by [Team] will be on highlight reels all year',
+    'Walk-off FG: [Kicker] nails [X]-yarder as time expires',
+    '[Coach] iced their own kicker — and it backfired',
+    '[QB] scrambles for a first down on 4th-and-[X] to seal the game',
+  ],
+};
+
+// ── Week 1 2025 pre-loaded samples ────────────────────────────────────────────
+const WEEK1_SAMPLES = [
+  { type: 'game',   text: 'Chiefs def. Ravens 27–20 in a tense AFC showdown. Mahomes outduels Lamar in prime time.' },
+  { type: 'game',   text: 'Eagles crush the Packers 34–14 in the season opener. Hurts looks back at full strength.' },
+  { type: 'player', text: 'Ja\'Marr Chase caught 9 passes for 132 yards and 2 TDs — Bengals fans exhale.' },
+  { type: 'player', text: 'Josh Allen rushed for 68 yards and threw for 312 yards vs. the Jets in Week 1 dominance.' },
+  { type: 'stat',   text: 'Patrick Mahomes is now 10–2 in season openers — best active record among QBs.' },
+  { type: 'moment', text: 'Play of the week: Tyreek Hill\'s 78-yard go-route TD in double coverage — just impossible.' },
+  { type: 'injury', text: 'DeAndre Hopkins (TE, Chiefs) left the Eagles game in Q3 with a hamstring — status TBD.' },
+];
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  loadFromStorage();
+  if (highlights.length === 0) loadWeek1Samples();
+  renderTemplates();
+  renderHighlights();
+  renderPreview();
+  renderDrafts();
+
+  // Enter to add
+  document.getElementById('highlight-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      addHighlight();
+    }
+  });
+});
+
+// ── Type selection ─────────────────────────────────────────────────────────────
+function setType(t) {
+  selectedType = t;
+  document.querySelectorAll('.type-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.type === t);
+  });
+  renderTemplates();
+  const input = document.getElementById('highlight-input');
+  const placeholders = {
+    game:   'e.g. Chiefs def. Ravens 27–20 — Mahomes throws 3 TDs',
+    player: 'e.g. Justin Jefferson caught 11 passes for 166 yards',
+    stat:   'e.g. First time since 2003 a team went 0-for-10 on 3rd down',
+    injury: 'e.g. Sauce Gardner left with a hamstring injury in Q2',
+    moment: 'e.g. Hail Mary from midfield — tipped and caught in the end zone',
+  };
+  input.placeholder = placeholders[t] || 'Type your highlight...';
+}
+
+// ── Templates ─────────────────────────────────────────────────────────────────
+function renderTemplates() {
+  const strip = document.getElementById('template-strip');
+  strip.innerHTML = '';
+  (TEMPLATES[selectedType] || []).forEach(tpl => {
+    const btn = document.createElement('button');
+    btn.className = 'tpl-btn';
+    btn.textContent = tpl.split(' ').slice(0, 5).join(' ') + '…';
+    btn.title = tpl;
+    btn.onclick = () => {
+      document.getElementById('highlight-input').value = tpl;
+      document.getElementById('highlight-input').focus();
+    };
+    strip.appendChild(btn);
+  });
+}
+
+// ── Add highlight ─────────────────────────────────────────────────────────────
+function addHighlight() {
+  const input = document.getElementById('highlight-input');
+  const text = input.value.trim();
+  if (!text) return;
+  highlights.push({ id: Date.now(), type: selectedType, text });
+  input.value = '';
+  saveToStorage();
+  renderHighlights();
+  renderPreview();
+  showToast('Highlight added');
+}
+
+// ── Render highlights list ─────────────────────────────────────────────────────
+function renderHighlights() {
+  const list = document.getElementById('highlights-list');
+  const empty = document.getElementById('highlights-empty');
+  const badge = document.getElementById('count-badge');
+
+  badge.textContent = highlights.length + ' highlight' + (highlights.length !== 1 ? 's' : '');
+
+  if (highlights.length === 0) {
+    list.innerHTML = '';
+    list.appendChild(empty);
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Rebuild list
+  list.innerHTML = '';
+  highlights.forEach((h, i) => {
+    const item = document.createElement('div');
+    item.className = 'highlight-item';
+    item.draggable = true;
+    item.dataset.index = i;
+    item.innerHTML = `
+      <div class="drag-handle" title="Drag to reorder">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="5" cy="4" r="1.2" fill="currentColor"/>
+          <circle cx="9" cy="4" r="1.2" fill="currentColor"/>
+          <circle cx="5" cy="7" r="1.2" fill="currentColor"/>
+          <circle cx="9" cy="7" r="1.2" fill="currentColor"/>
+          <circle cx="5" cy="10" r="1.2" fill="currentColor"/>
+          <circle cx="9" cy="10" r="1.2" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="highlight-type-dot dot-${h.type}"></div>
+      <div class="highlight-body">
+        <div class="highlight-type-tag tag-${h.type}">${h.type}</div>
+        <div class="highlight-text">${escHtml(h.text)}</div>
+      </div>
+      <div class="highlight-actions">
+        <button class="btn-icon" title="Edit" onclick="editHighlight(${i})">&#9998;</button>
+        <button class="btn-icon del" title="Delete" onclick="deleteHighlight(${i})">&#10005;</button>
+      </div>
+    `;
+
+    // Drag events
+    item.addEventListener('dragstart', (e) => {
+      dragSrcIndex = i;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      document.querySelectorAll('.highlight-item').forEach(el => el.classList.remove('drag-over'));
+    });
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      document.querySelectorAll('.highlight-item').forEach(el => el.classList.remove('drag-over'));
+      item.classList.add('drag-over');
+    });
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (dragSrcIndex === null || dragSrcIndex === i) return;
+      const moved = highlights.splice(dragSrcIndex, 1)[0];
+      highlights.splice(i, 0, moved);
+      dragSrcIndex = null;
+      saveToStorage();
+      renderHighlights();
+      renderPreview();
+    });
+
+    // Touch drag (mobile reorder via long press)
+    let touchStartY = 0;
+    let touchItemHeight = 0;
+    let longPressTimer = null;
+    item.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+      touchItemHeight = item.offsetHeight;
+    }, { passive: true });
+
+    list.appendChild(item);
+  });
+}
+
+// ── Edit / Delete ─────────────────────────────────────────────────────────────
+function editHighlight(i) {
+  const h = highlights[i];
+  const input = document.getElementById('highlight-input');
+  input.value = h.text;
+  setType(h.type);
+  input.focus();
+  highlights.splice(i, 1);
+  saveToStorage();
+  renderHighlights();
+  renderPreview();
+}
+
+function deleteHighlight(i) {
+  highlights.splice(i, 1);
+  saveToStorage();
+  renderHighlights();
+  renderPreview();
+  showToast('Highlight removed');
+}
+
+// ── Preview ───────────────────────────────────────────────────────────────────
+function renderPreview() {
+  const el = document.getElementById('newsletter-preview');
+  const week = document.getElementById('week-select').value;
+  const titleInput = document.getElementById('newsletter-title').value.trim();
+  const title = titleInput || `NFL Week ${week} Highlights — 2026 Season`;
+
+  if (highlights.length === 0) {
+    el.innerHTML = '<div class="preview-placeholder">Add highlights to see your newsletter preview here.</div>';
+    return;
+  }
+
+  const sections = { game: [], player: [], stat: [], injury: [], moment: [] };
+  highlights.forEach(h => sections[h.type].push(h.text));
+
+  const sectionLabels = {
+    game:   'GAME RESULTS',
+    player: 'STANDOUT PERFORMANCES',
+    stat:   'BY THE NUMBERS',
+    injury: 'INJURY REPORT',
+    moment: 'TOP MOMENTS',
+  };
+
+  let lines = [];
+  lines.push(title.toUpperCase());
+  lines.push('NFL 2025 | Week ' + week);
+  lines.push('─────────────────────────────────────────');
+  lines.push('');
+
+  const order = ['game', 'player', 'stat', 'injury', 'moment'];
+  order.forEach(type => {
+    if (sections[type].length === 0) return;
+    lines.push('[ ' + sectionLabels[type] + ' ]');
+    sections[type].forEach((text, idx) => {
+      lines.push((idx + 1) + '. ' + text);
+    });
+    lines.push('');
+  });
+
+  lines.push('─────────────────────────────────────────');
+  lines.push('Built with AiNFLGM Highlights Builder');
+  lines.push('ainflgm.com');
+
+  el.textContent = lines.join('\n');
+}
+
+function onWeekChange() {
+  renderPreview();
+}
+
+// ── Copy ──────────────────────────────────────────────────────────────────────
+function copyNewsletter() {
+  if (highlights.length === 0) {
+    showToast('Add highlights first');
+    return;
+  }
+  const text = document.getElementById('newsletter-preview').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    showToast('Copied to clipboard');
+    setTimeout(() => {
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="4" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 9H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.4"/></svg> Copy`;
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    showToast('Copy failed — try manually selecting the text');
+  });
+}
+
+// ── Save / Load drafts ─────────────────────────────────────────────────────────
+function saveDraft() {
+  if (highlights.length === 0) {
+    showToast('Nothing to save');
+    return;
+  }
+  const week = document.getElementById('week-select').value;
+  const titleInput = document.getElementById('newsletter-title').value.trim();
+  const name = titleInput || `Week ${week} Draft`;
+  const drafts = JSON.parse(localStorage.getItem('nfl-highlights-drafts') || '[]');
+  const draft = {
+    id: Date.now(),
+    name,
+    week,
+    highlights: [...highlights],
+    savedAt: new Date().toISOString(),
+  };
+  drafts.unshift(draft);
+  // Keep max 10 drafts
+  if (drafts.length > 10) drafts.splice(10);
+  localStorage.setItem('nfl-highlights-drafts', JSON.stringify(drafts));
+  renderDrafts();
+  showToast('Draft saved');
+}
+
+function loadDraft(id) {
+  const drafts = JSON.parse(localStorage.getItem('nfl-highlights-drafts') || '[]');
+  const draft = drafts.find(d => d.id === id);
+  if (!draft) return;
+  highlights = draft.highlights;
+  document.getElementById('week-select').value = draft.week;
+  document.getElementById('newsletter-title').value = draft.name;
+  saveToStorage();
+  renderHighlights();
+  renderPreview();
+  showToast('Draft loaded');
+}
+
+function deleteDraft(id) {
+  let drafts = JSON.parse(localStorage.getItem('nfl-highlights-drafts') || '[]');
+  drafts = drafts.filter(d => d.id !== id);
+  localStorage.setItem('nfl-highlights-drafts', JSON.stringify(drafts));
+  renderDrafts();
+  showToast('Draft deleted');
+}
+
+function renderDrafts() {
+  const list = document.getElementById('drafts-list');
+  const empty = document.getElementById('drafts-empty');
+  const drafts = JSON.parse(localStorage.getItem('nfl-highlights-drafts') || '[]');
+  if (drafts.length === 0) {
+    list.innerHTML = '';
+    list.appendChild(empty);
+    return;
+  }
+  list.innerHTML = '';
+  drafts.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'draft-card';
+    const saved = new Date(d.savedAt);
+    const savedStr = saved.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    card.innerHTML = `
+      <div class="draft-card-info" onclick="loadDraft(${d.id})" style="cursor:pointer;">
+        <div class="draft-card-name">${escHtml(d.name)}</div>
+        <div class="draft-card-meta">Week ${d.week} &nbsp;&middot;&nbsp; ${d.highlights.length} highlight${d.highlights.length !== 1 ? 's' : ''} &nbsp;&middot;&nbsp; ${savedStr}</div>
+      </div>
+      <div class="draft-card-actions">
+        <button class="btn-icon" title="Load" onclick="loadDraft(${d.id})">&#8617;</button>
+        <button class="btn-icon del" title="Delete" onclick="deleteDraft(${d.id})">&#10005;</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ── Clear all ─────────────────────────────────────────────────────────────────
+function clearAll() {
+  if (highlights.length === 0) return;
+  if (!confirm('Clear all highlights? This cannot be undone.')) return;
+  highlights = [];
+  saveToStorage();
+  renderHighlights();
+  renderPreview();
+  showToast('Cleared');
+}
+
+// ── localStorage ─────────────────────────────────────────────────────────────
+function saveToStorage() {
+  const week = document.getElementById('week-select') ? document.getElementById('week-select').value : '1';
+  const title = document.getElementById('newsletter-title') ? document.getElementById('newsletter-title').value : '';
+  localStorage.setItem('nfl-highlights-current', JSON.stringify({ highlights, week, title }));
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem('nfl-highlights-current');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (Array.isArray(data.highlights)) highlights = data.highlights;
+    if (data.week) document.getElementById('week-select').value = data.week;
+    if (data.title) document.getElementById('newsletter-title').value = data.title;
+  } catch (e) { /* ignore */ }
+}
+
+function loadWeek1Samples() {
+  highlights = WEEK1_SAMPLES.map((s, i) => ({ id: Date.now() + i, ...s }));
+}
+
+// ── Util ──────────────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>

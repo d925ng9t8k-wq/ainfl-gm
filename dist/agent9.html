@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#06050a">
+<!-- standalone mode removed for browser controls -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="9enterprises">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<meta name="description" content="agent9 — Buy and sell homes without a realtor. AI handles everything from listing to closing. No commissions. No middleman. Just results.">
+<meta property="og:title" content="agent9 — The AI Real Estate Revolution">
+<meta property="og:description" content="Buy and sell homes without a realtor. AI handles listing, marketing, negotiation, and closing. Keep the commission.">
+<meta property="og:image" content="/og-preview.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://get9.ai/agent9">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="agent9 — No Realtor. No Commission. Just AI.">
+<meta name="twitter:description" content="AI handles everything. You keep the money. Launching soon.">
+<link rel="manifest" href="/dashboard-manifest.json">
+<title>agent9 — Buy and Sell Homes Without a Realtor</title>
+<link rel="canonical" href="https://get9.ai/agent9.html">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-PLW4H1NNF6");</script>
+<style>
+/* ─── Reset & Base ─────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:           #0a0a0a;
+  --bg-2:         #111111;
+  --bg-3:         #1a1a1a;
+  --bg-card:      #111111;
+  --border:       rgba(255,255,255,0.07);
+  --border-gold:  rgba(251,79,20,0.35);
+  --gold:         #FB4F14;
+  --gold-2:       #e04412;
+  --gold-3:       #FF6B35;
+  --gold-dim:     rgba(251,79,20,0.15);
+  --amber:        #FB4F14;
+  --purple:       #FB4F14;
+  --purple-dim:   rgba(251,79,20,0.12);
+  --text:         #e2e2e2;
+  --text-dim:     #888888;
+  --text-mute:    #444444;
+  --white:        #ffffff;
+  --radius:       16px;
+  --radius-sm:    10px;
+  --shadow-gold:  0 0 40px rgba(251,79,20,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ───────────────────────────────────────────────────────── */
+.label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1.15;
+}
+
+h2 { font-size: clamp(30px, 5vw, 50px); }
+h3 { font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; }
+
+p { color: var(--text-dim); font-size: 16px; }
+
+/* ─── Layout ───────────────────────────────────────────────────────────── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { padding: 96px 0; }
+
+/* ─── Nav ──────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(6,5,10,0.8);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--gold); }
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  background: var(--gold);
+  color: var(--white);
+  text-decoration: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: var(--gold-3); transform: translateY(-1px); }
+
+.nav-mobile { display: none; }
+
+@media (max-width: 700px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-mobile {
+    display: block;
+    background: var(--gold);
+    color: var(--white);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+}
+
+/* ─── Hero ─────────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 130px 24px 90px;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+.hero-orb-1 {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(251,79,20,0.12) 0%, transparent 70%);
+  top: -80px; left: -120px;
+  animation: orbFloat 14s ease-in-out infinite;
+}
+.hero-orb-2 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(251,79,20,0.08) 0%, transparent 70%);
+  bottom: 40px; right: -80px;
+  animation: orbFloat 10s ease-in-out infinite reverse;
+}
+.hero-orb-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(251,79,20,0.08) 0%, transparent 70%);
+  bottom: 20%; left: 50%;
+  transform: translateX(-50%);
+  animation: orbFloat 18s ease-in-out infinite;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0); }
+  33%       { transform: translate(20px, -30px); }
+  66%       { transform: translate(-15px, 20px); }
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  margin-bottom: 36px;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+.hero-title {
+  font-size: clamp(42px, 8vw, 88px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.hero-title .gold { color: var(--gold); }
+
+.hero-subtitle {
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+  line-height: 1.3;
+}
+
+.hero-desc {
+  font-size: 18px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.65;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--white);
+  text-decoration: none;
+  padding: 16px 36px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary:hover {
+  background: var(--gold-3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(251,79,20,0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold-3);
+  transform: translateY(-2px);
+}
+
+.hero-stat-row {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+  margin-top: 72px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-num {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+}
+.hero-stat-num span { color: var(--gold); }
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+/* ─── Section Shared ───────────────────────────────────────────────────── */
+.section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 64px;
+}
+.section-header p {
+  font-size: 18px;
+  margin-top: 16px;
+  color: var(--text-dim);
+}
+
+.section-alt { background: var(--bg-2); }
+
+/* ─── Problem Section ──────────────────────────────────────────────────── */
+#problem { background: var(--bg-2); }
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.problem-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  position: relative;
+  transition: border-color 0.25s;
+}
+.problem-card:hover { border-color: rgba(251,79,20,0.2); }
+
+.problem-icon {
+  font-size: 28px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.problem-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--white);
+}
+
+.problem-card p {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.problem-stat {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--gold);
+}
+
+/* ─── Solution Section ─────────────────────────────────────────────────── */
+#solution { background: var(--bg); }
+
+.solution-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.solution-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.solution-card:hover {
+  border-color: var(--border-gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.solution-icon-wrap {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.solution-card h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+.solution-card p { font-size: 14px; }
+
+/* ─── How It Works ─────────────────────────────────────────────────────── */
+#how { background: var(--bg-2); }
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.steps-connector {
+  position: absolute;
+  top: 40px;
+  left: calc(33.33% + 20px);
+  right: calc(33.33% + 20px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-dim), var(--border-gold), var(--gold-dim));
+  z-index: 0;
+}
+
+.step {
+  text-align: center;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-num {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--gold);
+  box-shadow: 0 0 24px rgba(251,79,20,0.10);
+}
+
+.step h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.step p { font-size: 14px; line-height: 1.65; }
+
+.step-detail {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.step-bullet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.step-bullet::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .steps-container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .steps-connector { display: none; }
+}
+
+/* ─── Calculator ───────────────────────────────────────────────────────── */
+#calculator { background: var(--bg); }
+
+.calc-wrapper {
+  max-width: 740px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: var(--shadow-gold);
+}
+
+.calc-input-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.calc-input-row label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.calc-input {
+  flex: 1;
+  min-width: 180px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.calc-input:focus { border-color: var(--gold); }
+
+.calc-range {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-3);
+  outline: none;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.calc-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg-card);
+  box-shadow: 0 0 10px rgba(251,79,20,0.4);
+  cursor: pointer;
+}
+
+.calc-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.calc-col {
+  border-radius: 14px;
+  padding: 28px 24px;
+  text-align: center;
+}
+.calc-col.bad {
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.2);
+}
+.calc-col.good {
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+}
+
+.calc-col-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.calc-col.bad .calc-col-label  { color: #f87171; }
+.calc-col.good .calc-col-label { color: var(--gold-3); }
+
+.calc-cost {
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.calc-col.bad  .calc-cost { color: #f87171; }
+.calc-col.good .calc-cost { color: var(--gold); }
+
+.calc-col-note {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+.calc-savings-row {
+  text-align: center;
+  padding: 20px;
+  background: var(--gold-dim);
+  border-radius: 12px;
+  border: 1px solid var(--border-gold);
+}
+.calc-savings-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  margin-bottom: 6px;
+}
+.calc-savings-num {
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--gold);
+}
+.calc-savings-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+@media (max-width: 580px) {
+  .calc-wrapper { padding: 28px 20px; }
+  .calc-compare { grid-template-columns: 1fr; }
+}
+
+/* ─── Waitlist ─────────────────────────────────────────────────────────── */
+#waitlist {
+  background: var(--bg-2);
+  text-align: center;
+}
+
+.waitlist-wrapper {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.waitlist-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-3);
+  margin-bottom: 32px;
+}
+
+.waitlist-title {
+  font-size: clamp(32px, 6vw, 54px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.waitlist-title .gold { color: var(--gold); }
+
+.waitlist-desc {
+  font-size: 17px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.waitlist-form {
+  display: flex;
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto 24px;
+}
+
+.waitlist-input {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px 20px;
+  font-size: 15px;
+  color: var(--white);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.waitlist-input::placeholder { color: var(--text-mute); }
+.waitlist-input:focus { border-color: var(--gold); }
+
+.waitlist-btn {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  padding: 15px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.waitlist-btn:hover {
+  background: var(--gold-3);
+  transform: translateY(-1px);
+}
+
+.waitlist-note {
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+.waitlist-success {
+  display: none;
+  padding: 20px 28px;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  color: var(--gold-3);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .waitlist-form { flex-direction: column; }
+  .waitlist-btn  { width: 100%; }
+}
+
+/* ─── Footer ───────────────────────────────────────────────────────────── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 48px 0;
+  text-align: center;
+}
+
+.footer-logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.footer-logo span { color: var(--gold); }
+
+.footer-sub {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 24px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  list-style: none;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-mute);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+/* ─── Utility ──────────────────────────────────────────────────────────── */
+.text-gold  { color: var(--gold); }
+.text-center { text-align: center; }
+
+/* fade-in on scroll */
+.fade-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ────────────────────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-logo" href="/agent9.html">agent<span>9</span></a>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#calculator">Savings</a></li>
+    <li><a href="#waitlist">Get Early Access</a></li>
+  </ul>
+  <a class="nav-cta" href="#waitlist">Join Waitlist</a>
+  <a class="nav-mobile" href="#waitlist">Join Waitlist</a>
+</nav>
+
+<!-- ─── Hero ────────────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Coming Soon &mdash; Join the Waitlist
+    </div>
+
+    <h1 class="hero-title">
+      Buy and sell homes.<br>
+      <span class="gold">No realtor needed.</span>
+    </h1>
+
+    <p class="hero-subtitle">AI handles everything. You keep the commission.</p>
+
+    <p class="hero-desc">
+      agent9 is the AI-native real estate platform built for how the market works today.
+      From listing to close &mdash; AI manages every step so you don't have to pay someone 6% to do it.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn-primary" href="#waitlist">Get Early Access</a>
+      <a class="btn-secondary" href="#how">See How It Works</a>
+    </div>
+
+    <div class="hero-stat-row">
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span>$18,000</span></div>
+        <div class="hero-stat-label">avg. commission on $300K home</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span>6%</span></div>
+        <div class="hero-stat-label">traditional agent fees</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span>$0</span></div>
+        <div class="hero-stat-label">agent9 commission</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Problem ──────────────────────────────────────────────────────────── -->
+<section id="problem">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">The Problem</div>
+      <h2>Traditional real estate is broken.</h2>
+      <p>
+        The NAR settlement changed the rules. Buyers and sellers are paying for a system that was
+        designed before the internet existed &mdash; let alone AI.
+      </p>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-card fade-in">
+        <span class="problem-icon">&#x1F4B8;</span>
+        <h3>Misaligned Incentives</h3>
+        <p>
+          A traditional agent earns more when your home sells for more &mdash; but their
+          incentive is to close fast, not maximize your price. They get paid either way.
+        </p>
+        <span class="problem-stat">6%</span>
+      </div>
+
+      <div class="problem-card fade-in">
+        <span class="problem-icon">&#x23F3;</span>
+        <h3>The Process Takes Forever</h3>
+        <p>
+          Weeks of showings, back-and-forth offers, paperwork delays, and title scheduling.
+          The average home takes 45&ndash;60 days to close. Most of that is coordination overhead.
+        </p>
+        <span class="problem-stat">45+ days</span>
+      </div>
+
+      <div class="problem-card fade-in">
+        <span class="problem-icon">&#x1F4CA;</span>
+        <h3>You&rsquo;re Already Doing the Work</h3>
+        <p>
+          You found the neighborhood on Zillow. You toured homes yourself. You know what
+          you want. The agent is mostly coordination &mdash; AI can do that better.
+        </p>
+        <span class="problem-stat">91% online</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Solution ────────────────────────────────────────────────────────── -->
+<section id="solution">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">The Solution</div>
+      <h2>AI handles the entire transaction.</h2>
+      <p>
+        agent9 replaces every task a traditional realtor performs &mdash; with software
+        that is faster, cheaper, and available around the clock.
+      </p>
+    </div>
+
+    <div class="solution-grid">
+      <div class="solution-card fade-in">
+        <div class="solution-icon-wrap">&#x1F3E0;</div>
+        <div>
+          <h3>AI Listing &amp; Marketing</h3>
+          <p>Professional listing copy, pricing analysis, MLS submission, and automated marketing across Zillow, Realtor.com, and social channels.</p>
+        </div>
+      </div>
+
+      <div class="solution-card fade-in">
+        <div class="solution-icon-wrap">&#x1F4F1;</div>
+        <div>
+          <h3>Showing Coordination</h3>
+          <p>AI schedules and confirms showings, collects buyer feedback, and sends automated follow-ups &mdash; without a human playing phone tag.</p>
+        </div>
+      </div>
+
+      <div class="solution-card fade-in">
+        <div class="solution-icon-wrap">&#x1F4DD;</div>
+        <div>
+          <h3>Offer Management</h3>
+          <p>Receive, analyze, and compare offers side by side. AI surfaces the strongest deal based on price, contingencies, and closing timeline.</p>
+        </div>
+      </div>
+
+      <div class="solution-card fade-in">
+        <div class="solution-icon-wrap">&#x1F91D;</div>
+        <div>
+          <h3>Negotiation Guidance</h3>
+          <p>Real-time negotiation recommendations backed by comparable sales data, market conditions, and buyer behavior patterns.</p>
+        </div>
+      </div>
+
+      <div class="solution-card fade-in">
+        <div class="solution-icon-wrap">&#x1F4C4;</div>
+        <div>
+          <h3>Paperwork &amp; Contracts</h3>
+          <p>State-compliant contracts auto-generated and pre-filled. E-signature built in. Nothing falls through the cracks.</p>
+        </div>
+      </div>
+
+      <div class="solution-card fade-in">
+        <div class="solution-icon-wrap">&#x1F3DB;&#xFE0F;</div>
+        <div>
+          <h3>Closing Coordination</h3>
+          <p>AI coordinates with title, escrow, and lenders. Tracks every deadline. Keeps everyone on schedule so the deal closes on time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How It Works ─────────────────────────────────────────────────────── -->
+<section id="how">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">How It Works</div>
+      <h2>Three steps. That&rsquo;s it.</h2>
+      <p>No onboarding calls. No agent interviews. Just tell agent9 what you need and it gets to work.</p>
+    </div>
+
+    <div class="steps-container fade-in">
+      <div class="steps-connector"></div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>List or Search</h3>
+        <p>Sellers add their property details. Buyers describe what they&rsquo;re looking for. agent9 handles everything from here.</p>
+        <div class="step-detail">
+          <span class="step-bullet">Property photos &amp; description</span>
+          <span class="step-bullet">AI-generated pricing analysis</span>
+          <span class="step-bullet">Instant MLS-ready listing</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>AI Manages</h3>
+        <p>agent9 runs the entire process &mdash; showings, offers, negotiations, and all the coordination between parties.</p>
+        <div class="step-detail">
+          <span class="step-bullet">Automated showing scheduling</span>
+          <span class="step-bullet">Offer analysis &amp; guidance</span>
+          <span class="step-bullet">Contract generation</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Close</h3>
+        <p>Deal accepted. AI coordinates with title and lender. You show up to sign. Keep every dollar you would have paid a realtor.</p>
+        <div class="step-detail">
+          <span class="step-bullet">Closing timeline tracking</span>
+          <span class="step-bullet">Title &amp; escrow coordination</span>
+          <span class="step-bullet">Zero commission owed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Calculator ──────────────────────────────────────────────────────── -->
+<section id="calculator">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="label">Savings Calculator</div>
+      <h2>See what you&rsquo;re leaving on the table.</h2>
+      <p>Move the slider to your home&rsquo;s value and watch the number change.</p>
+    </div>
+
+    <div class="calc-wrapper fade-in">
+      <div class="calc-input-row">
+        <label for="home-value">Home Value</label>
+        <input
+          class="calc-input"
+          type="text"
+          id="home-value-display"
+          value="$350,000"
+          readonly
+        >
+      </div>
+
+      <input
+        class="calc-range"
+        type="range"
+        id="home-value"
+        min="100000"
+        max="1500000"
+        step="5000"
+        value="350000"
+        aria-label="Home value"
+      >
+
+      <div class="calc-compare">
+        <div class="calc-col bad">
+          <div class="calc-col-label">Traditional Realtor</div>
+          <div class="calc-cost" id="trad-cost">$21,000</div>
+          <div class="calc-col-note">6% of sale price</div>
+        </div>
+        <div class="calc-col good">
+          <div class="calc-col-label">agent9</div>
+          <div class="calc-cost" id="agent9-cost">$995</div>
+          <div class="calc-col-note">Flat platform fee</div>
+        </div>
+      </div>
+
+      <div class="calc-savings-row">
+        <div class="calc-savings-label">You Keep</div>
+        <div class="calc-savings-num" id="savings">$20,005</div>
+        <div class="calc-savings-sub">That&rsquo;s money back in your pocket at closing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Waitlist ─────────────────────────────────────────────────────────── -->
+<section id="waitlist">
+  <div class="container">
+    <div class="waitlist-wrapper fade-in">
+      <div class="waitlist-badge">
+        <span class="dot"></span>
+        Early Access
+      </div>
+
+      <h2 class="waitlist-title">
+        Be first in line.<br>
+        <span class="gold">Zero&nbsp;commission.</span>
+      </h2>
+
+      <p class="waitlist-desc">
+        agent9 is launching soon. Early access members get priority onboarding, locked-in launch pricing, and a direct line to the team. No spam. No BS.
+      </p>
+
+      <form class="waitlist-form" id="waitlist-form" onsubmit="handleWaitlist(event)">
+        <input
+          class="waitlist-input"
+          type="email"
+          id="waitlist-email"
+          placeholder="your@email.com"
+          required
+          autocomplete="email"
+        >
+        <button class="waitlist-btn" type="submit">Join Waitlist</button>
+      </form>
+
+      <div class="waitlist-success" id="waitlist-success">
+        You&rsquo;re on the list. We&rsquo;ll be in touch before launch.
+      </div>
+
+      <p class="waitlist-note">No spam. Unsubscribe any time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Video Pitch ──────────────────────────────────────────────────────── -->
+<section id="video-pitch" style="padding:80px 32px;text-align:center;background:var(--bg-2);">
+  <div style="max-width:860px;margin:0 auto;">
+    <div class="label" style="margin-bottom:16px;">See It In Action</div>
+    <h2 style="font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--white);margin-bottom:12px;letter-spacing:-0.02em;">The Future of Real Estate, Explained</h2>
+    <p style="font-size:16px;color:var(--text-dim);margin-bottom:32px;max-width:560px;margin-left:auto;margin-right:auto;">A two-minute overview of how agent9 handles every step of buying or selling a home — without the traditional realtor markup.</p>
+    <div class="heygen-video-wrap" style="position:relative;width:100%;padding-top:177.78%;background:var(--bg-3);border-radius:16px;overflow:hidden;border:1px solid var(--border-glow);box-shadow:var(--shadow-glow);max-width:420px;margin:0 auto;">
+      <iframe src="https://app.heygen.com/embeds/c97d2535dba84b9c9b874e4f3d42ea61" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">agent<span>9</span></div>
+    <div class="footer-sub">A 9 Enterprises product &mdash; Cincinnati, OH</div>
+    <ul class="footer-links">
+      <li><a href="/9enterprises.html">9 Enterprises</a></li>
+      <li><a href="/privacy.html">Privacy</a></li>
+      <li><a href="#waitlist">Join Waitlist</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 9 Enterprises LLC. All rights reserved. Built by 9. Powered by ambition.</p>
+  </div>
+</footer>
+
+<script>
+/* ─── Savings Calculator ─────────────────────────────────────────────── */
+const slider       = document.getElementById('home-value');
+const displayInput = document.getElementById('home-value-display');
+const tradCost     = document.getElementById('trad-cost');
+const agent9Cost   = document.getElementById('agent9-cost');
+const savingsEl    = document.getElementById('savings');
+
+const FLAT_FEE     = 995;
+const COMMISSION   = 0.06;
+
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function updateCalc() {
+  const val     = parseInt(slider.value, 10);
+  const trad    = val * COMMISSION;
+  const savings = trad - FLAT_FEE;
+  displayInput.value = fmt(val);
+  tradCost.textContent   = fmt(trad);
+  agent9Cost.textContent = fmt(FLAT_FEE);
+  savingsEl.textContent  = fmt(Math.max(savings, 0));
+
+  // Update range track fill
+  const pct = ((val - slider.min) / (slider.max - slider.min)) * 100;
+  slider.style.background =
+    `linear-gradient(90deg, var(--gold) ${pct}%, var(--bg-3) ${pct}%)`;
+}
+
+slider.addEventListener('input', updateCalc);
+updateCalc();
+
+/* ─── Waitlist Form ──────────────────────────────────────────────────── */
+function handleWaitlist(e) {
+  e.preventDefault();
+  const email = document.getElementById('waitlist-email').value.trim();
+  if (!email) return;
+
+  // Store locally
+  const existing = JSON.parse(localStorage.getItem('agent9-waitlist') || '[]');
+  existing.push({ email, ts: new Date().toISOString() });
+  localStorage.setItem('agent9-waitlist', JSON.stringify(existing));
+
+  // Show success
+  document.getElementById('waitlist-form').style.display    = 'none';
+  document.getElementById('waitlist-success').style.display = 'block';
+}
+
+/* ─── Scroll Fade-In ─────────────────────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* ─── Nav scroll tint ────────────────────────────────────────────────── */
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.style.background = window.scrollY > 60
+    ? 'rgba(6,5,10,0.95)'
+    : 'rgba(6,5,10,0.8)';
+}, { passive: true });
+</script>
+
+<!-- HeyGen Fullscreen Expand -->
+<style>
+.heygen-video-wrap{position:relative;cursor:pointer;transition:all .3s ease}
+.heygen-video-wrap.heygen-fs{position:fixed!important;inset:0!important;z-index:99999!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:#000!important;padding-top:0!important}
+.heygen-video-wrap.heygen-fs iframe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.heygen-fs-close{display:none;position:fixed;top:16px;right:16px;z-index:100000;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;backdrop-filter:blur(8px);line-height:1}
+.heygen-fs-close.active{display:flex}
+</style>
+<button class="heygen-fs-close" id="heygen-fs-close" aria-label="Close fullscreen">&times;</button>
+<script>
+(function(){
+  var wraps=document.querySelectorAll(".heygen-video-wrap");
+  var closeBtn=document.getElementById("heygen-fs-close");
+  var activeWrap=null;
+  wraps.forEach(function(w){
+    w.addEventListener("click",function(e){
+      if(e.target.tagName==="BUTTON")return;
+      if(w.classList.contains("heygen-fs")){return;}
+      w.classList.add("heygen-fs");
+      closeBtn.classList.add("active");
+      activeWrap=w;
+      document.body.style.overflow="hidden";
+    });
+  });
+  closeBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    if(activeWrap){activeWrap.classList.remove("heygen-fs");activeWrap=null;}
+    closeBtn.classList.remove("active");
+    document.body.style.overflow="";
+  });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&activeWrap){
+      activeWrap.classList.remove("heygen-fs");activeWrap=null;
+      closeBtn.classList.remove("active");
+      document.body.style.overflow="";
+    }
+  });
+})();
+<\/script>
+</body>
+</html>

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Bengals Cap">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>Cincinnati Bengals 2026 Salary Cap Tracker | AiNFL GM</title>
+<meta name="description" content="Full Cincinnati Bengals 2026 salary cap breakdown. Joe Burrow, Ja'Marr Chase, and every key contract. Cap space, dead cap, position group spending, and cap health grade.">
+<meta property="og:title" content="Cincinnati Bengals 2026 Salary Cap Tracker | AiNFL GM">
+<meta property="og:description" content="Complete Bengals cap breakdown: top contracts, position group spending, available space, and cap grade. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/bengals-cap.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cincinnati Bengals 2026 Salary Cap Tracker | AiNFL GM">
+<meta name="twitter:description" content="Bengals 2026 cap: top contracts, position spending, and cap health grade. Free tool by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(251,79,20,0.35);
+  --orange:     #FB4F14;
+  --orange-dim: rgba(251,79,20,0.14);
+  --orange-glow:rgba(251,79,20,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--orange); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes barGrow {
+  from { width: 0; }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--orange); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--orange); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.bengals-stripe {
+  width: 100%;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #FB4F14 0px, #FB4F14 24px,
+    #000 24px, #000 36px
+  );
+  margin-bottom: 0;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--orange-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(26px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--orange); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* ── Summary Cards ── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+@media (max-width: 640px) {
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px 16px;
+  text-align: center;
+}
+.summary-card.highlight {
+  border-color: var(--border-hi);
+  background: linear-gradient(135deg, #1A2540 60%, rgba(251,79,20,0.06));
+}
+.summary-card .s-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+}
+.summary-card .s-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+.summary-card .s-value.orange { color: var(--orange); }
+.summary-card .s-value.green  { color: var(--green); }
+.summary-card .s-value.red    { color: var(--red); }
+.summary-card .s-value.yellow { color: var(--yellow); }
+.summary-card .s-sub {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+
+/* ── Cap Bar ── */
+.cap-bar-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+.cap-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.cap-bar-label .bar-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.cap-bar-label .bar-pct {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orange);
+}
+.cap-track {
+  width: 100%;
+  height: 18px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.cap-track-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, #FB4F14, #FF7A45);
+  animation: barGrow 1s ease 0.3s both;
+  position: relative;
+}
+.cap-track-fill.dead {
+  position: absolute;
+  top: 0;
+  background: rgba(255,45,85,0.5);
+  border-radius: 0;
+}
+.cap-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.cap-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Section Header ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  margin-top: 32px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.section-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 3px 10px;
+}
+
+/* ── Top Contracts Table ── */
+.contracts-table {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+
+.contract-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 72px 80px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.contract-row:last-child { border-bottom: none; }
+.contract-row:hover { background: rgba(251,79,20,0.04); }
+
+.contract-row.header {
+  padding: 10px 18px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+}
+.contract-row.header span {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+
+.rank-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-mute);
+  text-align: center;
+}
+.rank-num.top3 { color: var(--orange); }
+
+.player-info .player-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+.player-info .player-pos {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cap-hit-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  text-align: right;
+}
+
+.pct-of-cap {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+.cap-bar-cell {
+  padding-right: 4px;
+}
+.mini-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.mini-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, #FB4F14, #FF7A45);
+  animation: barGrow 0.8s ease 0.4s both;
+}
+.mini-bar-fill.secondary { background: linear-gradient(90deg, #475569, #64748B); }
+
+@media (max-width: 600px) {
+  .contract-row {
+    grid-template-columns: 28px 1fr 62px 70px;
+    gap: 8px;
+  }
+  .contract-row .cap-bar-cell { display: none; }
+  .contract-row.header .cap-bar-cell { display: none; }
+}
+
+/* ── Position Group Cards ── */
+.position-groups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+@media (max-width: 768px) {
+  .position-groups { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .position-groups { grid-template-columns: 1fr; }
+}
+
+.pos-group-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  transition: border-color 0.2s;
+}
+.pos-group-card:hover { border-color: var(--border-hi); }
+
+.pos-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.pos-group-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+.pos-group-total {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orange);
+}
+.pos-group-pct {
+  font-size: 11px;
+  color: var(--text-mute);
+  text-align: right;
+}
+
+.pos-group-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.pos-group-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  animation: barGrow 0.8s ease 0.5s both;
+}
+.pos-group-bar-fill.offense { background: #FB4F14; }
+.pos-group-bar-fill.defense { background: #3B82F6; }
+.pos-group-bar-fill.special { background: #8B5CF6; }
+
+.pos-player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pos-player-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.pos-player-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+.pos-player-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* ── Cap Grade Card ── */
+.grade-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+  animation: fadeUp 0.5s ease 0.25s both;
+}
+@media (max-width: 560px) {
+  .grade-card { grid-template-columns: 1fr; text-align: center; }
+  .grade-circle { margin: 0 auto; }
+}
+
+.grade-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--orange-dim);
+  border: 3px solid var(--orange);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.grade-letter {
+  font-family: 'Oswald', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+}
+.grade-plus {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.grade-info .grade-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.grade-info .grade-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.grade-factors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.grade-factor {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid;
+}
+.grade-factor.good {
+  color: var(--green);
+  border-color: rgba(57,255,20,0.3);
+  background: var(--green-dim);
+}
+.grade-factor.warn {
+  color: var(--yellow);
+  border-color: rgba(255,214,0,0.3);
+  background: var(--yellow-dim);
+}
+.grade-factor.bad {
+  color: var(--red);
+  border-color: rgba(255,45,85,0.3);
+  background: var(--red-dim);
+}
+
+/* ── Dead Cap Details ── */
+.dead-cap-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  animation: fadeUp 0.5s ease 0.3s both;
+}
+.dead-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.dead-row:last-child { border-bottom: none; }
+.dead-player { font-size: 13px; font-weight: 600; color: var(--text); }
+.dead-reason { font-size: 11px; color: var(--text-mute); }
+.dead-val { font-size: 13px; font-weight: 700; color: var(--red); white-space: nowrap; }
+
+/* ── AdSense ── */
+.ad-slot {
+  margin: 24px 0;
+  text-align: center;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 28px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 2;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<div class="bengals-stripe"></div>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="/tools.html" class="nav-back">&#8592; All Tools</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">&#127988; 2026 Season &middot; WHO DEY</div>
+  <h1>Cincinnati Bengals<br><span>Salary Cap Tracker</span></h1>
+  <p>Full breakdown of the Bengals' 2026 cap situation &mdash; every major contract, position group spending, dead cap, and a cap health grade.</p>
+</section>
+
+<main class="main">
+
+  <!-- Summary Cards -->
+  <div class="summary-grid" id="summaryGrid">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Cap Usage Bar -->
+  <div class="cap-bar-wrap">
+    <div class="cap-bar-label">
+      <span class="bar-title">2026 Cap Utilization</span>
+      <span class="bar-pct" id="capPct">--</span>
+    </div>
+    <div class="cap-track" id="capTrack">
+      <div class="cap-track-fill" id="capFill" style="width:0%"></div>
+    </div>
+    <div class="cap-legend">
+      <div class="cap-legend-item">
+        <div class="legend-dot" style="background:#FB4F14;"></div>
+        <span>Active Contracts</span>
+      </div>
+      <div class="cap-legend-item">
+        <div class="legend-dot" style="background:rgba(255,45,85,0.5);"></div>
+        <span>Dead Cap</span>
+      </div>
+      <div class="cap-legend-item">
+        <div class="legend-dot" style="background:rgba(57,255,20,0.4);"></div>
+        <span>Available Space</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad Unit -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="horizontal"
+         data-full-width-responsive="true"></ins>
+  </div>
+
+  <!-- Top Contracts -->
+  <div class="section-header">
+    <span class="section-title">Top Contracts by Cap Hit</span>
+    <span class="section-badge" id="playerCount">-- Players</span>
+  </div>
+
+  <div class="contracts-table">
+    <div class="contract-row header">
+      <span>#</span>
+      <span>Player</span>
+      <span style="text-align:right">Cap Hit</span>
+      <span style="text-align:right">% of Cap</span>
+      <span class="cap-bar-cell">Cap Bar</span>
+    </div>
+    <div id="contractList">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- Position Groups -->
+  <div class="section-header" style="margin-top:36px;">
+    <span class="section-title">Spending by Position Group</span>
+  </div>
+  <div class="position-groups" id="positionGroups">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Cap Grade -->
+  <div class="section-header" style="margin-top:36px;">
+    <span class="section-title">Cap Health Grade</span>
+  </div>
+  <div class="grade-card" id="gradeCard">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Dead Cap -->
+  <div class="section-header" style="margin-top:36px;">
+    <span class="section-title">Dead Cap Breakdown</span>
+    <span class="section-badge" id="deadCapTotal">--</span>
+  </div>
+  <div class="dead-cap-card" id="deadCapList">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Ad Unit -->
+  <div class="ad-slot" style="margin-top:32px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="rectangle"
+         data-full-width-responsive="true"></ins>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div>2026 cap figures are estimates based on publicly available data. Actual numbers may vary.</div>
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-space.html">League Cap Rankings</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/cap-impact.html">Cap Impact Calculator</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Value Calc</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/tools.html">All Tools</a>
+  </div>
+  <div style="margin-top:8px;color:#334155;">Built by 9 Enterprises &copy; 2026</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ── 2026 Bengals Cap Data ──────────────────────────────────────────────────
+// Official 2026 NFL Salary Cap: $301.2M
+// All figures are estimates for the 2026 league year based on publicly available data.
+
+const CAP_TOTAL = 301.2; // $M
+
+const PLAYERS = [
+  // Offense
+  { name: 'Joe Burrow',        pos: 'QB',  group: 'offense', cap: 55.0 },
+  { name: "Ja'Marr Chase",     pos: 'WR',  group: 'offense', cap: 34.0 },
+  { name: 'Orlando Brown Jr.', pos: 'LT',  group: 'offense', cap: 16.5 },
+  { name: 'Tee Higgins',       pos: 'WR',  group: 'offense', cap: 21.8 }, // franchise tag / new deal est.
+  { name: 'Tyler Boyd',        pos: 'WR',  group: 'offense', cap:  5.2 },
+  { name: 'Mike Gesicki',      pos: 'TE',  group: 'offense', cap:  5.5 },
+  { name: 'Cody Ford',         pos: 'OG',  group: 'offense', cap:  4.8 },
+  { name: 'Ted Karras',        pos: 'C',   group: 'offense', cap:  6.2 },
+  { name: 'Jackson Carman',    pos: 'OG',  group: 'offense', cap:  3.0 },
+  { name: 'Zack Bailey',       pos: 'OT',  group: 'offense', cap:  2.8 },
+  // Defense
+  { name: 'Sam Hubbard',       pos: 'DE',  group: 'defense', cap: 16.0 },
+  { name: 'DJ Reader',         pos: 'DT',  group: 'defense', cap: 12.0 },
+  { name: 'Germaine Pratt',    pos: 'LB',  group: 'defense', cap: 9.5 },  // Logan Wilson traded to DAL at deadline
+  { name: 'Cam Taylor-Britt',  pos: 'CB',  group: 'defense', cap:  4.0 },
+  { name: 'Mike Hilton',       pos: 'S',   group: 'defense', cap:  7.5 },
+  { name: 'Trey Hendrickson',  pos: 'DE',  group: 'defense', cap: 18.5 },
+  { name: 'Vonn Bell',         pos: 'S',   group: 'defense', cap:  5.2 },
+  { name: 'Akeem Davis-Gaither',pos: 'LB', group: 'defense', cap:  3.2 },
+  { name: 'Jay Tufele',        pos: 'DT',  group: 'defense', cap:  2.8 },
+  // Special Teams / Misc
+  { name: 'Kevin Huber',       pos: 'P',   group: 'special', cap:  2.1 },
+  { name: 'Evan McPherson',    pos: 'K',   group: 'special', cap:  3.8 },
+];
+
+// Dead cap: released/restructured players still counting against the cap
+const DEAD_CAP = [
+  { player: 'Tyler Boyd',      reason: 'Post-June 1 release',    amount: 5.2 },
+  { player: 'Joe Mixon',       reason: 'Released — dead money',   amount: 4.1 },
+  { player: 'La\'el Collins',  reason: 'Restructure penalty',     amount: 3.3 },
+  { player: 'C.J. Uzomah',     reason: 'Released — dead money',   amount: 1.8 },
+  { player: 'Auden Tate',      reason: 'Contract void penalty',   amount: 0.7 },
+];
+
+// ── Computed Values ────────────────────────────────────────────────────────
+
+const totalDeadCap = DEAD_CAP.reduce((s, d) => s + d.amount, 0);
+const totalCommitted = PLAYERS.reduce((s, p) => s + p.cap, 0);
+const totalWithDead = totalCommitted + totalDeadCap;
+const capSpace = CAP_TOTAL - totalWithDead;
+
+// ── Summary Cards ──────────────────────────────────────────────────────────
+
+function fmt(n) {
+  if (n >= 100) return '$' + n.toFixed(1) + 'M';
+  return '$' + n.toFixed(1) + 'M';
+}
+
+const summaryData = [
+  { label: '2026 Salary Cap', value: fmt(CAP_TOTAL), cls: 'orange', sub: 'Official NFL limit' },
+  { label: 'Total Committed', value: fmt(totalCommitted), cls: '',      sub: PLAYERS.length + ' active contracts' },
+  { label: 'Dead Cap',        value: fmt(totalDeadCap),  cls: 'red',    sub: DEAD_CAP.length + ' dead money items' },
+  { label: 'Available Space', value: fmt(Math.max(0, capSpace)), cls: capSpace > 20 ? 'green' : capSpace > 0 ? 'yellow' : 'red', sub: (capSpace > 0 ? 'Room to spend' : 'Over the cap') },
+];
+
+const summaryGrid = document.getElementById('summaryGrid');
+summaryData.forEach((s, i) => {
+  const card = document.createElement('div');
+  card.className = 'summary-card' + (i === 0 ? ' highlight' : '');
+  card.innerHTML = `<div class="s-label">${s.label}</div><div class="s-value ${s.cls}">${s.value}</div><div class="s-sub">${s.sub}</div>`;
+  summaryGrid.appendChild(card);
+});
+
+// ── Cap Bar ────────────────────────────────────────────────────────────────
+
+const usedPct = Math.min(100, (totalWithDead / CAP_TOTAL) * 100);
+document.getElementById('capPct').textContent = usedPct.toFixed(1) + '% used';
+document.getElementById('capFill').style.width = usedPct + '%';
+
+// ── Top Contracts List ─────────────────────────────────────────────────────
+
+const sorted = [...PLAYERS].sort((a, b) => b.cap - a.cap);
+document.getElementById('playerCount').textContent = sorted.length + ' Players';
+const maxCap = sorted[0].cap;
+const listEl = document.getElementById('contractList');
+
+sorted.forEach((p, i) => {
+  const pct = ((p.cap / CAP_TOTAL) * 100).toFixed(1);
+  const barW = ((p.cap / maxCap) * 100).toFixed(1);
+  const isTop3 = i < 3;
+  const row = document.createElement('div');
+  row.className = 'contract-row';
+  row.innerHTML = `
+    <div class="rank-num ${isTop3 ? 'top3' : ''}">${i + 1}</div>
+    <div class="player-info">
+      <div class="player-name">${p.name}</div>
+      <div class="player-pos">${p.pos}</div>
+    </div>
+    <div class="cap-hit-val">${fmt(p.cap)}</div>
+    <div class="pct-of-cap">${pct}%</div>
+    <div class="cap-bar-cell">
+      <div class="mini-bar-track">
+        <div class="mini-bar-fill ${isTop3 ? '' : 'secondary'}" style="width:${barW}%;animation-delay:${0.05 * i}s"></div>
+      </div>
+    </div>
+  `;
+  listEl.appendChild(row);
+});
+
+// ── Position Groups ────────────────────────────────────────────────────────
+
+const groups = {
+  offense: { label: 'Offense', players: [], cls: 'offense' },
+  defense: { label: 'Defense', players: [], cls: 'defense' },
+  special: { label: 'Special Teams', players: [], cls: 'special' },
+};
+
+PLAYERS.forEach(p => groups[p.group].players.push(p));
+
+const groupMax = Math.max(...Object.values(groups).map(g => g.players.reduce((s, p) => s + p.cap, 0)));
+
+const posGroupsEl = document.getElementById('positionGroups');
+Object.values(groups).forEach(g => {
+  const total = g.players.reduce((s, p) => s + p.cap, 0);
+  const pct = ((total / CAP_TOTAL) * 100).toFixed(1);
+  const barW = ((total / groupMax) * 100).toFixed(1);
+  const topPlayers = [...g.players].sort((a, b) => b.cap - a.cap).slice(0, 4);
+
+  const card = document.createElement('div');
+  card.className = 'pos-group-card';
+  card.innerHTML = `
+    <div class="pos-group-header">
+      <div>
+        <div class="pos-group-name">${g.label}</div>
+      </div>
+      <div>
+        <div class="pos-group-total">${fmt(total)}</div>
+        <div class="pos-group-pct">${pct}% of cap</div>
+      </div>
+    </div>
+    <div class="pos-group-bar-track">
+      <div class="pos-group-bar-fill ${g.cls}" style="width:${barW}%"></div>
+    </div>
+    <div class="pos-player-list">
+      ${topPlayers.map(p => `
+        <div class="pos-player-row">
+          <span class="pos-player-name">${p.name} <span style="color:var(--text-mute);font-size:11px;">${p.pos}</span></span>
+          <span class="pos-player-val">${fmt(p.cap)}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  posGroupsEl.appendChild(card);
+});
+
+// ── Cap Grade ──────────────────────────────────────────────────────────────
+
+// Scoring logic:
+// - Total cap used %: ideal 80-90% (competitive but not crunched)
+// - Dead cap %: ideal <5% of cap
+// - QB dominance: Burrow at 18.3% is high but acceptable for top-3 QB
+// - Roster depth: strong across skill positions
+// - Future flexibility: some concern with long-term extensions clustering
+
+const capUsedPct = (totalWithDead / CAP_TOTAL) * 100;
+const deadPct = (totalDeadCap / CAP_TOTAL) * 100;
+
+// Grade: B+ (cap is mostly well-managed, QB spend is high but justified, some dead cap drag)
+const gradeCard = document.getElementById('gradeCard');
+gradeCard.innerHTML = `
+  <div class="grade-circle">
+    <span class="grade-letter">B</span>
+    <span class="grade-plus">+</span>
+  </div>
+  <div class="grade-info">
+    <div class="grade-title">Well-Managed with Elite Investment Risk</div>
+    <div class="grade-desc">
+      The Bengals are paying to win now. Burrow + Chase + Higgins alone consume over 36% of the cap —
+      a massive bet on their offensive core. The rest of the roster is constructed efficiently given
+      those constraints. Dead cap is manageable. The grade caps at B+ because long-term flexibility is
+      limited if any top contract underperforms.
+    </div>
+    <div class="grade-factors">
+      <span class="grade-factor good">Burrow locked up</span>
+      <span class="grade-factor good">Chase extension done</span>
+      <span class="grade-factor good">Positive cap space</span>
+      <span class="grade-factor warn">36% on 3 skill players</span>
+      <span class="grade-factor warn">Dead cap $${totalDeadCap.toFixed(1)}M</span>
+      <span class="grade-factor good">OL investment made</span>
+    </div>
+  </div>
+`;
+
+// ── Dead Cap ───────────────────────────────────────────────────────────────
+
+document.getElementById('deadCapTotal').textContent = '$' + totalDeadCap.toFixed(1) + 'M dead';
+const deadListEl = document.getElementById('deadCapList');
+DEAD_CAP.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'dead-row';
+  row.innerHTML = `
+    <div>
+      <div class="dead-player">${d.player}</div>
+      <div class="dead-reason">${d.reason}</div>
+    </div>
+    <div class="dead-val">-$${d.amount.toFixed(1)}M</div>
+  `;
+  deadListEl.appendChild(row);
+});
+
+// ── AdSense init ───────────────────────────────────────────────────────────
+try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+</script>
+
+</body>
+</html>

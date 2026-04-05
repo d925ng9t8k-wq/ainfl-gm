@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AiNFL GM</title>
+    <link>https://ainflgm.com</link>
+    <description>AI-Powered NFL Offseason Simulator - Manage any team's salary cap, sign free agents, make trades, and run a full mock draft.</description>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 Mar 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://ainflgm.com/feed.xml" rel="self" type="application/rss+xml"/>
+
+    <item>
+      <title>AiNFL GM: Full 2026 Offseason Simulator</title>
+      <description>Manage any NFL team's 2026 offseason. Real salary cap numbers, free agent signings, trades, and a full 7-round mock draft with AI opponents. Free, no signup required.</description>
+      <link>https://ainflgm.com</link>
+      <guid isPermaLink="true">https://ainflgm.com</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+
+    <item>
+      <title>Mock Draft: Run All 7 Rounds</title>
+      <description>Run a complete 7-round NFL mock draft for any team. Trade up, trade down, or let the board come to you. AI handles every other team's picks.</description>
+      <link>https://ainflgm.com/draft</link>
+      <guid isPermaLink="true">https://ainflgm.com/draft</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+
+    <item>
+      <title>Salary Cap Tracker: Real 2026 Numbers</title>
+      <description>See every team's real 2026 salary cap space. Cut players, restructure contracts, and clear cap room for free agency and the draft.</description>
+      <link>https://ainflgm.com/cap</link>
+      <guid isPermaLink="true">https://ainflgm.com/cap</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+
+    <item>
+      <title>Free Agency Simulator</title>
+      <description>Browse the full 2026 NFL free agent class and sign players to your team with realistic contracts. Watch your cap space update in real time.</description>
+      <link>https://ainflgm.com/fa</link>
+      <guid isPermaLink="true">https://ainflgm.com/fa</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+
+    <item>
+      <title>Trade Engine: Swap Picks and Players</title>
+      <description>Use AiNFL GM's trade engine to move up in the draft, dump bad contracts, or acquire star players from other teams.</description>
+      <link>https://ainflgm.com/trades</link>
+      <guid isPermaLink="true">https://ainflgm.com/trades</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+
+    <item>
+      <title>AI-Powered Roster Suggestions</title>
+      <description>Not sure who to draft or sign? AiNFL GM's AI analyzes your team's roster needs and recommends the best moves for your offseason.</description>
+      <link>https://ainflgm.com/summary</link>
+      <guid isPermaLink="true">https://ainflgm.com/summary</guid>
+      <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

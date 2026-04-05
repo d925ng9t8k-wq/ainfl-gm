@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Cap Quiz">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Salary Cap Quiz 2026 | AiNFL GM</title>
+<meta name="description" content="Test your NFL salary cap knowledge with 15 questions on the 2026 season. Cap hits, dead money, top earners — how well do you know the cap?">
+<meta property="og:title" content="NFL Salary Cap Quiz 2026 | AiNFL GM">
+<meta property="og:description" content="15 questions on the 2026 NFL salary cap. Dead money, QB contracts, cap space, and more. How do you grade out?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/cap-quiz.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Salary Cap Quiz 2026 | AiNFL GM">
+<meta name="twitter:description" content="15 questions. Real 2026 cap data. Can you ace the cap quiz?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(0.85); }
+  70%  { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+@keyframes progress-fill {
+  from { width: 0; }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(26px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+
+/* ── High Score strip ── */
+.high-score-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--yellow-dim);
+  border: 1px solid rgba(255,214,0,0.25);
+  border-radius: 100px;
+  padding: 5px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: 0.05em;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Quiz Shell ── */
+.quiz-shell {
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+/* ── Progress Bar ── */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-2);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
+  border-radius: 100px;
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* ── Score Tally ── */
+.score-tally {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.score-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.score-badge span { color: var(--green); font-size: 16px; }
+.streak-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border-radius: 100px;
+  padding: 3px 10px;
+  display: none;
+}
+.streak-badge.active { display: inline-block; }
+
+/* ── Question Card ── */
+.q-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 16px;
+  animation: glow-in 0.35s ease both;
+}
+.q-type-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.q-type-badge.mc  { background: var(--cyan-dim);   color: var(--cyan); }
+.q-type-badge.tf  { background: var(--yellow-dim); color: var(--yellow); }
+.q-type-badge.num { background: var(--green-dim);  color: var(--green); }
+
+.q-number {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.q-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(17px, 2.5vw, 22px);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 24px;
+}
+
+/* ── Answer Options ── */
+.options-grid {
+  display: grid;
+  gap: 10px;
+}
+.options-grid.tf-grid {
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 480px) {
+  .options-grid.tf-grid { grid-template-columns: 1fr; }
+}
+
+.option-btn {
+  width: 100%;
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--border-hi);
+  background: var(--bg-3);
+  transform: translateY(-1px);
+}
+.option-btn:active:not(:disabled) { transform: translateY(0); }
+.option-btn .opt-letter {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.option-btn:disabled { cursor: default; transform: none; }
+
+/* correct / wrong states */
+.option-btn.correct {
+  border-color: var(--green);
+  background: var(--green-dim);
+  color: #fff;
+  animation: pop-in 0.3s ease;
+}
+.option-btn.correct .opt-letter {
+  background: var(--green);
+  color: #000;
+  border-color: var(--green);
+}
+.option-btn.wrong {
+  border-color: var(--red);
+  background: var(--red-dim);
+  color: var(--text-dim);
+  animation: shake 0.4s ease;
+}
+.option-btn.wrong .opt-letter {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+.option-btn.reveal {
+  border-color: var(--green);
+  background: var(--green-dim);
+  opacity: 0.7;
+}
+.option-btn.reveal .opt-letter {
+  background: var(--green);
+  color: #000;
+  border-color: var(--green);
+}
+
+/* ── Number guess input ── */
+.num-input-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.num-input {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.num-input:focus { border-color: var(--border-hi); }
+.num-input::placeholder { color: var(--text-mute); font-weight: 400; }
+.num-submit-btn {
+  background: linear-gradient(135deg, var(--cyan), #0090aa);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 22px;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.num-submit-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.num-submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+/* ── Feedback Banner ── */
+.feedback-banner {
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  display: none;
+  animation: fadeUp 0.3s ease;
+}
+.feedback-banner.show { display: block; }
+.feedback-banner.correct-fb {
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  color: var(--green);
+}
+.feedback-banner.wrong-fb {
+  background: var(--red-dim);
+  border: 1px solid rgba(255,45,85,0.25);
+  color: #FF6B6B;
+}
+.feedback-banner .fb-label {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.feedback-banner .fb-explain {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* ── Next Button ── */
+.next-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--cyan), #0090aa);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 16px 24px;
+  color: #000;
+  font-family: 'Oswald', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  margin-top: 16px;
+  display: none;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.next-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.next-btn:active { transform: translateY(0); }
+.next-btn.show { display: block; animation: fadeUp 0.3s ease; }
+
+/* ── Results Screen ── */
+.results-screen {
+  display: none;
+  animation: fadeUp 0.5s ease both;
+}
+.results-screen.show { display: block; }
+
+.grade-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.grade-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, var(--cyan-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.grade-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  animation: pop-in 0.5s ease 0.2s both;
+}
+.grade-circle.A  { background: rgba(57,255,20,0.15); color: var(--green); border: 2px solid rgba(57,255,20,0.4); }
+.grade-circle.B  { background: var(--cyan-dim); color: var(--cyan); border: 2px solid var(--border-hi); }
+.grade-circle.C  { background: var(--yellow-dim); color: var(--yellow); border: 2px solid rgba(255,214,0,0.3); }
+.grade-circle.D  { background: rgba(255,100,0,0.12); color: #FF6B2B; border: 2px solid rgba(255,100,0,0.3); }
+.grade-circle.F  { background: var(--red-dim); color: var(--red); border: 2px solid rgba(255,45,85,0.3); }
+
+.result-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.result-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+.score-big {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(36px, 6vw, 52px);
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.score-label {
+  font-size: 13px;
+  color: var(--text-mute);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+
+/* stat pills */
+.stat-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.stat-pill {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.stat-pill span { color: var(--text); }
+
+/* share message */
+.share-box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+.share-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.share-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-share {
+  flex: 1;
+  min-width: 130px;
+  background: linear-gradient(135deg, #1DA1F2, #0d7abf);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-share:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-copy {
+  flex: 1;
+  min-width: 130px;
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  color: var(--text);
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-copy:hover { border-color: var(--border-hi); transform: translateY(-1px); }
+.btn-retry {
+  width: 100%;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  color: var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: border-color 0.2s, color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-retry:hover { border-color: var(--border-hi); color: var(--text); }
+
+/* high score row */
+.hs-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--yellow);
+  margin-top: 16px;
+}
+
+/* ── Review ── */
+.review-section {
+  margin-top: 20px;
+}
+.review-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.review-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 10px;
+  border-left: 3px solid transparent;
+}
+.review-item.ri-correct { border-left-color: var(--green); }
+.review-item.ri-wrong   { border-left-color: var(--red); }
+.ri-q {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.ri-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+}
+.ri-label {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-right: 3px;
+}
+.ri-your {
+  color: var(--text-dim);
+}
+.ri-your .ri-label { color: var(--text-mute); }
+.ri-correct-ans {
+  color: var(--green);
+}
+.ri-correct-ans .ri-label { color: rgba(57,255,20,0.7); }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  color: var(--text-mute);
+  font-size: 13px;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+/* ── Util ── */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">AiNFL<span>GM</span></a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Tools
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M6 3.5v3l2 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    2026 Cap Season
+  </div>
+  <h1>NFL Salary Cap <span>Quiz</span></h1>
+  <p>15 questions on dead money, QB contracts, cap hits, and cap space. Real 2026 data. How do you grade out?</p>
+  <div id="highScoreBar" class="high-score-bar hidden">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 1.9.7-4.1-3-2.9 4.2-.8z" fill="currentColor"/></svg>
+    <span id="highScoreText">Best: 0/15</span>
+  </div>
+</section>
+
+<!-- Main -->
+<main class="main">
+  <div class="quiz-shell">
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-label" id="progressLabel">0 / 15</div>
+    </div>
+
+    <!-- Score tally -->
+    <div class="score-tally">
+      <div class="score-badge">Score: <span id="scoreCurrent">0</span></div>
+      <div class="streak-badge" id="streakBadge">3 in a row!</div>
+    </div>
+
+    <!-- Question card (filled by JS) -->
+    <div id="questionArea"></div>
+
+    <!-- Next button -->
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question &rarr;</button>
+
+    <!-- Results screen -->
+    <div class="results-screen" id="resultsScreen"></div>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>Built by <a href="https://ainflgm.com">AiNFL GM</a> &mdash; AI-powered tools for serious NFL fans.</p>
+  <p style="margin-top:6px;">Cap data reflects 2026 NFL season estimates. <a href="https://ainflgm.com/cap-space.html">View full cap rankings</a></p>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+//  QUESTION BANK  (15 questions, 3 types)
+//  Types: "mc" = multiple choice, "tf" = true/false, "num" = closest number
+// ─────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    id: 1,
+    type: 'mc',
+    text: 'What is the NFL salary cap for the 2026 season?',
+    options: ['$272.5 million', '$289.0 million', '$301.2 million', '$315.0 million'],
+    correct: 2, // 0-indexed
+    explanation: 'The 2026 NFL salary cap is $301.2 million per club — the first time it has exceeded $300M. Up from $255.4M in 2025, driven by new media rights revenue.'
+  },
+  {
+    id: 2,
+    type: 'mc',
+    text: 'Which team entered 2026 with the most salary cap space?',
+    options: ['New England Patriots', 'New York Giants', 'Carolina Panthers', 'Cleveland Browns'],
+    correct: 0,
+    explanation: 'The New England Patriots led the league in available cap space heading into 2026, with over $100M to work with after years of rebuilding their roster.'
+  },
+  {
+    id: 3,
+    type: 'tf',
+    text: 'True or False: Dead cap money counts against a team\'s salary cap.',
+    options: ['True', 'False'],
+    correct: 0,
+    explanation: 'True. Dead cap is the remaining signing bonus proration owed to a player who was cut or traded. It still counts against the cap — you\'re paying a player who no longer plays for you.'
+  },
+  {
+    id: 4,
+    type: 'mc',
+    text: 'Which quarterback has the highest cap hit in the 2026 NFL season?',
+    options: ['Joe Burrow', 'Jalen Hurts', 'Dak Prescott', 'Trevor Lawrence'],
+    correct: 2,
+    explanation: 'Dak Prescott\'s restructured contract gives him one of the highest single-season cap hits in league history in 2026, topping $60M against the Cowboys\' cap.'
+  },
+  {
+    id: 5,
+    type: 'mc',
+    text: 'What is a "June 1 cut" in NFL cap terms?',
+    options: [
+      'A player released before free agency opens',
+      'A cut that splits dead cap into two separate league years',
+      'A cut that eliminates all dead cap immediately',
+      'A trade deadline transaction'
+    ],
+    correct: 1,
+    explanation: 'A June 1 designation (or post-June 1 cut) allows a team to split dead cap charges — half hits this year, half next year. This gives teams cap relief immediately without eating the full dead money in one season.'
+  },
+  {
+    id: 6,
+    type: 'tf',
+    text: 'True or False: A player on injured reserve (IR) still counts against the salary cap.',
+    options: ['True', 'False'],
+    correct: 0,
+    explanation: 'True. Going on IR does not remove a player\'s cap charge. His full salary and bonus proration still count against the team\'s cap for the season.'
+  },
+  {
+    id: 7,
+    type: 'mc',
+    text: 'Which position group carries the highest average cap hit across the entire NFL?',
+    options: ['Wide Receiver', 'Defensive End / Edge Rusher', 'Quarterback', 'Left Tackle'],
+    correct: 2,
+    explanation: 'Quarterbacks are by far the most expensive position group on average. The top 10 QBs alone average over $50M per year in cap hits, dwarfing any other position.'
+  },
+  {
+    id: 8,
+    type: 'num',
+    text: 'How many teams had more than $50 million in cap space entering the 2026 season? (Closest answer wins)',
+    correct: 8,
+    tolerance: 3,
+    unit: 'teams',
+    explanation: 'Roughly 8 teams had $50M+ in available cap space entering 2026. The Patriots, Giants, and several rebuilding franchises led the way in available space.'
+  },
+  {
+    id: 9,
+    type: 'mc',
+    text: 'What does "void year" mean in an NFL contract?',
+    options: [
+      'A contract year that doesn\'t count toward the cap',
+      'A year added to a deal to spread out signing bonus proration, which voids automatically',
+      'A season missed due to injury',
+      'An extension option held by the team'
+    ],
+    correct: 1,
+    explanation: 'Void years are fake contract years added to push signing bonus proration into the future. They automatically void on the specified date — but when they do, all that deferred signing bonus hits as dead cap at once.'
+  },
+  {
+    id: 10,
+    type: 'mc',
+    text: 'Joe Burrow\'s contract extension made him one of the highest-paid players in NFL history. Approximately what is his average annual value (AAV)?',
+    options: ['$45 million per year', '$52.5 million per year', '$55 million per year', '$60 million per year'],
+    correct: 2,
+    explanation: 'Joe Burrow signed a 5-year extension with an AAV of approximately $55 million per year, making him one of the highest-paid players in league history at the time of signing.'
+  },
+  {
+    id: 11,
+    type: 'tf',
+    text: 'True or False: Teams can designate a player as a "Franchise Tag" twice in a row without penalty.',
+    options: ['True', 'False'],
+    correct: 1,
+    explanation: 'False. A team can tag the same player twice in a row, but the second tag must be at 120% of the first tag\'s value. A third consecutive tag would be at 144% — making it extremely costly to keep tagging the same player.'
+  },
+  {
+    id: 12,
+    type: 'mc',
+    text: 'Which of these is NOT a valid way to create cap space?',
+    options: [
+      'Restructure a contract (convert salary to signing bonus)',
+      'Cut a player post-June 1',
+      'Move a player to the practice squad',
+      'Trade a player with dead cap to another team'
+    ],
+    correct: 2,
+    explanation: 'Moving a player to the practice squad does not create cap space — PS players still carry a cap charge. The other three are real cap management tools, though trading dead cap is extremely rare and requires the receiving team to accept it.'
+  },
+  {
+    id: 13,
+    type: 'num',
+    text: 'In millions of dollars, what is Patrick Mahomes\' approximate annual average value (AAV) on his current contract? (Closest wins)',
+    correct: 45,
+    tolerance: 5,
+    unit: 'million/yr',
+    explanation: 'Patrick Mahomes\' historic 10-year extension has an AAV of approximately $45 million per year — a landmark deal when signed that has since been surpassed by newer contracts.'
+  },
+  {
+    id: 14,
+    type: 'mc',
+    text: 'What happens to the salary cap if the NFL\'s total revenue drops in a given year?',
+    options: [
+      'The cap stays the same — it never goes down',
+      'The cap decreases — it is directly tied to league revenues',
+      'Teams vote on whether to reduce the cap',
+      'The cap freezes until revenues recover'
+    ],
+    correct: 1,
+    explanation: 'The cap is tied to a percentage of total league revenues. In 2021, the cap dropped to $182.5M (from $198.2M in 2020) due to COVID-19 wiping out gate revenues. It can go down, and it did.'
+  },
+  {
+    id: 15,
+    type: 'mc',
+    text: 'What term describes when a team restructures a contract so many times that they are locked into massive dead cap in future years — limiting future flexibility?',
+    options: ['Cap Hell', 'Dead Money Trap', 'Void Year Bomb', 'Rollover Debt'],
+    correct: 0,
+    explanation: '"Cap Hell" is the informal term for when a team\'s future cap flexibility is severely limited by accumulated dead money and prorated signing bonuses. The Saints and Cowboys have famously been accused of living in cap hell.'
+  }
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let currentQ     = 0;
+let score        = 0;
+let streak       = 0;
+let answered     = false;
+let userAnswers  = []; // {qIndex, correct, yourAnswer, correctAnswer}
+let shuffled     = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initQuiz() {
+  currentQ    = 0;
+  score       = 0;
+  streak      = 0;
+  answered    = false;
+  userAnswers = [];
+  shuffled    = shuffle(QUESTIONS);
+
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('resultsScreen').style.display = '';
+  document.getElementById('questionArea').style.display  = '';
+  document.getElementById('nextBtn').classList.remove('show');
+  document.getElementById('scoreCurrent').textContent = '0';
+  updateProgress();
+  updateStreakBadge();
+  renderQuestion();
+}
+
+// ─────────────────────────────────────────────
+//  HIGH SCORE
+// ─────────────────────────────────────────────
+function getHighScore() { return parseInt(localStorage.getItem('capQuizHigh') || '0', 10); }
+function saveHighScore(s) { localStorage.setItem('capQuizHigh', String(s)); }
+function refreshHighScoreBar() {
+  const hs = getHighScore();
+  if (hs > 0) {
+    document.getElementById('highScoreBar').classList.remove('hidden');
+    document.getElementById('highScoreText').textContent = 'Best: ' + hs + '/15';
+  }
+}
+
+// ─────────────────────────────────────────────
+//  PROGRESS
+// ─────────────────────────────────────────────
+function updateProgress() {
+  const pct = (currentQ / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = currentQ + ' / ' + QUESTIONS.length;
+}
+
+function updateStreakBadge() {
+  const el = document.getElementById('streakBadge');
+  if (streak >= 3) {
+    el.textContent = streak + ' in a row!';
+    el.classList.add('active');
+  } else {
+    el.classList.remove('active');
+  }
+}
+
+// ─────────────────────────────────────────────
+//  RENDER QUESTION
+// ─────────────────────────────────────────────
+function renderQuestion() {
+  answered = false;
+  const q   = shuffled[currentQ];
+  const area = document.getElementById('questionArea');
+
+  const typeLabel = q.type === 'mc'  ? 'Multiple Choice'
+                  : q.type === 'tf'  ? 'True / False'
+                  : 'Closest Answer';
+  const typeCls = q.type;
+
+  let optionsHTML = '';
+
+  if (q.type === 'mc' || q.type === 'tf') {
+    const letters = ['A','B','C','D'];
+    const gridCls = q.type === 'tf' ? 'options-grid tf-grid' : 'options-grid';
+    optionsHTML = `<div class="${gridCls}" id="optionsGrid">` +
+      q.options.map((opt, i) =>
+        `<button class="option-btn" id="opt-${i}" onclick="selectOption(${i})" aria-label="${letters[i]}: ${opt}">
+          <span class="opt-letter">${q.type === 'tf' ? opt.charAt(0) : letters[i]}</span>
+          <span>${opt}</span>
+        </button>`
+      ).join('') +
+    `</div>`;
+  } else {
+    // num type
+    optionsHTML = `
+      <div class="num-input-wrap">
+        <input type="number" class="num-input" id="numInput" placeholder="Enter your answer..." min="0" onkeydown="if(event.key==='Enter') submitNumber()">
+        <button class="num-submit-btn" id="numSubmit" onclick="submitNumber()">Submit</button>
+      </div>
+    `;
+  }
+
+  area.innerHTML = `
+    <div class="q-card" id="qCard">
+      <div class="q-number">Question ${currentQ + 1} of ${QUESTIONS.length}</div>
+      <span class="q-type-badge ${typeCls}">${typeLabel}</span>
+      <div class="q-text">${q.text}</div>
+      ${optionsHTML}
+      <div class="feedback-banner" id="feedbackBanner">
+        <div class="fb-label" id="fbLabel"></div>
+        <div id="fbMsg"></div>
+        <div class="fb-explain" id="fbExplain"></div>
+      </div>
+    </div>
+  `;
+
+  // Focus num input on mobile-friendly way
+  if (q.type === 'num') {
+    setTimeout(() => {
+      const inp = document.getElementById('numInput');
+      if (inp && window.innerWidth > 600) inp.focus();
+    }, 200);
+  }
+}
+
+// ─────────────────────────────────────────────
+//  ANSWER HANDLERS
+// ─────────────────────────────────────────────
+function selectOption(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q   = shuffled[currentQ];
+  const isCorrect = (idx === q.correct);
+  const letters   = ['A','B','C','D'];
+
+  // Disable all buttons
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  // Mark selected
+  const selectedBtn = document.getElementById('opt-' + idx);
+  if (isCorrect) {
+    selectedBtn.classList.add('correct');
+  } else {
+    selectedBtn.classList.add('wrong');
+    // reveal correct
+    document.getElementById('opt-' + q.correct).classList.add('reveal');
+  }
+
+  const yourLabel = q.type === 'tf' ? q.options[idx] : letters[idx] + ' — ' + q.options[idx];
+  const correctLabel = q.type === 'tf' ? q.options[q.correct] : letters[q.correct] + ' — ' + q.options[q.correct];
+
+  handleResult(isCorrect, yourLabel, correctLabel, q);
+}
+
+function submitNumber() {
+  if (answered) return;
+  const inp = document.getElementById('numInput');
+  const val = parseFloat(inp.value);
+  if (isNaN(val)) { inp.focus(); return; }
+
+  answered = true;
+  document.getElementById('numSubmit').disabled = true;
+  inp.disabled = true;
+
+  const q = shuffled[currentQ];
+  const diff = Math.abs(val - q.correct);
+  const isCorrect = diff <= q.tolerance;
+
+  const yourLabel  = val + ' ' + (q.unit || '');
+  const correctLabel = q.correct + ' ' + (q.unit || '');
+
+  handleResult(isCorrect, yourLabel, correctLabel, q, diff);
+}
+
+function handleResult(isCorrect, yourLabel, correctLabel, q, numDiff) {
+  if (isCorrect) {
+    score++;
+    streak++;
+    document.getElementById('scoreCurrent').textContent = score;
+  } else {
+    streak = 0;
+  }
+  updateStreakBadge();
+
+  userAnswers.push({
+    qIndex:       currentQ,
+    question:     q.text,
+    correct:      isCorrect,
+    yourAnswer:   yourLabel,
+    correctAnswer: correctLabel
+  });
+
+  // Show feedback
+  const banner  = document.getElementById('feedbackBanner');
+  const fbLabel = document.getElementById('fbLabel');
+  const fbMsg   = document.getElementById('fbMsg');
+  const fbExplain = document.getElementById('fbExplain');
+
+  banner.classList.remove('correct-fb', 'wrong-fb');
+
+  if (isCorrect) {
+    banner.classList.add('correct-fb');
+    fbLabel.textContent = q.type === 'num' ? 'Close enough!' : 'Correct!';
+    if (q.type === 'num') {
+      fbMsg.textContent = 'The answer was ' + q.correct + ' ' + (q.unit || '') + '. You were off by ' + (numDiff !== undefined ? numDiff : 0) + '.';
+    } else {
+      fbMsg.textContent = '';
+    }
+  } else {
+    banner.classList.add('wrong-fb');
+    fbLabel.textContent = q.type === 'num' ? 'Not quite.' : 'Wrong answer.';
+    if (q.type === 'num') {
+      fbMsg.textContent = 'The answer was ' + q.correct + ' ' + (q.unit || '') + '. You guessed ' + yourLabel + '.';
+    } else {
+      fbMsg.textContent = 'Correct answer: ' + correctLabel;
+    }
+  }
+
+  fbExplain.textContent = q.explanation;
+  banner.classList.add('show');
+
+  // Show next button
+  const nextBtn = document.getElementById('nextBtn');
+  if (currentQ === QUESTIONS.length - 1) {
+    nextBtn.textContent = 'See My Results';
+  } else {
+    nextBtn.textContent = 'Next Question \u2192';
+  }
+  nextBtn.classList.add('show');
+}
+
+// ─────────────────────────────────────────────
+//  NEXT QUESTION
+// ─────────────────────────────────────────────
+function nextQuestion() {
+  currentQ++;
+  document.getElementById('nextBtn').classList.remove('show');
+
+  if (currentQ >= QUESTIONS.length) {
+    showResults();
+    return;
+  }
+
+  updateProgress();
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────
+//  RESULTS
+// ─────────────────────────────────────────────
+function getGrade(s, total) {
+  const pct = s / total;
+  if (pct >= 0.97) return { letter: 'A+', cls: 'A', title: 'Cap Genius', sub: 'You could run an NFL front office.' };
+  if (pct >= 0.93) return { letter: 'A',  cls: 'A', title: 'Front Office Material', sub: 'You know this stuff cold.' };
+  if (pct >= 0.90) return { letter: 'A-', cls: 'A', title: 'Senior Scout Level', sub: 'Impressive cap IQ.' };
+  if (pct >= 0.87) return { letter: 'B+', cls: 'B', title: 'Capologist in Training', sub: 'You\'re closer to the top than the bottom.' };
+  if (pct >= 0.83) return { letter: 'B',  cls: 'B', title: 'Solid Cap Knowledge', sub: 'Better than most fans.' };
+  if (pct >= 0.80) return { letter: 'B-', cls: 'B', title: 'Above Average Fan', sub: 'You clearly follow the league closely.' };
+  if (pct >= 0.77) return { letter: 'C+', cls: 'C', title: 'Average NFL Fan', sub: 'You know the basics. Keep studying.' };
+  if (pct >= 0.70) return { letter: 'C',  cls: 'C', title: 'Casual Fan Territory', sub: 'The cap is trickier than it looks.' };
+  if (pct >= 0.60) return { letter: 'D',  cls: 'D', title: 'Needs Work', sub: 'The cap is a whole other game.' };
+  return               { letter: 'F',  cls: 'F', title: 'Back to the Salary Cap 101', sub: 'Don\'t worry — most fans don\'t know this stuff either.' };
+}
+
+function buildShareText(score, total, grade) {
+  const stars = score >= 14 ? '★★★' : score >= 12 ? '★★☆' : score >= 9 ? '★☆☆' : '☆☆☆';
+  return `I just scored ${score}/${total} (${grade.letter}) on the NFL Salary Cap Quiz! ${stars}\n\nThink you can beat me? Test your cap IQ at ainflgm.com/cap-quiz.html`;
+}
+
+function showResults() {
+  // Update progress to 100%
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = QUESTIONS.length + ' / ' + QUESTIONS.length;
+
+  const total = QUESTIONS.length;
+  const grade = getGrade(score, total);
+  const pct   = Math.round((score / total) * 100);
+  const correct = userAnswers.filter(a => a.correct).length;
+  const wrong   = total - correct;
+
+  // High score
+  const prev = getHighScore();
+  const isNew = score > prev;
+  if (isNew) saveHighScore(score);
+  refreshHighScoreBar();
+
+  const shareText = buildShareText(score, total, grade);
+
+  // Review HTML
+  const reviewItems = userAnswers.map((a, i) => `
+    <div class="review-item ${a.correct ? 'ri-correct' : 'ri-wrong'}">
+      <div class="ri-q">${i + 1}. ${a.question}</div>
+      <div class="ri-meta">
+        <div class="ri-your"><span class="ri-label">You:</span> ${a.yourAnswer}</div>
+        ${!a.correct ? `<div class="ri-correct-ans"><span class="ri-label">Correct:</span> ${a.correctAnswer}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  const resultsScreen = document.getElementById('resultsScreen');
+  resultsScreen.innerHTML = `
+    <div class="grade-card">
+      <div class="grade-circle ${grade.cls}">${grade.letter}</div>
+      <div class="result-title">${grade.title}</div>
+      <div class="result-sub">${grade.sub}</div>
+      <div class="score-big">${score} / ${total}</div>
+      <div class="score-label">${pct}% Correct</div>
+      <div class="stat-row">
+        <div class="stat-pill"><span>${correct}</span> Correct</div>
+        <div class="stat-pill"><span>${wrong}</span> Wrong</div>
+        ${isNew ? '<div class="stat-pill" style="border-color:rgba(255,214,0,0.3);color:var(--yellow);">New Best!</div>' : ''}
+      </div>
+      <div class="share-box">
+        <div class="share-box-label">Share Your Score</div>
+        <div class="share-text" id="shareTextBox">${shareText}</div>
+      </div>
+      <div class="result-actions">
+        <button class="btn-share" onclick="shareScore()">Share on X</button>
+        <button class="btn-copy" id="copyBtn" onclick="copyScore()">Copy Score</button>
+      </div>
+      <button class="btn-retry" onclick="retryQuiz()">Try Again</button>
+      ${prev > 0 && !isNew ? `<div class="hs-row">Your best: ${prev}/15</div>` : ''}
+    </div>
+
+    <div class="review-section">
+      <div class="review-title">Question Review</div>
+      ${reviewItems}
+    </div>
+  `;
+
+  // Hide question area, show results
+  document.getElementById('questionArea').style.display = 'none';
+  document.getElementById('nextBtn').classList.remove('show');
+  resultsScreen.classList.add('show');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // GA event
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'quiz_complete', {
+      event_category: 'cap_quiz',
+      event_label: grade.letter,
+      value: score
+    });
+  }
+}
+
+// ─────────────────────────────────────────────
+//  SHARE / COPY
+// ─────────────────────────────────────────────
+function shareScore() {
+  const txt = document.getElementById('shareTextBox').textContent;
+  const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(txt);
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function copyScore() {
+  const txt = document.getElementById('shareTextBox').textContent;
+  const btn = document.getElementById('copyBtn');
+  navigator.clipboard.writeText(txt).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Score'; }, 2000);
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Score'; }, 2000);
+  });
+}
+
+function retryQuiz() {
+  initQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────
+//  BOOT
+// ─────────────────────────────────────────────
+refreshHighScoreBar();
+initQuiz();
+</script>
+</body>
+</html>

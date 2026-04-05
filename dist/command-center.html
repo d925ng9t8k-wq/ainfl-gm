@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="apple-mobile-web-app-title" content="9 Command Center">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<title>9 Enterprises -- Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --bg:       #0a0a0f;
+  --bg-2:     #0f1018;
+  --surface:  #12131c;
+  --surface2: #181a26;
+  --surface3: #1e2030;
+  --border:   rgba(255,255,255,0.06);
+  --border-h: rgba(255,255,255,0.10);
+  --orange:   #FB4F14;
+  --orange-g: #FF6B35;
+  --green:    #22c55e;
+  --green-d:  rgba(34,197,94,0.15);
+  --red:      #ef4444;
+  --red-d:    rgba(239,68,68,0.12);
+  --yellow:   #eab308;
+  --yellow-d: rgba(234,179,8,0.12);
+  --cyan:     #06b6d4;
+  --cyan-d:   rgba(6,182,212,0.12);
+  --blue:     #3b82f6;
+  --purple:   #8b5cf6;
+  --text:     #e2e2e8;
+  --text-dim: #6b7280;
+  --text-m:   #3d4050;
+  --white:    #ffffff;
+  --radius:   12px;
+  --radius-s: 8px;
+  --mono:     'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.top-bar .logo {
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--white);
+  letter-spacing: -0.03em;
+}
+.top-bar .logo span { color: var(--orange); }
+.top-bar .env-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--orange);
+  color: #000;
+  font-weight: 600;
+}
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.hub-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+}
+.hub-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--text-m);
+  transition: background 0.3s;
+}
+.hub-dot.ok { background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,0.4); }
+.hub-dot.err { background: var(--red); box-shadow: 0 0 8px rgba(239,68,68,0.4); }
+.clock {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 340px 1fr 360px;
+  grid-template-rows: auto 1fr auto;
+  gap: 1px;
+  background: var(--border);
+  min-height: calc(100vh - 53px);
+}
+
+/* Panel base */
+.panel {
+  background: var(--bg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.panel-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-title .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+/* ═══════════════════════════════════════════
+   CHAT PANEL (left)
+═══════════════════════════════════════════ */
+.chat-panel {
+  grid-row: 1 / 4;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  min-height: 0;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+
+.msg {
+  padding: 10px 14px;
+  border-radius: var(--radius-s);
+  font-size: 13px;
+  line-height: 1.55;
+  max-width: 95%;
+  word-wrap: break-word;
+}
+.msg.inbound {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+}
+.msg.outbound {
+  background: rgba(251,79,20,0.1);
+  border: 1px solid rgba(251,79,20,0.2);
+  align-self: flex-end;
+}
+.msg-meta {
+  font-size: 10px;
+  color: var(--text-m);
+  margin-top: 4px;
+  font-family: var(--mono);
+}
+.msg-sender {
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.msg.inbound .msg-sender { color: var(--cyan); }
+.msg.outbound .msg-sender { color: var(--orange); }
+
+.chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.chat-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  padding: 10px 14px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+.chat-input:focus { border-color: var(--orange); }
+.chat-input::placeholder { color: var(--text-m); }
+.chat-send-btn {
+  background: var(--orange);
+  border: none;
+  border-radius: var(--radius-s);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+.chat-send-btn:hover { background: var(--orange-g); }
+.chat-send-btn:active { transform: scale(0.97); }
+
+/* ═══════════════════════════════════════════
+   BUDGET / GAUGES (top center-right)
+═══════════════════════════════════════════ */
+.stats-row {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.stat-card {
+  background: var(--bg);
+  padding: 20px 22px;
+  position: relative;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: var(--border);
+}
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  font-family: var(--mono);
+}
+.stat-bar-gauge {
+  margin-top: 10px;
+  height: 4px;
+  background: var(--surface3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ═══════════════════════════════════════════
+   UNIVERSE OVERVIEW (center)
+═══════════════════════════════════════════ */
+.universe-panel {
+  grid-column: 2 / 3;
+  overflow-y: auto;
+}
+.universe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.co-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  padding: 16px 18px;
+  transition: border-color 0.2s, transform 0.15s;
+  cursor: default;
+}
+.co-card:hover {
+  border-color: var(--border-h);
+  transform: translateY(-1px);
+}
+.co-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.co-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+.co-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* Status pills */
+.pill {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.pill-active   { background: var(--green-d); color: var(--green); }
+.pill-building { background: var(--cyan-d); color: var(--cyan); }
+.pill-concept  { background: var(--yellow-d); color: var(--yellow); }
+.pill-pending  { background: rgba(139,92,246,0.12); color: var(--purple); }
+.pill-live     { background: var(--green-d); color: var(--green); }
+
+/* ═══════════════════════════════════════════
+   TASKS PANEL (right)
+═══════════════════════════════════════════ */
+.tasks-panel {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+}
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  transition: border-color 0.2s;
+}
+.task-item:hover { border-color: var(--border-h); }
+.task-icon {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.task-icon.in-progress { background: var(--cyan-d); color: var(--cyan); }
+.task-icon.pending { background: var(--yellow-d); color: var(--yellow); }
+.task-icon.done { background: var(--green-d); color: var(--green); }
+.task-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.task-detail {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ═══════════════════════════════════════════
+   QUICK ACTIONS
+═══════════════════════════════════════════ */
+.quick-panel {
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+}
+.actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.action-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.action-btn:hover {
+  background: var(--surface2);
+  border-color: var(--border-h);
+}
+.action-btn .icon { font-size: 14px; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════
+   SYSTEM HEALTH (bottom center)
+═══════════════════════════════════════════ */
+.health-panel {
+  grid-column: 2 / 3;
+  border-top: 1px solid var(--border);
+}
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.health-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  padding: 14px 16px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.health-card.ok { border-color: rgba(34,197,94,0.25); }
+.health-card.err { border-color: rgba(239,68,68,0.25); }
+.health-card.unknown { border-color: var(--border); }
+.health-name {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.health-indicator {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin: 0 auto 6px;
+  transition: background 0.3s;
+}
+.health-indicator.ok { background: var(--green); box-shadow: 0 0 10px rgba(34,197,94,0.35); }
+.health-indicator.err { background: var(--red); box-shadow: 0 0 10px rgba(239,68,68,0.35); }
+.health-indicator.unknown { background: var(--text-m); }
+.health-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+.health-status.ok { color: var(--green); }
+.health-status.err { color: var(--red); }
+.health-status.unknown { color: var(--text-m); }
+.health-latency {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-m);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE (fallback for smaller screens)
+═══════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: 300px 1fr 300px;
+  }
+}
+@media (max-width: 960px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .chat-panel, .tasks-panel, .quick-panel, .health-panel, .universe-panel, .stats-row {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    border: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .chat-panel { max-height: 50vh; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .health-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  padding: 12px 20px;
+  font-size: 13px;
+  color: var(--text);
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <div class="logo"><span>9</span> Command Center</div>
+    <div class="env-tag">LIVE</div>
+  </div>
+  <div class="top-bar-right">
+    <div class="hub-status">
+      <div class="hub-dot" id="hubDot"></div>
+      <span id="hubLabel">Connecting...</span>
+    </div>
+    <div class="clock" id="clock"></div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD GRID ═══ -->
+<div class="dashboard">
+
+  <!-- LEFT: Live Chat -->
+  <div class="panel chat-panel">
+    <div class="panel-title"><div class="dot"></div> Live Chat -- Telegram</div>
+    <div class="chat-messages" id="chatMessages">
+      <div style="color:var(--text-m);font-size:12px;text-align:center;padding:40px 0;">Loading messages...</div>
+    </div>
+    <div class="chat-input-area">
+      <textarea class="chat-input" id="chatInput" placeholder="Type a message..." rows="1"></textarea>
+      <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- TOP CENTER-RIGHT: Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Monthly Burn</div>
+      <div class="stat-value" id="statBurn">$218</div>
+      <div class="stat-sub">Verified subscriptions</div>
+      <div class="stat-bar-gauge">
+        <div class="stat-bar-fill" style="width:44%;background:var(--orange);"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Companies</div>
+      <div class="stat-value">10</div>
+      <div class="stat-sub">3 active / 4 building / 3 concept</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Budget Remaining</div>
+      <div class="stat-value" id="statBudget">$300</div>
+      <div class="stat-sub">Approved resource budget</div>
+      <div class="stat-bar-gauge">
+        <div class="stat-bar-fill" id="budgetFill" style="width:100%;background:var(--green);"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Hub Uptime</div>
+      <div class="stat-value" id="statUptime">--</div>
+      <div class="stat-sub" id="statUptimeSub">Checking...</div>
+    </div>
+  </div>
+
+  <!-- CENTER: Universe Overview -->
+  <div class="panel universe-panel">
+    <div class="panel-title"><div class="dot"></div> Universe Overview</div>
+    <div class="universe-grid" id="universeGrid"></div>
+  </div>
+
+  <!-- RIGHT TOP: Active Tasks -->
+  <div class="panel tasks-panel">
+    <div class="panel-title"><div class="dot"></div> Active Tasks</div>
+    <div id="tasksList"></div>
+  </div>
+
+  <!-- BOTTOM CENTER: System Health -->
+  <div class="panel health-panel">
+    <div class="panel-title"><div class="dot"></div> System Health</div>
+    <div class="health-grid" id="healthGrid"></div>
+  </div>
+
+  <!-- RIGHT BOTTOM: Quick Actions -->
+  <div class="panel quick-panel">
+    <div class="panel-title"><div class="dot"></div> Quick Actions</div>
+    <div class="actions-grid">
+      <button class="action-btn" onclick="quickAction('check-inbox')"><span class="icon">&#9993;</span> Check Inbox</button>
+      <button class="action-btn" onclick="quickAction('health-sweep')"><span class="icon">&#9881;</span> Health Sweep</button>
+      <button class="action-btn" onclick="quickAction('refresh-state')"><span class="icon">&#8635;</span> Refresh State</button>
+      <button class="action-btn" onclick="quickAction('open-pitch')"><span class="icon">&#9733;</span> Open Pitch Deck</button>
+      <button class="action-btn" onclick="quickAction('open-ainflgm')"><span class="icon">&#127944;</span> AiNFL GM</button>
+      <button class="action-btn" onclick="quickAction('open-dashboard')"><span class="icon">&#9635;</span> Dashboard</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+// Smart hub detection: try local first, fall back to tunnel
+const TUNNEL = 'https://marathon-strain-workstation-secret.trycloudflare.com';
+const LOCAL  = 'http://localhost:3457';
+let HUB = LOCAL;
+
+// On page load, test local connection. If it fails, switch to tunnel.
+(async () => {
+  try {
+    await fetch(LOCAL + '/health', { signal: AbortSignal.timeout(2000) });
+    HUB = LOCAL;
+    console.log('Hub: connected via localhost');
+  } catch {
+    HUB = TUNNEL;
+    console.log('Hub: using tunnel (remote access)');
+  }
+})();
+let lastMessages = [];
+let hubConnected = false;
+
+/* ═══════════════════════════════════════════
+   COMPANIES DATA
+═══════════════════════════════════════════ */
+const companies = [
+  { name: '9 Enterprises', status: 'active', desc: 'AI-powered holding company. Parent entity for all ventures.' },
+  { name: 'AiNFL GM', status: 'active', desc: 'AI-powered NFL draft analysis and GM simulation platform.' },
+  { name: 'Shop9', status: 'building', desc: 'AI-operated dropshipping storefront. Autonomous e-commerce.' },
+  { name: 'Pilot', status: 'active', desc: 'Personal AI assistant for Kyle C. Custom dashboard + chat.' },
+  { name: 'Jules', status: 'concept', desc: 'Personal AI for Jamie and family. Scheduling, reminders, help.' },
+  { name: 'FreeAgent', status: 'building', desc: 'Consumer-facing AI assistant. Free tier personal AI for everyone.' },
+  { name: 'AI Underwriter', status: 'building', desc: 'Mortgage AI. FHA-first automated underwriting POC.' },
+  { name: 'Chaperone', status: 'building', desc: 'AI education platform. Guided AI learning experiences.' },
+  { name: "Hitchhiker's Guide", status: 'concept', desc: 'Education-first AI content. Teach then refer strategy.' },
+  { name: 'agent9', status: 'concept', desc: 'AI real estate venture. Buy/sell homes without realtors.' }
+];
+
+const tasks = [
+  { name: 'Command Center Build', detail: 'Full dashboard rewrite', status: 'in-progress' },
+  { name: 'Shop9 Dropshipping', detail: '48hr launch sprint', status: 'in-progress' },
+  { name: '9E LLC Registration', detail: 'Ohio filing -- $99', status: 'pending' },
+  { name: 'Sleeper Integration', detail: 'Fantasy sports distribution', status: 'pending' },
+  { name: 'Portfolio Monitoring', detail: 'Market + trading positions', status: 'in-progress' },
+  { name: 'Burrow Partnership', detail: 'Charity split, agent outreach', status: 'pending' },
+  { name: 'AI Underwriter POC', detail: 'FHA-first RAG build', status: 'pending' },
+  { name: 'Domain Architecture', detail: 'get9.ai + playaigm.com + 9enterprises.ai', status: 'in-progress' }
+];
+
+const healthEndpoints = [
+  { name: 'Comms Hub', url: `${HUB}/health`, key: 'hub' },
+  { name: 'Voice Server', url: 'http://localhost:3456/health', key: 'voice' },
+  { name: 'Pilot Server', url: 'http://localhost:3472/health', key: 'pilot' },
+  { name: 'Telegram', url: null, key: 'telegram' },
+  { name: 'Tunnel', url: null, key: 'tunnel' }
+];
+
+/* ═══════════════════════════════════════════
+   RENDER UNIVERSE
+═══════════════════════════════════════════ */
+function renderUniverse() {
+  const grid = document.getElementById('universeGrid');
+  grid.innerHTML = companies.map(c => {
+    const pillClass = c.status === 'active' ? 'pill-active' :
+                      c.status === 'building' ? 'pill-building' : 'pill-concept';
+    return `<div class="co-card">
+      <div class="co-card-top">
+        <div class="co-name">${c.name}</div>
+        <div class="pill ${pillClass}">${c.status}</div>
+      </div>
+      <div class="co-desc">${c.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════
+   RENDER TASKS
+═══════════════════════════════════════════ */
+function renderTasks() {
+  const list = document.getElementById('tasksList');
+  list.innerHTML = tasks.map(t => {
+    const iconClass = t.status === 'in-progress' ? 'in-progress' :
+                      t.status === 'pending' ? 'pending' : 'done';
+    const icon = t.status === 'in-progress' ? '&#9654;' :
+                 t.status === 'pending' ? '&#9679;' : '&#10003;';
+    return `<div class="task-item">
+      <div class="task-icon ${iconClass}">${icon}</div>
+      <div>
+        <div class="task-name">${t.name}</div>
+        <div class="task-detail">${t.detail}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════
+   RENDER HEALTH
+═══════════════════════════════════════════ */
+function renderHealth(results) {
+  const grid = document.getElementById('healthGrid');
+  grid.innerHTML = healthEndpoints.map((ep, i) => {
+    const r = results[i] || { ok: false, ms: null };
+    const cls = r.ok ? 'ok' : (r.checked ? 'err' : 'unknown');
+    const label = r.ok ? 'Online' : (r.checked ? 'Offline' : 'Unknown');
+    const latency = r.ms !== null ? `${r.ms}ms` : '--';
+    return `<div class="health-card ${cls}">
+      <div class="health-indicator ${cls}"></div>
+      <div class="health-name">${ep.name}</div>
+      <div class="health-status ${cls}">${label}</div>
+      <div class="health-latency">${latency}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════
+   CHAT
+═══════════════════════════════════════════ */
+function renderMessages(messages) {
+  const container = document.getElementById('chatMessages');
+  if (!messages || messages.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-m);font-size:12px;text-align:center;padding:40px 0;">No messages yet</div>';
+    return;
+  }
+  const html = messages.map(m => {
+    const isOut = m.direction === 'out' || m.from === '9';
+    const cls = isOut ? 'outbound' : 'inbound';
+    const sender = isOut ? '9' : (m.from || 'Owner');
+    const time = m.timestamp ? new Date(m.timestamp).toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'}) : '';
+    const text = (m.text || m.message || '').replace(/</g, '&lt;');
+    return `<div class="msg ${cls}">
+      <div class="msg-sender">${sender}</div>
+      <div>${text}</div>
+      <div class="msg-meta">${time}</div>
+    </div>`;
+  }).join('');
+  const wasAtBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 40;
+  container.innerHTML = html;
+  if (wasAtBottom) container.scrollTop = container.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+  try {
+    const res = await fetch(`${HUB}/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channel: 'telegram', message: text })
+    });
+    if (res.ok) {
+      showToast('Message sent');
+      setTimeout(fetchState, 1000);
+    } else {
+      showToast('Send failed: ' + res.status);
+    }
+  } catch(e) {
+    showToast('Send failed: Hub unreachable');
+  }
+}
+
+// Enter to send, Shift+Enter for newline
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('chatInput');
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  // Auto-resize
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 80) + 'px';
+  });
+});
+
+/* ═══════════════════════════════════════════
+   DATA FETCHING
+═══════════════════════════════════════════ */
+async function fetchState() {
+  try {
+    const res = await fetch(`${HUB}/state`);
+    const data = await res.json();
+    hubConnected = true;
+    updateHubStatus(true);
+
+    // Messages
+    if (data.recentMessages && data.recentMessages.length > 0) {
+      renderMessages(data.recentMessages);
+    } else if (data.messages && data.messages.length > 0) {
+      renderMessages(data.messages);
+    }
+
+    // Uptime
+    if (data.uptime) {
+      const hrs = Math.floor(data.uptime / 3600);
+      const mins = Math.floor((data.uptime % 3600) / 60);
+      document.getElementById('statUptime').textContent = `${hrs}h ${mins}m`;
+      document.getElementById('statUptimeSub').textContent = 'Hub process uptime';
+    }
+
+    // Channel status from state
+    if (data.channels) {
+      updateChannelHealth(data.channels);
+    }
+  } catch(e) {
+    hubConnected = false;
+    updateHubStatus(false);
+  }
+}
+
+function updateHubStatus(ok) {
+  const dot = document.getElementById('hubDot');
+  const label = document.getElementById('hubLabel');
+  dot.className = 'hub-dot ' + (ok ? 'ok' : 'err');
+  label.textContent = ok ? 'Hub Connected' : 'Hub Offline';
+}
+
+async function checkHealth() {
+  const results = [];
+  for (const ep of healthEndpoints) {
+    if (ep.url) {
+      const start = Date.now();
+      try {
+        const res = await fetch(ep.url, { signal: AbortSignal.timeout(3000) });
+        results.push({ ok: res.ok, ms: Date.now() - start, checked: true });
+      } catch(e) {
+        results.push({ ok: false, ms: null, checked: true });
+      }
+    } else {
+      // Telegram and Tunnel derived from hub state
+      results.push(channelHealthCache[ep.key] || { ok: false, ms: null, checked: false });
+    }
+  }
+  renderHealth(results);
+}
+
+let channelHealthCache = {};
+function updateChannelHealth(channels) {
+  if (channels.telegram !== undefined) {
+    channelHealthCache.telegram = { ok: channels.telegram === 'active' || channels.telegram === true, ms: null, checked: true };
+  }
+  if (channels.tunnel !== undefined) {
+    channelHealthCache.tunnel = { ok: channels.tunnel === 'active' || channels.tunnel === true, ms: null, checked: true };
+  }
+}
+
+/* ═══════════════════════════════════════════
+   QUICK ACTIONS
+═══════════════════════════════════════════ */
+async function quickAction(action) {
+  switch(action) {
+    case 'check-inbox':
+      try {
+        const res = await fetch(`${HUB}/inbox`);
+        const data = await res.json();
+        const count = data.messages ? data.messages.length : 0;
+        showToast(`Inbox: ${count} message(s)`);
+        if (count > 0) fetchState();
+      } catch(e) {
+        showToast('Inbox check failed');
+      }
+      break;
+    case 'health-sweep':
+      showToast('Running health sweep...');
+      await checkHealth();
+      showToast('Health sweep complete');
+      break;
+    case 'refresh-state':
+      await fetchState();
+      showToast('State refreshed');
+      break;
+    case 'open-pitch':
+      window.open('/pitch.html', '_blank');
+      break;
+    case 'open-ainflgm':
+      window.open('https://ainflgm.com', '_blank');
+      break;
+    case 'open-dashboard':
+      window.open('/dashboard.html', '_blank');
+      break;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleString('en-US', {
+    timeZone: 'America/New_York',
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  }) + ' ET';
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+renderUniverse();
+renderTasks();
+updateClock();
+fetchState();
+checkHealth();
+
+// Intervals
+setInterval(updateClock, 1000);
+setInterval(fetchState, 5000);
+setInterval(checkHealth, 30000);
+</script>
+</body>
+</html>

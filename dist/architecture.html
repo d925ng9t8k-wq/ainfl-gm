@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0a0a0a">
+<!-- standalone mode removed for browser controls -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="9E Architecture">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<meta name="description" content="9 Enterprises — Full System Architecture v4.0. Developer-grade technical documentation.">
+<title>9 Enterprises — System Architecture v4.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:        #0a0a0a;
+  --bg-2:      #0f0f12;
+  --bg-3:      #141418;
+  --bg-4:      #1a1a20;
+  --bg-code:   #0d0d10;
+  --border:    rgba(255,255,255,0.07);
+  --border-hi: rgba(251,79,20,0.3);
+  --orange:    #FB4F14;
+  --orange-2:  #ff6b35;
+  --orange-dim: rgba(251,79,20,0.06);
+  --orange-border: rgba(251,79,20,0.2);
+  --green:     #00ff88;
+  --green-dim: rgba(0,255,136,0.07);
+  --cyan:      #00e5ff;
+  --cyan-dim:  rgba(0,229,255,0.07);
+  --yellow:    #ffd060;
+  --yellow-dim: rgba(255,208,96,0.07);
+  --red:       #ff3b5c;
+  --red-dim:   rgba(255,59,92,0.07);
+  --purple:    #9b6dff;
+  --text:      #e2e2e2;
+  --text-dim:  #888888;
+  --text-mute: #444444;
+  --white:     #ffffff;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --radius:    12px;
+  --radius-sm: 8px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.page-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .page-wrap { grid-template-columns: 1fr; }
+}
+
+/* ── Sidebar Nav ─────────────────────────────────────────────────────────── */
+.sidebar {
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto;
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  flex-shrink: 0;
+}
+
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--bg-4); }
+
+.sidebar-brand {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-brand-title {
+  font-size: 13px; font-weight: 800; color: var(--white);
+  letter-spacing: -0.02em;
+}
+.sidebar-brand-sub {
+  font-family: var(--font-mono); font-size: 10px; color: var(--orange);
+  letter-spacing: 1px; margin-top: 2px;
+}
+
+.sidebar-section-label {
+  font-family: var(--font-mono); font-size: 9px; color: var(--text-mute);
+  text-transform: uppercase; letter-spacing: 2px;
+  padding: 12px 20px 4px;
+}
+
+.sidebar-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 20px;
+  font-size: 12px; color: var(--text-dim);
+  text-decoration: none; cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar-link:hover {
+  color: var(--text); background: rgba(255,255,255,0.03);
+  border-left-color: var(--border-hi);
+}
+.sidebar-link.active {
+  color: var(--orange-2); background: var(--orange-dim);
+  border-left-color: var(--orange);
+}
+.sidebar-link .sn { font-weight: 700; min-width: 22px; color: var(--text-mute); font-size: 11px; }
+
+.sidebar-back {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 20px; margin-bottom: 8px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-mute);
+  text-decoration: none; transition: color 0.15s;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px; margin-bottom: 12px;
+}
+.sidebar-back:hover { color: var(--orange); }
+
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+}
+
+/* ── Main Content ────────────────────────────────────────────────────────── */
+.main-content {
+  padding: 48px 56px 80px;
+  max-width: 900px;
+}
+
+@media (max-width: 1200px) {
+  .main-content { padding: 32px 32px 60px; }
+}
+@media (max-width: 768px) {
+  .main-content { padding: 24px 18px 48px; }
+}
+
+/* ── Mobile nav bar ──────────────────────────────────────────────────────── */
+.mobile-topbar {
+  display: none;
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.97);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 18px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  align-items: center; justify-content: space-between;
+}
+@media (max-width: 1024px) { .mobile-topbar { display: flex; } }
+.mobile-topbar-title { font-size: 13px; font-weight: 700; color: var(--white); }
+.mobile-topbar-back {
+  font-family: var(--font-mono); font-size: 11px; color: var(--orange);
+  text-decoration: none;
+}
+
+/* ── Page Header ─────────────────────────────────────────────────────────── */
+.doc-header { margin-bottom: 40px; }
+.doc-version-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+  color: var(--orange); text-transform: uppercase;
+  background: var(--orange-dim); border: 1px solid var(--orange-border);
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 16px;
+}
+.doc-version-badge::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--orange); box-shadow: 0 0 6px var(--orange);
+}
+.doc-title {
+  font-size: 36px; font-weight: 800; color: var(--white);
+  letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 12px;
+}
+@media (max-width: 768px) { .doc-title { font-size: 26px; } }
+.doc-subtitle { font-size: 16px; color: var(--text-dim); max-width: 640px; line-height: 1.6; margin-bottom: 24px; }
+
+.doc-meta-bar {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 14px 18px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.doc-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+}
+.doc-meta-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+.doc-meta-item strong { color: var(--text); }
+
+/* ── Section Layout ──────────────────────────────────────────────────────── */
+.doc-section { margin-bottom: 56px; scroll-margin-top: 24px; }
+
+.section-header {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--font-mono); font-size: 11px; color: var(--orange);
+  letter-spacing: 1px; min-width: 28px; font-weight: 500;
+}
+.section-title {
+  font-size: 22px; font-weight: 800; color: var(--white);
+  letter-spacing: -0.02em; line-height: 1.2;
+}
+
+h3.sub-heading {
+  font-size: 14px; font-weight: 700; color: var(--white);
+  letter-spacing: -0.01em; margin: 28px 0 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+h3.sub-heading::before {
+  content: ''; width: 3px; height: 16px; background: var(--orange);
+  border-radius: 2px; flex-shrink: 0;
+}
+
+p { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 14px; }
+p:last-child { margin-bottom: 0; }
+p strong { color: var(--text); font-weight: 600; }
+
+/* ── Novice Callout ──────────────────────────────────────────────────────── */
+.novice-box {
+  display: flex; gap: 12px;
+  background: rgba(0,229,255,0.04);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+.novice-icon {
+  font-size: 16px; flex-shrink: 0; margin-top: 1px;
+  line-height: 1.5;
+}
+.novice-content {}
+.novice-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 4px;
+}
+.novice-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+.novice-text strong { color: rgba(0,229,255,0.8); }
+
+/* ── Code Blocks ─────────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--bg-code);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.code-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+}
+.code-block-lang {
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-mute);
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.code-block-label {
+  font-family: var(--font-mono); font-size: 10px; color: var(--orange);
+  letter-spacing: 0.5px;
+}
+.code-block pre {
+  padding: 16px 18px;
+  font-family: var(--font-mono); font-size: 12px;
+  color: #b8ffb8; line-height: 1.7;
+  white-space: pre; overflow-x: auto;
+}
+.code-block pre .c  { color: #555; }           /* comments */
+.code-block pre .k  { color: #ff9de2; }        /* keywords */
+.code-block pre .s  { color: #ffd060; }        /* strings */
+.code-block pre .n  { color: #00e5ff; }        /* names/vars */
+.code-block pre .p  { color: var(--orange); }  /* ports/endpoints */
+.code-block pre .h  { color: #fff; }           /* headers/labels */
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 16px 0;
+}
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: var(--bg-3); }
+th {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-dim); padding: 10px 14px;
+  text-align: left; border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  font-size: 13px; color: var(--text-dim); padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.015); }
+td strong { color: var(--text); }
+td code {
+  font-family: var(--font-mono); font-size: 11px;
+  background: rgba(255,255,255,0.05); padding: 1px 5px;
+  border-radius: 3px; color: var(--orange-2);
+}
+
+/* ── Status Badges ───────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+  padding: 2px 7px; border-radius: 10px;
+}
+.badge-live    { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(0,255,136,0.2); }
+.badge-active  { background: var(--cyan-dim);   color: var(--cyan);   border: 1px solid rgba(0,229,255,0.2); }
+.badge-build   { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(255,208,96,0.2); }
+.badge-research{ background: rgba(155,109,255,0.07); color: var(--purple); border: 1px solid rgba(155,109,255,0.2); }
+.badge-pending { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border); }
+.badge-gap     { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,59,92,0.2); }
+.badge-fixed   { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+
+/* ── Layer Diagram ───────────────────────────────────────────────────────── */
+.layer-stack { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; }
+.layer-row {
+  display: flex; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm); overflow: hidden;
+  transition: border-color 0.2s;
+}
+.layer-row:hover { border-color: var(--border-hi); }
+.layer-num-col {
+  width: 80px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; padding: 14px 10px;
+  text-transform: uppercase;
+}
+.layer-body-col { flex: 1; padding: 14px 18px; }
+.layer-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.layer-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.layer-tech { font-family: var(--font-mono); font-size: 11px; color: var(--text-mute); margin-top: 6px; }
+.layer-tech span { color: var(--orange-2); margin-right: 12px; }
+
+.l4 .layer-num-col { background: rgba(251,79,20,0.08); color: var(--orange); border-right: 1px solid var(--border); }
+.l3 .layer-num-col { background: rgba(0,229,255,0.06); color: var(--cyan); border-right: 1px solid var(--border); }
+.l2 .layer-num-col { background: rgba(155,109,255,0.06); color: var(--purple); border-right: 1px solid var(--border); }
+.l1 .layer-num-col { background: rgba(0,255,136,0.05); color: var(--green); border-right: 1px solid var(--border); }
+
+/* ── Highlight / Alert Boxes ─────────────────────────────────────────────── */
+.alert-box {
+  display: flex; gap: 12px;
+  border-radius: var(--radius); padding: 14px 16px; margin: 16px 0;
+}
+.alert-box .alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.alert-box .alert-body {}
+.alert-box .alert-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.alert-box .alert-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.alert-box .alert-text strong { color: var(--text); }
+
+.alert-orange { background: var(--orange-dim); border: 1px solid var(--orange-border); }
+.alert-green  { background: var(--green-dim);  border: 1px solid rgba(0,255,136,0.15); }
+.alert-red    { background: var(--red-dim);    border: 1px solid rgba(255,59,92,0.15); }
+.alert-cyan   { background: var(--cyan-dim);   border: 1px solid rgba(0,229,255,0.15); }
+
+/* ── Process Diagram ─────────────────────────────────────────────────────── */
+.process-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0;
+}
+@media (max-width: 640px) { .process-grid { grid-template-columns: 1fr; } }
+.process-card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+  transition: border-color 0.2s;
+}
+.process-card:hover { border-color: var(--border-hi); }
+.process-name { font-size: 12px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.process-port { font-family: var(--font-mono); font-size: 10px; color: var(--orange); margin-bottom: 6px; }
+.process-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.process-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.process-tag {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.5px;
+  padding: 2px 7px; border-radius: 10px;
+  background: rgba(255,255,255,0.04); color: var(--text-mute);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Agent Cards ─────────────────────────────────────────────────────────── */
+.agent-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0;
+}
+@media (max-width: 640px) { .agent-grid { grid-template-columns: 1fr; } }
+.agent-card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+  transition: border-color 0.2s;
+}
+.agent-card:hover { border-color: var(--border-hi); }
+.agent-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.agent-name { font-size: 14px; font-weight: 800; color: var(--white); }
+.agent-rank { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); }
+.agent-role { font-size: 12px; font-weight: 600; color: var(--orange-2); margin-bottom: 4px; }
+.agent-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+.agent-model { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); margin-top: 6px; }
+
+/* ── Gap Cards ───────────────────────────────────────────────────────────── */
+.gap-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+.gap-card {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+}
+.gap-severity {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 10px; flex-shrink: 0; margin-top: 1px;
+  white-space: nowrap;
+}
+.sev-high   { background: var(--red-dim);    color: var(--red);    border: 1px solid rgba(255,59,92,0.2); }
+.sev-med    { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(255,208,96,0.2); }
+.sev-low    { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(0,255,136,0.2); }
+.gap-body {}
+.gap-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.gap-detail { font-size: 12px; color: var(--text-dim); line-height: 1.55; }
+.gap-plan { font-family: var(--font-mono); font-size: 11px; color: var(--orange); margin-top: 5px; }
+
+/* ── Endpoint List ───────────────────────────────────────────────────────── */
+.endpoint-list { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; }
+.endpoint-row {
+  display: flex; gap: 0; align-items: stretch;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); overflow: hidden;
+  transition: border-color 0.2s;
+}
+.endpoint-row:hover { border-color: var(--border-hi); }
+.endpoint-method {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  padding: 10px 12px; min-width: 50px; text-align: center;
+  border-right: 1px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.method-get  { background: rgba(0,229,255,0.08);   color: var(--cyan); }
+.method-post { background: rgba(0,255,136,0.07);   color: var(--green); }
+.method-del  { background: rgba(255,59,92,0.07);   color: var(--red); }
+.endpoint-path {
+  font-family: var(--font-mono); font-size: 12px; color: var(--orange-2);
+  padding: 10px 14px; border-right: 1px solid var(--border); min-width: 200px;
+  display: flex; align-items: center;
+}
+@media (max-width: 640px) { .endpoint-path { min-width: 150px; font-size: 11px; } }
+.endpoint-desc {
+  font-size: 12px; color: var(--text-dim); padding: 10px 14px;
+  display: flex; align-items: center; flex: 1;
+}
+
+/* ── Timeline ────────────────────────────────────────────────────────────── */
+.timeline { position: relative; padding-left: 24px; margin: 16px 0; }
+.timeline::before {
+  content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px;
+  width: 1px; background: var(--border);
+}
+.timeline-item { position: relative; margin-bottom: 18px; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -21px; top: 5px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--orange); box-shadow: 0 0 6px var(--orange);
+}
+.timeline-item.done::before { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.timeline-item.pending::before { background: var(--text-mute); box-shadow: none; }
+.timeline-date { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); margin-bottom: 2px; }
+.timeline-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.timeline-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+/* ── Cost Grid ───────────────────────────────────────────────────────────── */
+.cost-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+@media (max-width: 640px) { .cost-grid { grid-template-columns: repeat(2, 1fr); } }
+.cost-card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px 16px;
+}
+.cost-service { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.cost-purpose { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+.cost-amount { font-family: var(--font-mono); font-size: 16px; color: var(--orange-2); font-weight: 500; }
+.cost-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); margin-top: 3px; }
+
+/* ── TOC ─────────────────────────────────────────────────────────────────── */
+.toc-block {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; margin: 24px 0 40px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px;
+}
+@media (max-width: 640px) { .toc-block { grid-template-columns: 1fr; } }
+.toc-entry {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 8px; border-radius: 6px;
+  text-decoration: none; color: var(--text-dim); font-size: 13px;
+  transition: all 0.15s;
+}
+.toc-entry:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.toc-entry .toc-num { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); min-width: 22px; }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.doc-footer {
+  margin-top: 56px; padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between;
+}
+.doc-footer-left { font-family: var(--font-mono); font-size: 11px; color: var(--text-mute); }
+.doc-footer-links { display: flex; gap: 16px; }
+.doc-footer-links a { font-size: 12px; color: var(--orange); text-decoration: none; }
+.doc-footer-links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- Mobile topbar -->
+<div class="mobile-topbar">
+  <span class="mobile-topbar-title">Architecture v4.0</span>
+  <a class="mobile-topbar-back" href="/9enterprises.html">&#8592; War Room</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+  <nav class="sidebar">
+    <a class="sidebar-back" href="/9enterprises.html">&#8592; Back to War Room</a>
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-title">9 Enterprises LLC</div>
+      <div class="sidebar-brand-sub">Architecture v4.0</div>
+    </div>
+
+    <div class="sidebar-section-label">Document</div>
+    <a class="sidebar-link" href="#overview">    <span class="sn">00</span> Overview</a>
+
+    <div class="sidebar-section-label">Architecture</div>
+    <a class="sidebar-link" href="#layer-model"> <span class="sn">01</span> Layer Model</a>
+    <a class="sidebar-link" href="#processes">   <span class="sn">02</span> Always-Running Processes</a>
+    <a class="sidebar-link" href="#comms">       <span class="sn">03</span> Communication Flow</a>
+    <a class="sidebar-link" href="#endpoints">   <span class="sn">04</span> Hub API Endpoints</a>
+    <a class="sidebar-link" href="#terminal">    <span class="sn">05</span> Terminal Liveness</a>
+
+    <div class="sidebar-section-label">Organization</div>
+    <a class="sidebar-link" href="#org">         <span class="sn">06</span> Org Structure</a>
+    <a class="sidebar-link" href="#agents">      <span class="sn">07</span> Agent Roster</a>
+    <a class="sidebar-link" href="#naming">      <span class="sn">08</span> Naming Scheme</a>
+
+    <div class="sidebar-section-label">Business</div>
+    <a class="sidebar-link" href="#companies">   <span class="sn">09</span> Business Units</a>
+    <a class="sidebar-link" href="#revenue">     <span class="sn">10</span> Revenue Model</a>
+    <a class="sidebar-link" href="#hub-spoke">   <span class="sn">11</span> Hub-and-Spoke Scale</a>
+
+    <div class="sidebar-section-label">Operations</div>
+    <a class="sidebar-link" href="#costs">       <span class="sn">12</span> Cost Model</a>
+    <a class="sidebar-link" href="#gaps">        <span class="sn">13</span> Known Gaps</a>
+    <a class="sidebar-link" href="#changelog">   <span class="sn">14</span> Changelog</a>
+  </nav>
+
+  <!-- ── Main ────────────────────────────────────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <div class="doc-header" id="overview">
+      <div class="doc-version-badge">Architecture v4.0</div>
+      <h1 class="doc-title">9 Enterprises<br>System Architecture</h1>
+      <p class="doc-subtitle">Full technical documentation for the 9 Enterprises AI operating platform. Developer-grade detail with plain-English annotations throughout.</p>
+      <div class="doc-meta-bar">
+        <div class="doc-meta-item"><div class="dot"></div> Version: <strong>4.0 — March 30, 2026</strong></div>
+        <div class="doc-meta-item"><div class="dot"></div> Companies: <strong>9 Active</strong></div>
+        <div class="doc-meta-item"><div class="dot"></div> Operating cost: <strong>~$257/mo</strong></div>
+        <div class="doc-meta-item"><div class="dot"></div> Uptime target: <strong>99.5%</strong></div>
+        <div class="doc-meta-item"><div class="dot"></div> Classification: <strong>Shareable</strong></div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="toc-block">
+      <a class="toc-entry" href="#layer-model">  <span class="toc-num">01</span> Layer Model</a>
+      <a class="toc-entry" href="#processes">    <span class="toc-num">02</span> Always-Running Processes</a>
+      <a class="toc-entry" href="#comms">        <span class="toc-num">03</span> Communication Flow</a>
+      <a class="toc-entry" href="#endpoints">    <span class="toc-num">04</span> Hub API Endpoints</a>
+      <a class="toc-entry" href="#terminal">     <span class="toc-num">05</span> Terminal Liveness</a>
+      <a class="toc-entry" href="#org">          <span class="toc-num">06</span> Org Structure</a>
+      <a class="toc-entry" href="#agents">       <span class="toc-num">07</span> Agent Roster</a>
+      <a class="toc-entry" href="#naming">       <span class="toc-num">08</span> Naming Scheme</a>
+      <a class="toc-entry" href="#companies">    <span class="toc-num">09</span> Business Units</a>
+      <a class="toc-entry" href="#revenue">      <span class="toc-num">10</span> Revenue Model</a>
+      <a class="toc-entry" href="#hub-spoke">    <span class="toc-num">11</span> Hub-and-Spoke Scale</a>
+      <a class="toc-entry" href="#costs">        <span class="toc-num">12</span> Cost Model</a>
+      <a class="toc-entry" href="#gaps">         <span class="toc-num">13</span> Known Gaps</a>
+      <a class="toc-entry" href="#changelog">    <span class="toc-num">14</span> Changelog</a>
+    </div>
+
+    <!-- ── Section 01: Layer Model ──────────────────────────────────────── -->
+    <section class="doc-section" id="layer-model">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">System Layer Model</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#128161;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">Think of this like a football team. <strong>The Owner is the head coach</strong> — he sets strategy and makes final calls. <strong>9 is the quarterback</strong> — on the field running plays. <strong>The Front Office</strong> are the specialist agents doing deep work. <strong>Infrastructure</strong> is the stadium and equipment that keeps everything running.</div>
+        </div>
+      </div>
+
+      <div class="layer-stack">
+        <div class="layer-row l4">
+          <div class="layer-num-col">Layer 4</div>
+          <div class="layer-body-col">
+            <div class="layer-name">The Owner — 9 Enterprises</div>
+            <div class="layer-desc">Strategic authority. Communicates via Telegram (primary), Voice, iMessage, Email. Issues directives, approves architecture changes, holds financial authority. Non-technical operator — all technical complexity is abstracted by 9.</div>
+            <div class="layer-tech"><span>Telegram</span><span>Voice</span><span>iMessage</span><span>Email</span></div>
+          </div>
+        </div>
+        <div class="layer-row l3">
+          <div class="layer-num-col">Layer 3</div>
+          <div class="layer-body-col">
+            <div class="layer-name">9 — AI Partner &amp; Orchestrator</div>
+            <div class="layer-desc">Claude Sonnet 4.6 running in Claude Code terminal. Primary AI brain. Orchestrates all agents, holds the Locker (credential vault), maintains shared state, stays on comms at all times. Uses Opus model only for critical architecture decisions when explicitly requested.</div>
+            <div class="layer-tech"><span>claude-sonnet-4-6</span><span>Claude Code</span><span>Port 3457 (hub)</span><span>The Locker (.env)</span></div>
+          </div>
+        </div>
+        <div class="layer-row l2">
+          <div class="layer-num-col">Layer 2</div>
+          <div class="layer-body-col">
+            <div class="layer-name">Front Office — Sub-Agent Teams</div>
+            <div class="layer-desc">UNO (#1, Research Lead) and Tee (#2, Engineering Lead) head permanent teams. Specialist agents (SCOUT, MONEY, DOC, CANVAS, PRESS, X9) handle domain tasks. Ephemeral task agents are spawned per assignment and terminated on completion. No direct credential access. No direct Owner communication. All output reviewed by 9 before delivery.</div>
+            <div class="layer-tech"><span>UNO</span><span>Tee</span><span>Haiku (ephemeral agents)</span><span>Sonnet (leads)</span></div>
+          </div>
+        </div>
+        <div class="layer-row l1">
+          <div class="layer-num-col">Layer 1</div>
+          <div class="layer-body-col">
+            <div class="layer-name">Infrastructure — Always-On Processes</div>
+            <div class="layer-desc">OC (comms daemon, port 3457), Headset (voice server, port 3456), Backup QB (Cloudflare Worker, always-on cloud fallback), Training Staff (LaunchAgent terminal opener), cloudflared tunnel, Freeze Watchdog LaunchAgent. Survives terminal death, Mac sleep, and crashes.</div>
+            <div class="layer-tech"><span>Node.js v20+</span><span>macOS LaunchAgents</span><span>Cloudflare Workers</span><span>cloudflared</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 02: Always-Running Processes ─────────────────────────── -->
+    <section class="doc-section" id="processes">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Always-Running Processes</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#9881;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">These are programs that run <strong>24/7 in the background</strong> on the Owner's Mac, even when 9's terminal is closed. They handle incoming messages, voice calls, and system recovery without any human intervention.</div>
+        </div>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-name">OC — comms-hub.mjs</div>
+          <div class="process-port">:3457 | Node.js daemon</div>
+          <div class="process-desc">4-channel communication router. Relay mode when 9's terminal is active; autonomous mode (Claude Haiku) when terminal is down. 30-second proactive terminal watchdog. API health probe every 10 minutes.</div>
+          <div class="process-tags">
+            <span class="process-tag">Telegram</span>
+            <span class="process-tag">iMessage</span>
+            <span class="process-tag">Email</span>
+            <span class="process-tag">PID watchdog</span>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-name">Headset — voice-server.mjs</div>
+          <div class="process-port">:3456 | Twilio + ElevenLabs</div>
+          <div class="process-desc">Inbound/outbound voice calls. STT via Twilio, reasoning via Claude Haiku, TTS via ElevenLabs Flash. 6 caller-specific personality profiles. Average exchange latency: 1.2–2.1s. Cloudflare tunnel auto-restarts on failure.</div>
+          <div class="process-tags">
+            <span class="process-tag">Twilio STT</span>
+            <span class="process-tag">Haiku</span>
+            <span class="process-tag">ElevenLabs TTS</span>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-name">Backup QB — Cloudflare Worker</div>
+          <div class="process-port">Edge (global CDN)</div>
+          <div class="process-desc">Always-on cloud failover. Handles Telegram + voice failover + SMS when Mac is offline. State synced from Mac every 2 minutes via KV store. Cron heartbeat watchdog checks Mac health every 2 minutes.</div>
+          <div class="process-tags">
+            <span class="process-tag">Cloudflare KV</span>
+            <span class="process-tag">Global edge</span>
+            <span class="process-tag">Cron watchdog</span>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-name">pilot — jules-server.mjs</div>
+          <div class="process-port">:3470 | freeagent9 #1</div>
+          <div class="process-desc">Active freeagent9 instance deployed to Kyle Cabezas (POC user). SMS via Twilio, OpenWeather morning briefings, 40+ conversation memory entries. Fully autonomous — no human in the loop.</div>
+          <div class="process-tags">
+            <span class="process-tag">Twilio SMS</span>
+            <span class="process-tag">OpenWeather</span>
+            <span class="process-tag">Memory: 40+</span>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-name">Freeze Watchdog</div>
+          <div class="process-port">LaunchAgent — macOS</div>
+          <div class="process-desc">Three-tier self-healing. Tier 1 (3 min): kill stuck process. Tier 2 (6 min): force-kill + restart OC. Tier 3 (7 min): full session recovery via Training Staff. Installed March 28 after 45-minute freeze incident.</div>
+          <div class="process-tags">
+            <span class="process-tag">3-tier recovery</span>
+            <span class="process-tag">Self-healing</span>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-name">Training Staff — open-terminal.mjs</div>
+          <div class="process-port">LaunchAgent — watches /tmp</div>
+          <div class="process-desc">Watches /tmp/9-open-terminal signal file. When OC writes to this file (after detecting terminal death), Training Staff auto-opens Terminal app and starts Claude Code. 3x retry with error handling.</div>
+          <div class="process-tags">
+            <span class="process-tag">Signal file</span>
+            <span class="process-tag">Auto-open</span>
+            <span class="process-tag">3x retry</span>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Process Dependency Tree</h3>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-lang">ASCII</span>
+          <span class="code-block-label">Full process tree with ports</span>
+        </div>
+        <pre>
+ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
+│
+├── OC: comms-hub.mjs                  [port 3457]
+│   ├── Telegram poller                (2–5s long polling, 30s timeout)
+│   ├── iMessage monitor               (reads ~/Library/Messages/chat.db via FDA)
+│   ├── Email monitor                  (Mail.app via osascript)
+│   ├── 30s terminal watchdog          (PID liveness check → signal file)
+│   ├── API health probe               (every 10 min → alerts all channels on fail)
+│   ├── Cloud sync                     (POST /context every 60s → Cloudflare KV)
+│   └── LaunchAgent safety net         (com.9.comms-hub restarts if process dies)
+│
+├── Headset: voice-server.mjs          [port 3456]
+│   ├── Twilio webhook receiver        (POST /voice)
+│   ├── STT: Twilio speech recognition
+│   ├── Reasoning: Claude Haiku        (~0.8s avg)
+│   ├── TTS: ElevenLabs Flash          (~400ms avg)
+│   ├── Caller profiles: 6 configured
+│   └── Transcript saver               (/tmp/call-transcript-latest.txt)
+│
+├── cloudflared                        (tunnel → Headset, named restart on fail)
+│
+├── pilot: jules-server.mjs            [port 3470]
+│   ├── Twilio SMS receiver
+│   ├── OpenWeather briefings          (7:30 AM ET daily)
+│   └── Memory store: JSON file        (40+ entries)
+│
+├── Freeze Watchdog LaunchAgent        (com.9.freeze-watchdog)
+│   ├── Tier 1: 3 min → kill stuck process
+│   ├── Tier 2: 6 min → force-kill + restart OC
+│   └── Tier 3: 7 min → trigger Training Staff recovery
+│
+└── Training Staff LaunchAgent         (com.9.terminal-opener)
+    ├── Watches /tmp/9-open-terminal
+    ├── Opens Terminal.app
+    └── Starts Claude Code session
+</pre>
+      </div>
+    </section>
+
+    <!-- ── Section 03: Communication Flow ───────────────────────────────── -->
+    <section class="doc-section" id="comms">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Communication Flow</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#128172;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">When the Owner sends a message on any channel, it flows through the OC hub to 9. If 9's terminal is open, the message is delivered instantly. If 9's terminal is closed, <strong>Claude Haiku handles it automatically</strong> within seconds. If the Mac itself is offline, the <strong>Cloudflare Worker (cloud backup) responds</strong>. There is no scenario where a message goes unanswered.</div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Full Message Routing Diagram</h3>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-lang">ASCII</span>
+          <span class="code-block-label">End-to-end message routing</span>
+        </div>
+        <pre>
+                    OWNER (phone / laptop)
+                            │
+            ┌───────────────┼───────────────┐
+            │               │               │
+        Telegram        iMessage         Email / Voice
+            │               │               │
+            └───────────────┼───────────────┘
+                            │
+                    ┌───────▼────────┐
+                    │  OC (comms-    │
+                    │  hub.mjs)      │
+                    │  :3457         │
+                    └───────┬────────┘
+                            │
+              ┌─────────────┴─────────────┐
+              │                           │
+     TERMINAL ACTIVE?                TERMINAL DOWN?
+              │                           │
+              ▼                           ▼
+    ┌──────────────────┐      ┌──────────────────────┐
+    │  Signal File      │      │  Claude Haiku         │
+    │  + PostToolUse    │      │  Autonomous Response  │
+    │  hook → 9 sees   │      │  (natural language,   │
+    │  message inline  │      │  context-aware)       │
+    └──────────────────┘      │                       │
+                              │  + Request terminal   │
+                              │    via Training Staff │
+                              └──────────────────────┘
+                                          │
+                                 MAC OFFLINE?
+                                          │
+                                          ▼
+                              ┌──────────────────────┐
+                              │  Backup QB           │
+                              │  (Cloudflare Worker) │
+                              │  - KV synced state   │
+                              │  - Telegram webhook  │
+                              │  - Voice→SMS fallback│
+                              └──────────────────────┘
+</pre>
+      </div>
+
+      <h3 class="sub-heading">Channel Priority &amp; Failover Cascade</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Priority</th><th>Channel</th><th>Direction</th><th>Latency</th><th>Failover To</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>Telegram</td><td>Bidirectional</td><td>&lt;2s</td><td>iMessage, then Email</td></tr>
+            <tr><td><strong>2</strong></td><td>Voice Call</td><td>Bidirectional</td><td>1.2–2.1s/exchange</td><td>SMS via Twilio</td></tr>
+            <tr><td><strong>3</strong></td><td>iMessage</td><td>Bidirectional</td><td>&lt;5s</td><td>Email (FDA required)</td></tr>
+            <tr><td><strong>4</strong></td><td>Email</td><td>Bidirectional</td><td>~30s</td><td>Last resort</td></tr>
+            <tr><td><strong>5</strong></td><td>Cloudflare Worker</td><td>Auto-failover</td><td>Edge latency</td><td>Mac back online</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">OC Operating Modes</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Mode</th><th>Trigger</th><th>Behavior</th><th>9's Role</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Relay Mode</strong></td>
+              <td>Terminal active + PID alive + ping within 45s</td>
+              <td>Messages written to signal file. PostToolUse hook delivers inline. 9 responds directly.</td>
+              <td>Full operation</td>
+            </tr>
+            <tr>
+              <td><strong>Autonomous Mode</strong></td>
+              <td>Terminal dead (PID gone OR ping timeout)</td>
+              <td>Claude Haiku processes messages. Attempts to re-open terminal. Syncs state to cloud.</td>
+              <td>Not present</td>
+            </tr>
+            <tr>
+              <td><strong>DC (Disconnected) Mode</strong></td>
+              <td>Mac offline / OC unreachable</td>
+              <td>Cloudflare Worker handles all inbound. KV-synced state used for context.</td>
+              <td>Offline</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Section 04: Hub API Endpoints ────────────────────────────────── -->
+    <section class="doc-section" id="endpoints">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">OC Hub API — Endpoints</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#128279;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">The OC hub is a local web server on the Owner's Mac. It exposes API endpoints — <strong>think of them like buttons that programs can press</strong> — to send messages, check system state, manage terminal sessions, and read the inbox. The Huddle page and all agents use these endpoints.</div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Base URL: <code style="font-family:var(--font-mono);color:var(--orange-2);font-size:13px;">http://localhost:3457</code></h3>
+
+      <div class="endpoint-list">
+        <div class="endpoint-row">
+          <div class="endpoint-method method-get">GET</div>
+          <div class="endpoint-path">/health</div>
+          <div class="endpoint-desc">Hub liveness check. Returns <code>{"status":"ok","mode":"relay|autonomous","uptime":"Xh Xm"}</code></div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-get">GET</div>
+          <div class="endpoint-path">/state</div>
+          <div class="endpoint-desc">Full shared state JSON. Includes last 50 messages, terminal status, session context, all project state. Used by The Huddle dashboard.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-get">GET</div>
+          <div class="endpoint-path">/inbox</div>
+          <div class="endpoint-desc">Unread inbound messages since last check. Clears on read. Used by 9 at session start and via PostToolUse hook.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-post">POST</div>
+          <div class="endpoint-path">/send</div>
+          <div class="endpoint-desc">Send outbound message. Body: <code>{"channel":"telegram|imessage|email","message":"..."}</code>. Routes to correct channel. Logs to completed-actions to prevent duplicate sends.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-post">POST</div>
+          <div class="endpoint-path">/context</div>
+          <div class="endpoint-desc">Update shared state. Body: key-value pairs. Triggers cloud sync to Cloudflare KV within 60 seconds.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-post">POST</div>
+          <div class="endpoint-path">/terminal/claim</div>
+          <div class="endpoint-desc">Claim terminal control. Query param: <code>?pid=CLAUDE_PID</code>. Returns session token used for all subsequent pings.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-post">POST</div>
+          <div class="endpoint-path">/terminal/ping</div>
+          <div class="endpoint-desc">Liveness ping. Query param: <code>?token=SESSION_TOKEN</code>. Must be called every ≤30s or hub considers terminal dead. Returns 401 for stale tokens.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-post">POST</div>
+          <div class="endpoint-path">/terminal/release</div>
+          <div class="endpoint-desc">Graceful terminal release. 9 calls this before exiting. Hub immediately switches to DC mode. Cuts detection gap from ~45s to near-zero.</div>
+        </div>
+        <div class="endpoint-row">
+          <div class="endpoint-method method-post">POST</div>
+          <div class="endpoint-path">/send-email</div>
+          <div class="endpoint-desc">Send email via configured provider. Body: <code>{"to":"...","subject":"...","body":"..."}</code>. Currently uses Gmail MCP (draft mode until Resend configured).</div>
+        </div>
+      </div>
+
+      <div class="alert-box alert-orange" style="margin-top:20px;">
+        <div class="alert-icon">&#9888;</div>
+        <div class="alert-body">
+          <div class="alert-title">Security Note: Local-Only, No Auth (Gap — 30-day fix)</div>
+          <div class="alert-text">Port 3457 is currently bound to localhost with no authentication. Any local process can call these endpoints. Plan: add bearer token auth header validation. See Section 13 (Known Gaps) for full remediation plan.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 05: Terminal Liveness ────────────────────────────────── -->
+    <section class="doc-section" id="terminal">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Terminal Liveness Detection</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#128262;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">The system needs to know if 9's terminal window is actually open and responsive. Four independent checks run in parallel — <strong>if any check fails, the hub assumes 9 is gone and switches to autonomous mode</strong> within 45 seconds. This prevents messages from sitting unanswered.</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Layer</th><th>Mechanism</th><th>How It Works</th><th>Failure Detection</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Layer 1</strong></td>
+              <td>PID Tracking</td>
+              <td>On <code>/terminal/claim</code>, Claude Code's PID (<code>$PPID</code>) is registered. Hub polls <code>kill -0 PID</code> every 30s — this checks if the process is alive without killing it.</td>
+              <td>Immediate on PID gone</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 2</strong></td>
+              <td>Self-Terminating Ping Loop</td>
+              <td>Bash loop runs inside terminal: <code>while kill -0 $CLAUDE_PID; do curl /terminal/ping; sleep 15; done</code>. Loop exits when Claude Code dies. Calls <code>/terminal/release</code> on exit.</td>
+              <td>~15–45s (next ping missed)</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 3</strong></td>
+              <td>Session Token Validation</td>
+              <td>Each <code>/terminal/claim</code> generates a unique UUID token. Pings must include this token. Old tokens are rejected with 401. Prevents orphan pings from a previous session keeping relay mode alive.</td>
+              <td>Immediate on invalid token</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 4</strong></td>
+              <td>Graceful Release</td>
+              <td>9 calls <code>POST /terminal/release</code> before exiting. Hub clears PID, token, and signal files immediately. Switches to autonomous mode in &lt;1 second.</td>
+              <td>Near-zero when used</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">State Machine — Terminal Status</h3>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-lang">State Diagram</span>
+          <span class="code-block-label">Terminal lifecycle</span>
+        </div>
+        <pre>
+  ┌─────────────┐
+  │  IDLE / DC  │◄───────── Mac offline OR /terminal/release
+  └──────┬──────┘
+         │ POST /terminal/claim?pid=XXXX
+         ▼
+  ┌─────────────┐    PID gone OR ping timeout (&gt;45s)
+  │   CLAIMED   │──────────────────────────────────────►┐
+  └──────┬──────┘                                        │
+         │ /terminal/ping (every 15s, with session token)│
+         │◄──────────────────────────────────────────────┘
+         │                                               │
+         ▼                                               ▼
+  ┌─────────────┐                               ┌───────────────┐
+  │    RELAY    │                               │  AUTONOMOUS   │
+  │  MODE ✓    │                               │  MODE (Haiku) │
+  └─────────────┘                               └───────────────┘
+</pre>
+      </div>
+    </section>
+
+    <!-- ── Section 06: Org Structure ────────────────────────────────────── -->
+    <section class="doc-section" id="org">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 class="section-title">Organizational Structure</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#127970;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">9 Enterprises LLC is the holding company — it <strong>owns everything</strong>. Under it are individual companies, each with their own brand and customers. Each company has products. This structure is intentional: it makes each company <strong>independently sellable</strong> without taking down the whole operation.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-lang">Tree</span>
+          <span class="code-block-label">Full org hierarchy — March 30, 2026</span>
+        </div>
+        <pre>
+9 Enterprises LLC  (Holding Company — Ohio LLC, March 2026)
+│
+├── AiGM                          [LIVE]
+│   ├── AiNFLGM (Product)         ainflgm.com          ● LIVE
+│   ├── AiNBA GM (Product)                             ● Built, deploying
+│   └── AiMLB GM (Product)                             ● Built, deploying
+│
+├── freeagent9                    [Active POC]
+│   ├── pilot (Product)           Kyle Cabezas deploy  ● ACTIVE
+│   └── Concierge Features        in development
+│
+├── trader9                       [Building]
+│   └── Algorithmic Trading Bot   Alpaca paper mode    ● Paper mode
+│
+├── x9                            [Building]
+│   └── Autonomous social presence X + IG + TikTok     ● Launching
+│
+├── agent9                        [Research]
+│   ├── get9.ai (Site)         consumer site        ● LIVE
+│   └── AI Real Estate solution   concept stage
+│
+├── AI Underwriter                [POC Complete]
+│   └── Mortgage Guideline RAG    Rapid Mortgage POC   ● POC validated
+│
+├── AI Education                  [Research]
+│   └── Hitchhiker's Guide to AI  ainflgm.com/ai-education.html
+│
+├── Prompt Scripts                [Building]
+│   └── Marketplace               page live
+│
+└── Dropship Co                   [Building]
+    └── eCommerce proving ground  Shopify pending
+</pre>
+      </div>
+
+      <h3 class="sub-heading">Approved Hierarchy Definitions (Owner-locked March 28, 2026)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Term</th><th>Definition</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Holding Company</strong></td><td>9 Enterprises LLC. All revenue, IP, and liabilities route here.</td><td>9 Enterprises LLC</td></tr>
+            <tr><td><strong>Company</strong></td><td>Revenue-generating business unit. Own brand, customers, P&amp;L.</td><td>AiGM, freeagent9, trader9</td></tr>
+            <tr><td><strong>Product</strong></td><td>Specific deliverable within a Company. Own URL or feature set.</td><td>AiNFLGM (under AiGM)</td></tr>
+            <tr><td><strong>Concept</strong></td><td>Unvalidated idea in the Draft Room. Zero resources assigned.</td><td>NBA spinoff, subscription bundle</td></tr>
+            <tr><td><strong>Project</strong></td><td>Scoped body of work. Start date, end date, defined deliverable.</td><td>"Launch AiNBA GM by April 15"</td></tr>
+            <tr><td><strong>Task</strong></td><td>Single unit of work. One assignee, one outcome.</td><td>"Write AdSense application copy"</td></tr>
+            <tr><td><strong>Assignment</strong></td><td>Task actively delegated to a named agent team.</td><td>Tee assigned: "build portfolio panel"</td></tr>
+            <tr><td><strong>Draft Room</strong></td><td>Intake queue. Where Concepts wait before becoming Companies.</td><td>NBA spinoff → Evaluation → Build</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Section 07: Agent Roster ─────────────────────────────────────── -->
+    <section class="doc-section" id="agents">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2 class="section-title">Agent Roster — The Front Office</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#128101;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">9 is the quarterback — always on comms. When deep work needs to happen, <strong>9 delegates to specialist agents</strong>. These agents are like contractors: they get a brief, do the work, report back. 9 reviews their output before anything ships. No agent contacts the Owner directly.</div>
+        </div>
+      </div>
+
+      <div class="agent-grid">
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">UNO</div>
+            <div class="agent-rank">Rank #1 — Front Office Lead</div>
+          </div>
+          <div class="agent-role">Research Team Lead</div>
+          <div class="agent-desc">Web search, competitive analysis, market research, contact profiling, document synthesis, deep dives. Outranks all other agents. Reports to 9 only.</div>
+          <div class="agent-model">Model: Sonnet (default) | Opus (critical architecture)</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">Tee</div>
+            <div class="agent-rank">Rank #2 — Front Office</div>
+          </div>
+          <div class="agent-role">Engineering Team Lead</div>
+          <div class="agent-desc">Code writing, code review, unit + integration tests, deployments, browser automation (Playwright), bug fixes, build pipelines. Manages own sub-agent build teams.</div>
+          <div class="agent-model">Model: Sonnet (default) | Opus (critical architecture)</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">SCOUT</div>
+            <div class="agent-rank">Specialist</div>
+          </div>
+          <div class="agent-role">Research &amp; Intelligence</div>
+          <div class="agent-desc">Tactical research assignments. Competitor intel, product comparisons, market sizing, individual contact profiles.</div>
+          <div class="agent-model">Model: Sonnet</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">MONEY</div>
+            <div class="agent-rank">Specialist</div>
+          </div>
+          <div class="agent-role">Financial Analysis</div>
+          <div class="agent-desc">Revenue modeling, burn rate analysis, subscription economics, pricing strategy, P&amp;L projections. Does not hold or access credentials.</div>
+          <div class="agent-model">Model: Sonnet</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">CANVAS</div>
+            <div class="agent-rank">Specialist</div>
+          </div>
+          <div class="agent-role">Design &amp; Frontend</div>
+          <div class="agent-desc">UI/UX design decisions, CSS/HTML polish, mobile responsiveness audits, brand consistency checks. Works on public-facing pages.</div>
+          <div class="agent-model">Model: Sonnet</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">PRESS</div>
+            <div class="agent-rank">Specialist</div>
+          </div>
+          <div class="agent-role">Content &amp; Social</div>
+          <div class="agent-desc">Tweet drafting, blog posts, pitch copy, press release formatting, announcement scripts. Feeds x9 content pipeline.</div>
+          <div class="agent-model">Model: Sonnet</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">X9</div>
+            <div class="agent-rank">Specialist</div>
+          </div>
+          <div class="agent-role">Content &amp; Autonomous Social</div>
+          <div class="agent-desc">Dedicated agent for the x9 social company. Autonomous posting, engagement, brand voice. Content strategy execution for X, Instagram, TikTok.</div>
+          <div class="agent-model">Model: Sonnet</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-header">
+            <div class="agent-name">Ephemeral Agents</div>
+            <div class="agent-rank">Task-specific</div>
+          </div>
+          <div class="agent-role">Born-and-die per task</div>
+          <div class="agent-desc">Spawned by UNO, Tee, or other leads for specific sub-tasks. Haiku model by default (cost-efficient). Lifespan: single task. Never hold context between assignments.</div>
+          <div class="agent-model">Model: Haiku (default for cost)</div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Delegation Rules &amp; Spend Authority</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Rule</th><th>Detail</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>9 stays on comms</strong></td><td>All tasks &gt;10 seconds are delegated. 9 never goes dark for deep work.</td></tr>
+            <tr><td><strong>No credential access</strong></td><td>No agent except 9 can read .env / The Locker. Credentials passed as scoped vars only.</td></tr>
+            <tr><td><strong>No Owner communication</strong></td><td>Agents report to 9 only. Zero direct contact with the Owner.</td></tr>
+            <tr><td><strong>Output review mandatory</strong></td><td>9 reviews all agent output before delivery or deployment.</td></tr>
+            <tr><td><strong>Spend: auto-approve</strong></td><td>&lt;$20/task: 9 approves autonomously. $20–$100: requires Owner notification. &gt;$100: Owner explicit approval required.</td></tr>
+            <tr><td><strong>Model selection</strong></td><td>Haiku for ephemeral tasks. Sonnet for leads. Opus only when Owner explicitly requests for architecture.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Section 08: Naming ────────────────────────────────────────────── -->
+    <section class="doc-section" id="naming">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2 class="section-title">Naming Scheme</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#127944;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">Everything in 9 Enterprises has a football-themed code name. This is intentional — <strong>it creates a unified identity</strong> and makes it easy to remember what each component does. "9" is Joe Burrow's number. OC is offensive coordinator. The Locker is the credential safe.</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Code Name</th><th>Real Component</th><th>Role</th><th>File / Location</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>9</strong></td><td>Claude in Claude Code</td><td>AI Partner, Orchestrator, QB</td><td>Claude Code terminal</td></tr>
+            <tr><td><strong>OC</strong></td><td>comms-hub.mjs</td><td>Routes all communication — 4 channels</td><td><code>scripts/comms-hub.mjs</code></td></tr>
+            <tr><td><strong>Headset</strong></td><td>voice-server.mjs</td><td>Inbound/outbound voice calls</td><td><code>scripts/voice-server.mjs</code></td></tr>
+            <tr><td><strong>Backup QB</strong></td><td>Cloudflare Worker</td><td>Always-on cloud failover</td><td><code>cloud-worker/</code></td></tr>
+            <tr><td><strong>Training Staff</strong></td><td>open-terminal.mjs LaunchAgent</td><td>Auto-opens terminal on crash</td><td><code>scripts/open-terminal.mjs</code></td></tr>
+            <tr><td><strong>Front Office</strong></td><td>Sub-agent teams</td><td>UNO + Tee + specialists</td><td>Agent sessions</td></tr>
+            <tr><td><strong>The Locker</strong></td><td>.env file</td><td>Credential vault — 9 access only</td><td><code>.env</code> (gitignored)</td></tr>
+            <tr><td><strong>GamePlan</strong></td><td>Strategic planning layer</td><td>Session state, roadmaps</td><td><code>memory/project_session_state.md</code></td></tr>
+            <tr><td><strong>Draft Room</strong></td><td>Concept intake queue</td><td>Idea pipeline before becoming Companies</td><td>Kanban in The Huddle + War Room</td></tr>
+            <tr><td><strong>9 Huddle</strong></td><td>cockpit.html</td><td>Owner/Guest command interface — PIN gated</td><td><code>public/cockpit.html</code></td></tr>
+            <tr><td><strong>9 War Room</strong></td><td>dashboard.html</td><td>Operations dashboard — company status, comms, sprint</td><td><code>public/dashboard.html</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">Product Naming Rules</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Product</th><th>Correct Name</th><th>Wrong</th><th>What It Is</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ainflgm</td><td><code>ainflgm</code></td><td>AiNFLGM, AINFL</td><td>NFL simulator — AiGM flagship</td></tr>
+            <tr><td>AiNBA GM</td><td><code>ainbagm</code></td><td>AiNBAGM, NBA GM</td><td>NBA simulator — AiGM product</td></tr>
+            <tr><td>freeagent9</td><td><code>freeagent9</code></td><td>FreeAgent9, free agent</td><td>Personal AI assistant platform</td></tr>
+            <tr><td>pilot</td><td><code>pilot</code></td><td>Pilot, PILOT</td><td>freeagent9 instance #1 (Kyle Cabezas)</td></tr>
+            <tr><td>trader9</td><td><code>trader9</code></td><td>Trader9, Trader 9</td><td>Algorithmic trading agent</td></tr>
+            <tr><td>x9</td><td><code>x9</code></td><td>X9, X 9</td><td>Autonomous social presence</td></tr>
+            <tr><td>agent9</td><td><code>agent9</code></td><td>Agent9, Agent 9</td><td>AI real estate platform</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:8px;font-size:12px;color:var(--text-mute);">Rule: Product names are always lowercase, no spaces, no hyphens. "9 Enterprises LLC" keeps proper capitalization in legal contexts only.</p>
+    </section>
+
+    <!-- ── Section 09: Business Units ───────────────────────────────────── -->
+    <section class="doc-section" id="companies">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <h2 class="section-title">Business Units — Current State</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Company</th><th>Status</th><th>Live URLs</th><th>Tech Stack</th><th>Key Metric</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AiGM</strong></td>
+              <td><span class="badge badge-live">Live</span></td>
+              <td><code>ainflgm.com</code></td>
+              <td>React 19, Vite 8, PWA, GitHub Pages</td>
+              <td>40+ tools, 3 simulators, AdSense pending</td>
+            </tr>
+            <tr>
+              <td><strong>freeagent9</strong></td>
+              <td><span class="badge badge-active">Active POC</span></td>
+              <td>Via SMS/Telegram</td>
+              <td>Node.js, Twilio, Claude API, JSON memory</td>
+              <td>1 pilot user, 40+ memory entries</td>
+            </tr>
+            <tr>
+              <td><strong>trader9</strong></td>
+              <td><span class="badge badge-build">Building</span></td>
+              <td>Internal only</td>
+              <td>Node.js, Alpaca API, Bollinger strategy</td>
+              <td>+3.51% backtest (90 days, best of 692 sweeps)</td>
+            </tr>
+            <tr>
+              <td><strong>x9</strong></td>
+              <td><span class="badge badge-build">Launching</span></td>
+              <td>Pending setup</td>
+              <td>Autonomous posting via Claude + platform APIs</td>
+              <td>10 launch tweets written, accounts pending</td>
+            </tr>
+            <tr>
+              <td><strong>agent9</strong></td>
+              <td><span class="badge badge-active">Site Live</span></td>
+              <td><code>get9.ai</code></td>
+              <td>Static, GitHub Pages</td>
+              <td>Consumer site live, product in concept stage</td>
+            </tr>
+            <tr>
+              <td><strong>AI Underwriter</strong></td>
+              <td><span class="badge badge-active">POC Complete</span></td>
+              <td>Internal demo</td>
+              <td>RAG pipeline, PDF ingestion, vector search, Claude</td>
+              <td>25 test cases validated. 5 PDFs (FHA/Fannie/Freddie/VA/USDA) free</td>
+            </tr>
+            <tr>
+              <td><strong>AI Education</strong></td>
+              <td><span class="badge badge-research">Research</span></td>
+              <td>—</td>
+              <td>ainflgm.com/ai-education.html</td>
+              <td>Hitchhiker's Guide to AI — Live pitch page</td>
+            </tr>
+            <tr>
+              <td><strong>Prompt Scripts</strong></td>
+              <td><span class="badge badge-build">Building</span></td>
+              <td><code>ainflgm.com/prompt-scripts.html</code></td>
+              <td>Static, GitHub Pages</td>
+              <td>Page live, marketplace logic pending</td>
+            </tr>
+            <tr>
+              <td><strong>Dropship Co</strong></td>
+              <td><span class="badge badge-build">Building</span></td>
+              <td>—</td>
+              <td>Shopify (pending setup)</td>
+              <td>Proving grounds: $200/mo target, 48hr launch</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">The Core Product: "9" (Platform Layer)</h3>
+      <p>The strategic insight confirmed March 28 SOTU: <strong>all companies are powered by the same core infrastructure</strong>. "9" — the AI partner platform — is itself a product. Everything else is either a standalone company or an add-on module extending the 9 subscription.</p>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-lang">ASCII</span>
+          <span class="code-block-label">Core product architecture</span>
+        </div>
+        <pre>
+  ┌──────────────────────────────────────────────────────┐
+  │                    CORE: "9"                         │
+  │                                                      │
+  │  4-channel comms | Voice calls | Agent orchestration │
+  │  Credential vault | Terminal recovery | Cloud sync   │
+  │  Dashboard (The Huddle) | Draft Room kanban          │
+  │  ETA calibration | Freeze watchdog | Memory system   │
+  └──────┬─────────┬───────────┬──────────┬─────────────┘
+         │         │           │          │
+    freeagent9  trader9     agent9      x9
+    (Add-on)   (Add-on)   (Add-on)   (Add-on)
+</pre>
+      </div>
+    </section>
+
+    <!-- ── Section 10: Revenue Model ────────────────────────────────────── -->
+    <section class="doc-section" id="revenue">
+      <div class="section-header">
+        <span class="section-num">10</span>
+        <h2 class="section-title">Revenue Model</h2>
+      </div>
+
+      <div class="alert-box alert-orange">
+        <div class="alert-icon">&#127919;</div>
+        <div class="alert-body">
+          <div class="alert-title">North Star: $1M ARR within 12 months (by ~March 2027)</div>
+          <div class="alert-text">All businesses built clean, documented, and sellable — <strong>zero founder dependency</strong> for daily operations. Capital preservation: no unnecessary burn before revenue.</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Company</th><th>Revenue Model</th><th>Phase</th><th>Monthly Target at Scale</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>AiGM</strong></td><td>AdSense + DraftKings/FanDuel affiliates + Premium subscriptions ($4.99–9.99/mo)</td><td>AdSense pending phone verify</td><td>$50K+ at 100K MAU</td></tr>
+            <tr><td><strong>freeagent9</strong></td><td>SaaS per user ($29–99/mo) + white-label licensing ($499+/mo)</td><td>Q2 2026 beta</td><td>Per-user recurring</td></tr>
+            <tr><td><strong>trader9</strong></td><td>Autonomous trading returns (target: 1–2%/mo on capital) + strategy marketplace</td><td>Pending Alpaca keys</td><td>Capital-dependent</td></tr>
+            <tr><td><strong>x9</strong></td><td>Affiliate links + X Premium revenue share + brand sponsorships</td><td>Accounts launching</td><td>Traffic-dependent</td></tr>
+            <tr><td><strong>AI Underwriter</strong></td><td>SaaS per lender ($500–2,000/mo). Enterprise: $5K+/mo for custom deployment</td><td>Q2 2026 private beta. Anchor: Rapid Mortgage</td><td>Per-lender recurring</td></tr>
+            <tr><td><strong>agent9</strong></td><td>Transaction fee (1–2% per deal) + subscription for buyers/sellers</td><td>12–18 months</td><td>Transaction-based</td></tr>
+            <tr><td><strong>Core 9</strong></td><td>SaaS subscription ($99–499/mo) + add-on modules</td><td>90-day build target</td><td>Recurring</td></tr>
+            <tr><td><strong>Prompt Scripts</strong></td><td>Marketplace listing fees + revenue share (20%)</td><td>Q2 2026</td><td>Volume-dependent</td></tr>
+            <tr><td><strong>Dropship Co</strong></td><td>Product margin (30–60%). Proving grounds: validate process.</td><td>48hr launch target</td><td>$200/mo proving grounds target</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">AiGM Revenue Projections (detailed)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Monthly Active Users</th><th>AdSense</th><th>Premium (5% convert)</th><th>Affiliates</th><th>Total MRR</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1,000</td><td>$50–100</td><td>$0</td><td>$25–50</td><td>$75–150</td></tr>
+            <tr><td>5,000</td><td>$300–500</td><td>$500–1,000</td><td>$150–300</td><td>$1,150–2,000</td></tr>
+            <tr><td>25,000</td><td>$2,000–3,500</td><td>$3,000–5,000</td><td>$750–1,500</td><td>$6,750–11,000</td></tr>
+            <tr><td>100,000</td><td>$8,000–15,000</td><td>$12,000–20,000</td><td>$3,000–6,000</td><td><strong>$26,000–44,000</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading">AI Underwriter Competitive Position</h3>
+      <div class="alert-box alert-green">
+        <div class="alert-icon">&#9650;</div>
+        <div class="alert-body">
+          <div class="alert-title">100x cost advantage over enterprise competitors</div>
+          <div class="alert-text">Enterprise tools (Tavant, ICE, LoanLogics) cost <strong>$200K+</strong> and take 6 months to deploy. Mid-size lenders (20–50 LOs) are completely underserved. This solution targets <strong>$500–2,000/mo per lender SaaS</strong> — deployable in 90 days. Anchor customer: Rapid Mortgage (existing relationship via 9 Enterprises as partner).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 11: Hub-and-Spoke ─────────────────────────────────────── -->
+    <section class="doc-section" id="hub-spoke">
+      <div class="section-header">
+        <span class="section-num">11</span>
+        <h2 class="section-title">Hub-and-Spoke Scaling Model</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#9874;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">All the hard infrastructure work was done once, for the first product. <strong>Every new company after that costs almost nothing to add</strong> because it reuses the same communication system, AI brain, credential vault, and recovery system. This is how 9 companies can run on ~$257/month.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-lang">Economics</span>
+          <span class="code-block-label">Marginal cost per new company added</span>
+        </div>
+        <pre>
+Product 1 (AiNFLGM) — Built everything from scratch:
+  comms hub, voice, cloud worker, agent engine,
+  credential vault, deployment pipeline, crash recovery,
+  dashboard, Draft Room, ETA tracker, freeze watchdog.
+  Total infrastructure investment: ~$252/mo + dev time.
+
+Product 2 (freeagent9 / pilot):
+  Reused: all infrastructure.
+  New code: jules-server.mjs (~400 lines).
+  New cost: ~$10/mo (Twilio SMS).
+
+Product 3 (AI Underwriter):
+  Reused: entire stack + deployment pipeline.
+  New code: RAG pipeline + PDF ingestion (~600 lines).
+  New cost: ~$20/mo (vector storage, PDF hosting).
+
+Product 4 (trader9):
+  Reused: entire stack.
+  New code: trading-bot.mjs + Alpaca integration (~300 lines).
+  New cost: ~$0.
+
+Products 5–9 (x9, agent9, AI Education, Prompt Scripts, Dropship):
+  Incremental infrastructure cost → $0.
+  Each new company costs only its unique domain logic.
+</pre>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Hub Capability</th><th>What It Powers</th><th>Marginal Cost per New Company</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>OC (comms-hub)</strong></td><td>All 4 communication channels</td><td>~$0 (same daemon, same process)</td></tr>
+            <tr><td><strong>Headset (voice)</strong></td><td>Inbound/outbound voice for all companies</td><td>~$0.06/min (Twilio + ElevenLabs per call)</td></tr>
+            <tr><td><strong>Backup QB</strong></td><td>Cloud failover for all companies</td><td>~$0 (same Cloudflare Worker)</td></tr>
+            <tr><td><strong>The Locker</strong></td><td>Credential isolation for all keys</td><td>$0</td></tr>
+            <tr><td><strong>Agent Engine</strong></td><td>Sub-agent spawning across all projects</td><td>Token cost only (~$0.001–0.01/task)</td></tr>
+            <tr><td><strong>Cloud Sync</strong></td><td>State persistence and failover data</td><td>~$0 (Cloudflare KV free tier)</td></tr>
+            <tr><td><strong>Draft Room</strong></td><td>Concept pipeline for all companies</td><td>$0</td></tr>
+            <tr><td><strong>The Huddle</strong></td><td>Owner dashboard for all companies</td><td>$0 (static HTML)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Section 12: Cost Model ────────────────────────────────────────── -->
+    <section class="doc-section" id="costs">
+      <div class="section-header">
+        <span class="section-num">12</span>
+        <h2 class="section-title">Cost Model — Monthly Operating Costs</h2>
+      </div>
+
+      <div class="cost-grid">
+        <div class="cost-card">
+          <div class="cost-service">Anthropic Pro</div>
+          <div class="cost-purpose">Claude API — all AI reasoning, agents, voice</div>
+          <div class="cost-amount">$20/mo</div>
+          <div class="cost-note">Pro plan ($20/mo confirmed). High-volume = Max plan</div>
+        </div>
+        <div class="cost-card">
+          <div class="cost-service">HeyGen Pro</div>
+          <div class="cost-purpose">AI video generation (Burrow content, demos)</div>
+          <div class="cost-amount">$99/mo</div>
+          <div class="cost-note">Active — enterprise video production</div>
+        </div>
+        <div class="cost-card">
+          <div class="cost-service">ElevenLabs</div>
+          <div class="cost-purpose">Text-to-speech (Dan voice for all calls)</div>
+          <div class="cost-amount">~$22/mo</div>
+          <div class="cost-note">Scales with call volume</div>
+        </div>
+        <div class="cost-card">
+          <div class="cost-service">Twilio</div>
+          <div class="cost-purpose">Voice calls + pilot SMS for freeagent9</div>
+          <div class="cost-amount">~$10/mo</div>
+          <div class="cost-note">Pay-per-use, scales with usage</div>
+        </div>
+        <div class="cost-card">
+          <div class="cost-service">Cloudflare Workers</div>
+          <div class="cost-purpose">Backup QB + CORS proxy + tunnel</div>
+          <div class="cost-amount">~$5/mo</div>
+          <div class="cost-note">Workers paid plan for higher limits</div>
+        </div>
+        <div class="cost-card">
+          <div class="cost-service">Domains &amp; Hosting</div>
+          <div class="cost-purpose">ainflgm.com, 9enterprises.ai, get9.ai, others</div>
+          <div class="cost-amount">~$20/mo</div>
+          <div class="cost-note">GitHub Pages free. Domain renewals spread</div>
+        </div>
+      </div>
+
+      <div class="alert-box alert-green" style="margin-top:16px;">
+        <div class="alert-icon">&#128200;</div>
+        <div class="alert-body">
+          <div class="alert-title">Total Operating Cost: ~$176–218/mo (verified from email audit)</div>
+          <div class="alert-text">Running 9 companies with full AI infrastructure for under $220/month. A single enterprise software license typically costs more. <strong>First revenue dollar is pure margin recovery.</strong></div>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Third-Party Dependency Risk Matrix</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Service</th><th>Criticality</th><th>Failure Impact</th><th>Failover</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Anthropic API</strong></td><td>&#128308; Critical</td><td>Total AI reasoning loss across all companies</td><td>API health probe every 10min. Alerts on Telegram + iMessage + Email. Haiku offline responses active.</td></tr>
+            <tr><td><strong>Telegram Bot API</strong></td><td>&#128308; Critical</td><td>Lose primary Owner comms channel</td><td>Automatic failover: iMessage → Email → SMS cascade</td></tr>
+            <tr><td><strong>Twilio</strong></td><td>&#128992; High</td><td>Lose voice calls + pilot SMS</td><td>Text-only mode. Voice calls redirect to "call back" message.</td></tr>
+            <tr><td><strong>ElevenLabs</strong></td><td>&#128992; Medium</td><td>Lose natural voice TTS quality</td><td>Twilio native TTS fallback (functional, lower quality)</td></tr>
+            <tr><td><strong>Cloudflare</strong></td><td>&#128992; Medium</td><td>Lose cloud worker + tunnel + CORS proxy</td><td>Mac-only mode. Direct access via local network. Tunnel auto-restarts.</td></tr>
+            <tr><td><strong>GitHub Pages</strong></td><td>&#128994; Low</td><td>ainflgm.com down</td><td>Static site. Redeploy in minutes from local build. CDN cache provides buffer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Section 13: Known Gaps ────────────────────────────────────────── -->
+    <section class="doc-section" id="gaps">
+      <div class="section-header">
+        <span class="section-num">13</span>
+        <h2 class="section-title">Known Infrastructure Gaps</h2>
+      </div>
+
+      <div class="novice-box">
+        <div class="novice-icon">&#128270;</div>
+        <div class="novice-content">
+          <div class="novice-label">Plain English</div>
+          <div class="novice-text">This is the honest list of things that are not yet production-grade. Nothing here breaks the current operation — but each item has a plan. <strong>Transparency about gaps is a feature, not a bug.</strong> A team that hides gaps doesn't fix them.</div>
+        </div>
+      </div>
+
+      <div class="gap-list">
+        <div class="gap-card">
+          <div class="gap-severity sev-high">HIGH</div>
+          <div class="gap-body">
+            <div class="gap-title">OC API (:3457) — No Authentication</div>
+            <div class="gap-detail">Any process on localhost can call hub endpoints including /send. An exploited local process could impersonate 9 and send messages as 9 Enterprises' AI. Attack surface: local network only.</div>
+            <div class="gap-plan">Plan: Add bearer token header validation. All API callers must include <code>Authorization: Bearer {hub-token}</code>. Token rotated monthly. Implementation: 2–3 hours. Timeline: 30-day sprint.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-high">HIGH</div>
+          <div class="gap-body">
+            <div class="gap-title">Static .env Keys — No Rotation Mechanism</div>
+            <div class="gap-detail">All API keys (Anthropic, Twilio, ElevenLabs, Cloudflare, Telegram) live in a single .env file with no rotation schedule. If the file is compromised, all services are exposed simultaneously. No audit log for key access.</div>
+            <div class="gap-plan">Plan: macOS Keychain integration. Keys stored in Keychain, fetched at runtime. .env becomes a pointer file only. Automatic 90-day rotation reminders. Timeline: 60-day sprint.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-med">MED</div>
+          <div class="gap-body">
+            <div class="gap-title">No Container Isolation for Agents</div>
+            <div class="gap-detail">Sub-agents run on bare macOS with full filesystem access (within Claude Code sandbox). A compromised or misbehaving agent could theoretically access files outside its intended scope.</div>
+            <div class="gap-plan">Plan: Docker containerization for long-running agent processes. Each company gets its own container with scoped mounts. Claude Code sandbox already provides some isolation. Timeline: 60-day sprint, post-revenue.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-med">MED</div>
+          <div class="gap-body">
+            <div class="gap-title">Voice Latency 1.7s Average (Target: &lt;500ms)</div>
+            <div class="gap-detail">Current pipeline: Twilio STT (~400ms) → Haiku inference (~800ms) → ElevenLabs TTS (~500ms). Total: ~1.7s per exchange. Acceptable for current use but below premium threshold. Callers notice the delay on quick back-and-forth.</div>
+            <div class="gap-plan">Plan: Evaluate ElevenLabs Conversational AI (native Twilio integration, cuts one network hop). Parallel: streaming TTS to cut perceived latency. Target: sub-800ms by May 2026.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-med">MED</div>
+          <div class="gap-body">
+            <div class="gap-title">Single Mac Dependency — No Compute Redundancy</div>
+            <div class="gap-detail">All AI reasoning, the comms hub, voice server, and pilot run on one MacBook. Mac offline = degraded mode (Cloudflare Worker handles basics only, no new AI work possible).</div>
+            <div class="gap-plan">Plan: VPS deployment on DigitalOcean ($6/mo). Voice server + OC replicated to cloud. Mac stays primary for Claude Code + iMessage. Mac becomes optional, not critical. Timeline: Q2 2026.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-low">LOW</div>
+          <div class="gap-body">
+            <div class="gap-title">iMessage FDA Resets on Mac Reboot</div>
+            <div class="gap-detail">Full Disk Access (FDA) for OC is granted at the app level and persists — but Terminal requires a fresh FDA grant on some Mac OS updates. iMessage read silently fails without alerting the system.</div>
+            <div class="gap-plan">Plan: OC startup self-check includes iMessage read test. Failure triggers alert on Telegram. Documented in startup protocol. Manual re-grant takes 30 seconds.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-low">LOW</div>
+          <div class="gap-body">
+            <div class="gap-title">Cloudflare Tunnel URL is Ephemeral</div>
+            <div class="gap-detail">Each cloudflared restart generates a new tunnel URL. Twilio webhook must be manually updated on each restart. OC auto-updates the webhook, but if that fails, voice calls stop working silently.</div>
+            <div class="gap-plan">Plan: Named Cloudflare Tunnel with custom subdomain (e.g., voice.9enterprises.ai). URL becomes permanent. Deferred to VPS sprint — named tunnels require Cloudflare account configuration.</div>
+          </div>
+        </div>
+        <div class="gap-card">
+          <div class="gap-severity sev-low">LOW</div>
+          <div class="gap-body">
+            <div class="gap-title">No Automated Test Suite for Infrastructure</div>
+            <div class="gap-detail">comms-hub.mjs, voice-server.mjs, and jules-server.mjs have no automated unit or integration tests. Regressions are caught manually or in production. No CI/CD pipeline.</div>
+            <div class="gap-plan">Plan: Jest test suite for hub API endpoints. GitHub Actions CI on each push. Smoke tests on deploy. Timeline: Q2 2026 (post-revenue, not blocking).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 14: Changelog ─────────────────────────────────────────── -->
+    <section class="doc-section" id="changelog">
+      <div class="section-header">
+        <span class="section-num">14</span>
+        <h2 class="section-title">Architecture Changelog</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item done">
+          <div class="timeline-date">March 30, 2026 — v4.0</div>
+          <div class="timeline-title">Architecture doc rebuilt to developer-grade standard</div>
+          <div class="timeline-desc">Full technical depth added: API endpoints, state machines, process trees, dependency risk matrix, cost model, security gap remediation plans. Sidebar nav, novice annotations, responsive layout.</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-date">March 29–30, 2026</div>
+          <div class="timeline-title">9 Companies registered. 7-Day Enterprise Sprint approved.</div>
+          <div class="timeline-desc">AI Education, Prompt Scripts, Dropship Co added as proving grounds. $1,750 sprint budget. trader9 Alpaca paper mode initiated.</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-date">March 28, 2026 — v3.0</div>
+          <div class="timeline-title">State of the Union. Freeze watchdog installed. Brand unified.</div>
+          <div class="timeline-desc">Freeze watchdog LaunchAgent (3-tier recovery). Org hierarchy locked. "9" confirmed as core product. 9enterprises.ai and get9.ai deployed. freeagent9 pilot (Kyle Cabezas) active. Brand orange/black unified.</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-date">March 26–27, 2026</div>
+          <div class="timeline-title">Terminal liveness hardened. 4-layer detection deployed.</div>
+          <div class="timeline-desc">Session tokens added to prevent orphan pings. PID tracking. Self-terminating ping loop. Graceful /terminal/release. Detection gap reduced from 2.5 min to ~45s worst case.</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-date">March 2026 — v2.0</div>
+          <div class="timeline-title">Comms hub unified. Voice server + Cloudflare Worker deployed.</div>
+          <div class="timeline-desc">4-channel OC hub (Telegram, iMessage, Email, Voice). Headset voice server with ElevenLabs + Twilio. Backup QB Cloudflare Worker. Cloud state sync.</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-date">Early March 2026 — v1.0</div>
+          <div class="timeline-title">AiNFLGM live. Initial infrastructure built.</div>
+          <div class="timeline-desc">ainflgm.com live. Telegram agent. Basic comms. Agent engine. First deployment pipeline.</div>
+        </div>
+        <div class="timeline-item pending">
+          <div class="timeline-date">Q2 2026 — Planned</div>
+          <div class="timeline-title">VPS deployment. Security hardening. Container isolation.</div>
+          <div class="timeline-desc">DigitalOcean VPS ($6/mo). Bearer token auth for OC API. macOS Keychain key management. Docker containers for agent isolation. Named Cloudflare Tunnel. Jest test suite.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <div class="doc-footer-left">9 Enterprises LLC — Architecture v4.0 — March 30, 2026</div>
+      <div class="doc-footer-links">
+        <a href="/dashboard.html">9 War Room</a>
+        <a href="/cockpit.html">9 Huddle</a>
+        <a href="/docs-index.html">All Docs</a>
+      </div>
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+// Sidebar active link highlight on scroll
+const sections = document.querySelectorAll('.doc-section, #overview');
+const navLinks = document.querySelectorAll('.sidebar-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.15, rootMargin: '-80px 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jude's Zone 🐯</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 40px;
+    overflow-x: hidden;
+  }
+
+  /* Stars BG */
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: tw 2s infinite;
+  }
+  @keyframes tw { 0%,100%{opacity:0.2} 50%{opacity:1} }
+
+  .content { position: relative; z-index: 1; width: 100%; max-width: 500px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 28px;
+  }
+
+  .header-tiger {
+    font-size: 72px;
+    display: block;
+    animation: bounce 1.2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 20px rgba(251,79,20,0.8));
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0) rotate(-5deg); }
+    to { transform: translateY(-12px) rotate(5deg); }
+  }
+
+  .header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: #FB4F14;
+    text-shadow: 3px 3px 0 #000, 0 0 30px #FB4F14;
+    margin: 12px 0 6px;
+    line-height: 1.1;
+  }
+
+  .header-sub {
+    font-size: 8px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 3px;
+  }
+
+  /* Welcome banner */
+  .welcome-banner {
+    background: linear-gradient(135deg, rgba(251,79,20,0.2), rgba(0,0,0,0.5));
+    border: 2px solid #FB4F14;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .welcome-text {
+    font-size: 8px;
+    color: #FFD700;
+    letter-spacing: 2px;
+    line-height: 2.2;
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 7px;
+    color: #FFD700;
+    letter-spacing: 4px;
+    margin-bottom: 14px;
+    padding-left: 4px;
+  }
+
+  /* Game cards */
+  .games-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .game-card {
+    background: #0d0d0d;
+    border: 2px solid #222;
+    border-radius: 14px;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(251,79,20,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .game-card:hover, .game-card:active {
+    border-color: #FB4F14;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(251,79,20,0.25);
+  }
+
+  .game-card:hover::before, .game-card:active::before { opacity: 1; }
+
+  .game-card.new::after {
+    content: 'NEW!';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: #FB4F14;
+    color: #000;
+    font-size: 7px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  .card-icon {
+    font-size: 48px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(251,79,20,0.5));
+    animation: cardBounce 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes cardBounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+  }
+
+  .card-info { flex: 1; }
+
+  .card-name {
+    font-size: 13px;
+    color: #FB4F14;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 7px;
+    color: rgba(255,255,255,0.65);
+    line-height: 2;
+  }
+
+  .card-play-btn {
+    background: #FB4F14;
+    color: #000;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 4px 0 #7a2600;
+    transition: transform 0.1s, box-shadow 0.1s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .game-card:active .card-play-btn {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #7a2600;
+  }
+
+  /* Coming soon cards */
+  .game-card.coming-soon {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .game-card.coming-soon:hover {
+    border-color: #333;
+    transform: none;
+    box-shadow: none;
+  }
+  .game-card.coming-soon::after {
+    content: 'COMING SOON';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: #333;
+    color: #888;
+    font-size: 6px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  /* Score display */
+  .score-display {
+    background: rgba(251,79,20,0.1);
+    border: 1px solid rgba(251,79,20,0.3);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .score-label { font-size: 7px; color: #FFD700; letter-spacing: 2px; }
+  .score-value { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: #fff; }
+
+  /* Footer */
+  .footer {
+    font-size: 7px;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 2.5;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="content">
+
+  <div class="header">
+    <span class="header-tiger">🐯</span>
+    <div class="header-title">JUDE'S ZONE</div>
+    <div class="header-sub">POWERED BY BENGAL PRO</div>
+  </div>
+
+  <div class="welcome-banner">
+    <div class="welcome-text">
+      HEY JUDE! 👋<br>
+      THIS IS YOUR PERSONAL GAME HUB.<br>
+      BUILT JUST FOR YOU.<br>
+      WHO DEY! 🏈
+    </div>
+  </div>
+
+  <div class="section-label">YOUR GAMES</div>
+
+  <div class="games-grid">
+
+    <!-- Jude Bowl -->
+    <a href="/jude/jude-bowl/" class="game-card new">
+      <div class="card-icon">🏈</div>
+      <div class="card-info">
+        <div class="card-name">JUDE BOWL</div>
+        <div class="card-desc">
+          BENGALS vs RAVENS<br>
+          CALL PLAYS · RUN THE BALL<br>
+          SCORE TOUCHDOWNS!
+        </div>
+      </div>
+      <button class="card-play-btn">PLAY!</button>
+    </a>
+
+    <!-- Coming soon cards -->
+    <div class="game-card coming-soon">
+      <div class="card-icon">⭐</div>
+      <div class="card-info">
+        <div class="card-name">NFL TRIVIA</div>
+        <div class="card-desc">
+          TEST YOUR FOOTBALL KNOWLEDGE<br>
+          HOW MUCH DO YOU KNOW?
+        </div>
+      </div>
+      <button class="card-play-btn" style="background:#333;color:#666;box-shadow:none;">SOON</button>
+    </div>
+
+    <div class="game-card coming-soon">
+      <div class="card-icon">🎯</div>
+      <div class="card-info">
+        <div class="card-name">FIELD GOAL KICKER</div>
+        <div class="card-desc">
+          AIM AND KICK YOUR WAY<br>
+          TO THE HALL OF FAME!
+        </div>
+      </div>
+      <button class="card-play-btn" style="background:#333;color:#666;box-shadow:none;">SOON</button>
+    </div>
+
+    <div class="game-card coming-soon">
+      <div class="card-icon">🏆</div>
+      <div class="card-info">
+        <div class="card-name">BENGALS BUILDER</div>
+        <div class="card-desc">
+          DRAFT YOUR DREAM TEAM<br>
+          CAN YOU WIN THE SUPER BOWL?
+        </div>
+      </div>
+      <button class="card-play-btn" style="background:#333;color:#666;box-shadow:none;">SOON</button>
+    </div>
+
+  </div>
+
+  <!-- High score -->
+  <div class="score-display">
+    <div>
+      <div class="score-label">JUDE BOWL HIGH SCORE</div>
+    </div>
+    <div class="score-value" id="hs-display">—</div>
+  </div>
+
+  <div class="footer">
+    BUILT BY BENGAL PRO FOR JUDE 🐯<br>
+    MORE GAMES COMING SOON!
+  </div>
+
+</div>
+
+<script>
+// Stars
+(function() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 2 + 's';
+    s.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    c.appendChild(s);
+  }
+})();
+
+// Pull high score from localStorage
+const hs = localStorage.getItem('jude-bowl-hs');
+document.getElementById('hs-display').textContent = hs ? hs + ' PTS' : '0 PTS';
+</script>
+
+</body>
+</html>

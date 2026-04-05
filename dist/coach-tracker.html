@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-title" content="Coach Tracker">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0F172A">
+<title>NFL Head Coach Win Tracker | AiNFL GM</title>
+<meta name="description" content="Track and compare all 32 current NFL head coaches by wins, winning percentage, playoff appearances, and hot seat rating. Free tool by AiNFL GM.">
+<meta property="og:title" content="NFL Head Coach Win Tracker | AiNFL GM">
+<meta property="og:description" content="Compare current NFL head coaches by wins, win %, playoffs, and hot seat rating. Free tool by AiNFL GM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ainflgm.com/coach-tracker.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NFL Head Coach Win Tracker | AiNFL GM">
+<meta name="twitter:description" content="Compare all 32 current NFL head coaches. Wins, win %, playoffs, hot seat rating. Free by AiNFL GM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #0F172A;
+  --bg-2:       #1E293B;
+  --bg-3:       #263348;
+  --bg-card:    #1A2540;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,240,255,0.25);
+  --cyan:       #00F0FF;
+  --cyan-dim:   rgba(0,240,255,0.12);
+  --cyan-glow:  rgba(0,240,255,0.06);
+  --green:      #39FF14;
+  --green-dim:  rgba(57,255,20,0.12);
+  --red:        #FF2D55;
+  --red-dim:    rgba(255,45,85,0.12);
+  --yellow:     #FFD600;
+  --yellow-dim: rgba(255,214,0,0.12);
+  --orange:     #FF6B35;
+  --orange-dim: rgba(255,107,53,0.12);
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-mute:  #475569;
+  --radius:     14px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,240,255,0.12); }
+}
+
+/* ── Nav ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--cyan); }
+
+.nav-back {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--cyan); text-decoration: none; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 48px 24px 32px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--cyan); }
+.hero p {
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Main ── */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+/* ── Controls ── */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+  max-width: 280px;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-mute);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 10px 14px 10px 36px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--border-hi); }
+.search-input::placeholder { color: var(--text-mute); }
+
+.filter-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 32px 10px 14px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.2s;
+}
+.filter-select:focus { border-color: var(--border-hi); }
+
+.compare-btn {
+  margin-left: auto;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-sm);
+  color: var(--cyan);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.compare-btn:hover {
+  background: rgba(0,240,255,0.2);
+  box-shadow: 0 0 12px rgba(0,240,255,0.15);
+}
+.compare-count {
+  background: var(--cyan);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 100px;
+  padding: 1px 7px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── Stats Bar ── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+@media (max-width: 600px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: center;
+}
+.stat-pill .sp-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-pill .sp-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Table ── */
+.table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  overflow-x: auto;
+  animation: fadeUp 0.5s ease 0.15s both;
+  -webkit-overflow-scrolling: touch;
+}
+
+.coach-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.coach-table thead th {
+  background: var(--bg-2);
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.coach-table thead th:hover { color: var(--cyan); }
+.coach-table thead th.sort-asc::after,
+.coach-table thead th.sort-desc::after {
+  content: '';
+  display: inline-block;
+  margin-left: 5px;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+}
+.coach-table thead th.sort-asc::after {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 5px solid var(--cyan);
+}
+.coach-table thead th.sort-desc::after {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--cyan);
+}
+.coach-table thead th.th-check { width: 42px; text-align: center; cursor: default; }
+.coach-table thead th.th-check:hover { color: var(--text-dim); }
+
+.coach-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.coach-table tbody tr:last-child { border-bottom: none; }
+.coach-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.coach-table tbody tr.selected { background: var(--cyan-glow); }
+
+.coach-table tbody td {
+  padding: 13px 16px;
+  font-size: 14px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.td-check {
+  text-align: center;
+  width: 42px;
+}
+.row-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+
+.td-coach {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.coach-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.coach-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 14px;
+}
+.coach-team {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 1px;
+}
+
+.td-record {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.td-pct {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+.pct-high { color: var(--green); }
+.pct-mid  { color: var(--yellow); }
+.pct-low  { color: var(--red); }
+
+.td-years {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.td-playoffs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+
+.td-sb {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--yellow);
+}
+.td-sb.zero { color: var(--text-mute); font-weight: 400; }
+
+/* ── Hot Seat ── */
+.hot-seat {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.hs-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.hs-1 .hs-dot { background: var(--green); }
+.hs-2 .hs-dot { background: #7CFC00; }
+.hs-3 .hs-dot { background: var(--yellow); }
+.hs-4 .hs-dot { background: var(--orange); }
+.hs-5 .hs-dot { background: var(--red); }
+
+.hs-pips {
+  display: flex;
+  gap: 3px;
+}
+.hs-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--bg-3);
+}
+.hs-1 .hs-pip.on { background: var(--green); }
+.hs-2 .hs-pip.on { background: #7CFC00; }
+.hs-3 .hs-pip.on { background: var(--yellow); }
+.hs-4 .hs-pip.on { background: var(--orange); }
+.hs-5 .hs-pip.on { background: var(--red); }
+
+.hs-label {
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.hs-1 .hs-label { color: var(--green); }
+.hs-2 .hs-label { color: #7CFC00; }
+.hs-3 .hs-label { color: var(--yellow); }
+.hs-4 .hs-label { color: var(--orange); }
+.hs-5 .hs-label { color: var(--red); }
+
+/* ── Coach Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: glow-in 0.25s ease both;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s;
+  line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--cyan);
+  border: 2px solid var(--border-hi);
+  flex-shrink: 0;
+}
+.profile-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+.profile-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.profile-conf {
+  display: inline-block;
+  background: var(--cyan-dim);
+  border: 1px solid var(--border-hi);
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 5px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.ps-item {
+  background: var(--bg-2);
+  padding: 16px;
+  text-align: center;
+}
+.ps-val {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cyan);
+  line-height: 1;
+}
+.ps-label {
+  font-size: 11px;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+.profile-body {
+  padding: 20px 24px;
+}
+.pb-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.pb-row:last-child { border-bottom: none; }
+.pb-key { color: var(--text-dim); }
+.pb-val { font-weight: 600; color: var(--text); text-align: right; }
+
+/* ── Compare Panel ── */
+.compare-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cyan);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+  display: none;
+}
+.compare-panel.active { display: block; }
+
+.compare-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cyan);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.compare-clear {
+  font-size: 12px;
+  color: var(--text-mute);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: color 0.2s, border-color 0.2s;
+}
+.compare-clear:hover { color: var(--red); border-color: var(--red); }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 560px) {
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-vs { display: none; }
+}
+
+.compare-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+.cc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cc-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cyan);
+  border: 1px solid var(--border-hi);
+  flex-shrink: 0;
+}
+.cc-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.1;
+}
+.cc-team {
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+.cc-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.cc-stat:last-child { border-bottom: none; }
+.cc-key { color: var(--text-mute); }
+.cc-val {
+  font-weight: 700;
+  color: var(--text);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+}
+.cc-val.winner { color: var(--green); }
+
+.compare-vs {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-mute);
+  align-self: center;
+  text-align: center;
+  padding: 8px 4px;
+}
+
+.compare-share {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+.share-btn {
+  background: var(--green-dim);
+  border: 1px solid rgba(57,255,20,0.25);
+  border-radius: var(--radius-sm);
+  color: var(--green);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+.share-btn:hover { background: rgba(57,255,20,0.2); }
+.share-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--green);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 24px;
+  border-radius: 100px;
+  z-index: 300;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+.share-toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-mute);
+  font-size: 14px;
+  display: none;
+}
+.empty-state.visible { display: block; }
+
+/* ── AdSense slot ── */
+.ad-slot {
+  margin: 24px 0;
+  text-align: center;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+  line-height: 1.8;
+}
+.footer a { color: var(--text-dim); }
+.footer a:hover { color: var(--cyan); }
+
+@media (max-width: 480px) {
+  .controls { flex-direction: column; align-items: stretch; }
+  .search-wrap { max-width: 100%; }
+  .compare-btn { margin-left: 0; }
+  .coach-table { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="https://ainflgm.com" class="nav-logo">Ai<span>NFL</span>GM</a>
+  <a href="https://ainflgm.com" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back to AiNFLGM
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <circle cx="5" cy="5" r="4" fill="#00F0FF" opacity="0.8"/>
+    </svg>
+    2026 Season
+  </div>
+  <h1>NFL Head Coach<br><span>Win Tracker</span></h1>
+  <p>All 32 current NFL head coaches ranked by wins, win percentage, playoff appearances, and hot seat status.</p>
+</section>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-pill">
+      <div class="sp-val" id="sb-coaches">32</div>
+      <div class="sp-label">Head Coaches</div>
+    </div>
+    <div class="stat-pill">
+      <div class="sp-val" id="sb-avgwin">—</div>
+      <div class="sp-label">Avg Win %</div>
+    </div>
+    <div class="stat-pill">
+      <div class="sp-val" id="sb-mostwin">—</div>
+      <div class="sp-label">Most Wins</div>
+    </div>
+    <div class="stat-pill">
+      <div class="sp-val" id="sb-hotseat">—</div>
+      <div class="sp-label">On Hot Seat</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <circle cx="6" cy="6" r="4.5" stroke="#475569" stroke-width="1.5"/>
+        <path d="M9.5 9.5L12.5 12.5" stroke="#475569" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Search coach or team...">
+    </div>
+    <select class="filter-select" id="confFilter">
+      <option value="all">All Conferences</option>
+      <option value="AFC">AFC</option>
+      <option value="NFC">NFC</option>
+    </select>
+    <select class="filter-select" id="divFilter">
+      <option value="all">All Divisions</option>
+      <option value="AFC East">AFC East</option>
+      <option value="AFC North">AFC North</option>
+      <option value="AFC South">AFC South</option>
+      <option value="AFC West">AFC West</option>
+      <option value="NFC East">NFC East</option>
+      <option value="NFC North">NFC North</option>
+      <option value="NFC South">NFC South</option>
+      <option value="NFC West">NFC West</option>
+    </select>
+    <select class="filter-select" id="seatFilter">
+      <option value="all">All Hot Seat Levels</option>
+      <option value="5">On Fire (5)</option>
+      <option value="4">Hot (4)</option>
+      <option value="3">Warm (3)</option>
+      <option value="2">Stable (2)</option>
+      <option value="1">Locked In (1)</option>
+    </select>
+    <button class="compare-btn" id="compareBtn" onclick="showCompare()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7H12M2 4H7M2 10H7M9 4L12 7L9 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Compare
+      <span class="compare-count" id="compareCount">0</span>
+    </button>
+  </div>
+
+  <!-- Compare Panel -->
+  <div class="compare-panel" id="comparePanel">
+    <div class="compare-title">
+      Head-to-Head Comparison
+      <button class="compare-clear" onclick="clearCompare()">Clear</button>
+    </div>
+    <div class="compare-grid" id="compareGrid"></div>
+    <div class="compare-share">
+      <button class="share-btn" onclick="shareComparison()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M10 1L13 4L10 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13 4H5C3.34 4 2 5.34 2 7V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Share Comparison
+      </button>
+    </div>
+  </div>
+
+  <!-- AdSense -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8928127451532131"
+         data-ad-slot="auto"
+         data-ad-format="horizontal"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="coach-table" id="coachTable">
+      <thead>
+        <tr>
+          <th class="th-check"></th>
+          <th onclick="sortTable('name')" id="th-name">Coach</th>
+          <th onclick="sortTable('wins')" id="th-wins">Wins</th>
+          <th onclick="sortTable('losses')" id="th-losses">Losses</th>
+          <th onclick="sortTable('pct')" id="th-pct">Win %</th>
+          <th onclick="sortTable('years')" id="th-years">Tenure</th>
+          <th onclick="sortTable('playoffs')" id="th-playoffs">Playoffs</th>
+          <th onclick="sortTable('sb')" id="th-sb">SB Wins</th>
+          <th onclick="sortTable('hotseat')" id="th-hotseat">Hot Seat</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState">No coaches match your filters.</div>
+  </div>
+
+</main>
+
+<!-- Coach Profile Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-header">
+      <div></div>
+      <button class="modal-close" onclick="closeModal(null, true)">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M4 4L14 14M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Share Toast -->
+<div class="share-toast" id="shareToast">Link copied to clipboard</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div>
+    <a href="https://ainflgm.com">AiNFLGM</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/bengals-cap.html">Cap Tracker</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/draft-trade-calc.html">Trade Calc</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/qb-compare.html">QB Compare</a> &nbsp;&middot;&nbsp;
+    <a href="https://ainflgm.com/tools.html">All Tools</a>
+  </div>
+  <div style="margin-top:6px;">&copy; 2026 AiNFL GM &mdash; Data reflects career stats through 2025 season.</div>
+  <div style="margin-top:8px;">
+    <a href="/about.html">About</a> &nbsp;&middot;&nbsp;
+    <a href="/contact.html">Contact</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
+  </div>
+</footer>
+
+<script>
+// ── Coach Data ──────────────────────────────────────────────────────────────
+const COACHES = [
+  // AFC East
+  { name:"Jeff Hafley",      initials:"JH", team:"Miami Dolphins",      div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Mike McDaniel was let go. Former BC and Green Bay DC. First NFL HC job. New era in South Beach." },
+  { name:"Mike Vrabel",      initials:"MV", team:"New England Patriots", div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Jerod Mayo was fired following a 4-13 season. Respected defensive coach, first rebuild year." },
+  { name:"Aaron Glenn",      initials:"AG", team:"New York Jets",        div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Robert Saleh was fired in October 2024. Former Lions DC. Tasked with full rebuild." },
+  { name:"Joe Brady",        initials:"JB", team:"Buffalo Bills",        div:"AFC East", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Sean McDermott was fired following Josh Allen's exit. Former Panthers OC and rising play-caller." },
+
+  // AFC North
+  { name:"Zac Taylor",       initials:"ZT", team:"Cincinnati Bengals",   div:"AFC North", conf:"AFC", hired:2019, wins:46, losses:44, playoffs:3, sb:0, hotseat:2, notes:"Super Bowl LVI appearance. Built a winner with Burrow." },
+  { name:"Todd Monken",      initials:"TM", team:"Cleveland Browns",     div:"AFC North", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Kevin Stefanski was dismissed. Former Georgia OC and Ravens OC. Inherits a roster in transition post-Watson." },
+  { name:"Mike McCarthy",    initials:"MC", team:"Pittsburgh Steelers",  div:"AFC North", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Mike Tomlin departed. Super Bowl champion with Green Bay (XLV) and Dallas OC. Tasked with post-Tomlin rebuild." },
+  { name:"Jesse Minter",     initials:"JM", team:"Baltimore Ravens",     div:"AFC North", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after John Harbaugh stepped down. Former Michigan DC under Jim Harbaugh. Rising defensive coordinator making the leap." },
+
+  // AFC South
+  { name:"DeMeco Ryans",     initials:"DR", team:"Houston Texans",       div:"AFC South", conf:"AFC", hired:2023, wins:22, losses:13, playoffs:2, sb:0, hotseat:1, notes:"Built fastest-rising team in AFC. CJ Stroud franchise cornerstone." },
+  { name:"Shane Steichen",   initials:"SS", team:"Indianapolis Colts",   div:"AFC South", conf:"AFC", hired:2023, wins:14, losses:20, playoffs:0, sb:0, hotseat:3, notes:"Still building. QB situation critical for his job security." },
+  { name:"Liam Coen",        initials:"LC", team:"Jacksonville Jaguars",  div:"AFC South", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Doug Pederson was fired. Former Buccaneers OC. Youngest HC in the league. Trevor Lawrence's future in his hands." },
+  { name:"Robert Saleh",     initials:"RS", team:"Tennessee Titans",     div:"AFC South", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after being fired by the Jets mid-2024. Former 49ers DC and Jets HC. Gets a second chance with a rebuilding Titans squad." },
+
+  // AFC West
+  { name:"Andy Reid",        initials:"AR", team:"Kansas City Chiefs",   div:"AFC West", conf:"AFC", hired:2013, wins:132,losses:48, playoffs:12,sb:3, hotseat:1, notes:"Greatest coach of his era. 3 Super Bowls with Mahomes (LIV, LVII, LVIII). Future Hall of Famer." },
+  { name:"Jim Harbaugh",     initials:"JH2",team:"Los Angeles Chargers", div:"AFC West", conf:"AFC", hired:2024, wins:11, losses:6,  playoffs:1, sb:0, hotseat:1, notes:"Energized franchise immediately. College legend translating to NFL." },
+  { name:"Klint Kubiak",     initials:"KK", team:"Las Vegas Raiders",    div:"AFC West", conf:"AFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Antonio Pierce was let go. Former Vikings and Broncos OC. Son of Gary Kubiak. Young HC inheriting a thin roster." },
+  { name:"Sean Payton",      initials:"SP", team:"Denver Broncos",       div:"AFC West", conf:"AFC", hired:2023, wins:15, losses:18, playoffs:0, sb:0, hotseat:3, notes:"Expected more. Bo Nix development year key to his tenure." },
+
+  // NFC East
+  { name:"Brian Schottenheimer", initials:"BS", team:"Dallas Cowboys",   div:"NFC East", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Mike McCarthy was fired. Former Seahawks OC. Inherits Dak Prescott and a roster still built to compete." },
+  { name:"John Harbaugh",    initials:"JH3",team:"New York Giants",      div:"NFC East", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Brian Daboll was fired. Left Baltimore after stepping down. One of the most accomplished coaches in the NFL. Major credibility hire for a struggling Giants franchise." },
+  { name:"Nick Sirianni",    initials:"NS", team:"Philadelphia Eagles",   div:"NFC East", conf:"NFC", hired:2021, wins:46, losses:29, playoffs:4, sb:1, hotseat:1, notes:"SB LIX champion. Jalen Hurts-led dynasty building in Philly." },
+  { name:"Dan Quinn",        initials:"DQ", team:"Washington Commanders", div:"NFC East", conf:"NFC", hired:2024, wins:13, losses:4,  playoffs:1, sb:0, hotseat:1, notes:"Jayden Daniels exploded under him. Instant credibility." },
+
+  // NFC North
+  { name:"Ben Johnson",      initials:"BJ", team:"Chicago Bears",        div:"NFC North", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Matt Eberflus was fired. Former Lions OC and the most coveted coordinator in football. Reunites with Caleb Williams to unlock a potential dynasty." },
+  { name:"Dan Campbell",     initials:"DC", team:"Detroit Lions",        div:"NFC North", conf:"NFC", hired:2021, wins:38, losses:32, playoffs:2, sb:0, hotseat:1, notes:"Culture builder. Lions are legitimate NFC contenders." },
+  { name:"Matt LaFleur",     initials:"ML", team:"Green Bay Packers",    div:"NFC North", conf:"NFC", hired:2019, wins:65, losses:30, playoffs:5, sb:0, hotseat:1, notes:"Love era. Consistent double-digit win coach. SB still elusive." },
+  { name:"Kevin O'Connell",  initials:"KO", team:"Minnesota Vikings",    div:"NFC North", conf:"NFC", hired:2022, wins:35, losses:25, playoffs:2, sb:0, hotseat:1, notes:"JJ McCarthy era beginning. Offensive-minded, players love him." },
+
+  // NFC South
+  { name:"Kevin Stefanski",  initials:"KS", team:"Atlanta Falcons",      div:"NFC South", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Raheem Morris was fired. Former Browns HC and 2020 COY. Gets a fresh start with Michael Penix Jr. and a retooled Falcons roster." },
+  { name:"Dave Canales",     initials:"DC2",team:"Carolina Panthers",    div:"NFC South", conf:"NFC", hired:2024, wins:5,  losses:12, playoffs:0, sb:0, hotseat:4, notes:"Bryce Young struggled. Multiple consecutive 5+ win seasons needed." },
+  { name:"Kellen Moore",     initials:"KM", team:"New Orleans Saints",   div:"NFC South", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:2, notes:"Hired 2025 after Dennis Allen was fired mid-season. Former Eagles OC and Cowboys OC. Highly regarded offensive mind tasked with rebuilding a Saints franchise at rock bottom." },
+  { name:"Todd Bowles",      initials:"TB", team:"Tampa Bay Buccaneers", div:"NFC South", conf:"NFC", hired:2022, wins:26, losses:24, playoffs:2, sb:0, hotseat:2, notes:"Baker Mayfield renaissance. Winning in Brady's shadow." },
+
+  // NFC West
+  { name:"Mike LaFleur",     initials:"MLF",team:"Arizona Cardinals",    div:"NFC West", conf:"NFC", hired:2025, wins:0,  losses:0,  playoffs:0, sb:0, hotseat:3, notes:"Hired 2025 after Jonathan Gannon was fired. Former Jets and 49ers passing game coordinator. Brother of Matt LaFleur. Inherits Kyler Murray and a rebuilding Cards squad." },
+  { name:"Sean McVay",       initials:"SM", team:"Los Angeles Rams",     div:"NFC West", conf:"NFC", hired:2017, wins:88, losses:47, playoffs:7, sb:1, hotseat:1, notes:"Elite offensive mind. Youngest coach ever to win a Super Bowl." },
+  { name:"Kyle Shanahan",    initials:"KS2",team:"San Francisco 49ers",  div:"NFC West", conf:"NFC", hired:2017, wins:75, losses:59, playoffs:5, sb:0, hotseat:2, notes:"Multiple SB appearances. Scheme god but SB ring missing." },
+  { name:"Mike Macdonald",   initials:"MM2",team:"Seattle Seahawks",     div:"NFC West", conf:"NFC", hired:2024, wins:10, losses:7,  playoffs:1, sb:0, hotseat:1, notes:"Defensive specialist. Geno Smith and young roster responding well." },
+];
+
+// Deduplicate initials for display
+const usedInitials = {};
+COACHES.forEach(c => {
+  const key = c.initials;
+  usedInitials[key] = (usedInitials[key] || 0) + 1;
+});
+COACHES.forEach(c => {
+  c._initials = c.initials.replace(/\d+$/, '');
+});
+
+// ── State ────────────────────────────────────────────────────────────────────
+let sortKey = 'wins';
+let sortDir = -1; // -1 = desc
+let selected = []; // max 2 coach names
+let activeCoach = null;
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function pct(c) {
+  const total = c.wins + c.losses;
+  return total === 0 ? 0 : c.wins / total;
+}
+
+function fmtPct(c) {
+  return (pct(c) * 100).toFixed(1) + '%';
+}
+
+function pctClass(c) {
+  const p = pct(c);
+  if (p >= 0.6) return 'pct-high';
+  if (p >= 0.5) return 'pct-mid';
+  return 'pct-low';
+}
+
+function hsLabel(n) {
+  const map = { 1:'Locked In', 2:'Stable', 3:'Warm', 4:'Hot', 5:'On Fire' };
+  return map[n];
+}
+
+function tenure(c) {
+  return (2026 - c.hired) + ' yr' + ((2026 - c.hired) !== 1 ? 's' : '');
+}
+
+// ── Stats Bar ────────────────────────────────────────────────────────────────
+function updateStatsBar(coaches) {
+  const avgP = coaches.reduce((s, c) => s + pct(c), 0) / (coaches.length || 1);
+  const maxWins = coaches.reduce((m, c) => c.wins > m ? c.wins : m, 0);
+  const hotCount = coaches.filter(c => c.hotseat >= 4).length;
+
+  document.getElementById('sb-coaches').textContent = coaches.length;
+  document.getElementById('sb-avgwin').textContent = (avgP * 100).toFixed(1) + '%';
+  document.getElementById('sb-mostwin').textContent = maxWins;
+  document.getElementById('sb-hotseat').textContent = hotCount;
+}
+
+// ── Render ───────────────────────────────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const conf = document.getElementById('confFilter').value;
+  const div = document.getElementById('divFilter').value;
+  const seat = document.getElementById('seatFilter').value;
+
+  return COACHES.filter(c => {
+    if (q && !c.name.toLowerCase().includes(q) && !c.team.toLowerCase().includes(q)) return false;
+    if (conf !== 'all' && c.conf !== conf) return false;
+    if (div !== 'all' && c.div !== div) return false;
+    if (seat !== 'all' && c.hotseat !== parseInt(seat)) return false;
+    return true;
+  });
+}
+
+function getSorted(coaches) {
+  return [...coaches].sort((a, b) => {
+    let va, vb;
+    if (sortKey === 'name')    { va = a.name; vb = b.name; return sortDir * (va < vb ? -1 : va > vb ? 1 : 0); }
+    if (sortKey === 'wins')    { va = a.wins; vb = b.wins; }
+    if (sortKey === 'losses')  { va = a.losses; vb = b.losses; }
+    if (sortKey === 'pct')     { va = pct(a); vb = pct(b); }
+    if (sortKey === 'years')   { va = 2026 - a.hired; vb = 2026 - b.hired; }
+    if (sortKey === 'playoffs'){ va = a.playoffs; vb = b.playoffs; }
+    if (sortKey === 'sb')      { va = a.sb; vb = b.sb; }
+    if (sortKey === 'hotseat') { va = a.hotseat; vb = b.hotseat; }
+    return sortDir * (vb - va);
+  });
+}
+
+function renderHotSeat(n) {
+  let pips = '';
+  for (let i = 1; i <= 5; i++) {
+    pips += `<div class="hs-pip${i <= n ? ' on' : ''}"></div>`;
+  }
+  return `<div class="hot-seat hs-${n}"><div class="hs-pips">${pips}</div><span class="hs-label">${hsLabel(n)}</span></div>`;
+}
+
+function render() {
+  const filtered = getFiltered();
+  const sorted = getSorted(filtered);
+
+  updateStatsBar(filtered);
+
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (sorted.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.add('visible');
+    return;
+  }
+  empty.classList.remove('visible');
+
+  tbody.innerHTML = sorted.map(c => {
+    const isSelected = selected.includes(c.name);
+    return `
+    <tr class="${isSelected ? 'selected' : ''}" onclick="handleRowClick(event, '${c.name.replace(/'/g,"\\'")}')">
+      <td class="td-check"><input type="checkbox" class="row-checkbox" ${isSelected ? 'checked' : ''} onclick="toggleSelect(event, '${c.name.replace(/'/g,"\\'")}')"></td>
+      <td>
+        <div class="td-coach">
+          <div class="coach-avatar">${c._initials}</div>
+          <div>
+            <div class="coach-name">${c.name}</div>
+            <div class="coach-team">${c.team}</div>
+          </div>
+        </div>
+      </td>
+      <td class="td-record">${c.wins}</td>
+      <td class="td-record">${c.losses}</td>
+      <td class="td-pct ${pctClass(c)}">${fmtPct(c)}</td>
+      <td class="td-years">${tenure(c)}</td>
+      <td class="td-playoffs">${c.playoffs}</td>
+      <td class="td-sb ${c.sb === 0 ? 'zero' : ''}">${c.sb || '—'}</td>
+      <td>${renderHotSeat(c.hotseat)}</td>
+    </tr>`;
+  }).join('');
+
+  updateSortIndicators();
+}
+
+// ── Sort ─────────────────────────────────────────────────────────────────────
+function sortTable(key) {
+  if (sortKey === key) {
+    sortDir *= -1;
+  } else {
+    sortKey = key;
+    sortDir = key === 'name' ? 1 : -1;
+  }
+  render();
+}
+
+const COL_MAP = { name:'th-name', wins:'th-wins', losses:'th-losses', pct:'th-pct', years:'th-years', playoffs:'th-playoffs', sb:'th-sb', hotseat:'th-hotseat' };
+
+function updateSortIndicators() {
+  Object.values(COL_MAP).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('sort-asc', 'sort-desc'); }
+  });
+  const active = document.getElementById(COL_MAP[sortKey]);
+  if (active) {
+    active.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+  }
+}
+
+// ── Row Click / Select ────────────────────────────────────────────────────────
+function handleRowClick(e, name) {
+  if (e.target.type === 'checkbox') return;
+  const coach = COACHES.find(c => c.name === name);
+  if (coach) openModal(coach);
+}
+
+function toggleSelect(e, name) {
+  e.stopPropagation();
+  const idx = selected.indexOf(name);
+  if (idx > -1) {
+    selected.splice(idx, 1);
+  } else {
+    if (selected.length >= 2) {
+      selected.shift();
+    }
+    selected.push(name);
+  }
+  document.getElementById('compareCount').textContent = selected.length;
+  render();
+}
+
+// ── Compare ──────────────────────────────────────────────────────────────────
+function showCompare() {
+  if (selected.length < 2) {
+    alert('Select exactly 2 coaches using the checkboxes to compare.');
+    return;
+  }
+  const [a, b] = selected.map(n => COACHES.find(c => c.name === n));
+  if (!a || !b) return;
+
+  const fields = [
+    { key: 'wins',    label: 'Wins',             fn: c => c.wins,              fmt: v => v },
+    { key: 'losses',  label: 'Losses',           fn: c => c.losses,            fmt: v => v, invert: true },
+    { key: 'pct',     label: 'Win %',            fn: c => pct(c),              fmt: (v,c) => fmtPct(c) },
+    { key: 'tenure',  label: 'Tenure',           fn: c => 2026 - c.hired,      fmt: (v,c) => tenure(c) },
+    { key: 'playoffs',label: 'Playoff Apps',     fn: c => c.playoffs,          fmt: v => v },
+    { key: 'sb',      label: 'SB Wins',          fn: c => c.sb,                fmt: v => v },
+    { key: 'hotseat', label: 'Hot Seat',         fn: c => c.hotseat,           fmt: (v,c) => hsLabel(c.hotseat), invert: true },
+  ];
+
+  function buildCard(coach, opp) {
+    const rows = fields.map(f => {
+      const va = f.fn(coach);
+      const vb = f.fn(opp);
+      const win = f.invert ? (va < vb) : (va > vb);
+      const tie = va === vb;
+      return `<div class="cc-stat">
+        <span class="cc-key">${f.label}</span>
+        <span class="cc-val${(!tie && win) ? ' winner' : ''}">${f.fmt(va, coach)}</span>
+      </div>`;
+    }).join('');
+    return `<div class="compare-card">
+      <div class="cc-header">
+        <div class="cc-avatar">${coach._initials}</div>
+        <div>
+          <div class="cc-name">${coach.name}</div>
+          <div class="cc-team">${coach.team}</div>
+        </div>
+      </div>
+      ${rows}
+    </div>`;
+  }
+
+  document.getElementById('compareGrid').innerHTML =
+    buildCard(a, b) +
+    `<div class="compare-vs">VS</div>` +
+    buildCard(b, a);
+
+  const panel = document.getElementById('comparePanel');
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearCompare() {
+  selected = [];
+  document.getElementById('compareCount').textContent = '0';
+  document.getElementById('comparePanel').classList.remove('active');
+  render();
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+function shareComparison() {
+  const url = window.location.href.split('?')[0];
+  const params = new URLSearchParams();
+  if (selected.length === 2) params.set('compare', selected.join('|'));
+  const fullUrl = url + (params.toString() ? '?' + params.toString() : '');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(fullUrl).then(() => showToast());
+  } else {
+    showToast();
+  }
+}
+
+function showToast() {
+  const t = document.getElementById('shareToast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openModal(coach) {
+  activeCoach = coach;
+  const overlay = document.getElementById('modalOverlay');
+  const body = document.getElementById('modalBody');
+
+  body.innerHTML = `
+    <div class="profile-top">
+      <div class="profile-avatar">${coach._initials}</div>
+      <div>
+        <div class="profile-name">${coach.name}</div>
+        <div class="profile-sub">${coach.team}</div>
+        <span class="profile-conf">${coach.div}</span>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="ps-item"><div class="ps-val">${coach.wins}</div><div class="ps-label">Wins</div></div>
+      <div class="ps-item"><div class="ps-val">${fmtPct(coach)}</div><div class="ps-label">Win %</div></div>
+      <div class="ps-item"><div class="ps-val">${coach.playoffs}</div><div class="ps-label">Playoffs</div></div>
+    </div>
+    <div class="profile-body">
+      <div class="pb-row"><span class="pb-key">Record</span><span class="pb-val">${coach.wins}-${coach.losses}</span></div>
+      <div class="pb-row"><span class="pb-key">Super Bowl Wins</span><span class="pb-val">${coach.sb || '—'}</span></div>
+      <div class="pb-row"><span class="pb-key">Tenure</span><span class="pb-val">${tenure(coach)} (hired ${coach.hired})</span></div>
+      <div class="pb-row"><span class="pb-key">Conference</span><span class="pb-val">${coach.conf}</span></div>
+      <div class="pb-row"><span class="pb-key">Division</span><span class="pb-val">${coach.div}</span></div>
+      <div class="pb-row"><span class="pb-key">Hot Seat</span><span class="pb-val">${hsLabel(coach.hotseat)} (${coach.hotseat}/5)</span></div>
+      <div class="pb-row"><span class="pb-key">Analysis</span><span class="pb-val" style="max-width:220px;text-align:right;color:var(--text-dim);font-size:13px;">${coach.notes}</span></div>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e, force) {
+  if (!force && e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  activeCoach = null;
+}
+
+// ── URL params ────────────────────────────────────────────────────────────────
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const compare = params.get('compare');
+  if (compare) {
+    const names = compare.split('|').slice(0, 2);
+    names.forEach(n => {
+      const coach = COACHES.find(c => c.name === n);
+      if (coach && selected.length < 2) selected.push(coach.name);
+    });
+    document.getElementById('compareCount').textContent = selected.length;
+    if (selected.length === 2) {
+      setTimeout(showCompare, 200);
+    }
+  }
+}
+
+// ── Event Listeners ───────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', render);
+document.getElementById('confFilter').addEventListener('change', render);
+document.getElementById('divFilter').addEventListener('change', render);
+document.getElementById('seatFilter').addEventListener('change', render);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal(null, true);
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadFromUrl();
+render();
+</script>
+</body>
+</html>

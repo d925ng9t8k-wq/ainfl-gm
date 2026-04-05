@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-title" content="9enterprises">
+<link rel="apple-touch-icon" sizes="180x180" href="/9-brand.jpg">
+<link rel="manifest" href="/dashboard-manifest.json">
+<title>Pilot — Your Personal AI Free Agent | Kyle Cabezas</title>
+<meta name="description" content="Your personal AI business partner — pilot program exclusively for Kyle Cabezas. Powered by 9 Enterprises.">
+<meta property="og:title" content="Pilot — Your Personal AI Free Agent">
+<meta property="og:description" content="Your personal AI business partner — pilot program exclusively for Kyle Cabezas. Powered by 9 Enterprises.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://get9.ai/jules-pilot.html">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PLW4H1NNF6');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #ccc; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 820px; margin: 0 auto; padding: 48px 24px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid #1a1a1a; }
+  .brand-image { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; margin-bottom: 20px; border: 1px solid #222; }
+  .header .badge { display: inline-block; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; padding: 4px 14px; border-radius: 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+  .header h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .header .sub { font-size: 16px; color: #666; font-weight: 400; margin-bottom: 6px; }
+  .header .from-line { font-size: 14px; color: #555; }
+  .header .from-line strong { color: #818cf8; }
+
+  /* Intro */
+  .intro-box { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 24px 28px; margin-bottom: 40px; }
+  .intro-box p { font-size: 15px; color: #aaa; line-height: 1.8; margin-bottom: 10px; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box p strong { color: #fff; }
+
+  /* Section headers */
+  .section-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #444; margin: 48px 0 12px; }
+  .section-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 16px; letter-spacing: -0.5px; }
+
+  /* Cards */
+  .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px 28px; margin: 16px 0; }
+  .card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: #888; line-height: 1.7; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: #ddd; }
+
+  /* Confidence tiers */
+  .tier-block { margin: 24px 0; }
+  .tier-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .tier-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; }
+  .tier-badge.green { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #22c55e; }
+  .tier-badge.yellow { background: rgba(234,179,8,0.15); border: 1px solid rgba(234,179,8,0.3); color: #eab308; }
+  .tier-badge.orange { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3); color: #f97316; }
+  .tier-label { font-size: 13px; color: #555; font-weight: 500; }
+
+  .feature-list { list-style: none; padding: 0; margin: 0; }
+  .feature-list li { padding: 12px 16px; border-bottom: 1px solid #161616; font-size: 14px; color: #999; display: flex; align-items: flex-start; gap: 12px; }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li .feat-name { color: #ddd; font-weight: 600; min-width: 200px; }
+  .feature-list li .feat-desc { color: #777; line-height: 1.6; }
+  .feature-container { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 12px; overflow: hidden; }
+
+  /* How it works steps */
+  .steps { list-style: none; padding: 0; margin: 16px 0; counter-reset: step; }
+  .steps li { counter-increment: step; font-size: 14px; color: #999; padding: 12px 0 12px 52px; position: relative; border-bottom: 1px solid #1a1a1a; }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: 10px; width: 32px; height: 32px; border-radius: 8px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-align: center; }
+  .steps li strong { color: #ddd; }
+
+  /* Social media section */
+  .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .social-item { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 10px; padding: 18px 20px; }
+  .social-item .plat { font-size: 13px; font-weight: 700; color: #818cf8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .social-item .plat-desc { font-size: 13px; color: #666; line-height: 1.6; }
+
+  /* Pilot details */
+  .pilot-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  .pilot-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 1px solid #222; }
+  .pilot-table td { padding: 12px 12px; font-size: 14px; color: #999; border-bottom: 1px solid #161616; vertical-align: top; }
+  .pilot-table td:first-child { color: #ddd; font-weight: 600; width: 35%; white-space: nowrap; }
+
+  /* SMS conversation demo */
+  .sms-thread { background: #0d0d0d; border: 1px solid #1e1e1e; border-radius: 12px; padding: 24px; margin: 16px 0; }
+  .sms-thread .thread-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #444; margin-bottom: 18px; text-align: center; }
+  .sms-bubble-wrap { margin-bottom: 20px; }
+  .sms-bubble-wrap:last-child { margin-bottom: 0; }
+  .sms-sender { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .sms-sender.kyle { color: #60a5fa; text-align: right; }
+  .sms-sender.pilot { color: #818cf8; }
+  .sms-bubble { display: inline-block; max-width: 88%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+  .sms-bubble.kyle { background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.2); color: #c7d9f5; float: right; border-radius: 12px 4px 12px 12px; }
+  .sms-bubble.pilot { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); color: #c4c6f0; border-radius: 4px 12px 12px 12px; }
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  /* Not-list */
+  .not-list { list-style: none; padding: 0; margin: 16px 0; }
+  .not-list li { font-size: 14px; color: #888; padding: 8px 0 8px 28px; position: relative; border-bottom: 1px solid #151515; }
+  .not-list li:last-child { border-bottom: none; }
+  .not-list li::before { content: ''; position: absolute; left: 0; top: 14px; width: 14px; height: 2px; background: #f87171; border-radius: 2px; }
+  .not-list li strong { color: #ddd; }
+
+  /* Free badge */
+  .free-badge { display: inline-block; background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: #22c55e; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-left: 8px; vertical-align: middle; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid #1a1a1a; margin: 40px 0; }
+
+  /* Dashboard teaser */
+  .dashboard-box { background: linear-gradient(135deg, #0d0f1a, #0f0d1a); border: 1px solid rgba(99,102,241,0.25); border-radius: 12px; padding: 28px; margin: 16px 0; }
+  .dashboard-box .dash-url { font-size: 15px; font-weight: 700; color: #818cf8; margin-bottom: 8px; font-family: monospace; }
+  .dashboard-box p { font-size: 14px; color: #888; line-height: 1.7; margin-bottom: 6px; }
+  .dashboard-box p:last-child { margin-bottom: 0; }
+  .dashboard-box p strong { color: #ccc; }
+  .coming-soon { display: inline-block; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #818cf8; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-left: 8px; vertical-align: middle; }
+
+  /* Getting started box */
+  .start-box { background: linear-gradient(135deg, #0f0f1a, #12121e); border: 1px solid rgba(99,102,241,0.3); border-radius: 12px; padding: 32px; margin-top: 16px; }
+  .start-box p { font-size: 15px; color: #999; line-height: 1.8; margin-bottom: 10px; }
+  .start-box p:last-child { margin-bottom: 0; }
+  .start-box p strong { color: #fff; }
+  .start-box .highlight { font-size: 16px; color: #c7d2fe; font-weight: 500; margin-bottom: 6px; }
+
+  /* Footer */
+  .footer { text-align: center; margin-top: 56px; padding-top: 32px; border-top: 1px solid #1a1a1a; }
+  .footer p { font-size: 13px; color: #444; line-height: 1.7; }
+  .footer .footer-brand { font-size: 12px; color: #333; margin-top: 8px; letter-spacing: 0.5px; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 32px 16px; }
+    .header h1 { font-size: 28px; }
+    .social-grid { grid-template-columns: 1fr; }
+    .pilot-table td:first-child { white-space: normal; }
+    .sms-bubble { max-width: 95%; }
+    .feature-list li { flex-direction: column; gap: 4px; }
+    .feature-list li .feat-name { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <img src="9-brand.jpg" alt="9 Enterprises" class="brand-image">
+    <div class="badge">Pilot Program</div>
+    <h1>Pilot — Your Personal AI Free Agent</h1>
+    <div class="sub">A Free Agent by 9 Enterprises</div>
+    <div class="from-line">Prepared for <strong>Kyle Cabezas</strong> — Rapid Mortgage Cincinnati</div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro-box">
+    <p>Kyle — you already know what this is. You agreed to be the <strong>first external pilot</strong> for Pilot, and now we're ready to actually do it.</p>
+    <p>This page walks you through exactly what Pilot does, how confident we are in each feature, and what your 30-day pilot looks like. No pitch deck. No BS. This is just the actual info you need to get started.</p>
+    <p>We're being straight with you on confidence levels. Some features are rock solid. Some are still being dialed in. You'll know exactly which is which.</p>
+  </div>
+
+  <!-- Section 1: What Is Pilot -->
+  <div class="section-num">01</div>
+  <div class="section-title">What Is Pilot?</div>
+
+  <div class="card">
+    <p>Pilot is a <strong>personal AI assistant that runs entirely over text message</strong>. No app to download. No account to create. No login. You get a phone number, you save it as Pilot, and you just text it.</p>
+    <p>Pilot is built specifically for your life as a loan officer. It knows mortgage guidelines, tracks your reminders, writes your social posts, and sends you a morning briefing before you open Encompass. Think of it as having a sharp assistant in your phone who already knows what you do for a living.</p>
+    <p>It responds in seconds. Works at 6 AM or 11 PM. Remembers everything you've told it.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 2: What Pilot Does — with confidence levels -->
+  <div class="section-num">02</div>
+  <div class="section-title">What Pilot Does For You</div>
+
+  <!-- Tier 1: 95%+ -->
+  <div class="tier-block">
+    <div class="tier-header">
+      <span class="tier-badge green">95%+ Confidence</span>
+      <span class="tier-label">Ship it. These work exactly as described.</span>
+    </div>
+    <div class="feature-container">
+      <ul class="feature-list">
+        <li>
+          <span class="feat-name">Guideline Q&amp;A with Citations</span>
+          <span class="feat-desc">FHA DTI, VA funding fees, conforming limits, credit minimums — instant answers mid-call, with the source cited so you can trust it.</span>
+        </li>
+        <li>
+          <span class="feat-name">Morning Briefing — 7:00 AM</span>
+          <span class="feat-desc">Rates vs. yesterday. Today's closings. Pipeline flags. One priority action. Five lines, every morning, before you open anything.</span>
+        </li>
+        <li>
+          <span class="feat-name">Task &amp; Reminder Management</span>
+          <span class="feat-desc">"Remind me to call the Smiths Thursday at 9." Done. Fires at exactly the time you set. Running to-do list via text.</span>
+        </li>
+        <li>
+          <span class="feat-name">Script Sparring Partner</span>
+          <span class="feat-desc">Practice your rate lock conversation, your objection handlers, your realtor pitch. Pilot plays the other side. You sharpen the script.</span>
+        </li>
+        <li>
+          <span class="feat-name">Social Media Ghostwriter</span>
+          <span class="feat-desc">Tell Pilot the idea. It writes the post — optimized for LinkedIn, Instagram, X, TikTok, or Facebook. You copy, paste, done. No app access required.</span>
+        </li>
+        <li>
+          <span class="feat-name">Referral Partner Wingman</span>
+          <span class="feat-desc">Prep for a realtor meeting. Talking points for a specific agent. What to say when an agent asks about your pull-through rate. Pilot has your back.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tier 2: 85% -->
+  <div class="tier-block">
+    <div class="tier-header">
+      <span class="tier-badge yellow">85% Confidence</span>
+      <span class="tier-label">Solid, watching closely. Works well — just getting sharper.</span>
+    </div>
+    <div class="feature-container">
+      <ul class="feature-list">
+        <li>
+          <span class="feat-name">Rate Lock Coach</span>
+          <span class="feat-desc">Help you decide when to float vs. lock based on current MBS movement. Not a guarantee — context to make a faster decision.</span>
+        </li>
+        <li>
+          <span class="feat-name">Closing Day Commander</span>
+          <span class="feat-desc">Morning-of summary for each scheduled closing — what's cleared, what's pending, what needs your attention before the table.</span>
+        </li>
+        <li>
+          <span class="feat-name">Review Harvester</span>
+          <span class="feat-desc">Pilot drafts a personalized review request for a recent client — you approve, it sends. More 5-stars with less effort.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tier 3: 70% Beta -->
+  <div class="tier-block">
+    <div class="tier-header">
+      <span class="tier-badge orange">70% — Beta</span>
+      <span class="tier-label">In the lab. You'll be the one who helps us dial it in.</span>
+    </div>
+    <div class="feature-container">
+      <ul class="feature-list">
+        <li>
+          <span class="feat-name">Birthday &amp; Anniversary Bomber</span>
+          <span class="feat-desc">Pilot tracks client milestones and drafts a personal note for each one. Still refining timing and tone — feedback from you makes it better.</span>
+        </li>
+        <li>
+          <span class="feat-name">Direct Social Media Posting</span>
+          <span class="feat-desc">Optional. Pilot posts directly to your platforms — you approve before anything goes live. Beta feature, Kyle chooses if he wants this on.</span>
+        </li>
+        <li>
+          <span class="feat-name">Voice (Beta)</span>
+          <span class="feat-desc">Call Pilot instead of texting. Same assistant, same context, over voice. Early stage — good for quick questions, not full conversations yet.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 3: Social Media Management -->
+  <div class="section-num">03</div>
+  <div class="section-title">Social Media Management</div>
+
+  <div class="card">
+    <p>There are two ways Pilot handles social media. <strong>Copy/paste is the default — and it's already great.</strong></p>
+    <p>You tell Pilot what you want to post about — a rate drop, a client win, a market take, anything. Pilot writes platform-optimized copy for whichever platform you're targeting. You copy it, paste it, post it yourself. Clean. Zero friction.</p>
+    <p>The <strong>optional direct posting beta</strong> lets Pilot post on your behalf after you approve. You're always in control — nothing goes live without a thumbs-up from you. This is a beta feature. If you want it, we turn it on. If you'd rather stay copy/paste, you stay copy/paste. Your call.</p>
+  </div>
+
+  <div class="social-grid">
+    <div class="social-item">
+      <div class="plat">LinkedIn</div>
+      <div class="plat-desc">Professional tone. Market updates, milestones, referral partner shoutouts. Built to get agent attention.</div>
+    </div>
+    <div class="social-item">
+      <div class="plat">Instagram</div>
+      <div class="plat-desc">Lifestyle + wins. Caption-first, hashtag-ready. Works with Reels or static posts.</div>
+    </div>
+    <div class="social-item">
+      <div class="plat">X (Twitter)</div>
+      <div class="plat-desc">Short punches. Rate takes, quick tips, market reactions. Written to land in under 280 characters.</div>
+    </div>
+    <div class="social-item">
+      <div class="plat">TikTok &amp; Facebook</div>
+      <div class="plat-desc">TikTok gets hook-first scripts for talking-head videos. Facebook gets longer community-oriented posts.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 4: Your Dashboard -->
+  <div class="section-num">04</div>
+  <div class="section-title">Your Dashboard</div>
+
+  <div class="dashboard-box">
+    <div class="dash-url">ainflgm.com/freeagent <span class="coming-soon">Coming Soon</span></div>
+    <p>Your personal Pilot dashboard is being built at <strong>ainflgm.com/freeagent</strong>. This is where everything lives in one place — your active reminders, today's briefing, conversation history, and feature status.</p>
+    <p>You won't need it to use Pilot — everything works over text. The dashboard is just a clean view when you want it. We'll have it live for you shortly after the pilot kicks off.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 5: How It Works -->
+  <div class="section-num">05</div>
+  <div class="section-title">How It Works</div>
+
+  <ol class="steps">
+    <li><strong>You get a dedicated phone number.</strong> We'll text you from it to introduce Pilot. Save it as "Pilot" in your contacts.</li>
+    <li><strong>Text like you would anyone else.</strong> Ask a question, set a reminder, ask for today's rates. Plain English. No commands, no syntax.</li>
+    <li><strong>Pilot responds in seconds.</strong> Short, direct answers. No corporate speak. It knows you're a producing branch manager who's in between calls.</li>
+    <li><strong>Pilot remembers your context.</strong> Your team names, your preferences, your open reminders — Pilot carries it across every conversation.</li>
+    <li><strong>7:00 AM — morning briefing arrives.</strong> Before you've opened anything, Pilot has already done the morning homework. You just read it and move.</li>
+  </ol>
+
+  <hr class="divider">
+
+  <!-- Section 6: The Pilot -->
+  <div class="section-num">06</div>
+  <div class="section-title">What the Pilot Looks Like <span class="free-badge">Free</span></div>
+
+  <table class="pilot-table">
+    <thead>
+      <tr>
+        <th>What</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Duration</td>
+        <td>30 days of live use</td>
+      </tr>
+      <tr>
+        <td>Cost to you</td>
+        <td>Zero. You're the pilot.</td>
+      </tr>
+      <tr>
+        <td>What we ask</td>
+        <td>Use it naturally — text Pilot whenever you'd normally Google something or check a guideline. At the end of each week, give us honest feedback: what's useful, what's not, what's missing.</td>
+      </tr>
+      <tr>
+        <td>Iteration cadence</td>
+        <td>We update Pilot weekly based on what you actually use. If you never touch a feature, we cut it. If you want something Pilot doesn't do yet, we build it.</td>
+      </tr>
+      <tr>
+        <td>Your privacy</td>
+        <td>Pilot does not store SSNs, loan file data, or borrower financials. Reminders and conversation context only. No loan files, no sensitive data.</td>
+      </tr>
+      <tr>
+        <td>Commitment level</td>
+        <td>None. If it's not useful by week 2, just let us know and we pause. No awkwardness.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <!-- Section 7: What Pilot Is NOT -->
+  <div class="section-num">07</div>
+  <div class="section-title">What Pilot Is NOT</div>
+
+  <div class="card">
+    <ul class="not-list">
+      <li><strong>Not a replacement for Encompass or your CRM.</strong> Pilot is a layer on top of your existing tools, not a substitute for them.</li>
+      <li><strong>Not handling sensitive borrower data.</strong> No SSNs, no loan files, no financials. Pilot knows names and reminder context — that's it.</li>
+      <li><strong>Not making decisions for you.</strong> Pilot surfaces information and answers faster. The judgment calls are still yours.</li>
+      <li><strong>Not an AI that hallucinates guidelines.</strong> Mortgage guideline lookups are pulled from a verified reference table — not made up. If Pilot isn't sure, it says so.</li>
+      <li><strong>Not something that will spam you.</strong> Pilot texts you once in the morning and then waits for you to reach out. No check-ins, no "how's your day going."</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 8: Example Interactions -->
+  <div class="section-num">08</div>
+  <div class="section-title">What It Actually Looks Like</div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Guideline Lookup with Citation</div>
+    <div class="sms-bubble-wrap clearfix">
+      <div class="sms-sender kyle">Kyle</div>
+      <div class="sms-bubble kyle">What's the max DTI for FHA?</div>
+    </div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender pilot">Pilot</div>
+      <div class="sms-bubble pilot">FHA max is 31/43 standard. With AUS approval it goes to 46.9/56.9. Manual underwrite caps at 40/40 without compensating factors. Source: HUD 4000.1 Section II.A.5.d</div>
+    </div>
+  </div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Social Media Ghostwriter</div>
+    <div class="sms-bubble-wrap clearfix">
+      <div class="sms-sender kyle">Kyle</div>
+      <div class="sms-bubble kyle">Write me a LinkedIn post about rates dropping today and why now is a good time to buy</div>
+    </div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender pilot">Pilot</div>
+      <div class="sms-bubble pilot">Rates dropped 12.5bps today. Here's a LinkedIn post:<br><br>Rates moved today — and not in the direction most people expected. If you've been sitting on the fence, this week deserves a second look.<br><br>The payment difference on a $400k home is real. The window may not be.<br><br>DM me if you want the numbers on your specific situation.<br><br>#Mortgage #HomeBuying #Cincinnati</div>
+    </div>
+  </div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Morning Briefing</div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender pilot">Pilot</div>
+      <div class="sms-bubble pilot">Morning. 30yr conventional at 6.875% — down 12.5bps from yesterday. FHA 30yr at 6.5%. MBS holding steady. Martinez closing at 2pm, all conditions cleared. One thing: Hailey flagged the Williams file — appraisal came in low, needs your call before noon.</div>
+    </div>
+  </div>
+
+  <div class="sms-thread">
+    <div class="thread-label">Script Sparring</div>
+    <div class="sms-bubble-wrap clearfix">
+      <div class="sms-sender kyle">Kyle</div>
+      <div class="sms-bubble kyle">Help me practice the rate lock conversation. You be the client. They're nervous about locking.</div>
+    </div>
+    <div class="sms-bubble-wrap">
+      <div class="sms-sender pilot">Pilot</div>
+      <div class="sms-bubble pilot">Got it. I'm your client. Here goes:<br><br>"I don't know, Kyle. What if rates keep dropping after we lock? I feel like I'm leaving money on the table..."</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Section 9: Getting Started -->
+  <div class="section-num">09</div>
+  <div class="section-title">Getting Started</div>
+
+  <div class="start-box">
+    <p class="highlight"><strong>Here's what happens next:</strong></p>
+    <p>We'll text you from a new number — save it as <strong>Pilot</strong> in your contacts. That's the only setup required.</p>
+    <p>Your <strong>first morning briefing arrives at 7:00 AM</strong> on day one. Text Pilot anything, anytime — it's always on.</p>
+    <p>At the end of week one, we check in: what did you actually use, what's missing, what do you want more of. We iterate from there.</p>
+    <p>Any questions before we kick it off — just reply. Either way works.</p>
+  </div>
+
+  <!-- Video Pitch -->
+  <div style="margin-top:48px;margin-bottom:16px;text-align:center;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:12px;">Meet Jules</div>
+    <h2 style="font-size:22px;font-weight:800;color:#fff;margin-bottom:12px;">The Family AI That Has It Together</h2>
+    <p style="font-size:14px;color:#555;margin-bottom:24px;">A two-minute intro to Jules — the AI built specifically for families.</p>
+    <div class="heygen-video-wrap" style="position:relative;width:100%;padding-top:177.78%;background:#111;border-radius:12px;overflow:hidden;border:1px solid #1a1a1a;max-width:380px;margin:0 auto;">
+      <iframe src="https://app.heygen.com/embeds/fd7f74ed89694dc48ef7a54b397fb6a7" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Pilot — A Free Agent by 9 Enterprises</p>
+    <p class="footer-brand">Pilot Program | Rapid Mortgage Cincinnati | March 2026</p>
+  </div>
+
+</div>
+<!-- HeyGen Fullscreen Expand -->
+<style>
+.heygen-video-wrap{position:relative;cursor:pointer;transition:all .3s ease}
+.heygen-video-wrap.heygen-fs{position:fixed!important;inset:0!important;z-index:99999!important;width:100vw!important;height:100vh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border-radius:0!important;background:#000!important;padding-top:0!important}
+.heygen-video-wrap.heygen-fs iframe{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.heygen-fs-close{display:none;position:fixed;top:16px;right:16px;z-index:100000;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;backdrop-filter:blur(8px);line-height:1}
+.heygen-fs-close.active{display:flex}
+</style>
+<button class="heygen-fs-close" id="heygen-fs-close" aria-label="Close fullscreen">&times;</button>
+<script>
+(function(){
+  var wraps=document.querySelectorAll(".heygen-video-wrap");
+  var closeBtn=document.getElementById("heygen-fs-close");
+  var activeWrap=null;
+  wraps.forEach(function(w){
+    w.addEventListener("click",function(e){
+      if(e.target.tagName==="BUTTON")return;
+      if(w.classList.contains("heygen-fs")){return;}
+      w.classList.add("heygen-fs");
+      closeBtn.classList.add("active");
+      activeWrap=w;
+      document.body.style.overflow="hidden";
+    });
+  });
+  closeBtn.addEventListener("click",function(e){
+    e.stopPropagation();
+    if(activeWrap){activeWrap.classList.remove("heygen-fs");activeWrap=null;}
+    closeBtn.classList.remove("active");
+    document.body.style.overflow="";
+  });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&activeWrap){
+      activeWrap.classList.remove("heygen-fs");activeWrap=null;
+      closeBtn.classList.remove("active");
+      document.body.style.overflow="";
+    }
+  });
+})();
+<\/script>
+</body>
+</html>

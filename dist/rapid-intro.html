@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Rapid Mortgage — Intro</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+  html,body{
+    width:1920px;height:1080px;overflow:hidden;
+    font-family:'Poppins',system-ui,sans-serif;
+    background:#000;
+  }
+
+  .scene{
+    position:relative;width:1920px;height:1080px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+
+  /* Background: black → Rapid blue */
+  .bg{
+    position:absolute;inset:0;
+    background:#000;
+    animation:bgFade 1.8s ease-in-out 0.3s forwards;
+  }
+  @keyframes bgFade{
+    0%{background:#000}
+    100%{background:#2582B5}
+  }
+
+  /* Particle canvas overlay */
+  .particles{
+    position:absolute;inset:0;z-index:1;
+    opacity:0;
+    animation:particlesIn 1.5s ease 0.8s forwards;
+  }
+  @keyframes particlesIn{to{opacity:1}}
+
+  /* Vignette for polish */
+  .vignette{
+    position:absolute;inset:0;z-index:2;
+    background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.35) 100%);
+    pointer-events:none;
+  }
+
+  /* Subtle light sweep */
+  .light-sweep{
+    position:absolute;inset:0;z-index:3;
+    background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.08) 50%,transparent 60%);
+    transform:translateX(-120%);
+    animation:sweep 2.5s ease-in-out 1.5s forwards;
+    pointer-events:none;
+  }
+  @keyframes sweep{
+    0%{transform:translateX(-120%)}
+    100%{transform:translateX(120%)}
+  }
+
+  /* Content container */
+  .content{
+    position:relative;z-index:5;
+    display:flex;flex-direction:column;align-items:center;gap:32px;
+  }
+
+  /* Logo */
+  .logo-wrap{
+    opacity:0;
+    transform:scale(0.92);
+    animation:logoIn 1.4s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;
+  }
+  @keyframes logoIn{
+    to{opacity:1;transform:scale(1)}
+  }
+  .logo-wrap img{
+    height:140px;width:auto;
+    filter:drop-shadow(0 4px 24px rgba(0,0,0,0.3));
+  }
+
+  /* Divider line */
+  .divider{
+    width:0;height:2px;
+    background:rgba(255,255,255,0.5);
+    animation:divGrow 0.8s ease-out 2s forwards;
+  }
+  @keyframes divGrow{to{width:480px}}
+
+  /* Text blocks */
+  .headline{
+    font-size:38px;font-weight:600;color:#fff;
+    letter-spacing:0.5px;
+    opacity:0;transform:translateY(16px);
+    animation:textUp 1s ease-out 2.4s forwards;
+    text-shadow:0 2px 12px rgba(0,0,0,0.25);
+  }
+  .presenter{
+    font-size:26px;font-weight:300;color:rgba(255,255,255,0.85);
+    letter-spacing:1px;
+    opacity:0;transform:translateY(12px);
+    animation:textUp 1s ease-out 3s forwards;
+    text-shadow:0 1px 8px rgba(0,0,0,0.2);
+  }
+  @keyframes textUp{
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* Final fade out at ~6s */
+  .scene{
+    animation:sceneOut 1s ease-in 5.5s forwards;
+  }
+  @keyframes sceneOut{to{opacity:0}}
+</style>
+</head>
+<body>
+<div class="scene">
+  <div class="bg"></div>
+
+  <canvas class="particles" id="particles"></canvas>
+
+  <div class="vignette"></div>
+  <div class="light-sweep"></div>
+
+  <div class="content">
+    <div class="logo-wrap">
+      <img src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png"
+           alt="Rapid Mortgage" crossorigin="anonymous">
+    </div>
+    <div class="divider"></div>
+    <div class="headline">Exclusive P&amp;L Branch Opportunity</div>
+    <div class="presenter">Presented by Mark Jaynes</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('particles');
+  const ctx=c.getContext('2d');
+  c.width=1920;c.height=1080;
+  const dots=[];
+  for(let i=0;i<80;i++){
+    dots.push({
+      x:Math.random()*1920,
+      y:Math.random()*1080,
+      r:Math.random()*2.5+0.5,
+      dx:(Math.random()-0.5)*0.6,
+      dy:(Math.random()-0.5)*0.4-0.15,
+      a:Math.random()*0.5+0.15
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,1920,1080);
+    dots.forEach(d=>{
+      d.x+=d.dx;d.y+=d.dy;
+      if(d.x<0)d.x=1920;if(d.x>1920)d.x=0;
+      if(d.y<0)d.y=1080;if(d.y>1080)d.y=0;
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${d.a})`;
+      ctx.fill();
+    });
+    // Draw faint connecting lines between nearby dots
+    for(let i=0;i<dots.length;i++){
+      for(let j=i+1;j<dots.length;j++){
+        const dx=dots[i].x-dots[j].x;
+        const dy=dots[i].y-dots[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<160){
+          ctx.beginPath();
+          ctx.moveTo(dots[i].x,dots[i].y);
+          ctx.lineTo(dots[j].x,dots[j].y);
+          ctx.strokeStyle=`rgba(255,255,255,${0.06*(1-dist/160)})`;
+          ctx.lineWidth=0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
