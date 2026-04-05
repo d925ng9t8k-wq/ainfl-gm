@@ -1602,9 +1602,16 @@ const healthServer = createServer(async (req, res) => {
       return;
     }
     try {
+      // Use the in-process db handle (SQLCipher-aware) instead of calling /usr/bin/sqlite3
+      // which cannot read the encrypted database.
       const sqliteCount = (table) => {
-        try { return parseInt(execSync(`/usr/bin/sqlite3 ${PROJECT}/data/9-memory.db "SELECT count(*) FROM ${table};"`).toString().trim()); }
-        catch { return -1; }
+        try {
+          if (db) {
+            const row = db._db.prepare(`SELECT count(*) as c FROM ${table}`).get();
+            return row?.c ?? -1;
+          }
+          return -1;
+        } catch { return -1; }
       };
       const tables = ['messages', 'actions', 'decisions', 'memory', 'tasks'];
       const report = { status: 'checking', checked_at: new Date().toISOString(), tables: {} };
@@ -1722,7 +1729,8 @@ setInterval(async () => {
     return;
   }
   try {
-    const local = parseInt(execSync(`/usr/bin/sqlite3 ${PROJECT}/data/9-memory.db "SELECT count(*) FROM messages;"`).toString().trim());
+    // Use in-process db handle (SQLCipher-aware) instead of /usr/bin/sqlite3
+    const local = db ? (db._db.prepare('SELECT count(*) as c FROM messages').get()?.c ?? 0) : 0;
     const { count: cloud, error } = await supabase.from('messages').select('*', { count: 'exact', head: true });
     if (error) {
       console.error('[supabase watchdog] query failed:', error.message);
