@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.9.9-ops-daemon</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/jassonfishback/Projects/BengalOracle/scripts/9-ops-daemon.mjs</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/jassonfishback/Projects/BengalOracle</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/jassonfishback/Projects/BengalOracle/logs/9-ops-daemon-stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/jassonfishback/Projects/BengalOracle/logs/9-ops-daemon-stderr.log</string>
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>/Users/jassonfishback</string>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
