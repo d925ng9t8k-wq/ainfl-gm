@@ -768,6 +768,23 @@ function ocRelayDeferralMessage() {
   return OC_RELAY_DEFERRALS[Math.floor(Math.random() * OC_RELAY_DEFERRALS.length)];
 }
 
+// ─── OC Relay Lockdown Kill-Switch ───────────────────────────────────────────
+// OC_RELAY_LOCKDOWN=1 (default ON) hard-blocks ANY autonomous Claude call when
+// terminalState === 'relay'. Belt-and-suspenders — covers ALL code paths.
+// Set OC_RELAY_LOCKDOWN=0 in .env only if explicitly needed for testing.
+const OC_RELAY_LOCKDOWN = process.env.OC_RELAY_LOCKDOWN !== '0'; // default ON
+
+// Call this before any askClaude / askDoorman call in a relay-mode context.
+// Returns true if the call should be suppressed (i.e., terminal is active).
+// When suppressed, logs the reason and caller should send ocRelayDeferralMessage() instead.
+function isRelayLockdownActive(reason) {
+  if (OC_RELAY_LOCKDOWN && isTerminalActive()) {
+    log(`[oc-lockdown] suppressed autonomous call, routing to deferral (reason: ${reason})`);
+    return true;
+  }
+  return false;
+}
+
 // ─── OC Capability-Claim Filter ─────────────────────────────────────────────
 // Applied to every OC-generated message before it reaches any channel.
 // Catches phrases where OC offers technical capabilities it does not have.
@@ -1911,21 +1928,33 @@ async function telegramPoll() {
                       } catch {}
                     }, 180000);
                   } else {
-                    // File write failed — respond directly instead of losing the message
+                    // File write failed — respond directly only if NOT in relay mode
                     log('Signal file write failed — falling through to direct response');
-                    const reply = await askClaude(userText, 'telegram');
-                    await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
+                    if (isRelayLockdownActive('signal file write failed, terminal still active')) {
+                      await sendTelegram(ocRelayDeferralMessage());
+                    } else {
+                      const reply = await askClaude(userText, 'telegram');
+                      await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
+                    }
                   }
                 } else {
-                  // Terminal is alive but unresponsive — respond directly with Sonnet (via askClaude)
-                  const needsTerminal = detectComplexRequest(userText);
-                  if (needsTerminal) {
-                    await sendTelegram('OC: Covering for 9. Terminal is open but not responding. That request needs terminal — I\'ll queue it and keep trying.');
+                  // Terminal is alive (still pinging) but signal file has unread messages >60s old.
+                  // RELAY LOCKDOWN: terminal is still active (isTerminalActive() === true), so OC
+                  // must NOT generate a substantive response. Defer only.
+                  // This was the exact leak path that produced the Apr 5 OC impersonation incident.
+                  if (isRelayLockdownActive('terminal alive but unresponsive — signal file stale')) {
+                    await sendTelegram(ocRelayDeferralMessage());
                   } else {
-                    await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
-                    const reply = await askClaude(userText, 'telegram');
-                    log(`Telegram OUT (terminal unresponsive, Sonnet direct): "${reply.slice(0, 100)}..."`);
-                    await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
+                    // Only reaches here if lockdown is explicitly disabled (OC_RELAY_LOCKDOWN=0)
+                    const needsTerminal = detectComplexRequest(userText);
+                    if (needsTerminal) {
+                      await sendTelegram('OC: Covering for 9. Terminal is open but not responding. That request needs terminal — I\'ll queue it and keep trying.');
+                    } else {
+                      await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
+                      const reply = await askClaude(userText, 'telegram');
+                      log(`Telegram OUT (terminal unresponsive, Sonnet direct): "${reply.slice(0, 100)}..."`);
+                      await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
+                    }
                   }
                 }
               } else if (inStartupGrace()) {
@@ -2123,10 +2152,17 @@ async function imessageMonitor() {
               appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
             } catch {}
           } else {
-            // The Doorman handles iMessage when terminal is unresponsive
-            log('iMessage: terminal unresponsive — The Doorman responding');
-            const doormanReply = await askDoorman(msg.text, 'imessage');
-            sendIMessage(doormanReply);
+            // Terminal alive but signal file stale — same relay lockdown rule as Telegram.
+            // Terminal is still pinging (isTerminalActive() === true), so OC must NOT answer.
+            if (isRelayLockdownActive('iMessage: terminal alive but unresponsive — signal file stale')) {
+              sendIMessage(ocRelayDeferralMessage());
+            } else {
+              // Only reaches here if lockdown is explicitly disabled (OC_RELAY_LOCKDOWN=0)
+              log('iMessage: terminal unresponsive — The Doorman responding');
+              const doormanReply = await askDoorman(msg.text, 'imessage');
+              sendIMessage(doormanReply);
+            }
+            // Always queue the message so terminal can pick it up when it resumes
             try {
               const alert = JSON.stringify({ channel: 'imessage', text: msg.text, timestamp: new Date().toISOString() });
               appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
