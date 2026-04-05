@@ -1712,6 +1712,28 @@ const healthServer = createServer(async (req, res) => {
       res.end(JSON.stringify({ error: e.message }));
     }
 
+  } else if (req.method === 'GET' && req.url === '/usage-dashboard') {
+    // GET /usage-dashboard — proxy to usage-monitor's /usage-dashboard endpoint.
+    // If usage-monitor is down, return a stub with a warning.
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const umRes = await fetch('http://localhost:3460/usage-dashboard', { signal: AbortSignal.timeout(8000) }).catch(() => null);
+      if (umRes && umRes.ok) {
+        const data = await umRes.json();
+        res.end(JSON.stringify(data, null, 2));
+      } else {
+        res.end(JSON.stringify({
+          warning: 'usage-monitor is not running on port 3460 — start scripts/usage-monitor.mjs or load LaunchAgent com.9.usage-monitor',
+          current_status: {},
+          not_monitored: {},
+          top_by_usage: [],
+          recent_events: [],
+        }, null, 2));
+      }
+    } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
   } else {
     res.writeHead(404);
     res.end('not found');

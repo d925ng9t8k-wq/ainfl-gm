@@ -188,6 +188,26 @@ const SCHEMA = `
   CREATE INDEX IF NOT EXISTS idx_audit_log_timestamp  ON audit_log(timestamp);
   CREATE INDEX IF NOT EXISTS idx_audit_log_actor      ON audit_log(actor);
   CREATE INDEX IF NOT EXISTS idx_audit_log_table_name ON audit_log(table_name);
+
+  -- Usage events: quota + rate-limit tracking for all paid services (added by usage-monitor)
+  CREATE TABLE IF NOT EXISTS usage_events (
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp          TEXT    NOT NULL,
+    service            TEXT    NOT NULL,
+    metric_name        TEXT    NOT NULL,
+    metric_value       REAL,
+    metric_unit        TEXT,
+    limit_value        REAL,
+    pct_used           REAL,
+    status             TEXT    NOT NULL DEFAULT 'healthy',
+    severity           TEXT    NOT NULL DEFAULT 'info',
+    message            TEXT,
+    raw_response_json  TEXT
+  );
+  CREATE INDEX IF NOT EXISTS idx_usage_service   ON usage_events(service);
+  CREATE INDEX IF NOT EXISTS idx_usage_timestamp ON usage_events(timestamp);
+  CREATE INDEX IF NOT EXISTS idx_usage_severity  ON usage_events(severity);
+  CREATE INDEX IF NOT EXISTS idx_usage_metric    ON usage_events(metric_name);
 `;
 
 // ─── MemoryDB class ──────────────────────────────────────────────────────────
