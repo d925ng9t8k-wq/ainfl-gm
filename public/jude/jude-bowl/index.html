@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Jude Bowl 🏈</title>
+<title>Jude Bowl 🏈 v4</title>
+<!-- v4: mobile play fix — longer run window, pass D-pad, all play types playable -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -627,7 +628,7 @@
 </div>
 
 <!-- ===== MOBILE HINT (shown on touch screens during play call) ===== -->
-<div id="mobile-hint">TAP A PLAY TO CALL IT · D-PAD APPEARS ON RUN PLAYS</div>
+<div id="mobile-hint">TAP A PLAY TO CALL IT · D-PAD CONTROLS YOUR PLAYER</div>
 
 <!-- ===== PLAY PANEL ===== -->
 <div id="play-panel">
@@ -1209,10 +1210,14 @@ function callPlay(playType) {
   hidePlayCallUI();
   startClock();
 
-  // For run plays, show mobile controls and animate
+  // All play types get the interactive animation on mobile
+  // Desktop non-run plays auto-resolve after a short delay
   if (playType === 'run' || playType === 'sprint') {
     runPlayAnimation(playType);
+  } else if (playType === 'short_pass' || playType === 'bomb') {
+    passPlayAnimation(playType);
   } else {
+    // trick, special, field_goal, punt — short auto-resolve
     setTimeout(() => {
       executePlay(playType, true);
     }, 400);
@@ -1421,25 +1426,49 @@ let runYardsCurrent = 0;
 let runIsHome = true;
 let defenderChasing = false;
 
-function runPlayAnimation(playType) {
+// ===== PASS PLAY ANIMATION STATE =====
+let passAnimId = null;
+let passAnimActive = false;
+let passAnimFrames = 0;
+let passYardsTarget = 0;
+let passPlayType = '';
+let receiverX = 0;
+let receiverY = 0;
+let ballThrown = false;
+let ballProgress = 0; // 0→1: QB to receiver
+let passComplete = false;
+let passCatchFrame = 0;
+let passDefenderActive = false;
+let passDefX = 0, passDefY = 0;
+
+// Show mobile controls with a custom label
+function showMobileControls(label) {
   document.getElementById('mobile-controls').classList.add('visible');
   document.getElementById('mobile-hint').style.display = 'none';
+  // Update status bar with play instructions
+  if (label) showStatus(label);
+}
+
+function runPlayAnimation(playType) {
+  showMobileControls(isMobile ? 'USE D-PAD TO RUN! DODGE THE DEFENDER!' : '');
 
   runIsHome = G.possession === 'home';
-  const maxFrames = playType === 'sprint' ? 90 : 75;
+  // Mobile: 5 seconds (300 frames). Desktop: 1.5 seconds (90 frames).
+  const maxFrames = isMobile ? 300 : (playType === 'sprint' ? 90 : 75);
   runAnimFrames = 0;
   runYardsTarget = playType === 'sprint' ? rand(0, 12) : rand(2, 8);
   runYardsCurrent = 0;
 
-  // Reset player position
+  // Reset player — start slightly left of ball so they can run right
   player.x = ballYardToX(G.ballPos);
   player.y = CH / 2;
-  player.dx = 0;
+  player.dx = isMobile ? 0 : 1.5; // give desktop a head start, mobile starts from rest
   player.dy = 0;
 
-  // Spawn a defender
-  defender.x = ballYardToX(G.ballPos + 15);
-  defender.y = CH / 2 + rand(-40, 40);
+  // Spawn defender far ahead — 30 yards on mobile, 15 on desktop
+  const defenderStartGap = isMobile ? 30 : 15;
+  defender.x = Math.min(ballYardToX(G.ballPos + defenderStartGap), CW - 60);
+  defender.y = CH / 2 + rand(-50, 50);
   defender.active = true;
   defenderChasing = true;
 
@@ -1449,63 +1478,86 @@ function runPlayAnimation(playType) {
     runAnimId = requestAnimationFrame(animate);
     runAnimFrames++;
 
-    // Player movement from keys
+    // Player movement from D-pad / keys
     let spd = playType === 'sprint' ? 3.5 : 2.8;
-    if (G.spinBoost) spd *= 1.3;
-    if (G.hurdleBoost) spd *= 1.2;
+    if (isMobile) spd *= 1.15; // a touch faster on mobile so it feels responsive
+    if (G.spinBoost) { spd *= 1.35; }
+    if (G.hurdleBoost) { spd *= 1.2; }
 
     if (keys.right) player.dx = spd;
-    else if (keys.left) player.dx = -spd * 0.6;
+    else if (keys.left) player.dx = -spd * 0.5;
     else player.dx *= 0.85;
 
-    if (keys.up) player.dy = -spd * 0.7;
-    else if (keys.down) player.dy = spd * 0.7;
+    if (keys.up) player.dy = -spd * 0.75;
+    else if (keys.down) player.dy = spd * 0.75;
     else player.dy *= 0.85;
+
+    // On mobile, apply a gentle auto-advance so the player is always moving right
+    // even if they haven't tapped yet — prevents instant tackle on frame 1
+    if (isMobile && !keys.left && player.dx < 1.5) {
+      player.dx = Math.max(player.dx, 1.2);
+    }
 
     player.x = clamp(player.x + player.dx, 52, CW - 52);
     player.y = clamp(player.y + player.dy, 20, CH - 20);
 
-    // Track yards gained
+    // Track yards gained based on visual player position
     const yardGained = (player.x - ballYardToX(G.ballPos)) / ((CW - 104) / 100);
     runYardsCurrent = Math.max(0, Math.min(yardGained, runYardsTarget));
 
-    // Defender chases
+    // Defender chases — slower on mobile, grace period is longer
     if (defender.active) {
       const dx = player.x - defender.x;
       const dy = player.y - defender.y;
-      const dist = Math.sqrt(dx*dx+dy*dy);
-      const defSpd = 2.2 + runAnimFrames * 0.008;
-      defender.x += (dx/dist) * defSpd;
-      defender.y += (dy/dist) * defSpd;
+      const dist = Math.sqrt(dx*dx + dy*dy);
 
-      // Tackle!
-      if (dist < 22 && runAnimFrames > 20) {
+      // Defender speed: slower on mobile, ramps up more gently
+      const baseDefSpd = isMobile ? 1.6 : 2.2;
+      const rampFactor = isMobile ? 0.004 : 0.008;
+      const defSpd = baseDefSpd + runAnimFrames * rampFactor;
+      if (dist > 0) {
+        defender.x += (dx / dist) * defSpd;
+        defender.y += (dy / dist) * defSpd;
+      }
+
+      // Grace period before tackle can happen: 80 frames on mobile (~1.3s), 20 on desktop
+      const gracePeriod = isMobile ? 80 : 20;
+
+      // Tackle! (player and defender collide)
+      if (dist < 24 && runAnimFrames > gracePeriod) {
         cancelAnimationFrame(runAnimId);
         defender.active = false;
         document.getElementById('mobile-controls').classList.remove('visible');
         spawnParticles(player.x, player.y, '#ffffff', 12);
         drawScene();
-        executePlay('run_result', runIsHome, runYardsCurrent);
+        // Use spin/hurdle boosts even on tackle
+        let finalYards = Math.round(runYardsCurrent);
+        if (G.spinBoost) { finalYards += rand(1, 3); G.spinBoost = false; }
+        if (G.hurdleBoost) { finalYards += rand(1, 2); G.hurdleBoost = false; }
+        executePlay('run_result', runIsHome, finalYards);
         return;
       }
     }
 
-    // TD!
-    if (player.x >= CW - 52) {
+    // TOUCHDOWN — player reaches right end zone
+    if (player.x >= CW - 54) {
       cancelAnimationFrame(runAnimId);
       defender.active = false;
       document.getElementById('mobile-controls').classList.remove('visible');
-      runYardsCurrent = 100 - G.ballPos;
-      executePlay('run_result', runIsHome, runYardsTarget);
+      // TD — give full target yards (earned it)
+      executePlay('run_result', runIsHome, 100 - G.ballPos);
       return;
     }
 
-    // Time up
+    // Time up — play ends naturally, reward yards gained so far
     if (runAnimFrames >= maxFrames) {
       cancelAnimationFrame(runAnimId);
       defender.active = false;
       document.getElementById('mobile-controls').classList.remove('visible');
-      executePlay('run_result', runIsHome, Math.min(runYardsCurrent, runYardsTarget));
+      let finalYards = Math.round(Math.min(runYardsCurrent, runYardsTarget));
+      if (G.spinBoost) { finalYards += rand(1, 2); G.spinBoost = false; }
+      if (G.hurdleBoost) { finalYards += rand(0, 1); G.hurdleBoost = false; }
+      executePlay('run_result', runIsHome, finalYards);
       return;
     }
 
@@ -1513,6 +1565,216 @@ function runPlayAnimation(playType) {
   }
 
   animate();
+}
+
+// ===== PASS PLAY ANIMATION =====
+// Shows the D-pad. Ball flies from QB to receiver position.
+// Player steers the receiver with D-pad after catch (if complete).
+// Play resolves based on pre-rolled outcome but player sees it unfold.
+function passPlayAnimation(playType) {
+  passAnimActive = true;
+  passPlayType = playType;
+  passAnimFrames = 0;
+  ballThrown = false;
+  ballProgress = 0;
+  passComplete = false;
+  passCatchFrame = 0;
+  passDefenderActive = false;
+
+  // Pre-roll the outcome
+  let outcome, outcomeYards;
+  if (playType === 'short_pass') {
+    passComplete = Math.random() < 0.75;
+    outcomeYards = passComplete ? rand(5, 16) : 0;
+  } else { // bomb
+    passComplete = Math.random() < 0.42;
+    outcomeYards = passComplete ? rand(15, 35) : 0;
+  }
+  passYardsTarget = outcomeYards;
+
+  // QB position (left side of screen, current ball position)
+  const qbX = ballYardToX(G.ballPos);
+  const qbY = CH / 2;
+
+  // Receiver target — how far they run based on play type
+  const receiverRunYards = playType === 'bomb' ? rand(25, 40) : rand(10, 20);
+  receiverX = Math.min(ballYardToX(G.ballPos + receiverRunYards), CW - 55);
+  receiverY = CH / 2 + rand(-60, 60);
+
+  // Player sprite starts at QB position
+  player.x = qbX;
+  player.y = qbY;
+  player.dx = 0;
+  player.dy = 0;
+
+  // Defender spawns near receiver
+  if (passComplete) {
+    passDefX = receiverX + rand(-20, 20);
+    passDefY = receiverY + rand(-20, 20);
+    passDefenderActive = true;
+    defender.x = passDefX;
+    defender.y = passDefY;
+    defender.active = true;
+  }
+
+  // Ball starts at QB
+  ball.x = qbX;
+  ball.y = qbY;
+  ball.visible = true;
+
+  // Target coords for throw arc
+  const targetX = passComplete ? receiverX : receiverX + rand(-40, 40);
+  const targetY = passComplete ? receiverY : receiverY + rand(-40, 40);
+
+  // Total frames for throw animation — slower on mobile
+  const throwDuration = isMobile ? 90 : 50;
+  const catchWindowDuration = isMobile ? 200 : 80; // frames AFTER catch where player can run
+
+  showMobileControls(isMobile ? (passComplete ? 'CATCH IS COMING! STEER WITH D-PAD!' : 'PASS IN AIR...') : '');
+
+  function animate() {
+    passAnimId = requestAnimationFrame(animate);
+    passAnimFrames++;
+
+    // Phase 1: Throw animation (ball flies from QB to target)
+    if (!ballThrown || ballProgress < 1) {
+      if (!ballThrown && passAnimFrames > 15) {
+        // Snap delay then throw
+        ballThrown = true;
+        ballProgress = 0;
+      }
+      if (ballThrown) {
+        ballProgress = Math.min(1, ballProgress + (1 / throwDuration));
+        // Arc the ball (parabolic path)
+        const t = ballProgress;
+        ball.x = qbX + (targetX - qbX) * t;
+        ball.y = qbY + (targetY - qbY) * t - Math.sin(t * Math.PI) * 50;
+      }
+    }
+
+    // Phase 2: Ball arrives at target
+    if (ballThrown && ballProgress >= 1 && passCatchFrame === 0) {
+      passCatchFrame = passAnimFrames;
+      ball.visible = false;
+
+      if (passComplete) {
+        // Receiver (player sprite) appears at receiver position
+        player.x = receiverX;
+        player.y = receiverY;
+        player.dx = 0;
+        player.dy = 0;
+        sfxPass(passYardsTarget);
+        spawnParticles(receiverX, receiverY, '#FFD700', 10);
+        showStatus(isMobile ? 'CAUGHT! RUN WITH D-PAD!' : 'CAUGHT!');
+      } else {
+        // Incomplete — show and end
+        sfxFail();
+        cancelAnimationFrame(passAnimId);
+        passAnimActive = false;
+        defender.active = false;
+        document.getElementById('mobile-controls').classList.remove('visible');
+        showPlayResult('INCOMPLETE!', '0 YDS');
+        setTimeout(() => updateDownDistance(0, true), 600);
+        return;
+      }
+    }
+
+    // Phase 3: After catch — player runs with D-pad
+    if (passCatchFrame > 0 && passComplete) {
+      const framesSinceCatch = passAnimFrames - passCatchFrame;
+
+      // D-pad controls receiver after catch
+      let spd = 2.5;
+      if (isMobile) spd = 2.8;
+
+      if (keys.right) player.dx = spd;
+      else if (keys.left) player.dx = -spd * 0.5;
+      else player.dx *= 0.85;
+
+      if (keys.up) player.dy = -spd * 0.75;
+      else if (keys.down) player.dy = spd * 0.75;
+      else player.dy *= 0.85;
+
+      // Auto-advance after catch so player keeps moving right
+      if (isMobile && !keys.left && player.dx < 1.2) {
+        player.dx = Math.max(player.dx, 1.0);
+      }
+
+      player.x = clamp(player.x + player.dx, 52, CW - 52);
+      player.y = clamp(player.y + player.dy, 20, CH - 20);
+
+      // Defender moves in (slower on mobile)
+      if (passDefenderActive) {
+        const dx2 = player.x - defender.x;
+        const dy2 = player.y - defender.y;
+        const dist2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+        const defSpd2 = isMobile ? 1.5 + framesSinceCatch * 0.005 : 2.0 + framesSinceCatch * 0.01;
+        if (dist2 > 0) {
+          defender.x += (dx2 / dist2) * defSpd2;
+          defender.y += (dy2 / dist2) * defSpd2;
+        }
+
+        // Tackle after catch
+        const gracePeriod = isMobile ? 60 : 15;
+        if (dist2 < 24 && framesSinceCatch > gracePeriod) {
+          cancelAnimationFrame(passAnimId);
+          defender.active = false;
+          document.getElementById('mobile-controls').classList.remove('visible');
+          spawnParticles(player.x, player.y, '#ffffff', 10);
+          drawScene();
+          // Yards gained = based on player's visual position vs where catch happened
+          const bonusYards = Math.round(Math.max(0, (player.x - receiverX) / ((CW - 104) / 100)));
+          const totalYards = Math.min(passYardsTarget + bonusYards, passYardsTarget + 8);
+          resolvePassPlay(totalYards);
+          return;
+        }
+      }
+
+      // TD — receiver reaches end zone
+      if (player.x >= CW - 54) {
+        cancelAnimationFrame(passAnimId);
+        passAnimActive = false;
+        defender.active = false;
+        document.getElementById('mobile-controls').classList.remove('visible');
+        resolvePassPlay(100 - G.ballPos);
+        return;
+      }
+
+      // Catch window expires
+      if (framesSinceCatch >= catchWindowDuration) {
+        cancelAnimationFrame(passAnimId);
+        passAnimActive = false;
+        defender.active = false;
+        document.getElementById('mobile-controls').classList.remove('visible');
+        const bonusYards = Math.round(Math.max(0, (player.x - receiverX) / ((CW - 104) / 100)));
+        const totalYards = Math.min(passYardsTarget + bonusYards, passYardsTarget + 8);
+        resolvePassPlay(totalYards);
+        return;
+      }
+    }
+
+    drawScene();
+  }
+
+  animate();
+}
+
+function resolvePassPlay(yards) {
+  yards = Math.round(yards);
+  const title = yards >= 20 ? 'BIG PASS PLAY!' : yards >= 10 ? 'GREAT CATCH!' : 'CAUGHT IT!';
+  sfxPass(yards);
+  const newPos = clamp(G.ballPos + yards, 0, 100);
+  G.ballPos = newPos;
+  showPlayResult(title, '+' + yards + ' YDS');
+  if (yards >= 10) spawnParticles(ballYardToX(G.ballPos), CH/2, '#FB4F14', 20);
+  updateScoreboard();
+  if (G.ballPos >= 100) {
+    G.homeScore += 6;
+    updateScoreboard();
+    showTouchdown(true, () => { G.homeScore += 1; updateScoreboard(); afterScore(); });
+    return;
+  }
+  setTimeout(() => updateDownDistance(yards, true), 600);
 }
 
 // Override executePlay to handle run_result
@@ -1582,21 +1844,43 @@ function drawScene() {
   // Draw particles under players
   drawParticles();
 
-  // Ball (during non-animation)
-  if (G.phase !== 'animating' || !defender.active) {
+  if (G.phase !== 'animating') {
+    // Static idle state — ball and player at line
     drawBall(ballYardToX(G.ballPos), CH/2);
-  }
+    drawPlayer(ballYardToX(G.ballPos) - 18, CH/2, '#FB4F14', false);
+  } else if (passAnimActive) {
+    // Pass play in flight — draw QB, flying ball, and receiver marker
+    // QB stays at original position until catch
+    const qbX = ballYardToX(G.ballPos);
+    drawPlayer(qbX, CH/2, '#FB4F14', false);
 
-  // Player (during run animation)
-  if (defender.active || G.phase === 'animating') {
+    // Flying ball
+    if (ballThrown && ball.visible) {
+      drawBall(ball.x, ball.y);
+    }
+
+    // Receiver target ring (where ball is heading)
+    if (ballThrown && ball.visible && passComplete) {
+      ctx.strokeStyle = 'rgba(255,215,0,0.5)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(receiverX, receiverY, 14, 0, Math.PI*2);
+      ctx.stroke();
+    }
+
+    // After catch: draw runner (player) and defender
+    if (passCatchFrame > 0 && passComplete) {
+      drawPlayer(player.x, player.y, '#FB4F14', false);
+      if (passDefenderActive && defender.active) {
+        drawPlayer(defender.x, defender.y, '#6600aa', true);
+      }
+    }
+  } else {
+    // Run play animation
     drawPlayer(player.x, player.y, '#FB4F14', false);
     if (defender.active) {
       drawPlayer(defender.x, defender.y, '#6600aa', true);
     }
-  } else {
-    // Static player at ball position
-    drawPlayer(ballYardToX(G.ballPos) - 18, CH/2, '#FB4F14', false);
-    drawBall(ballYardToX(G.ballPos), CH/2);
   }
 
   // Yard markers
@@ -1620,6 +1904,9 @@ function idleDraw() {
 function endGame() {
   stopClock();
   cancelAnimationFrame(runAnimId);
+  cancelAnimationFrame(passAnimId);
+  passAnimActive = false;
+  defender.active = false;
   G.phase = 'gameover';
   document.getElementById('scoreboard').classList.remove('visible');
   document.getElementById('play-panel').classList.remove('visible');
@@ -1663,6 +1950,11 @@ function startGame() {
   G.hurdleBoost = false;
   particles.length = 0;
   defender.active = false;
+  passAnimActive = false;
+  ball.visible = true;
+  ballThrown = false;
+  cancelAnimationFrame(runAnimId);
+  cancelAnimationFrame(passAnimId);
   keys.up = keys.down = keys.left = keys.right = false;
 
   updateHighScoreDisplay();
