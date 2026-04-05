@@ -64,8 +64,46 @@ function log(msg) {
   try { appendFileSync(LOG_FILE, line); } catch {}
 }
 
+// ─── Encryption key (FORT C-03 compliant) ────────────────────────────────────
+// Primary: macOS Keychain. Fallback: env var (dev/CI only).
+// Pattern mirrors scripts/memory-db.mjs — Keychain is the canonical source.
+// If BOTH fail and the DB is encrypted, we throw rather than silently fail.
+function getEncryptionKey() {
+  try {
+    const key = execSync(
+      'security find-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w',
+      { stdio: ['pipe', 'pipe', 'pipe'], timeout: 5000 }
+    ).toString().trim();
+    if (key) {
+      log('[DB] Encryption key loaded from macOS Keychain (FORT C-03 compliant)');
+      return key;
+    }
+  } catch {
+    // Keychain not available or key not found — fall through to env var
+  }
+  const envKey = process.env.SQLITE_ENCRYPTION_KEY || null;
+  if (envKey) {
+    log('[DB] Encryption key loaded from env var (Keychain fallback — dev/CI only)');
+    return envKey;
+  }
+  // Both sources exhausted. If DB is encrypted this will corrupt writes silently —
+  // throw now so LaunchAgent surfaces a clean exit code rather than a zombie process.
+  throw new Error(
+    'FATAL: SQLITE_ENCRYPTION_KEY not found in macOS Keychain or env var. ' +
+    'Set it with: security add-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w <key>'
+  );
+}
+
 // ─── SQLite ───────────────────────────────────────────────────────────────────
-const ENCRYPTION_KEY = process.env.SQLITE_ENCRYPTION_KEY || null;
+let _encryptionKey;
+try {
+  _encryptionKey = getEncryptionKey();
+} catch (e) {
+  // Log to stderr before dying so LaunchAgent captures it
+  process.stderr.write(`[ram-watch-agent] ${e.message}\n`);
+  process.exit(1);
+}
+const ENCRYPTION_KEY = _encryptionKey;
 let _db;
 function getDb() {
   if (_db) return _db;
@@ -542,8 +580,11 @@ const server = createServer((req, res) => {
   res.end('not found');
 });
 
-server.listen(WATCH_PORT, () => {
-  log(`RAM watch health endpoint on port ${WATCH_PORT}`);
+// Bind loopback only — this endpoint is internal. No LAN exposure.
+// voice-server / pilot-server / jules-server remain public because they
+// receive inbound Twilio webhooks through the Cloudflare tunnel.
+server.listen(WATCH_PORT, '127.0.0.1', () => {
+  log(`RAM watch health endpoint on 127.0.0.1:${WATCH_PORT} (loopback only)`);
 });
 server.on('error', e => log(`HTTP server error: ${e.message}`));
 
