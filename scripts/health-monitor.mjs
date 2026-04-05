@@ -671,6 +671,7 @@ async function runFastChecks() {
   await check({ component: 'cloud-worker',   metricName: 'latency_ms',    getValue: () => checkCloudWorker() });
   await check({ component: 'claude-code',    metricName: 'rss_mb',        getValue: () => checkClaudeMemory() });
   await check({ component: 'claude-watchdog',metricName: 'restart_count', getValue: () => checkWatchdogRestarts() });
+  await check({ component: 'ram-watch-agent',metricName: 'http_status',   getValue: () => checkHttpEndpoint('ram-watch-agent', 'http://localhost:3459/health') });
 }
 
 // ─── SLOW LOOP (every 5m) ────────────────────────────────────────────────────
