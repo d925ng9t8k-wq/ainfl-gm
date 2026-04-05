@@ -109,6 +109,26 @@ const SCHEMA = `
   );
 
   CREATE INDEX IF NOT EXISTS idx_decisions_timestamp ON decisions(timestamp);
+
+  CREATE TABLE IF NOT EXISTS health_events (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp     TEXT    NOT NULL,
+    component     TEXT    NOT NULL,
+    status        TEXT    NOT NULL,
+    metric_name   TEXT    NOT NULL,
+    metric_value  TEXT,
+    severity      TEXT    NOT NULL DEFAULT 'info',
+    message       TEXT,
+    signature     TEXT    NOT NULL,
+    event_count   INTEGER NOT NULL DEFAULT 1,
+    last_seen     TEXT    NOT NULL
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_health_events_timestamp ON health_events(timestamp);
+  CREATE INDEX IF NOT EXISTS idx_health_events_component ON health_events(component);
+  CREATE INDEX IF NOT EXISTS idx_health_events_severity  ON health_events(severity);
+  CREATE INDEX IF NOT EXISTS idx_health_events_signature ON health_events(signature);
+  CREATE INDEX IF NOT EXISTS idx_health_events_last_seen ON health_events(last_seen);
 `;
 
 // ─── MemoryDB class ──────────────────────────────────────────────────────────
