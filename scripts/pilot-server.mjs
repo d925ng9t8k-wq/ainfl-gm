@@ -9,6 +9,7 @@ import http from "node:http";
 import https from "node:https";
 import net from "node:net";
 import fs from "node:fs";
+import crypto from "node:crypto";
 import { URL } from "node:url";
 
 // ─── Load .env ───────────────────────────────────────────────────────────────
@@ -30,13 +31,39 @@ const RECIPIENT_PHONE = process.env.JULES_KYLEC_RECIPIENT_PHONE;
 const OPENWEATHER_KEY = process.env.OPENWEATHER_API_KEY;
 const PROFILE_PATH    = new URL('../data/jules-profile-kylec.json', import.meta.url).pathname;
 
-const CLAUDE_HAIKU  = "claude-haiku-4-5-20251001";
+// Model IDs — Haiku is banned for quality-sensitive roles (Apr 5 rule).
+// Pilot (Kyle C agent) is a named agent; Sonnet is the minimum tier.
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 
 const VERSION = "1.3.0";
 const MAX_BODY_SIZE = 64 * 1024; // 64KB max request body
 const CINCINNATI_LAT = 39.1031;
 const CINCINNATI_LON = -84.5120;
+const SECURITY_LOG_PATH = new URL('../logs/freeagent-security.log', import.meta.url).pathname;
+
+// ─── Twilio Webhook Signature Validation ─────────────────────────────────────
+// Implements Twilio's HMAC-SHA1 validation spec:
+//   https://www.twilio.com/docs/usage/security#validating-signatures-from-twilio
+// No twilio npm package needed — uses Node.js built-in crypto.
+function validateTwilioSignature(authToken, signature, url, params) {
+  if (!authToken || !signature || !url) return false;
+  // Build sorted param string: sorted keys + values concatenated
+  const sortedKeys = Object.keys(params).sort();
+  const paramStr   = sortedKeys.reduce((acc, key) => acc + key + (params[key] ?? ''), '');
+  const hmac    = crypto.createHmac('sha1', authToken)
+                        .update(url + paramStr)
+                        .digest('base64');
+  const hmacBuf = Buffer.from(hmac);
+  const sigBuf  = Buffer.from(signature);
+  if (hmacBuf.length !== sigBuf.length) return false;
+  return crypto.timingSafeEqual(hmacBuf, sigBuf);
+}
+
+function logSecurityEvent(msg) {
+  const line = `[${new Date().toISOString()}] ${msg}\n`;
+  try { fs.appendFileSync(SECURITY_LOG_PATH, line); } catch { /* ignore */ }
+  console.error(`[pilot SECURITY] ${msg}`);
+}
 
 // ─── Performance: reusable HTTPS agents ──────────────────────────────────────
 const anthropicAgent = new https.Agent({ keepAlive: true, maxSockets: 5 });
@@ -1253,6 +1280,31 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && url.pathname === '/sms') {
     const rawBody = await readBody(req);
     const params     = parseFormBody(rawBody);
+
+    // ── Twilio signature validation — reject spoofed webhooks ──
+    // Reconstruct the full public URL Twilio signed. If behind a tunnel/proxy,
+    // the X-Forwarded-Host header carries the real public hostname.
+    const host = req.headers['x-forwarded-host'] || req.headers['host'] || `localhost:${PORT}`;
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const fullUrl = `${proto}://${host}${req.url}`;
+    const twilioSig = req.headers['x-twilio-signature'] || '';
+    if (TWILIO_AUTH) {
+      let sigValid = false;
+      try {
+        sigValid = validateTwilioSignature(TWILIO_AUTH, twilioSig, fullUrl, params);
+      } catch (_) {
+        sigValid = false;
+      }
+      if (!sigValid) {
+        logSecurityEvent(`INVALID TWILIO SIGNATURE — ip=${req.socket.remoteAddress} url=${fullUrl} sig=${twilioSig.slice(0,16)}...`);
+        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.end('Invalid signature');
+        return;
+      }
+    } else {
+      logSecurityEvent('WARNING: TWILIO_AUTH_TOKEN not set — signature validation skipped');
+    }
+
     const inboundBody = params.Body || '';
     const from        = params.From || 'unknown';
 

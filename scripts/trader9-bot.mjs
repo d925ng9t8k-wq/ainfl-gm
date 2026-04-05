@@ -21,7 +21,7 @@
  * Market Hours: stocks/ETFs 9:30 AM–4:00 PM ET only, crypto 24/7
  */
 
-import { readFileSync, appendFileSync, writeFileSync, mkdirSync } from 'fs';
+import { readFileSync, appendFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
 // ─── Asset Universe ───────────────────────────────────────────────────────────
@@ -39,6 +39,7 @@ const PROJECT_ROOT    = '/Users/jassonfishback/Projects/BengalOracle';
 const ENV_PATH        = join(PROJECT_ROOT, '.env');
 const LOG_PATH        = join(PROJECT_ROOT, 'logs/trader9.log');
 const STATUS_PATH     = '/tmp/trader9-status.txt';
+const HALT_PATH       = join(PROJECT_ROOT, 'data/trader9-halt-until.txt');
 
 // Alpaca endpoints — stocks and crypto use different data hosts
 const TRADE_BASE      = 'https://api.alpaca.markets';       // orders + account (both asset types)
@@ -63,6 +64,22 @@ const SPIKE_THRESHOLD      = 0.008;          // 0.8% move in 5 bars = micro-spik
 const BARS_NEEDED          = 25;             // ideal bars for strategies
 const BARS_MIN             = 8;              // absolute minimum to attempt trading
 
+// ─── Load API Keys ────────────────────────────────────────────────────────────
+// (defined here so MAX_DAILY_LOSS_PCT can read env before the full env load below)
+function loadEnvEarly() {
+  try {
+    const raw = readFileSync(ENV_PATH, 'utf-8');
+    const out = {};
+    for (const line of raw.split('\n')) {
+      const m = line.match(/^([A-Z_]+)=(.+)$/);
+      if (m) out[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+    }
+    return out;
+  } catch { return {}; }
+}
+const _earlyEnv = loadEnvEarly();
+const MAX_DAILY_LOSS_PCT = parseFloat(_earlyEnv.MAX_DAILY_LOSS_PCT ?? '3.0') / 100; // default 3%
+
 // Market hours (Eastern Time) — stocks + ETFs only
 const MARKET_OPEN_HOUR   = 9;
 const MARKET_OPEN_MIN    = 30;
@@ -70,17 +87,7 @@ const MARKET_CLOSE_HOUR  = 16;
 const MARKET_CLOSE_MIN   = 0;
 
 // ─── Load API Keys ────────────────────────────────────────────────────────────
-function loadEnv() {
-  const raw = readFileSync(ENV_PATH, 'utf-8');
-  const env = {};
-  for (const line of raw.split('\n')) {
-    const match = line.match(/^([A-Z_]+)=(.+)$/);
-    if (match) env[match[1]] = match[2].trim().replace(/^["']|["']$/g, '');
-  }
-  return env;
-}
-
-const env = loadEnv();
+const env = loadEnvEarly(); // reuse the early-load function defined above
 const USE_LIVE   = !!env.ALPACA_LIVE_API_KEY;
 const BASE_URL   = USE_LIVE ? TRADE_BASE : PAPER_BASE;
 const API_KEY    = USE_LIVE ? env.ALPACA_LIVE_API_KEY    : env.ALPACA_API_KEY;
@@ -103,6 +110,109 @@ let cycleCount   = 0;
 let startEquity  = null;
 // activePosition: { symbol, side, qty, entryPrice, stopPrice, entryTime, cyclesHeld, peakPrice }
 let activePosition = null;
+
+// ─── Daily Drawdown Circuit Breaker ──────────────────────────────────────────
+// Tracks realized P&L since midnight ET each trading day.
+// If realized loss exceeds MAX_DAILY_LOSS_PCT * dayStartEquity, halt new trades.
+let dayStartEquity    = null;   // equity captured at start of current trading day
+let dayStartDate      = null;   // "YYYY-MM-DD" in ET — reset trigger
+let realizedDayPnl    = 0;      // running realized P&L in dollars for today
+let haltedUntilMidnight = false; // true once circuit breaker trips today
+
+function etDateString() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' }); // "YYYY-MM-DD"
+}
+
+function etMidnightMs() {
+  // Returns ms until midnight ET
+  const now = new Date();
+  const etStr = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+  const etNow = new Date(etStr);
+  const nextMidnight = new Date(etNow);
+  nextMidnight.setHours(24, 0, 0, 0);
+  return nextMidnight - etNow;
+}
+
+// Persist halt state so a process restart doesn't bypass the circuit breaker.
+function persistHalt() {
+  const tomorrow = new Date(Date.now() + etMidnightMs() + 1000).toISOString();
+  try { writeFileSync(HALT_PATH, tomorrow); } catch (e) { log(`WARN: could not write halt file: ${e.message}`); }
+}
+
+function clearHalt() {
+  try { writeFileSync(HALT_PATH, ''); } catch { /* ignore */ }
+  haltedUntilMidnight = false;
+}
+
+function isHalted() {
+  if (haltedUntilMidnight) return true;
+  // Check persisted halt file (survives restarts)
+  try {
+    if (!existsSync(HALT_PATH)) return false;
+    const raw = readFileSync(HALT_PATH, 'utf-8').trim();
+    if (!raw) return false;
+    const haltUntil = new Date(raw);
+    if (isNaN(haltUntil.getTime())) return false;
+    if (Date.now() < haltUntil.getTime()) {
+      haltedUntilMidnight = true;
+      return true;
+    }
+    // Past midnight — clear stale halt
+    clearHalt();
+    return false;
+  } catch { return false; }
+}
+
+// Reset day tracking when ET date rolls over.
+function checkDayReset(currentEquity) {
+  const today = etDateString();
+  if (dayStartDate !== today) {
+    if (dayStartDate !== null) {
+      log(`NEW TRADING DAY (ET): ${today}. Resetting day P&L. Previous day realized P&L: $${realizedDayPnl.toFixed(2)}`);
+    }
+    dayStartDate   = today;
+    dayStartEquity = currentEquity;
+    realizedDayPnl = 0;
+    clearHalt();
+    log(`Day start equity set: $${dayStartEquity.toFixed(2)} | Max daily loss: ${(MAX_DAILY_LOSS_PCT * 100).toFixed(1)}% = $${(dayStartEquity * MAX_DAILY_LOSS_PCT).toFixed(2)}`);
+  }
+}
+
+// Call this whenever a trade closes with a realized P&L percentage (signed).
+function recordRealizedPnl(pnlPct, entryPrice, qty) {
+  const dollarPnl = pnlPct * entryPrice * qty;
+  realizedDayPnl += dollarPnl;
+  log(`REALIZED P&L: $${dollarPnl.toFixed(2)} | Day total: $${realizedDayPnl.toFixed(2)}`);
+}
+
+async function sendTelegramAlert(message) {
+  try {
+    const body = JSON.stringify({ channel: 'telegram', message });
+    const req = await fetch('http://localhost:3457/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    });
+    if (!req.ok) log(`WARN: Telegram alert HTTP ${req.status}`);
+  } catch (e) {
+    log(`WARN: Telegram alert failed: ${e.message}`);
+  }
+}
+
+function checkDrawdownCircuitBreaker() {
+  if (!dayStartEquity || isHalted()) return false;
+  const maxLossDollar = dayStartEquity * MAX_DAILY_LOSS_PCT;
+  if (realizedDayPnl <= -maxLossDollar) {
+    const pctLost = (Math.abs(realizedDayPnl) / dayStartEquity * 100).toFixed(2);
+    const msg = `TRADER9 DAILY DRAWDOWN TRIPPED: lost ${pctLost}% today ($${Math.abs(realizedDayPnl).toFixed(2)}), trading halted until midnight ET.`;
+    log(`CIRCUIT BREAKER: ${msg}`);
+    haltedUntilMidnight = true;
+    persistHalt();
+    sendTelegramAlert(msg).catch(() => {});
+    return true;
+  }
+  return false;
+}
 
 // ─── Logging ──────────────────────────────────────────────────────────────────
 function log(msg) {
@@ -592,6 +702,8 @@ async function managePosition(currentPrice) {
     log(`[${symbol}] TAKE PROFIT: ${(gainPct * 100).toFixed(2)}% >= ${TAKE_PROFIT_PCT * 100}% target`);
     await closePosition(symbol);
     logTrade('TAKE_PROFIT', { symbol, side: isLong ? 'sell' : 'buy', price: currentPrice, entryPrice: entry, pnl: (gainPct * 100).toFixed(2) + '%', cyclesHeld: activePosition.cyclesHeld });
+    recordRealizedPnl(gainPct, entry, activePosition.qty);
+    checkDrawdownCircuitBreaker();
     activePosition = null;
     return true;
   }
@@ -617,6 +729,8 @@ async function managePosition(currentPrice) {
     log(`[${symbol}] ${action}: price $${currentPrice} <= stop $${activePosition.stopPrice.toFixed(2)}`);
     await closePosition(symbol);
     logTrade(action, { symbol, side: 'sell', price: currentPrice, entryPrice: entry, pnl: (gainPct * 100).toFixed(2) + '%', cyclesHeld: activePosition.cyclesHeld });
+    recordRealizedPnl(gainPct, entry, activePosition.qty);
+    checkDrawdownCircuitBreaker();
     activePosition = null;
     return true;
   }
@@ -626,6 +740,8 @@ async function managePosition(currentPrice) {
     log(`[${symbol}] ${action}: price $${currentPrice} >= stop $${activePosition.stopPrice.toFixed(2)}`);
     await closePosition(symbol);
     logTrade(action, { symbol, side: 'buy', price: currentPrice, entryPrice: entry, pnl: (gainPct * 100).toFixed(2) + '%', cyclesHeld: activePosition.cyclesHeld });
+    recordRealizedPnl(gainPct, entry, activePosition.qty);
+    checkDrawdownCircuitBreaker();
     activePosition = null;
     return true;
   }
@@ -635,6 +751,8 @@ async function managePosition(currentPrice) {
     log(`[${symbol}] TIME EXIT: ${activePosition.cyclesHeld} cycles with ${(gainPct * 100).toFixed(2)}% gain (< ${TIME_EXIT_MIN_GAIN * 100}%)`);
     await closePosition(symbol);
     logTrade('TIME_EXIT', { symbol, side: isLong ? 'sell' : 'buy', price: currentPrice, entryPrice: entry, pnl: (gainPct * 100).toFixed(2) + '%', cyclesHeld: activePosition.cyclesHeld });
+    recordRealizedPnl(gainPct, entry, activePosition.qty);
+    checkDrawdownCircuitBreaker();
     activePosition = null;
     return true;
   }
@@ -663,6 +781,7 @@ function writeStatus(equity, cash) {
     `Current Equity: $${equity.toFixed(2)}`,
     `Cash:           $${cash.toFixed(2)}`,
     `P&L:            $${pnlDollar} (${pnl}%)`,
+    `Day P&L:        $${realizedDayPnl.toFixed(2)} | Limit: -$${dayStartEquity ? (dayStartEquity * MAX_DAILY_LOSS_PCT).toFixed(2) : 'N/A'} | ${haltedUntilMidnight ? 'HALTED' : 'TRADING'}`,
     `Position:       ${posLine}`,
     `Trades:         ${tradeLog.length}`,
     `${'─'.repeat(60)}`,
@@ -692,9 +811,13 @@ async function cycle() {
 
     if (!startEquity) startEquity = equity;
 
+    // ── Daily drawdown tracking — reset at ET midnight ──
+    checkDayReset(equity);
+
     log(`Account — Equity: $${equity.toFixed(2)} | Cash: $${cash.toFixed(2)} | Buying Power: $${buyingPower.toFixed(2)}`);
 
     // Sync active position from Alpaca (handles state loss after restart)
+    // Note: even when halted, we continue managing open positions (exits only).
     if (activePosition) {
       const pos = await getPosition(activePosition.symbol);
       if (!pos) {
@@ -713,6 +836,13 @@ async function cycle() {
         writeStatus(equity, cash);
         return;
       }
+    }
+
+    // ── Circuit breaker gate — block new entries only ──
+    if (isHalted()) {
+      log(`CIRCUIT BREAKER ACTIVE — no new entries today. Day realized P&L: $${realizedDayPnl.toFixed(2)} | Limit: -$${(dayStartEquity * MAX_DAILY_LOSS_PCT).toFixed(2)}`);
+      writeStatus(equity, cash);
+      return;
     }
 
     // No active position — scan eligible symbols for best opportunity
