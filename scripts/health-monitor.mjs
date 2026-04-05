@@ -703,6 +703,7 @@ async function runFastChecks() {
   await check({ component: 'claude-watchdog',metricName: 'restart_count', getValue: () => checkWatchdogRestarts() });
   await check({ component: 'ram-watch-agent',metricName: 'http_status',   getValue: () => checkHttpEndpoint('ram-watch-agent', 'http://localhost:3459/health') });
   await check({ component: 'usage-monitor',  metricName: 'http_status',   getValue: () => checkHttpEndpoint('usage-monitor',   'http://localhost:3460/health') });
+  await check({ component: '9-ops-daemon',   metricName: 'http_status',   getValue: () => checkHttpEndpoint('9-ops-daemon',    'http://localhost:3461/health') });
   await check({ component: 'sentry',         metricName: 'dsn_count',     getValue: () => checkSentry() });
 }
 
