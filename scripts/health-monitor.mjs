@@ -653,6 +653,36 @@ async function checkBackupFreshness() {
   }
 }
 
+// ─── Sentry wiring check ─────────────────────────────────────────────────────
+// Verifies DSNs are present in .env and @sentry/node module is loadable.
+// Does NOT make network calls — lightweight, safe to run every 30s.
+async function checkSentry() {
+  try {
+    // Count SENTRY_DSN_* vars present in env
+    const dsnKeys = ['SENTRY_DSN_COMMS_HUB', 'SENTRY_DSN_VOICE_SERVER', 'SENTRY_DSN_TRADER9_BOT'];
+    const configured = dsnKeys.filter(k => process.env[k] && process.env[k].startsWith('https://')).length;
+    // Verify the module is loadable (it's already loaded in nodes that use it, but verifiable here)
+    const { createRequire } = await import('module');
+    const req = createRequire(import.meta.url);
+    let moduleOk = false;
+    try { req.resolve('@sentry/node'); moduleOk = true; } catch {}
+    if (configured === 0) {
+      return { status: 'unconfigured', metricValue: 0, severity: 'warning', message: 'No SENTRY_DSN_* vars found in environment' };
+    }
+    if (!moduleOk) {
+      return { status: 'module_missing', metricValue: configured, severity: 'critical', message: `@sentry/node module not found — ${configured} DSN(s) configured but SDK not installed` };
+    }
+    return {
+      status: 'ok',
+      metricValue: configured,
+      severity: 'info',
+      message: `Sentry wired: ${configured}/${dsnKeys.length} DSNs configured, @sentry/node module present`,
+    };
+  } catch (e) {
+    return { status: 'error', metricValue: null, severity: 'warning', message: `Sentry check error: ${e.message}` };
+  }
+}
+
 // ─── FAST LOOP (every 30s) ───────────────────────────────────────────────────
 // Ports, processes, disk, memory, network
 async function runFastChecks() {
@@ -673,6 +703,7 @@ async function runFastChecks() {
   await check({ component: 'claude-watchdog',metricName: 'restart_count', getValue: () => checkWatchdogRestarts() });
   await check({ component: 'ram-watch-agent',metricName: 'http_status',   getValue: () => checkHttpEndpoint('ram-watch-agent', 'http://localhost:3459/health') });
   await check({ component: 'usage-monitor',  metricName: 'http_status',   getValue: () => checkHttpEndpoint('usage-monitor',   'http://localhost:3460/health') });
+  await check({ component: 'sentry',         metricName: 'dsn_count',     getValue: () => checkSentry() });
 }
 
 // ─── SLOW LOOP (every 5m) ────────────────────────────────────────────────────
