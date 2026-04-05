@@ -270,7 +270,7 @@ export default function OwnerDashboardPage() {
         <div>
           <h1 style={S.title}>Owner Dashboard</h1>
           <div style={S.subtitle}>
-            Jasson Fishback --- {today} --- {lastRefresh ? formatTime(lastRefresh) : 'loading...'}
+            9 Enterprises --- {today} --- {lastRefresh ? formatTime(lastRefresh) : 'loading...'}
           </div>
         </div>
         <button style={S.refreshBtn} onClick={fetchData} disabled={loading}>

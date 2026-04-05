@@ -12,7 +12,7 @@ import SeasonSimPage from './pages/SeasonSimPage';
 import MarketsPage from './pages/MarketsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import AboutPage from './pages/AboutPage';
-import OwnerDashboardPage from './pages/OwnerDashboardPage';
+
 import MLBApp from './MLBApp';
 import NBAApp from './NBAApp';
 
@@ -98,7 +98,7 @@ function NFLApp() {
             <Route path="/markets" element={<MarketsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/owner" element={<OwnerDashboardPage />} />
+            <Route path="/owner" element={<Navigate to="/" replace />} />
             <Route path="/team/:teamSlug" element={<TeamRedirect />} />
             <Route path="/:teamSlug" element={<TeamRedirect />} />
             <Route path="*" element={<Navigate to="/" replace />} />
