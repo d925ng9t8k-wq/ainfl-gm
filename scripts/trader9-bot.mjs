@@ -88,7 +88,16 @@ const MARKET_CLOSE_MIN   = 0;
 
 // ─── Load API Keys ────────────────────────────────────────────────────────────
 const env = loadEnvEarly(); // reuse the early-load function defined above
-const USE_LIVE   = !!env.ALPACA_LIVE_API_KEY;
+// FORT C-04: Live trading requires BOTH the live API keys AND an explicit opt-in flag.
+// Presence of ALPACA_LIVE_API_KEY alone is NOT sufficient — this prevents accidental
+// live trading when keys are rotated in or pasted into .env during dev/testing.
+// To enable live trading: set ALPACA_LIVE_ENABLED=true in .env in addition to the keys.
+const LIVE_KEY_PRESENT = !!env.ALPACA_LIVE_API_KEY;
+const LIVE_FLAG_SET    = env.ALPACA_LIVE_ENABLED === 'true';
+const USE_LIVE   = LIVE_KEY_PRESENT && LIVE_FLAG_SET;
+if (LIVE_KEY_PRESENT && !LIVE_FLAG_SET) {
+  console.log('[Trader9] FORT C-04: ALPACA_LIVE_API_KEY is present but ALPACA_LIVE_ENABLED is not "true" — forcing paper mode.');
+}
 const BASE_URL   = USE_LIVE ? TRADE_BASE : PAPER_BASE;
 const API_KEY    = USE_LIVE ? env.ALPACA_LIVE_API_KEY    : env.ALPACA_API_KEY;
 const SECRET_KEY = USE_LIVE ? env.ALPACA_LIVE_SECRET_KEY : env.ALPACA_SECRET_KEY;

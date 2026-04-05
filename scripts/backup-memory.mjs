@@ -44,6 +44,8 @@ const BACKUP_DIR       = path.join(PROJECT, 'data/backups');
 const LOG_FILE         = path.join(PROJECT, 'logs/backup-memory.log');
 const MAX_LOCAL_DAYS   = 30;
 const SUPABASE_URL     = process.env.SUPABASE_URL;
+// FORT C-02: Service key is justified here — Storage.createBucket + upload require admin scope.
+// This is a legitimate use of service key. All other scripts must use anon key only.
 const SUPABASE_KEY     = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const SUPABASE_BUCKET  = '9-backups';
 const HUB_URL          = 'http://localhost:3457';

@@ -14,11 +14,37 @@ import { createRequire } from 'module';
 import { mkdirSync, existsSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
+
+// FORT C-03: SQLite encryption key loaded from macOS Keychain first.
+// The key and the encrypted database must NOT live in the same file.
+// Primary: macOS Keychain (set by: security add-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w <key>)
+// Fallback: SQLITE_ENCRYPTION_KEY env var (for dev/CI environments without Keychain)
+function loadEncryptionKey() {
+  try {
+    const key = execSync(
+      'security find-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w',
+      { stdio: ['pipe', 'pipe', 'pipe'] }
+    ).toString().trim();
+    if (key) {
+      console.log('[MemoryDB] Encryption key loaded from macOS Keychain (FORT C-03 compliant)');
+      return key;
+    }
+  } catch {
+    // Keychain not available or key not found — fall through to env var
+  }
+  // Fallback: env var (dev/CI)
+  const envKey = process.env.SQLITE_ENCRYPTION_KEY || null;
+  if (envKey) {
+    console.log('[MemoryDB] Encryption key loaded from env var (Keychain fallback — acceptable for dev/CI only)');
+  }
+  return envKey;
+}
 
 // Use SQLCipher variant when available and key is set. Fall back to plain better-sqlite3.
 const require = createRequire(import.meta.url);
 let Database;
-const ENCRYPTION_KEY = process.env.SQLITE_ENCRYPTION_KEY || null;
+const ENCRYPTION_KEY = loadEncryptionKey();
 try {
   Database = require('better-sqlite3-multiple-ciphers');
   if (ENCRYPTION_KEY) {

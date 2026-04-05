@@ -54,10 +54,14 @@ async function syncToNeon(channel, direction, text, timestamp) {
 let supabase = null;
 try {
   const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+  // FORT C-02: Use anon key only. Service key bypasses RLS — it is NOT needed for
+  // the sync operations (upsert messages/actions, count selects) performed here.
+  // Service key must NOT be used unless an explicit RLS-bypass operation is required
+  // and documented. If you need service key, add it explicitly with a comment explaining why.
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
   if (supabaseUrl && supabaseKey) {
     supabase = createClient(supabaseUrl, supabaseKey);
-    console.log('[supabase] Client initialized');
+    console.log('[supabase] Client initialized (anon key — FORT C-02 compliant)');
   } else {
     console.log('[supabase] SUPABASE_URL or key not set — cloud sync disabled');
   }
