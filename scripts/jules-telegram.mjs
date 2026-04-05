@@ -19,7 +19,11 @@ if (fs.existsSync(envPath)) {
 }
 
 // ─── Config ──────────────────────────────────────────────────────────────────
-const BOT_TOKEN      = process.env.JULES_TELEGRAM_BOT_TOKEN || '8376748806:AAGky922GCWvuqOyvhLAvgucHUz05tOh44k';
+const BOT_TOKEN      = process.env.JULES_TELEGRAM_BOT_TOKEN;
+if (!BOT_TOKEN) {
+  console.error('[FORT] FATAL: JULES_TELEGRAM_BOT_TOKEN env var is required. Set it in .env and restart.');
+  process.exit(1);
+}
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_API_KEY;
 const PROFILE_PATH   = new URL('../data/jules-profile-jasson.json', import.meta.url).pathname;
 // Model IDs — Haiku is banned for quality-sensitive roles (Apr 5 rule).
