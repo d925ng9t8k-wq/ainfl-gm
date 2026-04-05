@@ -10,6 +10,18 @@
  * NEVER processes images through Claude API.
  */
 
+// ─── Sentry (must be first — before any other import that might throw) ─────────
+import * as Sentry from '@sentry/node';
+if (process.env.SENTRY_DSN_COMMS_HUB) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN_COMMS_HUB,
+    environment: process.env.NODE_ENV || 'production',
+    tracesSampleRate: 0.1,
+    sendDefaultPii: false,
+    release: process.env.GIT_SHA || 'dev',
+  });
+}
+
 import 'dotenv/config';
 import { execSync } from 'child_process';
 import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync } from 'fs';
@@ -3271,6 +3283,7 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 // would trigger this handler, which calls sendTelegram, which triggers EPIPE again = infinite loop
 let lastExceptionTime = 0;
 process.on('uncaughtException', (err) => {
+  Sentry.captureException(err);
   const now = Date.now();
   // Rate limit: max one log per second to prevent spam
   if (now - lastExceptionTime < 1000) return;
@@ -3282,6 +3295,7 @@ process.on('uncaughtException', (err) => {
   }
 });
 process.on('unhandledRejection', (reason) => {
+  Sentry.captureException(reason instanceof Error ? reason : new Error(String(reason)));
   log(`UNHANDLED REJECTION (hub survived): ${reason}`);
 });
 

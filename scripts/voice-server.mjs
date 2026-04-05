@@ -2,6 +2,10 @@
  * Captain Claude Voice Server V3 — Enterprise Edition
  * Optimized for minimum latency: Flash TTS, keep-alive agents, tight timeouts
  */
+
+// ─── Sentry (must be first — before any other import that might throw) ─────────
+import * as Sentry from '@sentry/node';
+
 import http from "node:http";
 import https from "node:https";
 import fs from "node:fs";
@@ -17,6 +21,26 @@ if (fs.existsSync(envPath)) {
     if (key && vals.length) process.env[key.trim()] = vals.join('=').trim();
   }
 }
+
+// ─── Sentry init (after .env so DSN is available) ───────────────────────────
+if (process.env.SENTRY_DSN_VOICE_SERVER) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN_VOICE_SERVER,
+    environment: process.env.NODE_ENV || 'production',
+    tracesSampleRate: 0.1,
+    sendDefaultPii: false,
+    release: process.env.GIT_SHA || 'dev',
+  });
+}
+
+process.on('uncaughtException', (err) => {
+  Sentry.captureException(err);
+  console.error(`[${new Date().toISOString()}] UNCAUGHT EXCEPTION: ${err.message}`);
+});
+process.on('unhandledRejection', (reason) => {
+  Sentry.captureException(reason instanceof Error ? reason : new Error(String(reason)));
+  console.error(`[${new Date().toISOString()}] UNHANDLED REJECTION: ${reason}`);
+});
 
 const PORT            = 3456;
 const ANTHROPIC_KEY   = process.env.ANTHROPIC_API_KEY;

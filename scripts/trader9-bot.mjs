@@ -21,6 +21,9 @@
  * Market Hours: stocks/ETFs 9:30 AM–4:00 PM ET only, crypto 24/7
  */
 
+// ─── Sentry (must be first — before any other import that might throw) ─────────
+import * as Sentry from '@sentry/node';
+
 import { readFileSync, appendFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
@@ -79,6 +82,26 @@ function loadEnvEarly() {
 }
 const _earlyEnv = loadEnvEarly();
 const MAX_DAILY_LOSS_PCT = parseFloat(_earlyEnv.MAX_DAILY_LOSS_PCT ?? '3.0') / 100; // default 3%
+
+// ─── Sentry init (after env load so DSN is available) ───────────────────────
+if (_earlyEnv.SENTRY_DSN_TRADER9_BOT) {
+  Sentry.init({
+    dsn: _earlyEnv.SENTRY_DSN_TRADER9_BOT,
+    environment: _earlyEnv.NODE_ENV || 'production',
+    tracesSampleRate: 0.1,
+    sendDefaultPii: false,
+    release: _earlyEnv.GIT_SHA || 'dev',
+  });
+}
+
+process.on('uncaughtException', (err) => {
+  Sentry.captureException(err);
+  console.error(`[Trader9] UNCAUGHT EXCEPTION: ${err.message}`);
+});
+process.on('unhandledRejection', (reason) => {
+  Sentry.captureException(reason instanceof Error ? reason : new Error(String(reason)));
+  console.error(`[Trader9] UNHANDLED REJECTION: ${reason}`);
+});
 
 // Market hours (Eastern Time) — stocks + ETFs only
 const MARKET_OPEN_HOUR   = 9;
