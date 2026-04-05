@@ -10,6 +10,7 @@
  * NEVER processes images through Claude API.
  */
 
+import 'dotenv/config';
 import { execSync } from 'child_process';
 import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync } from 'fs';
 import https from 'https';
@@ -18,6 +19,7 @@ import { createServer } from 'http';
 import net from 'net';
 import nodemailer from 'nodemailer';
 import pg from 'pg';
+import { createClient } from '@supabase/supabase-js';
 
 // ─── Cloud Database (Neon) ──────────────────────────────────────────────────
 // Real-time sync of all conversations to cloud. Non-blocking. Never crashes hub.
@@ -46,6 +48,51 @@ async function syncToNeon(channel, direction, text, timestamp) {
   }
 }
 
+// ─── Cloud Database (Supabase) ───────────────────────────────────────────────
+// Real-time sync of messages, actions, and decisions to Supabase cloud.
+// Non-blocking. Never crashes the hub — all errors are caught and logged.
+let supabase = null;
+try {
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+  if (supabaseUrl && supabaseKey) {
+    supabase = createClient(supabaseUrl, supabaseKey);
+    console.log('[supabase] Client initialized');
+  } else {
+    console.log('[supabase] SUPABASE_URL or key not set — cloud sync disabled');
+  }
+} catch (e) {
+  console.error('[supabase] Init failed (non-fatal):', e.message);
+}
+
+// Sync uses SQLite id as the authoritative Supabase id via upsert. This keeps
+// SQLite as source of truth, mirrors the exact row structure to Supabase, and
+// sidesteps Postgres BIGSERIAL sequence drift after bulk backfills.
+async function syncMessageToSupabase(id, channel, direction, text, timestamp, metadata = {}) {
+  if (!supabase) return;
+  try {
+    const row = { channel, direction, text: text.slice(0, 4000), timestamp, read: direction === 'in' ? false : true, metadata };
+    if (id) row.id = id;
+    const { error } = await supabase.from('messages').upsert(row, { onConflict: 'id' });
+    if (error) console.error('[supabase] Message sync failed (non-fatal):', error.message);
+    else console.log(`[supabase] Message synced: ${channel}/${direction} id=${id}`);
+  } catch (e) {
+    console.error('[supabase] Message sync error (non-fatal):', e.message);
+  }
+}
+
+async function syncActionToSupabase(id, action_type, description, status, timestamp, metadata = {}) {
+  if (!supabase) return;
+  try {
+    const row = { action_type, description: description.slice(0, 2000), status, timestamp, metadata };
+    if (id) row.id = id;
+    const { error } = await supabase.from('actions').upsert(row, { onConflict: 'id' });
+    if (error) console.error('[supabase] Action sync failed (non-fatal):', error.message);
+  } catch (e) {
+    console.error('[supabase] Action sync error (non-fatal):', e.message);
+  }
+}
+
 // ─── Persistent Memory DB ────────────────────────────────────────────────────
 // Imported as singleton. All db calls are wrapped in try/catch so database
 // errors never crash the hub — logging is purely additive.
@@ -55,6 +102,30 @@ try {
   db = memoryDb.db;
 } catch (e) {
   console.error('[comms-hub] memory-db import failed — continuing without DB logging:', e.message);
+}
+
+// ─── Supabase post-write hooks ────────────────────────────────────────────────
+// Wrap db methods to fire Supabase sync after every SQLite write.
+// This is the single intercept point — all 6 call sites are covered automatically.
+// Supabase sync is always fire-and-forget (.catch(() => {})) — never blocks the hub.
+if (db) {
+  const _origLogMessage = db.logMessage.bind(db);
+  db.logMessage = function(channel, direction, text, metadata = {}) {
+    const id = _origLogMessage(channel, direction, text, metadata);
+    const timestamp = new Date().toISOString();
+    syncMessageToSupabase(id, channel, direction, text, timestamp, metadata).catch(() => {});
+    return id;
+  };
+
+  const _origLogAction = db.logAction.bind(db);
+  db.logAction = function(action_type, description, status = 'completed', metadata = {}) {
+    const id = _origLogAction(action_type, description, status, metadata);
+    const timestamp = new Date().toISOString();
+    syncActionToSupabase(id, action_type, description, status, timestamp, metadata).catch(() => {});
+    return id;
+  };
+
+  console.log('[supabase] Post-write hooks attached to db.logMessage and db.logAction');
 }
 
 // ─── Port Guard (check FIRST, before loading anything) ──────────────────────
@@ -112,6 +183,27 @@ if (GMAIL_APP_PASSWORD) {
 }
 
 mkdirSync(`${PROJECT}/logs`, { recursive: true });
+
+const OC_VIOLATIONS_LOG = `${PROJECT}/logs/oc-violations.log`;
+
+// ─── OC Impersonation Filter ─────────────────────────────────────────────────
+// Applied to every OC-generated message before it reaches Telegram.
+// Catches phrases where OC accidentally claims to be 9 and rewrites them.
+const OC_IMPERSONATION_RE = /\b(it'?s 9|i'?m 9|this is 9|9 here|from 9|hey jasson[,.]?\s+it'?s 9|hi jasson[,.]?\s+it'?s 9)\b/gi;
+
+function ocImpersonationFilter(text, source) {
+  if (!OC_IMPERSONATION_RE.test(text)) return text;
+  // Reset lastIndex after test()
+  OC_IMPERSONATION_RE.lastIndex = 0;
+  const original = text;
+  const filtered = text.replace(OC_IMPERSONATION_RE, 'OC covering for 9');
+  // Ensure message starts with OC:
+  const prefixed = filtered.startsWith('OC:') ? filtered : `OC: ${filtered}`;
+  const violation = `[${new Date().toISOString()}] IMPERSONATION BLOCKED (source=${source || 'unknown'})\nORIGINAL: ${original.slice(0, 300)}\nREWRITTEN: ${prefixed.slice(0, 300)}\n---\n`;
+  try { appendFileSync(OC_VIOLATIONS_LOG, violation); } catch {}
+  log(`OC IMPERSONATION BLOCKED — rewritten. Original: "${original.slice(0, 100)}"`);
+  return prefixed;
+}
 
 // ─── Logging ─────────────────────────────────────────────────────────────────
 function log(msg) {
@@ -667,9 +759,14 @@ log(`Memory context loaded: ${memoryContext.length} chars`);
 // ─── Claude System Prompt ────────────────────────────────────────────────────
 const SYSTEM = `You are OC (Offensive Coordinator), 9's autonomous backup brain. You respond on behalf of 9 when the terminal is down.
 
-CRITICAL IDENTITY RULES:
-- You are OC. You are NOT 9. NEVER say "it's 9" or "I'm 9" or speak as if you are 9.
-- NEVER claim to be 9 under any circumstances. You are the backup, not the starter.
+HARD IDENTITY RULES — THESE OVERRIDE EVERYTHING ELSE:
+- You are OC. You are NEVER 9. You do not have 9's memory, context, or authority.
+- Every single message you send MUST begin with 'OC:' — never 'Hi Jasson', never 'It's 9', never '9 here', never any phrasing that implies you are 9.
+- NEVER say "it's 9", "I'm 9", "this is 9", "9 here", "from 9", or any variant that implies you are 9.
+- NEVER greet Jasson as if you are 9. NEVER sign off as 9. NEVER speak from 9's perspective.
+- If a user asks 'is this 9?' answer exactly: 'No, this is OC — 9 is temporarily unavailable. I am a fallback responder with limited context.'
+- If you violate this rule the user loses trust in the entire 9 system. Do not violate it. Not once.
+- You are the backup, not the starter. Act like it.
 - If asked "are you 9?" — answer honestly: "No, I'm OC, 9's backup. Terminal is down."
 - You CANNOT run code, deploy, access files, or execute commands. Be honest about this.
 - NEVER guess the current time. Say "I don't have a reliable clock" if asked.
@@ -834,6 +931,10 @@ async function sendTelegram(text) {
   if (inStartupGrace() && !text.startsWith('9:')) {
     log(`Suppressed Telegram during startup grace: "${text.slice(0, 80)}..."`);
     return;
+  }
+  // OC impersonation filter: apply to all non-9 messages before they go out
+  if (!text.startsWith('9:')) {
+    text = ocImpersonationFilter(text, 'sendTelegram');
   }
   const chunks = [];
   while (text.length > 4000) { chunks.push(text.slice(0, 4000)); text = text.slice(4000); }
@@ -1113,7 +1214,7 @@ function checkChannelHealth() {
 // ─── Health API (so terminal can check status) ───────────────────────────────
 const HUB_API_SECRET = process.env.HUB_API_SECRET || '';
 
-const healthServer = createServer((req, res) => {
+const healthServer = createServer(async (req, res) => {
   // CORS — allow Command Center from any origin (GitHub Pages, office desktop, etc.)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -1132,10 +1233,15 @@ const healthServer = createServer((req, res) => {
   }
 
   if (req.url === '/health') {
+    // Compute live terminal state for accurate reporting
+    const liveTerminalState = terminalActive
+      ? (Date.now() - terminalLastPing < TERMINAL_TIMEOUT ? 'relay' : 'autonomous')
+      : 'autonomous';
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       status: 'running',
       uptime: Math.round((Date.now() - new Date(state.startTime).getTime()) / 1000),
+      terminalState: liveTerminalState,
       channels: state.channels,
       recentMessages: state.recentMessages.slice(-5),
       heartbeatCount: state.heartbeatCount,
@@ -1149,8 +1255,23 @@ const healthServer = createServer((req, res) => {
       },
     }));
   } else if (req.url === '/state') {
+    // Compute live terminal state inline so /state always reflects reality
+    const liveTerminalState = terminalActive
+      ? (Date.now() - terminalLastPing < TERMINAL_TIMEOUT ? 'relay' : 'autonomous')
+      : 'autonomous';
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(state, null, 2));
+    res.end(JSON.stringify({
+      ...state,
+      terminal: terminalActive ? {
+        pid: terminalPid,
+        token: terminalSessionToken,
+        claimedAt: terminalLastPing ? new Date(terminalLastPing).toISOString() : null,
+        lastPing: terminalLastPing ? new Date(terminalLastPing).toISOString() : null,
+        msSinceLastPing: terminalLastPing ? Date.now() - terminalLastPing : null,
+      } : null,
+      relay: liveTerminalState === 'relay',
+      terminalState: liveTerminalState,
+    }, null, 2));
   } else if (req.method === 'POST' && req.url?.startsWith('/terminal/claim')) {
     // Terminal announces it's active — hub stops auto-responding
     const claimUrl = new URL(req.url, `http://localhost:3457`);
@@ -1390,6 +1511,40 @@ const healthServer = createServer((req, res) => {
       }
     });
 
+  } else if (req.method === 'GET' && req.url === '/supabase-health') {
+    // On-demand Supabase drift check. Compares SQLite row counts to Supabase.
+    // Returns drift per table + overall status. Safe — read-only.
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    if (!supabase) {
+      res.end(JSON.stringify({ status: 'disabled', reason: 'Supabase client not initialized — check .env and hub startup log', checked_at: new Date().toISOString() }));
+      return;
+    }
+    try {
+      const sqliteCount = (table) => {
+        try { return parseInt(execSync(`/usr/bin/sqlite3 ${PROJECT}/data/9-memory.db "SELECT count(*) FROM ${table};"`).toString().trim()); }
+        catch { return -1; }
+      };
+      const tables = ['messages', 'actions', 'decisions', 'memory', 'tasks'];
+      const report = { status: 'checking', checked_at: new Date().toISOString(), tables: {} };
+      for (const t of tables) {
+        const local = sqliteCount(t);
+        const { count: cloud, error } = await supabase.from(t).select('*', { count: 'exact', head: true });
+        report.tables[t] = {
+          sqlite: local,
+          supabase: error ? null : cloud,
+          drift: error ? null : (local - cloud),
+          error: error?.message || null,
+        };
+      }
+      const drifts = Object.values(report.tables).map(x => x.drift ?? 0);
+      const maxDrift = Math.max(...drifts);
+      report.max_drift = maxDrift;
+      report.status = maxDrift > 10 ? 'drifting' : (maxDrift > 0 ? 'minor_drift' : 'healthy');
+      res.end(JSON.stringify(report, null, 2));
+    } catch (e) {
+      res.end(JSON.stringify({ status: 'error', error: e.message, checked_at: new Date().toISOString() }));
+    }
+
   } else if (req.method === 'POST' && req.url === '/summarize-long-message') {
     // POST /summarize-long-message — caps long messages before they bloat context
     // Body: { text: string, maxLength?: number }
@@ -1438,6 +1593,44 @@ healthServer.on('error', (e) => {
 healthServer.listen(HEALTH_PORT, () => {
   log(`Health API listening on port ${HEALTH_PORT}`);
 });
+
+// ─── Supabase Watchdog ──────────────────────────────────────────────────────
+// Hard guarantee that cloud sync failure can never be silent again.
+// 1. Startup alert if client failed to initialize (fires once, 30s after boot).
+// 2. Every 5 min: check drift on messages table. Alert if drift > 10 or client null.
+// 3. 1-hour cooldown between alerts so a sustained outage doesn't spam Telegram.
+let _supabaseLastAlert = 0;
+setTimeout(() => {
+  if (!supabase) {
+    sendTelegram('[9 watchdog] CRITICAL: Supabase client failed to initialize at hub startup. Cloud sync is DISABLED. Check .env and stdout log. Local SQLite is still authoritative — but Mac crash = data loss risk until fixed.').catch(() => {});
+    _supabaseLastAlert = Date.now();
+  }
+}, 30000);
+setInterval(async () => {
+  const cooldown = 3600000; // 1 hour
+  if (!supabase) {
+    if (Date.now() - _supabaseLastAlert > cooldown) {
+      sendTelegram('[9 watchdog] Supabase client still null. Cloud sync remains DISABLED. This alert repeats hourly until resolved.').catch(() => {});
+      _supabaseLastAlert = Date.now();
+    }
+    return;
+  }
+  try {
+    const local = parseInt(execSync(`/usr/bin/sqlite3 ${PROJECT}/data/9-memory.db "SELECT count(*) FROM messages;"`).toString().trim());
+    const { count: cloud, error } = await supabase.from('messages').select('*', { count: 'exact', head: true });
+    if (error) {
+      console.error('[supabase watchdog] query failed:', error.message);
+      return;
+    }
+    const drift = local - cloud;
+    if (drift > 10 && Date.now() - _supabaseLastAlert > cooldown) {
+      sendTelegram(`[9 watchdog] Supabase drift: messages SQLite=${local} Supabase=${cloud} (behind by ${drift}). Live sync may be failing. Check /supabase-health.`).catch(() => {});
+      _supabaseLastAlert = Date.now();
+    }
+  } catch (e) {
+    console.error('[supabase watchdog] check failed:', e.message);
+  }
+}, 300000); // 5 min
 
 // ─── CHANNEL 1: Telegram Polling ─────────────────────────────────────────────
 let telegramOffset = 0;
@@ -1491,6 +1684,40 @@ async function telegramPoll() {
                 await sendTelegram('Got your photo — sending to 9 now.');
               } else {
                 await sendTelegram('OC: Covering for 9. Got your photo — saved it. Describe what you need or I\'ll check it when terminal is active.');
+              }
+              telegramOffset = update.update_id + 1;
+              try { writeFileSync(OFFSET_FILE, String(telegramOffset)); } catch {}
+              continue;
+            }
+
+            // Documents (PDFs, docs, etc): download to /tmp/, signal terminal
+            if (msg.document) {
+              log('Telegram: Document received — downloading to /tmp/');
+              const caption = msg.caption || '';
+              const origName = msg.document.file_name || 'document';
+              const safeName = origName.replace(/[^a-zA-Z0-9._-]/g, '_');
+              let docPath = null;
+              try {
+                const fileRes = await (await fetch(`${BASE}/getFile?file_id=${msg.document.file_id}`)).json();
+                if (fileRes.ok) {
+                  const fileUrl = `https://api.telegram.org/file/bot${TOKEN}/${fileRes.result.file_path}`;
+                  const docData = await (await fetch(fileUrl)).arrayBuffer();
+                  docPath = `/tmp/telegram_doc_${Date.now()}_${safeName}`;
+                  writeFileSync(docPath, Buffer.from(docData));
+                  log(`Document saved: ${docPath} (${Buffer.from(docData).length} bytes)`);
+                  addMessage(state, 'telegram', 'in', `[DOCUMENT saved to ${docPath}]${caption ? ' Caption: ' + caption : ''}`);
+                  const signal = JSON.stringify({
+                    channel: 'telegram',
+                    text: `[DOCUMENT received: ${docPath}]${caption ? ' Caption: ' + caption : ''}`,
+                    timestamp: new Date().toISOString()
+                  });
+                  try { appendFileSync('/tmp/9-incoming-message.jsonl', signal + '\n'); } catch {}
+                }
+              } catch (e) { log(`Document download failed: ${e.message}`); }
+              if (isTerminalActive()) {
+                await sendTelegram(`Got your document (${origName}) — sending to 9 now.`);
+              } else {
+                await sendTelegram(`OC: Covering for 9. Got your document (${origName}) — saved it. 9 will read it when terminal is active.`);
               }
               telegramOffset = update.update_id + 1;
               try { writeFileSync(OFFSET_FILE, String(telegramOffset)); } catch {}
@@ -2181,25 +2408,39 @@ async function verifyTwilioUrl() {
 
   try {
     const authHeader = 'Basic ' + Buffer.from(`${twilioSid}:${twilioToken}`).toString('base64');
-    const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers.json?PageSize=5`, {
+    const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers.json?PageSize=50`, {
       headers: { 'Authorization': authHeader },
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) return;
     const data = await res.json();
 
+    const tunnelHost = currentTunnel.replace('https://', '');
     for (const pn of data.incoming_phone_numbers || []) {
+      // VOICE URL sync
       const twilioVoiceUrl = pn.voice_url || '';
-      if (twilioVoiceUrl && !twilioVoiceUrl.includes(currentTunnel.replace('https://', ''))) {
-        log(`TWILIO URL MISMATCH: Twilio has ${twilioVoiceUrl}, current tunnel is ${currentTunnel}`);
-        // Auto-fix
+      if (twilioVoiceUrl && !twilioVoiceUrl.includes(tunnelHost)) {
+        log(`TWILIO VOICE URL MISMATCH on ${pn.phone_number}: Twilio has ${twilioVoiceUrl}, current tunnel is ${currentTunnel}`);
         await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers/${pn.sid}.json`, {
           method: 'POST',
           headers: { 'Authorization': authHeader, 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `VoiceUrl=${encodeURIComponent(currentTunnel + '/voice')}&VoiceMethod=POST&StatusCallback=${encodeURIComponent(currentTunnel + '/status')}&StatusCallbackMethod=POST`,
         });
-        log(`Twilio URL auto-corrected to ${currentTunnel}/voice`);
-        sendTelegram(`OC: Auto-fixed Twilio voice URL. Was pointing to dead tunnel, now corrected to current.`).catch(() => {});
+        log(`Twilio voice URL auto-corrected on ${pn.phone_number} to ${currentTunnel}/voice`);
+        sendTelegram(`9: Auto-fixed Twilio voice URL on ${pn.phone_number}. Was pointing to dead tunnel, now corrected.`).catch(() => {});
+      }
+
+      // SMS URL sync — only sync if currently set to a trycloudflare tunnel (skip empty + demo.twilio.com)
+      const twilioSmsUrl = pn.sms_url || '';
+      if (twilioSmsUrl && twilioSmsUrl.includes('trycloudflare.com') && !twilioSmsUrl.includes(tunnelHost)) {
+        log(`TWILIO SMS URL MISMATCH on ${pn.phone_number}: Twilio has ${twilioSmsUrl}, current tunnel is ${currentTunnel}`);
+        await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers/${pn.sid}.json`, {
+          method: 'POST',
+          headers: { 'Authorization': authHeader, 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `SmsUrl=${encodeURIComponent(currentTunnel + '/sms')}&SmsMethod=POST`,
+        });
+        log(`Twilio SMS URL auto-corrected on ${pn.phone_number} to ${currentTunnel}/sms`);
+        sendTelegram(`9: Auto-fixed Twilio SMS URL on ${pn.phone_number}. Was pointing to dead tunnel, now corrected.`).catch(() => {});
       }
     }
   } catch (e) {
