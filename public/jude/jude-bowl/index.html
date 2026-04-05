@@ -317,55 +317,61 @@
     width: 100%;
     max-width: 520px;
     display: none;
-    padding: 8px 12px;
+    padding: 10px 12px 14px;
     background: #0a0a0a;
+    border-top: 2px solid #333;
   }
 
   #mobile-controls.visible { display: flex; justify-content: space-between; align-items: center; }
 
   .dpad {
     display: grid;
-    grid-template-columns: repeat(3, 44px);
-    grid-template-rows: repeat(3, 44px);
-    gap: 2px;
+    grid-template-columns: repeat(3, 54px);
+    grid-template-rows: repeat(3, 54px);
+    gap: 3px;
   }
 
   .dpad-btn {
-    background: #222;
-    border: 2px solid #444;
-    border-radius: 6px;
+    background: #2a2a2a;
+    border: 2px solid #555;
+    border-radius: 8px;
     color: white;
-    font-size: 18px;
+    font-size: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.1s;
+    transition: background 0.08s;
     -webkit-tap-highlight-color: transparent;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
-  .dpad-btn:active { background: var(--bengals-orange); color: black; }
-  .dpad-center { background: #111; font-size: 10px; color: #555; }
+  .dpad-btn:active { background: var(--bengals-orange); color: black; border-color: var(--bengals-orange); }
+  .dpad-center { background: #111; font-size: 10px; color: #555; border-color: #333; }
   .dpad-center:active { background: #111; }
 
   .action-btns {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
   }
 
   .action-btn {
     background: var(--bengals-orange);
     border: none;
     border-radius: 50%;
-    width: 52px;
-    height: 52px;
+    width: 62px;
+    height: 62px;
     color: black;
     font-family: 'Press Start 2P', monospace;
     font-size: 8px;
     cursor: pointer;
-    transition: transform 0.1s;
+    transition: transform 0.08s;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     box-shadow: 0 4px 0 #7a2600;
     display: flex;
     align-items: center;
@@ -376,6 +382,38 @@
   .action-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #7a2600; }
   .action-btn.kick { background: #3a7bd5; box-shadow: 0 4px 0 #1a3a7a; }
   .action-btn.kick:active { box-shadow: 0 1px 0 #1a3a7a; }
+
+  /* ===== MOBILE HINT BANNER ===== */
+  #mobile-hint {
+    display: none;
+    width: 100%;
+    max-width: 520px;
+    background: rgba(251,79,20,0.12);
+    border: 1px solid rgba(251,79,20,0.4);
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 7px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 2px;
+  }
+
+  /* ===== PLAY BUTTONS — BIGGER ON TOUCH ===== */
+  @media (hover: none) and (pointer: coarse), (max-width: 600px) {
+    .play-btn {
+      padding: 16px 8px;
+      min-height: 70px;
+      font-size: 9px;
+    }
+    .play-btn .play-icon { font-size: 22px; }
+    .play-btn .play-desc { font-size: 7px; }
+
+    #mobile-hint { display: block; }
+
+    .dpad {
+      grid-template-columns: repeat(3, 58px);
+      grid-template-rows: repeat(3, 58px);
+    }
+  }
 
   /* ===== PLAY RESULT OVERLAY ===== */
   #play-result {
@@ -531,7 +569,8 @@
   <div class="title-instructions">
     BENGALS vs. RAVENS<br>
     4 QUARTERS · PICK YOUR PLAYS<br>
-    SCORE MORE POINTS TO WIN!
+    SCORE MORE POINTS TO WIN!<br>
+    <span id="title-mobile-tip"></span>
   </div>
 </div>
 
@@ -586,6 +625,9 @@
     <div id="play-result-yards"></div>
   </div>
 </div>
+
+<!-- ===== MOBILE HINT (shown on touch screens during play call) ===== -->
+<div id="mobile-hint">TAP A PLAY TO CALL IT · D-PAD APPEARS ON RUN PLAYS</div>
 
 <!-- ===== PLAY PANEL ===== -->
 <div id="play-panel">
@@ -770,6 +812,10 @@ function sfxLose() {
 
 <!-- ===== GAME ENGINE ===== -->
 <script>
+// ===== MOBILE DETECTION =====
+// Generous: touch-capable OR narrow viewport (<=600px)
+const isMobile = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || window.innerWidth <= 600);
+
 // ===== GAME STATE =====
 const G = {
   homeScore: 0,
@@ -1118,11 +1164,16 @@ function advanceQuarter() {
 function showPlayCallUI() {
   document.getElementById('play-panel').classList.add('visible');
   document.getElementById('mobile-controls').classList.remove('visible');
+  // Show hint banner during play-call phase on mobile
+  if (isMobile) {
+    document.getElementById('mobile-hint').style.display = 'block';
+  }
   updateScoreboard();
 }
 
 function hidePlayCallUI() {
   document.getElementById('play-panel').classList.remove('visible');
+  document.getElementById('mobile-hint').style.display = 'none';
 }
 
 // ===== CPU PLAY =====
@@ -1372,6 +1423,7 @@ let defenderChasing = false;
 
 function runPlayAnimation(playType) {
   document.getElementById('mobile-controls').classList.add('visible');
+  document.getElementById('mobile-hint').style.display = 'none';
 
   runIsHome = G.possession === 'home';
   const maxFrames = playType === 'sprint' ? 90 : 75;
@@ -1572,6 +1624,7 @@ function endGame() {
   document.getElementById('scoreboard').classList.remove('visible');
   document.getElementById('play-panel').classList.remove('visible');
   document.getElementById('mobile-controls').classList.remove('visible');
+  document.getElementById('mobile-hint').style.display = 'none';
   document.getElementById('status-bar').classList.remove('visible');
 
   const won = G.homeScore > G.awayScore;
@@ -1619,10 +1672,20 @@ function startGame() {
   document.getElementById('scoreboard').classList.add('visible');
   document.getElementById('field-wrap').style.display = 'block';
   document.getElementById('play-panel').classList.add('visible');
+  // Show mobile hint for touch devices
+  if (isMobile) {
+    document.getElementById('mobile-hint').style.display = 'block';
+  }
 
   updateScoreboard();
   idleDraw();
   showPlayCallUI();
+}
+
+// Show TAP TO PLAY tip on title screen for mobile
+if (isMobile) {
+  const tip = document.getElementById('title-mobile-tip');
+  if (tip) tip.textContent = '📱 TAP KICK OFF TO PLAY!';
 }
 
 // ===== INIT =====
