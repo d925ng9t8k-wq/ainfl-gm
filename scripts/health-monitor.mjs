@@ -16,9 +16,18 @@ import { execSync } from 'child_process';
 import { readFileSync, existsSync, appendFileSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { createHash } from 'crypto';
 import { createServer } from 'http';
-import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+// Use SQLCipher variant when available (matches rest of stack)
+const _require = createRequire(import.meta.url);
+let Database;
+try {
+  Database = _require('better-sqlite3-multiple-ciphers');
+} catch {
+  Database = _require('better-sqlite3');
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT   = path.resolve(__dirname, '..');
@@ -57,10 +66,16 @@ function log(msg) {
 }
 
 // ─── SQLite ──────────────────────────────────────────────────────────────────
+const ENCRYPTION_KEY = process.env.SQLITE_ENCRYPTION_KEY || null;
 let _db;
 function getDb() {
   if (_db) return _db;
   _db = new Database(DB_PATH);
+  // Apply SQLCipher key if set (matches memory-db.mjs pattern)
+  if (ENCRYPTION_KEY) {
+    _db.pragma(`key = '${ENCRYPTION_KEY}'`);
+    _db.pragma('cipher = sqlcipher');
+  }
   _db.pragma('journal_mode = WAL');
   // Ensure health_events table exists (idempotent — also in memory-db.mjs schema)
   _db.exec(`
@@ -293,10 +308,11 @@ async function checkWatchdogRestarts() {
 
 async function checkDbIntegrity() {
   try {
-    const result = execSync(
-      `/usr/bin/sqlite3 "${DB_PATH}" "PRAGMA integrity_check;" 2>&1`,
-      { encoding: 'utf-8', timeout: 30_000 }
-    ).trim();
+    // Use better-sqlite3-multiple-ciphers via getDb() — handles SQLCipher encryption.
+    // The sqlite3 CLI cannot open encrypted databases.
+    const db = getDb();
+    const rows = db.prepare('PRAGMA integrity_check;').all();
+    const result = rows.map(r => Object.values(r)[0]).join('\n').trim();
     const ok = result === 'ok';
     return {
       status:      ok ? 'healthy' : 'corrupt',
@@ -377,38 +393,50 @@ async function checkApiKey() {
 }
 
 // ─── RAM check ───────────────────────────────────────────────────────────────
+// macOS uses all available RAM as file cache — raw used% is always high and is
+// normal (not an alarm signal). Use memory_pressure command instead, which reports
+// actual system pressure: normal / warning / critical.
 async function checkRam() {
   try {
-    const out = execSync(
-      'vm_stat | grep -E "Pages (free|active|inactive|wired|speculative)"',
-      { encoding: 'utf-8', timeout: 5000 }
-    );
-    const pageSize = parseInt(
-      execSync('sysctl -n hw.pagesize', { encoding: 'utf-8', timeout: 2000 }).trim()
-    );
     const totalBytes = parseInt(
       execSync('sysctl -n hw.memsize', { encoding: 'utf-8', timeout: 2000 }).trim()
     );
     const totalMb = Math.round(totalBytes / (1024 * 1024));
 
-    const pages = {};
-    for (const line of out.split('\n')) {
-      const m = line.match(/Pages\s+(\w+):\s+(\d+)/);
-      if (m) pages[m[1].toLowerCase()] = parseInt(m[2]);
+    // memory_pressure is the authoritative macOS memory health indicator
+    let pressureLevel = 'normal';
+    try {
+      const pressureOut = execSync('memory_pressure 2>/dev/null | head -1', { encoding: 'utf-8', timeout: 5000 });
+      if (pressureOut.toLowerCase().includes('critical')) pressureLevel = 'critical';
+      else if (pressureOut.toLowerCase().includes('warning')) pressureLevel = 'warning';
+    } catch {
+      // memory_pressure may not be available on all macOS versions
     }
-    const freeMb = Math.round(((pages.free || 0) + (pages.speculative || 0)) * pageSize / (1024 * 1024));
-    const usedMb = totalMb - freeMb;
-    const usedPct = Math.round((usedMb / totalMb) * 100);
 
-    let severity = 'info';
-    if (usedPct >= 95) severity = 'critical';
-    else if (usedPct >= 85) severity = 'warning';
+    // Also compute wired + active pages (true "in-use" memory, not cache)
+    const vmOut = execSync('vm_stat', { encoding: 'utf-8', timeout: 5000 });
+    const pageSize = parseInt(
+      execSync('sysctl -n hw.pagesize', { encoding: 'utf-8', timeout: 2000 }).trim()
+    );
+    const pages = {};
+    for (const line of vmOut.split('\n')) {
+      const m = line.match(/Pages\s+(.+?):\s+(\d+)/);
+      if (m) pages[m[1].toLowerCase().trim()] = parseInt(m[2]);
+    }
+    const wiredMb  = Math.round(((pages['wired down'] || 0)) * pageSize / (1024 * 1024));
+    const activeMb = Math.round((pages.active || 0) * pageSize / (1024 * 1024));
+    const inUseMb  = wiredMb + activeMb;
+    const inUsePct = Math.round((inUseMb / totalMb) * 100);
+
+    const severity = pressureLevel === 'critical' ? 'critical'
+                   : pressureLevel === 'warning'  ? 'warning'
+                   : 'info';
 
     return {
-      status:      severity === 'info' ? 'healthy' : (severity === 'critical' ? 'critical' : 'warning'),
-      metricValue: usedPct,
+      status:      severity === 'info' ? 'healthy' : pressureLevel,
+      metricValue: inUsePct,
       severity,
-      message:     `RAM: ${usedMb}MB used / ${totalMb}MB total (${usedPct}%)`,
+      message:     `RAM pressure: ${pressureLevel} | active+wired: ${inUseMb}MB / ${totalMb}MB (${inUsePct}%)`,
     };
   } catch (e) {
     return { status: 'error', metricValue: null, severity: 'warning', message: `RAM check failed: ${e.message}` };
