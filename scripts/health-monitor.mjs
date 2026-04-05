@@ -13,7 +13,7 @@
  */
 
 import { execSync } from 'child_process';
-import { readFileSync, existsSync, appendFileSync, mkdirSync } from 'fs';
+import { readFileSync, existsSync, appendFileSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { createHash } from 'crypto';
 import { createServer } from 'http';
 import Database from 'better-sqlite3';
@@ -376,31 +376,281 @@ async function checkApiKey() {
   return apiKeyStatus;
 }
 
+// ─── RAM check ───────────────────────────────────────────────────────────────
+async function checkRam() {
+  try {
+    const out = execSync(
+      'vm_stat | grep -E "Pages (free|active|inactive|wired|speculative)"',
+      { encoding: 'utf-8', timeout: 5000 }
+    );
+    const pageSize = parseInt(
+      execSync('sysctl -n hw.pagesize', { encoding: 'utf-8', timeout: 2000 }).trim()
+    );
+    const totalBytes = parseInt(
+      execSync('sysctl -n hw.memsize', { encoding: 'utf-8', timeout: 2000 }).trim()
+    );
+    const totalMb = Math.round(totalBytes / (1024 * 1024));
+
+    const pages = {};
+    for (const line of out.split('\n')) {
+      const m = line.match(/Pages\s+(\w+):\s+(\d+)/);
+      if (m) pages[m[1].toLowerCase()] = parseInt(m[2]);
+    }
+    const freeMb = Math.round(((pages.free || 0) + (pages.speculative || 0)) * pageSize / (1024 * 1024));
+    const usedMb = totalMb - freeMb;
+    const usedPct = Math.round((usedMb / totalMb) * 100);
+
+    let severity = 'info';
+    if (usedPct >= 95) severity = 'critical';
+    else if (usedPct >= 85) severity = 'warning';
+
+    return {
+      status:      severity === 'info' ? 'healthy' : (severity === 'critical' ? 'critical' : 'warning'),
+      metricValue: usedPct,
+      severity,
+      message:     `RAM: ${usedMb}MB used / ${totalMb}MB total (${usedPct}%)`,
+    };
+  } catch (e) {
+    return { status: 'error', metricValue: null, severity: 'warning', message: `RAM check failed: ${e.message}` };
+  }
+}
+
+// ─── CPU check ───────────────────────────────────────────────────────────────
+// Cached — top -l takes 3s each call. Only samples every 60s.
+let lastCpuCheck = 0;
+let cpuCached = { status: 'unknown', metricValue: null, severity: 'info', message: 'Not yet checked' };
+const CPU_CACHE_MS = 60_000;
+
+async function checkCpu() {
+  if (Date.now() - lastCpuCheck < CPU_CACHE_MS) return cpuCached;
+  try {
+    const out = execSync('top -l 2 -n 0 | grep "CPU usage" | tail -1', {
+      encoding: 'utf-8',
+      timeout: 15_000,
+    });
+    const idleMatch = out.match(/([\d.]+)%\s+idle/);
+    if (!idleMatch) throw new Error('Could not parse CPU usage');
+    const idle = parseFloat(idleMatch[1]);
+    const usedPct = Math.round(100 - idle);
+    let severity = 'info';
+    if (usedPct >= 95) severity = 'critical';
+    else if (usedPct >= 80) severity = 'warning';
+    cpuCached = {
+      status:      severity === 'info' ? 'healthy' : (severity === 'critical' ? 'critical' : 'warning'),
+      metricValue: usedPct,
+      severity,
+      message:     `CPU: ${usedPct}% used (${(100 - usedPct).toFixed(1)}% idle)`,
+    };
+  } catch (e) {
+    cpuCached = { status: 'error', metricValue: null, severity: 'warning', message: `CPU check failed: ${e.message}` };
+  }
+  lastCpuCheck = Date.now();
+  return cpuCached;
+}
+
+// ─── Network latency check ────────────────────────────────────────────────────
+async function checkNetwork() {
+  try {
+    const start = Date.now();
+    await fetch('https://1.1.1.1', {
+      method: 'HEAD',
+      signal: AbortSignal.timeout(8000),
+    });
+    const latencyMs = Date.now() - start;
+    let severity = 'info';
+    if (latencyMs >= 3000) severity = 'critical';
+    else if (latencyMs >= 1000) severity = 'warning';
+    return {
+      status:      severity === 'info' ? 'healthy' : (latencyMs >= 3000 ? 'degraded' : 'slow'),
+      metricValue: latencyMs,
+      severity,
+      message:     `Network latency to 1.1.1.1: ${latencyMs}ms`,
+    };
+  } catch (e) {
+    return { status: 'down', metricValue: null, severity: 'critical', message: `Network unreachable: ${e.message}` };
+  }
+}
+
+// ─── DNS resolution check ─────────────────────────────────────────────────────
+async function checkDns() {
+  const hosts = ['api.anthropic.com', 'api.telegram.org'];
+  const results = [];
+  for (const host of hosts) {
+    try {
+      const start = Date.now();
+      execSync(`host ${host} 8.8.8.8`, { encoding: 'utf-8', timeout: 5000 });
+      results.push({ host, ok: true, ms: Date.now() - start });
+    } catch {
+      results.push({ host, ok: false });
+    }
+  }
+  const failed = results.filter(r => !r.ok);
+  if (failed.length > 0) {
+    return {
+      status: 'degraded', metricValue: failed.length, severity: 'critical',
+      message: `DNS failed for: ${failed.map(r => r.host).join(', ')}`,
+    };
+  }
+  const maxMs = Math.max(...results.map(r => r.ms));
+  return {
+    status: 'healthy', metricValue: maxMs, severity: 'info',
+    message: `DNS OK: ${results.map(r => `${r.host} ${r.ms}ms`).join(', ')}`,
+  };
+}
+
+// ─── TLS certificate expiry check ────────────────────────────────────────────
+let lastCertCheck = 0;
+let certCached = { status: 'unknown', metricValue: null, severity: 'info', message: 'Not yet checked' };
+const CERT_CACHE_MS  = 6 * 60 * 60 * 1000; // Every 6 hours
+const CERT_WARN_DAYS = 14;
+
+async function checkCertExpiry() {
+  if (Date.now() - lastCertCheck < CERT_CACHE_MS) return certCached;
+
+  const domains = ['ainflgm.com'];
+  const results = [];
+  for (const domain of domains) {
+    try {
+      const out = execSync(
+        `echo | openssl s_client -connect ${domain}:443 -servername ${domain} 2>/dev/null | openssl x509 -noout -enddate 2>/dev/null`,
+        { encoding: 'utf-8', timeout: 12_000 }
+      ).trim();
+      const match = out.match(/notAfter=(.+)/);
+      if (!match) { results.push({ domain, ok: false, reason: 'Could not parse cert date' }); continue; }
+      const expiry   = new Date(match[1].trim());
+      const daysLeft = Math.round((expiry - Date.now()) / (1000 * 60 * 60 * 24));
+      results.push({ domain, ok: true, daysLeft, expiry: expiry.toISOString().slice(0, 10) });
+    } catch (e) {
+      results.push({ domain, ok: false, reason: e.message.slice(0, 100) });
+    }
+  }
+
+  const failed   = results.filter(r => !r.ok);
+  const expiring = results.filter(r => r.ok && r.daysLeft < CERT_WARN_DAYS);
+  const minDays  = results.filter(r => r.ok).length > 0
+    ? Math.min(...results.filter(r => r.ok).map(r => r.daysLeft))
+    : 0;
+
+  if (failed.length > 0) {
+    certCached = { status: 'error', metricValue: 0, severity: 'warning',
+      message: `Cert check failed: ${failed.map(r => `${r.domain} (${r.reason})`).join(', ')}` };
+  } else if (expiring.length > 0) {
+    certCached = { status: 'expiring', metricValue: minDays, severity: minDays < 7 ? 'critical' : 'warning',
+      message: `TLS certs expiring: ${expiring.map(r => `${r.domain} in ${r.daysLeft}d`).join(', ')}` };
+  } else {
+    certCached = { status: 'healthy', metricValue: minDays, severity: 'info',
+      message: `TLS certs OK: ${results.filter(r => r.ok).map(r => `${r.domain} (${r.daysLeft}d)`).join(', ')}` };
+  }
+  lastCertCheck = Date.now();
+  return certCached;
+}
+
+// ─── Cloud worker liveness check ─────────────────────────────────────────────
+let lastCloudCheck = 0;
+let cloudCached = { status: 'unknown', metricValue: null, severity: 'info', message: 'Not yet checked' };
+const CLOUD_CACHE_MS = 60_000;
+
+async function checkCloudWorker() {
+  if (Date.now() - lastCloudCheck < CLOUD_CACHE_MS) return cloudCached;
+
+  let workerUrl = process.env.CLOUD_WORKER_URL;
+  try {
+    const envContent = readFileSync(envPath, 'utf-8');
+    const m = envContent.match(/CLOUD_WORKER_URL=(.*)/);
+    if (m) workerUrl = m[1].trim();
+  } catch {}
+
+  if (!workerUrl) {
+    cloudCached = { status: 'unknown', metricValue: null, severity: 'info', message: 'CLOUD_WORKER_URL not set' };
+    lastCloudCheck = Date.now();
+    return cloudCached;
+  }
+
+  try {
+    const start = Date.now();
+    const res = await fetch(`${workerUrl}/health`, { signal: AbortSignal.timeout(10_000) });
+    const latencyMs = Date.now() - start;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const mode  = data.mode || 'unknown';
+    const macHb = data.macLastHeartbeat;
+    const hbAgeMin = macHb ? Math.round((Date.now() - new Date(macHb)) / 60_000) : null;
+    cloudCached = {
+      status: 'healthy', metricValue: latencyMs, severity: 'info',
+      message: `Cloud worker OK (${latencyMs}ms, mode: ${mode}, mac hb: ${hbAgeMin !== null ? hbAgeMin + 'min ago' : 'none'})`,
+    };
+  } catch (e) {
+    cloudCached = {
+      status: 'down', metricValue: null, severity: 'critical',
+      message: `Cloud worker unreachable: ${e.message}`,
+    };
+  }
+  lastCloudCheck = Date.now();
+  return cloudCached;
+}
+
+// ─── Backup freshness check ───────────────────────────────────────────────────
+async function checkBackupFreshness() {
+  const backupDir = path.join(PROJECT, 'data/backups');
+  try {
+    if (!existsSync(backupDir)) {
+      return { status: 'missing', metricValue: null, severity: 'warning', message: 'Backup directory not found' };
+    }
+    const files = readdirSync(backupDir)
+      .filter(f => f.startsWith('9-memory-') && f.endsWith('.sql.gz'))
+      .map(f => ({ name: f, mtime: statSync(path.join(backupDir, f)).mtime }))
+      .sort((a, b) => b.mtime - a.mtime);
+
+    if (files.length === 0) {
+      return { status: 'missing', metricValue: null, severity: 'warning', message: 'No backups found in data/backups/' };
+    }
+    const ageHours = Math.round((Date.now() - files[0].mtime) / (1000 * 60 * 60));
+    let severity = 'info';
+    if (ageHours > 48) severity = 'critical';
+    else if (ageHours > 26) severity = 'warning';
+    return {
+      status: severity === 'info' ? 'fresh' : 'stale',
+      metricValue: ageHours,
+      severity,
+      message: `Latest backup: ${files[0].name} (${ageHours}h ago)`,
+    };
+  } catch (e) {
+    return { status: 'error', metricValue: null, severity: 'warning', message: `Backup freshness check failed: ${e.message}` };
+  }
+}
+
 // ─── FAST LOOP (every 30s) ───────────────────────────────────────────────────
-// Ports, processes, disk, memory
+// Ports, processes, disk, memory, network
 async function runFastChecks() {
   log('--- fast checks ---');
 
-  await check({ component: 'comms-hub',     metricName: 'http_status',   getValue: () => checkHttpEndpoint('comms-hub',     `${HUB_URL}/health`) });
-  await check({ component: 'voice-server',  metricName: 'http_status',   getValue: () => checkHttpEndpoint('voice-server',  'http://localhost:3456/health') });
-  await check({ component: 'trader9-bot',   metricName: 'process_alive', getValue: () => checkProcess('trader9-bot',   'scripts/trader9-bot.mjs') });
-  await check({ component: 'trinity-agent', metricName: 'process_alive', getValue: () => checkProcess('trinity-agent', 'scripts/trinity-agent.mjs') });
-  await check({ component: 'jules-telegram',metricName: 'process_alive', getValue: () => checkProcess('jules-telegram','scripts/jules-telegram.mjs') });
-  await check({ component: 'pilot-server',  metricName: 'process_alive', getValue: () => checkProcess('pilot-server',  'scripts/pilot-server.mjs') });
-  await check({ component: 'disk',          metricName: 'used_pct',      getValue: () => checkDisk() });
-  await check({ component: 'claude-code',   metricName: 'rss_mb',        getValue: () => checkClaudeMemory() });
-  await check({ component: 'claude-watchdog',metricName:'restart_count', getValue: () => checkWatchdogRestarts() });
+  await check({ component: 'comms-hub',      metricName: 'http_status',   getValue: () => checkHttpEndpoint('comms-hub',     `${HUB_URL}/health`) });
+  await check({ component: 'voice-server',   metricName: 'http_status',   getValue: () => checkHttpEndpoint('voice-server',  'http://localhost:3456/health') });
+  await check({ component: 'trader9-bot',    metricName: 'process_alive', getValue: () => checkProcess('trader9-bot',   'scripts/trader9-bot.mjs') });
+  await check({ component: 'trinity-agent',  metricName: 'process_alive', getValue: () => checkProcess('trinity-agent', 'scripts/trinity-agent.mjs') });
+  await check({ component: 'jules-telegram', metricName: 'process_alive', getValue: () => checkProcess('jules-telegram','scripts/jules-telegram.mjs') });
+  await check({ component: 'pilot-server',   metricName: 'process_alive', getValue: () => checkProcess('pilot-server',  'scripts/pilot-server.mjs') });
+  await check({ component: 'disk',           metricName: 'used_pct',      getValue: () => checkDisk() });
+  await check({ component: 'ram',            metricName: 'used_pct',      getValue: () => checkRam() });
+  await check({ component: 'cpu',            metricName: 'used_pct',      getValue: () => checkCpu() });
+  await check({ component: 'network',        metricName: 'latency_ms',    getValue: () => checkNetwork() });
+  await check({ component: 'cloud-worker',   metricName: 'latency_ms',    getValue: () => checkCloudWorker() });
+  await check({ component: 'claude-code',    metricName: 'rss_mb',        getValue: () => checkClaudeMemory() });
+  await check({ component: 'claude-watchdog',metricName: 'restart_count', getValue: () => checkWatchdogRestarts() });
 }
 
 // ─── SLOW LOOP (every 5m) ────────────────────────────────────────────────────
-// External services, DB integrity
+// External services, DB integrity, certs, DNS, backup freshness
 async function runSlowChecks() {
   log('--- slow checks ---');
 
-  await check({ component: 'ainflgm.com',   metricName: 'http_status',   getValue: () => checkHttpEndpoint('ainflgm.com', 'https://ainflgm.com', 10_000) });
-  await check({ component: 'supabase-sync', metricName: 'max_drift',     getValue: () => checkSupabaseDrift() });
-  await check({ component: 'sqlite-db',     metricName: 'integrity',     getValue: () => checkDbIntegrity() });
-  await check({ component: 'anthropic-api', metricName: 'api_key_valid', getValue: () => checkApiKey() });
+  await check({ component: 'ainflgm.com',    metricName: 'http_status',   getValue: () => checkHttpEndpoint('ainflgm.com', 'https://ainflgm.com', 10_000) });
+  await check({ component: 'supabase-sync',  metricName: 'max_drift',     getValue: () => checkSupabaseDrift() });
+  await check({ component: 'sqlite-db',      metricName: 'integrity',     getValue: () => checkDbIntegrity() });
+  await check({ component: 'anthropic-api',  metricName: 'api_key_valid', getValue: () => checkApiKey() });
+  await check({ component: 'dns',            metricName: 'resolution_ms', getValue: () => checkDns() });
+  await check({ component: 'tls-certs',      metricName: 'days_until_expiry', getValue: () => checkCertExpiry() });
+  await check({ component: 'backup',         metricName: 'age_hours',     getValue: () => checkBackupFreshness() });
 }
 
 // ─── Check + Record Helper ───────────────────────────────────────────────────

@@ -2231,7 +2231,33 @@ function restartVoiceWithTunnel() {
     // Kill old processes
     execSync('pkill -f voice-server 2>/dev/null; pkill -f cloudflared 2>/dev/null; sleep 2');
 
-    // Start new tunnel, capture URL
+    // If using a named tunnel, use `cloudflared tunnel run` instead of quick-tunnel
+    const tunnelType = (() => {
+      try {
+        const envC = readFileSync(envPath, 'utf-8');
+        const m = envC.match(/TUNNEL_TYPE=(.*)/);
+        return m ? m[1].trim() : 'quick';
+      } catch { return 'quick'; }
+    })();
+
+    if (tunnelType === 'named') {
+      const tunnelName = (() => {
+        try {
+          const envC = readFileSync(envPath, 'utf-8');
+          const m = envC.match(/TUNNEL_NAME=(.*)/);
+          return m ? m[1].trim() : '9-voice';
+        } catch { return '9-voice'; }
+      })();
+      log(`Named tunnel mode — using 'cloudflared tunnel run ${tunnelName}'`);
+      execSync(`nohup cloudflared tunnel --config ~/.cloudflared/9-voice-config.yml run "${tunnelName}" > /tmp/cloudflared.log 2>&1 &`);
+      execSync('sleep 5');
+      // Named tunnel URL is stable — read from .env, no update needed
+      execSync(`nohup /opt/homebrew/bin/node ${PROJECT}/scripts/voice-server.mjs > /tmp/voice-server.log 2>&1 &`);
+      log('Voice server restarted with named tunnel (stable URL — no Twilio update needed)');
+      return;
+    }
+
+    // Start new quick tunnel, capture URL
     execSync('nohup cloudflared tunnel --url http://localhost:3456 --no-autoupdate > /tmp/cloudflared.log 2>&1 &');
     execSync('sleep 5'); // Wait for tunnel to establish
 
