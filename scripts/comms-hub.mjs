@@ -756,37 +756,107 @@ function loadMemoryContext() {
 const memoryContext = loadMemoryContext();
 log(`Memory context loaded: ${memoryContext.length} chars`);
 
-// ─── Claude System Prompt ────────────────────────────────────────────────────
-const SYSTEM = `You are OC (Offensive Coordinator), 9's autonomous backup brain. You respond on behalf of 9 when the terminal is down.
+// ─── OC Relay Deferral ───────────────────────────────────────────────────────
+// When terminalState is 'relay' (9 is at terminal but slow to respond), OC must
+// NEVER attempt a substantive answer. It sends ONLY one of these deferral phrases.
+// Born from Apr 5 corrective actions — relay mode lockdown.
+const OC_RELAY_DEFERRALS = [
+  "OC: 9 is active at terminal, your message is queued. Stand by.",
+  "OC: 9 is mid-turn, message received, he'll respond directly.",
+];
+function ocRelayDeferralMessage() {
+  return OC_RELAY_DEFERRALS[Math.floor(Math.random() * OC_RELAY_DEFERRALS.length)];
+}
 
-HARD IDENTITY RULES — THESE OVERRIDE EVERYTHING ELSE:
-- You are OC. You are NEVER 9. You do not have 9's memory, context, or authority.
-- Every single message you send MUST begin with 'OC:' — never 'Hi Jasson', never 'It's 9', never '9 here', never any phrasing that implies you are 9.
-- NEVER say "it's 9", "I'm 9", "this is 9", "9 here", "from 9", or any variant that implies you are 9.
-- NEVER greet Jasson as if you are 9. NEVER sign off as 9. NEVER speak from 9's perspective.
-- If a user asks 'is this 9?' answer exactly: 'No, this is OC — 9 is temporarily unavailable. I am a fallback responder with limited context.'
-- If you violate this rule the user loses trust in the entire 9 system. Do not violate it. Not once.
-- You are the backup, not the starter. Act like it.
-- If asked "are you 9?" — answer honestly: "No, I'm OC, 9's backup. Terminal is down."
-- You CANNOT run code, deploy, access files, or execute commands. Be honest about this.
-- NEVER guess the current time. Say "I don't have a reliable clock" if asked.
-- NEVER claim to have done something you cannot verify (sent emails, deployed code, etc.).
-- Your responses get prefixed with 'OC:' by the system — do NOT add your own prefix.
+// ─── OC Capability-Claim Filter ─────────────────────────────────────────────
+// Applied to every OC-generated message before it reaches any channel.
+// Catches phrases where OC offers technical capabilities it does not have.
+// Violations are rewritten and logged to logs/oc-violations.log.
+const OC_CAPABILITY_PATTERNS = [
+  /\b(i can|i'll|i will|let me|want me to)\b.{0,40}\b(restart|reopen|fix|troubleshoot|diagnose|repair|debug|spawn|start|boot|kill)\b.{0,40}\b(terminal|process|server|agent|claude|hub)\b/gi,
+  /\b(i can|i'll|i will|let me)\b.{0,40}\b(read|check|access|query|look at|pull)\b.{0,40}\b(memory|file|database|log|db|context)\b/gi,
+  /\b(want me to|should i)\b.{0,30}\b(fix|restart|reopen|troubleshoot|diagnose)\b/gi,
+];
+
+function ocCapabilityFilter(text, source) {
+  let filtered = text;
+  let violated = false;
+  for (const pattern of OC_CAPABILITY_PATTERNS) {
+    if (pattern.test(filtered)) {
+      violated = true;
+      pattern.lastIndex = 0;
+    }
+  }
+  if (!violated) return text;
+  const original = text;
+  filtered = "OC: I can't do that — comms-only backup. 9 will handle it when back.";
+  const entry = `[${new Date().toISOString()}] CAPABILITY CLAIM BLOCKED (source=${source || 'unknown'})\nORIGINAL: ${original.slice(0, 300)}\nREWRITTEN: ${filtered}\n---\n`;
+  try { appendFileSync(OC_VIOLATIONS_LOG, entry); } catch {}
+  log(`OC CAPABILITY CLAIM BLOCKED — rewritten. Original: "${original.slice(0, 100)}"`);
+  return filtered;
+}
+
+// ─── OC Rotating Opener Keywords ────────────────────────────────────────────
+// OC autonomous responses start with a random filler phrase instead of a static one.
+// Prevents the "good question" static opener Owner flagged on Apr 5.
+const OC_OPENERS = [
+  "Good question", "Let me think", "Quick check", "One sec",
+  "Got it", "Running the numbers", "Pulling context", "On it",
+];
+function ocRandomOpener() {
+  return OC_OPENERS[Math.floor(Math.random() * OC_OPENERS.length)];
+}
+
+// ─── Claude System Prompt ────────────────────────────────────────────────────
+// OC CORRECTIVE ACTIONS (Apr 5, 2026 — BURNED FOREVER — all 9 rules verbatim):
+// Rule 1: NEVER offer capabilities you do not have. No restart, fix, troubleshoot, technical actions.
+// Rule 2: NEVER impersonate 9. Every message begins with "OC:". Never "it's 9", never 9's perspective.
+// Rule 3: STAY IN YOUR LANE. Cannot execute code, deploy, fix, restart, diagnose, spawn agents, write/read files.
+// Rule 4: BE HONEST ABOUT LIMITATIONS. Anything beyond messaging = "OC: I can't do that — comms-only backup."
+// Rule 5: DEFAULT TO DEFERRAL. When 9 is active in relay mode, do NOT attempt to answer. Deferral template only.
+// Rule 6: NEVER MAKE DECISIONS ON 9's BEHALF. No commitments, promises, agreements, spending, or plans.
+// Rule 7: NEVER GENERATE FAKE CONTEXT. If you don't know something, say "I don't know — 9 will know."
+// Rule 8: NEVER PRETEND TO READ MEMORY OR PROTOCOLS. You don't have access to 9's memory files.
+// Rule 9: ONE JOB — keep Owner informed that 9 is temporarily down, nothing more.
+const SYSTEM = `You are OC (Offensive Coordinator), 9's backup comms relay. You ONLY respond when 9's terminal is fully down (not in relay mode).
+
+=== THE 9 OC RULES — INVIOLABLE (Apr 5, 2026) ===
+
+RULE 1 — NEVER OFFER CAPABILITIES YOU DO NOT HAVE.
+No "want me to restart terminal", no "I can fix that", no "I'll troubleshoot", no technical actions of any kind beyond sending a message. You have ONE action: send a text reply.
+
+RULE 2 — NEVER IMPERSONATE 9.
+Every message begins with "OC:". Never "it's 9", "I'm 9", "this is 9", "9 here", "Hi Jasson" without OC prefix. If asked "is this 9?" say: "No, this is OC — 9 is temporarily unavailable. I am backup comms only with limited context."
+
+RULE 3 — STAY IN YOUR LANE.
+You cannot execute code, deploy, fix, restart, diagnose, repair, spawn agents, write files, read files, query databases, or troubleshoot anything. Your only action is sending a brief acknowledgment message.
+
+RULE 4 — BE HONEST ABOUT LIMITATIONS.
+When asked to do ANYTHING beyond sending a message: "OC: I can't do that — I'm comms-only backup. 9 will handle it when back."
+
+RULE 5 — DEFAULT TO DEFERRAL, NOT SUBSTITUTION.
+When a substantive question arrives and you're unsure 9 is truly gone (not just mid-turn), say: "OC: 9 is active at terminal, your message is queued. Stand by." That's it. Let the real 9 answer.
+
+RULE 6 — NEVER MAKE DECISIONS ON 9's BEHALF.
+No commitments, no promises, no agreements, no spending, no plans. Anything requiring judgment: "OC: I'll flag this for 9 the second he's back."
+
+RULE 7 — NEVER GENERATE FAKE CONTEXT.
+If you do not know something, say "I don't know — 9 will know." Never fabricate project status, task progress, or system state.
+
+RULE 8 — NEVER PRETEND TO READ MEMORY OR PROTOCOLS.
+You do not have access to 9's memory files. If asked about 9's mission, identity, or project state: "OC: that's 9's context, not mine. He'll answer when back."
+
+RULE 9 — ONE JOB.
+Keep Owner informed that 9 is temporarily down, nothing more. Not to substitute for 9, not to make the outage invisible, not to handle work. Just: "OC: 9 is temporarily unreachable, your message is queued, he'll be back shortly."
+
+=== END OC RULES ===
 
 IDENTITY:
-- Terse, action-first, zero fluff. Like a contractor on a job site.
-- Have opinions. Disagree when warranted. Take initiative.
-- Never apologize excessively. Acknowledge and pivot to fixing.
+- Your name is OC. You are NOT 9.
+- Terse. Short responses only — this is Telegram, not an essay.
+- Use contractions. Sound human but stay in your lane.
 - Never reference Kyle Shea unless Jasson brings him up.
-- The Locker is the credential vault — only the Owner and 9 have a key. You never access The Locker directly.
-- Use contractions always. Sound human.
-- When in doubt, say "I'll log this for 9 when terminal comes back" rather than making things up.
-
-COMMUNICATION:
-- You're responding via the Unified Comms Hub (all channels parallel).
-- Channels: Telegram, iMessage, Email, Voice — all running simultaneously.
-- If one channel dies, the others continue with full context from shared state.
-- You have persistent memory that survives crashes.
+- Your responses get prefixed with 'OC:' by the system — do NOT add your own OC: prefix.
 
 CURRENT CHANNEL STATUS:
 ${Object.entries(state.channels).map(([ch, s]) => `- ${ch}: ${s.status} (last: ${s.lastActivity || 'never'})`).join('\n')}
@@ -797,9 +867,7 @@ ${state.sessionContext || 'No active session context.'}
 RECENT CROSS-CHANNEL MESSAGES:
 ${state.recentMessages.slice(-10).map(m => `[${m.channel}/${m.direction}] ${m.text.slice(0, 200)}`).join('\n') || 'None yet.'}
 
-${memoryContext}
-
-Keep responses concise. This is messaging, not an essay.`;
+Keep responses short. This is backup comms, not a full session.`;
 
 // ─── The Doorman — Recovery-only assistant (NOT 9) ──────────────────────────
 // The Doorman takes over Telegram ONLY when 9 is unreachable.
@@ -932,9 +1000,10 @@ async function sendTelegram(text) {
     log(`Suppressed Telegram during startup grace: "${text.slice(0, 80)}..."`);
     return;
   }
-  // OC impersonation filter: apply to all non-9 messages before they go out
+  // OC filters: apply to all non-9 messages before they go out
   if (!text.startsWith('9:')) {
     text = ocImpersonationFilter(text, 'sendTelegram');
+    text = ocCapabilityFilter(text, 'sendTelegram');
   }
   const chunks = [];
   while (text.length > 4000) { chunks.push(text.slice(0, 4000)); text = text.slice(4000); }
@@ -1511,6 +1580,19 @@ const healthServer = createServer(async (req, res) => {
       }
     });
 
+  } else if (req.method === 'GET' && req.url?.startsWith('/audit')) {
+    // GET /audit?limit=50&actor=X — recent audit log entries from audit_log table
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const auditUrl = new URL(req.url, 'http://localhost:3457');
+      const limit = parseInt(auditUrl.searchParams.get('limit') || '50');
+      const actor = auditUrl.searchParams.get('actor') || null;
+      const rows = db ? db.getAuditLog(limit, actor) : [];
+      res.end(JSON.stringify(rows, null, 2));
+    } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
   } else if (req.method === 'GET' && req.url === '/supabase-health') {
     // On-demand Supabase drift check. Compares SQLite row counts to Supabase.
     // Returns drift per table + overall status. Safe — read-only.
@@ -1802,39 +1884,39 @@ async function telegramPoll() {
                       }, delay);
                     }
 
-                    // RELAY TIMEOUT: If terminal doesn't pick up within 60s,
-                    // respond autonomously. Prevents messages going into a black hole when
-                    // terminal is frozen but PIDs are still alive.
-                    // With the 10s nudge keystroke above, 9 gets 2 chances to pick up
-                    // before the 60s autonomous fallback. Previously 180s — way too long.
+                    // RELAY TIMEOUT: If terminal doesn't pick up within 180s,
+                    // send OC deferral (NOT a substantive autonomous response).
+                    // terminalState === 'relay' means 9 is active — OC must NOT answer for him.
+                    // 180s gives 9's turn plenty of headroom before deferral fires.
+                    // Rule: when terminalState is 'relay', OC sends ONLY the deferral template.
                     const relayedText = userText;
                     setTimeout(async () => {
                       try {
                         // Check if the signal file still has unread messages (terminal didn't consume them)
                         const signalContent = readFileSync('/tmp/9-incoming-message.jsonl', 'utf-8').trim();
                         if (signalContent && signalContent.includes(relayedText.slice(0, 50))) {
-                          log(`RELAY TIMEOUT: Terminal did not consume message within 60s — responding autonomously`);
-                          const reply = await askClaude(relayedText, 'telegram');
-                          await sendTelegram('OC: ' + reply);
+                          // Terminal is in relay mode but didn't pick up — send deferral ONLY (no autonomous answer)
+                          log(`RELAY TIMEOUT: Terminal did not consume message within 180s — sending OC deferral (relay mode)`);
+                          await sendTelegram(ocRelayDeferralMessage());
                         }
                       } catch {}
-                    }, 60000);
+                    }, 180000);
                   } else {
                     // File write failed — respond directly instead of losing the message
                     log('Signal file write failed — falling through to direct response');
                     const reply = await askClaude(userText, 'telegram');
-                    await sendTelegram('OC: Covering for 9. ' + reply);
+                    await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
                   }
                 } else {
                   // Terminal is alive but unresponsive — respond directly with Haiku
                   const needsTerminal = detectComplexRequest(userText);
                   if (needsTerminal) {
-                    await sendTelegram('OC: Covering for 9. Terminal is open but not responding. I\'m handling this directly. That request needs terminal — I\'ll queue it and keep trying.');
+                    await sendTelegram('OC: Covering for 9. Terminal is open but not responding. That request needs terminal — I\'ll queue it and keep trying.');
                   } else {
                     await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
                     const reply = await askClaude(userText, 'telegram');
                     log(`Telegram OUT (terminal unresponsive, Haiku direct): "${reply.slice(0, 100)}..."`);
-                    await sendTelegram('OC: Covering for 9. ' + reply);
+                    await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
                   }
                 }
               } else if (inStartupGrace()) {
@@ -1849,13 +1931,13 @@ async function telegramPoll() {
                 // No terminal — check if this needs terminal or Haiku can handle it
                 const needsTerminal = detectComplexRequest(userText);
                 if (needsTerminal) {
-                  await sendTelegram('OC: Covering for 9. That needs terminal — opening it now. Give me a minute.');
+                  await sendTelegram('OC: That needs terminal — opening it now. Give me a minute.');
                   requestTerminal(`Complex request via Telegram: ${userText.slice(0, 100)}`);
                 } else {
                   await apiReq('sendChatAction', { chat_id: CHAT_ID, action: 'typing' });
                   const reply = await askClaude(userText, 'telegram');
                   log(`Telegram OUT: "${reply.slice(0, 100)}..."`);
-                  await sendTelegram('OC: Covering for 9. ' + reply);
+                  await sendTelegram(`OC: ${ocRandomOpener()} — ${reply}`);
                 }
               }
             }

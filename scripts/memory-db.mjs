@@ -1,17 +1,35 @@
 /**
  * memory-db.mjs
  * Crash-proof persistent memory for the 9 agent system.
- * Uses better-sqlite3 (synchronous, WAL mode) for reliable concurrent access.
+ * Uses better-sqlite3-multiple-ciphers (SQLCipher) when SQLITE_ENCRYPTION_KEY is set.
+ * Falls back to plain better-sqlite3 if the cipher package is unavailable (safe degradation).
  *
  * Database: /Users/jassonfishback/Projects/BengalOracle/data/9-memory.db
  *
- * Tables: messages, actions, authority, memory, tasks
+ * Tables: messages, actions, authority, memory, tasks, decisions, health_events, audit_log
  */
 
-import Database from 'better-sqlite3';
+import 'dotenv/config';
+import { createRequire } from 'module';
 import { mkdirSync, existsSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+
+// Use SQLCipher variant when available and key is set. Fall back to plain better-sqlite3.
+const require = createRequire(import.meta.url);
+let Database;
+const ENCRYPTION_KEY = process.env.SQLITE_ENCRYPTION_KEY || null;
+try {
+  Database = require('better-sqlite3-multiple-ciphers');
+  if (ENCRYPTION_KEY) {
+    console.log('[MemoryDB] Using better-sqlite3-multiple-ciphers (SQLCipher encryption active)');
+  } else {
+    console.log('[MemoryDB] Using better-sqlite3-multiple-ciphers (no key set — unencrypted mode)');
+  }
+} catch {
+  Database = require('better-sqlite3');
+  console.log('[MemoryDB] better-sqlite3-multiple-ciphers not available — falling back to plain better-sqlite3');
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = resolve(__dirname, '../data/9-memory.db');
@@ -129,14 +147,34 @@ const SCHEMA = `
   CREATE INDEX IF NOT EXISTS idx_health_events_severity  ON health_events(severity);
   CREATE INDEX IF NOT EXISTS idx_health_events_signature ON health_events(signature);
   CREATE INDEX IF NOT EXISTS idx_health_events_last_seen ON health_events(last_seen);
+
+  CREATE TABLE IF NOT EXISTS audit_log (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp    TEXT    NOT NULL,
+    actor        TEXT    NOT NULL,
+    action       TEXT    NOT NULL,
+    table_name   TEXT    NOT NULL,
+    record_id    TEXT,
+    details_json TEXT    NOT NULL DEFAULT '{}',
+    session_id   TEXT
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_audit_log_timestamp  ON audit_log(timestamp);
+  CREATE INDEX IF NOT EXISTS idx_audit_log_actor      ON audit_log(actor);
+  CREATE INDEX IF NOT EXISTS idx_audit_log_table_name ON audit_log(table_name);
 `;
 
 // ─── MemoryDB class ──────────────────────────────────────────────────────────
 
 export class MemoryDB {
-  constructor(dbPath = DB_PATH) {
+  constructor(dbPath = DB_PATH, encryptionKey = ENCRYPTION_KEY) {
     try {
       this._db = new Database(dbPath);
+      // Apply SQLCipher encryption key if provided
+      if (encryptionKey) {
+        this._db.pragma(`key = '${encryptionKey}'`);
+        this._db.pragma('cipher = sqlcipher');
+      }
       this._db.exec(SCHEMA);
       this._prepareStatements();
     } catch (err) {
@@ -330,6 +368,18 @@ export class MemoryDB {
          ORDER BY timestamp DESC`
       ),
 
+      // Audit log
+      insertAuditLog: db.prepare(
+        `INSERT INTO audit_log (timestamp, actor, action, table_name, record_id, details_json, session_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      ),
+      getAuditLog: db.prepare(
+        `SELECT * FROM audit_log ORDER BY timestamp DESC LIMIT ?`
+      ),
+      getAuditLogByActor: db.prepare(
+        `SELECT * FROM audit_log WHERE actor = ? ORDER BY timestamp DESC LIMIT ?`
+      ),
+
       // Context rebuild
       getRecentMessagesForContext: db.prepare(
         `SELECT * FROM messages
@@ -345,6 +395,47 @@ export class MemoryDB {
         `SELECT * FROM authority WHERE status = 'active' ORDER BY granted_date ASC`
       ),
     };
+  }
+
+  // ── Audit Log ─────────────────────────────────────────────────────────────
+
+  /**
+   * Emit an audit row. Called internally by write methods.
+   * @param {string} actor - 9|OC|Owner|agent|system
+   * @param {string} action - read|write|delete
+   * @param {string} tableName
+   * @param {string|number|null} recordId
+   * @param {object} details
+   * @param {string} sessionId
+   */
+  _emitAudit(actor, action, tableName, recordId = null, details = {}, sessionId = '') {
+    try {
+      this._run(this._stmts.insertAuditLog, [
+        this._now(),
+        actor,
+        action,
+        tableName,
+        recordId !== null ? String(recordId) : null,
+        this._safeJson(details),
+        sessionId || '',
+      ]);
+    } catch (err) {
+      // Audit log failure must never crash the primary operation
+      console.error('[MemoryDB] _emitAudit error:', err.message);
+    }
+  }
+
+  /**
+   * Get recent audit log entries.
+   * @param {number} limit
+   * @param {string|null} actor - filter by actor (optional)
+   * @returns {object[]}
+   */
+  getAuditLog(limit = 50, actor = null) {
+    if (actor) {
+      return this._all(this._stmts.getAuditLogByActor, [actor, limit]);
+    }
+    return this._all(this._stmts.getAuditLog, [limit]);
   }
 
   // ── Messages ───────────────────────────────────────────────────────────────
@@ -365,7 +456,9 @@ export class MemoryDB {
       text,
       this._safeJson(metadata),
     ]);
-    return result?.lastInsertRowid ?? null;
+    const id = result?.lastInsertRowid ?? null;
+    this._emitAudit('system', 'write', 'messages', id, { channel, direction, text: text.slice(0, 200) });
+    return id;
   }
 
   /**
@@ -416,7 +509,9 @@ export class MemoryDB {
       status,
       this._safeJson(metadata),
     ]);
-    return result?.lastInsertRowid ?? null;
+    const id = result?.lastInsertRowid ?? null;
+    this._emitAudit('system', 'write', 'actions', id, { action_type, description: description.slice(0, 200), status });
+    return id;
   }
 
   /**
@@ -507,6 +602,7 @@ export class MemoryDB {
   saveMemory(name, type, description, content) {
     const now = this._now();
     this._run(this._stmts.upsertMemory, [name, type, description, content, now, now]);
+    this._emitAudit('system', 'write', 'memory', null, { name, type, description: description?.slice(0, 200) });
   }
 
   /**
@@ -581,6 +677,7 @@ export class MemoryDB {
     const allowed = ['title', 'description', 'status', 'assigned_to', 'priority', 'project', 'started_at', 'result'];
     const fields = Object.keys(updates).filter(k => allowed.includes(k));
     if (fields.length === 0) return;
+    this._emitAudit('system', 'write', 'tasks', id, { updates });
 
     // If setting status to in_progress and no started_at, auto-set it
     if (updates.status === 'in_progress' && !updates.started_at) {
@@ -655,7 +752,9 @@ export class MemoryDB {
       outcome,
       sessionId,
     ]);
-    return result?.lastInsertRowid ?? null;
+    const id = result?.lastInsertRowid ?? null;
+    this._emitAudit('system', 'write', 'decisions', id, { decision: decision.slice(0, 200) }, sessionId);
+    return id;
   }
 
   /**
