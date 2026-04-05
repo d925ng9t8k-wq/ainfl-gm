@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "bash scripts/check-name-invisibility.sh",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check-privacy": "bash scripts/check-name-invisibility.sh"
   },
   "dependencies": {
     "@sentry/node": "^10.47.0",
