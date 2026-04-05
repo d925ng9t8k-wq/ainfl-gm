@@ -758,11 +758,65 @@ const statusServer = createServer((req, res) => {
       const recentEvents = db.prepare(`
         SELECT * FROM health_events ORDER BY last_seen DESC LIMIT 50
       `).all();
+
+      // ── RAM Watch rolling stats (Task 4 — WATCH Day 1) ──────────────────────
+      // Pull 1m/5m/1hr averages and trends from ram_samples table.
+      // getRamWatchStats() is a lightweight read — no blocking ops.
+      let ramWatchStats = null;
+      try {
+        const now = new Date();
+        function avgRss(minutesBack) {
+          const since = new Date(now - minutesBack * 60_000).toISOString();
+          const r = db.prepare(
+            `SELECT AVG(rss_mb) AS a FROM ram_samples WHERE process_name='__system__' AND timestamp >= ?`
+          ).get(since);
+          return r?.a != null ? Math.round(r.a) : null;
+        }
+        function slope(minutesBack) {
+          const since = new Date(now - minutesBack * 60_000).toISOString();
+          const rows = db.prepare(
+            `SELECT rss_mb, timestamp FROM ram_samples WHERE process_name='__system__' AND timestamp >= ? ORDER BY timestamp ASC`
+          ).all(since);
+          if (rows.length < 2) return null;
+          const dtMin = (new Date(rows[rows.length-1].timestamp) - new Date(rows[0].timestamp)) / 60_000;
+          if (dtMin < 0.1) return null;
+          return Math.round(((rows[rows.length-1].rss_mb - rows[0].rss_mb) / dtMin) * 100) / 100;
+        }
+        const sysLatest = db.prepare(
+          `SELECT rss_mb, percent_mem, notes, timestamp FROM ram_samples WHERE process_name='__system__' ORDER BY timestamp DESC LIMIT 1`
+        ).get();
+        const sampleCount = db.prepare(`SELECT count(*) as c FROM ram_samples`).get()?.c ?? 0;
+        const orphanCount = db.prepare(`SELECT count(*) as c FROM ram_samples WHERE process_name='__orphan__'`).get()?.c ?? 0;
+        const leakSuspects = db.prepare(
+          `SELECT DISTINCT process_name FROM ram_samples WHERE notes LIKE '%LEAK%' AND timestamp >= datetime('now','-1 hour')`
+        ).all().map(r => r.process_name);
+        ramWatchStats = {
+          status: 'running',
+          port: 3459,
+          samples_total: sampleCount,
+          system_latest: sysLatest ?? null,
+          rolling: {
+            avg_1m_mb:    avgRss(1),
+            avg_5m_mb:    avgRss(5),
+            avg_1hr_mb:   avgRss(60),
+            trend_1m_mb_per_min:  slope(1),
+            trend_5m_mb_per_min:  slope(5),
+            trend_1hr_mb_per_min: slope(60),
+          },
+          orphan_count: orphanCount,
+          leak_suspects_1hr: leakSuspects,
+          checked_at: now.toISOString(),
+        };
+      } catch (re) {
+        ramWatchStats = { status: 'error', error: re.message };
+      }
+
       res.writeHead(200, cors);
       res.end(JSON.stringify({
         monitor: { pid: process.pid, uptime: Math.round(process.uptime()), checked_at: new Date().toISOString() },
         current: Object.values(currentStatus),
         recent_events: recentEvents,
+        ram_watch: ramWatchStats,
       }, null, 2));
     } catch (e) {
       res.writeHead(500, cors);
