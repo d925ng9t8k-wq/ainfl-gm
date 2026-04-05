@@ -23,8 +23,6 @@
 
   <!-- Micro-App Factory (Proving Grounds) -->
   <url><loc>https://ainflgm.com/trade-analyzer.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/mortgage-calc.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/name-generator.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/draft-trade-calc.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/cap-quiz.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/power-rankings.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -71,8 +69,6 @@
 
   <!-- Sport simulators -->
   <url><loc>https://ainflgm.com/aigm.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/ainba.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/aimlb.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <!-- All 32 NFL team pages -->
   <url><loc>https://ainflgm.com/cardinals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
@@ -107,7 +103,6 @@
   <url><loc>https://ainflgm.com/buccaneers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ainflgm.com/titans</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ainflgm.com/commanders</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://ainflgm.com/jules-family.html</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://ainflgm.com/tools.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/command-center.html</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
   <url><loc>https://ainflgm.com/bengals-cap.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
