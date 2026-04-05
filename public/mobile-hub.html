@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -505,13 +506,13 @@ body::before{
 
   // ==================== MOCK MESSAGES ====================
   const MOCK_MESSAGES = [
-    { dir: 'in', sender: 'Jasson', text: 'What\'s the status on Trader 9?', time: '10:42 AM' },
+    { dir: 'in', sender: 'Owner', text: 'What\'s the status on Trader 9?', time: '10:42 AM' },
     { dir: 'out', sender: '9', text: 'Paper trading is live. Running 3 strategies in parallel. Up 2.4% this week on simulated trades. Ready to present the P&L dashboard when you want it.', time: '10:42 AM' },
-    { dir: 'in', sender: 'Jasson', text: 'Good. What about the dropshipping store?', time: '10:45 AM' },
+    { dir: 'in', sender: 'Owner', text: 'Good. What about the dropshipping store?', time: '10:45 AM' },
     { dir: 'out', sender: '9', text: 'Supplier sourced, Shopify configured, 12 products loaded. Need your call on the brand name before we go live. Two options in the Draft Room.', time: '10:45 AM' },
-    { dir: 'in', sender: 'Jasson', text: 'Send me the options', time: '10:47 AM' },
+    { dir: 'in', sender: 'Owner', text: 'Send me the options', time: '10:47 AM' },
     { dir: 'out', sender: '9', text: 'Sent to your email. Both mockups attached. Recommend Option B — cleaner logo, better margins on the hero product.', time: '10:47 AM' },
-    { dir: 'in', sender: 'Jasson', text: 'Deploy the Chaperone pitch page update', time: '11:15 AM' },
+    { dir: 'in', sender: 'Owner', text: 'Deploy the Chaperone pitch page update', time: '11:15 AM' },
     { dir: 'out', sender: '9', text: 'Done. Live at chaperone page. Verified — loads in 1.2s, mobile-optimized, all links working.', time: '11:15 AM' },
   ];
 
@@ -622,7 +623,7 @@ body::before{
     const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
     const timeStr = h + ':' + m + ' ' + ampm;
 
-    MOCK_MESSAGES.push({ dir:'in', sender:'Jasson', text, time: timeStr });
+    MOCK_MESSAGES.push({ dir:'in', sender:'Owner', text, time: timeStr });
     renderMessages();
     scrollMessagesToBottom();
     msgInput.value = '';

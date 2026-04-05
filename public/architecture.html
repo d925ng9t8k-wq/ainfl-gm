@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, nosnippet">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -616,7 +617,7 @@ td code {
         <div class="novice-icon">&#128161;</div>
         <div class="novice-content">
           <div class="novice-label">Plain English</div>
-          <div class="novice-text">Think of this like a football team. <strong>Jasson (the Owner) is the head coach</strong> — he sets strategy and makes final calls. <strong>9 is the quarterback</strong> — on the field running plays. <strong>The Front Office</strong> are the specialist agents doing deep work. <strong>Infrastructure</strong> is the stadium and equipment that keeps everything running.</div>
+          <div class="novice-text">Think of this like a football team. <strong>The Owner is the head coach</strong> — he sets strategy and makes final calls. <strong>9 is the quarterback</strong> — on the field running plays. <strong>The Front Office</strong> are the specialist agents doing deep work. <strong>Infrastructure</strong> is the stadium and equipment that keeps everything running.</div>
         </div>
       </div>
 
@@ -624,7 +625,7 @@ td code {
         <div class="layer-row l4">
           <div class="layer-num-col">Layer 4</div>
           <div class="layer-body-col">
-            <div class="layer-name">The Owner — Jasson Fishback</div>
+            <div class="layer-name">The Owner — 9 Enterprises</div>
             <div class="layer-desc">Strategic authority. Communicates via Telegram (primary), Voice, iMessage, Email. Issues directives, approves architecture changes, holds financial authority. Non-technical operator — all technical complexity is abstracted by 9.</div>
             <div class="layer-tech"><span>Telegram</span><span>Voice</span><span>iMessage</span><span>Email</span></div>
           </div>
@@ -667,7 +668,7 @@ td code {
         <div class="novice-icon">&#9881;</div>
         <div class="novice-content">
           <div class="novice-label">Plain English</div>
-          <div class="novice-text">These are programs that run <strong>24/7 in the background</strong> on Jasson's Mac, even when 9's terminal is closed. They handle incoming messages, voice calls, and system recovery without any human intervention.</div>
+          <div class="novice-text">These are programs that run <strong>24/7 in the background</strong> on the Owner's Mac, even when 9's terminal is closed. They handle incoming messages, voice calls, and system recovery without any human intervention.</div>
         </div>
       </div>
 
@@ -791,7 +792,7 @@ ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
         <div class="novice-icon">&#128172;</div>
         <div class="novice-content">
           <div class="novice-label">Plain English</div>
-          <div class="novice-text">When Jasson sends a message on any channel, it flows through the OC hub to 9. If 9's terminal is open, the message is delivered instantly. If 9's terminal is closed, <strong>Claude Haiku handles it automatically</strong> within seconds. If the Mac itself is offline, the <strong>Cloudflare Worker (cloud backup) responds</strong>. There is no scenario where a message goes unanswered.</div>
+          <div class="novice-text">When the Owner sends a message on any channel, it flows through the OC hub to 9. If 9's terminal is open, the message is delivered instantly. If 9's terminal is closed, <strong>Claude Haiku handles it automatically</strong> within seconds. If the Mac itself is offline, the <strong>Cloudflare Worker (cloud backup) responds</strong>. There is no scenario where a message goes unanswered.</div>
         </div>
       </div>
 
@@ -802,7 +803,7 @@ ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
           <span class="code-block-label">End-to-end message routing</span>
         </div>
         <pre>
-                    JASSON (phone / laptop)
+                    OWNER (phone / laptop)
                             │
             ┌───────────────┼───────────────┐
             │               │               │
@@ -901,7 +902,7 @@ ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
         <div class="novice-icon">&#128279;</div>
         <div class="novice-content">
           <div class="novice-label">Plain English</div>
-          <div class="novice-text">The OC hub is a local web server on Jasson's Mac. It exposes API endpoints — <strong>think of them like buttons that programs can press</strong> — to send messages, check system state, manage terminal sessions, and read the inbox. The Huddle page and all agents use these endpoints.</div>
+          <div class="novice-text">The OC hub is a local web server on the Owner's Mac. It exposes API endpoints — <strong>think of them like buttons that programs can press</strong> — to send messages, check system state, manage terminal sessions, and read the inbox. The Huddle page and all agents use these endpoints.</div>
         </div>
       </div>
 
@@ -1127,7 +1128,7 @@ ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
         <div class="novice-icon">&#128101;</div>
         <div class="novice-content">
           <div class="novice-label">Plain English</div>
-          <div class="novice-text">9 is the quarterback — always on comms. When deep work needs to happen, <strong>9 delegates to specialist agents</strong>. These agents are like contractors: they get a brief, do the work, report back. 9 reviews their output before anything ships. No agent talks to Jasson directly.</div>
+          <div class="novice-text">9 is the quarterback — always on comms. When deep work needs to happen, <strong>9 delegates to specialist agents</strong>. These agents are like contractors: they get a brief, do the work, report back. 9 reviews their output before anything ships. No agent contacts the Owner directly.</div>
         </div>
       </div>
 
@@ -1215,7 +1216,7 @@ ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
           <tbody>
             <tr><td><strong>9 stays on comms</strong></td><td>All tasks &gt;10 seconds are delegated. 9 never goes dark for deep work.</td></tr>
             <tr><td><strong>No credential access</strong></td><td>No agent except 9 can read .env / The Locker. Credentials passed as scoped vars only.</td></tr>
-            <tr><td><strong>No Owner communication</strong></td><td>Agents report to 9 only. Zero direct contact with Jasson.</td></tr>
+            <tr><td><strong>No Owner communication</strong></td><td>Agents report to 9 only. Zero direct contact with the Owner.</td></tr>
             <tr><td><strong>Output review mandatory</strong></td><td>9 reviews all agent output before delivery or deployment.</td></tr>
             <tr><td><strong>Spend: auto-approve</strong></td><td>&lt;$20/task: 9 approves autonomously. $20–$100: requires Owner notification. &gt;$100: Owner explicit approval required.</td></tr>
             <tr><td><strong>Model selection</strong></td><td>Haiku for ephemeral tasks. Sonnet for leads. Opus only when Owner explicitly requests for architecture.</td></tr>
@@ -1437,7 +1438,7 @@ ALWAYS RUNNING (survive terminal death, Mac sleep, crashes)
         <div class="alert-icon">&#9650;</div>
         <div class="alert-body">
           <div class="alert-title">100x cost advantage over enterprise competitors</div>
-          <div class="alert-text">Enterprise tools (Tavant, ICE, LoanLogics) cost <strong>$200K+</strong> and take 6 months to deploy. Mid-size lenders (20–50 LOs) are completely underserved. This solution targets <strong>$500–2,000/mo per lender SaaS</strong> — deployable in 90 days. Anchor customer: Rapid Mortgage (existing relationship via Jasson as co-owner).</div>
+          <div class="alert-text">Enterprise tools (Tavant, ICE, LoanLogics) cost <strong>$200K+</strong> and take 6 months to deploy. Mid-size lenders (20–50 LOs) are completely underserved. This solution targets <strong>$500–2,000/mo per lender SaaS</strong> — deployable in 90 days. Anchor customer: Rapid Mortgage (existing relationship via 9 Enterprises as partner).</div>
         </div>
       </div>
     </section>
@@ -1601,7 +1602,7 @@ Products 5–9 (x9, agent9, AI Education, Prompt Scripts, Dropship):
           <div class="gap-severity sev-high">HIGH</div>
           <div class="gap-body">
             <div class="gap-title">OC API (:3457) — No Authentication</div>
-            <div class="gap-detail">Any process on localhost can call hub endpoints including /send. An exploited local process could impersonate 9 and send messages as Jasson's AI partner. Attack surface: local network only.</div>
+            <div class="gap-detail">Any process on localhost can call hub endpoints including /send. An exploited local process could impersonate 9 and send messages as 9 Enterprises' AI. Attack surface: local network only.</div>
             <div class="gap-plan">Plan: Add bearer token header validation. All API callers must include <code>Authorization: Bearer {hub-token}</code>. Token rotated monthly. Implementation: 2–3 hours. Timeline: 30-day sprint.</div>
           </div>
         </div>
