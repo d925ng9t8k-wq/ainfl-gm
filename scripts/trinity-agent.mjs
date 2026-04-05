@@ -4,13 +4,15 @@
  * 9's left hand. Scans X, YouTube, Hacker News, Product Hunt for AI tools,
  * techniques, and opportunities. Reports findings to 9 via comms hub.
  *
- * Runs on Haiku for cost efficiency (~$0.50/day).
- * Escalates interesting finds to Sonnet for deep evaluation.
+ * Apr 5 rule: Sonnet minimum for all quality-sensitive roles.
+ * MODEL_SCAN upgraded to Sonnet — analysis output ranks findings, explains
+ * business relevance, and recommends action. Quality-sensitive.
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { CLAUDE_QUALITY_MODEL } from './model-constants.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -26,8 +28,8 @@ const HUB_URL = 'http://localhost:3457';
 const LOG_FILE = join(ROOT, 'logs', 'trinity.log');
 const FINDINGS_FILE = join(ROOT, 'logs', 'trinity-findings.json');
 const SCAN_INTERVAL = 15 * 60 * 1000; // 15 minutes between scans (upgraded: 60→30→15min per Owner)
-const MODEL_SCAN = 'claude-haiku-4-5-20251001';
-const MODEL_DEEP = 'claude-sonnet-4-5-20241022';
+const MODEL_SCAN = CLAUDE_QUALITY_MODEL; // Apr 5: analysis is quality-sensitive — Sonnet minimum
+const MODEL_DEEP = CLAUDE_QUALITY_MODEL; // deep eval — also Sonnet
 
 // Ensure logs dir exists
 if (!existsSync(join(ROOT, 'logs'))) mkdirSync(join(ROOT, 'logs'), { recursive: true });
@@ -156,7 +158,7 @@ async function runScan() {
     scanGitHubTrending()
   ]);
 
-  log('Raw data collected. Analyzing with Haiku...');
+  log('Raw data collected. Analyzing with Sonnet...');
 
   const analysisPrompt = `You are Trinity, a discovery agent for a startup called 9 Enterprises. Your job is to find tools, techniques, and opportunities that could help an AI-powered business.
 
