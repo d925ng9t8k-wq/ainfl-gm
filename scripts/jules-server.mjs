@@ -29,7 +29,8 @@ const RECIPIENT_PHONE      = process.env.JULES_RECIPIENT_PHONE;
 const OPENWEATHER_KEY      = process.env.OPENWEATHER_API_KEY;
 const PROFILE_PATH         = new URL('../data/jules-profile.json', import.meta.url).pathname;
 
-const CLAUDE_HAIKU  = "claude-haiku-4-5-20251001";
+// Model IDs — Haiku is banned for quality-sensitive roles (Apr 5 rule).
+// Jules is a named agent; Sonnet is the minimum tier.
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 
 // ─── Performance: reusable HTTPS agents ──────────────────────────────────────
@@ -220,7 +221,7 @@ function scheduleReminder(task, timeStr, profile) {
 }
 
 // ─── Claude API call ─────────────────────────────────────────────────────────
-async function askClaude(systemPrompt, userMessage, model = CLAUDE_HAIKU) {
+async function askClaude(systemPrompt, userMessage, model = CLAUDE_SONNET) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       model,
@@ -383,7 +384,7 @@ async function sendMorningBriefing() {
 Keep it to 4-5 lines max. Natural and friendly, not a bullet list. Like a text from a friend who checked the weather for you.`;
 
   try {
-    const briefing = await askClaude(buildSystemPrompt(profile), prompt, CLAUDE_HAIKU);
+    const briefing = await askClaude(buildSystemPrompt(profile), prompt, CLAUDE_SONNET);
     await sendSms(briefing);
     log('Morning briefing sent.');
   } catch (e) {
@@ -504,7 +505,7 @@ async function handleIncomingMessage(body, from) {
   const systemPrompt = buildSystemPrompt(freshProfile);
 
   try {
-    const response = await askClaude(systemPrompt, body, CLAUDE_HAIKU);
+    const response = await askClaude(systemPrompt, body, CLAUDE_SONNET);
     updateMemory(loadProfile(), 'assistant', response);
     return response;
   } catch (e) {

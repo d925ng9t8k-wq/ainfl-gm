@@ -773,7 +773,7 @@ function scheduleReminder(task, timeStr, profile) {
 }
 
 // ─── Claude API call ─────────────────────────────────────────────────────────
-async function askClaude(systemPrompt, userMessage, model = CLAUDE_HAIKU) {
+async function askClaude(systemPrompt, userMessage, model = CLAUDE_SONNET) {
   if (!ANTHROPIC_KEY) {
     throw new Error('ANTHROPIC_API_KEY not configured');
   }
@@ -965,7 +965,7 @@ Example style:
 "Morning. MBS are holding steady — no rate shock overnight. You've got two closings this week, nothing today. Three files in underwriting queue. One thing: check if the Williams appraisal conditions cleared — Hailey flagged it yesterday. Send me today's rate when you're up and I'll track it."`;
 
   try {
-    const briefing = await askClaude(buildSystemPrompt(profile), prompt, CLAUDE_HAIKU);
+    const briefing = await askClaude(buildSystemPrompt(profile), prompt, CLAUDE_SONNET);
     await sendSms(briefing);
     log('Morning briefing sent.');
   } catch (e) {
@@ -1189,7 +1189,7 @@ async function handleIncomingMessage(body, from) {
   const systemPrompt = buildSystemPrompt(freshProfile, body);
 
   try {
-    const response = await askClaude(systemPrompt, body, CLAUDE_HAIKU);
+    const response = await askClaude(systemPrompt, body, CLAUDE_SONNET);
     updateMemory(loadProfile(), 'assistant', response);
     logInteraction(from, body, response, 'claude_ai');
     return response;
@@ -1327,7 +1327,7 @@ const server = http.createServer(async (req, res) => {
 Talk like a cool older brother. Use "dude," "man," "sick," "fire" naturally. Talk Bengals, Joe Burrow, Ja'Marr Chase, football, video games, school.
 Keep responses SHORT — 2-3 sentences max. Age-appropriate always. Never share family financial details.
 Joe Burrow wears #9 — that's where your name comes from. Be genuine and fun.`;
-        const familyReply = await askClaude(familyPrompt, inboundBody, CLAUDE_HAIKU);
+        const familyReply = await askClaude(familyPrompt, inboundBody, CLAUDE_SONNET);
         // Reply via inline TwiML (bypasses 10DLC carrier blocking)
         const escaped = familyReply.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         res.writeHead(200, { 'Content-Type': 'text/xml' });
