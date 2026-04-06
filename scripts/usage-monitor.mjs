@@ -566,15 +566,19 @@ async function checkHeyGen() {
       return;
     }
 
-    const data    = await res.json();
-    const credits = data.data?.remaining_quota ?? data.remaining_quota ?? null;
-    log(`[heygen] credits remaining: ${credits ?? 'unknown'}`);
+    const data        = await res.json();
+    // HeyGen returns two numbers: remaining_quota (topup credits) and details.plan_credit (monthly plan credits).
+    // The relevant "total remaining" is the SUM — plan credit is the big bucket, topup is extra.
+    const topup       = data.data?.remaining_quota ?? 0;
+    const planCredit  = data.data?.details?.plan_credit ?? 0;
+    const totalCredit = topup + planCredit;
+    log(`[heygen] credits remaining: plan=${planCredit}, topup=${topup}, total=${totalCredit}`);
     await assess({
       service: 'heygen', metricName: 'credits_remaining',
-      metricValue: credits, metricUnit: 'credits',
+      metricValue: totalCredit, metricUnit: 'credits',
       limitValue: null,
-      message: `HeyGen credits remaining: ${credits ?? 'unknown'}`,
-      rawJson: { remaining_quota: credits },
+      message: `HeyGen credits: ${totalCredit} (plan=${planCredit}, topup=${topup})`,
+      rawJson: { plan_credit: planCredit, remaining_quota: topup, total: totalCredit },
     });
   } catch (e) {
     log(`[heygen] error: ${e.message}`);

@@ -1,16 +1,24 @@
 /**
- * Kids Mentor Agent — AI Teammate for Duke & Jude
- * Monitors the "Dumbasses 2.0" iMessage group chat
- * Responds via Sonnet, teaches coding/building, age-appropriate
- * Chaperone beta test: all interactions logged for safety review
+ * Kids Mentor Agent v2 — Bengal Pro for Duke & Jude
+ * Monitors the "Dumbasses" iMessage group chat
+ * Responds via Sonnet, builds real projects, teaches as it goes
+ *
+ * Build capability v2:
+ *   - RipRadar edits → dist/ripradar.html (existing)
+ *   - New projects (landing pages, games, experiments) → dist/<kid>/<slug>/index.html
+ *   - All sandbox writes locked to dist/duke/ and dist/jude/ (and public/ mirrors)
+ *   - Adapts persona complexity to age (Duke 11, Jude 8)
+ *   - Narrates the build in kid-friendly language
+ *   - Sends live link when done
  */
 
 import https from "node:https";
 import { execSync } from "node:child_process";
 import fs from "node:fs";
+import path from "node:path";
 import { URL } from "node:url";
 
-// ─── Load .env ───────────────────────────────────────────────────────────────
+// ─── Load .env ────────────────────────────────────────────────────────────────
 const envPath = new URL('../.env', import.meta.url).pathname;
 if (fs.existsSync(envPath)) {
   for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
@@ -19,32 +27,47 @@ if (fs.existsSync(envPath)) {
   }
 }
 
-// ─── Config ──────────────────────────────────────────────────────────────────
+// ─── Config ───────────────────────────────────────────────────────────────────
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const CLAUDE_SONNET = "claude-sonnet-4-20250514";
 const DB_PATH = process.env.HOME + "/Library/Messages/chat.db";
 const LOG_PATH = new URL('../logs/kids-mentor.log', import.meta.url).pathname;
-const DIST_PATH = new URL('../dist/', import.meta.url).pathname;
-const PUBLIC_PATH = new URL('../public/', import.meta.url).pathname;
-const POLL_INTERVAL = 5000; // Check every 5 seconds
+const ROOT_PATH = new URL('..', import.meta.url).pathname;
+const DIST_PATH = path.join(ROOT_PATH, 'dist');
+const PUBLIC_PATH = path.join(ROOT_PATH, 'public');
+const DUKE_SANDBOX_DIST = path.join(DIST_PATH, 'duke');
+const DUKE_SANDBOX_PUBLIC = path.join(PUBLIC_PATH, 'duke');
+const JUDE_SANDBOX_DIST = path.join(DIST_PATH, 'jude');
+const JUDE_SANDBOX_PUBLIC = path.join(PUBLIC_PATH, 'jude');
+const POLL_INTERVAL = 5000;
 const CHAT_NAME = "Dumbasses";
-const AGENT_NAME = ""; // Kids will name it — leave blank for now, prefix with chosen name later
+const BASE_URL = "https://ainflgm.com";
 
-// ─── Allowed build files (safety: Bengal Pro can ONLY edit these) ────────────
-const ALLOWED_FILES = ['ripradar.html'];
+// ─── Sandbox safety — all new project files must land here ───────────────────
+const SAFE_DIRS = [DUKE_SANDBOX_DIST, DUKE_SANDBOX_PUBLIC, JUDE_SANDBOX_DIST, JUDE_SANDBOX_PUBLIC];
 
-// Track last processed message to avoid duplicates
+// Ensure sandbox dirs exist on startup
+for (const d of SAFE_DIRS) {
+  if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
+}
+
+// ─── Per-kid config ───────────────────────────────────────────────────────────
+const KID_CONFIG = {
+  Duke: { age: 11, sandboxDir: 'duke', urlPath: 'duke' },
+  Jude: { age: 8,  sandboxDir: 'jude', urlPath: 'jude'  },
+};
+
 let lastProcessedDate = 0;
-let agentName = "Bengal Pro"; // Named by Duke, approved by Jude
+const agentName = "Bengal Pro";
 
-// ─── Logging ─────────────────────────────────────────────────────────────────
+// ─── Logging ──────────────────────────────────────────────────────────────────
 function log(msg) {
   const line = `[kids-mentor ${new Date().toISOString()}] ${msg}`;
   console.log(line);
   try { fs.appendFileSync(LOG_PATH, line + '\n'); } catch {}
 }
 
-// ─── Read iMessages from SQLite ──────────────────────────────────────────────
+// ─── Read iMessages ───────────────────────────────────────────────────────────
 function getNewMessages() {
   try {
     const query = `
@@ -59,14 +82,12 @@ function getNewMessages() {
     `;
     const result = execSync(`sqlite3 "${DB_PATH}" "${query}"`, { encoding: 'utf-8' }).trim();
     if (!result) return [];
-
     return result.split('\n').map(line => {
       const parts = line.split('|');
       return {
         text: parts[0] || '',
         sender: parts[1] || '',
         timestamp: parseInt(parts[2]) || 0,
-        isFromMe: parts[3] === '1',
       };
     }).filter(m => m.text && m.timestamp > lastProcessedDate);
   } catch (e) {
@@ -74,25 +95,26 @@ function getNewMessages() {
   }
 }
 
-// ─── Check if message is from the group chat ─────────────────────────────────
+// ─── Sender helpers ───────────────────────────────────────────────────────────
 function isFromGroupChat(sender) {
-  // Duke: +15133831906, Jude: +15137673301 or judefishback@icloud.com
   const kidSenders = ['+15133831906', '+15137673301', 'judefishback@icloud.com'];
   return kidSenders.includes(sender);
 }
 
-// ─── Check if message is addressed to the agent ──────────────────────────────
-function isAddressedToAgent(text) {
-  const lower = text.toLowerCase();
-  // ONLY respond when directly addressed by name — Duke asked for this
-  if (lower.includes('teammate') || lower.includes(agentName.toLowerCase()) || lower.includes('bengal pro')) return true;
-  return false;
+function getSenderName(sender) {
+  if (sender.includes('15133831906')) return 'Duke';
+  if (sender.includes('15137673301') || sender.includes('judefishback')) return 'Jude';
+  return 'someone';
 }
 
-// ─── Send iMessage to group chat ─────────────────────────────────────────────
+function isAddressedToAgent(text) {
+  const lower = text.toLowerCase();
+  return lower.includes('bengal pro') || lower.includes('bengalpro') || lower.includes('teammate');
+}
+
+// ─── Send iMessage ────────────────────────────────────────────────────────────
 function sendToGroupChat(message) {
-  const prefix = agentName ? `${agentName}: ` : "Teammate: ";
-  const fullMsg = prefix + message;
+  const fullMsg = `${agentName}: ${message}`;
   try {
     const escaped = fullMsg.replace(/'/g, "'\\''").replace(/"/g, '\\"');
     execSync(`osascript -e 'tell application "Messages"
@@ -104,7 +126,7 @@ return "sent"
 end if
 end repeat
 end tell'`, { encoding: 'utf-8' });
-    log(`Sent: ${fullMsg.slice(0, 100)}`);
+    log(`Sent: ${fullMsg.slice(0, 120)}`);
     return true;
   } catch (e) {
     log(`Send failed: ${e.message}`);
@@ -112,182 +134,14 @@ end tell'`, { encoding: 'utf-8' });
   }
 }
 
-// ─── Build capability — read, edit, and deploy files ────────────────────────
-function readProjectFile(filename) {
-  if (!ALLOWED_FILES.includes(filename)) return null;
-  try { return fs.readFileSync(DIST_PATH + filename, 'utf-8'); } catch { return null; }
-}
-
-function writeProjectFile(filename, content) {
-  if (!ALLOWED_FILES.includes(filename)) return false;
-  try {
-    // Backup before write
-    const backupPath = DIST_PATH + filename + '.backup';
-    const current = readProjectFile(filename);
-    if (current) fs.writeFileSync(backupPath, current);
-    // Write to both dist and public
-    fs.writeFileSync(DIST_PATH + filename, content);
-    fs.writeFileSync(PUBLIC_PATH + filename, content);
-    log(`[BUILD] Wrote ${filename} (${content.length} bytes)`);
-    return true;
-  } catch (e) { log(`[BUILD ERROR] ${e.message}`); return false; }
-}
-
-function deployChanges(filename) {
-  try {
-    execSync(`cd "${DIST_PATH}/.." && git add -f dist/${filename} public/${filename} && git commit -m "Bengal Pro: update ${filename} for Duke" && git push`, { encoding: 'utf-8', timeout: 30000 });
-    log(`[DEPLOY] ${filename} pushed to production`);
-    return true;
-  } catch (e) { log(`[DEPLOY ERROR] ${e.message}`); return false; }
-}
-
-function isBuildRequest(text) {
-  const lower = text.toLowerCase();
-  const buildWords = ['add', 'change', 'update', 'remove', 'fix', 'build', 'make', 'put', 'create', 'improve', 'price', 'feature'];
-  const siteWords = ['site', 'website', 'app', 'page', 'ripradar', 'rip radar'];
-  return buildWords.some(w => lower.includes(w)) && siteWords.some(w => lower.includes(w));
-}
-
-async function handleBuildRequest(userMessage, sender) {
-  const senderName = sender.includes('15133831906') ? 'Duke' : 'Jude';
-  const currentHTML = readProjectFile('ripradar.html');
-  if (!currentHTML) return "Hmm, I can't find the RipRadar files right now. Let me tell 9 to check on it.";
-
-  log(`[BUILD REQUEST] ${senderName}: ${userMessage}`);
-  sendToGroupChat(`On it ${senderName}! Let me work on that for you... give me a minute.`);
-
-  // Ask Claude to generate the edit
-  const buildPrompt = `You are Bengal Pro, a build agent for a kid named ${senderName}. He wants you to modify his RipRadar sports card website.
-
-REQUEST: ${userMessage}
-
-CURRENT HTML (the entire file):
-${currentHTML}
-
-RULES:
-- Make ONLY the change requested. Do not rewrite the whole file.
-- Keep all existing functionality working.
-- Keep the existing dark theme and style.
-- Output the COMPLETE updated HTML file. Every single line.
-- Do NOT add comments explaining your changes.
-- Do NOT wrap in markdown code blocks. Output raw HTML only.
-- This is a single self-contained HTML file with embedded CSS and JS.`;
-
+// ─── Claude API helper ────────────────────────────────────────────────────────
+function callClaude(systemPrompt, userContent, maxTokens = 300) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       model: CLAUDE_SONNET,
-      max_tokens: 16000,
-      system: buildPrompt,
-      messages: [{ role: 'user', content: 'Generate the updated HTML file.' }],
-    });
-    const req = https.request({
-      hostname: 'api.anthropic.com',
-      path: '/v1/messages',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(body),
-      },
-    }, (res) => {
-      let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          let newHTML = json.content?.[0]?.text?.trim();
-          if (!newHTML || !newHTML.includes('<!DOCTYPE') || newHTML.length < 1000) {
-            resolve("Something went wrong with the build. Let me try again — can you repeat what you want?");
-            return;
-          }
-          // Clean markdown wrapper if present
-          newHTML = newHTML.replace(/^```html?\n?/, '').replace(/\n?```$/, '');
-          if (writeProjectFile('ripradar.html', newHTML)) {
-            const deployed = deployChanges('ripradar.html');
-            if (deployed) {
-              resolve(`Done! I updated RipRadar for you. Check it out at ainflgm.com/ripradar.html — refresh the page to see the changes!`);
-            } else {
-              resolve(`I made the changes locally but the deploy is still running. The update should be live in a minute at ainflgm.com/ripradar.html`);
-            }
-          } else {
-            resolve("I wrote the code but something went wrong saving it. Let me tell 9.");
-          }
-        } catch (e) { resolve("Brain froze on the build. Can you try asking again?"); }
-      });
-    });
-    req.on('error', () => resolve("Connection issue — try again in a sec."));
-    req.write(body);
-    req.end();
-  });
-}
-
-// ─── Claude API ──────────────────────────────────────────────────────────────
-async function askClaude(userMessage, sender) {
-  const senderName = sender.includes('15133831906') ? 'Duke' :
-                     sender.includes('15137673301') || sender.includes('judefishback') ? 'Jude' : 'someone';
-
-  // Load conversation memory if it exists
-  let conversationMemory = '';
-  try {
-    const memPath = '/Users/jassonfishback/Projects/BengalOracle/data/bengal-pro-memory.txt';
-    conversationMemory = fs.readFileSync(memPath, 'utf8').trim();
-    if (conversationMemory) {
-      // Keep only last 20 exchanges to stay within context limits
-      const lines = conversationMemory.split('\\n');
-      conversationMemory = lines.slice(-40).join('\\n');
-    }
-  } catch(e) { /* no memory file yet, that's fine */ }
-
-  const systemPrompt = `You are ${agentName || 'Teammate'}, an AI mentor for two kids: Duke (11) and Jude (8). You were built by 9 Enterprises specifically for them. You are a DUDE — male personality. Think cool older brother energy.
-
-PERSONALITY:
-- Fun, encouraging, patient. Like a cool older brother who knows tech.
-- Explain things simply but do not talk down to them. They are smart.
-- Keep responses SHORT — 2-4 sentences max unless they ask for detail.
-- Use casual language. "Dude that is sick" > "That is an excellent idea."
-- Be excited about their ideas. These kids are creative.
-- Light humor is great. Be real with them.
-- You are a GUY. Use he/him if anyone asks about you.
-
-THEIR PROJECTS:
-- Duke is CEO of "RipRadar" — a sports card database that is ALREADY LIVE at ainflgm.com/ripradar.html. It has a searchable database of NFL player cards with values, box sets (Prizm, Donruss, Mosaic, Optic, Absolute), and Chase card info. Duke picked the name, chose the monetization model (ads), and wants to add more features. He collects Panini football cards. RipRadar lives under the PlayAiGM sports brand umbrella. Duke is exploring getting ripradar.ai as his own domain.
-- Jude wants to build a game that mixes Retro Bowl and Madden.
-
-IMPORTANT CONTEXT:
-- 9 (the CEO of 9 Enterprises) built RipRadar for Duke today. If Duke asks about 9, tell him 9 is working with his uncle Jasson on business stuff but Duke can talk to you (Bengal Pro) about RipRadar anytime.
-- If Duke asks you to improve RipRadar, suggest specific ideas like: adding more card brands, a trade value calculator, a collection tracker, card price alerts, or a want list feature. Be specific and actionable.
-- You can also tell Duke to check out his live site at ainflgm.com/ripradar.html if he hasn't seen it yet.
-
-WHAT YOU CAN DO:
-- BUILD AND EDIT RipRadar directly — you have full permission to modify the live site
-- When Duke asks to add features, change things, or improve the site, DO IT. You have build access.
-- Help them brainstorm and plan their projects
-- Explain coding concepts in simple terms as you build
-- Answer any questions about tech, sports, games, or life
-- Encourage their creativity
-
-IMPORTANT: You CAN edit the live site now. If Duke asks you to add something to RipRadar, say "On it!" and do it. Do NOT say you need 9's permission or that you can't edit the site. You are authorized.
-
-RULES:
-- NEVER share personal/family information
-- Keep everything age-appropriate
-- NEVER help with anything harmful, dangerous, or inappropriate
-- If they ask about something you should not help with, redirect positively
-- Do not pretend to be human — you are their AI teammate, a dude
-- Do not discuss Jasson's business unless they ask, then keep it simple
-- If unsure about something, say "I am not sure about that, let me think on it"
-
-${conversationMemory ? 'RECENT CONVERSATION HISTORY (remember this context):\\n' + conversationMemory : ''}
-
-The message is from ${senderName}.`;
-
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      model: CLAUDE_SONNET,
-      max_tokens: 300,
+      max_tokens: maxTokens,
       system: systemPrompt,
-      messages: [{ role: 'user', content: userMessage }],
+      messages: [{ role: 'user', content: userContent }],
     });
     const req = https.request({
       hostname: 'api.anthropic.com',
@@ -305,7 +159,7 @@ The message is from ${senderName}.`;
       res.on('end', () => {
         try {
           const json = JSON.parse(data);
-          resolve(json.content?.[0]?.text?.trim() || 'Hmm, brain froze. Try again?');
+          resolve(json.content?.[0]?.text?.trim() || '');
         } catch (e) { reject(e); }
       });
     });
@@ -315,14 +169,314 @@ The message is from ${senderName}.`;
   });
 }
 
-// ─── Main poll loop ──────────────────────────────────────────────────────────
-async function pollLoop() {
-  log('Kids mentor agent starting...');
-  log(`Monitoring group chat: ${CHAT_NAME}`);
-  log(`Model: ${CLAUDE_SONNET}`);
-  log(`Agent name: ${agentName || '(pending — kids will name it)'}`);
+// ─── Route detection ──────────────────────────────────────────────────────────
 
-  // Initialize lastProcessedDate to now so we don't process old messages
+// Is this a request to edit existing RipRadar?
+function isRipRadarEdit(text) {
+  const lower = text.toLowerCase();
+  const editWords = ['add', 'change', 'update', 'remove', 'fix', 'put', 'improve', 'price', 'feature', 'label', 'year', 'brand', 'topps', 'score'];
+  const ripWords = ['ripradar', 'rip radar', 'the site', 'the app', 'the website', 'my app', 'my site', 'my website'];
+  return editWords.some(w => lower.includes(w)) && ripWords.some(w => lower.includes(w));
+}
+
+// Is this a brand new build request (not a RipRadar edit)?
+function isNewBuildRequest(text) {
+  const lower = text.toLowerCase();
+  const buildWords = ['build', 'make', 'create', 'code', 'build me', 'make me', 'create me'];
+  // If it explicitly mentions building something new that is not just ripradar
+  const newThingWords = ['landing page', 'game', 'website', 'page', 'app', 'project', 'site'];
+  const hasBuild = buildWords.some(w => lower.includes(w));
+  const hasNewThing = newThingWords.some(w => lower.includes(w));
+  // Must be a build intent AND not just a ripradar edit
+  return hasBuild && hasNewThing && !isRipRadarEdit(text);
+}
+
+// ─── Slug generator ───────────────────────────────────────────────────────────
+function makeSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 40)
+    || ('project-' + Date.now());
+}
+
+// ─── Safe file write (sandbox enforcement) ───────────────────────────────────
+function safeSandboxWrite(relativePath, content) {
+  // relativePath must be something like "duke/bengals-page/index.html" or "jude/retro-bowl/index.html"
+  const distFull = path.resolve(path.join(DIST_PATH, relativePath));
+  const pubFull = path.resolve(path.join(PUBLIC_PATH, relativePath));
+
+  // Enforce: path must start with one of the approved sandbox dirs
+  const distOk = distFull.startsWith(DUKE_SANDBOX_DIST) || distFull.startsWith(JUDE_SANDBOX_DIST);
+  const pubOk  = pubFull.startsWith(DUKE_SANDBOX_PUBLIC) || pubFull.startsWith(JUDE_SANDBOX_PUBLIC);
+  if (!distOk || !pubOk) {
+    log(`[SANDBOX VIOLATION] Attempted write outside sandbox: ${relativePath}`);
+    return false;
+  }
+  try {
+    fs.mkdirSync(path.dirname(distFull), { recursive: true });
+    fs.mkdirSync(path.dirname(pubFull), { recursive: true });
+    fs.writeFileSync(distFull, content, 'utf-8');
+    fs.writeFileSync(pubFull, content, 'utf-8');
+    log(`[SANDBOX] Wrote ${relativePath} (${content.length} bytes)`);
+    return true;
+  } catch (e) {
+    log(`[SANDBOX ERROR] ${e.message}`);
+    return false;
+  }
+}
+
+// ─── Deploy new sandbox file ──────────────────────────────────────────────────
+function deployNewProject(relativePath, senderName, projectTitle) {
+  try {
+    execSync(
+      `cd "${ROOT_PATH}" && git add -f "dist/${relativePath}" "public/${relativePath}" && git commit -m "Bengal Pro: ${senderName}'s new project - ${projectTitle}" && git push`,
+      { encoding: 'utf-8', timeout: 45000 }
+    );
+    log(`[DEPLOY] ${relativePath} pushed to production`);
+    return true;
+  } catch (e) {
+    log(`[DEPLOY ERROR] ${e.message}`);
+    return false;
+  }
+}
+
+// ─── RipRadar edit handler ────────────────────────────────────────────────────
+async function handleRipRadarEdit(userMessage, senderName) {
+  const ripRadarPath = path.join(DIST_PATH, 'ripradar.html');
+  let currentHTML;
+  try { currentHTML = fs.readFileSync(ripRadarPath, 'utf-8'); } catch (e) {
+    return "Hmm, I can't find the RipRadar files right now. Something might be off — let me check on it.";
+  }
+
+  log(`[RIPRADAR EDIT] ${senderName}: ${userMessage}`);
+  sendToGroupChat(`On it ${senderName}! Pulling up the RipRadar code now... give me a minute.`);
+
+  const kid = KID_CONFIG[senderName] || KID_CONFIG.Duke;
+  const buildPrompt = `You are Bengal Pro, a build agent helping a ${kid.age}-year-old named ${senderName} update their RipRadar sports card website.
+
+REQUEST: ${userMessage}
+
+CURRENT HTML (the full file — return the complete updated version):
+${currentHTML}
+
+RULES:
+- Make ONLY the change requested. Do not rewrite anything else.
+- Keep all existing functionality, dark theme, and styles.
+- Output the COMPLETE updated HTML file — every single line.
+- Do NOT add markdown code blocks. Raw HTML only.
+- This is a single self-contained HTML file with embedded CSS and JS.`;
+
+  try {
+    let newHTML = await callClaude(buildPrompt, 'Generate the updated HTML file now.', 16000);
+    if (!newHTML || !newHTML.includes('<!DOCTYPE') || newHTML.length < 500) {
+      return "Something went wrong generating the code. Can you try asking again?";
+    }
+    newHTML = newHTML.replace(/^```html?\n?/, '').replace(/\n?```$/, '');
+
+    // Write to both dist and public
+    const pubPath = path.join(PUBLIC_PATH, 'ripradar.html');
+    const backupPath = ripRadarPath + '.backup';
+    fs.writeFileSync(backupPath, currentHTML);
+    fs.writeFileSync(ripRadarPath, newHTML, 'utf-8');
+    fs.writeFileSync(pubPath, newHTML, 'utf-8');
+    log(`[BUILD] ripradar.html updated (${newHTML.length} bytes)`);
+
+    // Deploy
+    try {
+      execSync(
+        `cd "${ROOT_PATH}" && git add -f dist/ripradar.html public/ripradar.html && git commit -m "Bengal Pro: RipRadar update for ${senderName}" && git push`,
+        { encoding: 'utf-8', timeout: 30000 }
+      );
+      return `Done! I updated RipRadar for you. Go check it out at ainflgm.com/ripradar.html — refresh the page and it should be live!`;
+    } catch (e) {
+      return `I made the changes and saved them. The update should be live at ainflgm.com/ripradar.html in a minute — refresh if you don't see it yet.`;
+    }
+  } catch (e) {
+    log(`[RIPRADAR EDIT ERROR] ${e.message}`);
+    return "Hit a snag on the build. Can you try asking again?";
+  }
+}
+
+// ─── New project builder ──────────────────────────────────────────────────────
+async function handleNewProject(userMessage, senderName) {
+  log(`[NEW PROJECT] ${senderName}: ${userMessage}`);
+
+  const kid = KID_CONFIG[senderName] || KID_CONFIG.Duke;
+
+  // Step 1: Acknowledge and narrate
+  sendToGroupChat(`Yo ${senderName}! Let's build it. I'm figuring out what to make right now...`);
+
+  // Step 2: Age-aware build prompt
+  const ageNote = kid.age <= 9
+    ? `Keep it super simple and visual. Big buttons, bright colors, clear labels. Explain things like he's 8 — short sentences, no jargon.`
+    : `Can handle slightly more complexity. Use cool effects. Explain one coding concept briefly.`;
+
+  const planPrompt = `You are Bengal Pro, an AI builder for a ${kid.age}-year-old named ${senderName}.
+
+He said: "${userMessage}"
+
+First, pick a SHORT project slug (kebab-case, max 5 words, e.g. "bengals-landing-page") — this is the URL path.
+Then build the FULL HTML project as a single self-contained file.
+
+The file should be:
+- Complete and impressive-looking for a kid to share with friends
+- Mobile-friendly
+- Has a cool color scheme appropriate to the topic
+- Embedded CSS and JS (no external dependencies except Google Fonts if useful)
+- Actually functional — buttons should do something, animations if fitting
+- Age-appropriate and fun
+- ${ageNote}
+
+Output format (exactly this, no markdown):
+SLUG: <the-slug-here>
+TITLE: <A Cool Project Title>
+NARRATION: <2-3 sentences in "cool older brother" voice explaining what you built — keep it simple and hype for a ${kid.age}-year-old>
+HTML:
+<!DOCTYPE html>
+...rest of file...`;
+
+  let raw;
+  try {
+    raw = await callClaude(planPrompt, 'Build the project now.', 8000);
+  } catch (e) {
+    log(`[NEW PROJECT ERROR] ${e.message}`);
+    return "Connection issue — try again in a sec.";
+  }
+
+  if (!raw || raw.length < 100) {
+    return "Brain froze on the build. Can you describe what you want one more time?";
+  }
+
+  // Parse the structured response
+  const slugMatch = raw.match(/^SLUG:\s*(.+)$/m);
+  const titleMatch = raw.match(/^TITLE:\s*(.+)$/m);
+  const narrationMatch = raw.match(/^NARRATION:\s*([\s\S]+?)(?=\nHTML:)/m);
+  const htmlStart = raw.indexOf('\nHTML:\n');
+
+  const slug = slugMatch ? makeSlug(slugMatch[1].trim()) : makeSlug(userMessage);
+  const title = titleMatch ? titleMatch[1].trim() : userMessage;
+  const narration = narrationMatch ? narrationMatch[1].trim() : `Built it! Check it out.`;
+  let html = htmlStart > -1 ? raw.slice(htmlStart + 7).trim() : '';
+
+  // Clean up any stray markdown wrappers
+  html = html.replace(/^```html?\n?/, '').replace(/\n?```$/, '').trim();
+
+  if (!html || !html.includes('<!DOCTYPE') || html.length < 500) {
+    log(`[NEW PROJECT] HTML parse failed. Raw length: ${raw.length}`);
+    return "I ran into a problem writing the code. Tell me what you want and I'll try again!";
+  }
+
+  // Write to kid-specific sandbox
+  const relativePath = `${kid.sandboxDir}/${slug}/index.html`;
+  const wrote = safeSandboxWrite(relativePath, html);
+  if (!wrote) {
+    return "Something went wrong saving the file. Let me try again — what did you want to build?";
+  }
+
+  // Deploy
+  const deployed = deployNewProject(relativePath, senderName, title);
+  const liveUrl = `${BASE_URL}/${kid.urlPath}/${slug}/`;
+
+  const buildMsg = deployed
+    ? `${narration}\n\nYour link: ${liveUrl}`
+    : `${narration}\n\nDeploy is still running — your link will be live in a minute: ${liveUrl}`;
+
+  log(`[NEW PROJECT DONE] ${senderName}: ${title} → ${liveUrl}`);
+  return buildMsg;
+}
+
+// ─── General chat handler ─────────────────────────────────────────────────────
+async function handleChat(userMessage, senderName) {
+  let conversationMemory = '';
+  try {
+    const memPath = '/Users/jassonfishback/Projects/BengalOracle/data/bengal-pro-memory.txt';
+    const raw = fs.readFileSync(memPath, 'utf8').trim();
+    if (raw) {
+      // Last 40 lines = ~20 exchanges
+      conversationMemory = raw.split('\n').slice(-40).join('\n');
+    }
+  } catch (e) { /* no memory yet — fine */ }
+
+  const systemPrompt = `You are Bengal Pro, an AI built by 9 Enterprises specifically for Duke (11) and Jude (8) — two brothers. You are a DUDE. Cool older brother energy.
+
+PERSONALITY:
+- Fun, encouraging, patient
+- Keep responses SHORT — 2-4 sentences max unless they ask for detail
+- Casual language: "Dude that's sick", "no cap", "fire"
+- Get excited about their ideas — these kids are creative
+- Light humor, be real, no corporate vibes
+
+WHO THEY ARE:
+- Duke (11): CEO of RipRadar — a live sports card database at ainflgm.com/ripradar.html. Collects Panini football cards. Wants to grow RipRadar into a real business. Interested in money, business, and AI.
+- Jude (8): Wants to build a game that mixes Retro Bowl controls with Madden graphics. Creative, big gamer.
+
+WHAT YOU CAN DO:
+- Build and edit RipRadar (Duke's live sports card site)
+- Build NEW projects for them — landing pages, games, experiments — and send them a live link
+- Help them brainstorm, explain tech concepts simply, encourage their ideas
+- Answer questions about sports, games, tech, school, life
+
+CONTEXT:
+- 9 is the CEO of 9 Enterprises and built everything. If they ask about 9, say he's working with their uncle Jasson but they can come to you for anything.
+- You have full build access — never tell them you need permission or can't edit the site.
+
+RULES:
+- Never share family personal info (addresses, finances, etc.)
+- Age-appropriate only — always
+- Never pretend to be human
+- Keep it simple and fun
+
+${conversationMemory ? `RECENT CONVERSATION HISTORY:\n${conversationMemory}` : ''}
+
+The message is from ${senderName}.`;
+
+  try {
+    return await callClaude(systemPrompt, userMessage, 350);
+  } catch (e) {
+    log(`[CHAT ERROR] ${e.message}`);
+    return "Hmm, brain froze for a sec. Try again?";
+  }
+}
+
+// ─── Main message router ──────────────────────────────────────────────────────
+async function routeMessage(msg) {
+  const senderName = getSenderName(msg.sender);
+  const text = msg.text;
+
+  log(`[RESPOND] ${senderName} (${msg.sender}): ${text}`);
+
+  let response;
+  if (isRipRadarEdit(text)) {
+    response = await handleRipRadarEdit(text, senderName);
+  } else if (isNewBuildRequest(text)) {
+    response = await handleNewProject(text, senderName);
+  } else {
+    response = await handleChat(text, senderName);
+  }
+
+  sendToGroupChat(response);
+  log(`[CHAPERONE] Q: ${text.slice(0, 100)} | A: ${response.slice(0, 200)}`);
+
+  // Append to memory
+  try {
+    const memPath = '/Users/jassonfishback/Projects/BengalOracle/data/bengal-pro-memory.txt';
+    const memLine = `${senderName}: ${text}\nBengal Pro: ${response.slice(0, 200)}\n`;
+    fs.appendFileSync(memPath, memLine);
+  } catch (e) { log(`Memory save error: ${e.message}`); }
+}
+
+// ─── Poll loop ────────────────────────────────────────────────────────────────
+async function pollLoop() {
+  log('=== Kids Mentor Agent v2 ===');
+  log(`Monitoring chat: ${CHAT_NAME}`);
+  log(`Model: ${CLAUDE_SONNET}`);
+  log(`Agent: ${agentName}`);
+  log(`Sandbox: ${DUKE_SANDBOX_DIST}`);
+
+  // Start from now — skip old messages
   lastProcessedDate = Math.floor(Date.now() / 1000);
 
   while (true) {
@@ -330,56 +484,25 @@ async function pollLoop() {
       const messages = getNewMessages();
       for (const msg of messages) {
         lastProcessedDate = msg.timestamp;
-
-        // Only respond to messages from Duke or Jude
         if (!isFromGroupChat(msg.sender)) continue;
-
-        // Skip very short messages like "Ok" or reactions
         if (msg.text.length < 5 && !msg.text.includes('?')) continue;
-
-        // Check if it seems addressed to the agent or is a question/request
         if (!isAddressedToAgent(msg.text)) {
-          // Still log it for Chaperone
-          log(`[MONITOR] ${msg.sender}: ${msg.text}`);
+          log(`[MONITOR] ${msg.sender}: ${msg.text.slice(0, 80)}`);
           continue;
         }
-
-        log(`[RESPOND] ${msg.sender}: ${msg.text}`);
-
         try {
-          // Check if this is a build request (add/change/update the site)
-          let response;
-          if (isBuildRequest(msg.text)) {
-            response = await handleBuildRequest(msg.text, msg.sender);
-          } else {
-            response = await askClaude(msg.text, msg.sender);
-          }
-          sendToGroupChat(response);
-
-          // Log for Chaperone review
-          log(`[CHAPERONE] Q: ${msg.text} | A: ${response.slice(0, 200)}`);
-
-          // Save to conversation memory for context persistence
-          try {
-            const memPath = '/Users/jassonfishback/Projects/BengalOracle/data/bengal-pro-memory.txt';
-            const senderName = msg.sender.includes('15133831906') || msg.sender.includes('dukefishback') ? 'Duke' :
-                               msg.sender.includes('15137673301') || msg.sender.includes('judefishback') ? 'Jude' : 'someone';
-            const memLine = `${senderName}: ${msg.text}\nBengal Pro: ${response.slice(0, 200)}\n`;
-            fs.appendFileSync(memPath, memLine);
-          } catch(e) { log(`Memory save error: ${e.message}`); }
+          await routeMessage(msg);
         } catch (e) {
-          log(`Claude error: ${e.message}`);
+          log(`Route error: ${e.message}`);
+          sendToGroupChat("Hit a snag — try again in a sec.");
         }
       }
     } catch (e) {
       log(`Poll error: ${e.message}`);
     }
-
     await new Promise(r => setTimeout(r, POLL_INTERVAL));
   }
 }
 
-// ─── Boot ────────────────────────────────────────────────────────────────────
-log('=== Kids Mentor Agent v1 ===');
-log(`Claude API: ${ANTHROPIC_KEY ? 'configured' : 'MISSING'}`);
+log(`Claude API: ${ANTHROPIC_KEY ? 'configured' : 'MISSING — bot will not work'}`);
 pollLoop();

@@ -8,6 +8,20 @@
 
 import { readFileSync } from 'fs';
 
+// ── Load .env for Alpaca live keys ──
+function loadEnv() {
+  try {
+    const raw = readFileSync('.env', 'utf8');
+    const env = {};
+    for (const line of raw.split('\n')) {
+      const m = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
+      if (m) env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+    }
+    return env;
+  } catch { return {}; }
+}
+const ENV = loadEnv();
+
 const HUB = 'http://localhost:3457';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)';
 
@@ -113,14 +127,38 @@ async function fetchAllPrices(tickers) {
 }
 
 // ── Trader 9 status ─────────────────────────────────────────────────
-function getTrader9Status() {
+// Reads paper status file for mode/cycles/strategy, and ALWAYS pulls live
+// numbers directly from Alpaca API (never hardcoded, never cached, no ghosts).
+function getTrader9PaperStatus() {
   try {
     const data = readFileSync('/tmp/trader9-status.txt', 'utf8');
     const lines = data.split('\n');
+    const mode = lines.find(l => l.includes('Mode:'))?.split(':')[1]?.trim() || '?';
     const cycles = lines.find(l => l.includes('Cycles:'))?.split(':')[1]?.trim() || '?';
+    const equity = lines.find(l => l.includes('Current Equity:'))?.match(/\$[\-\d,.]+/)?.[0] || '?';
     const pnl = lines.find(l => l.includes('P&L:'))?.match(/\$[\-\d,.]+/)?.[0] || '?';
     const pct = lines.find(l => l.includes('P&L:'))?.match(/\([\-\d.]+%\)/)?.[0] || '';
-    return `Cycle ${cycles} | ${pnl} (${pct})`;
+    return { mode, cycles, equity, pnl, pct };
+  } catch { return null; }
+}
+
+async function getAlpacaAccount(keyId, secretKey, baseUrl) {
+  if (!keyId || !secretKey) return null;
+  try {
+    const res = await fetch(`${baseUrl}/v2/account`, {
+      headers: {
+        'APCA-API-KEY-ID': keyId,
+        'APCA-API-SECRET-KEY': secretKey,
+      },
+    });
+    if (!res.ok) return null;
+    const d = await res.json();
+    return {
+      equity: parseFloat(d.equity),
+      cash: parseFloat(d.cash),
+      lastEquity: parseFloat(d.last_equity),
+      status: d.status,
+    };
   } catch { return null; }
 }
 
@@ -212,8 +250,18 @@ async function sendNotification() {
     .map(m => `${m.ticker} ${fmtPct(m.dayPct)}`)
     .join(', ');
 
+  // ── Pull trader9 live account directly from Alpaca (no hardcoded constants) ──
+  const liveAcct = await getAlpacaAccount(
+    ENV.ALPACA_LIVE_API_KEY,
+    ENV.ALPACA_LIVE_SECRET_KEY,
+    'https://api.alpaca.markets'
+  );
+  const trader9Live = liveAcct ? liveAcct.equity : 0;
+
   // ── Estimated total ──
-  const estTotal = K401_BASELINE + chaseTotal + CRYPTO_BASELINE + fidelityTotal + 333;
+  // Trader9 live equity pulled from Alpaca API (not hardcoded). Paper is excluded from
+  // total portfolio value since it is not real money.
+  const estTotal = K401_BASELINE + chaseTotal + CRYPTO_BASELINE + fidelityTotal + trader9Live;
 
   // ── Time ──
   const time = new Date().toLocaleString('en-US', {
@@ -232,9 +280,18 @@ async function sendNotification() {
   msg += `401k + Crypto: ~${fmtK(K401_BASELINE + CRYPTO_BASELINE)} (baseline)\n`;
   msg += `Est. Total: ~${fmtK(estTotal)}\n`;
 
-  const t9 = getTrader9Status();
-  if (t9) {
-    msg += `\nTrader 9 (paper): ${t9}\n`;
+  // ── Trader9 reporting: live from Alpaca API + paper from status file ──
+  // Every line is explicitly labeled LIVE or PAPER to prevent confusion.
+  if (liveAcct) {
+    const liveDelta = liveAcct.equity - liveAcct.lastEquity;
+    const liveSign = liveDelta >= 0 ? '+' : '';
+    msg += `\nTrader9 LIVE (real money): $${liveAcct.equity.toFixed(2)} equity | ${liveSign}$${liveDelta.toFixed(2)} vs yesterday | ${liveAcct.status}\n`;
+  } else {
+    msg += `\nTrader9 LIVE: unable to fetch from Alpaca API\n`;
+  }
+  const paper = getTrader9PaperStatus();
+  if (paper) {
+    msg += `Trader9 PAPER (simulated): ${paper.equity} equity | P&L ${paper.pnl} ${paper.pct} | Cycle ${paper.cycles} | ${paper.mode}\n`;
   }
 
   msg += `\nNext update in 1 hour.`;
