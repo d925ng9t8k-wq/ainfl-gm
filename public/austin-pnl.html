@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Rapid Mortgage — P&L Comparison for Austin Clarkson</title>
+<title>Austin Clarkson — Monthly P&L Comparison: Lower vs Rapid Mortgage</title>
 <script>
 // Access protection
 (function() {
@@ -153,7 +153,6 @@
   }
   .highlight.green strong{color:var(--green)}
 
-  /* Assumptions box */
   .assumptions{
     background:#fffbeb;
     border:1px solid #fbbf24;
@@ -165,7 +164,6 @@
   }
   .assumptions strong{color:#78350f}
 
-  /* Stat cards */
   .stat-row{
     display:flex;gap:16px;flex-wrap:wrap;
     margin:20px 0;
@@ -194,7 +192,6 @@
     letter-spacing:0.5px;
   }
 
-  /* P&L Tables */
   .pnl-table{
     width:100%;border-collapse:collapse;
     margin:16px 0;font-size:14px;
@@ -255,28 +252,64 @@
   .pnl-table .positive{color:var(--green)!important}
   .pnl-table .negative{color:var(--red-text)!important}
 
-  /* Side by side tables */
-  .pnl-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  .calc-box{
+    background:var(--bg-light);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px 20px;
+    margin:16px 0;
+    font-size:14px;
+    color:var(--text-secondary);
+    font-family:'Lato',monospace;
+    line-height:1.8;
+  }
+  .calc-box .calc-label{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;font-size:13px;
+    color:var(--rm-blue);
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+
+  .range-table{
+    width:100%;border-collapse:collapse;
+    margin:16px 0;font-size:14px;
+  }
+  .range-table th{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;padding:10px 14px;
+    text-align:left;font-size:13px;
+    background:var(--bg-section);
+    color:var(--rm-blue);
+    border-bottom:2px solid var(--border);
+  }
+  .range-table td{
+    padding:10px 14px;
+    border-bottom:1px solid var(--border);
+    color:var(--text-secondary);
+  }
+  .range-table td:nth-child(2){text-align:right;font-weight:600}
+  .range-table tbody tr:hover{background:var(--bg-section)}
+
+  .benefits-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
     margin:20px 0;
   }
-  .pnl-panel{
+  .benefit-card{
+    background:var(--bg-light);
     border:1px solid var(--border);
     border-radius:10px;
-    overflow:hidden;
+    padding:18px;
   }
-  .pnl-panel-header{
-    padding:14px 18px;
+  .benefit-card h4{
     font-family:'Poppins',sans-serif;
-    font-size:15px;font-weight:600;
-    color:var(--white);
+    font-size:14px;font-weight:600;
+    color:var(--rm-blue);
+    margin-bottom:6px;
   }
-  .pnl-panel-header.lower{background:#555}
-  .pnl-panel-header.rapid{background:var(--rm-blue)}
-  .pnl-panel .pnl-table{margin:0}
-  .pnl-panel .pnl-table thead{display:none}
+  .benefit-card p{font-size:13px;margin-bottom:0;color:var(--text-secondary)}
 
-  /* Footer */
   .footer{
     background:var(--text-primary);
     color:rgba(255,255,255,0.7);
@@ -304,9 +337,9 @@
     .main{padding:24px 16px 40px}
     h2{font-size:18px}
     .stat-row{flex-direction:column}
-    .pnl-grid{grid-template-columns:1fr;gap:16px}
     .pnl-table{font-size:13px}
     .pnl-table th,.pnl-table td{padding:8px 10px}
+    .benefits-grid{grid-template-columns:1fr}
     .footer-inner{flex-direction:column;text-align:center}
     .footer-legal{text-align:center;max-width:none}
   }
@@ -319,8 +352,8 @@
     <img class="header-logo"
          src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png"
          alt="Rapid Mortgage">
-    <h1 class="header-title">Monthly P&amp;L Comparison<br>Austin Clarkson &amp; Team</h1>
-    <p class="header-subtitle">Current Model (Lower.com) vs. Rapid Mortgage P&amp;L Branch</p>
+    <h1 class="header-title">Austin Clarkson &mdash; Monthly P&amp;L Comparison<br>Lower vs. Rapid Mortgage</h1>
+    <p class="header-subtitle">Same lender fees. Same branch margin. The difference is expenses and ancillary income.</p>
   </div>
 </header>
 <div class="conf-strip">Confidential &mdash; For Discussion Purposes Only</div>
@@ -329,414 +362,428 @@
 
   <!-- Section 1: Production Baseline -->
   <section>
-    <h2><span class="section-number">1</span> Production Baseline (Monthly)</h2>
-    <p>All figures are derived from Austin's reported annual production of $110.64M across 356 units, converted to a monthly run rate.</p>
-
-    <div class="stat-row">
-      <div class="stat-card">
-        <div class="stat-value">$9.22M</div>
-        <div class="stat-label">Monthly Volume</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">29.7</div>
-        <div class="stat-label">Monthly Units</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">$310K</div>
-        <div class="stat-label">Avg Loan Size</div>
-      </div>
-    </div>
+    <h2><span class="section-number">1</span> Production Baseline</h2>
+    <p>Annual production data from the pitch deck, converted to monthly run rate. Both Lower and Rapid are Independent Mortgage Banks (IMBs) operating the same origination model with the same lender fee structure.</p>
 
     <table class="pnl-table">
       <thead>
-        <tr><th>Team Member</th><th>Monthly Volume</th><th>Monthly Units</th></tr>
+        <tr><th>Team Member</th><th>Annual Volume</th><th>Annual Units</th></tr>
       </thead>
       <tbody>
-        <tr><td>Austin Clarkson (Lead)</td><td>$4.61M</td><td>14.8</td></tr>
-        <tr><td>Partner LO #1</td><td>$2.77M</td><td>8.9</td></tr>
-        <tr><td>Partner LO #2</td><td>$1.84M</td><td>5.9</td></tr>
-        <tr class="subtotal"><td>Total Team</td><td>$9.22M</td><td>29.7</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Section 2: Assumptions -->
-  <section>
-    <h2><span class="section-number">2</span> Key Assumptions</h2>
-    <p>This analysis uses industry-standard assumptions for both retail and broker compensation models. Where actual figures differ, the framework holds — only the inputs change.</p>
-
-    <table class="pnl-table">
-      <thead>
-        <tr><th>Assumption</th><th>Lower.com (Retail)</th><th>Rapid (Broker P&amp;L)</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Gross Revenue per Loan (bps on volume)</td><td>275 bps</td><td>225 bps</td></tr>
-        <tr class="note"><td colspan="3">Retail shops charge higher lender fees; broker model passes savings to borrower but operates on leaner margin.</td></tr>
-        <tr><td>LO Comp Split (% of gross revenue)</td><td>35%</td><td>N/A (P&amp;L model)</td></tr>
-        <tr class="note"><td colspan="3">At retail shops, LOs typically receive 80-110 bps (roughly 30-40% of gross margin). At Rapid, Austin runs the branch P&amp;L and keeps net profit.</td></tr>
-        <tr><td>Branch P&amp;L Net Share to Austin</td><td>N/A</td><td>70%</td></tr>
-        <tr class="note"><td colspan="3">After all branch expenses, Austin's team keeps 70% of net profit. Rapid retains 30% for corporate overhead, compliance, and warehouse line access.</td></tr>
-        <tr><td>Processing Cost per File</td><td>$650</td><td>$0 (provided by Rapid)</td></tr>
-        <tr class="note"><td colspan="3">Lower charges processing per file. Rapid provides a dedicated processor as part of the branch support package.</td></tr>
-        <tr><td>LO Comp to Partner LOs (paid by Austin)</td><td>Paid by Lower</td><td>100 bps each</td></tr>
-        <tr class="note"><td colspan="3">In the P&amp;L model, Austin pays his own team. Industry standard for partner LOs under a branch lead is 80-120 bps.</td></tr>
-        <tr><td>Office / Desk Fees</td><td>$750/mo per LO</td><td>$0 (provided by Rapid)</td></tr>
-        <tr><td>Tech / Systems</td><td>$350/mo per LO</td><td>$0 (provided by Rapid)</td></tr>
-        <tr><td>E&amp;O Insurance</td><td>$200/mo (Austin's share)</td><td>$150/mo (lower group rate)</td></tr>
-        <tr><td>Marketing</td><td>$500/mo (Austin funds own)</td><td>$800/mo (Austin funds own)</td></tr>
-        <tr class="note"><td colspan="3">Higher marketing budget at Rapid reflects loss of national brand recognition. Austin would invest more in local branding, especially in Year 1.</td></tr>
+        <tr><td>Partner LO #1</td><td>$33.19M</td><td>107</td></tr>
+        <tr><td>Partner LO #2</td><td>$22.13M</td><td>71</td></tr>
+        <tr><td>Austin (personal production, est.)</td><td>$15M - $25M</td><td>50 - 80</td></tr>
+        <tr class="note"><td colspan="3">Austin's personal volume is estimated. Total team range reflects this uncertainty.</td></tr>
+        <tr class="subtotal"><td>Total Team (estimated)</td><td>$70M - $80M</td><td>~230 - 260</td></tr>
       </tbody>
     </table>
 
     <div class="assumptions">
-      <strong>Transparency Note:</strong> These assumptions are meant to be discussed and adjusted with real numbers. If Austin's actual comp at Lower is higher or lower than 35% of gross, the model recalibrates accordingly. The goal is an honest framework, not a sales pitch.
+      <strong>Note:</strong> This analysis uses $110.64M annual / $9.22M monthly as the midpoint estimate for total team volume. All calculations below scale linearly — adjust the volume and the math adjusts with it.
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-value">~$9.22M</div>
+        <div class="stat-label">Est. Monthly Volume</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">~21</div>
+        <div class="stat-label">Est. Monthly Units</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">300 bps</div>
+        <div class="stat-label">Branch Margin (Both)</div>
+      </div>
     </div>
   </section>
 
-  <!-- Section 3: Lower P&L -->
+  <!-- Section 2: The Model -->
   <section>
-    <h2><span class="section-number">3</span> Current Monthly P&amp;L at Lower.com</h2>
-    <p>Under the retail model, Austin earns a commission split on his personal production. His partner LOs are compensated separately by the company. Austin does not control margins, pricing, or team economics.</p>
+    <h2><span class="section-number">2</span> How the Model Works</h2>
+    <p>Both Lower and Rapid are IMBs. Same lender fees to the borrower. Same 300 bps blended branch margin across all products. The revenue line is identical.</p>
+    <p>In both structures, Austin keeps all branch margin revenue after paying staff payroll and branch expenses. He runs the P&amp;L.</p>
+    <p>The variance between Lower and Rapid comes from two places:</p>
+
+    <div class="highlight">
+      <p><strong>1. Reduced expenses</strong> &mdash; Rapid operates with lower overhead, a leaner corporate structure, and shared services that reduce Austin's branch-level cost burden.</p>
+    </div>
+    <div class="highlight green">
+      <p><strong>2. Ancillary income</strong> &mdash; Rapid offers profit sharing, equity participation, or a combination that does not exist at Lower. This is incremental income on top of branch net profit.</p>
+    </div>
+
+    <div class="calc-box">
+      <div class="calc-label">Revenue Calculation (Same Both Sides)</div>
+      Monthly funded volume: $9,220,000<br>
+      Branch margin at 300 bps: $9,220,000 x 0.0300 = <strong>$276,600/mo</strong><br>
+      Annual branch margin: $276,600 x 12 = <strong>$3,319,200/yr</strong>
+    </div>
+  </section>
+
+  <!-- Section 3: Expense Comparison -->
+  <section>
+    <h2><span class="section-number">3</span> Monthly Expense Comparison</h2>
+    <p>Revenue is identical. The question is: how much of that $276,600/mo does Austin keep? That depends on expenses. Below are estimated expense ranges at each company.</p>
 
     <table class="pnl-table">
-      <thead class="lower-head">
-        <tr><th>Line Item</th><th>Monthly</th><th>Notes</th></tr>
+      <thead>
+        <tr><th>Expense Category</th><th>Lower (Est.)</th><th>Rapid (Est.)</th></tr>
       </thead>
       <tbody>
-        <tr class="section-label lower-label"><td colspan="3">Revenue</td></tr>
-        <tr>
-          <td>Austin's Personal Volume</td>
-          <td>$4,610,000</td>
-          <td>$55.32M / 12</td>
+        <tr class="section-label"><td colspan="3">Staff Payroll (Same Both Sides)</td></tr>
+        <tr class="indent">
+          <td>Partner LO #1 compensation</td>
+          <td>Paid from branch margin</td>
+          <td>Paid from branch margin</td>
         </tr>
-        <tr>
-          <td>Gross Revenue at 275 bps</td>
-          <td>$126,775</td>
-          <td>Company-level revenue on Austin's loans</td>
+        <tr class="indent">
+          <td>Partner LO #2 compensation</td>
+          <td>Paid from branch margin</td>
+          <td>Paid from branch margin</td>
+        </tr>
+        <tr class="indent">
+          <td>Support staff (processor, LOA, etc.)</td>
+          <td>Paid from branch margin</td>
+          <td>Paid from branch margin</td>
+        </tr>
+        <tr class="note"><td colspan="3">Staff payroll is a branch expense in both models. Estimated at $40,000 - $55,000/mo total depending on team comp structure. Same both sides.</td></tr>
+
+        <tr class="section-label"><td colspan="3">Corporate Overhead &amp; Allocations</td></tr>
+        <tr class="indent">
+          <td>Corporate overhead allocation</td>
+          <td>$8,000 - $12,000</td>
+          <td>$3,000 - $5,000</td>
+        </tr>
+        <tr class="note"><td colspan="3">Large IMBs allocate significant corporate costs per branch. Rapid's smaller structure means less overhead to spread.</td></tr>
+        <tr class="indent">
+          <td>Technology platform fees</td>
+          <td>$3,000 - $5,000</td>
+          <td>$1,500 - $2,500</td>
+        </tr>
+        <tr class="note"><td colspan="3">Enterprise LOS, CRM, pricing engine, compliance tools. Rapid runs a leaner tech stack.</td></tr>
+        <tr class="indent">
+          <td>Marketing / brand contribution</td>
+          <td>$2,000 - $4,000</td>
+          <td>$500 - $1,500</td>
+        </tr>
+        <tr class="note"><td colspan="3">Many large IMBs mandate marketing contributions or brand fees. Rapid gives Austin more autonomy and lower mandatory spend.</td></tr>
+        <tr class="indent">
+          <td>Compliance &amp; licensing costs</td>
+          <td>$1,500 - $2,500</td>
+          <td>$800 - $1,200</td>
+        </tr>
+        <tr class="indent">
+          <td>Processing / operations fees</td>
+          <td>$2,000 - $4,000</td>
+          <td>$1,000 - $2,000</td>
+        </tr>
+        <tr class="indent">
+          <td>Facility / office costs</td>
+          <td>$2,500 - $4,000</td>
+          <td>$1,500 - $2,500</td>
+        </tr>
+        <tr class="indent">
+          <td>E&amp;O / insurance</td>
+          <td>$400 - $600</td>
+          <td>$300 - $500</td>
+        </tr>
+        <tr class="indent">
+          <td>Misc (travel, supplies, client events)</td>
+          <td>$500 - $1,000</td>
+          <td>$500 - $1,000</td>
         </tr>
 
-        <tr class="section-label lower-label"><td colspan="3">Austin's Compensation</td></tr>
+        <tr class="subtotal">
+          <td>Total Non-Payroll Expenses (Est.)</td>
+          <td>$19,900 - $33,100</td>
+          <td>$9,100 - $16,200</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="calc-box">
+      <div class="calc-label">Estimated Monthly Expense Savings at Rapid</div>
+      Lower non-payroll expenses (midpoint): ~$26,500/mo<br>
+      Rapid non-payroll expenses (midpoint): ~$12,650/mo<br>
+      <strong>Estimated monthly savings: ~$13,850/mo ($166,200/yr)</strong>
+    </div>
+
+    <div class="assumptions">
+      <strong>Transparency Note:</strong> These expense ranges are estimates based on industry norms for IMBs of different sizes. Austin knows his actual Lower expenses better than anyone. The framework holds — plug in real numbers and the savings delta recalculates.
+    </div>
+  </section>
+
+  <!-- Section 4: Branch Net Profit -->
+  <section>
+    <h2><span class="section-number">4</span> Branch Net Profit Comparison</h2>
+    <p>Using midpoint estimates for both payroll and non-payroll expenses. Revenue is identical at both companies.</p>
+
+    <table class="pnl-table">
+      <thead>
+        <tr><th>Line Item</th><th>At Lower</th><th>At Rapid</th></tr>
+      </thead>
+      <tbody>
+        <tr class="section-label"><td colspan="3">Revenue</td></tr>
         <tr>
-          <td>Commission at 35% of Gross (approx. 96 bps)</td>
-          <td>$44,372</td>
-          <td>Standard retail LO split</td>
+          <td>Branch margin (300 bps on $9.22M/mo)</td>
+          <td>$276,600</td>
+          <td>$276,600</td>
         </tr>
 
-        <tr class="section-label lower-label"><td colspan="3">Austin's Direct Expenses</td></tr>
+        <tr class="section-label"><td colspan="3">Expenses</td></tr>
         <tr class="indent">
-          <td>Processing ($650 x 14.8 files)</td>
-          <td>($9,620)</td>
-          <td>Per-file charge on Austin's production</td>
+          <td>Staff payroll (est. midpoint)</td>
+          <td>($47,500)</td>
+          <td>($47,500)</td>
         </tr>
         <tr class="indent">
-          <td>Desk Fee</td>
-          <td>($750)</td>
-          <td>Monthly seat cost</td>
-        </tr>
-        <tr class="indent">
-          <td>Tech / Systems</td>
-          <td>($350)</td>
-          <td>CRM, LOS access, tools</td>
-        </tr>
-        <tr class="indent">
-          <td>E&amp;O Insurance</td>
-          <td>($200)</td>
-          <td>Pro-rated share</td>
-        </tr>
-        <tr class="indent">
-          <td>Marketing (self-funded)</td>
-          <td>($500)</td>
-          <td>Digital, print, local sponsorships</td>
+          <td>Non-payroll expenses (est. midpoint)</td>
+          <td>($26,500)</td>
+          <td>($12,650)</td>
         </tr>
         <tr class="subtotal">
           <td>Total Expenses</td>
-          <td>($11,420)</td>
-          <td></td>
+          <td>($74,000)</td>
+          <td>($60,150)</td>
         </tr>
 
         <tr class="total">
-          <td>Net to Austin (Monthly)</td>
-          <td>$32,930</td>
-          <td>Take-home before taxes</td>
+          <td>Branch Net Profit to Austin (Monthly)</td>
+          <td>$113,500</td>
+          <td>$127,350</td>
         </tr>
       </tbody>
     </table>
-
-    <div class="highlight">
-      <p><strong>Key limitation:</strong> Austin has no visibility into the remaining $82,403/mo in gross revenue that Lower retains from his personal production alone. He also has no economic participation in the $46.1M/yr his partner LOs produce. He built the team — but the company captures all the upside from their volume.</p>
-    </div>
-  </section>
-
-  <!-- Section 4: Rapid P&L -->
-  <section>
-    <h2><span class="section-number">4</span> Proposed Monthly P&amp;L at Rapid Mortgage</h2>
-    <p>Under the P&amp;L branch model, Austin controls the full economics of his branch. Revenue from the entire team flows through the branch P&amp;L. After paying operating expenses and partner LO comp, Austin keeps 70% of net profit.</p>
-
-    <table class="pnl-table">
-      <thead>
-        <tr><th>Line Item</th><th>Monthly</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-        <tr class="section-label"><td colspan="3">Branch Gross Revenue</td></tr>
-        <tr>
-          <td>Total Team Volume</td>
-          <td>$9,220,000</td>
-          <td>All 3 producers combined</td>
-        </tr>
-        <tr>
-          <td>Gross Revenue at 225 bps</td>
-          <td>$207,450</td>
-          <td>Broker margin (lower than retail)</td>
-        </tr>
-
-        <tr class="section-label"><td colspan="3">Branch Operating Expenses</td></tr>
-        <tr class="indent">
-          <td>Partner LO #1 Comp (100 bps on $2.77M)</td>
-          <td>($27,700)</td>
-          <td>Competitive LO pay</td>
-        </tr>
-        <tr class="indent">
-          <td>Partner LO #2 Comp (100 bps on $1.84M)</td>
-          <td>($18,400)</td>
-          <td>Competitive LO pay</td>
-        </tr>
-        <tr class="indent">
-          <td>Processing Staff</td>
-          <td>$0</td>
-          <td>Provided by Rapid corporate</td>
-        </tr>
-        <tr class="indent">
-          <td>Office Space</td>
-          <td>$0</td>
-          <td>Provided by Rapid corporate</td>
-        </tr>
-        <tr class="indent">
-          <td>Tech / Systems</td>
-          <td>$0</td>
-          <td>Provided by Rapid corporate</td>
-        </tr>
-        <tr class="indent">
-          <td>E&amp;O Insurance</td>
-          <td>($150)</td>
-          <td>Group rate through Rapid</td>
-        </tr>
-        <tr class="indent">
-          <td>Marketing (Austin-funded)</td>
-          <td>($800)</td>
-          <td>Higher spend to build local brand</td>
-        </tr>
-        <tr class="indent">
-          <td>Misc Branch Expenses</td>
-          <td>($500)</td>
-          <td>Supplies, travel, client events</td>
-        </tr>
-        <tr class="subtotal">
-          <td>Total Branch Expenses</td>
-          <td>($47,550)</td>
-          <td></td>
-        </tr>
-
-        <tr class="section-label"><td colspan="3">Branch Net Profit</td></tr>
-        <tr>
-          <td>Net Profit Before Split</td>
-          <td>$159,900</td>
-          <td>Gross revenue minus all expenses</td>
-        </tr>
-
-        <tr class="section-label"><td colspan="3">Profit Split</td></tr>
-        <tr>
-          <td>Austin's Share (70%)</td>
-          <td>$111,930</td>
-          <td>P&amp;L branch partner share</td>
-        </tr>
-        <tr>
-          <td>Rapid Corporate (30%)</td>
-          <td>$47,970</td>
-          <td>License, compliance, warehouse lines, support</td>
-        </tr>
-
-        <tr class="total">
-          <td>Net to Austin (Monthly)</td>
-          <td>$111,930</td>
-          <td>Take-home before taxes</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="highlight">
-      <p><strong>What changes:</strong> Austin is no longer a commissioned employee. He operates a business unit. He pays his own people, controls his own margins, and captures profit from the entire team's production — not just his own book.</p>
-    </div>
-  </section>
-
-  <!-- Section 5: The Delta -->
-  <section>
-    <h2><span class="section-number">5</span> Monthly Delta</h2>
-    <p>The net difference in Austin's monthly take-home, holding production constant at current levels.</p>
 
     <div class="stat-row">
       <div class="stat-card">
-        <div class="stat-value">$32,930</div>
-        <div class="stat-label">Lower.com Net/Mo</div>
+        <div class="stat-value">$113,500</div>
+        <div class="stat-label">Lower Net/Mo (Est.)</div>
       </div>
       <div class="stat-card green-card">
-        <div class="stat-value">$111,930</div>
-        <div class="stat-label">Rapid Net/Mo</div>
+        <div class="stat-value">$127,350</div>
+        <div class="stat-label">Rapid Net/Mo (Est.)</div>
       </div>
       <div class="stat-card green-card">
-        <div class="stat-value">+$78,978</div>
-        <div class="stat-label">Monthly Uplift</div>
+        <div class="stat-value">+$13,850</div>
+        <div class="stat-label">Monthly Savings</div>
       </div>
     </div>
 
-    <table class="pnl-table">
-      <thead class="delta-head">
-        <tr><th>Metric</th><th>Lower.com</th><th>Rapid Mortgage</th></tr>
+    <div class="highlight">
+      <p><strong>On branch operations alone,</strong> the expense savings at Rapid put approximately $13,850 more per month in Austin's pocket. That is ~$166,200/yr before any ancillary income enters the picture.</p>
+    </div>
+  </section>
+
+  <!-- Section 5: Ancillary Income -->
+  <section>
+    <h2><span class="section-number">5</span> Ancillary Income (Rapid Only)</h2>
+    <p>This is income that does not exist at Lower. Rapid's proposal includes ancillary participation structures that add to Austin's branch net profit. The exact terms are per the proposal, but the options fall into three categories:</p>
+
+    <table class="range-table">
+      <thead>
+        <tr><th>Ancillary Income Option</th><th>Estimated Annual Value</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td>Annual Net to Austin</td>
-          <td>$395,155</td>
-          <td class="positive">$1,343,160</td>
+          <td><strong>Option A: Profit Share</strong><br>A percentage of branch net profit paid as additional income on top of what Austin already keeps. Typical range: 5-15% of branch net.</td>
+          <td>$38,000 - $115,000/yr</td>
         </tr>
         <tr>
-          <td>Annual Uplift</td>
-          <td colspan="2" class="positive" style="text-align:center;font-weight:700">+$948,005 / year</td>
+          <td><strong>Option B: Equity Stake</strong><br>Ownership interest in Rapid Mortgage. Value accrues over time as the company grows. This has no immediate cash value but represents long-term wealth creation that simply does not exist in the Lower structure.</td>
+          <td>Equity appreciation<br>(long-term)</td>
         </tr>
         <tr>
-          <td>Effective Bps on Total Team Volume</td>
-          <td>36 bps (on personal only)</td>
-          <td class="positive">121 bps (on total team)</td>
-        </tr>
-        <tr>
-          <td>Economic Participation in Team Volume</td>
-          <td class="negative">Austin's book only (50%)</td>
-          <td class="positive">Entire team (100%)</td>
-        </tr>
-        <tr>
-          <td>Equity Upside</td>
-          <td class="negative">None</td>
-          <td class="positive">Ownership stake in Rapid</td>
-        </tr>
-        <tr>
-          <td>Margin Control</td>
-          <td class="negative">Set by corporate</td>
-          <td class="positive">Austin controls pricing</td>
+          <td><strong>Option C: Combination</strong><br>Partial profit share plus partial equity. Provides both near-term cash benefit and long-term wealth building.</td>
+          <td>Varies per terms</td>
         </tr>
       </tbody>
     </table>
-  </section>
-
-  <!-- Section 6: Honest Tradeoffs -->
-  <section>
-    <h2><span class="section-number">6</span> Honest Tradeoffs</h2>
-    <p>No move is without tradeoffs. Here is what Austin would gain and what he would give up.</p>
-
-    <h3>Where Rapid Wins</h3>
-    <ul>
-      <li><strong>Dramatically higher take-home:</strong> The P&amp;L model pays Austin as a business owner, not an employee. At his volume, the math is not close.</li>
-      <li><strong>Team economics:</strong> Austin built his team. At Rapid, he participates in their production. At Lower, he does not.</li>
-      <li><strong>Equity:</strong> Real ownership in a growing company. No retail lender offers this to an LO.</li>
-      <li><strong>Lower borrower costs:</strong> Broker model means lower lender fees, which makes Austin more competitive on rate and closing costs.</li>
-      <li><strong>Autonomy:</strong> No corporate pricing desk overrides. No bureaucracy on underwriting exceptions. Direct line to ownership.</li>
-      <li><strong>Processing included:</strong> Dedicated processor provided by Rapid eliminates a $9,600+/mo expense.</li>
-    </ul>
-
-    <h3>Where Lower Wins (or Where Risk Exists)</h3>
-    <ul>
-      <li><strong>Brand recognition:</strong> Lower.com is a known national brand. Rapid Mortgage does not have the same consumer awareness. Austin would need to invest more in personal branding and local marketing, especially in Year 1.</li>
-      <li><strong>Operational responsibility:</strong> The P&amp;L model means Austin owns expenses. If production dips, the fixed costs do not. At Lower, comp just scales down — there is no negative P&amp;L risk.</li>
-      <li><strong>Transition disruption:</strong> Pipeline in progress, realtor relationships, referral partners — any move creates 30-60 days of transition friction. Some loans in process may not transfer cleanly.</li>
-      <li><strong>Benefits:</strong> If Lower provides health insurance, 401(k) match, or other employment benefits, these have real value (typically $15K-25K/yr) that must be factored in. Rapid's compensation uplift covers this significantly, but it is a real consideration.</li>
-      <li><strong>Marketing support:</strong> Large retail shops often have in-house marketing teams, branded events, and lead generation programs. At Rapid, Austin funds his own marketing — the upside is full control, the downside is full responsibility.</li>
-    </ul>
 
     <div class="assumptions">
-      <strong>Bottom line:</strong> The financial case is strong. The tradeoffs are real but manageable. The biggest risk factor is transition friction, which is temporary. The biggest upside — ownership economics and team participation — is permanent.
+      <strong>Important:</strong> The specific profit share percentage and/or equity terms are part of the formal proposal discussion between Austin, Mark, and Jasson. The ranges above are illustrative only. The point is structural: this category of income is available at Rapid and does not exist at Lower at any amount.
     </div>
   </section>
 
-  <!-- Section 7: Sensitivity -->
+  <!-- Section 6: Total Picture -->
   <section>
-    <h2><span class="section-number">7</span> Sensitivity Analysis</h2>
-    <p>What happens if production changes or assumptions shift? The model remains favorable across a wide range of scenarios.</p>
+    <h2><span class="section-number">6</span> Total Annual Picture</h2>
+    <p>Combining branch net profit with ancillary income potential.</p>
 
     <table class="pnl-table">
-      <thead>
-        <tr><th>Scenario</th><th>Lower Net/Mo</th><th>Rapid Net/Mo</th><th>Delta</th></tr>
+      <thead class="delta-head">
+        <tr><th>Metric</th><th>At Lower</th><th>At Rapid</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td>Current production (baseline)</td>
-          <td>$32,930</td>
-          <td>$111,930</td>
-          <td class="positive">+$78,978</td>
+          <td>Annual Branch Net Profit (est.)</td>
+          <td>$1,362,000</td>
+          <td class="positive">$1,528,200</td>
         </tr>
         <tr>
-          <td>Production drops 20%</td>
-          <td>$25,984</td>
-          <td>$89,341</td>
-          <td class="positive">+$63,357</td>
+          <td>Expense Savings vs. Lower</td>
+          <td>--</td>
+          <td class="positive">+$166,200/yr</td>
         </tr>
         <tr>
-          <td>Production drops 30%</td>
-          <td>$22,511</td>
-          <td>$78,046</td>
-          <td class="positive">+$55,536</td>
+          <td>Ancillary Income (profit share range)</td>
+          <td class="negative">$0</td>
+          <td class="positive">$38,000 - $115,000/yr</td>
         </tr>
         <tr>
-          <td>Austin's Lower comp is actually 40% (not 35%)</td>
-          <td>$39,268</td>
-          <td>$111,930</td>
-          <td class="positive">+$72,662</td>
+          <td>Equity Participation</td>
+          <td class="negative">None</td>
+          <td class="positive">Ownership stake available</td>
         </tr>
-        <tr>
-          <td>Rapid split is 60/40 (not 70/30)</td>
-          <td>$32,930</td>
-          <td>$95,940</td>
-          <td class="positive">+$63,010</td>
-        </tr>
-        <tr>
-          <td>Partner LO comp at 120 bps (not 100)</td>
-          <td>$32,930</td>
-          <td>$105,476</td>
-          <td class="positive">+$72,546</td>
-        </tr>
-        <tr>
-          <td>Worst case (all negatives combined)</td>
-          <td>$26,948</td>
-          <td>$63,025</td>
-          <td class="positive">+$36,077</td>
+        <tr class="total green-total">
+          <td>Total Estimated Annual Advantage</td>
+          <td colspan="2" style="text-align:center">+$204,000 - $281,000/yr in cash + equity upside</td>
         </tr>
       </tbody>
     </table>
 
     <div class="highlight green">
-      <p><strong>Even in the worst-case scenario</strong> — where Austin's actual Lower comp is higher than estimated, production drops 30%, the Rapid split is less favorable, and partner LO comp is higher — Austin still nets an additional $36K+/month at Rapid. The structural advantage of the P&amp;L model is that significant at this volume level.</p>
+      <p><strong>Conservative estimate:</strong> Even at the low end of ancillary income and using midpoint expense estimates, the Rapid structure puts roughly $200K+ more per year in Austin's pocket. The equity component is additional long-term upside on top of that.</p>
     </div>
   </section>
 
-  <!-- Section 8: Bottom Line -->
+  <!-- Section 7: Qualitative Benefits -->
   <section>
-    <h2><span class="section-number">8</span> The Bottom Line</h2>
+    <h2><span class="section-number">7</span> Beyond the Numbers</h2>
+    <p>The financial case is real but measured. These qualitative differences are arguably just as important for someone at Austin's level.</p>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <h4>Seat at the Leadership Table</h4>
+        <p>Direct involvement in company direction and strategy. Not a branch manager reporting up a chain — a partner with a voice.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Direct Access to Ownership</h4>
+        <p>Jasson and Mark are the owners. No layers of regional management or corporate bureaucracy between Austin and decision-makers.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Decision-Making Authority</h4>
+        <p>Austin runs his branch his way. Hiring, marketing, pricing strategy, client experience — his call.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Entrepreneurial Path</h4>
+        <p>The equity and profit share options create a genuine ownership trajectory. This is building something, not just earning a paycheck.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Flexibility and Autonomy</h4>
+        <p>Smaller company = faster decisions, more flexibility, less red tape. Austin can move at the speed his business requires.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>No Corporate Politics</h4>
+        <p>No approval chains, no committees, no corporate directives that conflict with what's best for Austin's clients and team.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: Honest Tradeoffs -->
+  <section>
+    <h2><span class="section-number">8</span> Honest Tradeoffs</h2>
+    <p>No move is without risk. Here is what Austin should weigh.</p>
+
+    <h3>Where Risk Exists</h3>
+    <ul>
+      <li><strong>Brand recognition:</strong> Lower is a larger, more recognized name. Rapid does not have the same national consumer awareness. Austin would rely more heavily on his personal brand and referral network, which is already strong — but it is a real factor.</li>
+      <li><strong>Transition friction:</strong> Any move creates 30-60 days of pipeline disruption. Loans in process, realtor relationships, referral partner communication. This is temporary but real.</li>
+      <li><strong>Smaller company risk:</strong> Rapid is a smaller operation. That is the source of the cost advantage, but it also means less institutional depth. If something goes wrong at the corporate level, there are fewer buffers.</li>
+      <li><strong>Benefits gap:</strong> If Lower provides health insurance, 401(k) match, or other employment benefits, those have real value ($15K-30K/yr). Austin should calculate what he currently receives and factor it against the financial advantage.</li>
+      <li><strong>Expense assumptions:</strong> The expense estimates in this analysis are based on industry norms. If Austin's actual expenses at Lower are materially lower than estimated, the savings gap narrows. Austin should run this with his real numbers.</li>
+    </ul>
+
+    <h3>Where Rapid Wins</h3>
+    <ul>
+      <li><strong>Lower operating costs:</strong> Smaller company, less overhead, shared services model. The expense savings are structural, not promotional.</li>
+      <li><strong>Ancillary income:</strong> Profit share and/or equity that simply do not exist at Lower. This is additive to the branch net profit.</li>
+      <li><strong>Autonomy and control:</strong> Austin controls his branch operations, marketing, and team decisions without corporate layers.</li>
+      <li><strong>Ownership trajectory:</strong> Equity in a growing company is wealth creation. No amount of commission splits at a large IMB replicates this.</li>
+      <li><strong>Direct partnership:</strong> Working directly with owners vs. being one branch among many in a large organization.</li>
+    </ul>
+
+    <div class="assumptions">
+      <strong>Bottom line:</strong> The financial advantage is real but not a 3x multiple — it is a meaningful improvement in take-home plus a category of income (ancillary) that does not exist in the current structure. The qualitative benefits — autonomy, ownership, leadership access — are what make this a career-level decision, not just a comp negotiation.
+    </div>
+  </section>
+
+  <!-- Section 9: Sensitivity -->
+  <section>
+    <h2><span class="section-number">9</span> Sensitivity Analysis</h2>
+    <p>How the annual advantage changes under different assumptions.</p>
+
+    <table class="pnl-table">
+      <thead>
+        <tr><th>Scenario</th><th>Annual Advantage</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Baseline (midpoint expenses, low-end profit share)</td>
+          <td class="positive">+$204,200</td>
+          <td>$166K savings + $38K profit share</td>
+        </tr>
+        <tr>
+          <td>Baseline + mid-range profit share (10%)</td>
+          <td class="positive">+$242,800</td>
+          <td>$166K savings + $76.6K profit share</td>
+        </tr>
+        <tr>
+          <td>Lower expenses higher than estimated (+20%)</td>
+          <td class="positive">+$267,800</td>
+          <td>Wider expense gap benefits Austin</td>
+        </tr>
+        <tr>
+          <td>Lower expenses lower than estimated (-20%)</td>
+          <td class="positive">+$140,600</td>
+          <td>Narrower gap, still positive</td>
+        </tr>
+        <tr>
+          <td>Team volume at $70M (low end)</td>
+          <td class="positive">+$190,600</td>
+          <td>Lower volume reduces both revenue and savings proportionally</td>
+        </tr>
+        <tr>
+          <td>Team volume at $80M (high end)</td>
+          <td class="positive">+$217,800</td>
+          <td>Higher volume amplifies the savings</td>
+        </tr>
+        <tr>
+          <td>Conservative case (all negatives combined)</td>
+          <td class="positive">+$100,000 - $130,000</td>
+          <td>Lower expenses close to Rapid + low-end profit share</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight green">
+      <p><strong>Even in the most conservative scenario,</strong> the Rapid structure delivers a six-figure annual advantage. The model does not depend on aggressive assumptions — it depends on the structural reality that a smaller, leaner IMB has lower overhead costs and offers ancillary income that large IMBs do not.</p>
+    </div>
+  </section>
+
+  <!-- Section 10: Bottom Line -->
+  <section>
+    <h2><span class="section-number">10</span> The Bottom Line</h2>
 
     <div class="stat-row">
       <div class="stat-card green-card">
-        <div class="stat-value">+$948K</div>
-        <div class="stat-label">Annual Uplift (Baseline)</div>
+        <div class="stat-value">+$166K</div>
+        <div class="stat-label">Annual Expense Savings</div>
       </div>
       <div class="stat-card green-card">
-        <div class="stat-value">+$433K</div>
-        <div class="stat-label">Annual Uplift (Worst Case)</div>
+        <div class="stat-value">+$38K-$115K</div>
+        <div class="stat-label">Annual Ancillary Income</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">3.4x</div>
-        <div class="stat-label">Income Multiple (Baseline)</div>
+        <div class="stat-value">+ Equity</div>
+        <div class="stat-label">Ownership Upside</div>
       </div>
     </div>
 
-    <p>Austin's team is producing at an elite level. The question is not whether they can produce — it is whether the current structure captures the full value of what they have built.</p>
-    <p>At Lower, Austin earns a commission on his personal book. At Rapid, he operates a business with full economic participation in the team he built, an equity stake in the parent company, and the autonomy to run his branch his way.</p>
-    <p>These numbers are meant to start a conversation, not end one. Every assumption is adjustable. The framework is what matters: <strong>the P&amp;L model pays more because it structurally gives Austin more.</strong></p>
+    <p>Austin's team is producing at an elite level. The revenue they generate is the same at either company — same lender fees, same 300 bps branch margin.</p>
+    <p>The difference is where the money goes after revenue. At Rapid, more of it stays with Austin because the cost structure is leaner. And on top of that, Rapid offers ancillary income — profit sharing and/or equity — that is a category of compensation that does not exist at Lower.</p>
+    <p>This is not a 3x income claim. This is a defensible, honest case that the Rapid structure puts roughly $200K+ more per year in Austin's pocket at baseline, with equity upside on top. The numbers in this document are meant to be challenged — bring your real expenses, and the framework recalculates.</p>
+    <p><strong>The conversation is worth having.</strong></p>
   </section>
 
 </main>
