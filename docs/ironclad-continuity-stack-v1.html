@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Enterprises — Ironclad Continuity Stack</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+
+:root {
+–black: #080808;
+–deep: #0f0f0f;
+–card: #141414;
+–border: #1f1f1f;
+–gold: #c9a84c;
+–gold-dim: #8a6f2e;
+–gold-glow: rgba(201,168,76,0.12);
+–red: #c0392b;
+–green: #27ae60;
+–text: #e8e8e8;
+–muted: #666;
+–mono: ‘IBM Plex Mono’, monospace;
+–sans: ‘IBM Plex Sans’, sans-serif;
+–display: ‘Bebas Neue’, sans-serif;
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–black);
+color: var(–text);
+font-family: var(–sans);
+line-height: 1.6;
+min-height: 100vh;
+}
+
+/* NOISE TEXTURE */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.03’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 0;
+opacity: 0.4;
+}
+
+.container {
+max-width: 900px;
+margin: 0 auto;
+padding: 40px 20px 80px;
+position: relative;
+z-index: 1;
+}
+
+/* HEADER */
+.header {
+border-bottom: 1px solid var(–gold-dim);
+padding-bottom: 30px;
+margin-bottom: 50px;
+}
+
+.logo-line {
+font-family: var(–mono);
+font-size: 11px;
+color: var(–gold);
+letter-spacing: 4px;
+text-transform: uppercase;
+margin-bottom: 12px;
+opacity: 0.8;
+}
+
+h1 {
+font-family: var(–display);
+font-size: clamp(42px, 8vw, 72px);
+letter-spacing: 2px;
+line-height: 0.95;
+color: var(–text);
+}
+
+h1 span {
+color: var(–gold);
+}
+
+.subtitle {
+font-family: var(–mono);
+font-size: 12px;
+color: var(–muted);
+margin-top: 14px;
+letter-spacing: 1px;
+}
+
+/* THREAT BOX */
+.threat-box {
+background: rgba(192,57,43,0.08);
+border: 1px solid rgba(192,57,43,0.3);
+border-left: 3px solid var(–red);
+padding: 20px 24px;
+margin-bottom: 50px;
+font-family: var(–mono);
+font-size: 12px;
+}
+
+.threat-box .label {
+color: var(–red);
+font-size: 10px;
+letter-spacing: 3px;
+margin-bottom: 10px;
+}
+
+.threat-box p {
+color: #bbb;
+line-height: 1.7;
+}
+
+/* SECTION */
+.section {
+margin-bottom: 50px;
+}
+
+.section-label {
+font-family: var(–mono);
+font-size: 10px;
+color: var(–gold);
+letter-spacing: 4px;
+text-transform: uppercase;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.section-label::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+/* LAYER CARDS */
+.layer {
+background: var(–card);
+border: 1px solid var(–border);
+margin-bottom: 3px;
+overflow: hidden;
+transition: border-color 0.2s;
+}
+
+.layer:hover {
+border-color: var(–gold-dim);
+}
+
+.layer-header {
+display: grid;
+grid-template-columns: 48px 1fr auto;
+align-items: center;
+padding: 18px 22px;
+gap: 16px;
+}
+
+.layer-num {
+font-family: var(–display);
+font-size: 28px;
+color: var(–gold);
+opacity: 0.4;
+line-height: 1;
+}
+
+.layer-title {
+font-family: var(–sans);
+font-weight: 600;
+font-size: 15px;
+color: var(–text);
+}
+
+.layer-subtitle {
+font-family: var(–mono);
+font-size: 10px;
+color: var(–muted);
+margin-top: 3px;
+letter-spacing: 0.5px;
+}
+
+.layer-badge {
+font-family: var(–mono);
+font-size: 9px;
+letter-spacing: 2px;
+padding: 4px 10px;
+border: 1px solid;
+text-transform: uppercase;
+}
+
+.badge-critical { color: var(–red); border-color: rgba(192,57,43,0.4); }
+.badge-high { color: #e67e22; border-color: rgba(230,126,34,0.4); }
+.badge-medium { color: var(–gold); border-color: rgba(201,168,76,0.4); }
+.badge-foundation { color: var(–green); border-color: rgba(39,174,96,0.4); }
+
+.layer-body {
+padding: 0 22px 20px 86px;
+}
+
+.layer-body p {
+font-size: 13px;
+color: #aaa;
+margin-bottom: 14px;
+line-height: 1.7;
+}
+
+.tools-row {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+}
+
+.tool-tag {
+font-family: var(–mono);
+font-size: 10px;
+background: rgba(201,168,76,0.07);
+border: 1px solid rgba(201,168,76,0.2);
+color: var(–gold);
+padding: 3px 10px;
+letter-spacing: 0.5px;
+}
+
+/* DIVIDER */
+.connector {
+text-align: center;
+font-family: var(–mono);
+font-size: 10px;
+color: var(–border);
+padding: 4px 0;
+letter-spacing: 2px;
+}
+
+/* ARCHITECTURE DIAGRAM */
+.arch {
+background: var(–card);
+border: 1px solid var(–border);
+padding: 30px;
+font-family: var(–mono);
+font-size: 12px;
+color: #888;
+line-height: 2;
+margin-bottom: 50px;
+}
+
+.arch .node {
+color: var(–text);
+background: rgba(201,168,76,0.08);
+border: 1px solid rgba(201,168,76,0.2);
+display: inline-block;
+padding: 2px 12px;
+}
+
+.arch .node.you { color: var(–gold); border-color: var(–gold-dim); }
+.arch .node.db { color: #5dade2; border-color: rgba(93,173,226,0.3); }
+.arch .node.verify { color: var(–green); border-color: rgba(39,174,96,0.3); }
+.arch .arrow { color: var(–muted); }
+
+/* FAILURE MODES TABLE */
+.table-wrap {
+overflow-x: auto;
+margin-bottom: 50px;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 12px;
+}
+
+thead tr {
+border-bottom: 1px solid var(–gold-dim);
+}
+
+th {
+font-family: var(–mono);
+font-size: 9px;
+letter-spacing: 3px;
+color: var(–gold);
+text-transform: uppercase;
+padding: 12px 16px;
+text-align: left;
+font-weight: 400;
+}
+
+td {
+padding: 12px 16px;
+border-bottom: 1px solid var(–border);
+color: #aaa;
+vertical-align: top;
+line-height: 1.6;
+}
+
+td:first-child {
+color: var(–text);
+font-weight: 600;
+font-size: 12px;
+white-space: nowrap;
+}
+
+.status-solved { color: var(–green); font-family: var(–mono); font-size: 10px; }
+.status-partial { color: var(–gold); font-family: var(–mono); font-size: 10px; }
+.status-manual { color: #e67e22; font-family: var(–mono); font-size: 10px; }
+
+tr:hover td { background: rgba(255,255,255,0.015); }
+
+/* HONEST LIMITS BOX */
+.limits-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-top: 2px solid var(–gold);
+padding: 28px;
+margin-bottom: 50px;
+}
+
+.limits-box h3 {
+font-family: var(–display);
+font-size: 22px;
+color: var(–gold);
+margin-bottom: 16px;
+letter-spacing: 1px;
+}
+
+.limits-box p {
+font-size: 13px;
+color: #aaa;
+line-height: 1.8;
+margin-bottom: 10px;
+}
+
+.limits-box p strong {
+color: var(–text);
+}
+
+/* PRIORITY ROADMAP */
+.roadmap {
+display: grid;
+gap: 3px;
+margin-bottom: 50px;
+}
+
+.road-item {
+display: grid;
+grid-template-columns: 28px 1fr auto;
+align-items: center;
+background: var(–card);
+border: 1px solid var(–border);
+padding: 14px 18px;
+gap: 14px;
+}
+
+.road-step {
+font-family: var(–mono);
+font-size: 10px;
+color: var(–gold-dim);
+}
+
+.road-text {
+font-size: 13px;
+color: var(–text);
+}
+
+.road-text span {
+display: block;
+font-size: 11px;
+color: var(–muted);
+margin-top: 2px;
+font-family: var(–mono);
+}
+
+.road-effort {
+font-family: var(–mono);
+font-size: 9px;
+color: var(–muted);
+letter-spacing: 1px;
+white-space: nowrap;
+}
+
+/* FOOTER */
+.footer {
+border-top: 1px solid var(–border);
+padding-top: 24px;
+font-family: var(–mono);
+font-size: 10px;
+color: var(–muted);
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 8px;
+}
+
+@media (max-width: 600px) {
+.layer-header { grid-template-columns: 36px 1fr; }
+.layer-badge { display: none; }
+.layer-body { padding-left: 52px; }
+.arch { font-size: 10px; }
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+
+  <div class="header">
+    <div class="logo-line">9 Enterprises LLC — Internal Architecture</div>
+    <h1>IRONCLAD<br><span>CONTINUITY</span><br>STACK</h1>
+    <div class="subtitle">// MAXIMUM PROTECTION AGAINST MEMORY LOSS · ALL FAILURE MODES COVERED</div>
+  </div>
+
+  <!-- THREAT ASSESSMENT -->
+
+  <div class="threat-box">
+    <div class="label">▲ THREAT ASSESSMENT</div>
+    <p>Claude has no native persistent memory. Every session starts blank. Without an explicit memory architecture, 9 forgets everything — context, decisions, task state, company knowledge — the moment a conversation ends. This is not a bug. It is default behavior that must be engineered around.</p>
+  </div>
+
+  <!-- LAYER STACK -->
+
+  <div class="section">
+    <div class="section-label">Defense Layers</div>
+
+```
+<!-- L1 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">1</div>
+    <div>
+      <div class="layer-title">Primary Database Memory</div>
+      <div class="layer-subtitle">The foundation — every decision, task, and outcome written to permanent storage</div>
+    </div>
+    <div class="layer-badge badge-critical">CRITICAL</div>
+  </div>
+  <div class="layer-body">
+    <p>Every meaningful interaction 9 has gets written to a structured database in real time. Not summarized at the end — written as it happens. This includes task assignments, completions, decisions made, errors encountered, and company-specific context. When a new session starts, 9 reads from this database before doing anything else.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Supabase</span>
+      <span class="tool-tag">PostgreSQL</span>
+      <span class="tool-tag">Auto-write on every action</span>
+      <span class="tool-tag">Read on session start</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector">↓ feeds into ↓</div>
+
+<!-- L2 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">2</div>
+    <div>
+      <div class="layer-title">Vector Memory Search</div>
+      <div class="layer-subtitle">Intelligent context retrieval — 9 finds relevant past info, not just recent info</div>
+    </div>
+    <div class="layer-badge badge-critical">CRITICAL</div>
+  </div>
+  <div class="layer-body">
+    <p>As memory grows across 12-15 companies, loading everything becomes impossible. Vector memory lets 9 search for what's relevant to the current task — like a smart search engine over its own history. It finds the right context without needing to read every record.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Supabase pgvector</span>
+      <span class="tool-tag">Semantic search</span>
+      <span class="tool-tag">Per-company namespacing</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector">↓ supplements ↓</div>
+
+<!-- L3 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">3</div>
+    <div>
+      <div class="layer-title">Forced Session Summaries</div>
+      <div class="layer-subtitle">Structured handoff notes written at the close of every session</div>
+    </div>
+    <div class="layer-badge badge-high">HIGH</div>
+  </div>
+  <div class="layer-body">
+    <p>9 is required to write a structured end-of-session brief before any conversation closes. This includes: what was worked on, what was completed, what is pending, any blockers, and the next priority. The next session opens by reading this brief first. No exceptions.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Auto-triggered on close</span>
+      <span class="tool-tag">Structured JSON format</span>
+      <span class="tool-tag">Stored in Supabase</span>
+      <span class="tool-tag">Read-first on open</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector">↓ validated by ↓</div>
+
+<!-- L4 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">4</div>
+    <div>
+      <div class="layer-title">Task Verification Loop</div>
+      <div class="layer-subtitle">Eliminates false completions — "done" must be proven, not reported</div>
+    </div>
+    <div class="layer-badge badge-critical">CRITICAL</div>
+  </div>
+  <div class="layer-body">
+    <p>This directly fixes your false completion problem. No task is marked complete by self-report. Every task has a verification step — either a second agent checks the output, a system confirms the change happened, or you manually confirm. Only then does the task status update in the database. 9 cannot mark its own work done.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Audit agent</span>
+      <span class="tool-tag">System confirmation required</span>
+      <span class="tool-tag">3-state tasks: Pending / In Progress / Verified</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector">↓ backed up by ↓</div>
+
+<!-- L5 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">5</div>
+    <div>
+      <div class="layer-title">External Task Queue</div>
+      <div class="layer-subtitle">Tasks live outside the agent entirely — immune to memory failure</div>
+    </div>
+    <div class="layer-badge badge-high">HIGH</div>
+  </div>
+  <div class="layer-body">
+    <p>Your task list is not stored in Claude's head. It lives in a real external system. 9 pulls tasks from this queue, works on them, and updates status there. If 9 crashes, restarts, or loses all context — the queue is untouched. Work resumes from exactly where it stopped.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Airtable or Notion</span>
+      <span class="tool-tag">Linear (for dev tasks)</span>
+      <span class="tool-tag">Status: queued / active / verified / archived</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector">↓ hosted on ↓</div>
+
+<!-- L6 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">6</div>
+    <div>
+      <div class="layer-title">Cloud VPS Infrastructure</div>
+      <div class="layer-subtitle">Eliminates the single-Mac dependency — 9 runs 24/7 regardless of your hardware</div>
+    </div>
+    <div class="layer-badge badge-foundation">FOUNDATION</div>
+  </div>
+  <div class="layer-body">
+    <p>Everything above runs on a cloud server that never sleeps, never crashes from a spilled coffee, and doesn't depend on your Mac being on. This was already flagged as your biggest infrastructure risk. It is the floor everything else stands on.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Railway or Render (easiest)</span>
+      <span class="tool-tag">DigitalOcean (more control)</span>
+      <span class="tool-tag">Cloudflare Workers (already partial)</span>
+      <span class="tool-tag">Auto-restart on failure</span>
+    </div>
+  </div>
+</div>
+
+<div class="connector">↓ monitored by ↓</div>
+
+<!-- L7 -->
+<div class="layer">
+  <div class="layer-header">
+    <div class="layer-num">7</div>
+    <div>
+      <div class="layer-title">Health Monitoring + Alerts</div>
+      <div class="layer-subtitle">You know instantly when something breaks — before 9 pretends it didn't</div>
+    </div>
+    <div class="layer-badge badge-medium">MONITORING</div>
+  </div>
+  <div class="layer-body">
+    <p>A separate monitoring layer watches 9's activity. If 9 goes quiet unexpectedly, fails to write a session summary, or a task sits in "in progress" too long without verification — you get alerted. This catches failure silently rather than waiting for you to notice something feels off.</p>
+    <div class="tools-row">
+      <span class="tool-tag">Uptime monitoring</span>
+      <span class="tool-tag">Dead task alerts</span>
+      <span class="tool-tag">Telegram or SMS alerts to you</span>
+      <span class="tool-tag">Betterstack or UptimeRobot</span>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- ARCHITECTURE FLOW -->
+
+  <div class="section">
+    <div class="section-label">Data Flow</div>
+    <div class="arch">
+      <div><span class="node you">YOU</span> <span class="arrow">──── gives task ────▶</span> <span class="node">9 (Orchestrator)</span></div>
+      <div style="padding-left:20px; color: #444">│</div>
+      <div style="padding-left:20px;"><span class="arrow">▼ reads context from</span></div>
+      <div style="padding-left:20px;"><span class="node db">Supabase DB + Vector Memory</span></div>
+      <div style="padding-left:20px; color: #444">│</div>
+      <div style="padding-left:20px;"><span class="arrow">▼ assigns to</span></div>
+      <div style="padding-left:20px;"><span class="node">Company GM Agent</span></div>
+      <div style="padding-left:20px; color: #444">│</div>
+      <div style="padding-left:20px;"><span class="arrow">▼ GM sends to</span></div>
+      <div style="padding-left:20px;"><span class="node">Specialist Agent</span> <span class="arrow">──▶</span> <span class="node verify">Audit Agent verifies</span></div>
+      <div style="padding-left:20px; color: #444">│</div>
+      <div style="padding-left:20px;"><span class="arrow">▼ writes outcome to</span></div>
+      <div style="padding-left:20px;"><span class="node db">External Task Queue + DB</span> <span class="arrow">──▶</span> <span class="node you">YOU see verified status</span></div>
+    </div>
+  </div>
+
+  <!-- FAILURE MODE TABLE -->
+
+  <div class="section">
+    <div class="section-label">Failure Mode Coverage</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Failure Mode</th>
+            <th>What Causes It</th>
+            <th>Which Layer Fixes It</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Forgets past conversations</td>
+            <td>No native LLM memory</td>
+            <td>L1 Database + L3 Session Summaries</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>Reports task as done when it isn't</td>
+            <td>Self-reporting without verification</td>
+            <td>L4 Verification Loop</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>Makes things up confidently</td>
+            <td>LLM confabulation — trained to sound certain</td>
+            <td>L4 Audit Agent catches errors</td>
+            <td class="status-partial">REDUCED</td>
+          </tr>
+          <tr>
+            <td>Loses all context if Mac goes offline</td>
+            <td>Single hardware dependency</td>
+            <td>L6 Cloud VPS</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>Can't find relevant old context</td>
+            <td>Too much history to load</td>
+            <td>L2 Vector Memory</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>Task queue lost if agent crashes</td>
+            <td>Tasks stored in agent context</td>
+            <td>L5 External Task Queue</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>You don't know when 9 is broken</td>
+            <td>No visibility into agent health</td>
+            <td>L7 Health Monitoring</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>Wrong context loaded for wrong company</td>
+            <td>No isolation between 9 Enterprises companies</td>
+            <td>L2 Per-company namespacing in vector DB</td>
+            <td class="status-solved">SOLVED</td>
+          </tr>
+          <tr>
+            <td>Overconfident wrong answers</td>
+            <td>Core LLM behavior — cannot be fully eliminated</td>
+            <td>L4 Audit Agent + your own verification</td>
+            <td class="status-manual">MANAGED</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HONEST LIMITS -->
+
+  <div class="limits-box">
+    <h3>THE HONEST CEILING</h3>
+    <p><strong>This stack eliminates almost all memory failure.</strong> But there is one thing no architecture fully solves: the model's tendency to confabulate — to produce confident wrong answers when it doesn't know something.</p>
+    <p><strong>The audit agent reduces this significantly</strong> by catching outputs before they reach you. But it is also a Claude model. Two imperfect models checking each other is better than one — but not perfect.</p>
+    <p><strong>The remaining protection is you.</strong> High-stakes decisions — real money, legal exposure, partner commitments — should always have a human checkpoint. The stack handles routine operations autonomously. Exceptions escalate to you.</p>
+    <p><strong>Nothing about AI is set-and-forget at this stage of the technology.</strong> This stack gets you as close as currently possible.</p>
+  </div>
+
+  <!-- BUILD PRIORITY -->
+
+  <div class="section">
+    <div class="section-label">Build Order — What to Do First</div>
+    <div class="roadmap">
+      <div class="road-item">
+        <div class="road-step">01</div>
+        <div class="road-text">
+          Migrate off single Mac to Cloud VPS
+          <span>Everything else depends on this. Start here.</span>
+        </div>
+        <div class="road-effort">WEEK 1</div>
+      </div>
+      <div class="road-item">
+        <div class="road-step">02</div>
+        <div class="road-text">
+          Stand up Supabase database + write first memory schema
+          <span>Tables for: sessions, tasks, decisions, company context</span>
+        </div>
+        <div class="road-effort">WEEK 1–2</div>
+      </div>
+      <div class="road-item">
+        <div class="road-step">03</div>
+        <div class="road-text">
+          Build forced session summary into 9's system prompt
+          <span>Cheapest, fastest win. Immediate continuity improvement.</span>
+        </div>
+        <div class="road-effort">DAY 1</div>
+      </div>
+      <div class="road-item">
+        <div class="road-step">04</div>
+        <div class="road-text">
+          Stand up external task queue in Airtable or Notion
+          <span>Tasks leave 9's head and live somewhere permanent</span>
+        </div>
+        <div class="road-effort">WEEK 1</div>
+      </div>
+      <div class="road-item">
+        <div class="road-step">05</div>
+        <div class="road-text">
+          Build verification loop — 3-state task system
+          <span>Pending → In Progress → Verified. No self-reporting.</span>
+        </div>
+        <div class="road-effort">WEEK 2–3</div>
+      </div>
+      <div class="road-item">
+        <div class="road-step">06</div>
+        <div class="road-text">
+          Enable pgvector + semantic search on memory
+          <span>Required once you have more than 2-3 companies active</span>
+        </div>
+        <div class="road-effort">WEEK 3–4</div>
+      </div>
+      <div class="road-item">
+        <div class="road-step">07</div>
+        <div class="road-text">
+          Deploy audit agent + health monitoring
+          <span>Final layer — catches what slips through everything else</span>
+        </div>
+        <div class="road-effort">MONTH 2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>9 ENTERPRISES LLC — INTERNAL ARCHITECTURE DOCUMENT</span>
+    <span>IRONCLAD CONTINUITY STACK v1.0</span>
+  </div>
+
+</div>
+</body>
+</html>
