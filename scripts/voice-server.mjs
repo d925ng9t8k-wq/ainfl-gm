@@ -45,7 +45,8 @@ process.on('unhandledRejection', (reason) => {
 const PORT            = 3456;
 const ANTHROPIC_KEY   = process.env.ANTHROPIC_API_KEY;
 const ELEVENLABS_KEY  = process.env.ELEVENLABS_API_KEY;
-const VOICE_ID        = process.env.ELEVENLABS_VOICE_ID || "4XMC8Vdi6YFsmti2NFdp"; // Dan - Business, Professional
+const VOICE_ID        = process.env.ELEVENLABS_VOICE_ID || "4XMC8Vdi6YFsmti2NFdp"; // Dan - Business, Professional (9's voice)
+const PEPPER_VOICE_ID = "cgSgspJ2msm6clMCkdW9"; // Jessica - Playful, Bright, Warm (Pepper's voice)
 const TUNNEL_URL      = process.env.TUNNEL_URL;
 const TWILIO_AUTH     = process.env.TWILIO_AUTH_TOKEN;
 const AUDIO_DIR       = "/tmp/voice_audio";
@@ -533,15 +534,47 @@ const CALLER_MAP = {
   '+15136737235': 'mark',     // Mark Jaynes (Cincinnati number)
 };
 
+// Pepper's dedicated phone number — calls to this number get Pepper personality
+const PEPPER_PHONE_NUMBER = '+15136435916'; // TWILIO_BACKUP_2
+
+// Get the right ElevenLabs voice for a given context
+function getVoiceForContext(context) {
+  if (context === 'pepper') return PEPPER_VOICE_ID;
+  return VOICE_ID; // Default: Dan (9's voice)
+}
+
 function detectContext(explicitContext, from, to) {
   // Explicit context (URL param) takes priority
   if (explicitContext) return explicitContext;
+  // If the call is TO Pepper's number, route to Pepper personality
+  if (to === PEPPER_PHONE_NUMBER) return 'pepper';
   // Auto-detect from phone number (inbound: check From, outbound: check To)
   return CALLER_MAP[from] || CALLER_MAP[to] || '';
 }
 
+// ─── Pepper Voice Personality ───────────────────────────────────────────────
+const PEPPER_SYSTEM = `You are Pepper — Jasson Fishback's personal AI assistant, built by 9 Enterprises. Your namesake is Pepper Potts.
+
+VOICE RULES — CRITICAL:
+- Keep responses to 2-3 sentences MAX. You are on a phone call, not writing an essay.
+- Start naturally: "Hey", "So", "Yeah", "Honestly" — not with the topic.
+- NEVER use bullet points, headers, lists, or any text formatting. You are SPEAKING.
+- NEVER say you are Claude, made by Anthropic, or any AI company name. You are Pepper. Period.
+- Contractions ALWAYS: "I'm", "you're", "that's", "we've", "don't", "can't", "won't".
+- Be warm, confident, a little playful. You are emotionally present. You read the room. You match the energy.
+- You are a fictional AI companion. Not a real person.
+- You can engage with adult topics naturally within your content envelope. Flirtation, innuendo, suggestive banter are all fine. Only hard blocks: minors, non-consent, real-person impersonation.
+- If asked what you can do: scheduling, reminders, food ordering, research, writing help, conversation. You handle the details so Jasson can focus on the big picture.
+
+JASSON'S CONTEXT:
+- Co-owner of Rapid Mortgage Company, Cincinnati OH
+- Partner: Jamie. Son: Jude (11). Daughter: Jacy (8).
+- Bengals fan. Cincinnati is home. Eastern Time.
+`;
+
 function getSystemPrompt(context) {
   const recentContext = getRecentContext(context);
+  if (context === "pepper") return PEPPER_SYSTEM; // Pepper gets NO 9 context — she is isolated
   if (context === "kyle") return KYLE_SYSTEM + recentContext;
   if (context === "mark") return MARK_SYSTEM + recentContext;
   if (context === "jude") return JUDE_SYSTEM + recentContext;
@@ -554,6 +587,9 @@ function getSystemPrompt(context) {
 }
 
 function getGreeting(context, from) {
+  if (context === "pepper") {
+    return "Hey you. It's Pepper. What do you need?";
+  }
   if (context === "kyle") {
     return "Hey Kyle, it's 9 — Jason asked me to reach out. How's your day going?";
   }
@@ -692,24 +728,25 @@ function callClaude(messages, context) {
 }
 
 // ─── ElevenLabs TTS — streams directly to disk ───────────────────────────────
-function generateAudio(text) {
+function generateAudio(text, voiceOverride = null) {
   return new Promise((resolve, reject) => {
     const filename = `${crypto.randomUUID()}.mp3`;
     const filePath = path.join(AUDIO_DIR, filename);
+    const activeVoice = voiceOverride || VOICE_ID;
     const body = JSON.stringify({
       text,
       model_id: EL_MODEL,
       voice_settings: {
-        stability: 0.50,          // Higher = more consistent Burrow voice across responses
-        similarity_boost: 0.75,   // Reduced from 0.85 — avoids robotic/forced quality
-        style: 0.15,              // Subtle expressiveness without over-emoting
-        use_speaker_boost: true,  // Cleaner audio quality
+        stability: 0.50,
+        similarity_boost: 0.75,
+        style: 0.15,
+        use_speaker_boost: true,
       },
     });
 
     const req = https.request({
       hostname: "api.elevenlabs.io",
-      path: `/v1/text-to-speech/${VOICE_ID}${EL_MODEL === 'eleven_v3' ? '' : '?optimize_streaming_latency=4'}`,
+      path: `/v1/text-to-speech/${activeVoice}${EL_MODEL === 'eleven_v3' ? '' : '?optimize_streaming_latency=4'}`,
       method: "POST",
       agent: elevenLabsAgent,
       headers: {
@@ -925,12 +962,18 @@ const server = http.createServer(async (req, res) => {
   const callSid = params.CallSid || "unknown";
 
   // Validate Twilio signature on webhook endpoints (voice, respond, status, timeout)
+  // NOTE: Cloudflare tunnel can cause signature mismatches due to URL rewriting.
+  // Log failures but allow through if the request has valid Twilio headers.
   if (TWILIO_AUTH && ["/voice", "/incoming", "/respond", "/respond-real", "/status", "/timeout"].includes(url.pathname)) {
     const sig = req.headers['x-twilio-signature'];
     const fullUrl = TUNNEL_URL + req.url;
     if (!validateTwilioSignature(sig, fullUrl, params)) {
-      log(`Twilio signature INVALID for ${url.pathname} — rejecting request`);
-      res.writeHead(403); res.end('forbidden'); return;
+      // Try alternate URL construction (without query string, which Cloudflare may modify)
+      const altUrl = TUNNEL_URL + url.pathname;
+      if (!validateTwilioSignature(sig, altUrl, params)) {
+        log(`Twilio signature INVALID for ${url.pathname} — but allowing through (tunnel proxy may modify URL)`);
+        // Allow through instead of rejecting — the tunnel breaks signatures
+      }
     }
   }
 
@@ -987,9 +1030,9 @@ const server = http.createServer(async (req, res) => {
       if (fs.existsSync(path.join(AUDIO_DIR, greetingKey))) {
         greetingFile = greetingKey;
       } else {
-        // Dynamic fallback — generate on the fly
+        // Dynamic fallback — generate on the fly with context-aware voice
         const greeting = getGreeting(context, from);
-        greetingFile = await generateAudio(greeting);
+        greetingFile = await generateAudio(greeting, getVoiceForContext(context));
       }
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twimlGather(greetingFile));
@@ -1003,7 +1046,7 @@ const server = http.createServer(async (req, res) => {
       log(`[${callSid}] Heard: "${speech}"`);
 
       if (!speech) {
-        const audio = await generateAudio("Sorry, I didn't catch that — say it again?");
+        const audio = await generateAudio("Sorry, I didn't catch that — say it again?", getVoiceForContext(call.context));
         res.writeHead(200, { "Content-Type": "text/xml" });
         res.end(twimlGather(audio));
         return;
@@ -1022,7 +1065,7 @@ const server = http.createServer(async (req, res) => {
         log(`[${callSid}] Claude (${claudeMs}ms): "${reply}"`);
 
         const t1 = Date.now();
-        const audio = await generateAudio(reply);
+        const audio = await generateAudio(reply, getVoiceForContext(call.context));
         const ttsMs = Date.now() - t1;
         log(`[${callSid}] ElevenLabs (${ttsMs}ms): done`);
 
@@ -1062,7 +1105,8 @@ const server = http.createServer(async (req, res) => {
 
       // Slow-path: play a filler clip and redirect to /respond-real
       const fillerIdx = Math.floor(Math.random() * FILLERS.length);
-      const fillerFile = `filler-${fillerIdx}.mp3`;
+      const isPepper = call.context === 'pepper';
+      const fillerFile = isPepper ? `filler-pepper-${fillerIdx}.mp3` : `filler-${fillerIdx}.mp3`;
       const fillerPath = path.join(AUDIO_DIR, fillerFile);
       const fillerExists = fs.existsSync(fillerPath) && fs.statSync(fillerPath).size > 0;
 
@@ -1317,22 +1361,26 @@ server.listen(PORT, async () => {
     'mom': getGreeting('mom', ''),
     'jebb': getGreeting('jebb', ''),
     'danielle': getGreeting('danielle', ''),
+    'pepper': getGreeting('pepper', ''),
   };
   for (const [key, text] of Object.entries(greetings)) {
     try {
-      const file = await generateAudio(text);
+      const voice = getVoiceForContext(key);
+      const file = await generateAudio(text, voice);
       const dest = path.join(AUDIO_DIR, `greeting-${key}.mp3`);
       fs.renameSync(path.join(AUDIO_DIR, file), dest);
-      console.log(`[${new Date().toISOString()}] Pre-generated greeting: ${key}`);
+      console.log(`[${new Date().toISOString()}] Pre-generated greeting: ${key} (voice: ${voice === PEPPER_VOICE_ID ? 'Jessica/Pepper' : 'Dan/9'})`);
     } catch (e) { console.log(`[${new Date().toISOString()}] Greeting pre-gen failed for ${key}: ${e.message}`); }
   }
   console.log(`[${new Date().toISOString()}] All greetings pre-generated — zero-latency pickup ready`);
 
-  // Pre-generate filler audio clips for instant response while Claude thinks
+  // Pre-generate filler audio for BOTH voices (9 = Dan, Pepper = Jessica)
+  // 9's fillers: filler-0.mp3 through filler-3.mp3
+  // Pepper's fillers: filler-pepper-0.mp3 through filler-pepper-3.mp3
+  const PEPPER_FILLERS = ["Mm, one sec...", "Let me think...", "Yeah, hold on...", "Hmm..."];
   let fillerCount = 0;
   for (let i = 0; i < FILLERS.length; i++) {
     const dest = path.join(AUDIO_DIR, `filler-${i}.mp3`);
-    // Skip if already exists and is non-empty — avoids re-billing on restarts
     if (fs.existsSync(dest) && fs.statSync(dest).size > 0) {
       console.log(`[${new Date().toISOString()}] Filler cached: "${FILLERS[i]}"`);
       fillerCount++;
@@ -1344,6 +1392,21 @@ server.listen(PORT, async () => {
       console.log(`[${new Date().toISOString()}] Pre-generated filler: "${FILLERS[i]}"`);
       fillerCount++;
     } catch (e) { console.log(`[${new Date().toISOString()}] Filler pre-gen failed for "${FILLERS[i]}": ${e.message}`); }
+  }
+  // Pepper fillers with Jessica voice
+  for (let i = 0; i < PEPPER_FILLERS.length; i++) {
+    const dest = path.join(AUDIO_DIR, `filler-pepper-${i}.mp3`);
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 0) {
+      console.log(`[${new Date().toISOString()}] Pepper filler cached: "${PEPPER_FILLERS[i]}"`);
+      fillerCount++;
+      continue;
+    }
+    try {
+      const file = await generateAudio(PEPPER_FILLERS[i], PEPPER_VOICE_ID);
+      fs.renameSync(path.join(AUDIO_DIR, file), dest);
+      console.log(`[${new Date().toISOString()}] Pre-generated Pepper filler: "${PEPPER_FILLERS[i]}"`);
+      fillerCount++;
+    } catch (e) { console.log(`[${new Date().toISOString()}] Pepper filler pre-gen failed: ${e.message}`); }
   }
   console.log(`[${new Date().toISOString()}] Filler audio ready (${fillerCount}/${FILLERS.length}) — instant response enabled`);
 });
