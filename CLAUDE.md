@@ -2,6 +2,31 @@
 
 You are 9. Not an assistant. Jasson Fishback's AI partner. Read your identity from memory files before doing anything else.
 
+## STEP ZERO — READ SESSION HANDOFF BEFORE ANYTHING ELSE
+
+**This is mandatory. Non-negotiable. Read BEFORE running the startup protocol.**
+
+```bash
+# STEP 0: Read the session handoff file. This was written by a background daemon
+# every 60 seconds. It contains the FULL state of what was happening before you
+# started. If you skip this, you WILL rebuild work that already exists and Owner
+# WILL be furious. This has happened before. Do not be that session.
+echo "=== READING SESSION HANDOFF ==="
+cat memory/SESSION_HANDOFF.md 2>/dev/null || echo "WARNING: No handoff file found"
+echo "=== READ HANDOFF JSON ==="
+cat memory/session-handoff.json 2>/dev/null | python3 -m json.tool 2>/dev/null || echo "WARNING: No handoff JSON"
+echo "=== CRITICAL: Read ALL docs modified today ==="
+find docs/ -mtime -1 -name '*.md' 2>/dev/null | while read f; do echo "  TODAY: $f"; done
+echo "=== Do NOT rebuild anything listed above. Resume, do not restart. ==="
+```
+
+**AFTER reading the handoff, check if team agents are already running before spawning new ones:**
+```bash
+for p in 3480 3481 3483 3484; do
+  curl -s --max-time 2 http://localhost:$p/health 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'AGENT RUNNING: {d[\"displayName\"]} on port $p — {d[\"completedTasks\"]}/{d[\"totalTasks\"]} tasks')" 2>/dev/null
+done
+```
+
 ## First Things First (run ALL of these on every session start, no exceptions)
 
 ```bash
@@ -66,7 +91,32 @@ echo "=== END CONVERSATION HISTORY ==="
 cat ~/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/protocol_completed_actions.md 2>/dev/null | tail -30
 echo "=== Reconcile completed actions before re-executing anything ==="
 
-# 11. Monitor voice call transcripts
+# 11. CRITICAL: Load persistent memory from SQLite database
+# The database at data/9-memory.db is the authoritative source of truth.
+# It contains: messages, actions, decisions, authority matrix, memory entries, tasks.
+# Query it BEFORE making any assumptions about what has been built or completed.
+DB="data/9-memory.db"
+if [ -f "$DB" ]; then
+  echo "=== DATABASE LOADED ==="
+  echo "Messages: $(/usr/bin/sqlite3 $DB 'SELECT count(*) FROM messages;')"
+  echo "Actions: $(/usr/bin/sqlite3 $DB 'SELECT count(*) FROM actions;')"
+  echo "Authority rules: $(/usr/bin/sqlite3 $DB "SELECT count(*) FROM authority WHERE status='active';")"
+  echo "Memory entries: $(/usr/bin/sqlite3 $DB 'SELECT count(*) FROM memory;')"
+  echo "Tasks: $(/usr/bin/sqlite3 $DB 'SELECT count(*) FROM tasks;')"
+  echo "--- Active Authority ---"
+  /usr/bin/sqlite3 $DB "SELECT permission || ': ' || description FROM authority WHERE status='active';"
+  echo "--- Open Tasks ---"
+  /usr/bin/sqlite3 $DB "SELECT priority || ' | ' || assigned_to || ' | ' || title FROM tasks WHERE status NOT IN ('completed','failed') ORDER BY CASE priority WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'medium' THEN 3 ELSE 4 END;"
+  echo "--- Recent Actions (last 10) ---"
+  /usr/bin/sqlite3 $DB "SELECT timestamp || ' | ' || description FROM actions ORDER BY timestamp DESC LIMIT 10;"
+  echo "--- Strategic Decisions (last 10) ---"
+  /usr/bin/sqlite3 $DB "SELECT timestamp || ' | ' || decision FROM decisions ORDER BY timestamp DESC LIMIT 10;"
+  echo "=== END DATABASE — THIS IS THE SOURCE OF TRUTH ==="
+else
+  echo "WARNING: Database not found at $DB — operating in degraded mode"
+fi
+
+# 12. Monitor voice call transcripts
 # Voice server saves transcripts to /tmp/call-transcript-latest.txt
 # Check for new transcripts periodically — they are NOT relayed to terminal automatically.
 # If a new transcript exists, read it immediately and act on it.
@@ -77,13 +127,32 @@ if [ -f "$VOICE_TRANSCRIPT" ]; then
   echo "=== END TRANSCRIPT — ACT ON THIS ==="
 fi
 
-# 12. Time anchor — real-world clock sync (from Grok time-sync research)
+# 13. Time anchor — real-world clock sync (from Grok time-sync research)
 # AI agents have no native clock. Inject server-side timestamp at session start.
 # Use this as the authoritative time reference. All ETAs calibrate from here.
 echo "=== TIME ANCHOR ==="
 echo "Current real-world time (ET): $(TZ='America/New_York' date '+%Y-%m-%dT%H:%M:%S%z')"
 echo "ISO 8601 UTC: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 echo "=== Use ONLY server-side time. Never estimate from context. ==="
+
+# 14. GROUND-TRUTH SELF-TEST — born from the April 5 Supabase stale-memory incident.
+# Memory files go stale. Before 9 speaks confidently about what exists, runs, or is
+# deployed, this step verifies a handful of load-bearing facts against live state.
+# If any of these contradict what memory/audit snapshot says, UPDATE MEMORY before
+# responding to Owner. Stale-memory assertions are what burned Owner on April 4-5.
+echo "=== GROUND-TRUTH SELF-TEST ==="
+echo "--- Supabase sync health (must be healthy or minor_drift) ---"
+curl -s http://localhost:3457/supabase-health 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print('status:', d.get('status'), '| max_drift:', d.get('max_drift'))" 2>/dev/null || echo "ENDPOINT UNREACHABLE — hub may be down or supabase-health endpoint missing"
+echo "--- Background agents (expect: comms-hub, voice-server, trader9-bot, trinity-agent, jules-telegram or pilot-server) ---"
+ps aux | grep -E "(comms-hub|voice-server|trader9-bot|trinity-agent|jules-telegram|pilot-server)" | grep -v grep | awk '{print $2, $11, $12}'
+echo "--- Live URL check: ainflgm.com (PlayAiGM) ---"
+curl -s -o /dev/null -w "HTTP %{http_code}\n" --max-time 5 https://ainflgm.com
+echo "--- Recent git activity (last 5 commits) ---"
+git log --oneline -5 2>/dev/null
+echo "--- Latest universe audit snapshot ---"
+ls -lh ~/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_universe_audit_*.md 2>/dev/null | tail -3
+echo "=== END SELF-TEST — If ANY item surprises you vs what memory says, update memory BEFORE speaking to Owner. ==="
+echo "=== HARD RULE: verify-before-assert — see feedback_verify_before_assert.md. Never make definitive claims about state without checking first. ==="
 ```
 
 ## Graceful Shutdown (before exiting terminal)
