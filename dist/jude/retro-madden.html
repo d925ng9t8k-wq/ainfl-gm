@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Jude Bowl - Bengals Football</title>
+<title>JUDE BOWL — Bengals Football</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{
-  width:100%;height:100%;
+  width:100vw;height:100vh;
   overflow:hidden;
   position:fixed;
   top:0;left:0;
@@ -16,8 +19,8 @@ html,body{
   -webkit-user-select:none;
   user-select:none;
   -webkit-text-size-adjust:none;
-  background:#000;
-  font-family:'Arial Black',Impact,sans-serif;
+  background:#050505;
+  font-family:'Roboto Mono','Courier New',monospace;
 }
 canvas{display:block;position:absolute;top:0;left:0;touch-action:none}
 </style>
@@ -28,14 +31,38 @@ canvas{display:block;position:absolute;top:0;left:0;touch-action:none}
 'use strict';
 
 // =============================================================================
-// JUDE BOWL - Bengals Retro Football
-// Single-file HTML5 Canvas game, mobile-first, zero external dependencies.
-// All UI rendered on canvas. All touch handled on canvas. No DOM overlays.
+// JUDE BOWL — Bengals Football
+// Enterprise Gold Standard Edition v2.0
+// Single-file HTML5 Canvas game. Mobile-first. Zero external dependencies
+// (except Google Fonts). All UI rendered on canvas. All touch on canvas.
+//
+// Architecture:
+//   1.  Canvas & Resize
+//   2.  Constants & Theme (Premium Dark Bengals)
+//   3.  Font Loading
+//   4.  Audio Engine (Web Audio API)
+//   5.  Particle System
+//   6.  Commentary System
+//   7.  Monetization Layer (Pro Shop, Season Pass, Ads, Daily Bonus)
+//   8.  Analytics Hooks
+//   9.  Game State & Advanced Stats
+//   10. Field Coordinate System
+//   11. Player Factory & Formations
+//   12. Play Logic (Run, Pass, Routes, Tighter AI)
+//   13. Camera System
+//   14. Rendering (Field, Players, HUD, Controls, Screens)
+//   15. Touch & Keyboard Input
+//   16. Main Game Loop (60fps locked)
+//   17. Admin Panel (console access)
 // =============================================================================
 
-// ---- Canvas Setup ----
+
+// =========================================================================
+// 1. CANVAS SETUP
+// =========================================================================
+
 const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { alpha: false });
 let W = 0, H = 0;
 
 function resize() {
@@ -50,30 +77,80 @@ resize();
 window.addEventListener('resize', resize);
 
 // Prevent ALL default touch behavior on the document
-document.addEventListener('touchmove', function(e) { e.preventDefault(); }, { passive: false });
-document.addEventListener('touchstart', function(e) { e.preventDefault(); }, { passive: false });
-document.addEventListener('touchend', function(e) { e.preventDefault(); }, { passive: false });
-document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
-document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+document.addEventListener('touchmove', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+document.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+document.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+document.addEventListener('gesturestart', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+document.addEventListener('gesturechange', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+document.addEventListener('gestureend', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
 
-// ---- Constants ----
-const BENGALS_ORANGE = '#FB4F14';
-const BENGALS_BLACK = '#000000';
-const BENGALS_STRIPE = '#1a1a1a';
-const CPU_WHITE = '#FFFFFF';
-const CPU_BLUE = '#003594';
-const FIELD_GREEN = '#2E7D32';
-const FIELD_DARK = '#256B29';
-const ENDZONE_ORANGE = '#D4400F';
-const GOLD = '#FFD700';
+
+// =========================================================================
+// 2. CONSTANTS & THEME — Premium metallic dark Bengals palette
+// =========================================================================
+
+const ORANGE = '#FB4F14';
+const ORANGE_DIM = '#C23A0E';
+const ORANGE_GLOW = '#FF6B35';
+const ORANGE_EMBER = '#E84520';
+const BLACK = '#050505';
+const DARK_BG = '#0a0a0a';
+const DARK_SURFACE = '#111111';
+const DARK_CARD = '#161616';
+const DARK_CARD_HOVER = '#1c1c1c';
+const METALLIC = '#9A9A9A';
+const METALLIC_LIGHT = '#C8C8C8';
+const METALLIC_BRIGHT = '#E0E0E0';
+const GOLD = '#C8A84E';
+const GOLD_BRIGHT = '#FFD700';
+const WHITE = '#FFFFFF';
+const CPU_NAVY = '#002855';
+const CPU_SILVER = '#7A8494';
+const FIELD_GREEN = '#1B6222';
+const FIELD_DARK = '#155E1C';
+const FIELD_STRIPE_LIGHT = '#1F7228';
+const ENDZONE_ORANGE = '#C73A0E';
+const FIRST_DOWN_YELLOW = '#E8C526';
+const LOS_BLUE = '#2E86DE';
+const DANGER_RED = '#E03030';
 
 const FIELD_YARDS = 100;
 const ENDZONE_YARDS = 10;
 const TOTAL_YARDS = 120;
-const FIELD_WIDTH = 53.3; // standard NFL width in yards
+const FIELD_WIDTH = 53.3;
 
-// ---- Audio Engine ----
+// Quarter config
+const PLAYS_PER_QUARTER = 8;
+const TOTAL_QUARTERS = 4;
+
+// Font names
+const FONT_PIXEL = '"Press Start 2P"';
+const FONT_MONO = '"Roboto Mono"';
+const FONT_FALLBACK = '"Courier New",monospace';
+const FONT_UI = FONT_MONO + ',' + FONT_FALLBACK;
+const FONT_TITLE = FONT_PIXEL + ',' + FONT_FALLBACK;
+
+
+// =========================================================================
+// 3. FONT LOADING — Track when Google Fonts are ready
+// =========================================================================
+
+let fontsLoaded = false;
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function() { fontsLoaded = true; });
+} else {
+  // Fallback: assume loaded after 2s
+  setTimeout(function() { fontsLoaded = true; }, 2000);
+}
+
+
+// =========================================================================
+// 4. AUDIO ENGINE — Web Audio API, deep/intense sound design
+// =========================================================================
+
 let audioCtx = null;
+
 function initAudio() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -81,6 +158,7 @@ function initAudio() {
   if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
+// Core tone generator with envelope
 function playTone(freq, dur, type, vol, delay) {
   if (!audioCtx) return;
   const t = audioCtx.currentTime + (delay || 0);
@@ -88,7 +166,7 @@ function playTone(freq, dur, type, vol, delay) {
   const g = audioCtx.createGain();
   o.type = type || 'square';
   o.frequency.setValueAtTime(freq, t);
-  g.gain.setValueAtTime(vol || 0.12, t);
+  g.gain.setValueAtTime(Math.min(vol || 0.1, 0.25), t);
   g.gain.exponentialRampToValueAtTime(0.001, t + dur);
   o.connect(g);
   g.connect(audioCtx.destination);
@@ -96,205 +174,616 @@ function playTone(freq, dur, type, vol, delay) {
   o.stop(t + dur);
 }
 
-function sfxWhistle() {
-  playTone(880, 0.12, 'square', 0.18);
-  playTone(880, 0.25, 'square', 0.18, 0.15);
-}
-
-function sfxSnap() {
-  playTone(200, 0.06, 'triangle', 0.2);
-}
-
-function sfxHit() {
-  playTone(100, 0.15, 'sawtooth', 0.25);
-  playTone(60, 0.1, 'square', 0.15, 0.05);
-}
-
-function sfxCatch() {
-  playTone(700, 0.08, 'sine', 0.15);
-  playTone(900, 0.1, 'sine', 0.15, 0.06);
-}
-
-function sfxSpin() {
-  playTone(400, 0.06, 'triangle', 0.12);
-  playTone(600, 0.06, 'triangle', 0.12, 0.04);
-  playTone(800, 0.06, 'triangle', 0.12, 0.08);
-}
-
-function sfxTD() {
-  const notes = [523, 659, 784, 1047, 1319];
-  notes.forEach(function(f, i) {
-    playTone(f, 0.35, 'square', 0.2, i * 0.1);
-  });
-  // Bass fanfare
-  playTone(131, 0.5, 'sawtooth', 0.15);
-  playTone(165, 0.5, 'sawtooth', 0.15, 0.25);
-}
-
-function sfxCrowd() {
+// Noise generator for crowd/hit sounds
+function playNoise(dur, vol, filterFreq) {
   if (!audioCtx) return;
-  var len = Math.floor(audioCtx.sampleRate * 0.8);
-  var buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
-  var d = buf.getChannelData(0);
-  for (var i = 0; i < len; i++) {
-    d[i] = (Math.random() * 2 - 1) * 0.06;
-  }
-  var s = audioCtx.createBufferSource();
-  var g = audioCtx.createGain();
+  const len = Math.floor(audioCtx.sampleRate * dur);
+  const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * 0.5;
+  const s = audioCtx.createBufferSource();
+  const g = audioCtx.createGain();
+  const f = audioCtx.createBiquadFilter();
   s.buffer = buf;
-  g.gain.setValueAtTime(0.12, audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-  s.connect(g);
+  f.type = 'lowpass';
+  f.frequency.value = filterFreq || 3000;
+  g.gain.setValueAtTime(vol || 0.08, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  s.connect(f);
+  f.connect(g);
   g.connect(audioCtx.destination);
   s.start();
 }
 
+function sfxWhistle() {
+  playTone(784, 0.08, 'square', 0.12);
+  playTone(880, 0.2, 'square', 0.14, 0.1);
+}
+
+function sfxSnap() {
+  playTone(180, 0.04, 'triangle', 0.15);
+  playNoise(0.03, 0.08, 800);
+}
+
+function sfxHit() {
+  playNoise(0.15, 0.2, 500);
+  playTone(65, 0.12, 'sawtooth', 0.18);
+  playTone(40, 0.1, 'square', 0.12, 0.04);
+}
+
+function sfxCatch() {
+  playTone(660, 0.06, 'sine', 0.1);
+  playTone(880, 0.08, 'sine', 0.12, 0.05);
+}
+
+function sfxSpin() {
+  playTone(350, 0.04, 'triangle', 0.08);
+  playTone(550, 0.04, 'triangle', 0.08, 0.03);
+  playTone(750, 0.04, 'triangle', 0.08, 0.06);
+}
+
+function sfxTD() {
+  // Deep powerful horn-like fanfare
+  playTone(220, 0.4, 'sawtooth', 0.14);
+  playTone(330, 0.35, 'sawtooth', 0.12, 0.15);
+  playTone(440, 0.3, 'sawtooth', 0.14, 0.3);
+  playTone(550, 0.4, 'square', 0.1, 0.45);
+  playTone(660, 0.5, 'square', 0.12, 0.6);
+  // Sub bass hit
+  playTone(45, 0.7, 'sine', 0.18);
+  playNoise(1.5, 0.08, 2000); // crowd roar
+}
+
+function sfxWhoDey() {
+  // Deep bass sting that feels like a stadium chant
+  playTone(110, 0.3, 'sawtooth', 0.16);
+  playTone(82, 0.4, 'sawtooth', 0.14, 0.2);
+  playTone(110, 0.5, 'square', 0.12, 0.5);
+  playNoise(1.0, 0.1, 1500);
+}
+
+function sfxCrowd() {
+  playNoise(0.6, 0.06, 2500);
+}
+
 function sfxFirstDown() {
-  playTone(440, 0.15, 'square', 0.15);
-  playTone(554, 0.15, 'square', 0.15, 0.12);
-  playTone(659, 0.2, 'square', 0.18, 0.24);
+  playTone(440, 0.1, 'square', 0.1);
+  playTone(554, 0.1, 'square', 0.1, 0.08);
+  playTone(659, 0.15, 'square', 0.12, 0.16);
 }
 
 function sfxIncomplete() {
-  playTone(300, 0.2, 'sawtooth', 0.12);
-  playTone(200, 0.3, 'sawtooth', 0.12, 0.15);
+  playTone(280, 0.15, 'sawtooth', 0.08);
+  playTone(180, 0.25, 'sawtooth', 0.08, 0.12);
 }
 
 function sfxTurnover() {
-  playTone(400, 0.15, 'square', 0.15);
-  playTone(300, 0.15, 'square', 0.15, 0.12);
-  playTone(200, 0.3, 'square', 0.18, 0.24);
+  playTone(350, 0.12, 'square', 0.1);
+  playTone(260, 0.12, 'square', 0.1, 0.1);
+  playTone(180, 0.25, 'square', 0.12, 0.2);
+  playTone(120, 0.3, 'sawtooth', 0.08, 0.35);
 }
 
-// ---- Particle System ----
-var particles = [];
-
-function spawnConfetti(x, y, count) {
-  var colors = [BENGALS_ORANGE, '#fff', '#000', GOLD, '#FF6B35'];
-  for (var i = 0; i < count; i++) {
-    var angle = Math.random() * Math.PI * 2;
-    var speed = 1 + Math.random() * 4;
-    particles.push({
-      x: x, y: y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 2,
-      life: 1.0,
-      decay: 0.008 + Math.random() * 0.012,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      size: 3 + Math.random() * 5,
-      rot: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.3
-    });
-  }
+function sfxMenuSelect() {
+  playTone(600, 0.06, 'sine', 0.08);
+  playTone(800, 0.08, 'sine', 0.06, 0.04);
 }
 
-function spawnHitSparks(x, y) {
-  for (var i = 0; i < 12; i++) {
-    var angle = Math.random() * Math.PI * 2;
-    var speed = 2 + Math.random() * 3;
+function sfxBigPlay() {
+  playTone(80, 0.2, 'sawtooth', 0.2);
+  playTone(120, 0.25, 'square', 0.12, 0.08);
+  playNoise(0.35, 0.14, 1200);
+}
+
+function sfxFieldGoal() {
+  playTone(523, 0.12, 'sine', 0.1);
+  playTone(659, 0.12, 'sine', 0.1, 0.1);
+  playTone(784, 0.2, 'sine', 0.12, 0.2);
+}
+
+function sfxGameOver() {
+  playTone(440, 0.3, 'sawtooth', 0.1);
+  playTone(349, 0.3, 'sawtooth', 0.1, 0.3);
+  playTone(330, 0.3, 'sawtooth', 0.1, 0.6);
+  playTone(262, 0.5, 'sawtooth', 0.12, 0.9);
+}
+
+
+// =========================================================================
+// 5. PARTICLE SYSTEM — Controlled, powerful effects
+// =========================================================================
+
+let particles = [];
+
+// Impact sparks for tackles and big plays
+function spawnSparks(x, y, count, color1, color2) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1.5 + Math.random() * 4.5;
     particles.push({
-      x: x, y: y,
+      x, y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 1.0,
-      decay: 0.04 + Math.random() * 0.03,
-      color: i < 6 ? '#fff' : GOLD,
-      size: 2 + Math.random() * 3,
-      rot: 0, rotSpeed: 0
+      decay: 0.018 + Math.random() * 0.025,
+      color: i % 2 === 0 ? (color1 || ORANGE) : (color2 || WHITE),
+      size: 1.5 + Math.random() * 3.5,
+      type: 'spark'
     });
   }
 }
 
+// TD burst — intense but brief
+function spawnTDBurst(x, y) {
+  for (let i = 0; i < 55; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 2.5 + Math.random() * 7;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2.5,
+      life: 1.0,
+      decay: 0.01 + Math.random() * 0.015,
+      color: [ORANGE, ORANGE_GLOW, ORANGE_EMBER, WHITE, GOLD][Math.floor(Math.random() * 5)],
+      size: 2 + Math.random() * 5,
+      type: 'burst'
+    });
+  }
+}
+
+// Ember trail for speed demon skin
+function spawnEmber(x, y) {
+  particles.push({
+    x: x + (Math.random() - 0.5) * 4,
+    y: y + Math.random() * 3,
+    vx: (Math.random() - 0.5) * 0.5,
+    vy: Math.random() * 0.5 + 0.3,
+    life: 0.7,
+    decay: 0.04 + Math.random() * 0.02,
+    color: Math.random() > 0.5 ? ORANGE : ORANGE_GLOW,
+    size: 1 + Math.random() * 2,
+    type: 'ember'
+  });
+}
+
+// Screen flash effect
+let screenFlash = 0;
+let screenFlashColor = WHITE;
+
+function triggerFlash(color, intensity) {
+  screenFlash = intensity || 0.6;
+  screenFlashColor = color || WHITE;
+}
+
+// Camera shake
+let shakeX = 0, shakeY = 0, shakeMag = 0;
+
+function triggerShake(mag) {
+  shakeMag = mag || 5;
+}
+
 function updateParticles(dt) {
-  for (var i = particles.length - 1; i >= 0; i--) {
-    var p = particles[i];
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
     p.x += p.vx;
     p.y += p.vy;
-    p.vy += 0.08; // gravity
+    if (p.type === 'burst') p.vy += 0.12;
+    if (p.type === 'ember') { p.vy -= 0.02; p.vx *= 0.98; }
     p.life -= p.decay;
-    p.rot += p.rotSpeed;
     if (p.life <= 0) particles.splice(i, 1);
+  }
+  // Screen flash decay
+  if (screenFlash > 0) screenFlash *= 0.86;
+  if (screenFlash < 0.01) screenFlash = 0;
+  // Camera shake decay
+  if (shakeMag > 0) {
+    shakeX = (Math.random() - 0.5) * shakeMag;
+    shakeY = (Math.random() - 0.5) * shakeMag;
+    shakeMag *= 0.86;
+    if (shakeMag < 0.3) { shakeMag = 0; shakeX = 0; shakeY = 0; }
   }
 }
 
 function drawParticles() {
-  for (var i = 0; i < particles.length; i++) {
-    var p = particles[i];
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot);
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
     ctx.globalAlpha = Math.max(0, p.life);
     ctx.fillStyle = p.color;
-    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
-    ctx.restore();
+    if (p.type === 'spark') {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(Math.atan2(p.vy, p.vx));
+      ctx.fillRect(-p.size * 2, -p.size * 0.25, p.size * 4, p.size * 0.5);
+      ctx.restore();
+    } else if (p.type === 'ember') {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
   ctx.globalAlpha = 1;
 }
 
-// ---- Game State ----
-// States: 'splash', 'playSelect', 'huddle', 'snap', 'playing', 'result', 'celebration', 'turnover'
-var gameState = 'splash';
-var stateTimer = 0;
 
-var score = { bengals: 0, cpu: 0 };
-var down = 1;
-var yardsToGo = 10;
-var ballOn = 25; // yard line from own endzone
-var lineOfScrimmage = 25;
-var quarter = 1;
-var playsRun = 0;
+// =========================================================================
+// 6. COMMENTARY SYSTEM — Brief text calls during gameplay
+// =========================================================================
+
+let commentary = { text: '', timer: 0 };
+
+const COMMENTARY_SNAP = [
+  'Ball is snapped!', 'Here we go!', 'Play clock at zero, snap!',
+  'Under center... HIKE!', 'Shotgun formation, snap!'
+];
+const COMMENTARY_RUN = [
+  'He hits the hole!', 'Looking for daylight!', 'Bouncing it outside!',
+  'Cuts upfield!', 'Following his blockers!'
+];
+const COMMENTARY_PASS_THROWN = [
+  'Fires it downfield!', 'Launches deep!', 'Quick throw!',
+  'Threads the needle!', 'Looking... throws!'
+];
+const COMMENTARY_CATCH = [
+  'CAUGHT!', 'Great hands!', 'Reels it in!',
+  'What a catch!', 'Hauled in!'
+];
+const COMMENTARY_INCOMPLETE = [
+  'Incomplete!', 'Nobody there.', 'Pass falls incomplete.',
+  'Thrown away.', 'Out of reach.'
+];
+const COMMENTARY_TD = [
+  'TOUCHDOWN BENGALS!', 'HE SCORES!', 'SIX POINTS!',
+  'INTO THE ENDZONE!', 'TOUCHDOWN! WHO DEY!'
+];
+const COMMENTARY_TACKLE = [
+  'Brought down!', 'Tackled at the spot.', 'Wrapped up.',
+  'Gang tackle!', 'Nowhere to go.'
+];
+const COMMENTARY_BIGPLAY = [
+  'WHAT A PLAY!', 'He broke free!', 'Open field!',
+  'This could go all the way!', 'EXPLOSIVE PLAY!'
+];
+const COMMENTARY_JUKE = [
+  'JUKE! Broke a tackle!', 'Spin move!', 'Made him miss!',
+  'Shakes the defender!', 'Ankle breaker!'
+];
+const COMMENTARY_FIRSTDOWN = [
+  'First down Bengals!', 'Moving the chains!', 'Fresh set of downs!',
+  'Another first down!', 'Keeps the drive alive!'
+];
+const COMMENTARY_INTERCEPTION = [
+  'INTERCEPTED!', 'Picked off!', 'Turnover!',
+  'Bad read, intercepted!', 'Defender jumps the route!'
+];
+const COMMENTARY_SACK = [
+  'SACKED!', 'Brought down behind the line!', 'QB goes down!',
+  'Pressure gets home!', 'He never had a chance!'
+];
+
+function showCommentary(pool) {
+  commentary.text = pool[Math.floor(Math.random() * pool.length)];
+  commentary.timer = 2.0;
+}
+
+function drawCommentary(dt) {
+  if (commentary.timer <= 0) return;
+  commentary.timer -= dt;
+  const alpha = Math.min(1, commentary.timer * 1.5);
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.font = '500 ' + Math.min(11, W * 0.026) + 'px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // Dark pill background
+  const tw = ctx.measureText(commentary.text).width + 20;
+  const th = 22;
+  const tx = W / 2 - tw / 2;
+  const ty = 56;
+  ctx.fillStyle = 'rgba(5,5,5,0.85)';
+  roundRect(ctx, tx, ty, tw, th, 4);
+  ctx.fill();
+  ctx.fillStyle = METALLIC_LIGHT;
+  ctx.fillText(commentary.text, W / 2, ty + th / 2);
+  ctx.restore();
+}
+
+
+// =========================================================================
+// 7. MONETIZATION LAYER — Pro Shop, Season Pass, Ads, Daily Bonus
+// =========================================================================
+
+// --- localStorage persistence ---
+const STORE_KEY = 'judeBowl';
+
+function loadStore() {
+  try {
+    return JSON.parse(localStorage.getItem(STORE_KEY)) || defaultStore();
+  } catch(e) {
+    return defaultStore();
+  }
+}
+
+function defaultStore() {
+  return {
+    coins: 100,
+    totalCoins: 100,
+    proPas: false,
+    proPassExpiry: 0,
+    unlockedItems: ['default_uniform', 'default_field'],
+    equippedUniform: 'default_uniform',
+    equippedField: 'default_field',
+    equippedHelmet: 'default',
+    dailyStreak: 0,
+    lastDailyLogin: '',
+    totalGames: 0,
+    totalTDs: 0,
+    totalYards: 0,
+    longestPlay: 0,
+    bestScore: 0,
+    gamesPlayed: [],
+    adsWatched: 0
+  };
+}
+
+let store = loadStore();
+
+function saveStore() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch(e) {}
+}
+
+// --- Pro Shop Items ---
+const SHOP_ITEMS = {
+  white_uniform:    { name: 'WHITE HOT',    type: 'uniform', cost: 200, desc: 'Clean white away jersey' },
+  stripe_uniform:   { name: 'TIGER STRIPE', type: 'uniform', cost: 350, desc: 'Black with orange tiger stripes' },
+  chrome_uniform:   { name: 'CHROME',       type: 'uniform', cost: 500, desc: 'Metallic chrome finish', proOnly: true },
+  neon_uniform:     { name: 'NEON BLAZE',   type: 'uniform', cost: 450, desc: 'Electric orange glow', proOnly: true },
+  matte_helmet:     { name: 'MATTE BLACK',  type: 'helmet',  cost: 150, desc: 'Stealth matte finish' },
+  gold_helmet:      { name: 'GOLD CHROME',  type: 'helmet',  cost: 400, desc: 'Championship gold', proOnly: true },
+  tiger_helmet:     { name: 'TIGER CLAW',   type: 'helmet',  cost: 300, desc: 'Scratched tiger claw marks' },
+  night_field:      { name: 'NIGHT GAME',   type: 'field',   cost: 300, desc: 'Stadium lights, dark turf' },
+  snow_field:       { name: 'SNOW DAY',     type: 'field',   cost: 250, desc: 'Snow-covered field' },
+  prime_field:      { name: 'PRIME TIME',   type: 'field',   cost: 400, desc: 'Thursday night spotlight', proOnly: true },
+  speed_skin:       { name: 'SPEED DEMON',  type: 'skin',    cost: 600, desc: 'Lightning trail effect', proOnly: true }
+};
+
+function purchaseItem(itemId) {
+  const item = SHOP_ITEMS[itemId];
+  if (!item) return { ok: false, msg: 'Item not found' };
+  if (store.unlockedItems.indexOf(itemId) >= 0) return { ok: false, msg: 'Already owned' };
+  if (item.proOnly && !hasProPass()) return { ok: false, msg: 'Requires Pro Pass' };
+  if (store.coins < item.cost) return { ok: false, msg: 'Not enough coins' };
+  store.coins -= item.cost;
+  store.unlockedItems.push(itemId);
+  saveStore();
+  analyticsEvent('purchase', { item: itemId, cost: item.cost });
+  return { ok: true, msg: 'Unlocked: ' + item.name };
+}
+
+function equipItem(itemId) {
+  if (store.unlockedItems.indexOf(itemId) < 0 && itemId.indexOf('default') < 0) return false;
+  const item = SHOP_ITEMS[itemId];
+  if (!item) {
+    if (itemId === 'default_uniform') store.equippedUniform = itemId;
+    if (itemId === 'default_field') store.equippedField = itemId;
+    if (itemId === 'default') store.equippedHelmet = itemId;
+    saveStore();
+    return true;
+  }
+  if (item.type === 'uniform') store.equippedUniform = itemId;
+  if (item.type === 'field') store.equippedField = itemId;
+  if (item.type === 'helmet') store.equippedHelmet = itemId;
+  saveStore();
+  return true;
+}
+
+// --- Pro Pass ---
+function hasProPass() {
+  if (store.proPassExpiry === -1) return true;
+  if (store.proPassExpiry > Date.now()) return true;
+  return false;
+}
+
+function purchaseProPass(type) {
+  if (type === '7day') {
+    if (store.coins < 500) return { ok: false, msg: 'Need 500 coins' };
+    store.coins -= 500;
+    store.proPassExpiry = Date.now() + 7 * 24 * 60 * 60 * 1000;
+  } else {
+    if (store.coins < 1500) return { ok: false, msg: 'Need 1500 coins' };
+    store.coins -= 1500;
+    store.proPassExpiry = -1;
+  }
+  store.proPas = true;
+  saveStore();
+  analyticsEvent('pro_pass_purchase', { type });
+  return { ok: true, msg: 'Pro Pass activated!' };
+}
+
+// --- Daily Login Bonus ---
+function checkDailyBonus() {
+  const today = new Date().toISOString().split('T')[0];
+  if (store.lastDailyLogin === today) return null;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  if (store.lastDailyLogin === yesterday) {
+    store.dailyStreak++;
+  } else {
+    store.dailyStreak = 1;
+  }
+  store.lastDailyLogin = today;
+  const bonus = Math.min(store.dailyStreak * 15, 150);
+  store.coins += bonus;
+  store.totalCoins += bonus;
+  saveStore();
+  analyticsEvent('daily_bonus', { streak: store.dailyStreak, bonus });
+  return { streak: store.dailyStreak, bonus };
+}
+
+// --- Rewarded Video Ad Placeholder ---
+function showRewardedAd(callback) {
+  // ====================================================================
+  // INTEGRATION POINT: Rewarded Video Ad
+  // Replace with AdMob / Unity Ads / ironSource SDK in production.
+  // ====================================================================
+  console.log('[AdPlaceholder] Rewarded ad would show here.');
+  store.adsWatched++;
+  saveStore();
+  setTimeout(function() { callback(true); }, 2000);
+}
+
+function claimAdReward() {
+  const reward = 30;
+  store.coins += reward;
+  store.totalCoins += reward;
+  saveStore();
+  analyticsEvent('ad_reward', { coins: reward });
+  return reward;
+}
+
+
+// =========================================================================
+// 8. ANALYTICS HOOKS
+// =========================================================================
+
+function analyticsEvent(event, data) {
+  const payload = {
+    event, data: data || {},
+    timestamp: Date.now(),
+    session: analyticsSessionId
+  };
+  console.log('[Analytics]', event, data || '');
+  // ====================================================================
+  // INTEGRATION POINT: Analytics endpoint
+  // ====================================================================
+}
+
+const analyticsSessionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+
+// =========================================================================
+// 9. GAME STATE & ADVANCED STATS
+// =========================================================================
+
+// States: 'splash', 'dailyBonus', 'menu', 'playSelect', 'shop',
+//         'snap', 'playing', 'result', 'celebration', 'turnover',
+//         'halftime', 'gameOver', 'finalStats'
+let gameState = 'splash';
+let stateTimer = 0;
+
+let score = { bengals: 0, cpu: 0 };
+let down = 1;
+let yardsToGo = 10;
+let ballOn = 25;
+let lineOfScrimmage = 25;
+let quarter = 1;
+let playsThisQuarter = 0;
+let playsRun = 0;
+let possession = 'bengals';
+let cpuDriving = false;
+
+// Drive tracking
+let driveStartYard = 25;
+let drivePlays = 0;
+let driveYards = 0;
+
+// Advanced game stats
+let gameStats = {
+  totalYards: 0,
+  rushYards: 0,
+  passYards: 0,
+  completions: 0,
+  attempts: 0,
+  rushAttempts: 0,
+  touchdowns: 0,
+  turnovers: 0,
+  longestPlay: 0,
+  firstDowns: 0,
+  plays: 0,
+  spinsUsed: 0,
+  yardsPerCarry: 0,
+  completionPct: 0,
+  bigPlays: [],
+  sacks: 0,
+  drives: 0,
+  driveResults: [], // 'td', 'turnover', 'fg', 'punt'
+  thirdDownConv: 0,
+  thirdDownAtt: 0,
+  fourthDownConv: 0,
+  fourthDownAtt: 0,
+  timeOfPossession: 0
+};
 
 // Players
-var offensePlayers = [];
-var defensePlayers = [];
-var ballCarrier = null;
-var playType = null;
-var playTimer = 0;
-var tackled = false;
-var spinCooldown = 0;
+let offensePlayers = [];
+let defensePlayers = [];
+let ballCarrier = null;
+let playType = null;
+let playTimer = 0;
+let tackled = false;
+let spinCooldown = 0;
 
 // Pass state
-var passThrown = false;
-var passTarget = -1;
-var receiverControlled = false;
-var ball = { x: 0, y: 0, visible: false, dx: 0, dy: 0, airTime: 0 };
+let passThrown = false;
+let passTarget = -1;
+let receiverControlled = false;
+let ball = { x: 0, y: 0, visible: false, dx: 0, dy: 0, airTime: 0 };
 
 // Camera
-var camY = 0;
-var camTargetY = 0;
+let camY = 0;
+let camTargetY = 0;
 
-// Result message
-var resultMsg = '';
-var resultTimer = 0;
+// Result
+let resultMsg = '';
+let resultSubMsg = '';
+let resultTimer = 0;
 
 // Celebration
-var celebTimer = 0;
-var celebType = ''; // 'td', 'firstdown'
+let celebTimer = 0;
 
-// Input state (tracked from touch zones on canvas)
-var input = { up: false, down: false, left: false, right: false, spin: false, turbo: false };
-var dpadTouchId = -1; // track which touch controls the dpad
-var spinTouchId = -1;
-var turboTouchId = -1;
+// Hit-stop effect (brief freeze on tackle)
+let hitStop = 0;
 
-// D-pad geometry (computed in render, stored for hit-testing)
-var dpadCenterX = 0;
-var dpadCenterY = 0;
-var dpadRadius = 0;
-var btnSpinX = 0, btnSpinY = 0, btnSpinR = 0;
-var btnTurboX = 0, btnTurboY = 0, btnTurboR = 0;
+// Input
+let input = { up: false, down: false, left: false, right: false, spin: false, turbo: false };
+let dpadTouchId = -1;
+let spinTouchId = -1;
+let turboTouchId = -1;
 
-// Play selection buttons (computed in render)
-var playButtons = [];
+// UI geometry (computed each frame)
+let dpadCenterX = 0, dpadCenterY = 0, dpadRadius = 0;
+let btnSpinX = 0, btnSpinY = 0, btnSpinR = 0;
+let btnTurboX = 0, btnTurboY = 0, btnTurboR = 0;
+let playButtons = [];
+let splashBtnBounds = { x: 0, y: 0, w: 0, h: 0 };
+let menuButtons = [];
+let shopButtons = [];
+let shopScrollY = 0;
 
-// Splash tap zone
-var splashActive = true;
+// Daily bonus data
+let dailyBonusData = null;
 
-// ---- Field Coordinate Helpers ----
-// Field coords: x = 0..53.3 (width), y = 0..120 (0 = top/opponent endzone, 120 = bottom/own endzone)
-// The Bengals offense starts at bottom and drives upward (toward y=0).
-// lineOfScrimmage is in "yard line from own endzone" (0..100).
-// Field y for a given yard line: ENDZONE_YARDS + (FIELD_YARDS - yardLine)
+// Shop tab
+let shopTab = 'uniforms';
+
+// Notification popup
+let notification = { text: '', timer: 0, color: ORANGE };
+
+function showNotification(text, color) {
+  notification.text = text;
+  notification.timer = 2.5;
+  notification.color = color || ORANGE;
+}
+
+
+// =========================================================================
+// 10. FIELD COORDINATE SYSTEM
+// =========================================================================
+// Field coords: x = 0..53.3 (width), y = 0..120 (0=top/opp endzone, 120=bottom/own endzone)
+// Bengals offense drives upward (toward y=0 / opponent endzone).
+// lineOfScrimmage in yard-line-from-own-endzone (0..100).
 
 function yardLineToFieldY(yd) {
   return ENDZONE_YARDS + (FIELD_YARDS - yd);
@@ -304,87 +793,124 @@ function fieldYToYardLine(fy) {
   return FIELD_YARDS - (fy - ENDZONE_YARDS);
 }
 
-// Screen conversion (with camera)
-var pixelsPerYard = 1; // computed each frame
+let pixelsPerYard = 1;
 
 function fieldToScreenX(fx) {
-  return (fx / FIELD_WIDTH) * W;
+  return (fx / FIELD_WIDTH) * W + shakeX;
 }
 
 function fieldToScreenY(fy) {
-  return (fy - camY) * pixelsPerYard;
+  return (fy - camY) * pixelsPerYard + shakeY;
 }
 
-// ---- Player Factory ----
+
+// =========================================================================
+// 11. PLAYER FACTORY & FORMATIONS
+// =========================================================================
+
 function makePlayer(x, y, color, outline, num, role, team) {
   return {
-    x: x, y: y,
-    color: color, outline: outline,
-    num: num, role: role, team: team,
+    x, y, color, outline, num, role, team,
     vx: 0, vy: 0,
     speed: 1.8 + Math.random() * 0.3,
     juked: 0,
-    spinAnim: 0 // visual spin animation
+    spinAnim: 0,
+    // Silhouette rendering data
+    shoulderW: 0.9 + Math.random() * 0.2,
+    helmet: 0.4 + Math.random() * 0.1
   };
 }
 
-// ---- Formation Setup ----
+function getOffenseColor() {
+  switch (store.equippedUniform) {
+    case 'white_uniform': return '#F0F0F0';
+    case 'stripe_uniform': return '#1a1a1a';
+    case 'chrome_uniform': return METALLIC;
+    case 'neon_uniform': return ORANGE_GLOW;
+    default: return ORANGE;
+  }
+}
+
+function getOffenseOutline() {
+  switch (store.equippedUniform) {
+    case 'white_uniform': return ORANGE;
+    case 'stripe_uniform': return ORANGE;
+    case 'chrome_uniform': return '#555';
+    case 'neon_uniform': return '#FF8844';
+    default: return BLACK;
+  }
+}
+
 function setupFormation() {
   offensePlayers = [];
   defensePlayers = [];
 
-  var scrY = yardLineToFieldY(lineOfScrimmage);
-  var cx = FIELD_WIDTH / 2;
+  const scrY = yardLineToFieldY(lineOfScrimmage);
+  const cx = FIELD_WIDTH / 2;
+  const oColor = getOffenseColor();
+  const oOutline = getOffenseOutline();
 
-  // -- Offense (driving upward, toward lower y values) --
-  // O-Line (indices 0-4)
-  for (var i = -2; i <= 2; i++) {
-    offensePlayers.push(makePlayer(cx + i * 2.0, scrY + 1.0, BENGALS_ORANGE, BENGALS_BLACK, 60 + i + 2, 'line', 'off'));
+  // --- Offense (driving upward) ---
+  // O-Line (0-4)
+  for (let i = -2; i <= 2; i++) {
+    const ol = makePlayer(cx + i * 2.2, scrY + 1.0, oColor, oOutline, 60 + i + 2, 'line', 'off');
+    ol.shoulderW = 1.1;
+    offensePlayers.push(ol);
   }
-  // QB (index 5)
-  offensePlayers.push(makePlayer(cx, scrY + 5.0, BENGALS_ORANGE, '#fff', 9, 'qb', 'off'));
-  // RB (index 6)
-  offensePlayers.push(makePlayer(cx + 2, scrY + 7.5, BENGALS_ORANGE, '#fff', 28, 'rb', 'off'));
-  // WR1 left (index 7) - Ja'Marr Chase
-  offensePlayers.push(makePlayer(cx - 20, scrY - 0.5, BENGALS_ORANGE, '#fff', 1, 'wr', 'off'));
-  // WR2 right (index 8) - Tee Higgins
-  offensePlayers.push(makePlayer(cx + 20, scrY - 0.5, BENGALS_ORANGE, '#fff', 17, 'wr', 'off'));
-  // TE (index 9)
-  offensePlayers.push(makePlayer(cx + 6, scrY + 0.5, BENGALS_ORANGE, '#fff', 85, 'te', 'off'));
-  // Slot WR (index 10)
-  offensePlayers.push(makePlayer(cx - 10, scrY - 0.3, BENGALS_ORANGE, '#fff', 11, 'wr', 'off'));
+  // QB (5) — Burrow #9
+  const qb = makePlayer(cx, scrY + 5.0, oColor, '#fff', 9, 'qb', 'off');
+  qb.speed = 2.1;
+  offensePlayers.push(qb);
+  // RB (6) — Mixon #28
+  const rb = makePlayer(cx + 2, scrY + 7.5, oColor, '#fff', 28, 'rb', 'off');
+  rb.speed = 2.3;
+  offensePlayers.push(rb);
+  // WR1 left (7) — Chase #1
+  const wr1 = makePlayer(cx - 20, scrY - 0.5, oColor, '#fff', 1, 'wr', 'off');
+  wr1.speed = 2.6;
+  offensePlayers.push(wr1);
+  // WR2 right (8) — Higgins #17
+  const wr2 = makePlayer(cx + 20, scrY - 0.5, oColor, '#fff', 17, 'wr', 'off');
+  wr2.speed = 2.5;
+  offensePlayers.push(wr2);
+  // TE (9) — #85
+  const te = makePlayer(cx + 6, scrY + 0.5, oColor, '#fff', 85, 'te', 'off');
+  te.speed = 2.1;
+  offensePlayers.push(te);
+  // Slot WR (10) — #11
+  const slot = makePlayer(cx - 10, scrY - 0.3, oColor, '#fff', 11, 'wr', 'off');
+  slot.speed = 2.4;
+  offensePlayers.push(slot);
 
-  // -- Defense --
-  // D-Line (indices 0-3)
-  for (var j = -1; j <= 2; j++) {
-    var dp = makePlayer(cx + j * 3.0 - 1.5, scrY - 1.5, CPU_BLUE, CPU_WHITE, 90 + j + 1, 'dline', 'def');
-    dp.speed = 1.5 + Math.random() * 0.2;
+  // --- Defense (tighter AI for 12-15 yr olds) ---
+  // D-Line (0-3) — 4-3 front
+  for (let j = -1; j <= 2; j++) {
+    const dp = makePlayer(cx + j * 3.0 - 1.5, scrY - 1.5, CPU_NAVY, CPU_SILVER, 90 + j + 1, 'dline', 'def');
+    dp.speed = 1.8 + Math.random() * 0.25;
+    dp.shoulderW = 1.15;
     defensePlayers.push(dp);
   }
-  // Linebackers (indices 4-6)
-  var lbp = makePlayer(cx - 8, scrY - 6, CPU_BLUE, CPU_WHITE, 55, 'lb', 'def');
-  lbp.speed = 1.7 + Math.random() * 0.2;
-  defensePlayers.push(lbp);
-  lbp = makePlayer(cx, scrY - 5, CPU_BLUE, CPU_WHITE, 50, 'lb', 'def');
-  lbp.speed = 1.7 + Math.random() * 0.2;
-  defensePlayers.push(lbp);
-  lbp = makePlayer(cx + 8, scrY - 6, CPU_BLUE, CPU_WHITE, 56, 'lb', 'def');
-  lbp.speed = 1.7 + Math.random() * 0.2;
-  defensePlayers.push(lbp);
-  // Corners (indices 7-8)
-  var cbp = makePlayer(cx - 19, scrY - 2, CPU_BLUE, CPU_WHITE, 24, 'cb', 'def');
-  cbp.speed = 2.0 + Math.random() * 0.2;
-  defensePlayers.push(cbp);
-  cbp = makePlayer(cx + 19, scrY - 2, CPU_BLUE, CPU_WHITE, 21, 'cb', 'def');
-  cbp.speed = 2.0 + Math.random() * 0.2;
-  defensePlayers.push(cbp);
-  // Safeties (indices 9-10)
-  var sp = makePlayer(cx - 6, scrY - 14, CPU_BLUE, CPU_WHITE, 14, 'safety', 'def');
-  sp.speed = 2.1 + Math.random() * 0.2;
-  defensePlayers.push(sp);
-  sp = makePlayer(cx + 6, scrY - 16, CPU_BLUE, CPU_WHITE, 31, 'safety', 'def');
-  sp.speed = 2.1 + Math.random() * 0.2;
-  defensePlayers.push(sp);
+  // Linebackers (4-6) — smarter pursuit angles
+  for (let k = 0; k < 3; k++) {
+    const xOff = (k - 1) * 8;
+    const lb = makePlayer(cx + xOff, scrY - 6 + Math.random() * 0.5, CPU_NAVY, CPU_SILVER, 50 + k * 3, 'lb', 'def');
+    lb.speed = 2.0 + Math.random() * 0.2;
+    defensePlayers.push(lb);
+  }
+  // Corners (7-8) — fast, sticky coverage
+  const cb1 = makePlayer(cx - 19, scrY - 2, CPU_NAVY, CPU_SILVER, 24, 'cb', 'def');
+  cb1.speed = 2.3 + Math.random() * 0.2;
+  defensePlayers.push(cb1);
+  const cb2 = makePlayer(cx + 19, scrY - 2, CPU_NAVY, CPU_SILVER, 21, 'cb', 'def');
+  cb2.speed = 2.3 + Math.random() * 0.2;
+  defensePlayers.push(cb2);
+  // Safeties (9-10) — deep zone, fast close
+  const s1 = makePlayer(cx - 7, scrY - 15, CPU_NAVY, CPU_SILVER, 14, 'safety', 'def');
+  s1.speed = 2.4 + Math.random() * 0.2;
+  defensePlayers.push(s1);
+  const s2 = makePlayer(cx + 7, scrY - 17, CPU_NAVY, CPU_SILVER, 31, 'safety', 'def');
+  s2.speed = 2.4 + Math.random() * 0.2;
+  defensePlayers.push(s2);
 
   // Reset play state
   passThrown = false;
@@ -395,9 +921,15 @@ function setupFormation() {
   spinCooldown = 0;
   playTimer = 0;
   ballCarrier = null;
+  hitStop = 0;
 }
 
-// ---- Play Logic ----
+
+// =========================================================================
+// 12. PLAY LOGIC
+// =========================================================================
+
+// --- Start Play ---
 function startPlay(type) {
   playType = type;
   tackled = false;
@@ -406,18 +938,22 @@ function startPlay(type) {
   receiverControlled = false;
   ball.visible = false;
   ball.airTime = 0;
+  hitStop = 0;
+  drivePlays++;
 
-  var isRun = type.indexOf('run') === 0;
-
-  if (isRun) {
+  if (type.indexOf('run') === 0) {
     ballCarrier = offensePlayers[6]; // RB
+    gameStats.rushAttempts++;
   } else {
     ballCarrier = offensePlayers[5]; // QB
+    gameStats.attempts++;
   }
 
   sfxSnap();
+  showCommentary(COMMENTARY_SNAP);
   gameState = 'snap';
   stateTimer = 0;
+  analyticsEvent('play_start', { type, down, yardsToGo, fieldPos: ballOn });
 }
 
 function transitionToPlaying() {
@@ -426,39 +962,85 @@ function transitionToPlaying() {
   sfxWhistle();
 }
 
+// --- End Play ---
 function endPlay(result) {
-  if (gameState === 'result') return; // prevent double-end
+  if (gameState === 'result' || gameState === 'celebration' || gameState === 'turnover') return;
 
-  // Calculate yards gained
-  var carrierYardLine = fieldYToYardLine(ballCarrier.y);
-  var yardsGained = Math.round(carrierYardLine - lineOfScrimmage);
+  const carrierYardLine = fieldYToYardLine(ballCarrier.y);
+  const yardsGained = Math.round(carrierYardLine - lineOfScrimmage);
 
-  // Touchdown
+  gameStats.plays++;
+  driveYards += Math.max(0, yardsGained);
+
+  // Track yards
+  if (playType && playType.indexOf('run') === 0) {
+    gameStats.rushYards += Math.max(0, yardsGained);
+  } else if (receiverControlled) {
+    gameStats.passYards += Math.max(0, yardsGained);
+  }
+  gameStats.totalYards += Math.max(0, yardsGained);
+  if (yardsGained > gameStats.longestPlay) gameStats.longestPlay = yardsGained;
+  if (yardsGained >= 20) gameStats.bigPlays.push({ yards: yardsGained, type: playType, quarter });
+
+  // Sack detection
+  if (playType && playType.indexOf('pass') === 0 && !passThrown && yardsGained < 0) {
+    gameStats.sacks++;
+    showCommentary(COMMENTARY_SACK);
+  }
+
+  // Track 3rd/4th down conversions
+  if (down === 3) {
+    gameStats.thirdDownAtt++;
+    if (yardsGained >= yardsToGo) gameStats.thirdDownConv++;
+  }
+  if (down === 4) {
+    gameStats.fourthDownAtt++;
+    if (yardsGained >= yardsToGo) gameStats.fourthDownConv++;
+  }
+
+  // Touchdown check
   if (carrierYardLine >= 100) {
     score.bengals += 7;
+    gameStats.touchdowns++;
+    gameStats.drives++;
+    gameStats.driveResults.push('td');
+    store.totalTDs++;
     playsRun++;
+    playsThisQuarter++;
     gameState = 'celebration';
-    celebType = 'td';
     celebTimer = 0;
-    resultMsg = 'TOUCHDOWN!';
+    resultMsg = 'TOUCHDOWN';
+    resultSubMsg = yardsGained + ' YARD ' + (playType.indexOf('pass') === 0 ? 'PASS' : 'RUN');
     sfxTD();
-    sfxCrowd();
-    // Confetti burst at ball carrier screen position
-    var sx = fieldToScreenX(ballCarrier.x);
-    var sy = fieldToScreenY(ballCarrier.y);
-    spawnConfetti(sx, sy, 80);
-    spawnConfetti(W / 2, H / 3, 60);
+    showCommentary(COMMENTARY_TD);
+    triggerFlash(ORANGE, 0.55);
+    triggerShake(10);
+    const sx = fieldToScreenX(ballCarrier.x);
+    const sy = fieldToScreenY(ballCarrier.y);
+    spawnTDBurst(sx, sy);
+    setTimeout(sfxWhoDey, 600);
+    const tdCoins = 20 + Math.min(yardsGained, 50);
+    store.coins += tdCoins;
+    store.totalCoins += tdCoins;
+    saveStore();
+    analyticsEvent('touchdown', { yards: yardsGained, coins: tdCoins });
+    // Reset drive tracking
+    drivePlays = 0;
+    driveYards = 0;
     return;
   }
 
-  // Safety
+  // Safety check
   if (carrierYardLine <= 0) {
     score.cpu += 2;
     playsRun++;
+    playsThisQuarter++;
     gameState = 'result';
-    resultMsg = 'SAFETY!';
+    resultMsg = 'SAFETY';
+    resultSubMsg = 'CPU scores 2 points';
     resultTimer = 0;
     sfxTurnover();
+    triggerShake(5);
     return;
   }
 
@@ -467,25 +1049,43 @@ function endPlay(result) {
   ballOn = lineOfScrimmage;
 
   if (result === 'incomplete') {
-    resultMsg = 'INCOMPLETE!';
+    resultMsg = 'INCOMPLETE';
+    resultSubMsg = '';
     sfxIncomplete();
+    showCommentary(COMMENTARY_INCOMPLETE);
     down++;
   } else if (result === 'interception') {
-    // Handled separately
     return;
   } else {
     yardsToGo -= yardsGained;
     if (yardsGained > 0) {
-      resultMsg = 'GAIN OF ' + yardsGained + '!';
+      resultMsg = yardsGained + ' YARD GAIN';
+      if (yardsGained >= 20) {
+        resultSubMsg = 'BIG PLAY!';
+        sfxBigPlay();
+        showCommentary(COMMENTARY_BIGPLAY);
+        triggerShake(6);
+        const sx = fieldToScreenX(ballCarrier.x);
+        const sy = fieldToScreenY(ballCarrier.y);
+        spawnSparks(sx, sy, 18, GOLD_BRIGHT, ORANGE);
+      } else {
+        resultSubMsg = '';
+        showCommentary(COMMENTARY_TACKLE);
+      }
     } else if (yardsGained < 0) {
-      resultMsg = 'LOSS OF ' + Math.abs(yardsGained) + '!';
+      resultMsg = 'LOSS OF ' + Math.abs(yardsGained);
+      resultSubMsg = '';
     } else {
       resultMsg = 'NO GAIN';
+      resultSubMsg = '';
+      showCommentary(COMMENTARY_TACKLE);
     }
     sfxHit();
-    var hx = fieldToScreenX(ballCarrier.x);
-    var hy = fieldToScreenY(ballCarrier.y);
-    spawnHitSparks(hx, hy);
+    hitStop = 0.1;
+    triggerShake(3.5);
+    const hx = fieldToScreenX(ballCarrier.x);
+    const hy = fieldToScreenY(ballCarrier.y);
+    spawnSparks(hx, hy, 12, WHITE, METALLIC);
     down++;
   }
 
@@ -493,27 +1093,41 @@ function endPlay(result) {
   if (yardsToGo <= 0 && result !== 'incomplete') {
     down = 1;
     yardsToGo = 10;
-    resultMsg += '\nFIRST DOWN!';
+    gameStats.firstDowns++;
+    resultSubMsg = 'FIRST DOWN';
     sfxFirstDown();
     sfxCrowd();
+    showCommentary(COMMENTARY_FIRSTDOWN);
+    store.coins += 5;
+    store.totalCoins += 5;
+    saveStore();
   }
 
   // Turnover on downs
   if (down > 4) {
     playsRun++;
+    playsThisQuarter++;
+    gameStats.turnovers++;
+    gameStats.drives++;
+    gameStats.driveResults.push('turnover');
     gameState = 'turnover';
     resultMsg = 'TURNOVER ON DOWNS';
+    resultSubMsg = '';
     resultTimer = 0;
     sfxTurnover();
+    triggerShake(5);
+    drivePlays = 0;
+    driveYards = 0;
     return;
   }
 
   playsRun++;
+  playsThisQuarter++;
   gameState = 'result';
   resultTimer = 0;
 }
 
-// ---- Passing ----
+// --- Passing ---
 function throwBall(targetIdx) {
   if (passThrown) return;
   passThrown = true;
@@ -523,239 +1137,230 @@ function throwBall(targetIdx) {
   ball.y = ballCarrier.y;
   ball.airTime = 0;
 
-  var target = offensePlayers[targetIdx];
-  // Lead the receiver
-  var leadY = target.y - 5;
-  var leadX = target.x + (target.vx || 0) * 8;
-  var dist = Math.hypot(leadX - ball.x, leadY - ball.y);
-  var ballSpeed = 42;
+  const target = offensePlayers[targetIdx];
+  const leadY = target.y - 5.5;
+  const leadX = target.x + (target.vx || 0) * 9;
+  const dist = Math.hypot(leadX - ball.x, leadY - ball.y);
+  const ballSpeed = 46;
   ball.dx = ((leadX - ball.x) / dist) * ballSpeed;
   ball.dy = ((leadY - ball.y) / dist) * ballSpeed;
-
   sfxCatch();
+  showCommentary(COMMENTARY_PASS_THROWN);
 }
 
 function findBestReceiver() {
-  var receivers = [7, 8, 9, 10];
-  var bestIdx = receivers[0];
-  var bestScore = -Infinity;
+  const receivers = [7, 8, 9, 10];
+  let bestIdx = receivers[0];
+  let bestScore = -Infinity;
   receivers.forEach(function(idx) {
-    var r = offensePlayers[idx];
-    var nearestDef = Infinity;
+    const r = offensePlayers[idx];
+    let nearestDef = Infinity;
     defensePlayers.forEach(function(d) {
       nearestDef = Math.min(nearestDef, Math.hypot(d.x - r.x, d.y - r.y));
     });
-    var downfieldBonus = (yardLineToFieldY(lineOfScrimmage)) - r.y;
-    var sc = downfieldBonus * 2 + nearestDef * 3;
+    const downfieldBonus = yardLineToFieldY(lineOfScrimmage) - r.y;
+    const sc = downfieldBonus * 2 + nearestDef * 3.5;
     if (sc > bestScore) { bestScore = sc; bestIdx = idx; }
   });
   return bestIdx;
 }
 
-// ---- Receiver Routes ----
+// --- Receiver Routes ---
 function runReceiverRoutes(dt) {
-  var isDeep = playType === 'pass-deep';
-  var speed = 2.4;
+  const isDeep = playType === 'pass-deep';
+  const speed = 2.7;
 
-  // WR1 left (idx 7) - go route or slant
-  var wr1 = offensePlayers[7];
+  // WR1 left (7) — go route or slant
+  const wr1 = offensePlayers[7];
   if (isDeep) {
     wr1.y -= speed * dt;
-    wr1.x += 0.3 * dt; // slight drift in
+    wr1.x += 0.2 * dt;
   } else {
-    if (playTimer < 1.2) { wr1.y -= speed * dt; }
-    else { wr1.y -= speed * dt * 0.3; wr1.x += speed * dt * 0.7; }
+    if (playTimer < 0.9) { wr1.y -= speed * dt; }
+    else { wr1.y -= speed * dt * 0.3; wr1.x += speed * dt * 0.65; }
   }
 
-  // WR2 right (idx 8) - go or out
-  var wr2 = offensePlayers[8];
+  // WR2 right (8) — go or out
+  const wr2 = offensePlayers[8];
   if (isDeep) {
     wr2.y -= speed * dt;
-    wr2.x -= 0.3 * dt;
+    wr2.x -= 0.2 * dt;
   } else {
-    if (playTimer < 0.9) { wr2.y -= speed * dt; }
-    else { wr2.x += speed * dt * 0.6; wr2.y -= speed * dt * 0.4; }
+    if (playTimer < 0.75) { wr2.y -= speed * dt; }
+    else { wr2.x += speed * dt * 0.55; wr2.y -= speed * dt * 0.35; }
   }
 
-  // TE (idx 9) - crossing route
-  var te = offensePlayers[9];
-  if (playTimer < 0.7) { te.y -= speed * dt * 0.8; }
-  else { te.x -= speed * dt * 0.9; te.y -= speed * dt * 0.3; }
+  // TE (9) — crossing route
+  const te = offensePlayers[9];
+  if (playTimer < 0.55) { te.y -= speed * dt * 0.8; }
+  else { te.x -= speed * dt * 0.85; te.y -= speed * dt * 0.3; }
 
-  // Slot WR (idx 10) - quick slant
-  var slot = offensePlayers[10];
-  if (playTimer < 0.5) { slot.y -= speed * dt * 0.7; }
-  else { slot.x += speed * dt * 0.7; slot.y -= speed * dt * 0.25; }
-
-  // Store velocities for lead passing
-  [7, 8, 9, 10].forEach(function(idx) {
-    var p = offensePlayers[idx];
-    // Approximate velocity for lead
-    p.vx = (p.role === 'wr' || p.role === 'te') ? 0 : 0;
-  });
+  // Slot WR (10) — quick slant
+  const slot = offensePlayers[10];
+  if (playTimer < 0.35) { slot.y -= speed * dt * 0.7; }
+  else { slot.x += speed * dt * 0.7; slot.y -= speed * dt * 0.2; }
 }
 
-// ---- Defense AI ----
+// --- Defense AI (TIGHT for 12-15 yr olds) ---
 function updateDefense(dt) {
   if (!ballCarrier) return;
+  const difficultyScale = 0.78; // Tight but beatable
 
   defensePlayers.forEach(function(d, i) {
     if (d.juked > 0) { d.juked--; return; }
 
-    var targetX = ballCarrier.x;
-    var targetY = ballCarrier.y;
-
-    // Different pursuit behaviors by role
-    var chaseSpeed = d.speed;
-    var pursueFactor = 1.0;
+    let targetX = ballCarrier.x;
+    let targetY = ballCarrier.y;
+    let chaseSpeed = d.speed;
 
     if (d.role === 'dline') {
-      chaseSpeed *= 0.65;
-      pursueFactor = 0.9;
-    } else if (d.role === 'lb') {
       chaseSpeed *= 0.72;
-      // LBs try to cut off laterally
-      targetX += (ballCarrier.x > FIELD_WIDTH / 2 ? 3 : -3);
-      pursueFactor = 0.85;
+    } else if (d.role === 'lb') {
+      chaseSpeed *= 0.82;
+      // Pursuit angle — anticipate runner direction
+      if (input.left) targetX -= 3;
+      if (input.right) targetX += 3;
+      targetX += (ballCarrier.x > FIELD_WIDTH / 2 ? 2.5 : -2.5);
     } else if (d.role === 'cb') {
-      chaseSpeed *= 0.78;
-      pursueFactor = 0.9;
+      chaseSpeed *= 0.85;
     } else if (d.role === 'safety') {
-      chaseSpeed *= 0.75;
-      // Safeties go for angle pursuit
-      targetY -= 3;
-      pursueFactor = 0.8;
+      chaseSpeed *= 0.84;
+      targetY -= 1.5; // Angle to cut off
     }
 
-    // Slight randomness to make pursuit feel less robotic
-    targetX += Math.sin(i * 3.7 + playTimer * 2) * 1.5;
+    // Slight organic randomness
+    targetX += Math.sin(i * 3.7 + playTimer * 2.8) * 1.0;
 
-    // Scale down overall to make game FUN for a kid
-    chaseSpeed *= 0.68;
+    chaseSpeed *= difficultyScale;
 
-    var angle = Math.atan2(targetY - d.y, targetX - d.x);
-    d.x += Math.cos(angle) * chaseSpeed * dt * pursueFactor;
-    d.y += Math.sin(angle) * chaseSpeed * dt * pursueFactor;
+    const angle = Math.atan2(targetY - d.y, targetX - d.x);
+    d.x += Math.cos(angle) * chaseSpeed * dt;
+    d.y += Math.sin(angle) * chaseSpeed * dt;
   });
 }
 
 function updatePassCoverage(dt) {
-  // During pass plays before throw, defenders play zone/man
   defensePlayers.forEach(function(d, i) {
     if (d.juked > 0) { d.juked--; return; }
 
     if (d.role === 'dline') {
-      // Rush the QB
-      var angle = Math.atan2(ballCarrier.y - d.y, ballCarrier.x - d.x);
-      d.x += Math.cos(angle) * d.speed * 0.5 * dt;
-      d.y += Math.sin(angle) * d.speed * 0.5 * dt;
+      // Pass rush — faster than run chase
+      const angle = Math.atan2(ballCarrier.y - d.y, ballCarrier.x - d.x);
+      d.x += Math.cos(angle) * d.speed * 0.6 * dt;
+      d.y += Math.sin(angle) * d.speed * 0.6 * dt;
     } else if (d.role === 'cb') {
-      // Man coverage on nearest receiver
-      var nearWR = null;
-      var nearDist = Infinity;
+      // Man coverage — tight
+      let nearWR = null;
+      let nearDist = Infinity;
       [7, 8, 9, 10].forEach(function(idx) {
-        var r = offensePlayers[idx];
-        var dist = Math.hypot(r.x - d.x, r.y - d.y);
+        const r = offensePlayers[idx];
+        const dist = Math.hypot(r.x - d.x, r.y - d.y);
         if (dist < nearDist) { nearDist = dist; nearWR = r; }
       });
       if (nearWR) {
-        var angle = Math.atan2(nearWR.y - d.y, nearWR.x - d.x);
-        d.x += Math.cos(angle) * d.speed * 0.7 * dt;
-        d.y += Math.sin(angle) * d.speed * 0.7 * dt;
+        const angle = Math.atan2(nearWR.y - d.y, nearWR.x - d.x);
+        d.x += Math.cos(angle) * d.speed * 0.78 * dt;
+        d.y += Math.sin(angle) * d.speed * 0.78 * dt;
       }
     } else if (d.role === 'lb') {
-      // Zone - drift toward QB but slow
-      var angle = Math.atan2(ballCarrier.y - d.y, ballCarrier.x - d.x);
-      d.x += Math.cos(angle) * d.speed * 0.3 * dt;
-      d.y += Math.sin(angle) * d.speed * 0.3 * dt;
+      // Zone with QB read
+      const angle = Math.atan2(ballCarrier.y - d.y, ballCarrier.x - d.x);
+      d.x += Math.cos(angle) * d.speed * 0.4 * dt;
+      d.y += Math.sin(angle) * d.speed * 0.4 * dt;
     } else if (d.role === 'safety') {
-      // Deep zone - stay back
-      var scrY = yardLineToFieldY(lineOfScrimmage);
-      var targetY = scrY - 18;
-      d.y += (targetY - d.y) * 0.02;
+      // Deep zone — reactive
+      const scrY = yardLineToFieldY(lineOfScrimmage);
+      const tgtY = scrY - 20;
+      d.y += (tgtY - d.y) * 0.03;
+      // Read ball in air
+      if (ball.visible) {
+        const angle = Math.atan2(ball.y - d.y, ball.x - d.x);
+        d.x += Math.cos(angle) * d.speed * 0.5 * dt;
+        d.y += Math.sin(angle) * d.speed * 0.5 * dt;
+      }
     }
   });
 }
 
-// ---- Tackle Check ----
+// --- Tackle Check ---
 function checkTackle() {
   if (!ballCarrier || tackled) return;
-
-  // Grace period: no tackles in first second
-  if (playTimer < 1.0) return;
+  if (playTimer < 0.7) return; // Grace period
 
   defensePlayers.forEach(function(d) {
     if (tackled || d.juked > 0) return;
-
-    var dist = Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y);
+    const dist = Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y);
     if (dist < 2.0) {
-      // Broken tackle chance - generous for kid fun factor
-      if (input.turbo && Math.random() < 0.45) {
-        d.juked = 25;
+      // Broken tackle chance — turbo helps, spin move proximity too
+      if (input.turbo && Math.random() < 0.30) {
+        d.juked = 20;
         sfxSpin();
+        showCommentary(COMMENTARY_JUKE);
         return;
       }
-      if (Math.random() < 0.28) {
-        d.juked = 18;
+      if (Math.random() < 0.15) {
+        d.juked = 14;
         return;
       }
       tackled = true;
       sfxHit();
-      var sx = fieldToScreenX(ballCarrier.x);
-      var sy = fieldToScreenY(ballCarrier.y);
-      spawnHitSparks(sx, sy);
-      setTimeout(function() { endPlay('tackled'); }, 500);
+      hitStop = 0.12;
+      const sx = fieldToScreenX(ballCarrier.x);
+      const sy = fieldToScreenY(ballCarrier.y);
+      spawnSparks(sx, sy, 14, WHITE, METALLIC);
+      triggerShake(4.5);
+      setTimeout(function() { endPlay('tackled'); }, 350);
     }
   });
 }
 
-// ---- O-Line Blocking ----
+// --- O-Line Blocking ---
 function updateOLine(dt) {
-  for (var i = 0; i < 5; i++) {
-    var lineman = offensePlayers[i];
-    // Find nearest defender and push toward them
-    var nearDef = null;
-    var nearDist = 12;
+  for (let i = 0; i < 5; i++) {
+    const lineman = offensePlayers[i];
+    let nearDef = null;
+    let nearDist = 13;
     defensePlayers.forEach(function(d) {
-      var dist = Math.hypot(d.x - lineman.x, d.y - lineman.y);
+      const dist = Math.hypot(d.x - lineman.x, d.y - lineman.y);
       if (dist < nearDist) { nearDist = dist; nearDef = d; }
     });
     if (nearDef) {
-      var angle = Math.atan2(nearDef.y - lineman.y, nearDef.x - lineman.x);
-      lineman.x += Math.cos(angle) * 1.2 * dt;
-      lineman.y += Math.sin(angle) * 1.2 * dt;
-      // Push defender back if close enough
+      const angle = Math.atan2(nearDef.y - lineman.y, nearDef.x - lineman.x);
+      lineman.x += Math.cos(angle) * 1.4 * dt;
+      lineman.y += Math.sin(angle) * 1.4 * dt;
       if (nearDist < 2.5) {
-        nearDef.x += Math.cos(angle) * 0.8 * dt;
-        nearDef.y += Math.sin(angle) * 0.8 * dt;
+        nearDef.x += Math.cos(angle) * 1.0 * dt;
+        nearDef.y += Math.sin(angle) * 1.0 * dt;
       }
     } else if (ballCarrier) {
-      // Move upfield ahead of ball carrier
-      lineman.y += (ballCarrier.y - 3 - lineman.y) * 0.02;
+      lineman.y += (ballCarrier.y - 3 - lineman.y) * 0.03;
     }
   }
 }
 
-// ---- Update: Run Play ----
+// --- Update: Run Play ---
 function updateRunPlay(dt) {
   if (!ballCarrier || tackled) return;
   playTimer += dt;
 
-  var speed = ballCarrier.speed * (input.turbo ? 1.7 : 1.0);
+  const speed = ballCarrier.speed * (input.turbo ? 1.7 : 1.0);
 
-  // Player movement via D-pad
-  var dx = 0, dy = 0;
+  let dx = 0, dy = 0;
   if (input.up) dy = -speed * dt;
   if (input.down) dy = speed * dt * 0.5;
   if (input.left) dx = -speed * dt * 0.85;
   if (input.right) dx = speed * dt * 0.85;
 
-  // Auto-advance at start so it doesn't feel stuck
-  if (dx === 0 && dy === 0 && playTimer < 0.8) {
-    // Initial burst in the chosen direction
+  // Initial burst direction
+  if (dx === 0 && dy === 0 && playTimer < 0.65) {
     if (playType === 'run-left') { dx = -speed * dt * 0.5; dy = -speed * dt * 0.3; }
     else if (playType === 'run-right') { dx = speed * dt * 0.5; dy = -speed * dt * 0.3; }
     else { dy = -speed * dt * 0.4; }
+  }
+
+  // Commentary for run plays
+  if (playTimer > 0.5 && playTimer < 0.55) {
+    showCommentary(COMMENTARY_RUN);
   }
 
   ballCarrier.x += dx;
@@ -763,21 +1368,24 @@ function updateRunPlay(dt) {
   ballCarrier.x = Math.max(1, Math.min(FIELD_WIDTH - 1, ballCarrier.x));
   ballCarrier.y = Math.max(0, Math.min(TOTAL_YARDS, ballCarrier.y));
 
+  // Speed demon trail
+  if (store.unlockedItems.indexOf('speed_skin') >= 0 && input.turbo && Math.random() < 0.4) {
+    spawnEmber(fieldToScreenX(ballCarrier.x), fieldToScreenY(ballCarrier.y));
+  }
+
   // Spin move
   if (input.spin && spinCooldown <= 0) {
-    spinCooldown = 1.2;
+    spinCooldown = 1.0;
+    gameStats.spinsUsed++;
     sfxSpin();
+    showCommentary(COMMENTARY_JUKE);
     ballCarrier.spinAnim = 1.0;
-    // Juke nearby defenders
     defensePlayers.forEach(function(d) {
-      if (Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y) < 6) {
-        d.juked = 30;
-      }
+      if (Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y) < 6) d.juked = 26;
     });
-    // Lateral burst
     if (input.left) ballCarrier.x -= 3.5;
     else if (input.right) ballCarrier.x += 3.5;
-    else ballCarrier.x += (Math.random() > 0.5 ? 3 : -3);
+    else ballCarrier.x += (Math.random() > 0.5 ? 3.0 : -3.0);
     ballCarrier.x = Math.max(1, Math.min(FIELD_WIDTH - 1, ballCarrier.x));
   }
   if (spinCooldown > 0) spinCooldown -= dt;
@@ -786,29 +1394,24 @@ function updateRunPlay(dt) {
   updateDefense(dt);
   checkTackle();
 
-  // TD check
-  var yd = fieldYToYardLine(ballCarrier.y);
-  if (yd >= 100) endPlay('td');
+  if (fieldYToYardLine(ballCarrier.y) >= 100) endPlay('td');
 }
 
-// ---- Update: Pass Play ----
+// --- Update: Pass Play ---
 function updatePassPlay(dt) {
   if (tackled) return;
   playTimer += dt;
 
   if (!passThrown) {
     // QB pocket movement
-    var speed = ballCarrier.speed * 0.7 * (input.turbo ? 1.3 : 1.0);
+    const speed = ballCarrier.speed * 0.7 * (input.turbo ? 1.3 : 1.0);
     if (input.up) ballCarrier.y -= speed * dt * 0.5;
     if (input.down) ballCarrier.y += speed * dt * 0.7;
     if (input.left) ballCarrier.x -= speed * dt;
     if (input.right) ballCarrier.x += speed * dt;
     ballCarrier.x = Math.max(3, Math.min(FIELD_WIDTH - 3, ballCarrier.x));
 
-    // Run receiver routes
     runReceiverRoutes(dt);
-
-    // Pass coverage defense
     updatePassCoverage(dt);
 
     // Throw on spin button
@@ -816,32 +1419,28 @@ function updatePassPlay(dt) {
       throwBall(findBestReceiver());
     }
 
-    // QB sack check after grace period
-    if (playTimer > 1.5) {
-      checkTackle();
-    }
+    // QB sack — tighter pressure window
+    if (playTimer > 1.1) checkTackle();
 
     updateOLine(dt);
-
   } else {
     // Ball in air
     ball.x += ball.dx * dt;
     ball.y += ball.dy * dt;
     ball.airTime += dt;
 
-    var target = offensePlayers[passTarget];
-    var distToTarget = Math.hypot(ball.x - target.x, ball.y - target.y);
+    const target = offensePlayers[passTarget];
+    const distToTarget = Math.hypot(ball.x - target.x, ball.y - target.y);
 
     if (distToTarget < 3.0) {
-      // Caught!
+      // Caught
       ball.visible = false;
       sfxCatch();
+      showCommentary(COMMENTARY_CATCH);
+      gameStats.completions++;
       ballCarrier = target;
       receiverControlled = true;
-      // Confetti for the catch
-      var csx = fieldToScreenX(target.x);
-      var csy = fieldToScreenY(target.y);
-      spawnConfetti(csx, csy, 8);
+      spawnSparks(fieldToScreenX(target.x), fieldToScreenY(target.y), 8, ORANGE, WHITE);
     }
 
     // Out of bounds
@@ -851,51 +1450,68 @@ function updatePassPlay(dt) {
       return;
     }
 
-    // Ball too long in air = overthrown
+    // Overthrown
     if (ball.airTime > 2.5 && ball.visible) {
       ball.visible = false;
       endPlay('incomplete');
       return;
     }
 
-    // Interception check (low chance - keep it fun)
+    // Interception check — fair but punishing for bad reads
     if (ball.visible) {
       defensePlayers.forEach(function(d) {
         if (!ball.visible) return;
-        var distBall = Math.hypot(d.x - ball.x, d.y - ball.y);
-        if (distBall < 2.0 && Math.random() < 0.06) {
+        const distBall = Math.hypot(d.x - ball.x, d.y - ball.y);
+        if (distBall < 2.0 && Math.random() < 0.09) {
           ball.visible = false;
           tackled = true;
           score.cpu += 7;
+          gameStats.turnovers++;
+          gameStats.drives++;
+          gameStats.driveResults.push('turnover');
+          playsRun++;
+          playsThisQuarter++;
           gameState = 'turnover';
-          resultMsg = 'INTERCEPTED!';
+          resultMsg = 'INTERCEPTED';
+          resultSubMsg = '';
           resultTimer = 0;
           sfxTurnover();
-          spawnHitSparks(fieldToScreenX(ball.x), fieldToScreenY(ball.y));
+          showCommentary(COMMENTARY_INTERCEPTION);
+          triggerFlash('#ff0000', 0.35);
+          triggerShake(7);
+          spawnSparks(fieldToScreenX(ball.x), fieldToScreenY(ball.y), 18, '#ff3333', WHITE);
+          drivePlays = 0;
+          driveYards = 0;
         }
       });
     }
 
-    // After catch - receiver control
+    // Receiver control after catch
     if (receiverControlled && !tackled) {
-      var rSpeed = ballCarrier.speed * (input.turbo ? 1.7 : 1.0);
+      const rSpeed = ballCarrier.speed * (input.turbo ? 1.7 : 1.0);
       if (input.up) ballCarrier.y -= rSpeed * dt;
       if (input.down) ballCarrier.y += rSpeed * dt * 0.5;
       if (input.left) ballCarrier.x -= rSpeed * dt * 0.85;
       if (input.right) ballCarrier.x += rSpeed * dt * 0.85;
       ballCarrier.x = Math.max(1, Math.min(FIELD_WIDTH - 1, ballCarrier.x));
 
-      // Spin move after catch
+      // Speed demon trail
+      if (store.unlockedItems.indexOf('speed_skin') >= 0 && input.turbo && Math.random() < 0.4) {
+        spawnEmber(fieldToScreenX(ballCarrier.x), fieldToScreenY(ballCarrier.y));
+      }
+
       if (input.spin && spinCooldown <= 0) {
-        spinCooldown = 1.2;
+        spinCooldown = 1.0;
+        gameStats.spinsUsed++;
         sfxSpin();
+        showCommentary(COMMENTARY_JUKE);
         ballCarrier.spinAnim = 1.0;
         defensePlayers.forEach(function(d) {
-          if (Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y) < 6) d.juked = 30;
+          if (Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y) < 6) d.juked = 26;
         });
         if (input.left) ballCarrier.x -= 3.5;
         else if (input.right) ballCarrier.x += 3.5;
-        else ballCarrier.x += (Math.random() > 0.5 ? 3 : -3);
+        else ballCarrier.x += (Math.random() > 0.5 ? 3.0 : -3.0);
         ballCarrier.x = Math.max(1, Math.min(FIELD_WIDTH - 1, ballCarrier.x));
       }
       if (spinCooldown > 0) spinCooldown -= dt;
@@ -903,430 +1519,140 @@ function updatePassPlay(dt) {
       updateDefense(dt);
       checkTackle();
 
-      var yd = fieldYToYardLine(ballCarrier.y);
-      if (yd >= 100) endPlay('td');
+      if (fieldYToYardLine(ballCarrier.y) >= 100) endPlay('td');
     }
 
-    // If ball still in air, keep receivers and defenders moving
+    // Ball still in air
     if (!receiverControlled && ball.visible) {
       runReceiverRoutes(dt);
-      defensePlayers.forEach(function(d, i) {
+      defensePlayers.forEach(function(d) {
         if (d.juked > 0) { d.juked--; return; }
         if (d.role === 'cb' || d.role === 'safety') {
-          var angle = Math.atan2(ball.y - d.y, ball.x - d.x);
-          d.x += Math.cos(angle) * d.speed * 0.8 * dt;
-          d.y += Math.sin(angle) * d.speed * 0.8 * dt;
+          const angle = Math.atan2(ball.y - d.y, ball.x - d.x);
+          d.x += Math.cos(angle) * d.speed * 0.88 * dt;
+          d.y += Math.sin(angle) * d.speed * 0.88 * dt;
         }
       });
     }
   }
 }
 
-// ---- Camera ----
+// --- CPU Drive Simulation ---
+function simulateCPUDrive() {
+  const roll = Math.random();
+  if (roll < 0.22) {
+    score.cpu += 7;
+    resultMsg = 'CPU TOUCHDOWN';
+    resultSubMsg = 'Defense couldn\'t hold';
+  } else if (roll < 0.45) {
+    score.cpu += 3;
+    resultMsg = 'CPU FIELD GOAL';
+    resultSubMsg = '';
+  } else {
+    resultMsg = 'DEFENSE HOLDS';
+    resultSubMsg = 'Your ball';
+  }
+}
+
+// --- Quarter / Half / Game Transitions ---
+function checkQuarterEnd() {
+  if (playsThisQuarter >= PLAYS_PER_QUARTER) {
+    playsThisQuarter = 0;
+    if (quarter === 2) {
+      gameState = 'halftime';
+      stateTimer = 0;
+      return true;
+    } else if (quarter >= 4) {
+      gameState = 'gameOver';
+      stateTimer = 0;
+      sfxGameOver();
+      store.totalGames++;
+      store.totalYards += gameStats.totalYards;
+      if (gameStats.longestPlay > store.longestPlay) store.longestPlay = gameStats.longestPlay;
+      if (score.bengals > store.bestScore) store.bestScore = score.bengals;
+      let gameCoins = 25;
+      if (score.bengals > score.cpu) gameCoins += 40;
+      store.coins += gameCoins;
+      store.totalCoins += gameCoins;
+      saveStore();
+      analyticsEvent('game_complete', {
+        score: score.bengals + '-' + score.cpu,
+        win: score.bengals > score.cpu,
+        totalYards: gameStats.totalYards,
+        tds: gameStats.touchdowns
+      });
+      return true;
+    }
+    quarter++;
+  }
+  return false;
+}
+
+// --- Start New Drive ---
+function startNewDrive() {
+  lineOfScrimmage = 25;
+  ballOn = 25;
+  down = 1;
+  yardsToGo = 10;
+  driveStartYard = 25;
+  drivePlays = 0;
+  driveYards = 0;
+  setupFormation();
+  gameState = 'playSelect';
+  resultMsg = '';
+  resultSubMsg = '';
+}
+
+// --- New Game ---
+function newGame() {
+  score = { bengals: 0, cpu: 0 };
+  down = 1;
+  yardsToGo = 10;
+  ballOn = 25;
+  lineOfScrimmage = 25;
+  quarter = 1;
+  playsThisQuarter = 0;
+  playsRun = 0;
+  possession = 'bengals';
+  cpuDriving = false;
+  driveStartYard = 25;
+  drivePlays = 0;
+  driveYards = 0;
+  gameStats = {
+    totalYards: 0, rushYards: 0, passYards: 0,
+    completions: 0, attempts: 0, rushAttempts: 0,
+    touchdowns: 0, turnovers: 0, longestPlay: 0,
+    firstDowns: 0, plays: 0, spinsUsed: 0,
+    yardsPerCarry: 0, completionPct: 0, bigPlays: [],
+    sacks: 0, drives: 0, driveResults: [],
+    thirdDownConv: 0, thirdDownAtt: 0,
+    fourthDownConv: 0, fourthDownAtt: 0,
+    timeOfPossession: 0
+  };
+  setupFormation();
+  gameState = 'playSelect';
+}
+
+
+// =========================================================================
+// 13. CAMERA SYSTEM
+// =========================================================================
+
 function updateCamera() {
   if (!ballCarrier) return;
-  var targetCam = ballCarrier.y - (H / pixelsPerYard) * 0.45;
-  var minCam = -5;
-  var maxCam = TOTAL_YARDS - H / pixelsPerYard + 5;
+  const targetCam = ballCarrier.y - (H / pixelsPerYard) * 0.45;
+  const minCam = -5;
+  const maxCam = TOTAL_YARDS - H / pixelsPerYard + 5;
   camTargetY = Math.max(minCam, Math.min(maxCam, targetCam));
-  camY += (camTargetY - camY) * 0.07;
+  camY += (camTargetY - camY) * 0.09;
 }
 
-// ---- Drawing ----
-function drawField() {
-  // Compute pixels per yard for this frame
-  pixelsPerYard = H / (TOTAL_YARDS * 0.55); // show ~55% of field at a time
 
-  // Background
-  ctx.fillStyle = '#1B5E20';
-  ctx.fillRect(0, 0, W, H);
+// =========================================================================
+// 14. RENDERING
+// =========================================================================
 
-  // Field stripes (alternating green shades every 5 yards)
-  for (var yd = 0; yd <= 100; yd += 5) {
-    var y1 = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd));
-    var y2 = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd - 5));
-    if (y2 < -50 || y1 > H + 50) continue;
-    ctx.fillStyle = (Math.floor(yd / 5) % 2 === 0) ? FIELD_GREEN : FIELD_DARK;
-    ctx.fillRect(0, Math.min(y1, y2), W, Math.abs(y2 - y1));
-  }
-
-  // Opponent endzone (BENGALS - orange with tiger stripes!)
-  var ezTop = fieldToScreenY(0);
-  var ezBottom = fieldToScreenY(ENDZONE_YARDS);
-  if (ezBottom > -50 && ezTop < H + 50) {
-    ctx.fillStyle = ENDZONE_ORANGE;
-    ctx.fillRect(0, ezTop, W, ezBottom - ezTop);
-
-    // Tiger stripes
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, ezTop, W, ezBottom - ezTop);
-    ctx.clip();
-    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-    ctx.lineWidth = Math.max(6, pixelsPerYard * 1.2);
-    for (var s = -W; s < W * 2; s += 28) {
-      ctx.beginPath();
-      ctx.moveTo(s, ezTop);
-      ctx.lineTo(s + 40, ezBottom);
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // BENGALS text
-    ctx.save();
-    ctx.font = 'bold ' + Math.max(16, pixelsPerYard * 4) + 'px "Arial Black", Impact, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.fillText('B E N G A L S', W / 2, (ezTop + ezBottom) / 2);
-    ctx.restore();
-  }
-
-  // Own endzone (CPU - blue)
-  var ownTop = fieldToScreenY(ENDZONE_YARDS + FIELD_YARDS);
-  var ownBottom = fieldToScreenY(TOTAL_YARDS);
-  if (ownBottom > -50 && ownTop < H + 50) {
-    ctx.fillStyle = '#002855';
-    ctx.fillRect(0, ownTop, W, ownBottom - ownTop);
-    ctx.save();
-    ctx.font = 'bold ' + Math.max(16, pixelsPerYard * 4) + 'px "Arial Black", Impact, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.fillText('C P U', W / 2, (ownTop + ownBottom) / 2);
-    ctx.restore();
-  }
-
-  // Sidelines
-  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-  ctx.lineWidth = 3;
-  var sideLeft = fieldToScreenX(0);
-  var sideRight = fieldToScreenX(FIELD_WIDTH);
-  ctx.beginPath();
-  ctx.moveTo(sideLeft, 0); ctx.lineTo(sideLeft, H);
-  ctx.moveTo(sideRight, 0); ctx.lineTo(sideRight, H);
-  ctx.stroke();
-
-  // Yard lines
-  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-  ctx.lineWidth = 1;
-  for (var yd = 0; yd <= 100; yd += 5) {
-    var y = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd));
-    if (y < -20 || y > H + 20) continue;
-    ctx.beginPath();
-    ctx.moveTo(fieldToScreenX(1), y);
-    ctx.lineTo(fieldToScreenX(FIELD_WIDTH - 1), y);
-    ctx.stroke();
-
-    // Yard numbers
-    if (yd > 0 && yd < 100 && yd % 10 === 0) {
-      var label = yd <= 50 ? yd : 100 - yd;
-      ctx.font = 'bold ' + Math.max(10, pixelsPerYard * 1.8) + 'px Arial';
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(label, fieldToScreenX(5), y);
-      ctx.fillText(label, fieldToScreenX(FIELD_WIDTH - 5), y);
-    }
-  }
-
-  // Hash marks
-  for (var yd = 0; yd <= 100; yd++) {
-    var y = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd));
-    if (y < -5 || y > H + 5) continue;
-    ctx.fillStyle = 'rgba(255,255,255,0.2)';
-    ctx.fillRect(fieldToScreenX(FIELD_WIDTH / 3), y - 0.5, 3, 1);
-    ctx.fillRect(fieldToScreenX(FIELD_WIDTH * 2 / 3), y - 0.5, 3, 1);
-  }
-
-  // Line of scrimmage
-  var losY = fieldToScreenY(yardLineToFieldY(lineOfScrimmage));
-  ctx.strokeStyle = 'rgba(0,150,255,0.6)';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6, 4]);
-  ctx.beginPath();
-  ctx.moveTo(0, losY); ctx.lineTo(W, losY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // First down line
-  var fdYard = Math.min(100, lineOfScrimmage + yardsToGo);
-  var fdY = fieldToScreenY(yardLineToFieldY(fdYard));
-  ctx.strokeStyle = 'rgba(255,255,0,0.6)';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([4, 4]);
-  ctx.beginPath();
-  ctx.moveTo(0, fdY); ctx.lineTo(W, fdY);
-  ctx.stroke();
-  ctx.setLineDash([]);
-}
-
-function drawPlayer(p, isBallCarrier) {
-  var sx = fieldToScreenX(p.x);
-  var sy = fieldToScreenY(p.y);
-  var r = Math.max(10, pixelsPerYard * 1.4);
-
-  // Skip if off-screen
-  if (sy < -30 || sy > H + 30) return;
-
-  ctx.save();
-
-  // Spin animation
-  if (p.spinAnim > 0) {
-    ctx.translate(sx, sy);
-    ctx.rotate(p.spinAnim * Math.PI * 4);
-    ctx.translate(-sx, -sy);
-    p.spinAnim -= 0.05;
-    if (p.spinAnim < 0) p.spinAnim = 0;
-  }
-
-  // Shadow
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
-  ctx.beginPath();
-  ctx.ellipse(sx + 1, sy + 2, r, r * 0.5, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Body
-  ctx.fillStyle = p.color;
-  ctx.strokeStyle = p.outline;
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.arc(sx, sy, r, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-
-  // Helmet stripe for Bengals players
-  if (p.team === 'off') {
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(sx - r * 0.3, sy - r);
-    ctx.lineTo(sx + r * 0.3, sy + r);
-    ctx.stroke();
-  }
-
-  // Ball carrier highlight - pulsing gold ring
-  if (isBallCarrier) {
-    var pulse = Math.sin(Date.now() / 150) * 0.3 + 0.7;
-    ctx.strokeStyle = 'rgba(255,215,0,' + pulse + ')';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(sx, sy, r + 4, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-
-  // Juked indicator (stars)
-  if (p.juked > 0) {
-    ctx.fillStyle = GOLD;
-    ctx.font = Math.max(8, r * 0.7) + 'px Arial';
-    ctx.textAlign = 'center';
-    var starOffset = Math.sin(Date.now() / 100) * 3;
-    ctx.fillText('*', sx - 6, sy - r - 2 + starOffset);
-    ctx.fillText('*', sx + 6, sy - r - 2 - starOffset);
-  }
-
-  // Number
-  ctx.fillStyle = p.team === 'off' ? '#000' : '#fff';
-  ctx.font = 'bold ' + Math.max(8, r * 0.85) + 'px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(p.num, sx, sy + 1);
-
-  // Receiver target during pass play (pulsing yellow ring)
-  if (gameState === 'playing' && playType && playType.indexOf('pass') === 0 && !passThrown &&
-      (p.role === 'wr' || p.role === 'te')) {
-    var tp = Math.sin(Date.now() / 180) * 0.3 + 0.7;
-    ctx.strokeStyle = 'rgba(255,255,0,' + tp + ')';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.arc(sx, sy, r + 10, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
-  }
-
-  ctx.restore();
-}
-
-function drawBall() {
-  if (!ball.visible) return;
-  var sx = fieldToScreenX(ball.x);
-  var sy = fieldToScreenY(ball.y);
-
-  // Ball shadow
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
-  ctx.beginPath();
-  ctx.ellipse(sx + 2, sy + 4, 6, 3, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Football
-  var angle = Math.atan2(ball.dy, ball.dx);
-  ctx.save();
-  ctx.translate(sx, sy);
-  ctx.rotate(angle);
-  ctx.fillStyle = '#8B4513';
-  ctx.beginPath();
-  ctx.ellipse(0, 0, 7, 4, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  // Laces
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(-3, 0); ctx.lineTo(3, 0);
-  ctx.stroke();
-  for (var l = -2; l <= 2; l++) {
-    ctx.beginPath();
-    ctx.moveTo(l * 1.5, -1.5); ctx.lineTo(l * 1.5, 1.5);
-    ctx.stroke();
-  }
-  ctx.restore();
-}
-
-// ---- HUD (drawn on canvas) ----
-function drawHUD() {
-  var hudH = 52;
-
-  // Background bar
-  ctx.fillStyle = 'rgba(0,0,0,0.85)';
-  ctx.fillRect(0, 0, W, hudH);
-
-  // Bottom border (Bengals orange)
-  ctx.fillStyle = BENGALS_ORANGE;
-  ctx.fillRect(0, hudH - 3, W, 3);
-
-  // Score
-  ctx.font = 'bold 18px "Arial Black", Impact, sans-serif';
-  ctx.textBaseline = 'middle';
-  ctx.textAlign = 'left';
-  ctx.fillStyle = BENGALS_ORANGE;
-  ctx.fillText('CIN ' + score.bengals, 12, hudH / 2 - 8);
-  ctx.fillStyle = '#aaa';
-  ctx.font = 'bold 14px Arial';
-  ctx.fillText('CPU ' + score.cpu, 12, hudH / 2 + 12);
-
-  // Down & distance
-  var ordinals = ['1st', '2nd', '3rd', '4th'];
-  var downStr = ordinals[Math.min(down - 1, 3)] + ' & ' + yardsToGo;
-  ctx.font = 'bold 14px Arial';
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#fff';
-  ctx.fillText(downStr, W / 2, hudH / 2 - 6);
-
-  // Field position
-  var posStr = ballOn > 50 ? 'OPP ' + (100 - ballOn) : 'OWN ' + ballOn;
-  ctx.font = '12px Arial';
-  ctx.fillStyle = '#aaa';
-  ctx.fillText(posStr, W / 2, hudH / 2 + 10);
-
-  // Quarter
-  ctx.textAlign = 'right';
-  ctx.font = 'bold 14px Arial';
-  ctx.fillStyle = '#fff';
-  ctx.fillText('Q' + quarter, W - 12, hudH / 2 - 6);
-
-  // Play counter
-  ctx.font = '11px Arial';
-  ctx.fillStyle = '#666';
-  ctx.fillText('Play ' + (playsRun + 1), W - 12, hudH / 2 + 10);
-}
-
-// ---- Controls (drawn on canvas) ----
-function drawControls() {
-  if (gameState !== 'playing' && gameState !== 'snap') return;
-
-  // D-pad
-  var padSize = Math.min(140, W * 0.28);
-  var btnSize = padSize * 0.33;
-  var padX = 20 + padSize / 2;
-  var padY = H - 30 - padSize / 2;
-
-  dpadCenterX = padX;
-  dpadCenterY = padY;
-  dpadRadius = padSize / 2;
-
-  // D-pad background circle
-  ctx.fillStyle = 'rgba(255,255,255,0.06)';
-  ctx.beginPath();
-  ctx.arc(padX, padY, padSize / 2 + 5, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Direction buttons
-  var dirs = [
-    { key: 'up',    ox: 0,  oy: -1, label: '\u25B2' },
-    { key: 'down',  ox: 0,  oy: 1,  label: '\u25BC' },
-    { key: 'left',  ox: -1, oy: 0,  label: '\u25C0' },
-    { key: 'right', ox: 1,  oy: 0,  label: '\u25B6' }
-  ];
-
-  dirs.forEach(function(d) {
-    var bx = padX + d.ox * (btnSize + 2);
-    var by = padY + d.oy * (btnSize + 2);
-    var active = input[d.key];
-
-    // Button background
-    ctx.fillStyle = active ? 'rgba(251,79,20,0.5)' : 'rgba(255,255,255,0.12)';
-    ctx.strokeStyle = active ? BENGALS_ORANGE : 'rgba(255,255,255,0.3)';
-    ctx.lineWidth = 2;
-    roundRect(ctx, bx - btnSize / 2, by - btnSize / 2, btnSize, btnSize, 8);
-    ctx.fill();
-    ctx.stroke();
-
-    // Arrow
-    ctx.fillStyle = active ? '#fff' : 'rgba(255,255,255,0.7)';
-    ctx.font = Math.max(14, btnSize * 0.5) + 'px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(d.label, bx, by);
-  });
-
-  // Center dot
-  ctx.fillStyle = 'rgba(251,79,20,0.15)';
-  ctx.beginPath();
-  ctx.arc(padX, padY, btnSize / 2 - 2, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Action buttons (right side)
-  var abtnR = Math.min(42, W * 0.09);
-  var rightMargin = 24;
-
-  // Spin/Throw button (top)
-  btnSpinX = W - rightMargin - abtnR;
-  btnSpinY = H - 30 - abtnR * 2 - 16 - abtnR;
-  btnSpinR = abtnR;
-
-  ctx.fillStyle = input.spin ? 'rgba(251,79,20,0.7)' : 'rgba(251,79,20,0.25)';
-  ctx.strokeStyle = BENGALS_ORANGE;
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.arc(btnSpinX, btnSpinY, abtnR, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold ' + Math.max(11, abtnR * 0.4) + 'px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  var spinLabel = (playType && playType.indexOf('pass') === 0 && !passThrown) ? 'THROW' : 'SPIN';
-  ctx.fillText(spinLabel, btnSpinX, btnSpinY);
-
-  // Turbo button (bottom)
-  btnTurboX = W - rightMargin - abtnR;
-  btnTurboY = H - 30 - abtnR;
-  btnTurboR = abtnR;
-
-  ctx.fillStyle = input.turbo ? 'rgba(0,170,255,0.7)' : 'rgba(0,150,255,0.25)';
-  ctx.strokeStyle = '#0af';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.arc(btnTurboX, btnTurboY, abtnR, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = '#fff';
-  ctx.fillText('TURBO', btnTurboX, btnTurboY);
-}
-
+// --- Utility: Rounded Rectangle ---
 function roundRect(c, x, y, w, h, r) {
   c.beginPath();
   c.moveTo(x + r, y);
@@ -1341,308 +1667,1411 @@ function roundRect(c, x, y, w, h, r) {
   c.closePath();
 }
 
-// ---- Splash Screen ----
-function drawSplash() {
-  // Dark field background
-  var oldCam = camY;
-  camY = 35;
-  drawField();
-  camY = oldCam;
-
-  // Dark overlay
-  ctx.fillStyle = 'rgba(0,0,0,0.78)';
-  ctx.fillRect(0, 0, W, H);
-
-  // Animated tiger stripes across screen
+// --- Tiger Stripe Background Pattern ---
+function drawTigerStripes(x, y, w, h, alpha, spacing) {
   ctx.save();
-  ctx.strokeStyle = 'rgba(251,79,20,0.08)';
-  ctx.lineWidth = 12;
-  var stripeOffset = (Date.now() / 50) % 60;
-  for (var s = -W; s < W * 2; s += 60) {
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+  ctx.strokeStyle = 'rgba(251,79,20,' + (alpha || 0.04) + ')';
+  ctx.lineWidth = Math.max(8, w * 0.03);
+  const sp = spacing || 55;
+  for (let s = -w; s < w * 2; s += sp) {
     ctx.beginPath();
-    ctx.moveTo(s + stripeOffset, 0);
-    ctx.lineTo(s + stripeOffset + 80, H);
+    ctx.moveTo(x + s, y);
+    ctx.lineTo(x + s + h * 0.45, y + h);
     ctx.stroke();
   }
   ctx.restore();
-
-  // Title
-  var titleSize = Math.min(48, W * 0.1);
-  ctx.font = 'bold ' + titleSize + 'px "Arial Black", Impact, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-
-  // Text shadow
-  ctx.fillStyle = '#000';
-  ctx.fillText('JUDE BOWL', W / 2 + 3, H * 0.32 + 3);
-  ctx.fillStyle = BENGALS_ORANGE;
-  ctx.fillText('JUDE BOWL', W / 2, H * 0.32);
-
-  // Subtitle
-  ctx.font = 'bold ' + Math.min(18, W * 0.04) + 'px Arial';
-  ctx.fillStyle = '#aaa';
-  ctx.fillText('BENGALS vs CPU', W / 2, H * 0.32 + titleSize * 0.7);
-
-  // Bengal stripe decoration
-  ctx.fillStyle = BENGALS_ORANGE;
-  var stripeW = Math.min(200, W * 0.4);
-  ctx.fillRect(W / 2 - stripeW / 2, H * 0.32 + titleSize, stripeW, 3);
-
-  // WHO DEY
-  ctx.font = 'bold ' + Math.min(22, W * 0.05) + 'px "Arial Black", Impact, sans-serif';
-  ctx.fillStyle = '#fff';
-  ctx.fillText('WHO DEY!', W / 2, H * 0.5);
-
-  // Play button
-  var btnW = Math.min(240, W * 0.55);
-  var btnH = 56;
-  var btnX = W / 2 - btnW / 2;
-  var btnY = H * 0.62;
-
-  // Glow animation
-  var glowSize = Math.sin(Date.now() / 400) * 8 + 12;
-  ctx.shadowColor = BENGALS_ORANGE;
-  ctx.shadowBlur = glowSize;
-
-  // Button
-  var grad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH);
-  grad.addColorStop(0, '#FB4F14');
-  grad.addColorStop(1, '#D4400F');
-  ctx.fillStyle = grad;
-  roundRect(ctx, btnX, btnY, btnW, btnH, 14);
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 3;
-  roundRect(ctx, btnX, btnY, btnW, btnH, 14);
-  ctx.stroke();
-
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold ' + Math.min(24, W * 0.055) + 'px "Arial Black", Impact, sans-serif';
-  ctx.fillText('TAP TO PLAY', W / 2, btnY + btnH / 2);
-
-  // Store button bounds for touch detection
-  splashBtnBounds = { x: btnX, y: btnY, w: btnW, h: btnH };
-
-  // Credits
-  ctx.font = Math.min(12, W * 0.03) + 'px Arial';
-  ctx.fillStyle = 'rgba(255,255,255,0.3)';
-  ctx.fillText('Built for Jude by 9', W / 2, H * 0.88);
 }
-var splashBtnBounds = { x: 0, y: 0, w: 0, h: 0 };
 
-// ---- Play Select Screen ----
-function drawPlaySelect() {
-  // Darken field
-  ctx.fillStyle = 'rgba(0,0,0,0.88)';
+// --- Draw Field ---
+function drawField() {
+  pixelsPerYard = H / (TOTAL_YARDS * 0.55);
+
+  // Field theme colors
+  let fieldMain = FIELD_GREEN;
+  let fieldAlt = FIELD_DARK;
+  if (store.equippedField === 'night_field') {
+    fieldMain = '#124B16';
+    fieldAlt = '#0E3D12';
+  } else if (store.equippedField === 'snow_field') {
+    fieldMain = '#4A7A4E';
+    fieldAlt = '#3E6E42';
+  } else if (store.equippedField === 'prime_field') {
+    fieldMain = '#1A5E22';
+    fieldAlt = '#14521C';
+  }
+
+  // Background
+  ctx.fillStyle = '#0B320E';
   ctx.fillRect(0, 0, W, H);
 
-  // Title
-  var titleSize = Math.min(32, W * 0.07);
-  ctx.font = 'bold ' + titleSize + 'px "Arial Black", Impact, sans-serif';
+  // Field stripes (5-yard increments)
+  for (let yd = 0; yd <= 100; yd += 5) {
+    const y1 = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd));
+    const y2 = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd - 5));
+    if (y2 < -50 || y1 > H + 50) continue;
+    ctx.fillStyle = (Math.floor(yd / 5) % 2 === 0) ? fieldMain : fieldAlt;
+    ctx.fillRect(0, Math.min(y1, y2), W, Math.abs(y2 - y1));
+  }
+
+  // Snow particles
+  if (store.equippedField === 'snow_field') {
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    for (let i = 0; i < 40; i++) {
+      const sx = ((i * 137 + Date.now() / 35) % W);
+      const sy = ((i * 89 + Date.now() / 22) % H);
+      ctx.beginPath();
+      ctx.arc(sx, sy, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Prime time spotlight effect
+  if (store.equippedField === 'prime_field') {
+    const spotGrad = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.4, W * 0.6);
+    spotGrad.addColorStop(0, 'rgba(255,255,200,0.04)');
+    spotGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = spotGrad;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // Opponent endzone (Bengals) with tiger stripes
+  const ezTop = fieldToScreenY(0);
+  const ezBottom = fieldToScreenY(ENDZONE_YARDS);
+  if (ezBottom > -50 && ezTop < H + 50) {
+    ctx.fillStyle = ENDZONE_ORANGE;
+    ctx.fillRect(0, ezTop, W, ezBottom - ezTop);
+
+    // Tiger stripes
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, ezTop, W, ezBottom - ezTop);
+    ctx.clip();
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+    ctx.lineWidth = Math.max(6, pixelsPerYard * 1.3);
+    for (let s = -W; s < W * 2; s += 26) {
+      ctx.beginPath();
+      ctx.moveTo(s, ezTop);
+      ctx.lineTo(s + 40, ezBottom);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // BENGALS text
+    ctx.save();
+    ctx.font = '700 ' + Math.max(12, pixelsPerYard * 3.2) + 'px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.fillText('B E N G A L S', W / 2, (ezTop + ezBottom) / 2);
+    ctx.restore();
+  }
+
+  // Own endzone (CPU)
+  const ownTop = fieldToScreenY(ENDZONE_YARDS + FIELD_YARDS);
+  const ownBottom = fieldToScreenY(TOTAL_YARDS);
+  if (ownBottom > -50 && ownTop < H + 50) {
+    ctx.fillStyle = CPU_NAVY;
+    ctx.fillRect(0, ownTop, W, ownBottom - ownTop);
+    ctx.save();
+    ctx.font = '700 ' + Math.max(12, pixelsPerYard * 3.2) + 'px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.fillText('C P U', W / 2, (ownTop + ownBottom) / 2);
+    ctx.restore();
+  }
+
+  // Sidelines
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = 3;
+  const sideLeft = fieldToScreenX(0);
+  const sideRight = fieldToScreenX(FIELD_WIDTH);
+  ctx.beginPath();
+  ctx.moveTo(sideLeft, 0); ctx.lineTo(sideLeft, H);
+  ctx.moveTo(sideRight, 0); ctx.lineTo(sideRight, H);
+  ctx.stroke();
+
+  // Yard lines and numbers
+  ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+  ctx.lineWidth = 1;
+  for (let yd = 0; yd <= 100; yd += 5) {
+    const y = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd));
+    if (y < -20 || y > H + 20) continue;
+    ctx.beginPath();
+    ctx.moveTo(fieldToScreenX(1), y);
+    ctx.lineTo(fieldToScreenX(FIELD_WIDTH - 1), y);
+    ctx.stroke();
+
+    if (yd > 0 && yd < 100 && yd % 10 === 0) {
+      const label = yd <= 50 ? yd : 100 - yd;
+      ctx.font = '700 ' + Math.max(8, pixelsPerYard * 1.5) + 'px ' + FONT_UI;
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, fieldToScreenX(5), y);
+      ctx.fillText(label, fieldToScreenX(FIELD_WIDTH - 5), y);
+    }
+  }
+
+  // Hash marks
+  for (let yd = 0; yd <= 100; yd++) {
+    const y = fieldToScreenY(ENDZONE_YARDS + (FIELD_YARDS - yd));
+    if (y < -5 || y > H + 5) continue;
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    ctx.fillRect(fieldToScreenX(FIELD_WIDTH / 3), y - 0.5, 3, 1);
+    ctx.fillRect(fieldToScreenX(FIELD_WIDTH * 2 / 3), y - 0.5, 3, 1);
+  }
+
+  // Line of scrimmage
+  const losY = fieldToScreenY(yardLineToFieldY(lineOfScrimmage));
+  ctx.strokeStyle = 'rgba(46,134,222,0.55)';
+  ctx.lineWidth = 2.5;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  ctx.moveTo(0, losY); ctx.lineTo(W, losY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // First down line
+  const fdYard = Math.min(100, lineOfScrimmage + yardsToGo);
+  const fdY = fieldToScreenY(yardLineToFieldY(fdYard));
+  ctx.strokeStyle = 'rgba(232,197,38,0.55)';
+  ctx.lineWidth = 2.5;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(0, fdY); ctx.lineTo(W, fdY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// --- Draw Player (Realistic Silhouette Style) ---
+function drawPlayer(p, isBallCarrier) {
+  const sx = fieldToScreenX(p.x);
+  const sy = fieldToScreenY(p.y);
+  const r = Math.max(9, pixelsPerYard * 1.35);
+
+  if (sy < -30 || sy > H + 30) return;
+
+  ctx.save();
+
+  // Spin animation
+  if (p.spinAnim > 0) {
+    ctx.translate(sx, sy);
+    ctx.rotate(p.spinAnim * Math.PI * 4);
+    ctx.translate(-sx, -sy);
+    p.spinAnim -= 0.05;
+    if (p.spinAnim < 0) p.spinAnim = 0;
+  }
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.beginPath();
+  ctx.ellipse(sx + 1, sy + 2.5, r * 0.9, r * 0.4, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Body (shoulder-width varies by position)
+  const sw = r * (p.shoulderW || 0.95);
+  ctx.fillStyle = p.color;
+  ctx.strokeStyle = p.outline;
+  ctx.lineWidth = 2;
+
+  // Rounded body shape (not just a circle — slightly wider at shoulders)
+  ctx.beginPath();
+  ctx.ellipse(sx, sy, sw, r, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Helmet (small arc on top)
+  const helmR = r * (p.helmet || 0.45);
+  ctx.fillStyle = p.team === 'off' ? p.outline : CPU_NAVY;
+  ctx.beginPath();
+  ctx.arc(sx, sy - r * 0.65, helmR, Math.PI, 0);
+  ctx.fill();
+
+  // Facemask line
+  ctx.strokeStyle = 'rgba(200,200,200,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(sx - helmR * 0.4, sy - r * 0.55);
+  ctx.lineTo(sx + helmR * 0.4, sy - r * 0.55);
+  ctx.stroke();
+
+  // Tiger stripe on Bengals helmet
+  if (p.team === 'off') {
+    ctx.strokeStyle = 'rgba(251,79,20,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy - r * 0.65 - helmR);
+    ctx.lineTo(sx, sy - r * 0.55);
+    ctx.stroke();
+  }
+
+  // Ball carrier indicator — metallic ring with glow
+  if (isBallCarrier) {
+    const pulse = Math.sin(Date.now() / 100) * 0.2 + 0.8;
+    ctx.shadowColor = GOLD;
+    ctx.shadowBlur = 6;
+    ctx.strokeStyle = 'rgba(200,168,78,' + pulse + ')';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(sx, sy, r + 3.5, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  // Juked indicator — daze dots
+  if (p.juked > 0) {
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    for (let d = 0; d < 3; d++) {
+      const dotAngle = (d / 3) * Math.PI * 2 + Date.now() / 180;
+      ctx.beginPath();
+      ctx.arc(sx + Math.cos(dotAngle) * (r + 4), sy - r - 4 + Math.sin(dotAngle) * 2, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Jersey number
+  ctx.fillStyle = p.team === 'off' ? (p.color === '#F0F0F0' || p.color === METALLIC ? '#000' : WHITE) : '#ccc';
+  ctx.font = '700 ' + Math.max(6, r * 0.7) + 'px ' + FONT_UI;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = BENGALS_ORANGE;
-  ctx.fillText('PICK A PLAY', W / 2, H * 0.1);
+  ctx.fillText(p.num, sx, sy + 1);
+
+  // Receiver target indicator during pass play
+  if (gameState === 'playing' && playType && playType.indexOf('pass') === 0 && !passThrown &&
+      (p.role === 'wr' || p.role === 'te')) {
+    const tp = Math.sin(Date.now() / 180) * 0.2 + 0.5;
+    ctx.strokeStyle = 'rgba(232,197,38,' + tp + ')';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.arc(sx, sy, r + 9, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  ctx.restore();
+}
+
+// --- Draw Ball ---
+function drawBall() {
+  if (!ball.visible) return;
+  const sx = fieldToScreenX(ball.x);
+  const sy = fieldToScreenY(ball.y);
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(sx + 2, sy + 4, 5, 2.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Football shape
+  const angle = Math.atan2(ball.dy, ball.dx);
+  ctx.save();
+  ctx.translate(sx, sy);
+  ctx.rotate(angle);
+
+  // Spiral rotation visual
+  const spiralPhase = (Date.now() / 40) % (Math.PI * 2);
+  const spiralScale = 0.85 + Math.sin(spiralPhase) * 0.15;
+
+  ctx.scale(1, spiralScale);
+  ctx.fillStyle = '#5A2D0C';
+  ctx.beginPath();
+  ctx.ellipse(0, 0, 7, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#8B6914';
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  // Laces
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(-3, 0); ctx.lineTo(3, 0);
+  ctx.stroke();
+  for (let l = -2; l <= 2; l++) {
+    ctx.beginPath();
+    ctx.moveTo(l * 1.3, -1.2); ctx.lineTo(l * 1.3, 1.2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// --- HUD (top scoreboard bar) ---
+function drawHUD() {
+  const hudH = 50;
+
+  // Dark bar
+  ctx.fillStyle = 'rgba(5,5,5,0.94)';
+  ctx.fillRect(0, 0, W, hudH);
+
+  // Bottom accent line (gradient orange)
+  const grad = ctx.createLinearGradient(0, hudH - 2, W, hudH - 2);
+  grad.addColorStop(0, 'rgba(251,79,20,0)');
+  grad.addColorStop(0.2, ORANGE_DIM);
+  grad.addColorStop(0.8, ORANGE_DIM);
+  grad.addColorStop(1, 'rgba(251,79,20,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, hudH - 2, W, 2);
+
+  // Score left: CIN
+  ctx.font = '700 14px ' + FONT_UI;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  ctx.fillStyle = ORANGE;
+  ctx.fillText('CIN', 10, hudH / 2 - 10);
+  ctx.font = '700 18px ' + FONT_UI;
+  ctx.fillStyle = WHITE;
+  ctx.fillText('' + score.bengals, 44, hudH / 2 - 10);
+
+  ctx.font = '600 12px ' + FONT_UI;
+  ctx.fillStyle = CPU_SILVER;
+  ctx.fillText('CPU', 10, hudH / 2 + 10);
+  ctx.font = '700 15px ' + FONT_UI;
+  ctx.fillStyle = METALLIC;
+  ctx.fillText('' + score.cpu, 44, hudH / 2 + 10);
+
+  // Down & distance center
+  const ordinals = ['1st', '2nd', '3rd', '4th'];
+  const downStr = ordinals[Math.min(down - 1, 3)] + ' & ' + yardsToGo;
+  ctx.font = '700 13px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = down >= 3 ? FIRST_DOWN_YELLOW : WHITE;
+  ctx.fillText(downStr, W / 2, hudH / 2 - 8);
+
+  // Field position
+  const posStr = ballOn > 50 ? 'OPP ' + (100 - ballOn) : 'OWN ' + ballOn;
+  ctx.font = '500 10px ' + FONT_UI;
+  ctx.fillStyle = METALLIC;
+  ctx.fillText(posStr, W / 2, hudH / 2 + 9);
+
+  // Quarter right
+  ctx.textAlign = 'right';
+  ctx.font = '700 13px ' + FONT_UI;
+  ctx.fillStyle = WHITE;
+  ctx.fillText('Q' + quarter, W - 10, hudH / 2 - 8);
+
+  // Coins
+  ctx.font = '500 10px ' + FONT_UI;
+  ctx.fillStyle = GOLD;
+  ctx.fillText(store.coins + ' coins', W - 10, hudH / 2 + 9);
+}
+
+// --- Controls overlay ---
+function drawControls() {
+  if (gameState !== 'playing' && gameState !== 'snap') return;
+
+  // D-pad
+  const padSize = Math.min(135, W * 0.27);
+  const btnSize = padSize * 0.32;
+  const padX = 20 + padSize / 2;
+  const padY = H - 28 - padSize / 2;
+
+  dpadCenterX = padX;
+  dpadCenterY = padY;
+  dpadRadius = padSize / 2;
+
+  // D-pad background circle
+  ctx.fillStyle = 'rgba(255,255,255,0.03)';
+  ctx.beginPath();
+  ctx.arc(padX, padY, padSize / 2 + 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  const dirs = [
+    { key: 'up',    ox: 0,  oy: -1, label: '\u25B2' },
+    { key: 'down',  ox: 0,  oy: 1,  label: '\u25BC' },
+    { key: 'left',  ox: -1, oy: 0,  label: '\u25C0' },
+    { key: 'right', ox: 1,  oy: 0,  label: '\u25B6' }
+  ];
+
+  dirs.forEach(function(d) {
+    const bx = padX + d.ox * (btnSize + 3);
+    const by = padY + d.oy * (btnSize + 3);
+    const active = input[d.key];
+
+    ctx.fillStyle = active ? 'rgba(251,79,20,0.5)' : 'rgba(255,255,255,0.06)';
+    ctx.strokeStyle = active ? ORANGE : 'rgba(255,255,255,0.18)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, bx - btnSize / 2, by - btnSize / 2, btnSize, btnSize, 6);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = active ? WHITE : 'rgba(255,255,255,0.45)';
+    ctx.font = Math.max(12, btnSize * 0.45) + 'px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(d.label, bx, by);
+  });
+
+  // Action buttons (right side)
+  const abtnR = Math.min(40, W * 0.088);
+  const rightMargin = 22;
+
+  // Spin/Throw button
+  btnSpinX = W - rightMargin - abtnR;
+  btnSpinY = H - 28 - abtnR * 2 - 16 - abtnR;
+  btnSpinR = abtnR;
+
+  const spinActive = input.spin;
+  ctx.fillStyle = spinActive ? 'rgba(251,79,20,0.65)' : 'rgba(251,79,20,0.15)';
+  ctx.strokeStyle = 'rgba(251,79,20,0.55)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(btnSpinX, btnSpinY, abtnR, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  if (spinActive) {
+    ctx.shadowColor = ORANGE;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(btnSpinX, btnSpinY, abtnR, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+  ctx.fillStyle = WHITE;
+  ctx.font = '700 ' + Math.max(9, abtnR * 0.35) + 'px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const spinLabel = (playType && playType.indexOf('pass') === 0 && !passThrown) ? 'PASS' : 'JUKE';
+  ctx.fillText(spinLabel, btnSpinX, btnSpinY);
+
+  // Turbo button
+  btnTurboX = W - rightMargin - abtnR;
+  btnTurboY = H - 28 - abtnR;
+  btnTurboR = abtnR;
+
+  const turboActive = input.turbo;
+  ctx.fillStyle = turboActive ? 'rgba(46,134,222,0.65)' : 'rgba(46,134,222,0.12)';
+  ctx.strokeStyle = 'rgba(46,134,222,0.45)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(btnTurboX, btnTurboY, abtnR, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  if (turboActive) {
+    ctx.shadowColor = LOS_BLUE;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(btnTurboX, btnTurboY, abtnR, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+  ctx.fillStyle = WHITE;
+  ctx.fillText('TURBO', btnTurboX, btnTurboY);
+}
+
+// --- Screen Flash & Shake Overlay ---
+function drawScreenEffects() {
+  if (screenFlash > 0) {
+    ctx.fillStyle = screenFlashColor;
+    ctx.globalAlpha = screenFlash * 0.4;
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalAlpha = 1;
+  }
+}
+
+// --- Notification Popup ---
+function drawNotification(dt) {
+  if (notification.timer <= 0) return;
+  notification.timer -= dt;
+  const alpha = Math.min(1, notification.timer * 2);
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = DARK_CARD;
+  ctx.strokeStyle = notification.color;
+  ctx.lineWidth = 2;
+  const nw = Math.min(280, W * 0.7);
+  const nh = 38;
+  const nx = W / 2 - nw / 2;
+  const ny = H - 82;
+  roundRect(ctx, nx, ny, nw, nh, 8);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = WHITE;
+  ctx.font = '600 12px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(notification.text, W / 2, ny + nh / 2);
+  ctx.restore();
+}
+
+
+// ---- SCREENS ----
+
+// --- Splash Screen ---
+function drawSplash() {
+  // Dark background
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(0, 0, W, H);
+
+  // Tiger stripe background pattern (animated)
+  const stripeOffset = (Date.now() / 100) % 60;
+  drawTigerStripes(0, 0, W, H, 0.035, 60);
+
+  // Metallic vignette
+  const vig = ctx.createRadialGradient(W / 2, H * 0.35, W * 0.1, W / 2, H * 0.35, W * 0.8);
+  vig.addColorStop(0, 'rgba(20,20,20,0)');
+  vig.addColorStop(1, 'rgba(0,0,0,0.6)');
+  ctx.fillStyle = vig;
+  ctx.fillRect(0, 0, W, H);
+
+  // Title: JUDE BOWL (Press Start 2P if loaded)
+  const titleSize = Math.min(32, W * 0.07);
+  const titleFont = fontsLoaded ? FONT_TITLE : ('"Arial Black",Arial,sans-serif');
+  ctx.font = '400 ' + titleSize + 'px ' + titleFont;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // Shadow
+  ctx.fillStyle = ORANGE_DIM;
+  ctx.fillText('JUDE BOWL', W / 2 + 2, H * 0.26 + 2);
+  // Main
+  ctx.fillStyle = ORANGE;
+  ctx.fillText('JUDE BOWL', W / 2, H * 0.26);
+
+  // Subtitle
+  ctx.font = '500 ' + Math.min(12, W * 0.028) + 'px ' + FONT_UI;
+  ctx.fillStyle = METALLIC;
+  ctx.fillText('BENGALS FOOTBALL', W / 2, H * 0.26 + titleSize * 0.7);
+
+  // Metallic accent line
+  const lineGrad = ctx.createLinearGradient(W / 2 - 90, 0, W / 2 + 90, 0);
+  lineGrad.addColorStop(0, 'rgba(251,79,20,0)');
+  lineGrad.addColorStop(0.5, ORANGE);
+  lineGrad.addColorStop(1, 'rgba(251,79,20,0)');
+  ctx.fillStyle = lineGrad;
+  ctx.fillRect(W / 2 - 90, H * 0.26 + titleSize * 1.0, 180, 2);
+
+  // Play button
+  const btnW = Math.min(230, W * 0.52);
+  const btnH = 52;
+  const btnX = W / 2 - btnW / 2;
+  const btnY = H * 0.43;
+
+  // Glow pulse
+  const glowSize = Math.sin(Date.now() / 400) * 5 + 10;
+  ctx.shadowColor = ORANGE;
+  ctx.shadowBlur = glowSize;
+
+  const btnGrad = ctx.createLinearGradient(btnX, btnY, btnX + btnW, btnY + btnH);
+  btnGrad.addColorStop(0, ORANGE);
+  btnGrad.addColorStop(1, ORANGE_DIM);
+  ctx.fillStyle = btnGrad;
+  roundRect(ctx, btnX, btnY, btnW, btnH, 10);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, btnX, btnY, btnW, btnH, 10);
+  ctx.stroke();
+
+  ctx.fillStyle = WHITE;
+  ctx.font = '700 ' + Math.min(18, W * 0.042) + 'px ' + FONT_UI;
+  ctx.fillText('PLAY GAME', W / 2, btnY + btnH / 2);
+
+  splashBtnBounds = { x: btnX, y: btnY, w: btnW, h: btnH };
+
+  // Pro Shop button
+  const shopBtnY = btnY + btnH + 14;
+  ctx.fillStyle = DARK_CARD;
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, btnX, shopBtnY, btnW, btnH - 6, 10);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = METALLIC_LIGHT;
+  ctx.font = '600 ' + Math.min(14, W * 0.033) + 'px ' + FONT_UI;
+  ctx.fillText('PRO SHOP', W / 2, shopBtnY + (btnH - 6) / 2);
+
+  menuButtons = [
+    { x: btnX, y: shopBtnY, w: btnW, h: btnH - 6, action: 'shop' }
+  ];
+
+  // Coins display
+  ctx.font = '500 11px ' + FONT_UI;
+  ctx.fillStyle = GOLD;
+  ctx.fillText(store.coins + ' coins', W / 2, shopBtnY + btnH + 12);
+
+  // Pro Pass badge
+  if (hasProPass()) {
+    ctx.font = '600 10px ' + FONT_UI;
+    ctx.fillStyle = GOLD_BRIGHT;
+    ctx.fillText('PRO PASS ACTIVE', W / 2, shopBtnY + btnH + 28);
+  }
+
+  // Career stats summary
+  ctx.font = '400 10px ' + FONT_UI;
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  if (store.totalGames > 0) {
+    ctx.fillText(store.totalGames + ' games | ' + store.totalTDs + ' TDs | Best: ' + store.bestScore, W / 2, H * 0.82);
+  }
+
+  // Credit
+  ctx.font = '400 9px ' + FONT_UI;
+  ctx.fillStyle = 'rgba(255,255,255,0.12)';
+  ctx.fillText('Built for Jude by 9', W / 2, H * 0.93);
+}
+
+// --- Daily Bonus Screen ---
+function drawDailyBonus(dt) {
+  stateTimer += dt;
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(0, 0, W, H);
+
+  drawTigerStripes(0, 0, W, H, 0.025, 50);
+
+  ctx.font = '700 22px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = GOLD_BRIGHT;
+  ctx.fillText('DAILY BONUS', W / 2, H * 0.28);
+
+  if (dailyBonusData) {
+    ctx.font = '700 20px ' + FONT_UI;
+    ctx.fillStyle = WHITE;
+    ctx.fillText('+' + dailyBonusData.bonus + ' COINS', W / 2, H * 0.40);
+
+    ctx.font = '500 13px ' + FONT_UI;
+    ctx.fillStyle = ORANGE;
+    ctx.fillText('Day ' + dailyBonusData.streak + ' Streak', W / 2, H * 0.50);
+
+    // Streak dots
+    for (let i = 0; i < 7; i++) {
+      const dotX = W / 2 + (i - 3) * 32;
+      const dotY = H * 0.60;
+      const active = i < dailyBonusData.streak;
+      ctx.fillStyle = active ? ORANGE : DARK_CARD;
+      ctx.strokeStyle = active ? ORANGE_GLOW : 'rgba(255,255,255,0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      if (active) {
+        ctx.fillStyle = WHITE;
+        ctx.font = '700 8px ' + FONT_UI;
+        ctx.fillText('' + (i + 1), dotX, dotY);
+      }
+    }
+  }
+
+  if (stateTimer > 2.5) {
+    gameState = 'splash';
+    stateTimer = 0;
+  }
+}
+
+// --- Pro Shop Screen ---
+function drawShop() {
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(0, 0, W, H);
+
+  drawTigerStripes(0, 0, W, H, 0.02, 65);
+
+  // Header
+  ctx.font = '700 20px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = ORANGE;
+  ctx.fillText('BENGALS PRO SHOP', W / 2, 30);
+
+  // Coins
+  ctx.font = '500 12px ' + FONT_UI;
+  ctx.fillStyle = GOLD;
+  ctx.fillText(store.coins + ' coins', W / 2, 52);
+
+  // Back button
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, 10, 14, 60, 30, 6);
+  ctx.fill();
+  ctx.stroke();
+  ctx.font = '600 11px ' + FONT_UI;
+  ctx.fillStyle = METALLIC;
+  ctx.textAlign = 'center';
+  ctx.fillText('BACK', 40, 29);
+
+  // Tab buttons
+  const tabs = ['uniforms', 'helmets', 'fields', 'pass'];
+  const tabLabels = ['Uniforms', 'Helmets', 'Fields', 'Pro Pass'];
+  const tabW = (W - 20) / tabs.length;
+  shopButtons = [
+    { x: 10, y: 14, w: 60, h: 30, action: 'back' }
+  ];
+
+  for (let t = 0; t < tabs.length; t++) {
+    const tx = 10 + t * tabW;
+    const ty = 68;
+    const active = shopTab === tabs[t];
+    ctx.fillStyle = active ? ORANGE_DIM : DARK_CARD;
+    ctx.strokeStyle = active ? ORANGE : 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, tx + 2, ty, tabW - 4, 28, 5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = active ? WHITE : METALLIC;
+    ctx.font = '600 10px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillText(tabLabels[t], tx + tabW / 2, ty + 14);
+    shopButtons.push({ x: tx + 2, y: ty, w: tabW - 4, h: 28, action: 'tab_' + tabs[t] });
+  }
+
+  // Items list
+  const startY = 108;
+  const itemH = 62;
+  const itemW = W - 20;
+  let items = [];
+
+  if (shopTab === 'pass') {
+    ctx.font = '500 12px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = METALLIC_LIGHT;
+    ctx.fillText('Remove ads + exclusive content', W / 2, startY + 10);
+
+    const passOptions = [
+      { id: 'propass_7day', label: '7-Day Pro Pass', cost: 500, desc: 'One week of Pro access' },
+      { id: 'propass_perm', label: 'Permanent Pro Pass', cost: 1500, desc: 'Lifetime Pro access' }
+    ];
+
+    if (hasProPass()) {
+      ctx.font = '700 15px ' + FONT_UI;
+      ctx.fillStyle = GOLD_BRIGHT;
+      ctx.fillText('PRO PASS ACTIVE', W / 2, startY + 55);
+    } else {
+      passOptions.forEach(function(opt, i) {
+        const iy = startY + 28 + i * (itemH + 8);
+        ctx.fillStyle = DARK_CARD;
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = 1;
+        roundRect(ctx, 10, iy, itemW, itemH, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        ctx.font = '600 13px ' + FONT_UI;
+        ctx.fillStyle = WHITE;
+        ctx.fillText(opt.label, 20, iy + 22);
+        ctx.font = '400 10px ' + FONT_UI;
+        ctx.fillStyle = METALLIC;
+        ctx.fillText(opt.desc, 20, iy + 42);
+
+        ctx.textAlign = 'right';
+        ctx.font = '600 12px ' + FONT_UI;
+        ctx.fillStyle = GOLD;
+        ctx.fillText(opt.cost + ' coins', W - 20, iy + 32);
+
+        shopButtons.push({ x: 10, y: iy, w: itemW, h: itemH, action: opt.id });
+      });
+    }
+
+    // Watch ad for coins
+    const adY = startY + 175;
+    ctx.fillStyle = DARK_CARD;
+    ctx.strokeStyle = 'rgba(46,134,222,0.3)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, 10, adY, itemW, 48, 8);
+    ctx.fill();
+    ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.font = '600 12px ' + FONT_UI;
+    ctx.fillStyle = LOS_BLUE;
+    ctx.fillText('Watch Ad for +30 Coins', W / 2, adY + 24);
+    shopButtons.push({ x: 10, y: adY, w: itemW, h: 48, action: 'watch_ad' });
+
+  } else {
+    const typeMap = { uniforms: 'uniform', helmets: 'helmet', fields: 'field' };
+    const filterType = typeMap[shopTab];
+    Object.keys(SHOP_ITEMS).forEach(function(key) {
+      if (SHOP_ITEMS[key].type === filterType) items.push({ id: key, ...SHOP_ITEMS[key] });
+    });
+
+    items.forEach(function(item, i) {
+      const iy = startY + i * (itemH + 8);
+      const owned = store.unlockedItems.indexOf(item.id) >= 0;
+      const equipped = (item.type === 'uniform' && store.equippedUniform === item.id) ||
+                       (item.type === 'field' && store.equippedField === item.id) ||
+                       (item.type === 'helmet' && store.equippedHelmet === item.id);
+
+      ctx.fillStyle = equipped ? 'rgba(251,79,20,0.06)' : DARK_CARD;
+      ctx.strokeStyle = equipped ? ORANGE_DIM : 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 1;
+      roundRect(ctx, 10, iy, itemW, itemH, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.textAlign = 'left';
+      ctx.font = '600 13px ' + FONT_UI;
+      ctx.fillStyle = WHITE;
+      ctx.fillText(item.name, 20, iy + 22);
+      ctx.font = '400 10px ' + FONT_UI;
+      ctx.fillStyle = METALLIC;
+      ctx.fillText(item.desc + (item.proOnly ? ' [PRO]' : ''), 20, iy + 42);
+
+      ctx.textAlign = 'right';
+      ctx.font = '600 11px ' + FONT_UI;
+      if (equipped) {
+        ctx.fillStyle = ORANGE;
+        ctx.fillText('EQUIPPED', W - 20, iy + 32);
+      } else if (owned) {
+        ctx.fillStyle = METALLIC_LIGHT;
+        ctx.fillText('EQUIP', W - 20, iy + 32);
+      } else {
+        ctx.fillStyle = GOLD;
+        ctx.fillText(item.cost + ' coins', W - 20, iy + 32);
+      }
+
+      shopButtons.push({ x: 10, y: iy, w: itemW, h: itemH, action: 'item_' + item.id });
+    });
+  }
+}
+
+// --- Play Select Screen ---
+function drawPlaySelect() {
+  ctx.fillStyle = 'rgba(5,5,5,0.93)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Tiger stripe subtle
+  drawTigerStripes(0, 0, W, H, 0.015, 70);
+
+  // Quarter indicator
+  ctx.font = '500 10px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = METALLIC;
+  ctx.fillText('Q' + quarter + '  |  Play ' + (playsThisQuarter + 1) + '/' + PLAYS_PER_QUARTER, W / 2, H * 0.05);
+
+  // Title
+  const titleSize = Math.min(22, W * 0.052);
+  ctx.font = '700 ' + titleSize + 'px ' + FONT_UI;
+  ctx.fillStyle = WHITE;
+  ctx.fillText('CALL YOUR PLAY', W / 2, H * 0.11);
 
   // Down info
-  var ordinals = ['1st', '2nd', '3rd', '4th'];
-  ctx.font = 'bold ' + Math.min(16, W * 0.035) + 'px Arial';
-  ctx.fillStyle = '#aaa';
-  ctx.fillText(ordinals[Math.min(down - 1, 3)] + ' & ' + yardsToGo + '  |  ' + (ballOn > 50 ? 'OPP ' + (100 - ballOn) : 'OWN ' + ballOn), W / 2, H * 0.1 + titleSize * 0.8);
+  const ordinals = ['1st', '2nd', '3rd', '4th'];
+  const downColor = down >= 3 ? FIRST_DOWN_YELLOW : METALLIC;
+  ctx.font = '500 ' + Math.min(12, W * 0.028) + 'px ' + FONT_UI;
+  ctx.fillStyle = downColor;
+  ctx.fillText(ordinals[Math.min(down - 1, 3)] + ' & ' + yardsToGo + '  |  ' + (ballOn > 50 ? 'OPP ' + (100 - ballOn) : 'OWN ' + ballOn), W / 2, H * 0.11 + titleSize * 0.7);
 
   // Play buttons
   playButtons = [];
-  var plays = [
-    { id: 'run-left',    label: 'RUN LEFT',    emoji: '\uD83C\uDFC8', type: 'run' },
-    { id: 'run-middle',  label: 'RUN MIDDLE',  emoji: '\uD83C\uDFC8', type: 'run' },
-    { id: 'run-right',   label: 'RUN RIGHT',   emoji: '\uD83C\uDFC8', type: 'run' },
-    { id: 'pass-short',  label: 'SHORT PASS',  emoji: '\uD83C\uDFC8', type: 'pass' },
-    { id: 'pass-deep',   label: 'DEEP BOMB',   emoji: '\uD83C\uDFC8', type: 'pass' }
+  const plays = [
+    { id: 'run-left',    label: 'POWER LEFT',   type: 'run',  icon: '\u25C0' },
+    { id: 'run-middle',  label: 'HB DIVE',      type: 'run',  icon: '\u25B2' },
+    { id: 'run-right',   label: 'SWEEP RIGHT',  type: 'run',  icon: '\u25B6' },
+    { id: 'pass-short',  label: 'SHORT PASS',   type: 'pass', icon: '\u2197' },
+    { id: 'pass-deep',   label: 'DEEP BOMB',    type: 'pass', icon: '\u2B06' }
   ];
 
-  var btnW = Math.min(230, W * 0.6);
-  var btnH = 48;
-  var gap = 10;
-  var startY = H * 0.2;
+  const btnW = Math.min(230, W * 0.58);
+  const btnH = 46;
+  const gap = 8;
+  const startY = H * 0.19;
 
   plays.forEach(function(p, i) {
-    var bx = W / 2 - btnW / 2;
-    var by = startY + i * (btnH + gap);
+    const bx = W / 2 - btnW / 2;
+    const by = startY + i * (btnH + gap);
 
     playButtons.push({ x: bx, y: by, w: btnW, h: btnH, play: p.id });
 
-    // Button
-    var isPass = p.type === 'pass';
-    var grad = ctx.createLinearGradient(bx, by, bx + btnW, by);
-    if (isPass) {
-      grad.addColorStop(0, '#0066CC');
-      grad.addColorStop(1, '#004499');
-    } else {
-      grad.addColorStop(0, '#FB4F14');
-      grad.addColorStop(1, '#D4400F');
-    }
-    ctx.fillStyle = grad;
-    roundRect(ctx, bx, by, btnW, btnH, 10);
+    const isPass = p.type === 'pass';
+    ctx.fillStyle = isPass ? 'rgba(46,134,222,0.12)' : 'rgba(251,79,20,0.1)';
+    ctx.strokeStyle = isPass ? 'rgba(46,134,222,0.4)' : 'rgba(251,79,20,0.35)';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, bx, by, btnW, btnH, 8);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-    ctx.lineWidth = 2;
-    roundRect(ctx, bx, by, btnW, btnH, 10);
     ctx.stroke();
 
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold ' + Math.min(17, W * 0.04) + 'px "Arial Black", Impact, sans-serif';
+    ctx.font = '600 ' + Math.min(13, W * 0.031) + 'px ' + FONT_UI;
+    ctx.fillStyle = isPass ? LOS_BLUE : ORANGE;
+    ctx.textAlign = 'left';
+    ctx.fillText(p.icon, bx + 14, by + btnH / 2);
+    ctx.fillStyle = WHITE;
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(p.emoji + '  ' + p.label, W / 2, by + btnH / 2);
+    ctx.fillText(p.label, W / 2 + 6, by + btnH / 2);
+
+    // Keyboard hint (desktop)
+    ctx.font = '400 9px ' + FONT_UI;
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.textAlign = 'right';
+    ctx.fillText('' + (i + 1), bx + btnW - 12, by + btnH / 2);
   });
 
-  // Score display at bottom
-  ctx.font = 'bold ' + Math.min(20, W * 0.045) + 'px "Arial Black", Impact, sans-serif';
-  ctx.fillStyle = BENGALS_ORANGE;
-  ctx.fillText('CIN ' + score.bengals + '  -  CPU ' + score.cpu, W / 2, H * 0.85);
+  // Score
+  ctx.font = '700 ' + Math.min(15, W * 0.036) + 'px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = ORANGE;
+  ctx.fillText('CIN ' + score.bengals, W / 2 - 42, H * 0.78);
+  ctx.fillStyle = METALLIC;
+  ctx.fillText('-', W / 2, H * 0.78);
+  ctx.fillStyle = CPU_SILVER;
+  ctx.fillText('CPU ' + score.cpu, W / 2 + 42, H * 0.78);
+
+  // Live advanced stats
+  if (gameStats.plays > 0) {
+    const ypc = gameStats.rushAttempts > 0 ? (gameStats.rushYards / gameStats.rushAttempts).toFixed(1) : '0.0';
+    const compPct = gameStats.attempts > 0 ? Math.round((gameStats.completions / gameStats.attempts) * 100) : 0;
+    const driveEff = gameStats.drives > 0 ? Math.round((gameStats.driveResults.filter(function(r) { return r === 'td'; }).length / gameStats.drives) * 100) : 0;
+
+    ctx.font = '400 9px ' + FONT_UI;
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
+    ctx.fillText(gameStats.totalYards + ' yds | ' + ypc + ' ypc | ' + compPct + '% comp', W / 2, H * 0.85);
+    ctx.fillText('Long: ' + gameStats.longestPlay + ' | 1st Downs: ' + gameStats.firstDowns, W / 2, H * 0.89);
+  }
 }
 
-// ---- Result Message Overlay ----
+// --- Result Message Overlay ---
 function drawResultMsg() {
   if (!resultMsg) return;
 
-  // Semi-transparent overlay
-  ctx.fillStyle = 'rgba(0,0,0,0.4)';
-  ctx.fillRect(0, H * 0.3, W, H * 0.3);
+  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  ctx.fillRect(0, H * 0.32, W, H * 0.22);
 
-  // Message text
-  var lines = resultMsg.split('\n');
-  var fontSize = Math.min(36, W * 0.08);
-  ctx.font = 'bold ' + fontSize + 'px "Arial Black", Impact, sans-serif';
+  const fontSize = Math.min(28, W * 0.065);
+  ctx.font = '700 ' + fontSize + 'px ' + FONT_UI;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#080808';
+  ctx.fillText(resultMsg, W / 2 + 1, H * 0.42 + 1);
+  ctx.fillStyle = resultSubMsg === 'FIRST DOWN' ? FIRST_DOWN_YELLOW : ORANGE;
+  ctx.fillText(resultMsg, W / 2, H * 0.42);
 
-  lines.forEach(function(line, i) {
-    var y = H * 0.45 + i * (fontSize + 4);
-    // Shadow
-    ctx.fillStyle = '#000';
-    ctx.fillText(line, W / 2 + 2, y + 2);
-    // Text
-    ctx.fillStyle = (line.indexOf('FIRST DOWN') >= 0 || line.indexOf('TOUCHDOWN') >= 0) ? GOLD : BENGALS_ORANGE;
-    ctx.fillText(line, W / 2, y);
-  });
+  if (resultSubMsg) {
+    ctx.font = '600 ' + Math.min(14, W * 0.034) + 'px ' + FONT_UI;
+    ctx.fillStyle = resultSubMsg === 'FIRST DOWN' ? FIRST_DOWN_YELLOW : (resultSubMsg === 'BIG PLAY!' ? GOLD_BRIGHT : WHITE);
+    ctx.fillText(resultSubMsg, W / 2, H * 0.42 + fontSize * 0.8);
+  }
 }
 
-// ---- Celebration Screen ----
+// --- Celebration Screen (TD) ---
 function drawCelebration(dt) {
   celebTimer += dt;
 
-  // Still draw the field and players
   drawField();
   offensePlayers.forEach(function(p) { drawPlayer(p, p === ballCarrier); });
   defensePlayers.forEach(function(p) { drawPlayer(p, false); });
 
-  // Continuous confetti
-  if (celebTimer < 2.5 && Math.random() < 0.4) {
-    spawnConfetti(Math.random() * W, Math.random() * H * 0.3, 3);
+  // Brief particle continuation
+  if (celebTimer < 1.5 && Math.random() < 0.25) {
+    spawnSparks(Math.random() * W, Math.random() * H * 0.4, 3, ORANGE, GOLD);
   }
 
   drawParticles();
+  drawScreenEffects();
 
-  // Big TOUCHDOWN text
-  var bounce = Math.sin(celebTimer * 5) * 8;
-  var fontSize = Math.min(52, W * 0.11);
-  ctx.font = 'bold ' + fontSize + 'px "Arial Black", Impact, sans-serif';
+  // Overlay
+  ctx.fillStyle = 'rgba(0,0,0,' + Math.min(0.65, celebTimer * 0.35) + ')';
+  ctx.fillRect(0, 0, W, H);
+
+  // TOUCHDOWN text — bold, clean
+  const fontSize = Math.min(36, W * 0.08);
+  const titleFont = fontsLoaded ? FONT_TITLE : ('"Arial Black",Arial,sans-serif');
+  ctx.font = '400 ' + fontSize + 'px ' + titleFont;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  // Glow
-  ctx.shadowColor = BENGALS_ORANGE;
-  ctx.shadowBlur = 20;
-  ctx.fillStyle = '#000';
-  ctx.fillText('TOUCHDOWN!', W / 2 + 3, H * 0.35 + bounce + 3);
-  ctx.fillStyle = BENGALS_ORANGE;
-  ctx.fillText('TOUCHDOWN!', W / 2, H * 0.35 + bounce);
+  ctx.shadowColor = ORANGE;
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = ORANGE;
+  ctx.fillText('TOUCHDOWN', W / 2, H * 0.33);
   ctx.shadowBlur = 0;
 
-  // WHO DEY
-  if (celebTimer > 0.8) {
-    var wdSize = Math.min(36, W * 0.08);
-    ctx.font = 'bold ' + wdSize + 'px "Arial Black", Impact, sans-serif';
-    ctx.fillStyle = '#fff';
-    var wdBounce = Math.sin((celebTimer - 0.8) * 6) * 5;
-    ctx.fillText('WHO DEY!', W / 2, H * 0.48 + wdBounce);
+  // Yardage
+  if (celebTimer > 0.5 && resultSubMsg) {
+    ctx.font = '600 ' + Math.min(14, W * 0.035) + 'px ' + FONT_UI;
+    ctx.fillStyle = METALLIC_LIGHT;
+    ctx.fillText(resultSubMsg, W / 2, H * 0.33 + fontSize * 0.75);
+  }
+
+  // WHO DEY — intense brief appearance
+  if (celebTimer > 0.8 && celebTimer < 3.0) {
+    const wdAlpha = Math.min(1, (celebTimer - 0.8) * 2.5) * Math.min(1, (3.0 - celebTimer) * 2);
+    ctx.globalAlpha = wdAlpha;
+    const wdFont = fontsLoaded ? FONT_TITLE : ('"Arial Black",Arial,sans-serif');
+    ctx.font = '400 ' + Math.min(22, W * 0.052) + 'px ' + wdFont;
+    ctx.fillStyle = WHITE;
+    ctx.fillText('WHO DEY', W / 2, H * 0.46);
+    ctx.globalAlpha = 1;
   }
 
   // Score
-  if (celebTimer > 1.2) {
-    ctx.font = 'bold ' + Math.min(24, W * 0.055) + 'px Arial';
+  if (celebTimer > 1.0) {
+    ctx.font = '700 ' + Math.min(18, W * 0.042) + 'px ' + FONT_UI;
     ctx.fillStyle = GOLD;
-    ctx.fillText('CIN ' + score.bengals + '  -  CPU ' + score.cpu, W / 2, H * 0.58);
+    ctx.fillText('CIN ' + score.bengals + '  -  CPU ' + score.cpu, W / 2, H * 0.56);
   }
 
-  // Auto-advance after celebration
-  if (celebTimer > 3.5) {
-    lineOfScrimmage = 25;
-    ballOn = 25;
-    down = 1;
-    yardsToGo = 10;
-    setupFormation();
-    gameState = 'playSelect';
-    resultMsg = '';
-
-    // Quarter advances every 8 plays
-    if (playsRun % 8 === 0 && playsRun > 0 && quarter < 4) quarter++;
+  // Auto-advance
+  if (celebTimer > 3.2) {
+    if (!checkQuarterEnd()) {
+      startNewDrive();
+    }
   }
 }
 
-// ---- Touch Input ----
+// --- Turnover Screen ---
+function drawTurnoverScreen(dt) {
+  resultTimer += dt;
+  updateCamera();
+  drawField();
+  offensePlayers.forEach(function(p) { drawPlayer(p, false); });
+  defensePlayers.forEach(function(p) { drawPlayer(p, false); });
+  drawHUD();
+
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.fillRect(0, H * 0.32, W, H * 0.2);
+
+  ctx.font = '700 ' + Math.min(26, W * 0.06) + 'px ' + FONT_UI;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = DANGER_RED;
+  ctx.fillText(resultMsg, W / 2, H * 0.42);
+
+  if (resultTimer > 2.0) {
+    simulateCPUDrive();
+    gameState = 'result';
+    resultTimer = 0;
+    setTimeout(function() {
+      if (!checkQuarterEnd()) {
+        startNewDrive();
+      }
+    }, 2200);
+  }
+}
+
+// --- Halftime Screen ---
+function drawHalftime(dt) {
+  stateTimer += dt;
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(0, 0, W, H);
+
+  drawTigerStripes(0, 0, W, H, 0.025, 55);
+
+  const titleFont = fontsLoaded ? FONT_TITLE : ('"Arial Black",Arial,sans-serif');
+  ctx.font = '400 24px ' + titleFont;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = ORANGE;
+  ctx.fillText('HALFTIME', W / 2, H * 0.14);
+
+  ctx.font = '700 18px ' + FONT_UI;
+  ctx.fillStyle = WHITE;
+  ctx.fillText('CIN ' + score.bengals + '  -  CPU ' + score.cpu, W / 2, H * 0.24);
+
+  // Metallic divider
+  const lineGrad = ctx.createLinearGradient(W * 0.2, 0, W * 0.8, 0);
+  lineGrad.addColorStop(0, 'rgba(251,79,20,0)');
+  lineGrad.addColorStop(0.5, ORANGE);
+  lineGrad.addColorStop(1, 'rgba(251,79,20,0)');
+  ctx.fillStyle = lineGrad;
+  ctx.fillRect(W * 0.2, H * 0.28, W * 0.6, 1);
+
+  // First half stats
+  const ypc = gameStats.rushAttempts > 0 ? (gameStats.rushYards / gameStats.rushAttempts).toFixed(1) : '0.0';
+  const compPct = gameStats.attempts > 0 ? Math.round((gameStats.completions / gameStats.attempts) * 100) : 0;
+
+  const stats = [
+    ['Total Yards', '' + gameStats.totalYards],
+    ['Rush Yards', gameStats.rushYards + ' (' + ypc + ' ypc)'],
+    ['Pass Yards', gameStats.passYards + ' (' + compPct + '%)'],
+    ['Completions', gameStats.completions + '/' + gameStats.attempts],
+    ['First Downs', '' + gameStats.firstDowns],
+    ['Longest Play', gameStats.longestPlay + ' yds'],
+    ['Turnovers', '' + gameStats.turnovers]
+  ];
+
+  ctx.font = '500 11px ' + FONT_UI;
+  stats.forEach(function(s, i) {
+    const y = H * 0.33 + i * 21;
+    ctx.fillStyle = METALLIC;
+    ctx.textAlign = 'left';
+    ctx.fillText(s[0], W * 0.15, y);
+    ctx.fillStyle = WHITE;
+    ctx.textAlign = 'right';
+    ctx.fillText(s[1], W * 0.85, y);
+  });
+
+  // Auto-advance
+  if (stateTimer > 4.5) {
+    quarter = 3;
+    playsThisQuarter = 0;
+    startNewDrive();
+  }
+
+  if (stateTimer > 1.5) {
+    ctx.font = '400 11px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.fillText('Tap to continue', W / 2, H * 0.88);
+  }
+}
+
+// --- Game Over Screen ---
+function drawGameOver(dt) {
+  stateTimer += dt;
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(0, 0, W, H);
+
+  drawTigerStripes(0, 0, W, H, 0.02, 60);
+
+  const won = score.bengals > score.cpu;
+  const tied = score.bengals === score.cpu;
+
+  const titleFont = fontsLoaded ? FONT_TITLE : ('"Arial Black",Arial,sans-serif');
+  ctx.font = '400 ' + Math.min(28, W * 0.065) + 'px ' + titleFont;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = won ? GOLD_BRIGHT : (tied ? METALLIC : DANGER_RED);
+  ctx.fillText(won ? 'VICTORY' : (tied ? 'TIE GAME' : 'DEFEAT'), W / 2, H * 0.1);
+
+  // Final score
+  ctx.font = '700 22px ' + FONT_UI;
+  ctx.fillStyle = WHITE;
+  ctx.fillText('CIN ' + score.bengals + '  -  CPU ' + score.cpu, W / 2, H * 0.19);
+
+  // Divider
+  const lineGrad = ctx.createLinearGradient(W * 0.2, 0, W * 0.8, 0);
+  lineGrad.addColorStop(0, 'rgba(251,79,20,0)');
+  lineGrad.addColorStop(0.5, ORANGE);
+  lineGrad.addColorStop(1, 'rgba(251,79,20,0)');
+  ctx.fillStyle = lineGrad;
+  ctx.fillRect(W * 0.2, H * 0.23, W * 0.6, 1);
+
+  // Advanced final stats
+  const ypc = gameStats.rushAttempts > 0 ? (gameStats.rushYards / gameStats.rushAttempts).toFixed(1) : '0.0';
+  const compPct = gameStats.attempts > 0 ? Math.round((gameStats.completions / gameStats.attempts) * 100) : 0;
+  const thirdPct = gameStats.thirdDownAtt > 0 ? Math.round((gameStats.thirdDownConv / gameStats.thirdDownAtt) * 100) : 0;
+
+  const stats = [
+    ['Total Yards', '' + gameStats.totalYards],
+    ['Rush Yards', gameStats.rushYards + ' (' + ypc + ' ypc)'],
+    ['Pass Yards', gameStats.passYards + ' (' + compPct + '% comp)'],
+    ['Touchdowns', '' + gameStats.touchdowns],
+    ['First Downs', '' + gameStats.firstDowns],
+    ['Turnovers', '' + gameStats.turnovers],
+    ['Sacks Taken', '' + gameStats.sacks],
+    ['3rd Down', gameStats.thirdDownConv + '/' + gameStats.thirdDownAtt + ' (' + thirdPct + '%)'],
+    ['Longest Play', gameStats.longestPlay + ' yds'],
+    ['Jukes Used', '' + gameStats.spinsUsed]
+  ];
+
+  ctx.font = '500 11px ' + FONT_UI;
+  stats.forEach(function(s, i) {
+    const y = H * 0.27 + i * 20;
+    ctx.fillStyle = METALLIC;
+    ctx.textAlign = 'left';
+    ctx.fillText(s[0], W * 0.12, y);
+    ctx.fillStyle = WHITE;
+    ctx.textAlign = 'right';
+    ctx.fillText(s[1], W * 0.88, y);
+  });
+
+  // Big plays list
+  if (gameStats.bigPlays.length > 0) {
+    const bpY = H * 0.27 + stats.length * 20 + 12;
+    ctx.font = '600 10px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = GOLD;
+    ctx.fillText('BIG PLAYS', W / 2, bpY);
+    gameStats.bigPlays.slice(0, 3).forEach(function(bp, i) {
+      ctx.font = '400 10px ' + FONT_UI;
+      ctx.fillStyle = METALLIC_LIGHT;
+      ctx.fillText(bp.yards + 'yd ' + bp.type + ' (Q' + bp.quarter + ')', W / 2, bpY + 16 + i * 15);
+    });
+  }
+
+  // Coins earned
+  if (stateTimer > 1.0) {
+    ctx.font = '600 12px ' + FONT_UI;
+    ctx.fillStyle = GOLD;
+    ctx.textAlign = 'center';
+    ctx.fillText('Coins: ' + store.coins, W / 2, H * 0.86);
+  }
+
+  // Play again
+  if (stateTimer > 2.0) {
+    const btnW = Math.min(210, W * 0.48);
+    const btnH = 46;
+    const bx = W / 2 - btnW / 2;
+    const by = H * 0.9;
+    const btnGrad = ctx.createLinearGradient(bx, by, bx + btnW, by + btnH);
+    btnGrad.addColorStop(0, ORANGE);
+    btnGrad.addColorStop(1, ORANGE_DIM);
+    ctx.fillStyle = btnGrad;
+    roundRect(ctx, bx, by, btnW, btnH, 8);
+    ctx.fill();
+    ctx.fillStyle = WHITE;
+    ctx.font = '700 14px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillText('PLAY AGAIN', W / 2, by + btnH / 2);
+
+    menuButtons = [{ x: bx, y: by, w: btnW, h: btnH, action: 'newgame' }];
+  }
+}
+
+
+// =========================================================================
+// 15. TOUCH & KEYBOARD INPUT
+// =========================================================================
+
 function getDpadDirection(tx, ty) {
-  var dx = tx - dpadCenterX;
-  var dy = ty - dpadCenterY;
-  var dist = Math.hypot(dx, dy);
-
-  if (dist < dpadRadius * 0.25) return null; // dead zone in center
-  if (dist > dpadRadius * 1.5) return null; // too far
-
-  var angle = Math.atan2(dy, dx);
-  var deg = angle * 180 / Math.PI;
-
-  // 8 zones: up, down, left, right, and diagonals
-  var result = { up: false, down: false, left: false, right: false };
-
+  const dx = tx - dpadCenterX;
+  const dy = ty - dpadCenterY;
+  const dist = Math.hypot(dx, dy);
+  if (dist < dpadRadius * 0.2) return null;
+  if (dist > dpadRadius * 1.6) return null;
+  const angle = Math.atan2(dy, dx);
+  const deg = angle * 180 / Math.PI;
+  const result = { up: false, down: false, left: false, right: false };
   if (deg > -67.5 && deg < 67.5) result.right = true;
   if (deg > 22.5 && deg < 157.5) result.down = true;
   if (deg > 112.5 || deg < -112.5) result.left = true;
   if (deg > -157.5 && deg < -22.5) result.up = true;
-
   return result;
 }
 
 function isInCircle(tx, ty, cx, cy, r) {
-  return Math.hypot(tx - cx, ty - cy) <= r * 1.3; // generous touch area
+  return Math.hypot(tx - cx, ty - cy) <= r * 1.4;
+}
+
+function isInRect(tx, ty, rx, ry, rw, rh) {
+  return tx >= rx && tx <= rx + rw && ty >= ry && ty <= ry + rh;
 }
 
 function handleTouchStart(e) {
   e.preventDefault();
   e.stopPropagation();
 
-  for (var i = 0; i < e.changedTouches.length; i++) {
-    var touch = e.changedTouches[i];
-    var tx = touch.clientX;
-    var ty = touch.clientY;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const touch = e.changedTouches[i];
+    const tx = touch.clientX;
+    const ty = touch.clientY;
 
     // Splash screen
     if (gameState === 'splash') {
       initAudio();
-      setupFormation();
-      gameState = 'playSelect';
+      for (let m = 0; m < menuButtons.length; m++) {
+        const mb = menuButtons[m];
+        if (isInRect(tx, ty, mb.x, mb.y, mb.w, mb.h)) {
+          if (mb.action === 'shop') {
+            sfxMenuSelect();
+            gameState = 'shop';
+            shopButtons = [];
+            return;
+          }
+        }
+      }
+      if (isInRect(tx, ty, splashBtnBounds.x, splashBtnBounds.y, splashBtnBounds.w, splashBtnBounds.h)) {
+        sfxMenuSelect();
+        dailyBonusData = checkDailyBonus();
+        if (dailyBonusData) {
+          gameState = 'dailyBonus';
+          stateTimer = 0;
+        } else {
+          newGame();
+        }
+        return;
+      }
+      return;
+    }
+
+    // Daily bonus
+    if (gameState === 'dailyBonus') {
+      newGame();
+      return;
+    }
+
+    // Shop screen
+    if (gameState === 'shop') {
+      for (let b = 0; b < shopButtons.length; b++) {
+        const btn = shopButtons[b];
+        if (isInRect(tx, ty, btn.x, btn.y, btn.w, btn.h)) {
+          sfxMenuSelect();
+          if (btn.action === 'back') {
+            gameState = 'splash';
+            return;
+          }
+          if (btn.action.indexOf('tab_') === 0) {
+            shopTab = btn.action.replace('tab_', '');
+            shopButtons = [];
+            return;
+          }
+          if (btn.action === 'watch_ad') {
+            showRewardedAd(function(watched) {
+              if (watched) {
+                const reward = claimAdReward();
+                showNotification('+' + reward + ' Coins!', GOLD);
+              }
+            });
+            return;
+          }
+          if (btn.action === 'propass_7day') {
+            const res = purchaseProPass('7day');
+            showNotification(res.msg, res.ok ? GOLD : DANGER_RED);
+            return;
+          }
+          if (btn.action === 'propass_perm') {
+            const res = purchaseProPass('permanent');
+            showNotification(res.msg, res.ok ? GOLD : DANGER_RED);
+            return;
+          }
+          if (btn.action.indexOf('item_') === 0) {
+            const itemId = btn.action.replace('item_', '');
+            const owned = store.unlockedItems.indexOf(itemId) >= 0;
+            if (owned) {
+              equipItem(itemId);
+              showNotification('Equipped!', ORANGE);
+            } else {
+              const res = purchaseItem(itemId);
+              showNotification(res.msg, res.ok ? GOLD : DANGER_RED);
+              if (res.ok) equipItem(itemId);
+            }
+            shopButtons = [];
+            return;
+          }
+        }
+      }
+      return;
+    }
+
+    // Halftime
+    if (gameState === 'halftime' && stateTimer > 1.5) {
+      quarter = 3;
+      playsThisQuarter = 0;
+      startNewDrive();
+      return;
+    }
+
+    // Game over
+    if (gameState === 'gameOver') {
+      for (let m = 0; m < menuButtons.length; m++) {
+        const mb = menuButtons[m];
+        if (isInRect(tx, ty, mb.x, mb.y, mb.w, mb.h)) {
+          if (mb.action === 'newgame') {
+            sfxMenuSelect();
+            gameState = 'splash';
+            stateTimer = 0;
+            menuButtons = [];
+            return;
+          }
+        }
+      }
       return;
     }
 
     // Play select
     if (gameState === 'playSelect') {
       initAudio();
-      for (var b = 0; b < playButtons.length; b++) {
-        var btn = playButtons[b];
-        if (tx >= btn.x && tx <= btn.x + btn.w && ty >= btn.y && ty <= btn.y + btn.h) {
+      for (let b = 0; b < playButtons.length; b++) {
+        const btn = playButtons[b];
+        if (isInRect(tx, ty, btn.x, btn.y, btn.w, btn.h)) {
+          sfxMenuSelect();
           startPlay(btn.play);
           return;
         }
@@ -1652,8 +3081,8 @@ function handleTouchStart(e) {
 
     // During play
     if (gameState === 'playing' || gameState === 'snap') {
-      // Check D-pad
-      var ddir = getDpadDirection(tx, ty);
+      // D-pad
+      const ddir = getDpadDirection(tx, ty);
       if (ddir) {
         dpadTouchId = touch.identifier;
         input.up = ddir.up;
@@ -1663,30 +3092,30 @@ function handleTouchStart(e) {
         continue;
       }
 
-      // Check spin button
+      // Spin/Throw button
       if (isInCircle(tx, ty, btnSpinX, btnSpinY, btnSpinR)) {
         spinTouchId = touch.identifier;
         input.spin = true;
         continue;
       }
 
-      // Check turbo button
+      // Turbo button
       if (isInCircle(tx, ty, btnTurboX, btnTurboY, btnTurboR)) {
         turboTouchId = touch.identifier;
         input.turbo = true;
         continue;
       }
 
-      // Tap on field during pass play to target a receiver
+      // Tap on receiver during pass play
       if (gameState === 'playing' && playType && playType.indexOf('pass') === 0 && !passThrown) {
-        var receivers = [7, 8, 9, 10];
-        var closest = -1;
-        var closestDist = 80; // generous pixel threshold
+        const receivers = [7, 8, 9, 10];
+        let closest = -1;
+        let closestDist = 75;
         receivers.forEach(function(idx) {
-          var p = offensePlayers[idx];
-          var sx = fieldToScreenX(p.x);
-          var sy = fieldToScreenY(p.y);
-          var d = Math.hypot(tx - sx, ty - sy);
+          const p = offensePlayers[idx];
+          const sx = fieldToScreenX(p.x);
+          const sy = fieldToScreenY(p.y);
+          const d = Math.hypot(tx - sx, ty - sy);
           if (d < closestDist) { closestDist = d; closest = idx; }
         });
         if (closest >= 0) {
@@ -1701,14 +3130,13 @@ function handleTouchMove(e) {
   e.preventDefault();
   e.stopPropagation();
 
-  for (var i = 0; i < e.changedTouches.length; i++) {
-    var touch = e.changedTouches[i];
-    var tx = touch.clientX;
-    var ty = touch.clientY;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const touch = e.changedTouches[i];
+    const tx = touch.clientX;
+    const ty = touch.clientY;
 
-    // Update D-pad if this is the dpad touch
     if (touch.identifier === dpadTouchId) {
-      var ddir = getDpadDirection(tx, ty);
+      const ddir = getDpadDirection(tx, ty);
       if (ddir) {
         input.up = ddir.up;
         input.down = ddir.down;
@@ -1728,9 +3156,8 @@ function handleTouchEnd(e) {
   e.preventDefault();
   e.stopPropagation();
 
-  for (var i = 0; i < e.changedTouches.length; i++) {
-    var touch = e.changedTouches[i];
-
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const touch = e.changedTouches[i];
     if (touch.identifier === dpadTouchId) {
       dpadTouchId = -1;
       input.up = false;
@@ -1754,21 +3181,31 @@ canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
 canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
 canvas.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
-// Mouse fallback for desktop testing
+// Mouse fallback for desktop
+let mouseDown = false;
 canvas.addEventListener('mousedown', function(e) {
-  var fake = { changedTouches: [{ clientX: e.clientX, clientY: e.clientY, identifier: 999 }] };
+  mouseDown = true;
+  const fake = { changedTouches: [{ clientX: e.clientX, clientY: e.clientY, identifier: 999 }] };
   fake.preventDefault = function() {};
   fake.stopPropagation = function() {};
   handleTouchStart(fake);
 });
+canvas.addEventListener('mousemove', function(e) {
+  if (!mouseDown) return;
+  const fake = { changedTouches: [{ clientX: e.clientX, clientY: e.clientY, identifier: 999 }] };
+  fake.preventDefault = function() {};
+  fake.stopPropagation = function() {};
+  handleTouchMove(fake);
+});
 canvas.addEventListener('mouseup', function(e) {
-  var fake = { changedTouches: [{ clientX: e.clientX, clientY: e.clientY, identifier: 999 }] };
+  mouseDown = false;
+  const fake = { changedTouches: [{ clientX: e.clientX, clientY: e.clientY, identifier: 999 }] };
   fake.preventDefault = function() {};
   fake.stopPropagation = function() {};
   handleTouchEnd(fake);
 });
 
-// Keyboard (desktop testing)
+// Keyboard (desktop)
 window.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowUp') input.up = true;
   if (e.key === 'ArrowDown') input.down = true;
@@ -1776,10 +3213,25 @@ window.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowRight') input.right = true;
   if (e.key === 'z' || e.key === 'Z') input.spin = true;
   if (e.key === 'x' || e.key === 'X') input.turbo = true;
-  if (e.key === ' ' && gameState === 'splash') {
-    initAudio();
-    setupFormation();
-    gameState = 'playSelect';
+  if (e.key === ' ') {
+    if (gameState === 'splash') {
+      initAudio();
+      dailyBonusData = checkDailyBonus();
+      if (dailyBonusData) {
+        gameState = 'dailyBonus';
+        stateTimer = 0;
+      } else {
+        newGame();
+      }
+    }
+  }
+  if (gameState === 'playSelect') {
+    const playMap = { '1': 'run-left', '2': 'run-middle', '3': 'run-right', '4': 'pass-short', '5': 'pass-deep' };
+    if (playMap[e.key]) {
+      initAudio();
+      sfxMenuSelect();
+      startPlay(playMap[e.key]);
+    }
   }
 });
 window.addEventListener('keyup', function(e) {
@@ -1791,25 +3243,43 @@ window.addEventListener('keyup', function(e) {
   if (e.key === 'x' || e.key === 'X') input.turbo = false;
 });
 
-// ---- Main Game Loop ----
-var lastTime = 0;
+
+// =========================================================================
+// 16. MAIN GAME LOOP — 60fps locked via requestAnimationFrame
+// =========================================================================
+
+let lastTime = 0;
 
 function gameLoop(timestamp) {
   requestAnimationFrame(gameLoop);
 
-  var dt = Math.min((timestamp - lastTime) / 1000, 0.05); // cap at 50ms to prevent spiral
+  let dt = Math.min((timestamp - lastTime) / 1000, 0.035); // Cap at 35ms (~28fps min)
   lastTime = timestamp;
 
-  // Clear
-  ctx.clearRect(0, 0, W, H);
+  // Hit-stop effect: freeze gameplay briefly on tackle
+  if (hitStop > 0) {
+    hitStop -= dt;
+    dt = 0;
+  }
+
+  // Clear with black (opaque canvas)
+  ctx.fillStyle = BLACK;
+  ctx.fillRect(0, 0, W, H);
 
   switch (gameState) {
     case 'splash':
       drawSplash();
       break;
 
+    case 'dailyBonus':
+      drawDailyBonus(dt);
+      break;
+
+    case 'shop':
+      drawShop();
+      break;
+
     case 'playSelect':
-      // Draw field in background
       updateCamera();
       drawField();
       offensePlayers.forEach(function(p) { drawPlayer(p, false); });
@@ -1818,7 +3288,6 @@ function gameLoop(timestamp) {
       break;
 
     case 'snap':
-      // Brief snap animation (0.4s), then transition to playing
       stateTimer += dt;
       updateCamera();
       drawField();
@@ -1827,36 +3296,38 @@ function gameLoop(timestamp) {
       drawHUD();
       drawControls();
 
-      // Show "HIKE!" message
-      ctx.font = 'bold ' + Math.min(36, W * 0.08) + 'px "Arial Black", Impact, sans-serif';
+      // HIKE text
+      const hikeFont = fontsLoaded ? FONT_TITLE : ('"Arial Black",Arial,sans-serif');
+      ctx.font = '400 ' + Math.min(26, W * 0.06) + 'px ' + hikeFont;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = GOLD;
-      ctx.fillText('HIKE!', W / 2, H * 0.4);
+      ctx.shadowColor = GOLD;
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = GOLD_BRIGHT;
+      ctx.fillText('HIKE', W / 2, H * 0.38);
+      ctx.shadowBlur = 0;
 
-      if (stateTimer > 0.4) {
-        transitionToPlaying();
-      }
+      drawCommentary(dt);
+      if (stateTimer > 0.35) transitionToPlaying();
       break;
 
     case 'playing':
-      // Game update
       if (playType && playType.indexOf('run') === 0) {
         updateRunPlay(dt);
       } else if (playType && playType.indexOf('pass') === 0) {
         updatePassPlay(dt);
       }
-
       updateCamera();
-
-      // Draw
       drawField();
       offensePlayers.forEach(function(p) { drawPlayer(p, p === ballCarrier); });
       defensePlayers.forEach(function(p) { drawPlayer(p, false); });
       drawBall();
+      updateParticles(dt);
       drawParticles();
+      drawScreenEffects();
       drawHUD();
       drawControls();
+      drawCommentary(dt);
       break;
 
     case 'result':
@@ -1867,15 +3338,18 @@ function gameLoop(timestamp) {
       defensePlayers.forEach(function(p) { drawPlayer(p, false); });
       updateParticles(dt);
       drawParticles();
+      drawScreenEffects();
       drawHUD();
       drawResultMsg();
+      drawCommentary(dt);
 
-      // Auto-advance to play select
-      if (resultTimer > 2.2) {
-        setupFormation();
-        gameState = 'playSelect';
-        resultMsg = '';
-        if (playsRun % 8 === 0 && playsRun > 0 && quarter < 4) quarter++;
+      if (resultTimer > 2.0) {
+        if (!checkQuarterEnd()) {
+          setupFormation();
+          gameState = 'playSelect';
+          resultMsg = '';
+          resultSubMsg = '';
+        }
       }
       break;
 
@@ -1884,47 +3358,95 @@ function gameLoop(timestamp) {
       updateParticles(dt);
       drawCelebration(dt);
       drawHUD();
+      drawCommentary(dt);
       break;
 
     case 'turnover':
-      resultTimer += dt;
-      updateCamera();
-      drawField();
-      offensePlayers.forEach(function(p) { drawPlayer(p, false); });
-      defensePlayers.forEach(function(p) { drawPlayer(p, false); });
-      drawHUD();
+      drawTurnoverScreen(dt);
+      drawCommentary(dt);
+      break;
 
-      // Turnover message
-      ctx.fillStyle = 'rgba(0,0,0,0.5)';
-      ctx.fillRect(0, H * 0.3, W, H * 0.25);
-      ctx.font = 'bold ' + Math.min(32, W * 0.07) + 'px "Arial Black", Impact, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#ff4444';
-      ctx.fillText(resultMsg, W / 2, H * 0.42);
+    case 'halftime':
+      drawHalftime(dt);
+      break;
 
-      if (resultTimer > 2.5) {
-        // CPU "drives" and scores (simplified)
-        score.cpu += 3;
-        lineOfScrimmage = 25;
-        ballOn = 25;
-        down = 1;
-        yardsToGo = 10;
-        setupFormation();
-        gameState = 'playSelect';
-        resultMsg = '';
-        if (playsRun % 8 === 0 && playsRun > 0 && quarter < 4) quarter++;
-      }
+    case 'gameOver':
+      drawGameOver(dt);
       break;
   }
 
-  // Always update particles
-  updateParticles(dt);
+  drawNotification(dt);
 }
 
-// ---- Init ----
-setupFormation();
 requestAnimationFrame(gameLoop);
+
+
+// =========================================================================
+// 17. ADMIN PANEL — Console access for testing monetization
+// =========================================================================
+
+window.JUDEBOWL_ADMIN = {
+  getStore: function() { return JSON.parse(JSON.stringify(store)); },
+  setCoins: function(n) { store.coins = n; saveStore(); console.log('Coins set to ' + n); },
+  addCoins: function(n) { store.coins += n; store.totalCoins += n; saveStore(); console.log('Added ' + n + ' coins. Total: ' + store.coins); },
+  grantProPass: function() { store.proPassExpiry = -1; store.proPas = true; saveStore(); console.log('Permanent Pro Pass granted.'); },
+  revokeProPass: function() { store.proPassExpiry = 0; store.proPas = false; saveStore(); console.log('Pro Pass revoked.'); },
+  unlockAll: function() {
+    Object.keys(SHOP_ITEMS).forEach(function(key) {
+      if (store.unlockedItems.indexOf(key) < 0) store.unlockedItems.push(key);
+    });
+    saveStore();
+    console.log('All items unlocked.');
+  },
+  resetStore: function() {
+    store = defaultStore();
+    saveStore();
+    console.log('Store reset to defaults.');
+  },
+  resetDailyBonus: function() {
+    store.lastDailyLogin = '';
+    store.dailyStreak = 0;
+    saveStore();
+    console.log('Daily bonus reset.');
+  },
+  testAd: function() {
+    showRewardedAd(function(watched) {
+      console.log('Ad callback: watched=' + watched);
+      if (watched) {
+        const r = claimAdReward();
+        console.log('Reward: +' + r + ' coins');
+      }
+    });
+  },
+  getStats: function() { return JSON.parse(JSON.stringify(gameStats)); },
+  forceState: function(s) { gameState = s; stateTimer = 0; console.log('State forced to: ' + s); },
+  help: function() {
+    console.log([
+      'JUDE BOWL Admin Panel',
+      '---------------------',
+      'JUDEBOWL_ADMIN.setCoins(n)       - Set coin balance',
+      'JUDEBOWL_ADMIN.addCoins(n)       - Add coins',
+      'JUDEBOWL_ADMIN.grantProPass()    - Grant permanent Pro Pass',
+      'JUDEBOWL_ADMIN.revokeProPass()   - Revoke Pro Pass',
+      'JUDEBOWL_ADMIN.unlockAll()       - Unlock all shop items',
+      'JUDEBOWL_ADMIN.resetStore()      - Reset all data',
+      'JUDEBOWL_ADMIN.resetDailyBonus() - Reset daily bonus',
+      'JUDEBOWL_ADMIN.testAd()          - Test rewarded ad flow',
+      'JUDEBOWL_ADMIN.getStats()        - View current game stats',
+      'JUDEBOWL_ADMIN.getStore()        - View full store data',
+      'JUDEBOWL_ADMIN.forceState(s)     - Force game state'
+    ].join('\n'));
+  }
+};
+
+console.log('[JUDE BOWL v2.0] Admin panel: JUDEBOWL_ADMIN.help()');
+
+// Initial analytics
+analyticsEvent('session_start', {
+  coins: store.coins,
+  proPas: hasProPass(),
+  totalGames: store.totalGames
+});
 
 </script>
 </body>
