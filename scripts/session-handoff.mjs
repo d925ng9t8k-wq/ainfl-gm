@@ -19,6 +19,8 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 
+// ─── Ironclad Layer 1+3: Write episodic checkpoints to Supabase ────────────
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const HANDOFF_FILE = join(ROOT, 'memory', 'SESSION_HANDOFF.md');
@@ -40,7 +42,7 @@ function shell(cmd, timeout = 8000) {
   }
 }
 
-function buildHandoff() {
+async function buildHandoff() {
   const now = new Date();
   const nowET = shell("TZ='America/New_York' date '+%Y-%m-%d %H:%M ET'");
 
@@ -153,6 +155,60 @@ ${gitLog}
 
   writeFileSync(HANDOFF_FILE, markdown);
   writeFileSync(HANDOFF_JSON, JSON.stringify(handoffData, null, 2));
+
+  // ─── Ironclad: Write episodic checkpoint to Supabase ──────────────────────
+  try {
+    const envFile = readFileSync(join(ROOT, '.env'), 'utf8');
+    const envVars = Object.fromEntries(
+      envFile.split('\n').filter(l => l && !l.startsWith('#'))
+        .map(l => { const i = l.indexOf('='); return [l.slice(0, i), l.slice(i + 1)]; })
+    );
+    const supabaseUrl = (envVars.SUPABASE_URL || '').replace(/\/$/, '');
+    const supabaseKey = envVars.SUPABASE_SERVICE_KEY;
+
+    if (supabaseUrl && supabaseKey) {
+      const checkpoint = {
+        name: `session_checkpoint_${now.toISOString()}`,
+        type: 'episodic',
+        description: `Checkpoint ${nowET} — ${handoffData.runningProcesses.length} processes, ${handoffData.auditReportsGenerated.length} reports`,
+        content: JSON.stringify({
+          timestamp: now.toISOString(),
+          processes: handoffData.runningProcesses.length,
+          teamAgents: Object.keys(handoffData.teamAgents),
+          recentDocs: handoffData.recentDocsModifiedToday.length,
+          reports: handoffData.auditReportsGenerated.length,
+          pepperPID: handoffData.pepperPID,
+          hubHealthy: handoffData.hubHealthy
+        })
+      };
+
+      // Upsert — update existing checkpoint or create new (keep only latest)
+      await fetch(`${supabaseUrl}/rest/v1/memory?name=eq.ironclad_session_checkpoint`, {
+        method: 'DELETE',
+        headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
+      }).catch(() => {});
+
+      await fetch(`${supabaseUrl}/rest/v1/memory`, {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: 'ironclad_session_checkpoint',
+          type: 'episodic',
+          description: checkpoint.description,
+          content: checkpoint.content
+        })
+      });
+      // Log every 10th write to avoid spam
+      if (Math.random() < 0.1) log('Supabase episodic checkpoint written');
+    }
+  } catch (e) {
+    // Silent fail — local files are the primary, Supabase is backup
+  }
+
   return handoffData;
 }
 
@@ -163,16 +219,16 @@ log(`JSON to: ${HANDOFF_JSON}`);
 
 // Write immediately on start
 try {
-  const data = buildHandoff();
+  const data = await buildHandoff();
   log(`Initial handoff written. ${data.runningProcesses.length} processes, ${data.recentDocsModifiedToday.length} docs today, ${data.auditReportsGenerated.length} reports.`);
 } catch (e) {
   log(`Error: ${e.message}`);
 }
 
 // Then loop
-setInterval(() => {
+setInterval(async () => {
   try {
-    buildHandoff();
+    await buildHandoff();
   } catch (e) {
     log(`Error: ${e.message}`);
   }
