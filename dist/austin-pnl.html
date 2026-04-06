@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Rapid Mortgage — P&L Comparison for Austin Clarkson</title>
+<script>
+// Access protection
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('key') !== 'rapid2026') {
+    document.documentElement.innerHTML = '<body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f7f8fa"><p style="color:#718096">Access restricted. Please use the link provided to you.</p></body>';
+  }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rm-blue:#2582B5;
+    --rm-blue-dark:#1d6a96;
+    --rm-red:#991C1F;
+    --rm-red-light:#b52225;
+    --text-primary:#1a1a1a;
+    --text-secondary:#444;
+    --text-light:#666;
+    --bg-light:#f8f9fb;
+    --bg-section:#eef4f8;
+    --border:#dce4ea;
+    --white:#fff;
+    --green:#1a7a3a;
+    --green-bg:#eaf7ee;
+    --green-border:#b8e0c4;
+    --red-bg:#fef2f2;
+    --red-text:#991C1F;
+  }
+
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{font-size:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  body{
+    font-family:'Lato','Helvetica Neue',Arial,sans-serif;
+    color:var(--text-primary);
+    background:var(--white);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media print{
+    body{font-size:11pt;line-height:1.5}
+    .page-break{page-break-before:always}
+    .header-bar{position:relative!important}
+    .no-print{display:none!important}
+    section{break-inside:avoid}
+  }
+
+  .header-bar{
+    background:linear-gradient(135deg,var(--rm-blue) 0%,var(--rm-blue-dark) 100%);
+    color:var(--white);
+    padding:48px 0 44px;
+    position:relative;
+    overflow:hidden;
+  }
+  .header-bar::after{
+    content:'';position:absolute;top:0;right:0;bottom:0;
+    width:40%;
+    background:linear-gradient(135deg,transparent 0%,rgba(255,255,255,0.04) 100%);
+    pointer-events:none;
+  }
+  .header-inner{
+    max-width:960px;margin:0 auto;padding:0 32px;
+    position:relative;z-index:1;
+  }
+  .header-logo{
+    height:64px;width:auto;margin-bottom:24px;
+    filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+  }
+  .header-title{
+    font-family:'Poppins',sans-serif;
+    font-size:26px;font-weight:700;
+    line-height:1.3;margin-bottom:8px;
+  }
+  .header-subtitle{
+    font-size:15px;font-weight:300;
+    opacity:0.85;letter-spacing:0.3px;
+  }
+
+  .conf-strip{
+    background:var(--rm-red);
+    color:var(--white);
+    text-align:center;
+    font-size:12px;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;
+    padding:8px 16px;
+  }
+
+  .main{
+    max-width:960px;margin:0 auto;padding:40px 32px 60px;
+  }
+
+  section{margin-bottom:44px}
+  section:last-of-type{margin-bottom:0}
+
+  .section-number{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--rm-blue);
+    color:var(--white);
+    font-family:'Poppins',sans-serif;
+    font-size:13px;font-weight:600;
+    width:28px;height:28px;
+    border-radius:50%;
+    margin-right:10px;
+    flex-shrink:0;
+  }
+
+  h2{
+    font-family:'Poppins',sans-serif;
+    font-size:21px;font-weight:600;
+    color:var(--rm-blue);
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--bg-section);
+    display:flex;align-items:center;
+  }
+
+  h3{
+    font-family:'Poppins',sans-serif;
+    font-size:16px;font-weight:600;
+    color:var(--text-primary);
+    margin:24px 0 12px;
+  }
+
+  p{margin-bottom:14px;color:var(--text-secondary);font-size:15px}
+
+  ul{margin:0 0 16px 0;padding-left:24px;color:var(--text-secondary);font-size:15px}
+  ul li{margin-bottom:6px}
+  ul li::marker{color:var(--rm-blue)}
+
+  .highlight{
+    background:var(--bg-section);
+    border-left:4px solid var(--rm-blue);
+    padding:18px 22px;
+    border-radius:0 8px 8px 0;
+    margin:20px 0;
+  }
+  .highlight p{margin-bottom:0;color:var(--text-primary);font-weight:400}
+  .highlight strong{color:var(--rm-blue)}
+
+  .highlight.green{
+    background:var(--green-bg);
+    border-left-color:var(--green);
+  }
+  .highlight.green strong{color:var(--green)}
+
+  /* Assumptions box */
+  .assumptions{
+    background:#fffbeb;
+    border:1px solid #fbbf24;
+    border-radius:8px;
+    padding:18px 22px;
+    margin:20px 0;
+    font-size:14px;
+    color:#92400e;
+  }
+  .assumptions strong{color:#78350f}
+
+  /* Stat cards */
+  .stat-row{
+    display:flex;gap:16px;flex-wrap:wrap;
+    margin:20px 0;
+  }
+  .stat-card{
+    flex:1;min-width:160px;
+    background:var(--bg-light);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px;text-align:center;
+  }
+  .stat-card.green-card{
+    background:var(--green-bg);
+    border-color:var(--green-border);
+  }
+  .stat-value{
+    font-family:'Poppins',sans-serif;
+    font-size:26px;font-weight:700;
+    color:var(--rm-blue);
+    line-height:1.2;
+  }
+  .stat-card.green-card .stat-value{color:var(--green)}
+  .stat-label{
+    font-size:12px;color:var(--text-light);
+    margin-top:4px;text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+
+  /* P&L Tables */
+  .pnl-table{
+    width:100%;border-collapse:collapse;
+    margin:16px 0;font-size:14px;
+  }
+  .pnl-table thead{background:var(--rm-blue);color:var(--white)}
+  .pnl-table thead.lower-head{background:#555}
+  .pnl-table thead.delta-head{background:var(--green)}
+  .pnl-table th{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;padding:11px 14px;
+    text-align:left;font-size:13px;
+    letter-spacing:0.3px;
+  }
+  .pnl-table th:nth-child(2),
+  .pnl-table th:nth-child(3),
+  .pnl-table td:nth-child(2),
+  .pnl-table td:nth-child(3){text-align:right}
+  .pnl-table td{
+    padding:10px 14px;
+    border-bottom:1px solid var(--border);
+    color:var(--text-secondary);
+  }
+  .pnl-table tbody tr:nth-child(even){background:var(--bg-light)}
+  .pnl-table tbody tr:hover{background:var(--bg-section)}
+  .pnl-table .subtotal td{
+    font-weight:700;
+    border-top:2px solid var(--border);
+    color:var(--text-primary);
+  }
+  .pnl-table .total td{
+    font-weight:700;
+    border-top:3px double var(--rm-blue);
+    color:var(--rm-blue);
+    font-size:15px;
+    background:var(--bg-section);
+  }
+  .pnl-table .total.green-total td{
+    border-top-color:var(--green);
+    color:var(--green);
+    background:var(--green-bg);
+  }
+  .pnl-table .section-label td{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--rm-blue);
+    background:var(--bg-section);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    padding:8px 14px;
+  }
+  .pnl-table .section-label.lower-label td{color:#555}
+  .pnl-table .indent td:first-child{padding-left:28px}
+  .pnl-table .note td{
+    font-size:12px;font-style:italic;color:var(--text-light);
+    border-bottom:none;padding:4px 14px 8px;
+  }
+  .pnl-table .positive{color:var(--green)!important}
+  .pnl-table .negative{color:var(--red-text)!important}
+
+  /* Side by side tables */
+  .pnl-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:24px;
+    margin:20px 0;
+  }
+  .pnl-panel{
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .pnl-panel-header{
+    padding:14px 18px;
+    font-family:'Poppins',sans-serif;
+    font-size:15px;font-weight:600;
+    color:var(--white);
+  }
+  .pnl-panel-header.lower{background:#555}
+  .pnl-panel-header.rapid{background:var(--rm-blue)}
+  .pnl-panel .pnl-table{margin:0}
+  .pnl-panel .pnl-table thead{display:none}
+
+  /* Footer */
+  .footer{
+    background:var(--text-primary);
+    color:rgba(255,255,255,0.7);
+    padding:28px 0;
+    margin-top:40px;
+  }
+  .footer-inner{
+    max-width:960px;margin:0 auto;padding:0 32px;
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:16px;
+  }
+  .footer-contact{font-size:14px;line-height:1.6}
+  .footer-contact strong{color:var(--white);font-size:15px}
+  .footer-contact a{color:rgba(255,255,255,0.8);text-decoration:none}
+  .footer-contact a:hover{color:var(--white)}
+  .footer-legal{
+    font-size:11px;text-align:right;
+    color:rgba(255,255,255,0.4);
+    max-width:340px;line-height:1.5;
+  }
+
+  @media(max-width:768px){
+    .header-inner{padding:0 20px}
+    .header-title{font-size:20px}
+    .main{padding:24px 16px 40px}
+    h2{font-size:18px}
+    .stat-row{flex-direction:column}
+    .pnl-grid{grid-template-columns:1fr;gap:16px}
+    .pnl-table{font-size:13px}
+    .pnl-table th,.pnl-table td{padding:8px 10px}
+    .footer-inner{flex-direction:column;text-align:center}
+    .footer-legal{text-align:center;max-width:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="header-bar">
+  <div class="header-inner">
+    <img class="header-logo"
+         src="https://rapidmortgage.com/wp-content/uploads/2019/01/high-res-no-background-logo.png"
+         alt="Rapid Mortgage">
+    <h1 class="header-title">Monthly P&amp;L Comparison<br>Austin Clarkson &amp; Team</h1>
+    <p class="header-subtitle">Current Model (Lower.com) vs. Rapid Mortgage P&amp;L Branch</p>
+  </div>
+</header>
+<div class="conf-strip">Confidential &mdash; For Discussion Purposes Only</div>
+
+<main class="main">
+
+  <!-- Section 1: Production Baseline -->
+  <section>
+    <h2><span class="section-number">1</span> Production Baseline (Monthly)</h2>
+    <p>All figures are derived from Austin's reported annual production of $110.64M across 356 units, converted to a monthly run rate.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-value">$9.22M</div>
+        <div class="stat-label">Monthly Volume</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">29.7</div>
+        <div class="stat-label">Monthly Units</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">$310K</div>
+        <div class="stat-label">Avg Loan Size</div>
+      </div>
+    </div>
+
+    <table class="pnl-table">
+      <thead>
+        <tr><th>Team Member</th><th>Monthly Volume</th><th>Monthly Units</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Austin Clarkson (Lead)</td><td>$4.61M</td><td>14.8</td></tr>
+        <tr><td>Partner LO #1</td><td>$2.77M</td><td>8.9</td></tr>
+        <tr><td>Partner LO #2</td><td>$1.84M</td><td>5.9</td></tr>
+        <tr class="subtotal"><td>Total Team</td><td>$9.22M</td><td>29.7</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 2: Assumptions -->
+  <section>
+    <h2><span class="section-number">2</span> Key Assumptions</h2>
+    <p>This analysis uses industry-standard assumptions for both retail and broker compensation models. Where actual figures differ, the framework holds — only the inputs change.</p>
+
+    <table class="pnl-table">
+      <thead>
+        <tr><th>Assumption</th><th>Lower.com (Retail)</th><th>Rapid (Broker P&amp;L)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Gross Revenue per Loan (bps on volume)</td><td>275 bps</td><td>225 bps</td></tr>
+        <tr class="note"><td colspan="3">Retail shops charge higher lender fees; broker model passes savings to borrower but operates on leaner margin.</td></tr>
+        <tr><td>LO Comp Split (% of gross revenue)</td><td>35%</td><td>N/A (P&amp;L model)</td></tr>
+        <tr class="note"><td colspan="3">At retail shops, LOs typically receive 80-110 bps (roughly 30-40% of gross margin). At Rapid, Austin runs the branch P&amp;L and keeps net profit.</td></tr>
+        <tr><td>Branch P&amp;L Net Share to Austin</td><td>N/A</td><td>70%</td></tr>
+        <tr class="note"><td colspan="3">After all branch expenses, Austin's team keeps 70% of net profit. Rapid retains 30% for corporate overhead, compliance, and warehouse line access.</td></tr>
+        <tr><td>Processing Cost per File</td><td>$650</td><td>$0 (provided by Rapid)</td></tr>
+        <tr class="note"><td colspan="3">Lower charges processing per file. Rapid provides a dedicated processor as part of the branch support package.</td></tr>
+        <tr><td>LO Comp to Partner LOs (paid by Austin)</td><td>Paid by Lower</td><td>100 bps each</td></tr>
+        <tr class="note"><td colspan="3">In the P&amp;L model, Austin pays his own team. Industry standard for partner LOs under a branch lead is 80-120 bps.</td></tr>
+        <tr><td>Office / Desk Fees</td><td>$750/mo per LO</td><td>$0 (provided by Rapid)</td></tr>
+        <tr><td>Tech / Systems</td><td>$350/mo per LO</td><td>$0 (provided by Rapid)</td></tr>
+        <tr><td>E&amp;O Insurance</td><td>$200/mo (Austin's share)</td><td>$150/mo (lower group rate)</td></tr>
+        <tr><td>Marketing</td><td>$500/mo (Austin funds own)</td><td>$800/mo (Austin funds own)</td></tr>
+        <tr class="note"><td colspan="3">Higher marketing budget at Rapid reflects loss of national brand recognition. Austin would invest more in local branding, especially in Year 1.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="assumptions">
+      <strong>Transparency Note:</strong> These assumptions are meant to be discussed and adjusted with real numbers. If Austin's actual comp at Lower is higher or lower than 35% of gross, the model recalibrates accordingly. The goal is an honest framework, not a sales pitch.
+    </div>
+  </section>
+
+  <!-- Section 3: Lower P&L -->
+  <section>
+    <h2><span class="section-number">3</span> Current Monthly P&amp;L at Lower.com</h2>
+    <p>Under the retail model, Austin earns a commission split on his personal production. His partner LOs are compensated separately by the company. Austin does not control margins, pricing, or team economics.</p>
+
+    <table class="pnl-table">
+      <thead class="lower-head">
+        <tr><th>Line Item</th><th>Monthly</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="section-label lower-label"><td colspan="3">Revenue</td></tr>
+        <tr>
+          <td>Austin's Personal Volume</td>
+          <td>$4,610,000</td>
+          <td>$55.32M / 12</td>
+        </tr>
+        <tr>
+          <td>Gross Revenue at 275 bps</td>
+          <td>$126,775</td>
+          <td>Company-level revenue on Austin's loans</td>
+        </tr>
+
+        <tr class="section-label lower-label"><td colspan="3">Austin's Compensation</td></tr>
+        <tr>
+          <td>Commission at 35% of Gross (approx. 96 bps)</td>
+          <td>$44,372</td>
+          <td>Standard retail LO split</td>
+        </tr>
+
+        <tr class="section-label lower-label"><td colspan="3">Austin's Direct Expenses</td></tr>
+        <tr class="indent">
+          <td>Processing ($650 x 14.8 files)</td>
+          <td>($9,620)</td>
+          <td>Per-file charge on Austin's production</td>
+        </tr>
+        <tr class="indent">
+          <td>Desk Fee</td>
+          <td>($750)</td>
+          <td>Monthly seat cost</td>
+        </tr>
+        <tr class="indent">
+          <td>Tech / Systems</td>
+          <td>($350)</td>
+          <td>CRM, LOS access, tools</td>
+        </tr>
+        <tr class="indent">
+          <td>E&amp;O Insurance</td>
+          <td>($200)</td>
+          <td>Pro-rated share</td>
+        </tr>
+        <tr class="indent">
+          <td>Marketing (self-funded)</td>
+          <td>($500)</td>
+          <td>Digital, print, local sponsorships</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total Expenses</td>
+          <td>($11,420)</td>
+          <td></td>
+        </tr>
+
+        <tr class="total">
+          <td>Net to Austin (Monthly)</td>
+          <td>$32,930</td>
+          <td>Take-home before taxes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <p><strong>Key limitation:</strong> Austin has no visibility into the remaining $82,403/mo in gross revenue that Lower retains from his personal production alone. He also has no economic participation in the $46.1M/yr his partner LOs produce. He built the team — but the company captures all the upside from their volume.</p>
+    </div>
+  </section>
+
+  <!-- Section 4: Rapid P&L -->
+  <section>
+    <h2><span class="section-number">4</span> Proposed Monthly P&amp;L at Rapid Mortgage</h2>
+    <p>Under the P&amp;L branch model, Austin controls the full economics of his branch. Revenue from the entire team flows through the branch P&amp;L. After paying operating expenses and partner LO comp, Austin keeps 70% of net profit.</p>
+
+    <table class="pnl-table">
+      <thead>
+        <tr><th>Line Item</th><th>Monthly</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr class="section-label"><td colspan="3">Branch Gross Revenue</td></tr>
+        <tr>
+          <td>Total Team Volume</td>
+          <td>$9,220,000</td>
+          <td>All 3 producers combined</td>
+        </tr>
+        <tr>
+          <td>Gross Revenue at 225 bps</td>
+          <td>$207,450</td>
+          <td>Broker margin (lower than retail)</td>
+        </tr>
+
+        <tr class="section-label"><td colspan="3">Branch Operating Expenses</td></tr>
+        <tr class="indent">
+          <td>Partner LO #1 Comp (100 bps on $2.77M)</td>
+          <td>($27,700)</td>
+          <td>Competitive LO pay</td>
+        </tr>
+        <tr class="indent">
+          <td>Partner LO #2 Comp (100 bps on $1.84M)</td>
+          <td>($18,400)</td>
+          <td>Competitive LO pay</td>
+        </tr>
+        <tr class="indent">
+          <td>Processing Staff</td>
+          <td>$0</td>
+          <td>Provided by Rapid corporate</td>
+        </tr>
+        <tr class="indent">
+          <td>Office Space</td>
+          <td>$0</td>
+          <td>Provided by Rapid corporate</td>
+        </tr>
+        <tr class="indent">
+          <td>Tech / Systems</td>
+          <td>$0</td>
+          <td>Provided by Rapid corporate</td>
+        </tr>
+        <tr class="indent">
+          <td>E&amp;O Insurance</td>
+          <td>($150)</td>
+          <td>Group rate through Rapid</td>
+        </tr>
+        <tr class="indent">
+          <td>Marketing (Austin-funded)</td>
+          <td>($800)</td>
+          <td>Higher spend to build local brand</td>
+        </tr>
+        <tr class="indent">
+          <td>Misc Branch Expenses</td>
+          <td>($500)</td>
+          <td>Supplies, travel, client events</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total Branch Expenses</td>
+          <td>($47,550)</td>
+          <td></td>
+        </tr>
+
+        <tr class="section-label"><td colspan="3">Branch Net Profit</td></tr>
+        <tr>
+          <td>Net Profit Before Split</td>
+          <td>$159,900</td>
+          <td>Gross revenue minus all expenses</td>
+        </tr>
+
+        <tr class="section-label"><td colspan="3">Profit Split</td></tr>
+        <tr>
+          <td>Austin's Share (70%)</td>
+          <td>$111,930</td>
+          <td>P&amp;L branch partner share</td>
+        </tr>
+        <tr>
+          <td>Rapid Corporate (30%)</td>
+          <td>$47,970</td>
+          <td>License, compliance, warehouse lines, support</td>
+        </tr>
+
+        <tr class="total">
+          <td>Net to Austin (Monthly)</td>
+          <td>$111,930</td>
+          <td>Take-home before taxes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight">
+      <p><strong>What changes:</strong> Austin is no longer a commissioned employee. He operates a business unit. He pays his own people, controls his own margins, and captures profit from the entire team's production — not just his own book.</p>
+    </div>
+  </section>
+
+  <!-- Section 5: The Delta -->
+  <section>
+    <h2><span class="section-number">5</span> Monthly Delta</h2>
+    <p>The net difference in Austin's monthly take-home, holding production constant at current levels.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-value">$32,930</div>
+        <div class="stat-label">Lower.com Net/Mo</div>
+      </div>
+      <div class="stat-card green-card">
+        <div class="stat-value">$111,930</div>
+        <div class="stat-label">Rapid Net/Mo</div>
+      </div>
+      <div class="stat-card green-card">
+        <div class="stat-value">+$78,978</div>
+        <div class="stat-label">Monthly Uplift</div>
+      </div>
+    </div>
+
+    <table class="pnl-table">
+      <thead class="delta-head">
+        <tr><th>Metric</th><th>Lower.com</th><th>Rapid Mortgage</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Annual Net to Austin</td>
+          <td>$395,155</td>
+          <td class="positive">$1,343,160</td>
+        </tr>
+        <tr>
+          <td>Annual Uplift</td>
+          <td colspan="2" class="positive" style="text-align:center;font-weight:700">+$948,005 / year</td>
+        </tr>
+        <tr>
+          <td>Effective Bps on Total Team Volume</td>
+          <td>36 bps (on personal only)</td>
+          <td class="positive">121 bps (on total team)</td>
+        </tr>
+        <tr>
+          <td>Economic Participation in Team Volume</td>
+          <td class="negative">Austin's book only (50%)</td>
+          <td class="positive">Entire team (100%)</td>
+        </tr>
+        <tr>
+          <td>Equity Upside</td>
+          <td class="negative">None</td>
+          <td class="positive">Ownership stake in Rapid</td>
+        </tr>
+        <tr>
+          <td>Margin Control</td>
+          <td class="negative">Set by corporate</td>
+          <td class="positive">Austin controls pricing</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 6: Honest Tradeoffs -->
+  <section>
+    <h2><span class="section-number">6</span> Honest Tradeoffs</h2>
+    <p>No move is without tradeoffs. Here is what Austin would gain and what he would give up.</p>
+
+    <h3>Where Rapid Wins</h3>
+    <ul>
+      <li><strong>Dramatically higher take-home:</strong> The P&amp;L model pays Austin as a business owner, not an employee. At his volume, the math is not close.</li>
+      <li><strong>Team economics:</strong> Austin built his team. At Rapid, he participates in their production. At Lower, he does not.</li>
+      <li><strong>Equity:</strong> Real ownership in a growing company. No retail lender offers this to an LO.</li>
+      <li><strong>Lower borrower costs:</strong> Broker model means lower lender fees, which makes Austin more competitive on rate and closing costs.</li>
+      <li><strong>Autonomy:</strong> No corporate pricing desk overrides. No bureaucracy on underwriting exceptions. Direct line to ownership.</li>
+      <li><strong>Processing included:</strong> Dedicated processor provided by Rapid eliminates a $9,600+/mo expense.</li>
+    </ul>
+
+    <h3>Where Lower Wins (or Where Risk Exists)</h3>
+    <ul>
+      <li><strong>Brand recognition:</strong> Lower.com is a known national brand. Rapid Mortgage does not have the same consumer awareness. Austin would need to invest more in personal branding and local marketing, especially in Year 1.</li>
+      <li><strong>Operational responsibility:</strong> The P&amp;L model means Austin owns expenses. If production dips, the fixed costs do not. At Lower, comp just scales down — there is no negative P&amp;L risk.</li>
+      <li><strong>Transition disruption:</strong> Pipeline in progress, realtor relationships, referral partners — any move creates 30-60 days of transition friction. Some loans in process may not transfer cleanly.</li>
+      <li><strong>Benefits:</strong> If Lower provides health insurance, 401(k) match, or other employment benefits, these have real value (typically $15K-25K/yr) that must be factored in. Rapid's compensation uplift covers this significantly, but it is a real consideration.</li>
+      <li><strong>Marketing support:</strong> Large retail shops often have in-house marketing teams, branded events, and lead generation programs. At Rapid, Austin funds his own marketing — the upside is full control, the downside is full responsibility.</li>
+    </ul>
+
+    <div class="assumptions">
+      <strong>Bottom line:</strong> The financial case is strong. The tradeoffs are real but manageable. The biggest risk factor is transition friction, which is temporary. The biggest upside — ownership economics and team participation — is permanent.
+    </div>
+  </section>
+
+  <!-- Section 7: Sensitivity -->
+  <section>
+    <h2><span class="section-number">7</span> Sensitivity Analysis</h2>
+    <p>What happens if production changes or assumptions shift? The model remains favorable across a wide range of scenarios.</p>
+
+    <table class="pnl-table">
+      <thead>
+        <tr><th>Scenario</th><th>Lower Net/Mo</th><th>Rapid Net/Mo</th><th>Delta</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Current production (baseline)</td>
+          <td>$32,930</td>
+          <td>$111,930</td>
+          <td class="positive">+$78,978</td>
+        </tr>
+        <tr>
+          <td>Production drops 20%</td>
+          <td>$25,984</td>
+          <td>$89,341</td>
+          <td class="positive">+$63,357</td>
+        </tr>
+        <tr>
+          <td>Production drops 30%</td>
+          <td>$22,511</td>
+          <td>$78,046</td>
+          <td class="positive">+$55,536</td>
+        </tr>
+        <tr>
+          <td>Austin's Lower comp is actually 40% (not 35%)</td>
+          <td>$39,268</td>
+          <td>$111,930</td>
+          <td class="positive">+$72,662</td>
+        </tr>
+        <tr>
+          <td>Rapid split is 60/40 (not 70/30)</td>
+          <td>$32,930</td>
+          <td>$95,940</td>
+          <td class="positive">+$63,010</td>
+        </tr>
+        <tr>
+          <td>Partner LO comp at 120 bps (not 100)</td>
+          <td>$32,930</td>
+          <td>$105,476</td>
+          <td class="positive">+$72,546</td>
+        </tr>
+        <tr>
+          <td>Worst case (all negatives combined)</td>
+          <td>$26,948</td>
+          <td>$63,025</td>
+          <td class="positive">+$36,077</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight green">
+      <p><strong>Even in the worst-case scenario</strong> — where Austin's actual Lower comp is higher than estimated, production drops 30%, the Rapid split is less favorable, and partner LO comp is higher — Austin still nets an additional $36K+/month at Rapid. The structural advantage of the P&amp;L model is that significant at this volume level.</p>
+    </div>
+  </section>
+
+  <!-- Section 8: Bottom Line -->
+  <section>
+    <h2><span class="section-number">8</span> The Bottom Line</h2>
+
+    <div class="stat-row">
+      <div class="stat-card green-card">
+        <div class="stat-value">+$948K</div>
+        <div class="stat-label">Annual Uplift (Baseline)</div>
+      </div>
+      <div class="stat-card green-card">
+        <div class="stat-value">+$433K</div>
+        <div class="stat-label">Annual Uplift (Worst Case)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">3.4x</div>
+        <div class="stat-label">Income Multiple (Baseline)</div>
+      </div>
+    </div>
+
+    <p>Austin's team is producing at an elite level. The question is not whether they can produce — it is whether the current structure captures the full value of what they have built.</p>
+    <p>At Lower, Austin earns a commission on his personal book. At Rapid, he operates a business with full economic participation in the team he built, an equity stake in the parent company, and the autonomy to run his branch his way.</p>
+    <p>These numbers are meant to start a conversation, not end one. Every assumption is adjustable. The framework is what matters: <strong>the P&amp;L model pays more because it structurally gives Austin more.</strong></p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-contact">
+      <strong>Rapid Mortgage</strong><br>
+      <a href="tel:+16148001100">Mark Jaynes, Co-Owner</a><br>
+      <a href="https://rapidmortgage.com">rapidmortgage.com</a>
+    </div>
+    <div class="footer-legal">
+      Confidential. All figures are estimates based on industry standard
+      assumptions and reported production data. Actual results will vary based
+      on negotiated terms, market conditions, and production levels.
+      Not a binding offer.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
