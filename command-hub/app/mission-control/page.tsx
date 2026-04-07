@@ -2,6 +2,8 @@
 // Phase 1 shell: KPI strip, daily briefing widget, task list, chat prompt.
 // Phase 2 will wire these to live Supabase data + real-time subscriptions.
 
+import LiveStatus from "@/components/LiveStatus";
+
 export default function MissionControlPage() {
   return (
     <div>
@@ -153,6 +155,11 @@ export default function MissionControlPage() {
             Checkboxes are visual only until Phase 1 wires them to Supabase.
           </p>
         </div>
+      </div>
+
+      {/* Live Status — agent health, channels, recent messages */}
+      <div className="mb-6">
+        <LiveStatus />
       </div>
 
       {/* Command Prompt — direct line to 9 */}
