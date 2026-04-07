@@ -310,6 +310,37 @@ function handleShoppingList(text, profile) {
   return null;
 }
 
+// ─── Escalation to 9 ─────────────────────────────────────────────────────────
+const SIGNAL_FILE = '/tmp/9-incoming-message.jsonl';
+const HUB_URL = 'http://localhost:3457/send';
+
+async function escalateToNine(message) {
+  const signal = JSON.stringify({
+    channel: 'pepper-escalation',
+    text: `[PEPPER ESCALATION] ${message}`,
+    timestamp: new Date().toISOString(),
+  });
+
+  // Write directly to the signal file so 9's PostToolUse hook picks it up
+  try {
+    fs.appendFileSync(SIGNAL_FILE, signal + '\n');
+    log(`Escalated to 9 via signal file: ${message}`);
+    return true;
+  } catch (e) {
+    log(`Signal file write failed: ${e.message}`);
+  }
+
+  // Fallback: notify Jasson on Telegram through the hub
+  try {
+    await httpPost(HUB_URL, { channel: 'telegram', message: `Pepper escalation: ${message}` });
+    log(`Escalated to 9 via hub Telegram fallback`);
+    return true;
+  } catch (e2) {
+    log(`Hub fallback also failed: ${e2.message}`);
+    return false;
+  }
+}
+
 // ─── Tool detection and execution ───────────────────────────────────────────
 const TOOLS_URL = 'http://localhost:3490/execute';
 
@@ -370,6 +401,17 @@ async function detectAndExecuteTool(text) {
 async function handleMessage(text, chatId) {
   const profile = loadProfile();
   if (!profile) return "Jules is having a moment. Try again in a sec.";
+
+  // Explicit escalation triggers — user is asking Pepper to reach 9
+  const escalationTrigger = /^(ask 9|tell 9|let 9 know|ping 9|get 9|have 9|notify 9)\b/i;
+  if (escalationTrigger.test(text.trim())) {
+    const stripped = text.replace(escalationTrigger, '').trim();
+    const escalationMsg = stripped || text;
+    const ok = await escalateToNine(`User said: "${escalationMsg}"`);
+    return ok
+      ? "Done — I flagged that for 9. He'll see it on his next tool call."
+      : "Tried to reach 9 but the signal path is down. Send him a direct message to be safe.";
+  }
 
   // Shopping list shortcuts
   const shopResult = handleShoppingList(text, profile);

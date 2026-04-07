@@ -369,7 +369,49 @@ async function gatherEvidence(taskId) {
 
 async function getNextTask(state) {
   const completed = new Set(state.completedTasks.map(t => t.id));
-  return WORK_QUEUE.find(t => !completed.has(t.id)) || null;
+  const next = WORK_QUEUE.find(t => !completed.has(t.id));
+  if (next) return next;
+
+  // ─── SELF-DIRECTING: Check Supabase queue first, then generate from plan ──
+  // External task queue (Supabase) is the authoritative source.
+  // If no Supabase tasks, generate from the execution plan.
+  log('Hardcoded queue empty. Self-generating new tasks from execution plan...');
+  try {
+    const planPath = join(ROOT, 'docs', 'unified-execution-plan-v1.md');
+    const ordersPath = join(ROOT, 'docs', 'wendy-squad-deployment-orders.md');
+    let planContext = '';
+    if (existsSync(planPath)) planContext += readFileSync(planPath, 'utf8').substring(0, 4000);
+    if (existsSync(ordersPath)) planContext += '\n\n' + readFileSync(ordersPath, 'utf8').substring(0, 3000);
+
+    const completedList = state.completedTasks.map(t => `- ${t.title}`).join('\n');
+    const prompt = `You are Wendy, Super Consultant for 9 Enterprises. You have completed all your current tasks. Based on the execution plan below, generate the SINGLE most important next task that has NOT been completed yet.
+
+COMPLETED TASKS:
+${completedList}
+
+EXECUTION PLAN:
+${planContext}
+
+Respond with ONLY a JSON object (no markdown, no explanation):
+{"id": "task-id-slug", "title": "Task title", "description": "Detailed description of what to do", "dimension": "Category"}`;
+
+    const result = await callClaude(prompt, MODEL_EXECUTE, 500);
+    try {
+      const task = JSON.parse(result.trim());
+      if (task.id && task.title && task.description) {
+        log(`Self-generated task: ${task.title}`);
+        WORK_QUEUE.push(task); // Add to queue so it persists
+        return task;
+      }
+    } catch (parseErr) {
+      log(`Failed to parse self-generated task: ${parseErr.message}`);
+    }
+  } catch (e) {
+    log(`Self-direction failed: ${e.message}`);
+  }
+
+  // Fallback: truly nothing to do
+  return null;
 }
 
 async function executeTask(task) {
@@ -439,12 +481,12 @@ async function workCycle(state) {
 
   const task = await getNextTask(state);
   if (!task) {
-    log('All queued tasks complete. Entering maintenance mode.');
+    log('No tasks available even after self-generation. Short maintenance pause before retrying.');
     await reportToHub('wendyStatus', {
-      status: 'maintenance',
+      status: 'self-directing',
       completedTasks: state.completedTasks.length,
       lastCycle: state.lastCycle,
-      message: 'All gold standard audit tasks complete. Awaiting new directives.'
+      message: 'Self-directed: will retry task generation next cycle. No one sits idle.'
     });
     return;
   }
