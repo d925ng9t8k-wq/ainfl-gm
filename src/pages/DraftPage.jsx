@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { useGame } from '../context/GameContext';
 import { allRosters } from '../data/allRosters';
 import AffiliateBanner from '../components/AffiliateBanner';
+import ShareCard from '../components/ShareCard';
 
 import { getPickValueByOverall as tradeValue, getPlayerValue as playerTradeValue } from '../utils/tradeValues';
 
@@ -130,6 +131,7 @@ export default function DraftPage() {
   const [activeRound, setActiveRound] = useState(1);
   const [filterPos, setFilterPos] = useState('All');
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
   const [draftSpeed, setDraftSpeed] = useState(1); // index into SPEED_OPTIONS, default Medium
   const [draftRounds, setDraftRounds] = useState(7); // 1-7 rounds to simulate
   const [viewMode, setViewMode] = useState('round'); // 'round' or 'fullBoard'
@@ -1511,13 +1513,14 @@ export default function DraftPage() {
               </span>
             )}
             <button
-              onClick={handleShareDraftX}
+              onClick={() => setShowShareCard(true)}
               style={{
-                background: '#000', color: '#fff', border: '1px solid #333', borderRadius: 8,
-                padding: '8px 16px', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+                background: accentColor, color: '#000', border: 'none', borderRadius: 8,
+                padding: '8px 16px', cursor: 'pointer', fontWeight: 800, fontSize: 13,
+                letterSpacing: '0.03em',
               }}
             >
-              Share on X
+              Share My Draft
             </button>
             <button
               onClick={() => setShowResetConfirm(true)}
@@ -1533,6 +1536,23 @@ export default function DraftPage() {
 
         {renderResetModal()}
         {renderAddDraftClassModal()}
+
+        {showShareCard && (
+          <ShareCard
+            teamAbbr={currentTeamAbbr}
+            teamName={allTeams?.find(t => t.abbreviation === currentTeamAbbr)?.name || currentTeamAbbr}
+            draftGrade={draftRecap.letter}
+            avgGrade={draftRecap.avgGrade}
+            picks={draftedPlayers.map(p => ({
+              name: p.name,
+              position: p.position,
+              pickNumber: p.pickNumber,
+              grade: p.grade,
+            }))}
+            accentColor={accentColor}
+            onClose={() => setShowShareCard(false)}
+          />
+        )}
 
         {/* Overall Grade */}
         <div style={{
