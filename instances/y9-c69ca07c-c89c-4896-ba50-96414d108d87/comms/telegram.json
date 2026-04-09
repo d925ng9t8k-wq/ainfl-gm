@@ -1,0 +1,27 @@
+{
+  "botToken": "LOAD_FROM_ENV:TELEGRAM_BOT_TOKEN",
+  "ownerChatId": "LOAD_FROM_ENV:TELEGRAM_OWNER_CHAT_ID",
+  "parseMode": "Markdown",
+  "maxMessageLength": 4096,
+  "typingIndicator": true,
+  "webhookPath": "/webhook/y9-c69ca07c-c89c-4896-ba50-96414d108d87",
+  "commands": [
+    {
+      "command": "briefing",
+      "description": "Get a full status overview"
+    },
+    {
+      "command": "pipeline",
+      "description": "Review current pipeline / tasks"
+    },
+    {
+      "command": "agents",
+      "description": "Check agent team status"
+    },
+    {
+      "command": "help",
+      "description": "Show available commands"
+    }
+  ],
+  "createdAt": "2026-04-09T21:05:42.730Z"
+}

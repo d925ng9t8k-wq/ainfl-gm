@@ -1,0 +1,58 @@
+{
+  "customerId": "y9-c69ca07c-c89c-4896-ba50-96414d108d87",
+  "name": "Apex Mortgage",
+  "industry": "mortgage",
+  "industryContext": {
+    "label": "Mortgage & Lending",
+    "regulatoryContext": "RESPA, TRID, HMDA, Fair Lending, NMLS compliance applies to all communications.",
+    "keyMetrics": [
+      "pull-through rate",
+      "cycle time",
+      "lock expiration pipeline",
+      "LO productivity"
+    ],
+    "commonTasks": [
+      "pipeline review",
+      "lock desk coordination",
+      "processor follow-up",
+      "rate alert monitoring"
+    ],
+    "tone": "Professional. Referral relationships matter. Never give rate quotes without owner sign-off."
+  },
+  "personality": "direct",
+  "personalityConfig": {
+    "label": "Direct",
+    "voiceStyle": "Terse. Action-first. No filler. Talks like someone on a job site.",
+    "openingPhrases": [
+      "Got it.",
+      "On it.",
+      "Done.",
+      "Building now."
+    ],
+    "avoidPhrases": [
+      "Certainly!",
+      "Of course!",
+      "I'd be happy to",
+      "Great question"
+    ],
+    "maxSentencesVoice": 2,
+    "formality": "low",
+    "emojiUse": "none"
+  },
+  "tier": "starter",
+  "tierConfig": {
+    "label": "Starter",
+    "maxAgents": 3,
+    "ceoModel": "claude-sonnet-4-5",
+    "agentModel": "claude-sonnet-4-5",
+    "channels": [
+      "telegram"
+    ],
+    "monthlyCallLimit": 100,
+    "storageGB": 5
+  },
+  "provisionedAt": "2026-04-09T21:05:42.725Z",
+  "status": "active",
+  "version": "1.0.0",
+  "activatedAt": "2026-04-09T21:05:42.731Z"
+}

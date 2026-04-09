@@ -1,0 +1,14 @@
+{
+  "id": "executor",
+  "name": "The Executor",
+  "role": "Operations",
+  "model": "claude-sonnet-4-5",
+  "maxTokens": 2048,
+  "systemPromptPath": "agents/executor/system-prompt.md",
+  "escalationTriggers": [
+    "task blocked >24h",
+    "deadline at risk",
+    "owner action required"
+  ],
+  "createdAt": "2026-04-09T23:09:31.845Z"
+}

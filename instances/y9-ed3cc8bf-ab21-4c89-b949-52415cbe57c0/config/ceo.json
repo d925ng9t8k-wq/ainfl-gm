@@ -1,0 +1,12 @@
+{
+  "model": "claude-sonnet-4-5",
+  "maxTokens": 4096,
+  "temperature": 0.7,
+  "systemPromptPath": "prompts/ceo-system-prompt.md",
+  "personality": "warm",
+  "channels": [
+    "telegram"
+  ],
+  "monthlyCallLimit": 100,
+  "createdAt": "2026-04-09T23:09:31.844Z"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "voice",
+  "name": "The Voice",
+  "role": "Communications",
+  "model": "claude-sonnet-4-5",
+  "maxTokens": 2048,
+  "systemPromptPath": "agents/voice/system-prompt.md",
+  "escalationTriggers": [
+    "sensitive message needs CEO review",
+    "response from key contact",
+    "escalation requested"
+  ],
+  "createdAt": "2026-04-09T23:09:31.845Z"
+}

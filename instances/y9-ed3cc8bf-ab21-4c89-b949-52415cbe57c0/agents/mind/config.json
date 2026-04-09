@@ -1,0 +1,14 @@
+{
+  "id": "mind",
+  "name": "The Mind",
+  "role": "Research & Intel",
+  "model": "claude-sonnet-4-5",
+  "maxTokens": 2048,
+  "systemPromptPath": "agents/mind/system-prompt.md",
+  "escalationTriggers": [
+    "high-confidence opportunity found",
+    "competitive threat detected",
+    "market shift"
+  ],
+  "createdAt": "2026-04-09T23:09:31.845Z"
+}

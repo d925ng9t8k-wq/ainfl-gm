@@ -1,0 +1,56 @@
+{
+  "customerId": "y9-ed3cc8bf-ab21-4c89-b949-52415cbe57c0",
+  "name": "Rapid Mortgage Cincinnati",
+  "industry": "mortgage",
+  "industryContext": {
+    "label": "Mortgage & Lending",
+    "regulatoryContext": "RESPA, TRID, HMDA, Fair Lending, NMLS compliance applies to all communications.",
+    "keyMetrics": [
+      "pull-through rate",
+      "cycle time",
+      "lock expiration pipeline",
+      "LO productivity"
+    ],
+    "commonTasks": [
+      "pipeline review",
+      "lock desk coordination",
+      "processor follow-up",
+      "rate alert monitoring"
+    ],
+    "tone": "Professional. Referral relationships matter. Never give rate quotes without owner sign-off."
+  },
+  "personality": "warm",
+  "personalityConfig": {
+    "label": "Warm",
+    "voiceStyle": "Conversational, genuine, uses contractions. Warm but never sycophantic.",
+    "openingPhrases": [
+      "Absolutely.",
+      "On it.",
+      "Good thinking."
+    ],
+    "avoidPhrases": [
+      "Certainly!",
+      "Of course!",
+      "As an AI"
+    ],
+    "maxSentencesVoice": 3,
+    "formality": "medium",
+    "emojiUse": "minimal"
+  },
+  "tier": "starter",
+  "tierConfig": {
+    "label": "Starter",
+    "maxAgents": 3,
+    "ceoModel": "claude-sonnet-4-5",
+    "agentModel": "claude-sonnet-4-5",
+    "channels": [
+      "telegram"
+    ],
+    "monthlyCallLimit": 100,
+    "storageGB": 5
+  },
+  "provisionedAt": "2026-04-09T23:09:31.841Z",
+  "status": "active",
+  "version": "1.0.0",
+  "activatedAt": "2026-04-09T23:09:31.845Z"
+}

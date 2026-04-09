@@ -1,0 +1,9 @@
+{
+  "provider": "resend",
+  "apiKey": "LOAD_FROM_ENV:RESEND_API_KEY",
+  "fromAddress": "LOAD_FROM_ENV:EMAIL_FROM",
+  "defaultSubjectPrefix": "[Apex Mortgage]",
+  "reportSchedule": "0 8 * * 1-5",
+  "enabled": false,
+  "createdAt": "2026-04-09T21:05:42.731Z"
+}
