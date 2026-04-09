@@ -84,18 +84,18 @@ function trackAffiliateClick(partner, placement) {
         placement: placement,
       });
     }
-  } catch (_) {}
+  } catch { /* no-op */ }
 }
 
 export default function AffiliateBanner({ partner = 'fanduel', placement = 'site', compact = false }) {
+  const handleClick = useCallback(() => {
+    trackAffiliateClick(partner, placement);
+  }, [partner, placement]);
+
   const cfg = AFFILIATE_URLS[partner];
   if (!cfg) return null;
 
   const href = buildAffiliateUrl(partner, placement);
-
-  const handleClick = useCallback(() => {
-    trackAffiliateClick(partner, placement);
-  }, [partner, placement]);
 
   if (compact) {
     // Inline text link — use inside body copy near relevant content

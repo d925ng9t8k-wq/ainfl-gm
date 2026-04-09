@@ -4,7 +4,7 @@ import ShareButtons from '../components/ShareButtons';
 import AffiliateBanner from '../components/AffiliateBanner';
 
 function ProbabilityBar({ name, probability, isTop }) {
-  const barColor = isTop ? '#00f0ff' : 'rgba(0, 240, 255, 0.4)';
+  const _barColor = isTop ? '#00f0ff' : 'rgba(0, 240, 255, 0.4)';
   return (
     <div style={{ marginBottom: 6 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 3 }}>

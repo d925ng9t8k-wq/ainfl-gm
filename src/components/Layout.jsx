@@ -71,7 +71,8 @@ export default function Layout({ children }) {
   const isOverCap = capUsed > totalCap;
 
   const currentTeamObj = allTeams.find(t => t.abbreviation === currentTeamAbbr) || allTeams[0];
-  const teamLabel = `${currentTeamObj.city} ${currentTeamObj.name}`;
+  // teamLabel available for future use
+  const _teamLabel = `${currentTeamObj.city} ${currentTeamObj.name}`;
   const primaryColor = selectedTeamColors?.primaryColor || '#FB4F14';
   const secondaryColor = selectedTeamColors?.secondaryColor || '#000000';
 
@@ -87,7 +88,7 @@ export default function Layout({ children }) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
-    } catch (e) {
+    } catch {
       // AdSense not loaded — no-op in dev
     }
   }, []);

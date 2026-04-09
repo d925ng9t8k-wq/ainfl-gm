@@ -43,8 +43,8 @@ function ContractBadge({ type }) {
 
 export default function NbaRosterPage() {
   const {
-    roster, cutPlayer, extendPlayer, capUsed, totalCap, capAvailable,
-    luxuryTax, overLuxuryTax, tradeHistory, cutPlayers, allTeams, currentTeamAbbr,
+    roster, cutPlayer, extendPlayer, totalCap, capAvailable,
+    luxuryTax, tradeHistory, cutPlayers, allTeams, currentTeamAbbr,
   } = useNbaGame();
 
   const [filterPos, setFilterPos] = useState('All');
@@ -82,20 +82,19 @@ export default function NbaRosterPage() {
     else { setSortKey(key); setSortDir('desc'); }
   }
 
-  function SortHeader({ label, k }) {
+  const sortHeaderRenderer = (label, k) => {
     const active = sortKey === k;
     return (
       <th
+        key={k}
         onClick={() => handleSort(k)}
         style={{ cursor: 'pointer', color: active ? '#FFA500' : '#94A3B8', padding: '8px 6px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', whiteSpace: 'nowrap', userSelect: 'none' }}
       >
         {label} {active ? (sortDir === 'asc' ? '↑' : '↓') : ''}
       </th>
     );
-  }
+  };
 
-  const capPct = Math.min((capUsed / totalCap) * 100, 100);
-  const taxPct = Math.min((capUsed / luxuryTax) * 100, 100);
   const totalSalary = roster.reduce((s, p) => s + p.capHit, 0);
   const overTax = totalSalary > luxuryTax;
 
@@ -108,7 +107,7 @@ export default function NbaRosterPage() {
           border: '1px solid rgba(255,160,0,0.25)', borderRadius: 12, padding: 18, marginBottom: 20,
           position: 'relative',
         }}>
-          <button onClick={() => { setWelcomeDismissed(true); try { localStorage.setItem('ainbagm_welcome_dismissed', '1'); } catch {} }} style={{ position: 'absolute', top: 10, right: 12, background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', fontSize: 18 }}>
+          <button onClick={() => { setWelcomeDismissed(true); try { localStorage.setItem('ainbagm_welcome_dismissed', '1'); } catch { /* no-op */ } }} style={{ position: 'absolute', top: 10, right: 12, background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', fontSize: 18 }}>
             &times;
           </button>
           <div style={{ fontWeight: 800, fontSize: 16, color: '#FFA500', fontFamily: "'Oswald', sans-serif", letterSpacing: '0.06em', marginBottom: 6 }}>
@@ -165,12 +164,12 @@ export default function NbaRosterPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead style={{ background: 'rgba(15,23,42,0.8)' }}>
             <tr>
-              <SortHeader label="Player" k="name" />
-              <SortHeader label="Pos" k="position" />
-              <SortHeader label="Age" k="age" />
-              <SortHeader label="Rating" k="rating" />
-              <SortHeader label="Salary" k="capHit" />
-              <SortHeader label="Yrs Left" k="yearsRemaining" />
+              {sortHeaderRenderer("Player", "name")}
+              {sortHeaderRenderer("Pos", "position")}
+              {sortHeaderRenderer("Age", "age")}
+              {sortHeaderRenderer("Rating", "rating")}
+              {sortHeaderRenderer("Salary", "capHit")}
+              {sortHeaderRenderer("Yrs Left", "yearsRemaining")}
               <th style={{ color: '#94A3B8', padding: '8px 6px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Contract</th>
               <th style={{ color: '#94A3B8', padding: '8px 6px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Actions</th>
             </tr>

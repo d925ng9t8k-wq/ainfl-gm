@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMLBGame, getServiceStatus, computeCBT } from '../../context/MLBGameContext';
+import { useMLBGame, getServiceStatus } from '../../context/MLBGameContext';
 import { CBT_THRESHOLDS } from '../../data/mlb/mlbTeams';
 
 const POSITIONS = ['All', 'SP', 'RP', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'DH'];
@@ -46,7 +46,7 @@ function RatingBar({ rating }) {
 }
 
 export default function MLBRosterPage() {
-  const { roster, payroll, cbt, releasePlayer, currentTeamAbbr, allTeams, selectedTeamColors } = useMLBGame();
+  const { roster, payroll, cbt, releasePlayer, currentTeamAbbr, allTeams } = useMLBGame();
   const [filterPos, setFilterPos] = useState('All');
   const [sortKey, setSortKey] = useState('salary');
   const [sortDir, setSortDir] = useState('desc');
@@ -54,8 +54,6 @@ export default function MLBRosterPage() {
   const [confirmRelease, setConfirmRelease] = useState(null);
 
   const team = allTeams.find(t => t.abbreviation === currentTeamAbbr);
-  const accentColor = selectedTeamColors?.primaryColor || '#003087';
-
   const filtered = roster
     .filter(p => filterPos === 'All' || p.position === filterPos)
     .filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()));
@@ -74,10 +72,11 @@ export default function MLBRosterPage() {
     else { setSortKey(key); setSortDir('desc'); }
   }
 
-  function SortHeader({ label, field }) {
+  const sortHeaderRenderer = (label, field) => {
     const active = sortKey === field;
     return (
       <th
+        key={field}
         onClick={() => handleSort(field)}
         style={{ padding: '8px 12px', textAlign: 'left', cursor: 'pointer', whiteSpace: 'nowrap',
           color: active ? '#E2E8F0' : '#94A3B8', fontWeight: active ? 700 : 500, fontSize: 12,
@@ -85,7 +84,7 @@ export default function MLBRosterPage() {
         {label} {active ? (sortDir === 'asc' ? ' ↑' : ' ↓') : ''}
       </th>
     );
-  }
+  };
 
   const spCount = roster.filter(p => p.position === 'SP').length;
   const rpCount = roster.filter(p => p.position === 'RP').length;
@@ -151,13 +150,13 @@ export default function MLBRosterPage() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr style={{ background: 'rgba(30,41,59,0.8)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-              <SortHeader label="Player" field="name" />
-              <SortHeader label="Pos" field="position" />
-              <SortHeader label="Age" field="age" />
-              <SortHeader label="Salary (AAV)" field="salary" />
-              <SortHeader label="Yrs Left" field="contractYears" />
-              <SortHeader label="Status" field="serviceTime" />
-              <SortHeader label="Rating" field="rating" />
+              {sortHeaderRenderer("Player", "name")}
+              {sortHeaderRenderer("Pos", "position")}
+              {sortHeaderRenderer("Age", "age")}
+              {sortHeaderRenderer("Salary (AAV)", "salary")}
+              {sortHeaderRenderer("Yrs Left", "contractYears")}
+              {sortHeaderRenderer("Status", "serviceTime")}
+              {sortHeaderRenderer("Rating", "rating")}
               <th style={{ padding: '8px 12px', fontSize: 12, color: '#94A3B8', fontWeight: 500 }}>Notes</th>
               <th style={{ padding: '8px 12px', fontSize: 12, color: '#94A3B8', fontWeight: 500 }}>Action</th>
             </tr>

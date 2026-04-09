@@ -19,7 +19,7 @@ function getTeamRoster(teamAbbr) {
   return teamData.players.map((p, i) => ({ ...p, id: `${teamAbbr}-${i}` }));
 }
 
-function getTeamPayroll(teamAbbr) {
+function _getTeamPayroll(teamAbbr) {
   const teamData = mlbRosters[teamAbbr];
   return teamData ? teamData.payroll : 0;
 }
@@ -276,7 +276,7 @@ export function MLBGameProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ _version: DATA_VERSION, state }));
-    } catch {}
+    } catch { /* no-op */ }
   }, [state]);
 
   const payroll = computePayroll(state.roster);

@@ -365,7 +365,7 @@ export default function SummaryPage() {
             { label: 'Pre-Season', key: 'preseason', detail: `Real moves (baseline)`, isBaseline: true },
             { label: 'Your Moves', key: 'yourMoves', detail: `Simulation actions`, isBaseline: false },
           ].map(({ label, key, detail, isBaseline }) => {
-            const { grade, score } = grades[key];
+            const { grade } = grades[key];
             const color = gradeColor(grade);
             return (
               <div key={key} style={{

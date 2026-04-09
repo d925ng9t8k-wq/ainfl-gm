@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { useMLBGame, computeCBT } from '../context/MLBGameContext';
+import { useMLBGame } from '../context/MLBGameContext';
 import { CBT_THRESHOLDS } from '../data/mlb/mlbTeams';
 
 const navItems = [
@@ -52,7 +52,7 @@ function ensureContrast(hexColor) {
 }
 
 export default function MLBLayout({ children }) {
-  const { payroll, cbt, allTeams, currentTeamAbbr, selectedTeamColors, selectTeam } = useMLBGame();
+  const { payroll, allTeams, currentTeamAbbr, selectedTeamColors, selectTeam } = useMLBGame();
 
   const primaryColor = selectedTeamColors?.primaryColor || '#003087';
   const secondaryColor = selectedTeamColors?.secondaryColor || '#C4CED4';
@@ -64,7 +64,7 @@ export default function MLBLayout({ children }) {
   const cbtPct = Math.min((payroll / CBT_THRESHOLDS.first) * 100, 130);
   const isOverCBT = payroll > CBT_THRESHOLDS.first;
   const currentTeamObj = allTeams.find(t => t.abbreviation === currentTeamAbbr) || allTeams[0];
-  const teamLabel = `${currentTeamObj.city} ${currentTeamObj.name}`;
+  const _teamLabel = `${currentTeamObj.city} ${currentTeamObj.name}`;
 
   // Group teams by division for the select
   const divisionOrder = ['AL East', 'AL Central', 'AL West', 'NL East', 'NL Central', 'NL West'];

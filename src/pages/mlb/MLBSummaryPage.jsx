@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useMLBGame, computeCBT } from '../../context/MLBGameContext';
+import { useMLBGame } from '../../context/MLBGameContext';
 import { CBT_THRESHOLDS } from '../../data/mlb/mlbTeams';
 
 function gradeFromScore(score) {

@@ -135,7 +135,7 @@ export default function DraftPage() {
   const [viewMode, setViewMode] = useState('round'); // 'round' or 'fullBoard'
   const [showTradeUpModal, setShowTradeUpModal] = useState(false);
   const [showTradeDownModal, setShowTradeDownModal] = useState(false);
-  const [tradeOffer, setTradeOffer] = useState(null);
+  const [_tradeOffer, setTradeOffer] = useState(null);
   const [showAddDraftClassConfirm, setShowAddDraftClassConfirm] = useState(false);
   // Player trade state
   const [tradeUpPlayersOffered, setTradeUpPlayersOffered] = useState([]); // user's players to include
@@ -440,7 +440,7 @@ export default function DraftPage() {
     };
   }
 
-  function handleTradeUpClick() {
+  function _handleTradeUpClick() {
     setTradeUpPlayersOffered([]);
     const offer = computeTradeUpOffer();
     setTradeOffer(offer);
@@ -1992,7 +1992,7 @@ export default function DraftPage() {
 
               {/* Prospect List */}
               <div style={{ overflowY: 'auto' }}>
-                {availableProspects.map((p, idx) => {
+                {availableProspects.map((p) => {
                   const projectedPick = projectedPickMap.get(p.id) || null;
                   return (
                   <div

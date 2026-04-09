@@ -35,7 +35,7 @@ export default function EmailCapture() {
           const existing = JSON.parse(localStorage.getItem('ainfl_emails') || '[]');
           existing.push({ email: email.trim(), date: new Date().toISOString() });
           localStorage.setItem('ainfl_emails', JSON.stringify(existing));
-        } catch (_) {}
+        } catch { /* no-op */ }
       })
       .catch(() => setStatus('error'));
   }

@@ -14,7 +14,7 @@ function GradeBadge({ grade }) {
 
 export default function NbaDraftPage() {
   const {
-    draftBoard, draftedPlayers, myPicks, allDraftPicks, draftStarted, draftComplete,
+    draftBoard, draftedPlayers, myPicks, draftStarted, draftComplete,
     draftPlayer, cpuDraftPlayer, startDraft, completeDraft, resetDraft, addDraftClass,
     draftClassAdded, currentDraftPick, currentTeamAbbr, allTeams,
   } = useNbaGame();

@@ -6,8 +6,8 @@ const POS_COLORS = { PG: '#00F0FF', SG: '#FFA500', SF: '#10b981', PF: '#8b5cf6',
 
 export default function NbaFreeAgencyPage() {
   const {
-    freeAgentPool, signPlayer, roster, capAvailable, totalCap, overLuxuryTax,
-    luxuryTax, getMaxSalary, currentTeamAbbr, allTeams,
+    freeAgentPool, signPlayer, roster, capAvailable, overLuxuryTax,
+    currentTeamAbbr, allTeams,
   } = useNbaGame();
 
   const [filterPos, setFilterPos] = useState('All');

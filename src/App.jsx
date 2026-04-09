@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { GameProvider, useGame } from './context/GameContext';
 import Layout from './components/Layout';
 import RosterPage from './pages/RosterPage';

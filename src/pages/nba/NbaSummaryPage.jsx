@@ -5,8 +5,8 @@ const POS_COLORS = { PG: '#00F0FF', SG: '#FFA500', SF: '#10b981', PF: '#8b5cf6',
 
 export default function NbaSummaryPage() {
   const {
-    roster, signingHistory, tradeHistory, cutPlayers, draftedPlayers,
-    capUsed, totalCap, capAvailable, luxuryTax, overLuxuryTax,
+    roster, signingHistory, tradeHistory, cutPlayers,
+    capAvailable, luxuryTax, overLuxuryTax,
     allTeams, currentTeamAbbr, resetGame,
   } = useNbaGame();
 
@@ -16,7 +16,7 @@ export default function NbaSummaryPage() {
   const draftCount = tradeHistory.filter(t => t.type === 'draft').length;
   const extensionCount = tradeHistory.filter(t => t.type === 'extension').length;
   const cutCount = tradeHistory.filter(t => t.type === 'cut').length;
-  const totalMoves = tradeCount + draftCount + extensionCount + cutCount + signingHistory.length;
+  const _totalMoves = tradeCount + draftCount + extensionCount + cutCount + signingHistory.length;
   const deadCap = cutPlayers.reduce((s, p) => s + (p.deadCap || 0), 0);
 
   // Team rating

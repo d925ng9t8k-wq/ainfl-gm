@@ -152,7 +152,7 @@ const S = {
     fontSize: 11,
     color: '#94A3B8',
   },
-  progressBar: (pct, color) => ({
+  progressBar: () => ({
     width: '100%',
     height: 6,
     background: 'rgba(0,240,255,0.06)',

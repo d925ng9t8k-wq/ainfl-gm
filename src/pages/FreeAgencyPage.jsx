@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useGame } from '../context/GameContext';
 import PredictionMarkets from '../components/PredictionMarkets';
 import AffiliateBanner from '../components/AffiliateBanner';

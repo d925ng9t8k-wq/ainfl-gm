@@ -34,7 +34,7 @@ function PayrollGauge({ payroll, threshold }) {
   const pct = Math.min((payroll / threshold) * 100, 130);
   const clampedPct = Math.min(pct, 100);
   const cx = 160, cy = 140, r = 110;
-  const semiCirc = Math.PI * r;
+  const _semiCirc = Math.PI * r;
   const valueSweep = (clampedPct / 100) * Math.PI;
   const polarToXY = (angle) => ({ x: cx + r * Math.cos(angle), y: cy - r * Math.sin(angle) });
   const trackStart = polarToXY(Math.PI);
@@ -84,7 +84,7 @@ export default function MLBPayrollPage() {
 
   const releasedPayroll = cutPlayers.reduce((s, p) => s + (p.buyout || 0), 0);
 
-  const secondCBT = computeCBT(payroll + 20); // show what happens if they add $20M
+  const _secondCBT = computeCBT(payroll + 20); // show what happens if they add $20M
 
   const sortedByPayroll = [...roster].sort((a, b) => b.salary - a.salary);
 

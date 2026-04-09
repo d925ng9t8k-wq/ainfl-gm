@@ -132,7 +132,7 @@ function generateRosterSuggestions(roster) {
   return suggestions.slice(0, 3);
 }
 
-function generateCapSuggestions(roster, capAvailable, totalCap) {
+function generateCapSuggestions(roster, capAvailable) {
   const suggestions = [];
 
   if (capAvailable < 0) {

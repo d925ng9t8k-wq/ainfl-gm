@@ -55,20 +55,19 @@ function ensureContrast(hexColor) {
 
 export default function NbaLayout({ children }) {
   const {
-    capAvailable, totalCap, capUsed, overLuxuryTax, overFirstApron,
+    capAvailable, capUsed, overLuxuryTax,
     allTeams, currentTeamAbbr, selectedTeamColors, selectTeam,
-    luxuryTax, firstApron,
+    luxuryTax,
   } = useNbaGame();
 
   const currentTeamObj = allTeams.find(t => t.abbreviation === currentTeamAbbr) || allTeams[0];
-  const teamLabel = `${currentTeamObj.city} ${currentTeamObj.name}`;
+  const _teamLabel = `${currentTeamObj.city} ${currentTeamObj.name}`;
 
   const primaryColor = selectedTeamColors?.primaryColor || '#1D428A';
   const secondaryColor = selectedTeamColors?.secondaryColor || '#FFC72C';
   const rawAccent = primaryColor === '#000000' ? (secondaryColor !== '#000000' ? secondaryColor : '#1D428A') : primaryColor;
   const accentColor = ensureContrast(rawAccent);
 
-  const capPct = Math.min((capUsed / totalCap) * 100, 100);
   const taxPct = Math.min((capUsed / luxuryTax) * 100, 100);
   const isOverCap = capAvailable < 0;
   const isOverTax = overLuxuryTax;

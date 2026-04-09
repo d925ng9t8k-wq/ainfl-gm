@@ -47,7 +47,7 @@ function CapGauge({ capUsed, totalCap, capAvailable, isOverCap }) {
   const totalArc = Math.PI;          // 180 degrees
 
   // Circumference of the semicircle
-  const semiCircumference = Math.PI * r;
+  const _semiCircumference = Math.PI * r;
 
   // For the value arc, compute how far around it goes
   const valueSweep = (clampedPct / 100) * totalArc;
@@ -84,7 +84,7 @@ function CapGauge({ capUsed, totalCap, capAvailable, isOverCap }) {
   }
 
   // Zone tick marks
-  const zones = [
+  const _zones = [
     { pct: 0, label: '$0' },
     { pct: 25, label: '' },
     { pct: 50, label: '' },

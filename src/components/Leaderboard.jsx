@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const STORAGE_KEY = 'ainfl_leaderboard';
 const MAX_ENTRIES = 50;
@@ -103,13 +103,9 @@ export default function Leaderboard({ onClose, accentColor = '#FB4F14' }) {
   const [entries, setEntries] = useState([]);
   const userId = getUserId();
 
-  const refresh = useCallback(() => {
+  useEffect(() => {
     setEntries(getLeaderboard());
   }, []);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
 
   function handleClearMine() {
     if (!window.confirm('Remove all your entries from the leaderboard?')) return;

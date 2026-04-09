@@ -75,7 +75,7 @@ export default function MLBSeasonSimPage() {
   const [simState, setSimState] = useState(null);
   const [simRunning, setSimRunning] = useState(false);
   const [playoffState, setPlayoffState] = useState(null);
-  const [playoffRound, setPlayoffRound] = useState(0);
+  const [_playoffRound, setPlayoffRound] = useState(0);
 
   const accentColor = selectedTeamColors?.primaryColor || '#003087';
 
@@ -88,7 +88,6 @@ export default function MLBSeasonSimPage() {
       // Build strength map
       const strengths = {};
       allTeams.forEach(t => {
-        const teamRoster = mlbRosters[t.abbreviation]?.players || [];
         strengths[t.abbreviation] = getTeamStrength(t.abbreviation === currentTeamAbbr ? null : null, null);
       });
       // Use static data but boost player's team if they've made moves
@@ -154,12 +153,12 @@ export default function MLBSeasonSimPage() {
     setPlayoffState({ alWC, nlWC, alDS, nlDS, alCS, nlCS, ws });
   }
 
-  function getTeamName(abbr) {
+  function _getTeamName(abbr) {
     const t = allTeams.find(t => t.abbreviation === abbr);
     return t ? `${t.city} ${t.name}` : abbr;
   }
 
-  function TeamDisplay({ abbr, isChamp = false, isUser = false }) {
+  const renderTeamDisplay = (abbr, isChamp = false) => {
     const t = allTeams.find(t => t.abbreviation === abbr);
     const isMyTeam = abbr === currentTeamAbbr;
     return (
@@ -173,7 +172,7 @@ export default function MLBSeasonSimPage() {
         {t ? `${t.city} ${t.name}` : abbr} {isChamp ? '🏆' : ''}
       </span>
     );
-  }
+  };
 
   return (
     <div style={{ color: '#E2E8F0' }}>
@@ -264,10 +263,10 @@ export default function MLBSeasonSimPage() {
                 <div style={{ fontSize: 13, color: '#94A3B8', fontWeight: 700, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>American League</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ fontSize: 12, color: '#64748b' }}>
-                    ALDS: <TeamDisplay abbr={playoffState.alDS[0].abbr} /> vs <TeamDisplay abbr={playoffState.alDS[1].abbr} />
+                    ALDS: {renderTeamDisplay(playoffState.alDS[0].abbr)} vs {renderTeamDisplay(playoffState.alDS[1].abbr)}
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>
-                    ALCS Winner: <TeamDisplay abbr={playoffState.alCS.winner} />
+                    ALCS Winner: {renderTeamDisplay(playoffState.alCS.winner)}
                   </div>
                 </div>
               </div>
@@ -277,10 +276,10 @@ export default function MLBSeasonSimPage() {
                 <div style={{ fontSize: 13, color: '#94A3B8', fontWeight: 700, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>National League</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ fontSize: 12, color: '#64748b' }}>
-                    NLDS: <TeamDisplay abbr={playoffState.nlDS[0].abbr} /> vs <TeamDisplay abbr={playoffState.nlDS[1].abbr} />
+                    NLDS: {renderTeamDisplay(playoffState.nlDS[0].abbr)} vs {renderTeamDisplay(playoffState.nlDS[1].abbr)}
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>
-                    NLCS Winner: <TeamDisplay abbr={playoffState.nlCS.winner} />
+                    NLCS Winner: {renderTeamDisplay(playoffState.nlCS.winner)}
                   </div>
                 </div>
               </div>
@@ -292,10 +291,10 @@ export default function MLBSeasonSimPage() {
               }}>
                 <div style={{ fontSize: 11, color: '#fbbf24', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>World Series</div>
                 <div style={{ fontSize: 14, color: '#94A3B8', marginBottom: 10 }}>
-                  <TeamDisplay abbr={playoffState.alCS.winner} /> vs <TeamDisplay abbr={playoffState.nlCS.winner} />
+                  {renderTeamDisplay(playoffState.alCS.winner)} vs {renderTeamDisplay(playoffState.nlCS.winner)}
                 </div>
                 <div style={{ fontSize: 22, fontWeight: 900, fontFamily: "'Oswald', sans-serif" }}>
-                  World Series Champion: <TeamDisplay abbr={playoffState.ws.winner} isChamp={true} />
+                  World Series Champion: {renderTeamDisplay(playoffState.ws.winner, true)}
                 </div>
                 {playoffState.ws.winner === currentTeamAbbr && (
                   <div style={{ marginTop: 10, fontSize: 14, color: '#00C853', fontWeight: 700 }}>

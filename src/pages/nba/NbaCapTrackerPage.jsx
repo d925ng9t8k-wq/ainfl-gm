@@ -48,7 +48,7 @@ function CapBar({ label, value, max, color, sublabel }) {
 
 export default function NbaCapTrackerPage() {
   const {
-    roster, capUsed, totalCap, capAvailable, luxuryTax, firstApron, secondApron,
+    roster, totalCap, capAvailable, luxuryTax, firstApron, secondApron,
     overLuxuryTax, overFirstApron, overSecondApron, cutPlayers, allTeams, currentTeamAbbr,
   } = useNbaGame();
 
@@ -70,7 +70,7 @@ export default function NbaCapTrackerPage() {
 
   const sortedByHit = [...roster].sort((a, b) => b.capHit - a.capHit);
 
-  const taxPenalty = overLuxuryTax ? (totalSalary - luxuryTax) * 1.5 : 0; // simplified tax calc
+  const _taxPenalty = overLuxuryTax ? (totalSalary - luxuryTax) * 1.5 : 0; // simplified tax calc
 
   return (
     <div>
@@ -127,7 +127,7 @@ export default function NbaCapTrackerPage() {
       <div style={{ background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(255,160,0,0.1)', borderRadius: 12, padding: 20, marginBottom: 20 }}>
         <div style={{ fontSize: 13, color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 16 }}>Salary by Position</div>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {Object.entries(groupBreakdown).filter(([g, data]) => data.players.length > 0).map(([g, data]) => (
+          {Object.entries(groupBreakdown).filter(([, data]) => data.players.length > 0).map(([g, data]) => (
             <div key={g} style={{
               flex: 1, minWidth: 100, background: 'rgba(15,23,42,0.6)',
               border: `1px solid ${GROUP_COLORS[g] || '#94A3B8'}33`, borderRadius: 8, padding: '10px 12px',

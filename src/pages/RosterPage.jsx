@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
 import PredictionMarkets from '../components/PredictionMarkets';
 
@@ -45,7 +45,7 @@ export default function RosterPage() {
   });
 
   function dismissWelcome() {
-    try { localStorage.setItem('ainflgm_welcome_dismissed', '1'); } catch {}
+    try { localStorage.setItem('ainflgm_welcome_dismissed', '1'); } catch { /* no-op */ }
     setWelcomeDismissed(true);
   }
 

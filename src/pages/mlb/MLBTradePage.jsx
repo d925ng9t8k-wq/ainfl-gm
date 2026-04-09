@@ -20,7 +20,7 @@ function getTeamPlayers(teamAbbr) {
 }
 
 // Simple AI GM evaluation
-function evaluateTradeForAI(myPlayers, theirPlayers, targetTeamRoster) {
+function evaluateTradeForAI(myPlayers, theirPlayers) {
   const myVal = myPlayers.reduce((s, p) => s + getMLBPlayerValue(p), 0);
   const theirVal = theirPlayers.reduce((s, p) => s + getMLBPlayerValue(p), 0);
 
@@ -55,7 +55,7 @@ function ValueIndicator({ myVal, theirVal }) {
 }
 
 export default function MLBTradePage() {
-  const { roster, tradePlayer, tradeHistory, currentTeamAbbr, allTeams, payroll } = useMLBGame();
+  const { roster, tradePlayer, tradeHistory, currentTeamAbbr, allTeams } = useMLBGame();
   const [selectedTeam, setSelectedTeam] = useState('');
   const [myOffer, setMyOffer] = useState([]);
   const [theirOffer, setTheirOffer] = useState([]);
