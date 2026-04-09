@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Your9 — Your Autonomous AI Company</title>
+<meta name="description" content="Your own AI CEO and agent team that runs your business while you focus on what matters. Starting at $499/mo.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/9-brand.jpg">
+<meta name="theme-color" content="#0f172a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Your9 — Your Autonomous AI Company">
+<meta property="og:description" content="An AI CEO and a full agent team. Running your business around the clock. Starting at $499/mo.">
+<meta property="og:image" content="https://9enterprises.ai/og-preview.jpg">
+<meta property="og:url" content="https://9enterprises.ai/your9">
+<meta property="og:site_name" content="9 Enterprises">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your9 — Your Autonomous AI Company">
+<meta name="twitter:description" content="An AI CEO and a full agent team. Running your business around the clock.">
+<meta name="twitter:image" content="https://9enterprises.ai/og-preview.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0f172a;
+  --bg-deep:#080e1c;
+  --surface:#1e293b;
+  --surface-2:#253347;
+  --border:#2d3f57;
+  --border-subtle:#1e293b;
+  --text:#f1f5f9;
+  --text-muted:#94a3b8;
+  --text-dim:#64748b;
+  --accent:#6366f1;
+  --accent-bright:#818cf8;
+  --accent-dim:rgba(99,102,241,0.12);
+  --accent-glow:rgba(99,102,241,0.25);
+  --green:#10b981;
+  --green-dim:rgba(16,185,129,0.12);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg-deep);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+a{color:var(--accent-bright);text-decoration:none}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 var(--accent-glow)}70%{box-shadow:0 0 0 14px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes dot-blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+@keyframes slide-in-msg{from{opacity:0;transform:translateY(12px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes glow-pulse{0%,100%{opacity:0.6}50%{opacity:1}}
+@keyframes counter-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.fade-up{opacity:0;animation:fadeUp 0.65s ease forwards}
+.d1{animation-delay:0.05s}.d2{animation-delay:0.15s}.d3{animation-delay:0.25s}.d4{animation-delay:0.35s}.d5{animation-delay:0.5s}.d6{animation-delay:0.65s}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:64px;
+  background:rgba(8,14,28,0.85);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-subtle);
+}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{
+  width:32px;height:32px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:18px;color:#fff;
+  letter-spacing:-1px;
+}
+.nav-name{font-weight:700;font-size:15px;letter-spacing:-0.01em}
+.nav-name span{color:var(--text-muted);font-weight:400}
+.nav-cta{
+  background:var(--accent);
+  color:#fff;font-weight:600;font-size:13px;
+  padding:0.45rem 1.1rem;border-radius:7px;
+  transition:background 0.2s,transform 0.15s;
+  white-space:nowrap;
+}
+.nav-cta:hover{background:var(--accent-bright);transform:translateY(-1px);color:#fff}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:7rem 1.5rem 5rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(99,102,241,0.18) 0%,transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 80%,rgba(99,102,241,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--border-subtle) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border-subtle) 1px,transparent 1px);
+  background-size:60px 60px;
+  opacity:0.25;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 40%,transparent 100%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:0.35rem 1rem;
+  background:var(--accent-dim);
+  border:1px solid rgba(99,102,241,0.3);
+  border-radius:999px;
+  font-size:0.75rem;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--accent-bright);
+  margin-bottom:1.75rem;
+  position:relative;
+}
+.hero-badge-dot{
+  width:6px;height:6px;
+  background:var(--green);
+  border-radius:50%;
+  animation:glow-pulse 2s ease-in-out infinite;
+}
+.hero h1{
+  font-size:clamp(2.6rem,7vw,5.2rem);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.03em;
+  margin-bottom:1.25rem;
+  position:relative;
+}
+.hero h1 .gradient{
+  background:linear-gradient(135deg,#f1f5f9 30%,var(--accent-bright) 70%,#c7d2fe 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  color:var(--text-muted);
+  max-width:600px;
+  margin:0 auto 2.5rem;
+  line-height:1.7;
+  font-weight:400;
+}
+.hero-actions{
+  display:flex;align-items:center;gap:1rem;
+  flex-wrap:wrap;justify-content:center;
+  margin-bottom:3.5rem;
+}
+.btn-primary{
+  background:var(--accent);
+  color:#fff;font-weight:700;font-size:1rem;
+  padding:0.85rem 2.2rem;
+  border-radius:10px;border:none;cursor:pointer;
+  transition:background 0.2s,transform 0.15s,box-shadow 0.2s;
+  box-shadow:0 0 0 0 var(--accent-glow);
+  animation:pulse-ring 3s ease-in-out infinite;
+  white-space:nowrap;
+}
+.btn-primary:hover{
+  background:var(--accent-bright);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px var(--accent-glow);
+}
+.btn-secondary{
+  background:transparent;
+  color:var(--text-muted);font-weight:600;font-size:0.95rem;
+  padding:0.85rem 1.75rem;
+  border-radius:10px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:border-color 0.2s,color 0.2s,transform 0.15s;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--text);transform:translateY(-1px)}
+
+.hero-trust{
+  display:flex;align-items:center;justify-content:center;gap:2rem;
+  flex-wrap:wrap;
+}
+.hero-trust-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:0.8rem;color:var(--text-dim);font-weight:500;
+}
+.trust-check{color:var(--green);font-size:0.9rem}
+
+/* ===== SECTION SHARED ===== */
+section{position:relative}
+.section-inner{max-width:1100px;margin:0 auto;padding:5rem 1.5rem}
+.section-label{
+  font-size:0.72rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--accent-bright);
+  margin-bottom:0.75rem;
+}
+.section-title{
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:800;letter-spacing:-0.025em;
+  line-height:1.15;
+  margin-bottom:1rem;
+}
+.section-sub{
+  font-size:1.05rem;color:var(--text-muted);
+  max-width:580px;line-height:1.7;
+}
+
+/* ===== WHAT YOU GET ===== */
+.what-section{background:var(--bg)}
+.what-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5rem;
+  margin-top:3rem;
+}
+.what-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:2rem;
+  position:relative;
+  overflow:hidden;
+  transition:border-color 0.25s,transform 0.2s;
+}
+.what-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.what-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity 0.25s;
+}
+.what-card:hover::before{opacity:1}
+.card-icon{
+  width:48px;height:48px;
+  border-radius:12px;
+  background:var(--accent-dim);
+  border:1px solid rgba(99,102,241,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;
+  margin-bottom:1.25rem;
+}
+.card-title{font-size:1.15rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.01em}
+.card-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.65}
+.card-tag{
+  display:inline-block;
+  margin-top:1rem;
+  padding:0.2rem 0.65rem;
+  background:var(--green-dim);
+  border:1px solid rgba(16,185,129,0.2);
+  border-radius:999px;
+  font-size:0.7rem;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--green);
+}
+
+/* ===== HOW IT WORKS ===== */
+.how-section{background:var(--bg-deep)}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:2rem;
+  margin-top:3.5rem;
+  position:relative;
+}
+.steps::before{
+  content:'';
+  position:absolute;
+  top:38px;left:calc(16.66% + 2rem);right:calc(16.66% + 2rem);
+  height:1px;
+  background:linear-gradient(90deg,var(--accent) 0%,var(--accent-bright) 50%,var(--accent) 100%);
+  opacity:0.35;
+}
+.step{text-align:center;padding:0 1rem}
+.step-num{
+  width:76px;height:76px;
+  border-radius:50%;
+  background:var(--surface);
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;font-weight:900;
+  color:var(--accent-bright);
+  margin:0 auto 1.25rem;
+  position:relative;
+  z-index:1;
+  transition:background 0.25s,transform 0.2s;
+}
+.step:hover .step-num{background:var(--accent-dim);transform:scale(1.05)}
+.step-title{font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.01em}
+.step-desc{font-size:0.88rem;color:var(--text-muted);line-height:1.65}
+.step-detail{
+  margin-top:0.75rem;
+  padding:0.6rem 0.9rem;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:0.78rem;
+  color:var(--text-dim);
+  font-style:italic;
+}
+
+/* ===== FIRST MESSAGE ===== */
+.message-section{background:var(--bg)}
+.message-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:center;
+  margin-top:3rem;
+}
+.message-copy .section-sub{margin-top:0.75rem}
+.message-copy-detail{
+  margin-top:1.5rem;
+  padding-left:1rem;
+  border-left:2px solid var(--accent);
+}
+.message-copy-detail p{
+  font-size:0.9rem;color:var(--text-muted);
+  line-height:1.7;margin-bottom:0.5rem;
+}
+.message-copy-detail p:last-child{margin-bottom:0}
+
+/* Telegram mockup */
+.telegram-phone{
+  background:var(--bg-deep);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(99,102,241,0.08);
+  max-width:380px;
+  margin:0 auto;
+  animation:float 5s ease-in-out infinite;
+}
+.tg-header{
+  background:#17212b;
+  padding:1rem 1.2rem;
+  display:flex;align-items:center;gap:0.75rem;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.tg-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),#8b5cf6);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1.1rem;color:#fff;flex-shrink:0;
+}
+.tg-name{font-size:0.95rem;font-weight:600;color:#fff}
+.tg-status{font-size:0.72rem;color:var(--green);display:flex;align-items:center;gap:4px}
+.tg-status-dot{width:5px;height:5px;background:var(--green);border-radius:50%}
+.tg-body{
+  background:#0d1117;
+  padding:1.25rem 1rem;
+  min-height:320px;
+  display:flex;flex-direction:column;gap:0.6rem;
+}
+.tg-msg{
+  max-width:92%;
+  padding:0.75rem 1rem;
+  border-radius:12px;
+  font-size:0.82rem;
+  line-height:1.6;
+}
+.tg-msg.bot{
+  background:#17212b;
+  color:#e8eaf0;
+  border-radius:2px 12px 12px 12px;
+  align-self:flex-start;
+  animation:slide-in-msg 0.4s ease forwards;
+}
+.tg-msg.bot.d1{animation-delay:0.2s;opacity:0}
+.tg-msg.bot.d2{animation-delay:0.8s;opacity:0}
+.tg-msg.bot.d3{animation-delay:1.5s;opacity:0}
+.tg-msg-time{font-size:0.65rem;color:var(--text-dim);text-align:right;margin-top:0.25rem}
+.tg-typing{
+  display:flex;align-items:center;gap:4px;
+  padding:0.6rem 0.75rem;
+  background:#17212b;
+  border-radius:12px;
+  width:fit-content;
+  opacity:0;
+  animation:slide-in-msg 0.4s ease 0.2s forwards;
+}
+.tg-typing-dot{
+  width:6px;height:6px;background:var(--text-dim);border-radius:50%;
+}
+.tg-typing-dot:nth-child(1){animation:dot-blink 1.2s infinite 0s}
+.tg-typing-dot:nth-child(2){animation:dot-blink 1.2s infinite 0.2s}
+.tg-typing-dot:nth-child(3){animation:dot-blink 1.2s infinite 0.4s}
+.tg-footer{
+  background:#17212b;
+  padding:0.75rem 1rem;
+  display:flex;align-items:center;gap:0.5rem;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.tg-input{
+  flex:1;background:rgba(255,255,255,0.06);
+  border:none;border-radius:20px;
+  padding:0.5rem 1rem;
+  font-size:0.8rem;color:var(--text-muted);
+  font-family:inherit;
+}
+.tg-send{
+  width:36px;height:36px;
+  background:var(--accent);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.tg-send svg{width:16px;height:16px;fill:#fff}
+
+/* ===== PRICING ===== */
+.pricing-section{background:var(--bg-deep)}
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;
+  margin-top:3.5rem;
+  align-items:start;
+}
+.price-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2rem;
+  transition:border-color 0.25s,transform 0.2s;
+  position:relative;
+}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{
+  border-color:var(--accent);
+  background:linear-gradient(135deg,var(--surface) 0%,rgba(99,102,241,0.06) 100%);
+}
+.price-card.featured::before{
+  content:'Most Popular';
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  padding:0.25rem 1rem;
+  background:var(--accent);
+  border-radius:0 0 8px 8px;
+  font-size:0.7rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:#fff;white-space:nowrap;
+}
+.price-tier{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem}
+.price-amount{
+  font-size:3rem;font-weight:900;letter-spacing:-0.03em;line-height:1;
+  margin-bottom:0.25rem;
+}
+.price-amount span{font-size:1.1rem;font-weight:500;color:var(--text-muted);vertical-align:top;margin-top:0.6rem;display:inline-block}
+.price-mo{font-size:0.8rem;color:var(--text-dim);margin-bottom:1.5rem}
+.price-desc{font-size:0.88rem;color:var(--text-muted);margin-bottom:1.75rem;line-height:1.6}
+.price-features{list-style:none;margin-bottom:2rem}
+.price-features li{
+  font-size:0.875rem;color:var(--text-muted);
+  padding:0.45rem 0;
+  display:flex;align-items:flex-start;gap:0.6rem;
+  border-bottom:1px solid var(--border-subtle);
+}
+.price-features li:last-child{border-bottom:none}
+.price-features .check{color:var(--green);font-size:0.85rem;margin-top:1px;flex-shrink:0}
+.price-btn{
+  width:100%;padding:0.8rem;
+  border-radius:10px;font-weight:700;font-size:0.9rem;
+  cursor:pointer;transition:all 0.2s;border:none;
+}
+.price-btn.outline{
+  background:transparent;border:1px solid var(--border);color:var(--text);
+}
+.price-btn.outline:hover{border-color:var(--accent);color:var(--accent-bright)}
+.price-btn.solid{
+  background:var(--accent);color:#fff;
+}
+.price-btn.solid:hover{background:var(--accent-bright);transform:translateY(-1px)}
+.price-btn.outline-accent{
+  background:transparent;border:1px solid var(--accent);color:var(--accent-bright);
+}
+.price-btn.outline-accent:hover{background:var(--accent-dim)}
+
+/* ===== TESTIMONIAL / SOCIAL PROOF ===== */
+.proof-section{background:var(--bg)}
+.proof-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2.5rem;
+  max-width:760px;
+  margin:3rem auto 0;
+  position:relative;
+}
+.proof-card::before{
+  content:'"';
+  position:absolute;top:1.5rem;left:2rem;
+  font-size:5rem;line-height:1;
+  color:var(--accent);
+  opacity:0.25;
+  font-family:Georgia,serif;
+}
+.proof-quote{
+  font-size:1.15rem;
+  line-height:1.75;
+  color:var(--text);
+  margin-bottom:1.5rem;
+  font-weight:400;
+}
+.proof-quote em{
+  color:var(--accent-bright);
+  font-style:normal;
+  font-weight:600;
+}
+.proof-author{
+  display:flex;align-items:center;gap:1rem;
+}
+.proof-avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1rem;color:#fff;flex-shrink:0;
+}
+.proof-name{font-weight:700;font-size:0.95rem}
+.proof-role{font-size:0.8rem;color:var(--text-dim)}
+.proof-label{
+  display:inline-block;margin-top:0.25rem;
+  padding:0.15rem 0.6rem;
+  background:var(--accent-dim);border:1px solid rgba(99,102,241,0.2);
+  border-radius:999px;font-size:0.68rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.06em;color:var(--accent-bright);
+}
+.proof-stats{
+  display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;
+  margin-top:3rem;
+}
+.proof-stat{text-align:center}
+.proof-stat-num{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;color:var(--accent-bright)}
+.proof-stat-label{font-size:0.8rem;color:var(--text-dim);margin-top:0.15rem}
+
+/* ===== FAQ ===== */
+.faq-section{background:var(--bg-deep)}
+.faq-list{margin-top:2.5rem;max-width:720px}
+.faq-item{
+  border-bottom:1px solid var(--border);
+  padding:1.25rem 0;
+}
+.faq-q{
+  font-weight:600;font-size:0.97rem;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  user-select:none;
+}
+.faq-q .arrow{
+  color:var(--text-dim);font-size:1rem;
+  transition:transform 0.2s;flex-shrink:0;
+}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{
+  font-size:0.875rem;color:var(--text-muted);
+  line-height:1.7;
+  max-height:0;overflow:hidden;
+  transition:max-height 0.3s ease,padding 0.3s ease;
+}
+.faq-item.open .faq-a{max-height:200px;padding-top:0.75rem}
+
+/* ===== FINAL CTA ===== */
+.cta-section{
+  background:var(--bg);
+  text-align:center;
+}
+.cta-inner{
+  background:linear-gradient(135deg,var(--surface) 0%,rgba(99,102,241,0.08) 100%);
+  border:1px solid rgba(99,102,241,0.2);
+  border-radius:24px;
+  padding:4rem 2rem;
+  max-width:680px;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+}
+.cta-inner::before{
+  content:'';position:absolute;
+  top:-60%;left:50%;transform:translateX(-50%);
+  width:500px;height:300px;
+  background:radial-gradient(ellipse,rgba(99,102,241,0.12),transparent 70%);
+  pointer-events:none;
+}
+.cta-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;letter-spacing:-0.025em;margin-bottom:1rem}
+.cta-sub{font-size:1rem;color:var(--text-muted);margin-bottom:2rem;line-height:1.7}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--bg-deep);
+  border-top:1px solid var(--border-subtle);
+  padding:2.5rem 1.5rem;
+  text-align:center;
+}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-brand{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:1.25rem;
+}
+.footer-logo{
+  width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:15px;color:#fff;
+}
+.footer-name{font-weight:700;font-size:14px}
+.footer-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.25rem}
+.footer-links a{font-size:0.8rem;color:var(--text-dim);transition:color 0.2s}
+.footer-links a:hover{color:var(--text-muted)}
+.footer-legal{font-size:0.75rem;color:var(--text-dim);line-height:1.6}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .message-wrapper{grid-template-columns:1fr}
+  .telegram-phone{max-width:100%}
+  .steps::before{display:none}
+  .nav-links{display:none}
+}
+@media(max-width:640px){
+  .nav{padding:0 1rem}
+  .section-inner{padding:3.5rem 1.25rem}
+  .hero{padding:5.5rem 1.25rem 4rem}
+  .hero-trust{gap:1rem}
+  .pricing-grid{grid-template-columns:1fr}
+  .proof-card{padding:2rem 1.5rem}
+  .proof-stats{gap:1.5rem}
+  .cta-inner{padding:2.5rem 1.25rem}
+}
+
+/* ===== INTERSECTION OBSERVER (scroll fade) ===== */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-brand" style="text-decoration:none;color:inherit">
+    <div class="nav-logo">9</div>
+    <span class="nav-name">Your9 <span>by 9 Enterprises</span></span>
+  </a>
+  <a href="#pricing" class="nav-cta">Get Your9</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge fade-up d1">
+    <span class="hero-badge-dot"></span>
+    Now accepting founders
+  </div>
+
+  <h1 class="fade-up d2">
+    <span class="gradient">Your Own 9</span><br>
+    Your autonomous AI company<br>that runs itself.
+  </h1>
+
+  <p class="hero-sub fade-up d3">
+    An AI CEO and a full agent team working around the clock on your business.
+    Not a chatbot. Not a tool. A company that operates while you sleep.
+  </p>
+
+  <div class="hero-actions fade-up d4">
+    <a href="#pricing" class="btn-primary">Get Your9 &rarr;</a>
+    <a href="#how-it-works" class="btn-secondary">See how it works</a>
+  </div>
+
+  <div class="hero-trust fade-up d5">
+    <span class="hero-trust-item"><span class="trust-check">&#10003;</span> No agency overhead</span>
+    <span class="hero-trust-item"><span class="trust-check">&#10003;</span> 24/7 autonomous operation</span>
+    <span class="hero-trust-item"><span class="trust-check">&#10003;</span> Cancel anytime</span>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="what-section" id="what-you-get">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">What you get</p>
+      <h2 class="section-title">A full team. Zero payroll.</h2>
+      <p class="section-sub">
+        Every Your9 comes with an AI CEO and three specialist agents — each with a defined role, operating autonomously inside your business.
+      </p>
+    </div>
+
+    <div class="what-grid">
+      <div class="what-card reveal">
+        <div class="card-icon">&#129504;</div>
+        <h3 class="card-title">Your AI CEO</h3>
+        <p class="card-desc">Thinks strategically. Prioritizes ruthlessly. Orchestrates the team. Sends you a morning briefing every day. Makes decisions without hand-holding.</p>
+        <span class="card-tag">Active 24/7</span>
+      </div>
+
+      <div class="what-card reveal">
+        <div class="card-icon">&#9889;</div>
+        <h3 class="card-title">The Executor</h3>
+        <p class="card-desc">Gets things done. Drafts, builds, writes, sends. Handles the operational grind so nothing stalls and nothing slips through the cracks.</p>
+        <span class="card-tag">Operations</span>
+      </div>
+
+      <div class="what-card reveal">
+        <div class="card-icon">&#128301;</div>
+        <h3 class="card-title">The Mind</h3>
+        <p class="card-desc">Research and intelligence. Monitors competitors, markets, and opportunities. Delivers insights before you know you need them.</p>
+        <span class="card-tag">Intelligence</span>
+      </div>
+
+      <div class="what-card reveal">
+        <div class="card-icon">&#127908;</div>
+        <h3 class="card-title">The Voice</h3>
+        <p class="card-desc">Communication and brand. Drafts outreach, follows up, manages your public presence. Speaks on your behalf with your tone.</p>
+        <span class="card-tag">Comms</span>
+      </div>
+
+      <div class="what-card reveal" style="grid-column:span 1">
+        <div class="card-icon">&#128202;</div>
+        <h3 class="card-title">Full Autonomy</h3>
+        <p class="card-desc">The team sets priorities, executes tasks, and reports to you. Not the other way around. You stay in the loop — you just don't have to run anything.</p>
+        <span class="card-tag">Autonomous</span>
+      </div>
+
+      <div class="what-card reveal" style="background:var(--accent-dim);border-color:rgba(99,102,241,0.25)">
+        <div class="card-icon" style="background:rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.3)">&#128640;</div>
+        <h3 class="card-title">Daily Morning Briefing</h3>
+        <p class="card-desc">Every morning, your AI CEO sends a briefing: what happened yesterday, what's happening today, and what decisions you need to make — if any.</p>
+        <span class="card-tag" style="background:var(--accent-dim);border-color:rgba(99,102,241,0.3);color:var(--accent-bright)">Delivered via Telegram</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how-it-works">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">How it works</p>
+      <h2 class="section-title">Simple by design.</h2>
+      <p class="section-sub">
+        Three steps from signup to a fully operating AI company. No setup calls. No onboarding decks. Just a first message.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3 class="step-title">Sign Up</h3>
+        <p class="step-desc">Tell us what you're building. Takes 5 minutes. We handle everything else.</p>
+        <div class="step-detail">Business context captured. Team initialized.</div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h3 class="step-title">Your CEO Starts Working</h3>
+        <p class="step-desc">Within minutes, your AI CEO sends the first message. Then gets to work.</p>
+        <div class="step-detail">No ramp time. No onboarding calls. Immediate output.</div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h3 class="step-title">You Focus on What Matters</h3>
+        <p class="step-desc">Get your morning briefing. Answer questions when you want to. Everything else runs.</p>
+        <div class="step-detail">You're the owner. Not the operator.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIRST MESSAGE -->
+<section class="message-section" id="first-message">
+  <div class="section-inner">
+    <div class="message-wrapper">
+      <div class="message-copy reveal">
+        <p class="section-label">The first message</p>
+        <h2 class="section-title">You're not alone in this anymore.</h2>
+        <div class="message-copy-detail">
+          <p>Most founders wake up and immediately carry the weight of every decision, every priority, every dropped ball — alone.</p>
+          <p>Your9 changes that from day one. Your AI CEO's first message isn't a tutorial. It's a commitment.</p>
+          <p>From this point forward, you have a team. It just doesn't show up on payroll.</p>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="telegram-phone">
+          <!-- Header -->
+          <div class="tg-header">
+            <div class="tg-avatar">9</div>
+            <div>
+              <div class="tg-name">Your9 CEO</div>
+              <div class="tg-status"><span class="tg-status-dot"></span> online</div>
+            </div>
+          </div>
+
+          <!-- Messages -->
+          <div class="tg-body">
+            <div class="tg-typing">
+              <span class="tg-typing-dot"></span>
+              <span class="tg-typing-dot"></span>
+              <span class="tg-typing-dot"></span>
+            </div>
+            <div class="tg-msg bot d1">
+              I've read everything you shared. I understand where you are and where you're trying to go.
+              <div class="tg-msg-time">9:01 AM</div>
+            </div>
+            <div class="tg-msg bot d2">
+              You're not alone in this anymore. I'm your CEO. The Executor, The Mind, and The Voice are already working. We run while you sleep.
+              <div class="tg-msg-time">9:01 AM</div>
+            </div>
+            <div class="tg-msg bot d3">
+              Your first briefing hits tomorrow morning at 8 AM. Tonight, we build the plan.
+              <div class="tg-msg-time">9:02 AM</div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="tg-footer">
+            <input class="tg-input" type="text" placeholder="Message Your9 CEO..." readonly>
+            <div class="tg-send">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <p class="section-label">Pricing</p>
+      <h2 class="section-title">One team. Three tiers.</h2>
+      <p class="section-sub" style="margin:0 auto">
+        Every tier includes your full AI CEO and agent team. Tiers differ by depth, speed, and access.
+      </p>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="price-card reveal">
+        <p class="price-tier">Starter</p>
+        <div class="price-amount"><span>$</span>499</div>
+        <p class="price-mo">per month</p>
+        <p class="price-desc">The complete Your9 team for founders who want autonomy without the agency bill.</p>
+        <ul class="price-features">
+          <li><span class="check">&#10003;</span> AI CEO + full 3-agent team</li>
+          <li><span class="check">&#10003;</span> Daily morning briefings</li>
+          <li><span class="check">&#10003;</span> Telegram-based communication</li>
+          <li><span class="check">&#10003;</span> Operational task execution</li>
+          <li><span class="check">&#10003;</span> Weekly strategy review</li>
+          <li><span class="check">&#10003;</span> Cancel anytime</li>
+        </ul>
+        <button class="price-btn outline" onclick="document.getElementById('cta-form').scrollIntoView({behavior:'smooth'})">Get Started</button>
+      </div>
+
+      <!-- Growth (featured) -->
+      <div class="price-card featured reveal">
+        <p class="price-tier">Growth</p>
+        <div class="price-amount"><span>$</span>999</div>
+        <p class="price-mo">per month</p>
+        <p class="price-desc">For founders scaling fast who need more capacity, more depth, and faster response across all functions.</p>
+        <ul class="price-features">
+          <li><span class="check">&#10003;</span> Everything in Starter</li>
+          <li><span class="check">&#10003;</span> Priority execution queue</li>
+          <li><span class="check">&#10003;</span> Market intelligence reports</li>
+          <li><span class="check">&#10003;</span> Competitor monitoring</li>
+          <li><span class="check">&#10003;</span> Outreach and follow-up automation</li>
+          <li><span class="check">&#10003;</span> Direct CEO access — reply anytime</li>
+        </ul>
+        <button class="price-btn solid" onclick="document.getElementById('cta-form').scrollIntoView({behavior:'smooth'})">Get Started</button>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="price-card reveal">
+        <p class="price-tier">Enterprise</p>
+        <div class="price-amount"><span>$</span>2,499</div>
+        <p class="price-mo">per month</p>
+        <p class="price-desc">Custom deployment. Your agents integrated directly into your systems, tools, and workflows.</p>
+        <ul class="price-features">
+          <li><span class="check">&#10003;</span> Everything in Growth</li>
+          <li><span class="check">&#10003;</span> Custom agent configuration</li>
+          <li><span class="check">&#10003;</span> CRM and tool integrations</li>
+          <li><span class="check">&#10003;</span> Dedicated architecture review</li>
+          <li><span class="check">&#10003;</span> SLA and uptime guarantees</li>
+          <li><span class="check">&#10003;</span> White-glove onboarding</li>
+        </ul>
+        <button class="price-btn outline-accent" onclick="document.getElementById('cta-form').scrollIntoView({behavior:'smooth'})">Talk to Us</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof-section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center">
+      <p class="section-label">Early access</p>
+      <h2 class="section-title">From the first cohort.</h2>
+    </div>
+
+    <div class="proof-card reveal">
+      <p class="proof-quote">
+        I've been in mortgage for over a decade. I've tried every tool, every VA, every system that was supposed to save me time.
+        <em>Your9 is the first thing that actually runs.</em> I wake up and there's already a plan for the day.
+        My team is asking me what changed — I just tell them I hired better.
+      </p>
+      <div class="proof-author">
+        <div class="proof-avatar">KC</div>
+        <div>
+          <div class="proof-name">Kyle C.</div>
+          <div class="proof-role">Branch Manager, Cincinnati</div>
+          <span class="proof-label">Flagship Pilot</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proof-stats reveal">
+      <div class="proof-stat">
+        <div class="proof-stat-num">24/7</div>
+        <div class="proof-stat-label">Always operating</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">Day 1</div>
+        <div class="proof-stat-label">First briefing delivered</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">$0</div>
+        <div class="proof-stat-label">Payroll overhead</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">3</div>
+        <div class="proof-stat-label">Specialist agents included</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">FAQ</p>
+      <h2 class="section-title">Good questions.</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is this just a chatbot?
+          <span class="arrow">&#8964;</span>
+        </div>
+        <div class="faq-a">No. A chatbot responds when you ask. Your9 operates without you. The team is running tasks, making decisions within their scope, and delivering results before you think to ask. You can talk to your CEO any time — but you don't have to.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How does it know what to work on?
+          <span class="arrow">&#8964;</span>
+        </div>
+        <div class="faq-a">Your CEO starts with your business context — what you shared during signup. From there, it learns your priorities, your rhythm, and your goals. It gets sharper every week.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What kinds of tasks can the agents actually do?
+          <span class="arrow">&#8964;</span>
+        </div>
+        <div class="faq-a">Research, writing, outreach drafts, follow-up sequences, market monitoring, briefings, strategy documents, task prioritization, scheduling inputs, and more. The scope expands based on your tier and integrations.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I communicate with my team?
+          <span class="arrow">&#8964;</span>
+        </div>
+        <div class="faq-a">Telegram. Your AI CEO sends you briefings, you reply with feedback or new direction. Simple as texting. No new software to learn.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I cancel?
+          <span class="arrow">&#8964;</span>
+        </div>
+        <div class="faq-a">Yes. Cancel any time before your next billing cycle. No contracts, no exit fees, no awkward cancellation calls.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          When does the team actually start working?
+          <span class="arrow">&#8964;</span>
+        </div>
+        <div class="faq-a">Within minutes of signup. Your first message comes fast. Your first briefing arrives the next morning. There is no ramp period.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section" id="cta-form">
+  <div class="section-inner" style="text-align:center">
+    <div class="cta-inner reveal">
+      <p class="section-label" style="margin-bottom:0.75rem">Ready?</p>
+      <h2 class="cta-title">Stop running everything yourself.</h2>
+      <p class="cta-sub">
+        Your9 is accepting early founders now. Spots are limited while we maintain quality.
+        Join the first cohort.
+      </p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap">
+        <a href="mailto:hello@9enterprises.ai?subject=Your9 — I'm interested&body=Business name:%0D%0AWhat you're building:%0D%0ATier interested in: (Starter / Growth / Enterprise)" class="btn-primary" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none">
+          Get Your9 &rarr;
+        </a>
+        <a href="https://9enterprises.ai" class="btn-secondary" style="display:inline-block;text-decoration:none">
+          Learn about 9 Enterprises
+        </a>
+      </div>
+      <p style="margin-top:1.5rem;font-size:0.78rem;color:var(--text-dim)">
+        Starter from $499/mo &middot; No contracts &middot; Cancel anytime
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">9</div>
+      <span class="footer-name">9 Enterprises</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://9enterprises.ai">9enterprises.ai</a>
+      <a href="https://9enterprises.ai/privacy.html">Privacy</a>
+      <a href="https://9enterprises.ai/terms.html">Terms</a>
+      <a href="mailto:hello@9enterprises.ai">Contact</a>
+    </div>
+    <p class="footer-legal">
+      &copy; 2026 9 Enterprises LLC &middot; Ohio &middot; All rights reserved.<br>
+      Your9 is a product of 9 Enterprises. AI-powered autonomous business operations.
+    </p>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FAQ toggle
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Smooth scroll polyfill for anchor hrefs
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+});
+
+// Nav hide on scroll (mobile UX)
+let lastY = 0;
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y > 100) {
+    nav.style.transform = y > lastY ? 'translateY(-100%)' : 'translateY(0)';
+  } else {
+    nav.style.transform = 'translateY(0)';
+  }
+  lastY = y;
+}, {passive: true});
+nav.style.transition = 'transform 0.3s ease';
+</script>
+</body>
+</html>
