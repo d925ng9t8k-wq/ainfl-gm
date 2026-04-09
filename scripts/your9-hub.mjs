@@ -30,6 +30,14 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createServer } from 'http';
 import https from 'https';
+import {
+  processSocialTask,
+  handleSocialApprovalReply,
+  hasPendingApprovals,
+  looksLikeApprovalReply,
+  isSocialTask,
+  detectPlatforms,
+} from './your9-agent-social.mjs';
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -339,7 +347,37 @@ function updateTaskFile(taskPath, updates) {
 // Agent execution — process a CEO-delegated task with Sonnet
 // ---------------------------------------------------------------------------
 
-async function executeAgentTask(anthropicKey, agentId, agentConfig, instanceDir, task, taskDir) {
+async function executeAgentTask(anthropicKey, agentId, agentConfig, instanceDir, task, taskDir, hub) {
+  // Social media tasks delegated to the voice agent are intercepted here
+  // and routed through the social drafting agent with its approval workflow.
+  if (agentId === 'voice' && isSocialTask(task)) {
+    log(`Voice agent received social task — routing to social agent`);
+    const platforms = detectPlatforms(task);
+    const { instanceConfig, botToken, ownerChatId } = hub;
+    try {
+      const result = await processSocialTask({
+        instanceDir,
+        anthropicKey,
+        botToken,
+        ownerChatId,
+        businessName: instanceConfig.name,
+        industry: instanceConfig.industry,
+        personality: instanceConfig.personality,
+        taskBrief: task,
+        platforms,
+        taskDir,
+      });
+      if (result.success) {
+        return `Social draft sent to founder for approval (Post ID: ${result.postId}). Platforms: ${result.platforms.join(', ')}. Awaiting PUBLISH or revision instructions.`;
+      } else {
+        return `Social drafting failed: ${result.error}`;
+      }
+    } catch (e) {
+      log(`Social agent error: ${e.message}`);
+      return `Social agent error: ${e.message}`;
+    }
+  }
+
   const promptPath = join(instanceDir, 'agents', agentId, 'system-prompt.md');
 
   if (!existsSync(promptPath)) {
@@ -514,7 +552,8 @@ async function processCeoMessage(hub, userMessage) {
       agentConf,
       instanceDir,
       delegation.task,
-      taskDir
+      taskDir,
+      hub
     );
     agentResults.push(`**${agentConf.name || delegation.agentId}:** ${result}`);
   }
@@ -686,6 +725,39 @@ async function handleOwnerMessage(hub, userText) {
     ].join('\n');
     await sendTelegramMessage(botToken, ownerChatId, helpText);
     return;
+  }
+
+  // Check for pending social approval before routing to CEO
+  if (hasPendingApprovals(hub.instanceDir) && looksLikeApprovalReply(userText)) {
+    try {
+      const { instanceConfig, instanceDir, taskDir } = hub;
+      const socialResult = await handleSocialApprovalReply({
+        instanceDir,
+        anthropicKey: hub.anthropicKey,
+        botToken,
+        ownerChatId,
+        businessName: instanceConfig.name,
+        industry: instanceConfig.industry,
+        personality: instanceConfig.personality,
+        replyText: userText,
+        taskDir,
+      });
+
+      if (socialResult.handled) {
+        log(`Social approval handled — skipping CEO routing`);
+        // If the founder approved, report back to CEO so it has full context
+        if (socialResult.ceoReport) {
+          try {
+            await processCeoMessage(hub, `[Social Agent Report] ${socialResult.ceoReport}`);
+          } catch (e) {
+            log(`CEO social report failed (non-fatal): ${e.message}`);
+          }
+        }
+        return;
+      }
+    } catch (e) {
+      log(`Social approval check error (non-fatal): ${e.message}`);
+    }
   }
 
   // Standard message — route to CEO
