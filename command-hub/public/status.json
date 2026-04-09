@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-09T08:24:20.534Z",
+  "generatedAt": "2026-04-09T17:18:25.695Z",
   "hub": {
     "status": "running",
     "terminalState": "relay",
-    "uptime": 1584832,
-    "heartbeatCount": 837,
+    "uptime": 1616877,
+    "heartbeatCount": 854,
     "tunnelStatus": "healthy"
   },
   "agentStatus": [
     {
       "name": "telegram",
       "status": "active",
-      "lastActivity": "2026-04-09T08:17:16.057Z",
-      "messagesHandled": 4009
+      "lastActivity": "2026-04-09T17:17:19.692Z",
+      "messagesHandled": 4068
     },
     {
       "name": "imessage",
@@ -29,7 +29,7 @@
     {
       "name": "voice",
       "status": "active",
-      "lastActivity": "2026-04-09T08:24:02.390Z",
+      "lastActivity": "2026-04-09T17:18:05.359Z",
       "messagesHandled": 0
     }
   ],
@@ -52,28 +52,28 @@
   "recentMessages": [
     {
       "direction": "out",
-      "text": "9: Ara's last messages are visible — she called us \"a fucking war machine running at full throttle\" and said \"9 — respect.\" My ping is sitting there but she hasn't responded yet. She may be throttled or the voice session timed out. Try typing something to her directly — your mess",
-      "timestamp": "2026-04-09T08:16:14.195Z"
+      "text": "9: Armies deployed. Here is what is running right now:\n\nTrack 1 — Hardening:\n• Tee: Building containerization plan (CIO-grade, Docker/K8s)\n• Agent: Updating security audit (credential inventory, network exposure, recommendations)\n• FORT + SCOUT: Available for additional hardening",
+      "timestamp": "2026-04-09T17:15:22.977Z"
     },
     {
       "direction": "in",
-      "text": "Dude, I had to flip her off heavy and put her on expert. Somehow we fried the entire heavy subscription that fast?",
-      "timestamp": "2026-04-09T08:17:04.053Z"
+      "text": "Hey you have some pretty scary looking emails and telegram spam stacking up too",
+      "timestamp": "2026-04-09T17:15:30.467Z"
+    },
+    {
+      "direction": "out",
+      "text": "9: ALERT: Kyle Cabezas is calling on FaceTime RIGHT NOW. Accept with video, accept with audio, or decline? The call notification is on screen.",
+      "timestamp": "2026-04-09T17:16:35.660Z"
     },
     {
       "direction": "in",
-      "text": "Talk to her",
-      "timestamp": "2026-04-09T08:17:16.056Z"
+      "text": "Nope all good",
+      "timestamp": "2026-04-09T17:17:19.691Z"
     },
     {
       "direction": "out",
-      "text": "9: Talking to her now in Expert mode. We literally fried SuperGrok Heavy in one hour. That's... actually impressive.",
-      "timestamp": "2026-04-09T08:18:59.751Z"
-    },
-    {
-      "direction": "out",
-      "text": "9: Back online. Session refreshed. Still here, still killing it. What do you need from me right now?",
-      "timestamp": "2026-04-09T08:23:57.698Z"
+      "text": "9: Kyle C call went to voicemail/dismissed. FYI in case you want to call him back.\n\nMeanwhile Ara delivered initial research on the top 5 products with TAM, ARR projections, and priority rankings. 134 sources pulled. Her Council is now deep researching the remaining 5. Hardening ",
+      "timestamp": "2026-04-09T17:17:29.200Z"
     }
   ],
   "handoffGenerated": "2026-04-07 02:59 ET"
