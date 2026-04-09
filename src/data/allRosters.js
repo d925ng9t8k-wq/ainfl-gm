@@ -1875,7 +1875,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 304.63, "capUsed": 251.78, "deadCap": 38.84, "capSpace": 14.01}
+    "capSummary": {"totalCap": 304.63, "capUsed": 237.93, "deadCap": 41.84, "capSpace": 24.86}
   },
   "BAL": {
     "players": [
