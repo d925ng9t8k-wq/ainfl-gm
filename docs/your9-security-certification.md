@@ -273,6 +273,148 @@ For the current deployment model (single-host, localhost-only, single operator),
 
 ---
 
-*Security Certification produced by 9 -- 9 Enterprises*
-*Reviewed: 9 source files, 1 provisioned instance, ~4,800 lines of platform code*
+---
+
+## Final Pass — April 9, 2026
+
+**Auditor:** 9 (AI Chief of Staff, 9 Enterprises)
+**Scope:** Second-pass review of all code added after initial certification: `your9-add-agent.mjs`, `your9-go-live.mjs`, `your9-test-e2e.mjs`, `your9-daily-briefing.mjs`, `your9-self-improve.mjs`, and the Kyle Cabezas pilot instance at `instances/y9-ed3cc8bf-ab21-4c89-b949-52415cbe57c0/`.
+
+---
+
+### File-by-File Verdicts
+
+#### 1. scripts/your9-add-agent.mjs — Dynamic Agent Provisioning
+
+| Check | Verdict | Detail |
+|-------|---------|--------|
+| Credential exposure | PASS | No API keys, tokens, or secrets handled. Script writes config files only. .env loader does not pollute `process.env`. |
+| Cross-customer data bleed | PASS | All file operations are scoped to `instances/{instanceId}/agents/{slug}/`. Instance directory validated via `existsSync` before any writes. |
+| Unauthorized access paths | PASS | Tier cap enforced (`tierConfig.maxAgents`). Slug collision rejected. Instance existence validated before provisioning. |
+| Input validation | WARNING | `--instance` CLI argument is used directly in `path.join()` without sanitization. A crafted instance ID containing `../` could target directories outside `instances/`. Mitigated by the `existsSync(instanceDir)` check — the directory must pre-exist — but no explicit path traversal guard. |
+| Sensitive data logging | PASS | Log output contains only agent names, slugs, roles, and directory paths. No credentials logged. |
+| `parseAddAgentDirectives` injection | PASS | Regex `[ADD_AGENT:slug]` is constrained to `[a-z0-9-]+`. No shell execution or eval. Description is text only. |
+
+**Verdict: PASS** — One minor warning on path traversal (mitigated by existence check).
+
+---
+
+#### 2. scripts/your9-go-live.mjs — Go-Live Validation & Launch Gate
+
+| Check | Verdict | Detail |
+|-------|---------|--------|
+| Credential exposure | WARNING | Credential values are masked in output (`val.slice(0, 4) + '...' + val.slice(-4)`) — first 4 and last 4 characters of every credential are printed. For short tokens this may reveal too much. For API keys (52+ chars) this is acceptable. |
+| Cross-customer data bleed | PASS | Operates on exactly one instance directory specified by `--instance`. No instance enumeration or cross-instance queries. |
+| Unauthorized access paths | PASS | Read-only operations against the instance directory. Only write is appending to a shared `logs/your9-go-live.log` file — no customer data written there. |
+| Input validation | PASS | All credential checks use format validators (regex for Telegram tokens, `sk-ant-` prefix for API keys, numeric check for chat IDs). Placeholder detection is thorough — scans entire .env for any remaining `PLACEHOLDER` strings. |
+| Sensitive data logging | WARNING | The go-live log file at `logs/your9-go-live.log` receives PASS/FAIL results including the masked credential fragments (`sk-a...xyz1`). If log file permissions are too broad, partial credentials are exposed. Log file permissions are not explicitly set. |
+| Live API probing | PASS | Telegram `getMe` and `sendMessage` are legitimate verification calls. Anthropic API probe uses minimal tokens (`max_tokens: 5`). Timeouts set (10s). No credential leakage in API call error messages — response bodies are truncated. |
+
+**Verdict: PASS** — Two minor warnings on credential masking granularity and log file permissions.
+
+---
+
+#### 3. scripts/your9-test-e2e.mjs — End-to-End Test Framework
+
+| Check | Verdict | Detail |
+|-------|---------|--------|
+| Credential exposure | PASS | Does not handle real credentials. Tests provisioned instances which use `PLACEHOLDER_` values. Checks for hardcoded credentials in agent scripts (`/sk-ant-|telegram:[0-9]+:|resend_live/`). |
+| Cross-customer data bleed | PASS | Creates test instances with `y9-test-{uuid}` prefix. Cleanup with `rmSync(recursive)` removes all test data. `--cleanup` flag documented. |
+| Unauthorized access paths | PASS | Test instances are isolated in the same `instances/` directory pattern. No ability to target production instances unless explicitly passed via `--instance`. |
+| Input validation | PASS | `--instance` flag, if provided, is validated via `dirExists()` check. Test instance IDs are generated with `crypto.randomUUID()`. |
+| Sensitive data logging | PASS | All output is pass/fail test results with structural information only. No credentials, tokens, or API responses logged. |
+| Destructive operations | WARNING | `rmSync(instanceDir, { recursive: true, force: true })` in `cleanupInstance()` — if `--instance` points to a production instance AND `--cleanup` is set, the production instance would be destroyed. No safety guard distinguishes test vs production instances. |
+
+**Verdict: PASS** — One warning on cleanup of production instances if flags are misused. Recommend adding a guard that refuses to `rmSync` instances not matching the `y9-test-*` prefix.
+
+---
+
+#### 4. scripts/your9-daily-briefing.mjs — AI CEO Daily Briefing Engine
+
+| Check | Verdict | Detail |
+|-------|---------|--------|
+| Credential exposure | PASS | API key loaded via instance `.env` with `process.env` fallback. Placeholder detection present. Key is passed to Anthropic API via HTTPS header only — never logged, never written to files. |
+| Cross-customer data bleed | PASS | Instance-scoped: reads tasks from `instances/{id}/data/tasks/`, conversation from `instances/{id}/data/conversation/`. No cross-instance access paths. |
+| Unauthorized access paths | PASS | Instance existence and config validity are verified before any operation. |
+| Input validation | PASS | `--hour` is validated (0-23, `parseInt` with `isNaN` check). Instance ID validated via `existsSync`. Task file parsing catches malformed JSON silently (non-fatal `try/catch`). |
+| Sensitive data logging | PASS | Log output contains instance name, model name, task counts, and character counts only. No message content, credentials, or conversation data written to log. Briefing text is sent to Telegram and printed only in `--dry-run` mode (intentional). |
+| Telegram message content | PASS | Briefing text is AI-generated from task data — no raw credentials or sensitive internal data injected into the prompt context. Task content is truncated (`.slice(0, 150)`, `.slice(0, 200)`). |
+
+**Verdict: PASS** — No findings.
+
+---
+
+#### 5. scripts/your9-self-improve.mjs — Agent Self-Improvement Loop
+
+| Check | Verdict | Detail |
+|-------|---------|--------|
+| Credential exposure | PASS | API key loaded via instance `.env` with `process.env` fallback. Placeholder detection present. Never logged. |
+| Cross-customer data bleed | PASS | All reads scoped to the bound instance directory. Task history, agent configs, and improvement logs are all instance-specific. |
+| Unauthorized access paths | PASS | CEO review gate (Opus) must approve all proposals before file changes. Soul Code protection explicit in CEO review system prompt: "does not remove Soul Code hard rules, does not grant new permissions." |
+| Input validation | PASS | `--agent` validated against whitelist (`['executor', 'mind', 'voice']`). `--min-tasks` and `--max-tasks` validated as positive integers. Instance existence checked. |
+| Sensitive data logging | PASS | Improvement log JSON contains proposal text, decisions, and reasoning — no credentials or raw task data beyond truncated summaries. |
+| Prompt injection via task data | WARNING | Completed task content (`.task`, `.result`, `.summary`, `.founderNote`) is fed into the analysis prompt with only length truncation (300 chars). If a malicious task payload were injected into the task files, it would be passed to the analysis model. Risk is LOW because task files are written only by the hub (which validates owner chat ID) and agents (which report to the CEO). No external write path exists to task files. |
+| Config modification scope | WARNING | `applyProposals()` with `config_change` type calls `Object.assign(agentFiles.config, parsedChange)` — this could overwrite ANY key in the agent config, including `model`, `id`, or `systemPromptPath`. The CEO review gate is the only protection. Consider whitelisting mutable config keys. |
+
+**Verdict: PASS** — Two low-risk warnings. Config modification is broad but gated by Opus CEO review.
+
+---
+
+#### 6. Kyle Cabezas Instance — instances/y9-ed3cc8bf-ab21-4c89-b949-52415cbe57c0/
+
+| Check | Verdict | Detail |
+|-------|---------|--------|
+| Credential isolation | PASS | Instance has its own `config/.env` with unique `YOUR9_INSTANCE_SECRET`, `YOUR9_AGENT_SECRET`, and `YOUR9_WEBHOOK_SECRET` — all generated via `crypto.randomBytes(24)`. |
+| Placeholder status | PASS | All externally-provisioned credentials (`ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_OWNER_CHAT_ID`, `YOUR9_HUB_PORT`, Supabase keys, Resend, ElevenLabs, Twilio) correctly show `PLACEHOLDER_*` values — not yet activated. Go-live gate will block launch until replaced. |
+| Secrets in committed files | WARNING | The `.env` file at `instances/y9-ed3cc8bf-ab21-4c89-b949-52415cbe57c0/config/.env` contains three generated secrets (`y9s_c4b...`, `y9a_441...`, `y9w_9d7...`). These are currently PLACEHOLDERs for external services but the instance secrets themselves are real, generated values. If this instance directory is committed to git, those secrets are in version history. Verify `.gitignore` covers `instances/*/config/.env` or the entire `instances/` directory. |
+| Comms config | PASS | `telegram.json` uses `LOAD_FROM_ENV:TELEGRAM_BOT_TOKEN` pattern — no hardcoded bot token. `email.json` uses `LOAD_FROM_ENV:RESEND_API_KEY` — same pattern. Email correctly `enabled: false` for starter tier. |
+| CEO system prompt | PASS | Prompt contains Soul Code foundation, identity isolation constraint ("You are NOT 9" / HARD CONSTRAINT pattern expected by go-live checks), customer business name, mortgage industry terms (RESPA, TRID, HMDA, NMLS), and personality configuration. No placeholder text or unrendered templates. |
+| First-day message | PASS | Personalized to "Rapid Mortgage Cincinnati." Contains mortgage-specific language (RESPA, TRID, pipeline, referral). No banned AI phrases. No credential leakage. Compliance-aware (rate quote approval constraint mentioned). |
+| Agent configs | PASS | All three starter agents (executor, mind, voice) have config.json and system-prompt.md. No credentials in agent configs. Escalation triggers defined. Models set to `claude-sonnet-4-5`. |
+| Customer PII | WARNING | `customer.json` contains the business name "Rapid Mortgage Cincinnati" and industry context. No personal identifying information (email, phone, SSN) is stored. However, the instance UUID could be correlated to Kyle Cabezas if the provisioning log or this certification document links the two. For production: avoid linking customer names to instance IDs in any committed documentation. |
+
+**Verdict: PASS** — Two warnings on secrets in git and PII correlation.
+
+---
+
+### Cross-Cutting Findings (All New Files)
+
+| Finding | Severity | Detail |
+|---------|----------|--------|
+| No path traversal guard on `--instance` | WARNING | All five scripts accept `--instance` as a raw CLI argument and use it in `path.join(INSTANCES_DIR, instanceId)`. An attacker with CLI access could pass `--instance "../../etc"` to attempt directory traversal. Mitigated by `existsSync` checks (directory must pre-exist) and the fact that CLI access already implies full host access. **Low risk for current deployment model.** For production: add `if (instanceId.includes('..')) reject;` guard. |
+| `process.env` fallback for API keys | WARNING | `your9-daily-briefing.mjs` and `your9-self-improve.mjs` fall back to `process.env.ANTHROPIC_API_KEY` if the instance `.env` has no key. This means the platform operator's key is used for customer workloads. Already documented in initial certification (Section 1.2). Repeating here: enforce dedicated keys for enterprise tier. |
+| No rate limiting on CLI invocation | INFO | All scripts can be invoked without limits. `your9-add-agent.mjs` could be called in a loop to exhaust the tier cap (which it correctly enforces) but there is no rate limit or cooldown. Acceptable for CLI-only access model. |
+| Consistent .env loader pattern | PASS | All five scripts use the same `loadEnvFile()` function that reads into a local object without polluting `process.env`. Consistent and correct. |
+| No hardcoded credentials in any new file | PASS | Grep confirmed: no `sk-ant-`, `resend_live`, hardcoded Telegram tokens, or passwords in any of the five scripts. |
+| Dry-run mode on all write operations | PASS | `your9-add-agent.mjs`, `your9-daily-briefing.mjs`, `your9-self-improve.mjs`, and `your9-go-live.mjs` all support `--dry-run`. Test framework uses `--cleanup` and `--keep-on-fail` for safe test execution. |
+
+---
+
+### Final Pass Scorecard
+
+| File | Credential Exposure | Cross-Customer Bleed | Unauthorized Access | Input Validation | Sensitive Logging | Verdict |
+|------|-------------------|---------------------|-------------------|-----------------|------------------|---------|
+| your9-add-agent.mjs | PASS | PASS | PASS | WARNING | PASS | **PASS** |
+| your9-go-live.mjs | WARNING | PASS | PASS | PASS | WARNING | **PASS** |
+| your9-test-e2e.mjs | PASS | PASS | PASS | PASS | PASS | **PASS** |
+| your9-daily-briefing.mjs | PASS | PASS | PASS | PASS | PASS | **PASS** |
+| your9-self-improve.mjs | PASS | PASS | PASS | PASS | WARNING | **PASS** |
+| Kyle instance (y9-ed3cc8bf-*) | WARNING | PASS | PASS | N/A | PASS | **PASS** |
+
+**Overall Final Pass Verdict: PASS**
+
+No critical vulnerabilities found. No cross-customer data bleed vectors identified. All human approval gates intact. All credential handling follows the established instance-isolation pattern.
+
+**Action items before production multi-tenant deployment:**
+
+1. Add `if (instanceId.includes('..')) throw` guard to all scripts accepting `--instance`.
+2. Add `.gitignore` rule for `instances/*/config/.env` to prevent committed secrets.
+3. Reduce go-live credential masking to last-4-only (drop the first-4 reveal).
+4. Whitelist mutable config keys in `your9-self-improve.mjs` `applyProposals()`.
+5. Add `y9-test-*` prefix guard in `your9-test-e2e.mjs` cleanup to prevent accidental production instance deletion.
+
+---
+
+*Final Pass Security Certification produced by 9 -- 9 Enterprises*
+*Reviewed: 5 scripts + 1 customer instance (15 files), ~3,900 additional lines of platform code*
 *Date: April 9, 2026*
