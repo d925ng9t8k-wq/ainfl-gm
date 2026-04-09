@@ -47,10 +47,11 @@ let lastStatus = 'unknown';
  */
 async function checkGrokAlive() {
   try {
-    // Check if Grok app is running at all
-    const psCheck = execSync('pgrep -x Grok', { timeout: 5000 }).toString().trim();
+    // Check if Grok app is running — it's a Safari Web App, not a native process
+    // The process shows as "Web App" with bundlepath containing Grok.app
+    const psCheck = execSync('ps aux | grep "Grok.app" | grep -v grep', { timeout: 5000 }).toString().trim();
     if (!psCheck) {
-      log('Grok app not running');
+      log('Grok app not running (no Grok.app process found)');
       return false;
     }
 
