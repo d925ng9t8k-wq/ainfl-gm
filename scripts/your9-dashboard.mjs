@@ -18,7 +18,7 @@
  */
 
 import {
-  existsSync, readFileSync, readdirSync
+  existsSync, readFileSync, readdirSync, mkdirSync, writeFileSync
 } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -172,6 +172,69 @@ function readTasks(instanceDir) {
 }
 
 /**
+ * Read audit log entries from instances/{id}/data/audit/
+ * Each file is a JSON object per decision. Returns newest-first.
+ */
+function readAuditLog(instanceDir, limit = 100) {
+  const auditDir = join(instanceDir, 'data', 'audit');
+  if (!existsSync(auditDir)) return [];
+  try {
+    const files = readdirSync(auditDir)
+      .filter(f => f.endsWith('.json'))
+      .sort()
+      .reverse(); // newest first by filename (ISO timestamp prefix)
+
+    const entries = [];
+    for (const f of files.slice(0, limit)) {
+      try {
+        const entry = JSON.parse(readFileSync(join(auditDir, f), 'utf-8'));
+        entry._file = f;
+        entries.push(entry);
+      } catch {}
+    }
+    return entries;
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Write a challenge task to instances/{id}/data/audit/{entryId}-challenge.json
+ * The hub picks this up as a pending task for CEO reconsideration.
+ */
+function writeChallenge(instanceDir, entryId, reason) {
+  const auditDir = join(instanceDir, 'data', 'audit');
+  mkdirSync(auditDir, { recursive: true });
+
+  const challengeFile = join(auditDir, `${entryId}-challenge.json`);
+  const challenge = {
+    type: 'founder_challenge',
+    originalEntryId: entryId,
+    reason: reason.slice(0, 2000), // cap size
+    submittedAt: new Date().toISOString(),
+    status: 'pending',
+  };
+  writeFileSync(challengeFile, JSON.stringify(challenge, null, 2), 'utf-8');
+
+  // Also write to tasks dir so the hub picks it up
+  const tasksDir = join(instanceDir, 'data', 'tasks');
+  mkdirSync(tasksDir, { recursive: true });
+  const taskId = `${Date.now()}-challenge`;
+  const taskFile = join(tasksDir, `${taskId}-task.json`);
+  const task = {
+    id: taskId,
+    type: 'reconsider',
+    agentId: 'ceo',
+    task: `Founder challenged decision: ${entryId}. Reason: ${reason.slice(0, 500)}`,
+    challengeEntryId: entryId,
+    challengeReason: reason.slice(0, 2000),
+    status: 'queued',
+    loggedAt: new Date().toISOString(),
+  };
+  writeFileSync(taskFile, JSON.stringify(task, null, 2), 'utf-8');
+}
+
+/**
  * Read hub health from the hub HTTP endpoint.
  * Falls back to null if hub is not running.
  */
@@ -235,6 +298,161 @@ function computeVelocityScore(tasks, conversations) {
     Math.round((agentsUsed / totalAgents) * 10);
 
   return Math.min(100, pts);
+}
+
+// ---------------------------------------------------------------------------
+// ROI data builder — computes real value indicators from task + convo data
+// ---------------------------------------------------------------------------
+
+/**
+ * Time-savings estimate per task complexity tier.
+ * "Complexity" is inferred from task description length and keywords.
+ * Conservative estimates — these are minimums, not highs.
+ */
+const COMPLEXITY_HOURS = {
+  high: 2.5,    // research, draft, analyze, build, deploy, integrate
+  medium: 0.75, // summarize, respond, schedule, review, monitor
+  low: 0.25,    // lookup, notify, log, ping, check
+};
+
+const HIGH_KEYWORDS = /research|draft|analyz|build|deploy|integrat|implement|creat|design|generat|report|plan|strat/i;
+const MED_KEYWORDS  = /summar|respond|schedul|review|monitor|updat|send|follow|compil|prepar/i;
+
+function inferTaskComplexity(task) {
+  if (!task) return 'low';
+  if (HIGH_KEYWORDS.test(task)) return 'high';
+  if (MED_KEYWORDS.test(task)) return 'medium';
+  return 'low';
+}
+
+/**
+ * Classify a task description into a key action category.
+ * Returns a short label used in the key actions breakdown.
+ */
+const ACTION_PATTERNS = [
+  { label: 'Emails sent',        re: /\bemail|send.*message|outreach|follow.?up/i },
+  { label: 'Research delivered', re: /\bresearch|analyz|investigat|look.?up|find|gather/i },
+  { label: 'Content drafted',    re: /\bdraft|writ|creat.*post|content|copy|caption/i },
+  { label: 'Reports generated',  re: /\breport|summar|brief|digest/i },
+  { label: 'Data processed',     re: /\bdata|import|export|sync|log|parse|extract/i },
+  { label: 'Plans created',      re: /\bplan|strateg|roadmap|schedul|agenda/i },
+  { label: 'Systems checked',    re: /\bmonitor|check|health|status|verif|test/i },
+  { label: 'Responses handled',  re: /\brespond|reply|answer|handle|address/i },
+];
+
+function classifyAction(taskDescription) {
+  if (!taskDescription) return null;
+  for (const { label, re } of ACTION_PATTERNS) {
+    if (re.test(taskDescription)) return label;
+  }
+  return null;
+}
+
+/**
+ * Generate a Business Impact summary from real data signals.
+ * Written as if from the AI CEO perspective — honest, concrete, no fluff.
+ */
+function generateBusinessImpactSummary(completedToday, timeSavedHours, agentBreakdown, keyActions, businessName) {
+  const name = businessName || 'your business';
+  const totalActions = Object.values(keyActions).reduce((a, b) => a + b, 0);
+
+  // Zero activity case
+  if (completedToday === 0 && totalActions === 0) {
+    return `No tasks logged yet today. Your AI team is active and standing by — send a message via Telegram to get work moving.`;
+  }
+
+  const lines = [];
+
+  // Time savings headline
+  if (timeSavedHours >= 1) {
+    lines.push(`Today your AI team saved you an estimated ${timeSavedHours.toFixed(1)} hours of manual work — time you kept for the decisions only a founder can make.`);
+  } else if (timeSavedHours > 0) {
+    lines.push(`Today your AI team handled ${completedToday} task${completedToday !== 1 ? 's' : ''}, freeing up roughly ${Math.round(timeSavedHours * 60)} minutes.`);
+  }
+
+  // What was accomplished
+  const actionLabels = Object.entries(keyActions)
+    .filter(([, count]) => count > 0)
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, count]) => `${count} ${label.toLowerCase()}`);
+
+  if (actionLabels.length > 0) {
+    const summary = actionLabels.slice(0, 3).join(', ');
+    lines.push(`Work completed: ${summary}${actionLabels.length > 3 ? `, and ${actionLabels.length - 3} more` : ''}.`);
+  }
+
+  // Agent utilization
+  const agentNames = Object.keys(agentBreakdown);
+  if (agentNames.length > 1) {
+    lines.push(`${agentNames.length} agents contributed across different functions — no single point of failure.`);
+  } else if (agentNames.length === 1) {
+    lines.push(`${agentNames[0]} handled all work today.`);
+  }
+
+  // Forward-looking close
+  if (completedToday > 0) {
+    lines.push(`At this pace: ${(timeSavedHours * 5).toFixed(0)} hours saved this week, ${(timeSavedHours * 22).toFixed(0)} this month.`);
+  }
+
+  return lines.join(' ');
+}
+
+function computeRoiData(tasks, conversations, customerConfig) {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const completedToday = tasks.filter(t => {
+    if (t.status !== 'completed') return false;
+    const ts = t.completedAt || t.loggedAt;
+    return ts && new Date(ts) >= todayStart;
+  });
+
+  // Time saved — sum complexity estimates for each completed task
+  let timeSavedHours = 0;
+  for (const t of completedToday) {
+    const complexity = t.complexity || inferTaskComplexity(t.task);
+    timeSavedHours += COMPLEXITY_HOURS[complexity] || COMPLEXITY_HOURS.low;
+  }
+
+  // Breakdown by agent
+  const agentBreakdown = {};
+  for (const t of completedToday) {
+    const aid = t.agentId || 'ceo';
+    agentBreakdown[aid] = (agentBreakdown[aid] || 0) + 1;
+  }
+
+  // Key actions tally
+  const keyActions = {};
+  for (const t of completedToday) {
+    const label = classifyAction(t.task);
+    if (label) keyActions[label] = (keyActions[label] || 0) + 1;
+  }
+
+  // Also scan conversation messages for action keywords (CEO outbound messages)
+  const todayConvos = conversations.filter(c => {
+    return c.role === 'assistant' && c.timestamp && new Date(c.timestamp) >= todayStart;
+  });
+  for (const c of todayConvos) {
+    const label = classifyAction(c.content?.slice(0, 200));
+    if (label) keyActions[label] = (keyActions[label] || 0) + 1;
+  }
+
+  const businessName = customerConfig?.name || 'your business';
+  const businessImpact = generateBusinessImpactSummary(
+    completedToday.length,
+    timeSavedHours,
+    agentBreakdown,
+    keyActions,
+    businessName
+  );
+
+  return {
+    completedToday: completedToday.length,
+    timeSavedHours: Math.round(timeSavedHours * 10) / 10, // 1 decimal
+    agentBreakdown,
+    keyActions,
+    businessImpact,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -375,9 +593,11 @@ function renderDashboard(data) {
     agentConfigs,
     conversations,
     tasks,
+    auditLog,
     hubHealth,
     velocityScore,
     dailyBriefing,
+    roiData,
     dashboardPort,
     hubPort,
     generatedAt,
@@ -887,6 +1107,107 @@ function renderDashboard(data) {
     .meta-key { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); }
     .meta-val { font-size: 12px; color: var(--text); font-weight: 500; }
 
+    /* ── ROI Panel ── */
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .roi-stat {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .roi-stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .roi-stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+    }
+
+    .roi-stat-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .roi-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .roi-breakdown-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .roi-breakdown-label {
+      color: var(--text-muted);
+    }
+
+    .roi-breakdown-val {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .roi-agent-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .roi-agent-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent)40;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .roi-impact {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .roi-impact-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .roi-impact-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--border);
@@ -897,6 +1218,347 @@ function renderDashboard(data) {
     }
 
     footer a { color: var(--text-dim); text-decoration: none; }
+
+    /* ── Transparency / Audit layer ── */
+    .audit-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .audit-search {
+      flex: 1;
+      min-width: 160px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 10px;
+      outline: none;
+    }
+
+    .audit-search:focus {
+      border-color: var(--accent);
+    }
+
+    .audit-search::placeholder {
+      color: var(--text-dim);
+    }
+
+    .audit-filter {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 10px;
+      outline: none;
+    }
+
+    .audit-filter:focus {
+      border-color: var(--accent);
+    }
+
+    .audit-count {
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    .audit-list {
+      padding: 0;
+      max-height: 560px;
+      overflow-y: auto;
+    }
+
+    .audit-list::-webkit-scrollbar { width: 4px; }
+    .audit-list::-webkit-scrollbar-track { background: transparent; }
+    .audit-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .audit-entry {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .audit-entry:last-child {
+      border-bottom: none;
+    }
+
+    .audit-entry-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.12s;
+    }
+
+    .audit-entry-header:hover {
+      background: var(--surface2);
+    }
+
+    .audit-actor {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid var(--accent)40;
+      border-radius: 4px;
+      padding: 2px 7px;
+    }
+
+    .audit-actor.agent {
+      background: #0ea5e920;
+      color: #38bdf8;
+      border-color: #38bdf840;
+    }
+
+    .audit-action-text {
+      flex: 1;
+      min-width: 0;
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .audit-confidence {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .audit-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .audit-timestamp {
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    .why-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 2px 8px;
+      cursor: pointer;
+      transition: border-color 0.12s, color 0.12s;
+      white-space: nowrap;
+    }
+
+    .why-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .audit-expand {
+      display: none;
+      padding: 0 16px 14px 16px;
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+    }
+
+    .audit-expand.open {
+      display: block;
+    }
+
+    .audit-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin: 12px 0 6px;
+    }
+
+    .audit-reasoning {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Decision tree */
+    .decision-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tree-node {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .tree-connector {
+      flex-shrink: 0;
+      width: 16px;
+      color: var(--text-dim);
+      font-family: monospace;
+      margin-top: 1px;
+    }
+
+    .tree-label {
+      flex-shrink: 0;
+      font-weight: 600;
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      min-width: 72px;
+    }
+
+    .tree-value {
+      flex: 1;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .confidence-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .confidence-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .confidence-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .confidence-pct {
+      font-size: 12px;
+      font-weight: 700;
+      min-width: 36px;
+    }
+
+    /* Sources list */
+    .source-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .source-chip {
+      font-size: 11px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      color: var(--text-muted);
+    }
+
+    /* Outcome */
+    .outcome-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-top: 2px;
+    }
+
+    /* Challenge section */
+    .challenge-zone {
+      margin-top: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .challenge-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .challenge-textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 12px;
+      padding: 8px 10px;
+      resize: vertical;
+      min-height: 60px;
+      font-family: inherit;
+      line-height: 1.5;
+      outline: none;
+      margin-bottom: 8px;
+    }
+
+    .challenge-textarea:focus {
+      border-color: #f59e0b;
+    }
+
+    .challenge-btn {
+      background: #f59e0b20;
+      border: 1px solid #f59e0b60;
+      border-radius: 6px;
+      color: #f59e0b;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+    }
+
+    .challenge-btn:hover {
+      background: #f59e0b30;
+      border-color: #f59e0b;
+    }
+
+    .challenge-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .challenge-status {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .audit-empty {
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
 
     /* ── Spinner for refresh countdown ── */
     .countdown {
@@ -1069,6 +1731,225 @@ function renderDashboard(data) {
       </div>
     </div>
 
+    <!-- ROI / Business Impact Panel -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <span class="card-title">ROI &amp; Business Impact</span>
+        <span style="font-size:11px;color:var(--text-dim)">Today</span>
+      </div>
+      <div class="card-body">
+
+        <!-- Four headline stats -->
+        <div class="roi-grid">
+          <div class="roi-stat">
+            <div class="roi-stat-value">${roiData.timeSavedHours >= 1
+              ? roiData.timeSavedHours.toFixed(1) + 'h'
+              : Math.round(roiData.timeSavedHours * 60) + 'm'}</div>
+            <div class="roi-stat-label">Time Saved</div>
+            <div class="roi-stat-sub">est. founder hours recovered</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-value">${roiData.completedToday}</div>
+            <div class="roi-stat-label">Tasks Done</div>
+            <div class="roi-stat-sub">completed by AI team today</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-value">${Object.values(roiData.keyActions).reduce((a, b) => a + b, 0)}</div>
+            <div class="roi-stat-label">Key Actions</div>
+            <div class="roi-stat-sub">emails, research, drafts &amp; more</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-value">${Object.keys(roiData.agentBreakdown).length || '—'}</div>
+            <div class="roi-stat-label">Agents Active</div>
+            <div class="roi-stat-sub">contributing agents today</div>
+          </div>
+        </div>
+
+        ${Object.keys(roiData.keyActions).length > 0 ? `
+        <!-- Key Actions breakdown -->
+        <div style="margin-bottom:6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim)">Actions Breakdown</div>
+        <div class="roi-breakdown">
+          ${Object.entries(roiData.keyActions)
+            .sort((a, b) => b[1] - a[1])
+            .map(([label, count]) => `
+          <div class="roi-breakdown-row">
+            <span class="roi-breakdown-label">${escHtml(label)}</span>
+            <span class="roi-breakdown-val">${count}</span>
+          </div>`).join('')}
+        </div>` : ''}
+
+        ${Object.keys(roiData.agentBreakdown).length > 0 ? `
+        <!-- Agent contribution chips -->
+        <div style="margin-bottom:6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim)">Agent Contributions</div>
+        <div class="roi-agent-chips">
+          ${Object.entries(roiData.agentBreakdown)
+            .sort((a, b) => b[1] - a[1])
+            .map(([aid, count]) => `
+          <div class="roi-agent-chip">
+            ${agentIcon(aid)} ${escHtml(agentConfigs[aid]?.name || aid)} &middot; ${count} task${count !== 1 ? 's' : ''}
+          </div>`).join('')}
+        </div>` : ''}
+
+        <!-- AI CEO Business Impact summary -->
+        <div class="roi-impact">
+          <div class="roi-impact-label">Business Impact — AI CEO Assessment</div>
+          <div class="roi-impact-text">${escHtml(roiData.businessImpact)}</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Transparency & Audit Layer -->
+    <div class="card" style="margin-bottom:16px" id="audit-card">
+      <div class="card-header">
+        <span class="card-title">Transparency &amp; Audit Log</span>
+        <span style="font-size:11px;color:var(--text-dim)" id="audit-visible-count">${auditLog.length} decision${auditLog.length !== 1 ? 's' : ''}</span>
+      </div>
+
+      <div class="audit-toolbar">
+        <input
+          type="search"
+          class="audit-search"
+          id="audit-search"
+          placeholder="Search decisions, actions, reasoning..."
+          aria-label="Search audit log"
+        >
+        <select class="audit-filter" id="audit-actor-filter" aria-label="Filter by actor">
+          <option value="">All actors</option>
+          <option value="ceo">CEO</option>
+          <option value="agent">Agent</option>
+        </select>
+        <select class="audit-filter" id="audit-outcome-filter" aria-label="Filter by outcome">
+          <option value="">All outcomes</option>
+          <option value="success">Success</option>
+          <option value="failed">Failed</option>
+          <option value="pending">Pending</option>
+          <option value="challenged">Challenged</option>
+        </select>
+        <span class="audit-count" id="audit-count-label"></span>
+      </div>
+
+      <div class="audit-list" id="audit-list">
+        ${auditLog.length === 0
+          ? `<div class="audit-empty">No audit entries yet. Decisions made by the AI CEO and agents will appear here automatically.<br>
+             <br>To seed an entry for testing, create a JSON file in <code>instances/{id}/data/audit/</code> with fields:<br>
+             <code>timestamp, actor, action, reasoning, confidence, sources, outcome</code></div>`
+          : auditLog.map((entry, idx) => {
+              const entryId = entry.id || entry._file?.replace('.json', '') || `entry-${idx}`;
+              const actor = entry.actor || 'ceo';
+              const actorLabel = actor === 'ceo' ? 'CEO' : (entry.agentId || actor);
+              const action = entry.action || '—';
+              const confidence = typeof entry.confidence === 'number' ? entry.confidence : null;
+              const confidencePct = confidence !== null ? Math.round(confidence * 100) : null;
+              const confColor = confidencePct === null ? '#64748b'
+                : confidencePct >= 75 ? '#22c55e'
+                : confidencePct >= 50 ? '#f59e0b'
+                : '#ef4444';
+              const reasoning = entry.reasoning || '';
+              const sources = Array.isArray(entry.sources) ? entry.sources : (entry.sources ? [entry.sources] : []);
+              const outcome = entry.outcome || '';
+              const outcomeColor = outcome === 'success' ? '#22c55e'
+                : outcome === 'failed' ? '#ef4444'
+                : outcome === 'challenged' ? '#f59e0b'
+                : '#64748b';
+              const ts = entry.timestamp || '';
+
+              // Decision tree nodes — inferred from entry fields
+              const treeNodes = [];
+              if (entry.trigger) treeNodes.push({ label: 'Trigger', value: entry.trigger });
+              if (entry.options && Array.isArray(entry.options)) {
+                treeNodes.push({ label: 'Options', value: entry.options.join(' / ') });
+              }
+              if (entry.chosen !== undefined) treeNodes.push({ label: 'Chosen', value: String(entry.chosen) });
+              if (entry.rationale) treeNodes.push({ label: 'Rationale', value: entry.rationale });
+
+              return `
+              <div class="audit-entry"
+                   data-actor="${escHtml(actor)}"
+                   data-outcome="${escHtml(outcome)}"
+                   data-searchtext="${escHtml((action + ' ' + reasoning + ' ' + sources.join(' ')).toLowerCase())}">
+
+                <div class="audit-entry-header" onclick="toggleAudit('ae-${idx}')">
+                  <div class="audit-actor ${actor !== 'ceo' ? 'agent' : ''}">${escHtml(actorLabel)}</div>
+                  <div class="audit-action-text" title="${escHtml(action)}">${escHtml(action)}</div>
+                  ${confidencePct !== null ? `
+                  <div class="audit-confidence" style="background:${confColor}20;color:${confColor};border:1px solid ${confColor}40">
+                    ${confidencePct}%
+                  </div>` : ''}
+                  <div class="audit-meta-row">
+                    <span class="audit-timestamp">${escHtml(formatRelativeTime(ts))}</span>
+                    <button class="why-btn" onclick="event.stopPropagation();toggleAudit('ae-${idx}')">Why?</button>
+                  </div>
+                </div>
+
+                <div class="audit-expand" id="ae-${idx}">
+
+                  <!-- Reasoning chain -->
+                  ${reasoning ? `
+                  <div class="audit-section-label">Reasoning Chain</div>
+                  <div class="audit-reasoning">${escHtml(reasoning)}</div>` : ''}
+
+                  <!-- Decision tree -->
+                  ${(treeNodes.length > 0 || confidencePct !== null) ? `
+                  <div class="audit-section-label">Decision Tree</div>
+                  <div class="decision-tree">
+                    ${treeNodes.map((n, ni) => `
+                    <div class="tree-node">
+                      <span class="tree-connector">${ni === treeNodes.length - 1 ? '└─' : '├─'}</span>
+                      <span class="tree-label">${escHtml(n.label)}</span>
+                      <span class="tree-value">${escHtml(n.value)}</span>
+                    </div>`).join('')}
+                    ${confidencePct !== null ? `
+                    <div class="tree-node" style="margin-top:8px;flex-direction:column;gap:4px">
+                      <span class="tree-label">Confidence</span>
+                      <div class="confidence-bar-wrap">
+                        <div class="confidence-bar-bg">
+                          <div class="confidence-bar-fill"
+                               style="width:${confidencePct}%;background:${confColor}">
+                          </div>
+                        </div>
+                        <span class="confidence-pct" style="color:${confColor}">${confidencePct}%</span>
+                      </div>
+                    </div>` : ''}
+                  </div>` : ''}
+
+                  <!-- Sources -->
+                  ${sources.length > 0 ? `
+                  <div class="audit-section-label">Sources Used</div>
+                  <div class="source-chips">
+                    ${sources.map(s => `<span class="source-chip">${escHtml(String(s))}</span>`).join('')}
+                  </div>` : ''}
+
+                  <!-- Outcome -->
+                  ${outcome ? `
+                  <div class="audit-section-label">Outcome</div>
+                  <span class="outcome-badge" style="background:${outcomeColor}20;color:${outcomeColor};border:1px solid ${outcomeColor}40">
+                    ${escHtml(outcome)}
+                  </span>` : ''}
+
+                  <!-- Challenge section -->
+                  <div class="challenge-zone">
+                    <div class="challenge-label">Challenge This Decision</div>
+                    <textarea
+                      class="challenge-textarea"
+                      id="challenge-text-${idx}"
+                      placeholder="Explain why you disagree with this decision. The CEO will reconsider and respond..."
+                    ></textarea>
+                    <button
+                      class="challenge-btn"
+                      id="challenge-btn-${idx}"
+                      onclick="submitChallenge('${escHtml(entryId)}', ${idx})"
+                    >Push Back</button>
+                    <span class="challenge-status" id="challenge-status-${idx}"></span>
+                  </div>
+
+                </div>
+              </div>`;
+            }).join('')
+        }
+      </div>
+    </div>
+
     <!-- Bottom: Feed + Pipeline/Briefing -->
     <div class="grid-bottom">
 
@@ -1202,6 +2083,93 @@ function renderDashboard(data) {
 
     setTimeout(tick, 1000);
   })();
+
+  // ── Transparency / Audit layer JS ──────────────────────────────────────────
+
+  // Toggle expand/collapse for a single audit entry
+  function toggleAudit(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('open');
+  }
+
+  // Filter + search the audit list
+  (function() {
+    var searchEl = document.getElementById('audit-search');
+    var actorEl = document.getElementById('audit-actor-filter');
+    var outcomeEl = document.getElementById('audit-outcome-filter');
+    var countEl = document.getElementById('audit-count-label');
+    var list = document.getElementById('audit-list');
+
+    if (!searchEl || !list) return;
+
+    function applyFilters() {
+      var q = searchEl.value.toLowerCase().trim();
+      var actor = actorEl ? actorEl.value : '';
+      var outcome = outcomeEl ? outcomeEl.value : '';
+      var entries = list.querySelectorAll('.audit-entry');
+      var visible = 0;
+
+      entries.forEach(function(entry) {
+        var matchSearch = !q || (entry.dataset.searchtext || '').indexOf(q) !== -1;
+        var matchActor = !actor || (entry.dataset.actor || '') === actor;
+        var matchOutcome = !outcome || (entry.dataset.outcome || '') === outcome;
+        var show = matchSearch && matchActor && matchOutcome;
+        entry.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      if (countEl) {
+        countEl.textContent = visible + ' of ' + entries.length + ' shown';
+      }
+    }
+
+    if (searchEl) searchEl.addEventListener('input', applyFilters);
+    if (actorEl) actorEl.addEventListener('change', applyFilters);
+    if (outcomeEl) outcomeEl.addEventListener('change', applyFilters);
+
+    // Init count label
+    applyFilters();
+  })();
+
+  // Submit a founder challenge for an audit entry
+  function submitChallenge(entryId, idx) {
+    var textarea = document.getElementById('challenge-text-' + idx);
+    var btn = document.getElementById('challenge-btn-' + idx);
+    var statusEl = document.getElementById('challenge-status-' + idx);
+
+    if (!textarea || !btn) return;
+    var reason = textarea.value.trim();
+    if (!reason) {
+      if (statusEl) statusEl.textContent = 'Please enter a reason before submitting.';
+      textarea.focus();
+      return;
+    }
+
+    btn.disabled = true;
+    if (statusEl) statusEl.textContent = 'Submitting...';
+
+    fetch('/challenge', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entryId: entryId, reason: reason }),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          if (statusEl) statusEl.textContent = 'Challenge submitted. CEO will reconsider.';
+          textarea.value = '';
+          textarea.disabled = true;
+        } else {
+          if (statusEl) statusEl.textContent = 'Error: ' + (data.error || 'unknown');
+          btn.disabled = false;
+        }
+      })
+      .catch(function(e) {
+        if (statusEl) statusEl.textContent = 'Network error. Try again.';
+        btn.disabled = false;
+      });
+  }
 </script>
 </body>
 </html>`;
@@ -1217,10 +2185,12 @@ async function gatherData(instanceDir, customerId, hubPort, dashboardPort) {
   const agentConfigs = readAgentConfigs(instanceDir);
   const conversations = readConversationHistory(instanceDir, 50);
   const tasks = readTasks(instanceDir);
+  const auditLog = readAuditLog(instanceDir, 100);
   const hubHealth = await readHubHealth(hubPort);
 
   const velocityScore = computeVelocityScore(tasks, conversations);
   const dailyBriefing = buildDailyBriefing(tasks, conversations, customerConfig);
+  const roiData = computeRoiData(tasks, conversations, customerConfig);
 
   const generatedAt = new Date().toLocaleTimeString('en-US', {
     hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
@@ -1232,9 +2202,11 @@ async function gatherData(instanceDir, customerId, hubPort, dashboardPort) {
     agentConfigs,
     conversations,
     tasks,
+    auditLog,
     hubHealth,
     velocityScore,
     dailyBriefing,
+    roiData,
     dashboardPort,
     hubPort,
     generatedAt,
@@ -1255,13 +2227,41 @@ function startDashboardServer(instanceDir, customerId, hubPort, dashboardPort) {
       return;
     }
 
+    const url = new URL(req.url || '/', `http://127.0.0.1:${dashboardPort}`);
+
+    // POST /challenge — founder pushes back on an audit entry
+    if (req.method === 'POST' && url.pathname === '/challenge') {
+      let body = '';
+      req.on('data', chunk => (body += chunk));
+      req.on('end', () => {
+        try {
+          const { entryId, reason } = JSON.parse(body);
+          if (!entryId || !reason || typeof reason !== 'string') {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ok: false, error: 'entryId and reason required' }));
+            return;
+          }
+          writeChallenge(instanceDir, String(entryId), reason);
+          console.log(`[your9-dashboard] Founder challenge submitted for entry: ${entryId}`);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: true, entryId }));
+        } catch (e) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: e.message }));
+        }
+      });
+      req.on('error', () => {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'request error' }));
+      });
+      return;
+    }
+
     if (req.method !== 'GET') {
       res.writeHead(405, { 'Content-Type': 'text/plain' });
       res.end('Method Not Allowed');
       return;
     }
-
-    const url = new URL(req.url || '/', `http://127.0.0.1:${dashboardPort}`);
 
     if (url.pathname === '/health') {
       const body = JSON.stringify({
