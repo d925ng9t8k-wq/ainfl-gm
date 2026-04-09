@@ -3,6 +3,7 @@ import { useGame } from '../context/GameContext';
 import { allRosters } from '../data/allRosters';
 import { getPickValue, getPlayerValue, getFuturePickValue } from '../utils/tradeValues';
 import PredictionMarkets from '../components/PredictionMarkets';
+import AffiliateBanner from '../components/AffiliateBanner';
 
 function getTeamPlayers(teamAbbr) {
   const teamData = allRosters[teamAbbr];
@@ -573,6 +574,12 @@ export default function TradePage() {
       )}
 
       <PredictionMarkets maxMarkets={3} />
+
+      {/* Affiliate CTAs — Trade page, users evaluating player values */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+        <AffiliateBanner partner="fanduel" placement="trade-page" />
+        <AffiliateBanner partner="draftkings" placement="trade-page" />
+      </div>
     </div>
   );
 }

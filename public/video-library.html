@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9 Enterprises — Video Library</title>
+<meta name="description" content="Every video 9 Enterprises has ever produced.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0a0a0a">
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --surface:#111111;
+  --surface-hover:#1a1a1a;
+  --border:#222222;
+  --text:#f0f0f0;
+  --text-secondary:#999999;
+  --accent:#f97316;
+  --accent-glow:rgba(249,115,22,0.12);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+/* Header */
+.header{
+  border-bottom:1px solid var(--border);
+  padding:1.5rem 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  background:var(--bg);
+  z-index:10;
+}
+.header-logo{
+  font-size:1rem;
+  font-weight:700;
+  letter-spacing:0.04em;
+  color:var(--text);
+  text-decoration:none;
+}
+.header-logo span{color:var(--accent)}
+.header-back{
+  font-size:0.85rem;
+  color:var(--text-secondary);
+  text-decoration:none;
+  transition:color 0.15s;
+}
+.header-back:hover{color:var(--accent)}
+
+/* Hero */
+.page-hero{
+  padding:4rem 2rem 3rem;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.page-hero h1{
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:800;
+  letter-spacing:-0.02em;
+  margin-bottom:0.75rem;
+}
+.page-hero h1 span{color:var(--accent)}
+.page-hero p{
+  color:var(--text-secondary);
+  font-size:1rem;
+  max-width:480px;
+  margin:0 auto;
+}
+.video-count{
+  display:inline-block;
+  margin-top:1.25rem;
+  background:var(--accent-glow);
+  border:1px solid rgba(249,115,22,0.25);
+  color:var(--accent);
+  font-size:0.8rem;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  padding:0.3rem 0.9rem;
+  border-radius:999px;
+}
+
+/* Section layout */
+.library{
+  max-width:1100px;
+  margin:0 auto;
+  padding:3rem 1.5rem 5rem;
+}
+.section{
+  margin-bottom:3.5rem;
+}
+.section-title{
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.25rem;
+  padding-bottom:0.6rem;
+  border-bottom:1px solid var(--border);
+}
+
+/* Grid */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1rem;
+}
+
+/* Card */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.25rem 1.25rem 1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.6rem;
+  transition:border-color 0.15s,background 0.15s;
+  position:relative;
+  overflow:hidden;
+}
+.card:hover{
+  border-color:rgba(249,115,22,0.35);
+  background:var(--surface-hover);
+}
+.card-badge{
+  font-size:0.7rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-secondary);
+  margin-bottom:0.1rem;
+}
+.card-title{
+  font-size:0.95rem;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.3;
+}
+.card-meta{
+  font-size:0.78rem;
+  color:var(--text-secondary);
+}
+.card-path{
+  font-size:0.7rem;
+  color:#555;
+  font-family:'SF Mono',ui-monospace,monospace;
+  word-break:break-all;
+}
+.card-actions{
+  display:flex;
+  gap:0.5rem;
+  margin-top:0.4rem;
+  flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+  font-size:0.78rem;
+  font-weight:600;
+  text-decoration:none;
+  padding:0.35rem 0.85rem;
+  border-radius:6px;
+  transition:background 0.15s,color 0.15s;
+  cursor:pointer;
+  border:none;
+}
+.btn-primary{
+  background:var(--accent);
+  color:#000;
+}
+.btn-primary:hover{background:#fb923c}
+.btn-secondary{
+  background:transparent;
+  color:var(--text-secondary);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover{color:var(--text);border-color:#444}
+
+/* Play icon */
+.play-icon::before{content:'▶  '}
+.dl-icon::before{content:'↓  '}
+
+/* Tag for v2 */
+.card-tag{
+  position:absolute;
+  top:0.75rem;
+  right:0.75rem;
+  font-size:0.65rem;
+  font-weight:700;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  padding:0.15rem 0.5rem;
+  border-radius:999px;
+  background:rgba(249,115,22,0.15);
+  color:var(--accent);
+  border:1px solid rgba(249,115,22,0.2);
+}
+
+/* Footer */
+.page-footer{
+  border-top:1px solid var(--border);
+  padding:2rem;
+  text-align:center;
+  font-size:0.8rem;
+  color:var(--text-secondary);
+}
+
+@media(max-width:600px){
+  .header{padding:1rem 1.25rem}
+  .page-hero{padding:2.5rem 1.25rem 2rem}
+  .library{padding:2rem 1rem 4rem}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="/9enterprises.html" class="header-logo"><span>9</span> Enterprises</a>
+  <a href="/9enterprises.html" class="header-back">Back to Home</a>
+</header>
+
+<section class="page-hero">
+  <h1>Video <span>Library</span></h1>
+  <p>Every video 9 Enterprises has ever produced — pitches, intros, origin stories, and more.</p>
+  <span class="video-count">42 Videos</span>
+</section>
+
+<main class="library">
+
+  <!-- FLAGSHIP / COMPILED -->
+  <div class="section">
+    <div class="section-title">Flagship Compilations</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badge">Brand Film</div>
+        <div class="card-title">Meet the Team — Final Cut</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 158 MB</div>
+        <div class="card-path">data/9enterprises-meet-the-team.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/9enterprises-meet-the-team.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/9enterprises-meet-the-team.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Brand Film</div>
+        <div class="card-title">Meet the Team — v2 Final Cut</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 159 MB</div>
+        <div class="card-path">data/9enterprises-meet-the-team-v2.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/9enterprises-meet-the-team-v2.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/9enterprises-meet-the-team-v2.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Brand Film</div>
+        <div class="card-title">Meet the Team — Telegram Cut</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 46 MB &nbsp;·&nbsp; Compressed for mobile</div>
+        <div class="card-path">data/9enterprises-meet-the-team-telegram.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/9enterprises-meet-the-team-telegram.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/9enterprises-meet-the-team-telegram.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Brand Film</div>
+        <div class="card-title">Meet the Team v2 — Telegram Cut</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 46 MB &nbsp;·&nbsp; Compressed for mobile</div>
+        <div class="card-path">data/9enterprises-meet-the-team-v2-telegram.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/9enterprises-meet-the-team-v2-telegram.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/9enterprises-meet-the-team-v2-telegram.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Brand Film</div>
+        <div class="card-title">Meet the Team — Web Compressed</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 60 MB</div>
+        <div class="card-path">data/9enterprises-meet-the-team-compressed.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/9enterprises-meet-the-team-compressed.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/9enterprises-meet-the-team-compressed.mp4" download>Download</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PEPPER ORIGIN STORY -->
+  <div class="section">
+    <div class="section-title">Pepper Origin Story</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badge">Origin Story</div>
+        <div class="card-title">Pepper Origin Story — Complete</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 67 MB &nbsp;·&nbsp; Full length</div>
+        <div class="card-path">data/Pepper-Origin-Story-Complete.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/Pepper-Origin-Story-Complete.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/Pepper-Origin-Story-Complete.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Origin Story</div>
+        <div class="card-title">Pepper Origin Story — Compressed</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 16 MB &nbsp;·&nbsp; Web-ready</div>
+        <div class="card-path">data/Pepper-Origin-Story-Complete-compressed.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/Pepper-Origin-Story-Complete-compressed.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/Pepper-Origin-Story-Complete-compressed.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Origin Story</div>
+        <div class="card-title">Pepper Origin Story — Final</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 44 MB</div>
+        <div class="card-path">data/pepper-origin-story-final.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/pepper-origin-story-final.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/pepper-origin-story-final.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Origin Story</div>
+        <div class="card-title">Pepper Origin — Part 1</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 3 MB &nbsp;·&nbsp; Segment</div>
+        <div class="card-path">data/pepper-origin-part1.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/pepper-origin-part1.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/pepper-origin-part1.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Origin Story</div>
+        <div class="card-title">Pepper Origin — Part 1 (Retry)</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 22 MB &nbsp;·&nbsp; Re-render</div>
+        <div class="card-path">data/pepper-origin-part1-retry.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/pepper-origin-part1-retry.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/pepper-origin-part1-retry.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Origin Story</div>
+        <div class="card-title">Pepper Origin — Part 2</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 22 MB &nbsp;·&nbsp; Segment</div>
+        <div class="card-path">data/pepper-origin-part2.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/pepper-origin-part2.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/pepper-origin-part2.mp4" download>Download</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEAM INTROS v2 -->
+  <div class="section">
+    <div class="section-title">Team Intros — v2 (Current)</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">9 — Principal Agent</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/01-9.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/01-9.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/01-9.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Wendy — Super Consultant</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/02-WENDY.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/02-WENDY.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/02-WENDY.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Pepper — Personal AI</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/03-PEPPER.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/03-PEPPER.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/03-PEPPER.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Tee — Engineering Lead</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/04-TEE.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/04-TEE.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/04-TEE.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Scout — Intelligence &amp; Research</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/05-SCOUT.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/05-SCOUT.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/05-SCOUT.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">UNO — Browser Automation</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/06-UNO.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/06-UNO.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/06-UNO.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Fort — Security &amp; Infrastructure</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/07-FORT.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/07-FORT.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/07-FORT.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Judge — QA &amp; Compliance</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/08-JUDGE.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/08-JUDGE.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/08-JUDGE.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Doc — Documentation</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/09-DOC.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/09-DOC.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/09-DOC.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Press — Communications</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/10-PRESS.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/10-PRESS.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/10-PRESS.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Money — Finance</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/11-MONEY.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/11-MONEY.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/11-MONEY.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Canvas — Design</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/12-CANVAS.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/12-CANVAS.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/12-CANVAS.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-tag">v2</div>
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Bolt — Senior Engineer</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros-v2/13-BOLT.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros-v2/13-BOLT.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros-v2/13-BOLT.mp4" download>Download</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEAM INTROS v1 -->
+  <div class="section">
+    <div class="section-title">Team Intros — v1 (Original)</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">9 — Principal Agent (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/01-9.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/01-9.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/01-9.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Wendy — Super Consultant (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/02-WENDY.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/02-WENDY.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/02-WENDY.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Pepper — Personal AI (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/03-PEPPER.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/03-PEPPER.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/03-PEPPER.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Tee — Engineering Lead (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/04-TEE.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/04-TEE.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/04-TEE.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Scout — Intelligence &amp; Research (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/05-SCOUT.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/05-SCOUT.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/05-SCOUT.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">UNO — Browser Automation (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/06-UNO.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/06-UNO.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/06-UNO.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Fort — Security &amp; Infrastructure (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/07-FORT.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/07-FORT.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/07-FORT.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Judge — QA &amp; Compliance (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/08-JUDGE.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/08-JUDGE.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/08-JUDGE.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Doc — Documentation (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/09-DOC.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/09-DOC.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/09-DOC.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Press — Communications (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/10-PRESS.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/10-PRESS.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/10-PRESS.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Money — Finance (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/11-MONEY.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/11-MONEY.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/11-MONEY.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Canvas — Design (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/12-CANVAS.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/12-CANVAS.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/12-CANVAS.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Team Intro</div>
+        <div class="card-title">Bolt — Senior Engineer (Original)</div>
+        <div class="card-meta">Apr 7, 2026</div>
+        <div class="card-path">data/team-intros/13-BOLT.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="../data/team-intros/13-BOLT.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="../data/team-intros/13-BOLT.mp4" download>Download</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RAPID MORTGAGE PITCHES -->
+  <div class="section">
+    <div class="section-title">Rapid Mortgage Pitches</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badge">Client Pitch</div>
+        <div class="card-title">Rapid Mortgage — Austin Pitch (Final)</div>
+        <div class="card-meta">Apr 2, 2026 &nbsp;·&nbsp; 59 MB &nbsp;·&nbsp; Public</div>
+        <div class="card-path">public/rapid-mortgage-austin-final.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="/rapid-mortgage-austin-final.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="/rapid-mortgage-austin-final.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Client Pitch</div>
+        <div class="card-title">Rapid Mortgage — Austin Pitch (Original)</div>
+        <div class="card-meta">Apr 2, 2026 &nbsp;·&nbsp; 59 MB &nbsp;·&nbsp; Public</div>
+        <div class="card-path">public/rapid-mortgage-austin-pitch.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="/rapid-mortgage-austin-pitch.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="/rapid-mortgage-austin-pitch.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Client Pitch</div>
+        <div class="card-title">Rapid Mortgage — Austin Pitch (Archive)</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 59 MB &nbsp;·&nbsp; dist/ copy</div>
+        <div class="card-path">dist/rapid-mortgage-austin-pitch.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-secondary dl-icon" href="../dist/rapid-mortgage-austin-pitch.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Client Pitch</div>
+        <div class="card-title">Rapid Mortgage — Austin Final (Archive)</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 59 MB &nbsp;·&nbsp; dist/ copy</div>
+        <div class="card-path">dist/rapid-mortgage-austin-final.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-secondary dl-icon" href="../dist/rapid-mortgage-austin-final.mp4" download>Download</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BURROW PARTNERSHIP -->
+  <div class="section">
+    <div class="section-title">Burrow Partnership</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badge">Partnership Pitch</div>
+        <div class="card-title">Burrow Partnership — v7 (Final)</div>
+        <div class="card-meta">Mar 30, 2026 &nbsp;·&nbsp; 17 MB &nbsp;·&nbsp; Public</div>
+        <div class="card-path">public/burrow-v7.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-primary play-icon" href="/burrow-v7.mp4" target="_blank">Play</a>
+          <a class="btn btn-secondary dl-icon" href="/burrow-v7.mp4" download>Download</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badge">Partnership Pitch</div>
+        <div class="card-title">Burrow Partnership — v7 (Archive)</div>
+        <div class="card-meta">Apr 7, 2026 &nbsp;·&nbsp; 17 MB &nbsp;·&nbsp; dist/ copy</div>
+        <div class="card-path">dist/burrow-v7.mp4</div>
+        <div class="card-actions">
+          <a class="btn btn-secondary dl-icon" href="../dist/burrow-v7.mp4" download>Download</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <p>9 Enterprises &nbsp;&mdash;&nbsp; Internal Use Only &nbsp;&mdash;&nbsp; <a href="/9enterprises.html" style="color:var(--accent);text-decoration:none">9enterprises.ai</a></p>
+</footer>
+
+</body>
+</html>

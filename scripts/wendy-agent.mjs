@@ -67,7 +67,10 @@ async function reportToHub(key, value) {
   try {
     await fetch(`${HUB_URL}/context`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hub-secret': ENV.HUB_API_SECRET || ''
+      },
       body: JSON.stringify({ key, value: typeof value === 'string' ? value : JSON.stringify(value) })
     });
   } catch (e) {

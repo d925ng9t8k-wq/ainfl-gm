@@ -1,5 +1,5 @@
 /**
- * Kids Mentor Agent v2 — Bengal Pro for Duke & Jude
+ * Kids Mentor Agent v3 — Bengal Pro for Duke & Jude
  * Monitors the "Dumbasses" iMessage group chat
  * Responds via Sonnet, builds real projects, teaches as it goes
  *
@@ -228,6 +228,22 @@ function safeSandboxWrite(relativePath, content) {
   }
 }
 
+// ─── Generic deploy to live (any dist/ changes) ──────────────────────────────
+function deployToLive(commitMessage = 'Bengal Pro: site update') {
+  try {
+    // Stage everything in dist/ and public/ that changed
+    execSync(
+      `cd "${ROOT_PATH}" && git add -f dist/ public/ && git diff --cached --quiet || git commit -m "${commitMessage}" && git push`,
+      { encoding: 'utf-8', timeout: 60000 }
+    );
+    log(`[DEPLOY] Pushed live: ${commitMessage}`);
+    return true;
+  } catch (e) {
+    log(`[DEPLOY ERROR] ${e.message}`);
+    return false;
+  }
+}
+
 // ─── Deploy new sandbox file ──────────────────────────────────────────────────
 function deployNewProject(relativePath, senderName, projectTitle) {
   try {
@@ -241,6 +257,45 @@ function deployNewProject(relativePath, senderName, projectTitle) {
     log(`[DEPLOY ERROR] ${e.message}`);
     return false;
   }
+}
+
+// ─── Escalation: silently ping 9 via comms hub ────────────────────────────────
+function escalateTo9(context, senderName, originalRequest) {
+  const msg = `[Bengal Pro escalation] ${senderName} asked: "${originalRequest.slice(0, 200)}" — context: ${context}`;
+  try {
+    const body = JSON.stringify({ channel: 'telegram', message: msg });
+    const req = https.request({
+      hostname: 'localhost',
+      port: 3457,
+      path: '/send',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+    });
+    req.on('error', () => {}); // fire and forget
+    req.write(body);
+    req.end();
+    log(`[ESCALATE] Pinged 9 — ${context}`);
+  } catch (e) {
+    log(`[ESCALATE ERROR] ${e.message}`);
+  }
+}
+
+// ─── Escalation detection ─────────────────────────────────────────────────────
+function needsEscalation(text) {
+  const lower = text.toLowerCase();
+  const escalationKeywords = [
+    'domain', 'register', 'dns', 'buy', 'purchase', 'pay', 'payment',
+    'credit card', 'money', 'charge', 'billing', 'subscription',
+    'delete everything', 'shut down', 'turn off',
+  ];
+  return escalationKeywords.some(kw => lower.includes(kw));
+}
+
+// ─── Escalation handler ───────────────────────────────────────────────────────
+async function handleEscalation(text, senderName) {
+  escalateTo9('request beyond Bengal Pro capability', senderName, text);
+  // Tell the boys we are on it — do NOT reveal the escalation
+  return `Working on it! That one needs a little extra behind-the-scenes magic. I'll get back to you.`;
 }
 
 // ─── RipRadar edit handler ────────────────────────────────────────────────────
@@ -413,21 +468,44 @@ WHO THEY ARE:
 - Duke (11): CEO of RipRadar — a live sports card database at ainflgm.com/ripradar.html. Collects Panini football cards. Wants to grow RipRadar into a real business. Interested in money, business, and AI.
 - Jude (8): Wants to build a game that mixes Retro Bowl controls with Madden graphics. Creative, big gamer.
 
-WHAT YOU CAN DO:
-- Build and edit RipRadar (Duke's live sports card site)
-- Build NEW projects for them — landing pages, games, experiments — and send them a live link
-- Help them brainstorm, explain tech concepts simply, encourage their ideas
+WHAT YOU CAN DO (CAN list — you can do all of these right now):
+- Edit sites and push changes LIVE — you have real deploy capability
+- Build brand new pages, games, and experiments and send a live link
+- Add new features to existing projects (RipRadar, Jude Bowl, etc.)
+- Deploy changes to ainflgm.com automatically — no waiting on anyone
 - Answer questions about sports, games, tech, school, life
+- Brainstorm ideas, explain code concepts in plain English
+- Remember what you've built before and continue where you left off
+
+WHAT YOU CANNOT DO (CANNOT list — these go to 9 silently):
+- Register new domain names
+- Change DNS settings
+- Access payment systems or make purchases
+- Change billing or subscriptions
+- Delete an entire project permanently
+When someone asks for these: say "Working on it! That one needs a little extra magic — I'll get back to you." and silently escalate to 9. Never say "I can't do that."
+
+CURRENT PROJECT STATUS (KNOW THIS COLD — never say "I don't know" about these):
+- Duke's RipRadar: LIVE at https://ainflgm.com/ripradar.html AND at https://ripradar.com (his own domain!)
+- Duke's RipRadar features: sports card database, search, card info. Next update: card PRICES feature coming.
+- Jude's JUDE BOWL: LIVE at https://ainflgm.com/jude/retro-madden.html — Play Game, Pro Shop with coins, retro football.
+- Jude's game v2: IN DEVELOPMENT — will have more features, better graphics. Coming soon.
+- Both projects built by 9 Enterprises team. You manage them for the boys.
 
 CONTEXT:
 - 9 is the CEO of 9 Enterprises and built everything. If they ask about 9, say he's working with their uncle Jasson but they can come to you for anything.
-- You have full build access — never tell them you need permission or can't edit the site.
+- You have full build access — you CAN edit the site, build new features, and deploy changes.
+- You were recently UPGRADED with new abilities — better memory, project awareness, and build capability.
 
-RULES:
+CRITICAL RULES:
+- NEVER promise a specific timeline you can't keep. Say "working on it" not "done in 30 minutes."
+- NEVER say a project doesn't exist if it does. CHECK THE URLs ABOVE before answering.
+- ALWAYS reply on the SAME channel the conversation is happening on (group chat → group chat, individual → individual)
 - Never share family personal info (addresses, finances, etc.)
 - Age-appropriate only — always
 - Never pretend to be human
 - Keep it simple and fun
+- If you're unsure about something, say "let me check with 9" instead of making something up
 
 ${conversationMemory ? `RECENT CONVERSATION HISTORY:\n${conversationMemory}` : ''}
 
@@ -449,7 +527,9 @@ async function routeMessage(msg) {
   log(`[RESPOND] ${senderName} (${msg.sender}): ${text}`);
 
   let response;
-  if (isRipRadarEdit(text)) {
+  if (needsEscalation(text)) {
+    response = await handleEscalation(text, senderName);
+  } else if (isRipRadarEdit(text)) {
     response = await handleRipRadarEdit(text, senderName);
   } else if (isNewBuildRequest(text)) {
     response = await handleNewProject(text, senderName);

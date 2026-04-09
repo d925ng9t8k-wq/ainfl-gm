@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [
+    "/austin-pnl.html",
+    "/austin.html",
+    "/rapid-clarkson-deck-v2.html",
+    "/rapid-clarkson-deck.html",
+    "/rapid-clarkson-summary.html",
+    "/rapid-mortgage-austin-pitch.mp4",
+    "/rapid-mortgage-austin-final.mp4",
+    "/9enterprises.html",
+    "/burrow-pitch.html",
+    "/burrow-partnership.html"
+  ]
+}

@@ -9,7 +9,11 @@
     "postbuild": "bash scripts/check-name-invisibility.sh",
     "lint": "eslint .",
     "preview": "vite preview",
-    "check-privacy": "bash scripts/check-name-invisibility.sh"
+    "check-privacy": "bash scripts/check-name-invisibility.sh",
+    "test": "node --test tests/**/*.test.mjs",
+    "test:comms": "node --test tests/comms-hub/*.test.mjs",
+    "test:trader": "node --test tests/trader9/*.test.mjs",
+    "test:voice": "node --test tests/voice-server/*.test.mjs"
   },
   "dependencies": {
     "@sentry/node": "^10.47.0",

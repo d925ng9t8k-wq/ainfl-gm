@@ -56,11 +56,13 @@ const SLOW_INTERVAL_MS = 300_000; // 5m  — ainflgm.com, supabase drift, DB int
 
 const DEDUP_WINDOW_MS   = 5 * 60 * 1000;  // 5 min — same signature = increment, don't re-alert
 const ALERT_COOLDOWN_MS = 15 * 60 * 1000; // 15 min — same signature cannot re-alert within this window
+const COLD_START_GRACE_MS = 90_000; // 90s — suppress ALL Telegram alerts after startup to avoid spam
 
 // ─── Alert state map ──────────────────────────────────────────────────────────
 // Keyed by signature. Tracks lastAlertedAt to enforce ALERT_COOLDOWN_MS.
 // Populated at startup from recent SQLite events to survive restarts cleanly.
 const alertState = new Map(); // sig -> { lastAlertedAt: number }
+const startupTime = Date.now();
 
 mkdirSync(path.join(PROJECT, 'logs'), { recursive: true });
 
@@ -72,7 +74,19 @@ function log(msg) {
 }
 
 // ─── SQLite ──────────────────────────────────────────────────────────────────
-const ENCRYPTION_KEY = process.env.SQLITE_ENCRYPTION_KEY || null;
+// Primary: macOS Keychain. Fallback: env var. Matches memory-db.mjs / 9-ops-daemon.mjs pattern.
+function getEncryptionKey() {
+  try {
+    return execSync(
+      'security find-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w',
+      { encoding: 'utf-8', timeout: 5000 }
+    ).trim();
+  } catch {
+    // Keychain unavailable (e.g. LaunchAgent without GUI session)
+  }
+  return process.env.SQLITE_ENCRYPTION_KEY || null;
+}
+const ENCRYPTION_KEY = getEncryptionKey();
 let _db;
 function getDb() {
   if (_db) return _db;
@@ -166,9 +180,15 @@ function recordEvent({ component, status, metricName, metricValue, severity, mes
 
 // ─── Telegram Alert ──────────────────────────────────────────────────────────
 // Fire-and-forget. Never blocks the monitor loop.
-async function alertTelegram(message) {
+// Alert routing: only CRITICAL severity reaches Owner's Telegram.
+// Warnings are log-only (9/Wendy channel — ops team monitors logs).
+async function alertTelegram(message, severity = 'critical') {
+  // Always log the alert regardless of severity
+  log(`[alert:${severity}] ${message}`);
+  // Only send to Owner's Telegram for critical alerts
+  if (severity !== 'critical') return;
   try {
-    const body = JSON.stringify({ channel: 'telegram', message });
+    const body = JSON.stringify({ channel: 'telegram', message: `[9-OPS] ${message}` });
     const res = await fetch(`${HUB_URL}/send`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -757,18 +777,26 @@ async function check({ component, metricName, getValue }) {
     const alert = `[health] ${label}: ${component} — ${result.message}`;
     log(alert);
 
-    // Enforce 15-minute per-signature alert cooldown
     const now = Date.now();
-    const state = sig ? alertState.get(sig) : null;
-    const lastAlerted = state?.lastAlertedAt ?? 0;
-    const msSinceLast = now - lastAlerted;
 
-    if (msSinceLast >= ALERT_COOLDOWN_MS) {
-      await alertTelegram(alert);
-      if (sig) alertState.set(sig, { lastAlertedAt: now });
+    // Cold start grace period — log but don't send Telegram alerts for 90s after startup.
+    // This prevents a burst of alerts for services that are expected to be down (trader9,
+    // trinity-agent, etc.) every time the monitor restarts.
+    if (now - startupTime < COLD_START_GRACE_MS) {
+      log(`[cold-start] alert suppressed for ${component} — grace period active (${Math.ceil((COLD_START_GRACE_MS - (now - startupTime)) / 1000)}s remaining)`);
     } else {
-      const remainMin = Math.ceil((ALERT_COOLDOWN_MS - msSinceLast) / 60_000);
-      log(`[dedup] alert suppressed for ${component} (sig ${sig}) — cooldown active, ${remainMin}m remaining`);
+      // Enforce 15-minute per-signature alert cooldown
+      const state = sig ? alertState.get(sig) : null;
+      const lastAlerted = state?.lastAlertedAt ?? 0;
+      const msSinceLast = now - lastAlerted;
+
+      if (msSinceLast >= ALERT_COOLDOWN_MS) {
+        await alertTelegram(alert, result.severity);
+        if (sig) alertState.set(sig, { lastAlertedAt: now });
+      } else {
+        const remainMin = Math.ceil((ALERT_COOLDOWN_MS - msSinceLast) / 60_000);
+        log(`[dedup] alert suppressed for ${component} (sig ${sig}) — cooldown active, ${remainMin}m remaining`);
+      }
     }
   }
 

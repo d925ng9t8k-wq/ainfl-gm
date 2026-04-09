@@ -29,6 +29,22 @@ jobs:
 
       - run: npm ci --legacy-peer-deps
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Syntax check — critical scripts
+        run: |
+          node --check scripts/comms-hub.mjs
+          node --check scripts/voice-server.mjs
+          node --check scripts/jules-telegram.mjs
+          node --check scripts/trader9-bot.mjs
+          node --check scripts/trinity-agent.mjs
+          node --check scripts/pilot-server.mjs
+          node --check scripts/session-handoff.mjs
+          node --check scripts/memory-db.mjs
+          node --check scripts/health-monitor.mjs
+          node --check scripts/agent-base.mjs
+
       - run: npm run build
 
       - name: Copy index.html to 404.html for SPA routing

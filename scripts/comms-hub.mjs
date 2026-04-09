@@ -52,7 +52,7 @@ async function syncToNeon(channel, direction, text, timestamp) {
   try {
     await neonPool.query(
       'INSERT INTO conversations (channel, direction, message, timestamp) VALUES ($1, $2, $3, $4)',
-      [channel, direction, text.slice(0, 4000), timestamp]
+      [channel, direction, text.slice(0, 4096), timestamp]
     );
   } catch (e) {
     // Never let cloud sync failure crash the hub
@@ -87,7 +87,7 @@ try {
 async function syncMessageToSupabase(id, channel, direction, text, timestamp, metadata = {}) {
   if (!supabase) return;
   try {
-    const row = { channel, direction, text: text.slice(0, 4000), timestamp, read: direction === 'in' ? false : true, metadata };
+    const row = { channel, direction, text: text.slice(0, 4096), timestamp, read: direction === 'in' ? false : true, metadata };
     if (id) row.id = id;
     const { error } = await supabase.from('messages').upsert(row, { onConflict: 'id' });
     if (error) console.error('[supabase] Message sync failed (non-fatal):', error.message);
@@ -107,6 +107,66 @@ async function syncActionToSupabase(id, action_type, description, status, timest
   } catch (e) {
     console.error('[supabase] Action sync error (non-fatal):', e.message);
   }
+}
+
+// ─── Outbound Message WAL (Write-Ahead Log) ─────────────────────────────────
+// Prevents duplicate sends on crash recovery. Every outbound message gets a
+// unique ID written to the WAL BEFORE send. On restart, the hub checks the WAL
+// for messages that were logged but not confirmed delivered.
+// Format: one JSON line per entry { id, channel, text, status, timestamp }
+// Status: 'pending' → 'sent' → 'confirmed'
+const WAL_DIR = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'logs');
+const OUTBOUND_WAL_PATH = path.join(WAL_DIR, 'outbound-wal.jsonl');
+mkdirSync(WAL_DIR, { recursive: true });
+
+let walIdCounter = Date.now();
+function nextWalId() { return `wal-${++walIdCounter}`; }
+
+function walAppend(entry) {
+  try {
+    appendFileSync(OUTBOUND_WAL_PATH, JSON.stringify(entry) + '\n');
+  } catch (e) {
+    console.error(`[wal] Append failed: ${e.message}`);
+  }
+}
+
+function walMarkSent(walId) {
+  // Append a status update line rather than rewriting the file (append-only for safety)
+  walAppend({ walId, status: 'sent', at: new Date().toISOString() });
+}
+
+// On startup: read WAL and warn about any pending messages that were never confirmed sent.
+// This gives operators visibility into potential lost messages after a crash.
+try {
+  if (existsSync(OUTBOUND_WAL_PATH)) {
+    const walLines = readFileSync(OUTBOUND_WAL_PATH, 'utf-8').trim().split('\n').filter(l => l);
+    const pending = new Map(); // walId -> entry
+    const sent = new Set();
+    for (const line of walLines) {
+      try {
+        const entry = JSON.parse(line);
+        if (entry.status === 'pending') pending.set(entry.id, entry);
+        if (entry.status === 'sent' && entry.walId) sent.add(entry.walId);
+      } catch {}
+    }
+    // Remove confirmed entries
+    for (const id of sent) pending.delete(id);
+    if (pending.size > 0) {
+      console.log(`[wal] WARNING: ${pending.size} outbound message(s) were pending at last shutdown — may not have been delivered:`);
+      for (const [id, entry] of pending) {
+        console.log(`  [wal] ${id}: ${entry.channel} — "${(entry.text || '').slice(0, 80)}..."`);
+      }
+    } else {
+      console.log('[wal] Clean startup — no pending outbound messages from prior session');
+    }
+    // Rotate WAL if > 10000 lines (keep last 1000)
+    if (walLines.length > 10000) {
+      writeFileSync(OUTBOUND_WAL_PATH, walLines.slice(-1000).join('\n') + '\n');
+      console.log(`[wal] Rotated WAL: ${walLines.length} → 1000 lines`);
+    }
+  }
+} catch (e) {
+  console.error(`[wal] Startup WAL read failed (non-fatal): ${e.message}`);
 }
 
 // ─── Persistent Memory DB ────────────────────────────────────────────────────
@@ -165,15 +225,20 @@ if (existsSync(envPath)) {
   }
 }
 
+// ─── VPS_MODE — skip macOS-only features (iMessage, osascript, FDA) on Linux ─
+// Auto-detects from platform if VPS_MODE env var is not explicitly set.
+const VPS_MODE = process.env.VPS_MODE === '1' || (process.env.VPS_MODE !== '0' && process.platform !== 'darwin');
+if (VPS_MODE) console.log('[vps-mode] Running on Linux VPS — iMessage, osascript, FDA watchdog, freeze keystrokes DISABLED');
+
 // ─── Constants ───────────────────────────────────────────────────────────────
 const TOKEN         = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID       = process.env.TELEGRAM_CHAT_ID || '8784022142';
 const BASE          = `https://api.telegram.org/bot${TOKEN}`;
-const PROJECT       = '/Users/jassonfishback/Projects/BengalOracle';
+const PROJECT       = VPS_MODE ? (process.env.PROJECT_DIR || '/home/deploy/BengalOracle') : '/Users/jassonfishback/Projects/BengalOracle';
 const STATE_FILE    = `${PROJECT}/scripts/shared-state.json`;
 const OFFSET_FILE   = '/tmp/tc-agent-offset.txt';
 const LOG_FILE      = `${PROJECT}/logs/comms-hub.log`;
-const IMSG_DB       = `${process.env.HOME}/Library/Messages/chat.db`;
+const IMSG_DB       = VPS_MODE ? '/dev/null' : `${process.env.HOME}/Library/Messages/chat.db`;
 
 const JASSON_PHONE  = process.env.JASSON_PHONE || '+15134031829';
 const JAMIE_PHONE   = process.env.JAMIE_PHONE || ''; // Jamie Bryant — Jules routing. Set JAMIE_PHONE in .env.
@@ -266,8 +331,20 @@ function saveState(state) {
 }
 
 function addMessage(state, channel, direction, text) {
+  const TELEGRAM_MAX = 4096;
+  // Detect if Telegram itself truncated this message (exactly 4096 chars = likely cut off)
+  if (direction === 'in' && channel === 'telegram' && text.length === TELEGRAM_MAX) {
+    log(`TRUNCATION WARNING: Telegram message is exactly ${TELEGRAM_MAX} chars — may be cut off by Telegram. Last chars: "${text.slice(-30)}"`);
+  }
+  // Detect if message ends mid-word or mid-sentence (heuristic for cut-off content)
+  if (direction === 'in' && text.length >= TELEGRAM_MAX - 10 && text.length > 0) {
+    const lastChar = text[text.length - 1];
+    if (lastChar !== '.' && lastChar !== '!' && lastChar !== '?' && lastChar !== '\n') {
+      log(`TRUNCATION WARNING: Inbound message from ${channel} ends without sentence terminator — may be cut off. Length: ${text.length}`);
+    }
+  }
   const msg = {
-    channel, direction, text: text.slice(0, 2000),
+    channel, direction, text: text.slice(0, TELEGRAM_MAX),
     timestamp: new Date().toISOString(),
   };
   if (direction === 'in') msg.read = false;  // Explicit false — inbox filter depends on this
@@ -638,11 +715,13 @@ setInterval(() => {
 
       sendTelegram(`9: WARNING — Terminal may be frozen. No tool call in ${ageMin}+ minutes. Attempting to unblock.`).catch(() => {});
 
-      try {
-        execSync(`osascript -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
-        log('Freeze detector: sent keystroke return via osascript');
-      } catch (e) {
-        log(`Freeze detector: osascript keystroke failed — ${e.message}`);
+      if (!VPS_MODE) {
+        try {
+          execSync(`osascript -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
+          log('Freeze detector: sent keystroke return via osascript');
+        } catch (e) {
+          log(`Freeze detector: osascript keystroke failed — ${e.message}`);
+        }
       }
 
       freezeAlertSent = true;
@@ -713,6 +792,7 @@ const TERMINAL_SIGNAL = '/tmp/9-open-terminal';
 let lastTerminalRequest = 0;
 
 function requestTerminal(reason, force = false) {
+  if (VPS_MODE) { log(`[vps-mode] requestTerminal skipped (no Terminal/LaunchAgent on Linux). Reason: ${reason}`); return; }
   // Crash loop cooldown — self-healer sets this to break rapid crash cycles
   if (crashLoopCooldownUntil > Date.now()) {
     log(`Terminal open BLOCKED by crash loop cooldown (${Math.round((crashLoopCooldownUntil - Date.now()) / 1000)}s remaining). Reason: ${reason}`);
@@ -1042,6 +1122,9 @@ async function sendTelegram(text) {
   const chunks = [];
   while (text.length > 4000) { chunks.push(text.slice(0, 4000)); text = text.slice(4000); }
   chunks.push(text);
+  // WAL: log outbound message as pending BEFORE sending
+  const walId = nextWalId();
+  walAppend({ id: walId, channel: 'telegram', text: text.slice(0, 200), status: 'pending', timestamp: new Date().toISOString() });
   for (const chunk of chunks) {
     // Try Markdown first, fall back to plain text if Telegram rejects it (special chars break Markdown parser)
     try {
@@ -1050,6 +1133,8 @@ async function sendTelegram(text) {
       await apiReq('sendMessage', { chat_id: CHAT_ID, text: chunk });
     }
   }
+  // WAL: mark as sent AFTER successful delivery
+  walMarkSent(walId);
   addMessage(state, 'telegram', 'out', text);
   try { if (db) db.logMessage('telegram', 'out', text); } catch (e) { console.error('DB log failed:', e.message); }
   saveState(state);
@@ -1057,8 +1142,13 @@ async function sendTelegram(text) {
 
 // ─── iMessage Send ───────────────────────────────────────────────────────────
 function sendIMessage(message) {
+  if (VPS_MODE) { log('[vps-mode] iMessage send skipped (no osascript on Linux)'); return false; }
+  // WAL: log outbound message as pending BEFORE sending
+  const walId = nextWalId();
+  walAppend({ id: walId, channel: 'imessage', text: message.slice(0, 200), status: 'pending', timestamp: new Date().toISOString() });
   try {
     execSync(`osascript -e 'tell application "Messages" to send "${message.replace(/"/g, '\\"').replace(/'/g, "'\\''")}" to buddy "${JASSON_PHONE}"'`);
+    walMarkSent(walId);
     log(`iMessage sent: ${message.slice(0, 100)}`);
     addMessage(state, 'imessage', 'out', message);
     try { if (db) db.logMessage('imessage', 'out', message); } catch (e) { console.error('DB log failed:', e.message); }
@@ -1077,6 +1167,7 @@ function sendIMessage(message) {
 let lastImsgRowId = 0;
 
 function initImsgRowId() {
+  if (VPS_MODE) { log('[vps-mode] iMessage DB read skipped (no iMessage on Linux)'); return false; }
   try {
     const result = execSync(`sqlite3 "${IMSG_DB}" "SELECT MAX(ROWID) FROM message;"`, { encoding: 'utf-8' }).trim();
     lastImsgRowId = parseInt(result) || 0;
@@ -1317,6 +1408,12 @@ function checkChannelHealth() {
 // ─── Health API (so terminal can check status) ───────────────────────────────
 const HUB_API_SECRET = process.env.HUB_API_SECRET || '';
 
+// FORT H-03: Warn at startup if HUB_API_SECRET is not set — /context will be locked down
+// regardless, but operator should set a real secret in .env for production.
+if (!HUB_API_SECRET) {
+  log('[FORT H-03] WARNING: HUB_API_SECRET is not set. POST /context is LOCKED DOWN (all requests rejected) until a secret is configured in .env. Set HUB_API_SECRET to enable context writes.');
+}
+
 const healthServer = createServer(async (req, res) => {
   // CORS — allow Command Center from any origin (GitHub Pages, office desktop, etc.)
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -1324,11 +1421,13 @@ const healthServer = createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-hub-secret');
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
-  // Auth check for sensitive endpoints — /context injection is the biggest risk
-  if (req.method === 'POST' && req.url === '/context' && HUB_API_SECRET) {
+  // FORT H-03: Auth check for POST /context — always enforced.
+  // If HUB_API_SECRET is not set, all writes are rejected (fail-closed, not fail-open).
+  // Previously: auth was skipped when HUB_API_SECRET was empty — that was the vulnerability.
+  if (req.method === 'POST' && req.url === '/context') {
     const authHeader = req.headers['x-hub-secret'] || '';
-    if (authHeader !== HUB_API_SECRET) {
-      log(`Auth rejected: POST /context (missing or invalid x-hub-secret)`);
+    if (!HUB_API_SECRET || authHeader !== HUB_API_SECRET) {
+      log(`Auth rejected: POST /context (${!HUB_API_SECRET ? 'no secret configured' : 'invalid x-hub-secret'})`);
       res.writeHead(401);
       res.end('unauthorized');
       return;
@@ -1937,15 +2036,18 @@ async function telegramPoll() {
 
                     // NUDGE: Send keystrokes to Terminal to force tool calls and trigger the hook.
                     // Two nudges (10s and 30s) before the 60s autonomous fallback.
-                    for (const delay of [10000, 30000]) {
-                      setTimeout(() => {
-                        try {
-                          if (existsSync('/tmp/9-incoming-message.jsonl')) {
-                            log(`NUDGE: Signal file still unread after ${delay/1000}s — sending keystroke to Terminal`);
-                            execSync(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
-                          }
-                        } catch (e) { log(`NUDGE failed: ${e.message}`); }
-                      }, delay);
+                    // VPS_MODE: no Terminal/osascript — skip nudges entirely.
+                    if (!VPS_MODE) {
+                      for (const delay of [10000, 30000]) {
+                        setTimeout(() => {
+                          try {
+                            if (existsSync('/tmp/9-incoming-message.jsonl')) {
+                              log(`NUDGE: Signal file still unread after ${delay/1000}s — sending keystroke to Terminal`);
+                              execSync(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
+                            }
+                          } catch (e) { log(`NUDGE failed: ${e.message}`); }
+                        }, delay);
+                      }
                     }
 
                     // RELAY TIMEOUT: If terminal doesn't pick up within 180s,
@@ -2090,6 +2192,7 @@ async function handleJulesMessage(msg) {
 
 // ─── Pilot Relay — Routes Kyle C's "Pilot" iMessages to the pilot server ────
 function sendIMessageToKyle(message) {
+  if (VPS_MODE) { log('[vps-mode] iMessage to Kyle skipped (no osascript on Linux)'); return false; }
   try {
     const escaped = message.replace(/"/g, '\\"').replace(/'/g, "'\\''");
     execSync(`osascript -e 'tell application "Messages" to send "${escaped}" to buddy "${KYLEC_PHONE}" of service "iMessage"'`, { timeout: 10000 });
@@ -2300,6 +2403,7 @@ async function emailMonitor() {
 // ─── CHANNEL 4: Voice Server Health Check ────────────────────────────────────
 // ─── Voice + Tunnel Restart ───────────────────────────────────────────────────
 function restartVoiceWithTunnel() {
+  if (VPS_MODE) { log('[vps-mode] Voice/tunnel restart skipped (voice runs on Mac only)'); return; }
   log('Restarting voice server and tunnel...');
   try {
     // Kill old processes
@@ -2968,7 +3072,9 @@ setInterval(efficiencySweep, 2 * 60 * 60 * 1000); // Every 2 hours
 setTimeout(efficiencySweep, 60000); // Run 1 minute after startup
 
 // ─── FDA Watchdog (check iMessage access on startup and every 30 min) ────────
+// VPS_MODE: iMessage DB does not exist on Linux. Always returns false, watchdog is a no-op.
 function checkFdaAccess() {
+  if (VPS_MODE) return false;
   try {
     execSync(`sqlite3 "${IMSG_DB}" "SELECT 1;" 2>&1`, { encoding: 'utf-8' });
     return true;
@@ -3007,6 +3113,14 @@ setInterval(fdaWatchdog, 30 * 60 * 1000); // Every 30 minutes
 
 // ─── Reboot Detection ────────────────────────────────────────────────────────
 function checkIfRecentReboot() {
+  if (VPS_MODE) {
+    // Linux: use /proc/uptime instead of macOS sysctl
+    try {
+      const upSec = parseFloat(readFileSync('/proc/uptime', 'utf-8').split(' ')[0]);
+      if (upSec < 600) { log(`REBOOT DETECTED — VPS booted ${Math.round(upSec / 60)} minutes ago`); return true; }
+    } catch {}
+    return false;
+  }
   try {
     const uptime = execSync('sysctl -n kern.boottime', { encoding: 'utf-8' });
     const match = uptime.match(/sec = (\d+)/);
@@ -3086,30 +3200,38 @@ async function startupSelfCheck() {
     issues.push('Claude API is NOT responding — check billing or key');
   }
 
-  // Check FDA
-  const hasFda = checkFdaAccess();
-  fdaWasWorking = hasFda;
-  if (hasFda) {
-    status.push('iMessage: two-way (FDA granted)');
+  // Check FDA (macOS only)
+  if (!VPS_MODE) {
+    const hasFda = checkFdaAccess();
+    fdaWasWorking = hasFda;
+    if (hasFda) {
+      status.push('iMessage: two-way (FDA granted)');
+    } else {
+      status.push('iMessage: send-only (no FDA)');
+      if (!recentReboot) issues.push('iMessage read access denied — may need FDA re-grant');
+    }
   } else {
-    status.push('iMessage: send-only (no FDA)');
-    if (!recentReboot) issues.push('iMessage read access denied — may need FDA re-grant');
+    status.push('iMessage: disabled (VPS mode)');
   }
 
-  // Check voice
-  try {
-    const vRes = await fetch('http://localhost:3456/health');
-    if (vRes.ok) {
-      status.push('Voice: active');
-    } else {
-      issues.push('Voice server not healthy');
+  // Check voice (macOS only — voice server runs on Mac)
+  if (!VPS_MODE) {
+    try {
+      const vRes = await fetch('http://localhost:3456/health');
+      if (vRes.ok) {
+        status.push('Voice: active');
+      } else {
+        issues.push('Voice server not healthy');
+      }
+    } catch {
+      status.push('Voice: down');
+      issues.push('Voice server not running');
+      if (!recentReboot) {
+        try { restartVoiceWithTunnel(); status.push('Voice: restart attempted'); } catch {}
+      }
     }
-  } catch {
-    status.push('Voice: down');
-    issues.push('Voice server not running');
-    if (!recentReboot) {
-      try { restartVoiceWithTunnel(); status.push('Voice: restart attempted'); } catch {}
-    }
+  } else {
+    status.push('Voice: N/A (VPS mode — voice runs on Mac)');
   }
 
   // Check tunnel
@@ -3132,13 +3254,15 @@ async function startupSelfCheck() {
       status.push('Health monitor: running');
     } else {
       issues.push('Health monitor returned non-OK status');
-      sendTelegram('[9 watchdog] ALERT: health-monitor process is not healthy. Dashboard data may be stale. Check LaunchAgent com.9.health-monitor.').catch(() => {});
+      // DISABLED: alerts route to team, not Owner's Telegram (Apr 8 directive)
+      log('[9 watchdog] health-monitor not healthy — logged only, not sent to Telegram');
     }
   } catch {
     issues.push('Health monitor not running (port 3458 unreachable)');
     log('Health monitor not running at startup — LaunchAgent should restart it');
     // Alert Owner that the monitor itself is down
-    sendTelegram('[9 watchdog] ALERT: health-monitor is not running. Real-time health dashboard is offline. LaunchAgent should auto-restart it within 10 seconds.').catch(() => {});
+    // DISABLED: alerts route to team, not Owner's Telegram (Apr 8 directive)
+    log('[9 watchdog] health-monitor not running — logged only, not sent to Telegram');
   }
 
   // Report
@@ -3289,8 +3413,8 @@ process.on('uncaughtException', (err) => {
   if (now - lastExceptionTime < 1000) return;
   lastExceptionTime = now;
   log(`UNCAUGHT EXCEPTION (hub survived): ${err.message}`);
-  // Use iMessage instead of Telegram to avoid EPIPE loops
-  if (!err.message.includes('EPIPE')) {
+  // Use iMessage instead of Telegram to avoid EPIPE loops (macOS only)
+  if (!err.message.includes('EPIPE') && !VPS_MODE) {
     sendIMessage(`Hub caught an exception: ${err.message}. Still running.`);
   }
 });
@@ -3341,17 +3465,22 @@ apiReq('deleteWebhook').then(async () => {
 
   // Launch all channels simultaneously
   telegramPoll().catch(e => log(`Telegram fatal: ${e.message}`));
-  imessageMonitor().catch(e => log(`iMessage fatal: ${e.message}`));
+  if (!VPS_MODE) {
+    imessageMonitor().catch(e => log(`iMessage fatal: ${e.message}`));
+    voiceHealthCheck().catch(e => log(`Voice health fatal: ${e.message}`));
+  } else {
+    log('[vps-mode] iMessage monitor and voice health check SKIPPED');
+    updateChannelStatus(state, 'imessage', 'disabled-vps');
+  }
   emailMonitor().catch(e => log(`Email fatal: ${e.message}`));
-  voiceHealthCheck().catch(e => log(`Voice health fatal: ${e.message}`));
 
   log('All channels launched');
 
   // Run first API probe immediately
   probeApiHealth().catch(() => {});
 
-  // Run FDA watchdog immediately
-  fdaWatchdog();
+  // Run FDA watchdog immediately (macOS only)
+  if (!VPS_MODE) fdaWatchdog();
 
   // Send startup report
   await sendTelegram('OC: Covering for 9.' + report).catch(() => {});

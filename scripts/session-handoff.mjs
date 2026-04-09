@@ -80,6 +80,17 @@ async function buildHandoff() {
   // 8. Pepper status
   const pepperPID = shell("ps aux | grep jules-telegram | grep -v grep | awk '{print $2}'");
 
+  // Explicit list of squad names that had live health endpoints at this checkpoint.
+  // A new session reads this to know which squads to resurrect if ports are down.
+  const teamAgentsWereRunning = Object.keys(teamStatus);
+
+  // Completed-work manifest: recent completed tasks from SQLite + recent docs created
+  const recentCompletedTasks = shell(`/usr/bin/sqlite3 data/9-memory.db "SELECT title || ' | ' || assigned_to FROM tasks WHERE status='completed' ORDER BY updated_at DESC LIMIT 10;" 2>/dev/null`);
+  // Files modified in docs/ or logs/ in the last hour — explicit "do not redo" list
+  const filesModifiedLastHour = shell("find docs/ logs/ -mmin -60 -name '*.md' 2>/dev/null | sort");
+  // Detailed git log with timestamps for cross-referencing completed deliverables
+  const gitLogDetailed = shell("git log --format='%h|%ci|%s' -10 2>/dev/null");
+
   // Build structured JSON
   const handoffData = {
     generated: now.toISOString(),
@@ -87,10 +98,18 @@ async function buildHandoff() {
     message: 'READ THIS ENTIRE FILE BEFORE DOING ANYTHING. This is the state of the universe at the time of the last session.',
     runningProcesses: processes.split('\n').filter(Boolean),
     teamAgents: teamStatus,
+    // NEW: explicit was-running list — used by Step 15 resurrection protocol
+    teamAgentsWereRunning,
     recentDocsModifiedToday: recentDocs.split('\n').filter(Boolean),
     recentMemoryModifiedToday: recentMemory.split('\n').filter(Boolean),
     auditReportsGenerated: recentLogs.split('\n').filter(Boolean),
     gitLog: gitLog.split('\n').filter(Boolean),
+    // NEW: completed-work manifest — new session reads this to avoid duplicate work
+    completedTaskManifest: {
+      recentCompletedTasks: recentCompletedTasks.split('\n').filter(Boolean),
+      filesModifiedLastHour: filesModifiedLastHour.split('\n').filter(Boolean),
+      gitLogDetailed: gitLogDetailed.split('\n').filter(Boolean)
+    },
     wendyPlan: wendy90day,
     wendyTeamStructure: wendyTeam,
     pepperPID: pepperPID || 'NOT RUNNING',
@@ -145,12 +164,22 @@ ${recentTelegram}
 ${gitLog}
 \`\`\`
 
+## COMPLETED THIS SESSION — do NOT redo these
+${recentCompletedTasks || 'Check git log and audit logs above'}
+
+## Files Modified in Last Hour — do NOT recreate these
+${filesModifiedLastHour || 'none'}
+
+## Squads That Were Running — restart these if ports show DOWN
+${teamAgentsWereRunning.length > 0 ? teamAgentsWereRunning.join(', ') : 'none — no squads to resurrect'}
+
 ## RULES FOR NEW SESSION
 1. Do NOT rebuild agents that are already running (check team agent status above)
 2. Do NOT rewrite plans that already exist (check Wendy's plans above)
 3. Do NOT propose new architectures before reading docs/ files modified today
 4. READ wendy_90day_plan_v1.md and wendy_team_structure_v1.md BEFORE spawning any agents
 5. The Owner (Jasson) has been burned multiple times by sessions that rebuilt instead of resuming. DO NOT BE THAT SESSION.
+6. If "Squads That Were Running" above is non-empty AND ports show DOWN — spawn them immediately (Step 15).
 `;
 
   writeFileSync(HANDOFF_FILE, markdown);
@@ -220,7 +249,7 @@ log(`JSON to: ${HANDOFF_JSON}`);
 // Write immediately on start
 try {
   const data = await buildHandoff();
-  log(`Initial handoff written. ${data.runningProcesses.length} processes, ${data.recentDocsModifiedToday.length} docs today, ${data.auditReportsGenerated.length} reports.`);
+  log(`Initial handoff written. ${data.runningProcesses.length} processes, ${data.recentDocsModifiedToday.length} docs today, ${data.auditReportsGenerated.length} reports. Squads running: ${data.teamAgentsWereRunning.join(', ') || 'none'}`);
 } catch (e) {
   log(`Error: ${e.message}`);
 }
@@ -233,3 +262,23 @@ setInterval(async () => {
     log(`Error: ${e.message}`);
   }
 }, INTERVAL);
+
+// Crash-moment snapshot: detect when hub switches relay→autonomous (terminal just died)
+// Write a fresh handoff immediately at that moment — before the 60s interval fires.
+// This captures the most accurate squad state right at crash time.
+let lastKnownTerminalState = null;
+setInterval(async () => {
+  try {
+    const health = shell('curl -s --max-time 2 http://localhost:3457/health 2>/dev/null');
+    if (health) {
+      const h = JSON.parse(health);
+      const currentState = h.terminalState;
+      if (lastKnownTerminalState === 'relay' && currentState === 'autonomous') {
+        log('Terminal state changed relay→autonomous — writing crash-moment snapshot immediately');
+        await buildHandoff();
+        log('Crash-moment snapshot written');
+      }
+      lastKnownTerminalState = currentState;
+    }
+  } catch {}
+}, 10000); // Check every 10 seconds

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useGame } from '../context/GameContext';
 import PredictionMarkets from '../components/PredictionMarkets';
+import AffiliateBanner from '../components/AffiliateBanner';
 
 // NFL divisions
 const DIVISIONS = {
@@ -679,6 +680,12 @@ export default function SeasonSimPage() {
       </div>
 
       <PredictionMarkets maxMarkets={3} />
+
+      {/* Affiliate CTAs — Season Sim page, highest-intent for futures/win-total bets */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+        <AffiliateBanner partner="fanduel" placement="season-sim" />
+        <AffiliateBanner partner="draftkings" placement="season-sim" />
+      </div>
     </div>
   );
 }

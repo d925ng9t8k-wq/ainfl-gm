@@ -12,6 +12,7 @@
 
 import http from 'node:http';
 import https from 'node:https';
+import tls from 'node:tls';
 import fs from 'node:fs';
 import { URL } from 'node:url';
 
@@ -129,17 +130,122 @@ async function toolWeather(params) {
   }
 }
 
-// ─── Tool: Web Search ───────────────────────────────────────────────────────
+// ─── Tool: Web Search (via DuckDuckGo Instant Answer API) ──────────────────
 async function toolWebSearch(params) {
-  // Simple web search using a search API or fallback
   const query = params.query;
   if (!query) return { success: false, error: 'No search query provided' };
 
-  return {
-    success: true,
-    message: `I'd search for "${query}" but web search integration is coming soon. For now, I can help you think through this or give you a link to Google it.`,
-    fallbackUrl: `https://www.google.com/search?q=${encodeURIComponent(query)}`
-  };
+  try {
+    const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    const answer = data.AbstractText || data.Answer || data.Definition || '';
+    const source = data.AbstractSource || data.AnswerType || '';
+    const relatedTopics = (data.RelatedTopics || []).slice(0, 3).map(t => t.Text).filter(Boolean);
+
+    if (answer) {
+      return { success: true, message: `${answer}${source ? ` (${source})` : ''}` };
+    }
+    if (relatedTopics.length) {
+      return { success: true, message: `Here's what I found:\n${relatedTopics.map(t => `• ${t}`).join('\n')}` };
+    }
+    return { success: true, message: `Couldn't find a quick answer for "${query}". Here's a search link: https://www.google.com/search?q=${encodeURIComponent(query)}` };
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+}
+
+// ─── Tool: Email Check (IMAP over TLS) ────────────────────────────────────
+async function toolEmailCheck(params) {
+  const email = process.env.ALPACA_EMAIL || 'emailfishback@gmail.com';
+  const appPassword = process.env.GMAIL_APP_PASSWORD;
+  if (!appPassword) return { success: false, error: 'Gmail app password not configured' };
+
+  const count = Math.min(params.count || 5, 10);
+
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      try { sock.end(); } catch {}
+      resolve({ success: false, error: 'IMAP timeout' });
+    }, 15000);
+
+    let fullBuf = '', state = 'connect', tag = 1;
+
+    const sock = tls.connect(993, 'imap.gmail.com', { servername: 'imap.gmail.com' }, () => {
+      log('IMAP connected');
+    });
+
+    function send(cmd) {
+      const t = `A${tag++}`;
+      log(`IMAP >> ${t} ${cmd.startsWith('LOGIN') ? 'LOGIN ***' : cmd}`);
+      sock.write(`${t} ${cmd}\r\n`);
+      return t;
+    }
+
+    function finish(result) {
+      clearTimeout(timeout);
+      state = 'done';
+      try { send('LOGOUT'); sock.end(); } catch {}
+      resolve(result);
+    }
+
+    sock.on('data', (chunk) => {
+      fullBuf += chunk.toString();
+
+      // Process only on complete lines
+      if (!fullBuf.includes('\r\n')) return;
+
+      if (state === 'connect' && fullBuf.includes('* OK')) {
+        state = 'login';
+        send(`LOGIN ${email} ${appPassword}`);
+      } else if (state === 'login' && /A\d+ OK/m.test(fullBuf)) {
+        fullBuf = '';
+        state = 'select';
+        send('SELECT INBOX');
+      } else if (state === 'select' && /A\d+ OK/m.test(fullBuf)) {
+        fullBuf = '';
+        state = 'search';
+        send('SEARCH ALL');
+      } else if (state === 'search' && /A\d+ OK/m.test(fullBuf)) {
+        const searchLine = fullBuf.match(/\* SEARCH (.+)/);
+        if (!searchLine) {
+          finish({ success: true, message: 'Inbox is empty.', emails: [] });
+          return;
+        }
+        const ids = searchLine[1].trim().split(/\s+/).filter(Boolean);
+        const fetchIds = ids.slice(-count).reverse();
+        fullBuf = '';
+        state = 'fetch';
+        send(`FETCH ${fetchIds.join(',')} BODY.PEEK[HEADER.FIELDS (FROM SUBJECT DATE)]`);
+      } else if (state === 'fetch' && /A\d+ OK/m.test(fullBuf)) {
+        // Parse all email headers from the accumulated FETCH response
+        const emails = [];
+        const blocks = fullBuf.split(/\* \d+ FETCH/);
+        for (const block of blocks) {
+          const from = block.match(/From:\s*(.+)/i);
+          const subject = block.match(/Subject:\s*(.+)/i);
+          const date = block.match(/Date:\s*(.+)/i);
+          if (from || subject) {
+            emails.push({
+              from: (from?.[1] || 'unknown').trim(),
+              subject: (subject?.[1] || '(no subject)').trim(),
+              date: (date?.[1] || '').trim()
+            });
+          }
+        }
+        const summary = emails.length
+          ? emails.map((e, i) => `${i + 1}. From: ${e.from}\n   Subject: ${e.subject}\n   Date: ${e.date}`).join('\n\n')
+          : 'No emails found.';
+        finish({ success: true, message: `Your ${emails.length} most recent emails:\n\n${summary}`, emails });
+      }
+    });
+
+    sock.on('error', (e) => {
+      clearTimeout(timeout);
+      resolve({ success: false, error: `IMAP error: ${e.message}` });
+    });
+  });
 }
 
 // ─── Tool Registry ──────────────────────────────────────────────────────────
@@ -147,6 +253,7 @@ const TOOLS = {
   'dominos-order': { fn: toolDominosOrder, description: 'Order pizza from Dominos' },
   'weather': { fn: toolWeather, description: 'Get current weather' },
   'web-search': { fn: toolWebSearch, description: 'Search the web' },
+  'email-check': { fn: toolEmailCheck, description: 'Check recent emails from Gmail' },
 };
 
 // ─── HTTP Server ────────────────────────────────────────────────────────────

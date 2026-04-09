@@ -453,11 +453,10 @@ export default function MarketsPage() {
           Think you know which teams will win? Take your analysis from the simulator to the sportsbooks.
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {/* TODO: Replace URLs with actual affiliate tracking links once approved */}
           {[
-            { name: 'Bet on DraftKings', url: 'https://www.draftkings.com/?ref=AINFLGM_AFFILIATE', color: '#53D337' },
-            { name: 'Bet on FanDuel', url: 'https://www.fanduel.com/?ref=AINFLGM_AFFILIATE', color: '#1493FF' },
-            { name: 'Bet on PrizePicks', url: 'https://www.prizepicks.com/?ref=AINFLGM_AFFILIATE', color: '#7C3AED' },
+            { name: 'Bet on DraftKings', url: 'https://www.draftkings.com/lobby?utm_source=ainflgm&utm_medium=affiliate&utm_campaign=markets-sportsbook&utm_content=draftkings', color: '#53D337' },
+            { name: 'Bet on FanDuel', url: 'https://www.fanduel.com/join?utm_source=ainflgm&utm_medium=affiliate&utm_campaign=markets-sportsbook&utm_content=fanduel', color: '#1493FF' },
+            { name: 'Bet on PrizePicks', url: 'https://www.prizepicks.com/?utm_source=ainflgm&utm_medium=affiliate&utm_campaign=markets-sportsbook&utm_content=prizepicks', color: '#7C3AED' },
           ].map(book => (
             <a key={book.name} href={book.url} target="_blank" rel="noopener noreferrer" style={{
               padding: '8px 18px', borderRadius: 6, fontSize: 13, fontWeight: 700,

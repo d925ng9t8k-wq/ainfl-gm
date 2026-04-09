@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useGame } from '../context/GameContext';
 import PredictionMarkets from '../components/PredictionMarkets';
+import AffiliateBanner from '../components/AffiliateBanner';
 
 const NEEDS_MAP = {
   QB: (roster) => roster.filter(p => p.position === 'QB').length < 2 ? 'Need' : 'Set',
@@ -748,6 +749,12 @@ export default function FreeAgencyPage() {
       )}
 
       <PredictionMarkets maxMarkets={4} />
+
+      {/* Affiliate CTAs — Free Agency page, high-intent users managing rosters */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+        <AffiliateBanner partner="draftkings" placement="free-agency" />
+        <AffiliateBanner partner="fanduel" placement="free-agency" />
+      </div>
     </div>
   );
 }

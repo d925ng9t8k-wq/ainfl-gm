@@ -49,7 +49,22 @@ const SUPABASE_URL     = process.env.SUPABASE_URL;
 const SUPABASE_KEY     = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 const SUPABASE_BUCKET  = '9-backups';
 const HUB_URL          = 'http://localhost:3457';
-const ENCRYPTION_KEY   = process.env.SQLITE_ENCRYPTION_KEY || null;
+
+// DOC fix: Load encryption key from macOS Keychain first (same as memory-db.mjs).
+// LaunchAgent context lacks .env env vars, so Keychain is the reliable source.
+function loadEncryptionKey() {
+  try {
+    const key = execSync(
+      'security find-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w',
+      { stdio: ['pipe', 'pipe', 'pipe'] }
+    ).toString().trim();
+    if (key) return key;
+  } catch {
+    // Keychain not available — fall through
+  }
+  return process.env.SQLITE_ENCRYPTION_KEY || null;
+}
+const ENCRYPTION_KEY   = loadEncryptionKey();
 
 // Ensure dirs exist
 mkdirSync(BACKUP_DIR, { recursive: true });

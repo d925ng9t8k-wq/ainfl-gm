@@ -1,0 +1,11 @@
+# Serve static HTML files directly (bypass SPA routing)
+/austin-pnl.html /austin-pnl.html 200
+/austin.html /austin.html 200
+/rapid-clarkson-deck-v2.html /rapid-clarkson-deck-v2.html 200
+/rapid-clarkson-deck.html /rapid-clarkson-deck.html 200
+/rapid-clarkson-summary.html /rapid-clarkson-summary.html 200
+/rapid-mortgage-austin-pitch.mp4 /rapid-mortgage-austin-pitch.mp4 200
+/rapid-mortgage-austin-final.mp4 /rapid-mortgage-austin-final.mp4 200
+
+# All other routes → SPA
+/* /index.html 200

@@ -30,27 +30,26 @@ import React, { useCallback } from 'react';
  */
 const AFFILIATE_URLS = {
   fanduel: {
-    baseUrl: 'https://www.fanduel.com/join', // REPLACE WITH REAL AFFILIATE LINK
-    name: 'FanDuel',
-    tagline: 'Bet the NFL Draft — first bet bonus',
+    baseUrl: 'https://www.fanduel.com/join',
+    name: 'FanDuel Sportsbook',
+    tagline: 'NFL Draft props + futures — bet $5, get $200 in bonus bets',
     cta: 'Claim Offer',
     accentColor: '#1493FF',
-    // Tracking pixel / click ID: append to URL if partner requires it
     requiresClickId: false,
   },
   betmgm: {
-    baseUrl: 'https://sports.betmgm.com/en/sports', // REPLACE WITH REAL AFFILIATE LINK
+    baseUrl: 'https://sports.betmgm.com/en/sports',
     name: 'BetMGM',
-    tagline: 'NFL Draft props — draft day odds',
+    tagline: 'NFL Draft props — first bet up to $1,500',
     cta: 'Bet Now',
     accentColor: '#FFB800',
     requiresClickId: false,
   },
   draftkings: {
-    baseUrl: 'https://www.draftkings.com/lobby', // REPLACE WITH REAL AFFILIATE LINK
-    name: 'DraftKings',
-    tagline: 'Daily fantasy — draft your players live',
-    cta: 'Play Free',
+    baseUrl: 'https://www.draftkings.com/lobby',
+    name: 'DraftKings Sportsbook',
+    tagline: 'NFL Draft contest — bet $5, get $150 in bonus bets',
+    cta: 'Play Now',
     accentColor: '#53D338',
     requiresClickId: false,
   },

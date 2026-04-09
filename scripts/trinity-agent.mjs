@@ -59,7 +59,10 @@ async function sendToHub(message) {
     // Log to hub state for 9 to review, but do NOT send to Telegram
     await fetch(`${HUB_URL}/context`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hub-secret': ENV.HUB_API_SECRET || ''
+      },
       body: JSON.stringify({ key: 'trinityLatest', value: message.substring(0, 500) })
     });
   } catch (e) {

@@ -12,13 +12,35 @@
 import 'dotenv/config';
 import { createRequire } from 'module';
 import { existsSync, mkdirSync } from 'fs';
+import { execSync } from 'child_process';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const HOT_DB_PATH  = resolve(__dirname, '../data/9-memory.db');
 const COLD_DB_PATH = resolve(__dirname, '../data/9-memory-cold.db');
-const ENCRYPTION_KEY = process.env.SQLITE_ENCRYPTION_KEY || null;
+
+// DOC fix: Load encryption key from macOS Keychain first (same as memory-db.mjs).
+// LaunchAgent context lacks .env, so env-only loading caused SQLITE_NOTADB errors.
+function loadEncryptionKey() {
+  try {
+    const key = execSync(
+      'security find-generic-password -a "9-enterprises" -s "SQLITE_ENCRYPTION_KEY" -w',
+      { stdio: ['pipe', 'pipe', 'pipe'] }
+    ).toString().trim();
+    if (key) {
+      console.log('[archive] Encryption key loaded from macOS Keychain');
+      return key;
+    }
+  } catch {
+    // Keychain not available — fall through to env var
+  }
+  const envKey = process.env.SQLITE_ENCRYPTION_KEY || null;
+  if (envKey) console.log('[archive] Encryption key loaded from env var (Keychain fallback)');
+  return envKey;
+}
+
+const ENCRYPTION_KEY = loadEncryptionKey();
 
 // Parse --days flag
 const daysArg = process.argv.find(a => a.startsWith('--days='));

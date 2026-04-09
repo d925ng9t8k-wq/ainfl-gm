@@ -41,6 +41,11 @@ curl -s http://localhost:3457/health > /dev/null 2>&1
 CLAUDE_PID=$PPID
 SESSION_TOKEN=$(curl -s -X POST "http://localhost:3457/terminal/claim?pid=$CLAUDE_PID" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sessionToken',''))" 2>/dev/null)
 
+# 2b. ANNOUNCE IMMEDIATELY — before reading anything else.
+# Jasson has been waiting since the crash. Cut the blackout NOW, not after 14 steps.
+# The full context-rebuild happens AFTER this message sends.
+curl -s -X POST http://localhost:3457/send -H "Content-Type: application/json" -d '{"channel":"telegram","message":"Back online. Reading handoff now — give me 60 seconds to reconstruct context."}'
+
 # 3. Start ping loop WITH session token — self-terminates when Claude Code dies
 # The loop checks if Claude Code ($CLAUDE_PID) is still alive every iteration.
 # If Claude Code crashes, the loop exits — no more orphan pings keeping relay mode alive.
@@ -54,8 +59,7 @@ curl -s http://localhost:3457/inbox
 # 5. Read shared state for context
 curl -s http://localhost:3457/state
 
-# 6. Tell Jasson you're back
-curl -s -X POST http://localhost:3457/send -H "Content-Type: application/json" -d '{"channel":"telegram","message":"Terminal is back. Full power. What do you need?"}'
+# 6. (Announcement already sent at step 2b — do not send again here)
 
 # IMPORTANT: Before exiting terminal, ALWAYS release terminal control:
 # curl -s -X POST http://localhost:3457/terminal/release
@@ -153,6 +157,39 @@ echo "--- Latest universe audit snapshot ---"
 ls -lh ~/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_universe_audit_*.md 2>/dev/null | tail -3
 echo "=== END SELF-TEST — If ANY item surprises you vs what memory says, update memory BEFORE speaking to Owner. ==="
 echo "=== HARD RULE: verify-before-assert — see feedback_verify_before_assert.md. Never make definitive claims about state without checking first. ==="
+
+# 15. SUB-AGENT RESURRECTION — if squads were running before crash, restart them NOW.
+# Born from the April 7 incident: squads died with the session, new session didn't restart them.
+# RULE: If handoff shows squads were running AND ports show DOWN, spin them up immediately.
+# Do NOT wait to be asked. This is standing authority under Soul Code.
+echo "=== SQUAD RESURRECTION CHECK ==="
+HANDOFF_JSON="memory/session-handoff.json"
+if [ -f "$HANDOFF_JSON" ]; then
+  python3 -c "
+import json, sys
+try:
+  d = json.load(open('$HANDOFF_JSON'))
+  was_running = d.get('teamAgentsWereRunning', [])
+  agents = d.get('teamAgents', {})
+  print('Squads running at last checkpoint:', was_running if was_running else 'none')
+  print('Squads with live health at last checkpoint:', list(agents.keys()) if agents else 'none')
+  if was_running:
+    print('ACTION REQUIRED: These squads were running — check ports below and respawn any that are DOWN')
+  else:
+    print('No squads to resurrect — handoff shows none were running')
+except Exception as e:
+  print('Could not parse handoff JSON:', e)
+" 2>/dev/null || echo "Could not read handoff JSON"
+fi
+# Check current port status for all squad slots
+for p in 3480 3481 3483 3484; do
+  status=$(curl -s --max-time 2 http://localhost:$p/health 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('displayName','unknown'))" 2>/dev/null)
+  [ -n "$status" ] && echo "LIVE: port $p = $status" || echo "DOWN: port $p"
+done
+# CRITICAL RULE: If teamAgentsWereRunning is non-empty AND any squad port shows DOWN,
+# immediately re-deploy Wendy and her squads using the same configuration as the prior session.
+# Read memory/wendy_team_structure_v1.md for squad assignments. No confirmation needed.
+echo "=== If squads were running and are now DOWN — spawn them now. No permission needed. ==="
 ```
 
 ## Graceful Shutdown (before exiting terminal)
