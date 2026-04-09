@@ -40,6 +40,7 @@ import {
 } from './your9-agent-social.mjs';
 import { handleEmailDelegation } from './your9-agent-voice-email.mjs';
 import { executeResearch, saveReport } from './your9-agent-mind-research.mjs';
+import { processAgentDirectives, readRecentHandoffs, readSharedContext } from './your9-agent-collab.mjs';
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -639,7 +640,21 @@ async function processCeoMessage(hub, userMessage) {
       taskDir,
       hub
     );
-    agentResults.push(`**${agentConf.name || delegation.agentId}:** ${result}`);
+
+    // Scan agent output for inter-agent collaboration directives ([HANDOFF:] / [ESCALATE])
+    const collabResult = await processAgentDirectives(
+      hub,
+      delegation.agentId,
+      result,
+      executeAgentTask,
+      sendTelegramMessage
+    );
+
+    // Build the result entry: agent output + any collab follow-through summary
+    const collabSuffix = collabResult.hasDirectives && collabResult.summary
+      ? `\n\n_Team activity:_\n${collabResult.summary}`
+      : '';
+    agentResults.push(`**${agentConf.name || delegation.agentId}:** ${result}${collabSuffix}`);
   }
 
   // Feed agent results back to CEO for synthesis
@@ -878,6 +893,18 @@ function startHealthServer(hub, port) {
         agents: Object.keys(hub.agentConfigs),
         port,
       }, null, 2);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(body);
+    } else if (req.method === 'GET' && req.url === '/collab/handoffs') {
+      // Recent inter-agent handoffs — for dashboard pipeline view
+      const handoffs = readRecentHandoffs(hub.instanceDir, 20);
+      const body = JSON.stringify({ handoffs }, null, 2);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(body);
+    } else if (req.method === 'GET' && req.url === '/collab/context') {
+      // Current shared context store — for dashboard and debugging
+      const context = readSharedContext(hub.instanceDir);
+      const body = JSON.stringify({ context }, null, 2);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(body);
     } else {
