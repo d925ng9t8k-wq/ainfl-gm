@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Duke's HQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #161616;
+    --orange: #ff6b1a;
+    --orange2: #ff8c42;
+    --orange-glow: rgba(255,107,26,0.25);
+    --cyan: #00d4ff;
+    --cyan-glow: rgba(0,212,255,0.2);
+    --green: #22c55e;
+    --green-glow: rgba(34,197,94,0.15);
+    --gold: #f5c518;
+    --gold-glow: rgba(245,197,24,0.15);
+    --purple: #a855f7;
+    --text: #f0f0f0;
+    --text-dim: #999;
+    --text-muted: #555;
+    --border: rgba(255,255,255,0.08);
+    --r: 16px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 60px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,107,26,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,26,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 0;
+    pointer-events: none;
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Floating orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+    animation: orbFloat 12s ease-in-out infinite;
+  }
+  .orb-1 { width: 200px; height: 200px; background: rgba(255,107,26,0.08); top: 10%; left: 5%; }
+  .orb-2 { width: 180px; height: 180px; background: rgba(0,212,255,0.06); top: 60%; right: 5%; animation-delay: -4s; }
+  .orb-3 { width: 150px; height: 150px; background: rgba(168,85,247,0.05); bottom: 15%; left: 20%; animation-delay: -8s; }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(20px, -15px); }
+    66% { transform: translate(-10px, 10px); }
+  }
+
+  .content { position: relative; z-index: 1; width: 100%; max-width: 500px; }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 48px 0 32px;
+    position: relative;
+  }
+
+  .header-icon {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 12px;
+    animation: rocketFloat 2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 24px var(--orange-glow));
+  }
+
+  @keyframes rocketFloat {
+    from { transform: translateY(0) rotate(-3deg); }
+    to { transform: translateY(-10px) rotate(3deg); }
+  }
+
+  .header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(32px, 8vw, 44px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, var(--orange) 50%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: textShift 4s ease-in-out infinite;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  @keyframes textShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .header-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .header-badge {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--orange-glow), var(--cyan-glow));
+    border: 1px solid rgba(255,107,26,0.3);
+    color: var(--orange2);
+  }
+
+  /* ── CEO STATS BAR ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .stat-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+
+  .stat-box:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+  }
+
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .stat-value.orange { color: var(--orange); }
+  .stat-value.cyan { color: var(--cyan); }
+  .stat-value.green { color: var(--green); }
+
+  .stat-label {
+    font-size: 8px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 700;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 14px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(245,197,24,0.3), transparent);
+  }
+
+  /* ── PROJECT CARDS ── */
+  .projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--orange-glow) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .project-card:hover, .project-card:active {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(255,107,26,0.2), 0 0 0 1px rgba(255,107,26,0.1);
+  }
+
+  .project-card:hover::before, .project-card:active::before { opacity: 1; }
+
+  .project-card.flagship {
+    border-color: rgba(255,107,26,0.3);
+    background: linear-gradient(135deg, var(--bg2) 0%, rgba(255,107,26,0.05) 100%);
+  }
+
+  .project-card.flagship::after {
+    content: 'LIVE';
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: var(--green);
+    color: #000;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    animation: livePulse 2s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+    50% { box-shadow: 0 0 16px rgba(34,197,94,0.7); }
+  }
+
+  .card-icon {
+    font-size: 44px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 0 8px var(--orange-glow));
+  }
+
+  .card-body { flex: 1; position: relative; z-index: 1; }
+
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--orange);
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  .card-btn {
+    background: var(--orange);
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 0 #7a2600;
+    transition: transform 0.1s, box-shadow 0.1s;
+    pointer-events: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-card:active .card-btn {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #7a2600;
+  }
+
+  /* Coming soon */
+  .project-card.soon {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .project-card.soon:hover {
+    border-color: var(--border);
+    transform: none;
+    box-shadow: none;
+  }
+  .project-card.soon::after {
+    content: 'COMING SOON';
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: #222;
+    color: #666;
+    font-size: 7px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    z-index: 2;
+  }
+
+  /* ── CARD COLLECTION TRACKER ── */
+  .collection-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .collection-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .collection-count {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 700;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .mini-card {
+    aspect-ratio: 2.5/3.5;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    border: 1px solid var(--border);
+  }
+
+  .mini-card.collected {
+    background: linear-gradient(135deg, var(--bg3), rgba(255,107,26,0.1));
+    border-color: rgba(255,107,26,0.3);
+  }
+
+  .mini-card.empty {
+    background: var(--bg3);
+    border-style: dashed;
+  }
+
+  .mini-card.collected:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 4px 16px var(--orange-glow);
+    z-index: 2;
+  }
+
+  .mini-card .rarity {
+    position: absolute;
+    bottom: 2px;
+    right: 3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .rarity.gold { background: var(--gold); box-shadow: 0 0 6px var(--gold-glow); }
+  .rarity.silver { background: #aaa; }
+  .rarity.common { background: #444; }
+
+  /* ── TICKER / MARKET TICKER ── */
+  .ticker-bar {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ticker-label {
+    font-size: 7px;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ticker-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--cyan);
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .ticker-scroll {
+    display: flex;
+    gap: 24px;
+    animation: scroll 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .ticker-item .name { color: var(--text); }
+  .ticker-item .up { color: var(--green); }
+  .ticker-item .down { color: #ef4444; }
+
+  /* ── DAILY CHALLENGE ── */
+  .challenge-card {
+    background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(0,212,255,0.05));
+    border: 1px solid rgba(168,85,247,0.25);
+    border-radius: var(--r);
+    padding: 20px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .challenge-label {
+    font-size: 8px;
+    color: var(--purple);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .challenge-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .challenge-btn {
+    background: var(--purple);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .challenge-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(168,85,247,0.3);
+  }
+
+  .challenge-btn:active {
+    transform: translateY(1px);
+  }
+
+  /* ── DAILY QUOTE ── */
+  .quote-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 20px;
+    margin-bottom: 28px;
+    text-align: center;
+    position: relative;
+  }
+
+  .quote-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .quote-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .quote-author {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 2;
+    margin-top: 12px;
+  }
+
+  .footer-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    color: var(--orange);
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+
+  /* ── CONFETTI BURST ON TAP ── */
+  .confetti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    font-size: 18px;
+    animation: confettiFall 1.2s ease-out forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(120px) rotate(720deg) scale(0.3); }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="content">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-icon">&#x1F4A5;</span>
+    <div class="header-title">DUKE'S HQ</div>
+    <div class="header-sub">COMMAND CENTER</div>
+    <div class="header-badge">CEO &middot; RipRadar</div>
+  </div>
+
+  <!-- CEO STATS -->
+  <div class="stats-bar">
+    <div class="stat-box">
+      <div class="stat-value orange" id="visits">0</div>
+      <div class="stat-label">VISITS</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value cyan" id="streak">0</div>
+      <div class="stat-label">DAY STREAK</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value green" id="xp">0</div>
+      <div class="stat-label">XP</div>
+    </div>
+  </div>
+
+  <!-- LIVE TICKER -->
+  <div class="ticker-bar">
+    <div class="ticker-label"><span class="ticker-dot"></span> CARD MARKET PULSE</div>
+    <div class="ticker-scroll" id="ticker"></div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section-label">YOUR PROJECTS</div>
+  <div class="projects-grid">
+
+    <!-- RipRadar -->
+    <a href="/ripradar.html" class="project-card flagship">
+      <div class="card-icon">&#x1F4E1;</div>
+      <div class="card-body">
+        <div class="card-title">RIPRADAR</div>
+        <div class="card-desc">Your sports card database. Live at ripradar.com. Search, track, discover.</div>
+      </div>
+      <button class="card-btn">OPEN</button>
+    </a>
+
+    <!-- Card Price Tracker — coming soon -->
+    <div class="project-card soon">
+      <div class="card-icon">&#x1F4B0;</div>
+      <div class="card-body">
+        <div class="card-title">PRICE TRACKER</div>
+        <div class="card-desc">Real-time card prices. Know what your collection is worth.</div>
+      </div>
+      <button class="card-btn" style="background:#222;color:#555;box-shadow:none;">SOON</button>
+    </div>
+
+    <!-- Trade Grader -->
+    <div class="project-card soon">
+      <div class="card-icon">&#x2696;&#xFE0F;</div>
+      <div class="card-body">
+        <div class="card-title">TRADE GRADER</div>
+        <div class="card-desc">Find out if a trade is fair before you make it. AI-powered.</div>
+      </div>
+      <button class="card-btn" style="background:#222;color:#555;box-shadow:none;">SOON</button>
+    </div>
+
+  </div>
+
+  <!-- CARD COLLECTION -->
+  <div class="section-label">CARD COLLECTION</div>
+  <div class="collection-panel">
+    <div class="collection-header">
+      <div class="collection-title">TOP PULLS</div>
+      <div class="collection-count" id="coll-count">0 / 10</div>
+    </div>
+    <div class="card-grid" id="card-grid"></div>
+    <div style="margin-top: 14px; text-align: center;">
+      <button class="challenge-btn" id="pack-btn" style="background: var(--orange); font-size: 9px; padding: 8px 18px;">RIP A PACK</button>
+    </div>
+  </div>
+
+  <!-- DAILY CHALLENGE -->
+  <div class="section-label">DAILY CHALLENGE</div>
+  <div class="challenge-card">
+    <div class="challenge-label">TODAY'S MISSION</div>
+    <div class="challenge-text" id="challenge-text">Loading...</div>
+    <button class="challenge-btn" id="challenge-btn">ACCEPT</button>
+  </div>
+
+  <!-- DAILY QUOTE -->
+  <div class="quote-box" id="quote-box">
+    <span class="quote-icon">&#x1F4A1;</span>
+    <div class="quote-text" id="quote-text">"Loading..."</div>
+    <div class="quote-author" id="quote-author">-</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    BUILT FOR DUKE BY<br>
+    <span class="footer-brand">BENGAL PRO &middot; 9 ENTERPRISES</span>
+  </div>
+
+</div>
+
+<script>
+// ─── VISITS + STREAK TRACKER ────────────────────────────────────────────
+(function() {
+  const today = new Date().toDateString();
+  let visits = parseInt(localStorage.getItem('duke-hq-visits') || '0', 10) + 1;
+  localStorage.setItem('duke-hq-visits', visits);
+  document.getElementById('visits').textContent = visits;
+
+  const lastVisit = localStorage.getItem('duke-hq-last-visit') || '';
+  let streak = parseInt(localStorage.getItem('duke-hq-streak') || '0', 10);
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+
+  if (lastVisit === today) {
+    // same day — keep streak
+  } else if (lastVisit === yesterday) {
+    streak++;
+  } else if (lastVisit !== today) {
+    streak = 1;
+  }
+  localStorage.setItem('duke-hq-streak', streak);
+  localStorage.setItem('duke-hq-last-visit', today);
+  document.getElementById('streak').textContent = streak;
+
+  let xp = parseInt(localStorage.getItem('duke-hq-xp') || '0', 10);
+  document.getElementById('xp').textContent = xp;
+})();
+
+// ─── XP HELPER ──────────────────────────────────────────────────────────
+function addXP(amount) {
+  let xp = parseInt(localStorage.getItem('duke-hq-xp') || '0', 10) + amount;
+  localStorage.setItem('duke-hq-xp', xp);
+  document.getElementById('xp').textContent = xp;
+}
+
+// ─── CARD MARKET TICKER ─────────────────────────────────────────────────
+(function() {
+  const players = [
+    { name: 'Ja\'Marr Chase', val: '+12%' },
+    { name: 'Joe Burrow', val: '+8%' },
+    { name: 'CeeDee Lamb', val: '-3%' },
+    { name: 'Lamar Jackson', val: '+5%' },
+    { name: 'Caleb Williams', val: '+18%' },
+    { name: 'Brock Bowers', val: '+22%' },
+    { name: 'Drake Maye', val: '-7%' },
+    { name: 'Tee Higgins', val: '+4%' },
+    { name: 'Patrick Mahomes', val: '+2%' },
+    { name: 'Jayden Daniels', val: '+15%' },
+    { name: 'Marvin Harrison Jr', val: '+11%' },
+    { name: 'Travis Hunter', val: '+31%' },
+  ];
+
+  const ticker = document.getElementById('ticker');
+  // Double for infinite scroll effect
+  const items = [...players, ...players];
+  ticker.innerHTML = items.map(p => {
+    const cls = p.val.startsWith('+') ? 'up' : 'down';
+    return `<span class="ticker-item"><span class="name">${p.name}</span> <span class="${cls}">${p.val}</span></span>`;
+  }).join('');
+})();
+
+// ─── CARD COLLECTION (with localStorage persistence) ────────────────────
+(function() {
+  const PLAYERS = [
+    { emoji: '\u{1F3C8}', name: 'Burrow', rarity: 'gold' },
+    { emoji: '\u{1F525}', name: 'Chase', rarity: 'gold' },
+    { emoji: '\u{26A1}', name: 'Mixon', rarity: 'silver' },
+    { emoji: '\u{1F3AF}', name: 'Higgins', rarity: 'silver' },
+    { emoji: '\u{1F6E1}', name: 'Hendrickson', rarity: 'silver' },
+    { emoji: '\u{1F4A8}', name: 'Brown', rarity: 'common' },
+    { emoji: '\u{1F451}', name: 'Mahomes', rarity: 'gold' },
+    { emoji: '\u{2B50}', name: 'Bowers', rarity: 'gold' },
+    { emoji: '\u{1F3C6}', name: 'Hunter', rarity: 'gold' },
+    { emoji: '\u{1F48E}', name: 'Daniels', rarity: 'silver' },
+  ];
+
+  let collection = JSON.parse(localStorage.getItem('duke-hq-collection') || '[]');
+  const grid = document.getElementById('card-grid');
+
+  function render() {
+    grid.innerHTML = PLAYERS.map((p, i) => {
+      const owned = collection.includes(i);
+      return `<div class="mini-card ${owned ? 'collected' : 'empty'}" title="${owned ? p.name : '???'}">
+        ${owned ? p.emoji : '<span style="color:#333;font-size:14px;">?</span>'}
+        ${owned ? '<span class="rarity ' + p.rarity + '"></span>' : ''}
+      </div>`;
+    }).join('');
+    document.getElementById('coll-count').textContent = collection.length + ' / ' + PLAYERS.length;
+  }
+
+  render();
+
+  document.getElementById('pack-btn').addEventListener('click', function() {
+    // Find cards not yet collected
+    const remaining = PLAYERS.map((_, i) => i).filter(i => !collection.includes(i));
+    if (remaining.length === 0) {
+      this.textContent = 'ALL COLLECTED!';
+      this.style.background = 'var(--gold)';
+      this.style.color = '#000';
+      return;
+    }
+    // Pull 1-2 random cards
+    const pullCount = Math.min(remaining.length, Math.random() > 0.5 ? 2 : 1);
+    const pulled = [];
+    for (let j = 0; j < pullCount; j++) {
+      const idx = Math.floor(Math.random() * remaining.length);
+      pulled.push(remaining.splice(idx, 1)[0]);
+    }
+    pulled.forEach(i => collection.push(i));
+    localStorage.setItem('duke-hq-collection', JSON.stringify(collection));
+    render();
+    addXP(pulled.length * 25);
+
+    // Confetti burst
+    pulled.forEach(() => burstConfetti());
+
+    this.textContent = 'PULLED ' + pulled.length + '!';
+    this.style.background = 'var(--green)';
+    setTimeout(() => {
+      this.textContent = remaining.length - pullCount > 0 ? 'RIP A PACK' : 'ALL COLLECTED!';
+      this.style.background = remaining.length - pullCount > 0 ? 'var(--orange)' : 'var(--gold)';
+    }, 1200);
+  });
+})();
+
+// ─── CONFETTI BURST ─────────────────────────────────────────────────────
+function burstConfetti() {
+  const emojis = ['\u{1F389}', '\u{2B50}', '\u{1F525}', '\u{1F3C8}', '\u{1F4A5}', '\u{1F451}'];
+  for (let i = 0; i < 10; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = (30 + Math.random() * 40) + '%';
+    el.style.top = (20 + Math.random() * 30) + '%';
+    el.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+    el.style.animationDelay = (Math.random() * 0.3) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1800);
+  }
+}
+
+// ─── DAILY CHALLENGES ───────────────────────────────────────────────────
+(function() {
+  const challenges = [
+    { text: 'Find 3 rookie cards in your collection and look up their value', xp: 50 },
+    { text: 'Name every starting QB in the AFC North without looking it up', xp: 30 },
+    { text: 'Open RipRadar and search for your most valuable card', xp: 40 },
+    { text: 'Tell someone one cool fact about sports cards today', xp: 20 },
+    { text: 'Find a card from the 2024 draft class on RipRadar', xp: 35 },
+    { text: 'What would you sell your rarest card for? Write the number down.', xp: 25 },
+    { text: 'Look up the top 3 most expensive football cards of all time', xp: 45 },
+    { text: 'Design a new feature for RipRadar in your head. Tell Bengal Pro about it.', xp: 60 },
+    { text: 'Name 5 Bengals players from last season without looking', xp: 30 },
+    { text: 'Imagine RipRadar with 1 million users. What would you add first?', xp: 50 },
+  ];
+
+  // One challenge per day based on day-of-year
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const challenge = challenges[dayOfYear % challenges.length];
+  document.getElementById('challenge-text').textContent = challenge.text;
+
+  const accepted = localStorage.getItem('duke-hq-challenge-' + dayOfYear);
+  const btn = document.getElementById('challenge-btn');
+
+  if (accepted) {
+    btn.textContent = 'COMPLETED +' + challenge.xp + ' XP';
+    btn.style.background = 'var(--green)';
+    btn.disabled = true;
+  }
+
+  btn.addEventListener('click', function() {
+    if (accepted) return;
+    localStorage.setItem('duke-hq-challenge-' + dayOfYear, 'done');
+    addXP(challenge.xp);
+    this.textContent = 'COMPLETED +' + challenge.xp + ' XP';
+    this.style.background = 'var(--green)';
+    this.disabled = true;
+    burstConfetti();
+  });
+})();
+
+// ─── DAILY QUOTES (boss / entrepreneur / sports) ────────────────────────
+(function() {
+  const quotes = [
+    { text: '"I\'m not a businessman. I\'m a business, man."', author: 'JAY-Z' },
+    { text: '"The ones who are crazy enough to think they can change the world are the ones that do."', author: 'STEVE JOBS' },
+    { text: '"Hard work beats talent when talent doesn\'t work hard."', author: 'TIM NOTKE' },
+    { text: '"I don\'t count my sit-ups. I only start counting when it starts hurting."', author: 'MUHAMMAD ALI' },
+    { text: '"Every morning you have two choices: continue to sleep with your dreams, or wake up and chase them."', author: 'CARMELO ANTHONY' },
+    { text: '"The only way to do great work is to love what you do."', author: 'STEVE JOBS' },
+    { text: '"Don\'t let anyone tell you that you can\'t do something."', author: 'JOE BURROW' },
+    { text: '"Age is no barrier. It\'s a limitation you put on your mind."', author: 'JACKIE JOYNER-KERSEE' },
+    { text: '"You miss 100% of the shots you don\'t take."', author: 'WAYNE GRETZKY' },
+    { text: '"It\'s not whether you get knocked down. It\'s whether you get up."', author: 'VINCE LOMBARDI' },
+    { text: '"Stay hungry. Stay foolish."', author: 'STEVE JOBS' },
+    { text: '"I never dreamed about success. I worked for it."', author: 'ESTEE LAUDER' },
+    { text: '"Winners never quit, and quitters never win."', author: 'VINCE LOMBARDI' },
+    { text: '"I\'m going to make the rest of my life the best of my life."', author: 'ERIC THOMAS' },
+  ];
+
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const q = quotes[dayOfYear % quotes.length];
+  document.getElementById('quote-text').textContent = q.text;
+  document.getElementById('quote-author').textContent = '- ' + q.author;
+})();
+</script>
+
+</body>
+</html>

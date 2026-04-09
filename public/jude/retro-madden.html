@@ -31,7 +31,7 @@ canvas{display:block;position:absolute;top:0;left:0;touch-action:none}
 'use strict';
 
 // =============================================================================
-// JUDE BOWL — Best-in-Class Edition v3.0
+// JUDE BOWL — Best-in-Class Edition v4.0
 // Retro Bowl progression + Tecmo Bowl arcade speed + NFL Blitz over-the-top +
 // NFL Street style points. Single HTML5 Canvas, mobile-first, zero external
 // dependencies (except Google Fonts).
@@ -298,6 +298,38 @@ function sfxTrickPlay() {
 function sfxStylePoints() {
   playTone(800, 0.06, 'sine', 0.06);
   playTone(1000, 0.06, 'sine', 0.06, 0.04);
+}
+function sfxFumble() {
+  playNoise(0.3, 0.25, 600);
+  playTone(200, 0.15, 'sawtooth', 0.15);
+  playTone(120, 0.2, 'sawtooth', 0.12, 0.1);
+  playTone(80, 0.3, 'square', 0.1, 0.2);
+}
+function sfxStiffArm() {
+  playNoise(0.1, 0.15, 700);
+  playTone(250, 0.08, 'square', 0.1);
+  playTone(400, 0.06, 'triangle', 0.08, 0.05);
+}
+function sfxPunt() {
+  playTone(150, 0.08, 'triangle', 0.12);
+  playTone(400, 0.15, 'sine', 0.1, 0.06);
+  playTone(600, 0.1, 'sine', 0.06, 0.12);
+}
+function sfxFieldGoalAttempt() {
+  playTone(300, 0.1, 'sine', 0.08);
+  playTone(450, 0.12, 'sine', 0.08, 0.08);
+  playTone(600, 0.15, 'sine', 0.1, 0.16);
+}
+function sfxCrowdRoar() {
+  playNoise(2.0, 0.12, 2500);
+  playNoise(1.5, 0.08, 1800);
+  playTone(80, 1.0, 'sine', 0.06, 0.3);
+}
+function sfxRain() {
+  playNoise(0.5, 0.02, 6000);
+}
+function vibrate(ms) {
+  if (navigator.vibrate) try { navigator.vibrate(ms); } catch(e) {}
 }
 
 
@@ -757,6 +789,49 @@ function showNotification(text, color) {
 let lateHitWindow = 0;
 let lateHitTarget = null;
 
+// Fumble tracking
+let fumbleRecovery = 0; // countdown timer for fumble recovery mini-game
+let fumbleX = 0, fumbleY = 0;
+let fumbleBounceVx = 0, fumbleBounceVy = 0;
+
+// Stiff arm cooldown
+let stiffArmCooldown = 0;
+
+// Weather system
+const WEATHER_TYPES = ['clear', 'clear', 'clear', 'rain', 'snow', 'wind', 'fog'];
+let gameWeather = 'clear';
+let weatherParticles = [];
+let windDirection = 0; // -1 left, 0 none, 1 right
+
+function pickWeather() {
+  gameWeather = WEATHER_TYPES[Math.floor(Math.random() * WEATHER_TYPES.length)];
+  windDirection = gameWeather === 'wind' ? (Math.random() > 0.5 ? 1 : -1) : 0;
+  // Snow field auto-equip visual hint during snow
+  if (gameWeather === 'snow' || gameWeather === 'rain') {
+    weatherParticles = [];
+    for (let i = 0; i < (gameWeather === 'snow' ? 80 : 120); i++) {
+      weatherParticles.push({
+        x: Math.random() * 800,
+        y: Math.random() * 800,
+        speed: gameWeather === 'snow' ? (0.5 + Math.random() * 1.5) : (4 + Math.random() * 6),
+        size: gameWeather === 'snow' ? (1 + Math.random() * 2) : (1 + Math.random()),
+        drift: (Math.random() - 0.5) * 0.8
+      });
+    }
+  }
+}
+
+// Kick return state
+let kickReturnActive = false;
+let kickReturnBall = { x: 0, y: 0, airTime: 0, landed: false };
+
+// Player stamina (slight fatigue late game)
+function getStaminaFactor() {
+  if (quarter <= 2) return 1.0;
+  if (quarter === 3) return 0.97;
+  return 0.94; // Q4 slight slowdown adds realism
+}
+
 
 // =========================================================================
 // 10. FIELD COORDINATE SYSTEM
@@ -883,6 +958,24 @@ const PLAYBOOK = [
   { id: 'run-qb',       label: 'QB SCRAMBLE',    type: 'run',   icon: '\u26A1', desc: 'QB designed run' }
 ];
 
+// Special teams plays (shown only on 4th down)
+const SPECIAL_TEAMS = [
+  { id: 'punt',         label: 'PUNT',           type: 'special', icon: '\u{1F462}', desc: 'Kick it away' },
+  { id: 'field-goal',   label: 'FIELD GOAL',     type: 'special', icon: '\u{1F3C8}', desc: 'Kick 3 points' }
+];
+
+const COMMENTARY_FUMBLE = ['FUMBLE!','The ball is loose!','He lost it!','FUMBLE ON THE PLAY!','Ball on the ground!'];
+const COMMENTARY_STIFFARM = ['STIFF ARM!','Pushed him away!','Get off me!','DENIED!','Put him on the ground!'];
+const COMMENTARY_PUNT = ['Punts it away.','Good punt.','Booming kick!','High punt!'];
+const COMMENTARY_FG_GOOD = ['IT IS GOOD!','Right through the uprights!','Three points!','MONEY!'];
+const COMMENTARY_FG_MISS = ['No good!','Wide!','Missed it!','Off the mark!'];
+const COMMENTARY_WEATHER = {
+  rain: ['Slippery conditions out there.','Rain coming down hard.','Wet ball today.'],
+  snow: ['Snow falling at the stadium!','Winter wonderland out here.','Cold one today!'],
+  wind: ['Windy conditions on the field.','The wind is howling.','Tough day to throw.'],
+  fog: ['Foggy conditions.','Hard to see out there.','Visibility is low.']
+};
+
 // Route runner — per play type
 function runReceiverRoutes(dt) {
   const speed = 2.7;
@@ -921,10 +1014,14 @@ function runReceiverRoutes(dt) {
 // 13. DEFENSE AI (Difficulty-Scaled)
 // =========================================================================
 
+// Random blitz flag per play (set in startPlay)
+let defenseBlitzing = false;
+
 function updateDefense(dt) {
   if (!ballCarrier) return;
   const diff = getDiff();
   const diffScale = DIFF_DEFENSE_SPEED[diff];
+  const blitzBoost = defenseBlitzing ? 1.18 : 1.0;
 
   defensePlayers.forEach(function(d, i) {
     if (d.juked > 0) { d.juked--; return; }
@@ -955,7 +1052,7 @@ function updateDefense(dt) {
     }
 
     targetX += Math.sin(i * 3.7 + playTimer * 2.8) * (diff === 0 ? 2.0 : 1.0);
-    chaseSpeed *= diffScale;
+    chaseSpeed *= diffScale * blitzBoost;
 
     // ON FIRE makes defenders slightly slower
     if (onFire) chaseSpeed *= 0.85;
@@ -1021,6 +1118,90 @@ function startPlay(type) {
   receiverControlled = false; ball.visible = false; ball.airTime = 0;
   hitStop = 0; drivePlays++; trickPhase = 0;
   lateHitWindow = 0; lateHitTarget = null;
+
+  // Special teams handling
+  if (type === 'punt') {
+    sfxPunt();
+    showCommentary(COMMENTARY_PUNT);
+    // Punt pushes opponent back, they start further from our endzone
+    const puntYards = 30 + Math.floor(Math.random() * 20);
+    const windBonus = gameWeather === 'wind' ? (windDirection * 8) : 0;
+    playsRun++; playsThisQuarter++;
+    gameStats.plays++;
+    gameStats.drives++;
+    gameStats.driveResults.push('punt');
+    resultMsg = 'PUNT — ' + (puntYards + Math.round(windBonus)) + ' YARDS';
+    resultSubMsg = gameWeather === 'wind' ? (windBonus > 0 ? 'Wind helped!' : 'Into the wind!') : '';
+    gameState = 'result'; resultTimer = 0;
+    // After result, CPU drives then we get ball back at 25
+    setTimeout(function() {
+      simulateCPUDrive();
+      gameState = 'result'; resultTimer = 0;
+      setTimeout(function() {
+        if (!checkQuarterEnd()) startNewDrive();
+      }, 2200);
+    }, 2000);
+    drivePlays = 0; driveYards = 0;
+    return;
+  }
+
+  if (type === 'field-goal') {
+    sfxFieldGoalAttempt();
+    // FG chance based on distance (ballOn = yard line, distance = 100 - ballOn + 17)
+    const fgDistance = (100 - ballOn) + 17; // endzone + 7 yard snap
+    let fgChance = fgDistance <= 30 ? 0.92 : (fgDistance <= 40 ? 0.78 : (fgDistance <= 50 ? 0.55 : 0.30));
+    if (gameWeather === 'wind') fgChance -= 0.15;
+    if (gameWeather === 'rain') fgChance -= 0.05;
+    if (onFire) fgChance += 0.1;
+    const fgGood = Math.random() < fgChance;
+    playsRun++; playsThisQuarter++;
+    gameStats.plays++;
+    gameStats.drives++;
+
+    if (fgGood) {
+      score.bengals += 3;
+      sfxFieldGoal();
+      showCommentary(COMMENTARY_FG_GOOD);
+      triggerFlash(GOLD, 0.35);
+      vibrate(100);
+      resultMsg = 'FIELD GOAL!';
+      resultSubMsg = fgDistance + ' YARDS — 3 POINTS';
+      gameStats.driveResults.push('fg');
+      const fgCoins = 10;
+      store.coins += fgCoins; store.totalCoins += fgCoins;
+      addStylePoints(15, 'field_goal');
+      saveStore();
+    } else {
+      sfxIncomplete();
+      showCommentary(COMMENTARY_FG_MISS);
+      triggerShake(3);
+      resultMsg = 'NO GOOD';
+      resultSubMsg = fgDistance + ' YARD ATTEMPT';
+      gameStats.driveResults.push('fg_miss');
+    }
+    gameState = 'result'; resultTimer = 0;
+    setTimeout(function() {
+      if (fgGood) {
+        simulateCPUDrive();
+        gameState = 'result'; resultTimer = 0;
+        setTimeout(function() {
+          if (!checkQuarterEnd()) startNewDrive();
+        }, 2200);
+      } else {
+        simulateCPUDrive();
+        gameState = 'result'; resultTimer = 0;
+        setTimeout(function() {
+          if (!checkQuarterEnd()) startNewDrive();
+        }, 2200);
+      }
+    }, 2000);
+    drivePlays = 0; driveYards = 0;
+    return;
+  }
+
+  // Random blitz (more likely on higher difficulty and 3rd/4th down)
+  const blitzChance = (getDiff() === 0 ? 0.1 : (getDiff() === 1 ? 0.2 : 0.35)) + (down >= 3 ? 0.15 : 0);
+  defenseBlitzing = Math.random() < blitzChance;
 
   if (type === 'trick-flea') {
     ballCarrier = offensePlayers[6]; // RB starts
@@ -1108,8 +1289,13 @@ function endPlay(result) {
     showCommentary(COMMENTARY_TD);
     triggerFlash(ORANGE, 0.55);
     triggerShake(10);
+    vibrate(200);
     spawnTDBurst(fieldToScreenX(ballCarrier.x), fieldToScreenY(ballCarrier.y));
+    // Extra fireworks bursts for TDs
+    setTimeout(function() { spawnTDBurst(Math.random() * W, Math.random() * H * 0.3); }, 300);
+    setTimeout(function() { spawnTDBurst(Math.random() * W, Math.random() * H * 0.3); }, 600);
     setTimeout(sfxWhoDey, 600);
+    setTimeout(sfxCrowdRoar, 200);
     addStylePoints(50, 'touchdown');
     if (playType.indexOf('trick') === 0) addStylePoints(30, 'trick_td');
     const tdCoins = 20 + Math.min(yardsGained, 50);
@@ -1199,6 +1385,15 @@ function throwBall(targetIdx) {
   const ballSpeed = 46;
   ball.dx = ((leadX - ball.x) / dist) * ballSpeed;
   ball.dy = ((leadY - ball.y) / dist) * ballSpeed;
+  // Wind affects the ball
+  if (gameWeather === 'wind') {
+    ball.dx += windDirection * 6;
+  }
+  // Rain makes the ball slightly less accurate
+  if (gameWeather === 'rain') {
+    ball.dx += (Math.random() - 0.5) * 4;
+    ball.dy += (Math.random() - 0.5) * 2;
+  }
   sfxCatch();
   showCommentary(COMMENTARY_PASS_THROWN);
 }
@@ -1247,6 +1442,7 @@ function checkTackle() {
         return;
       }
       tackled = true;
+      vibrate(30);
 
       // Big hit detection (NFL Blitz style)
       const hitForce = d.speed + (d.role === 'lb' || d.role === 'safety' ? 0.5 : 0);
@@ -1254,8 +1450,41 @@ function checkTackle() {
         sfxBigHit();
         hitStop = 0.2;
         triggerShake(8);
+        vibrate(60);
         spawnSparks(fieldToScreenX(ballCarrier.x), fieldToScreenY(ballCarrier.y), 22, WHITE, GOLD_BRIGHT);
         addStylePoints(5, 'big_hit_taken');
+
+        // Fumble chance on big hits (weather increases chance)
+        const fumbleChance = gameWeather === 'rain' ? 0.14 : (gameWeather === 'snow' ? 0.10 : 0.06);
+        if (Math.random() < fumbleChance && playTimer > 1.0) {
+          // Fumble! 50/50 recovery
+          if (Math.random() < 0.5) {
+            // Offense recovers
+            sfxFumble();
+            showCommentary(COMMENTARY_FUMBLE);
+            triggerFlash(DANGER_RED, 0.3);
+            vibrate(100);
+            showNotification('FUMBLE - Bengals recover!', ORANGE);
+            // Still end play as tackle
+          } else {
+            // Defense recovers - turnover!
+            sfxFumble();
+            showCommentary(COMMENTARY_FUMBLE);
+            triggerFlash(DANGER_RED, 0.5);
+            triggerShake(10);
+            vibrate(150);
+            spawnSparks(fieldToScreenX(ballCarrier.x), fieldToScreenY(ballCarrier.y), 30, DANGER_RED, ORANGE);
+            score.cpu += 7;
+            gameStats.turnovers++; gameStats.drives++;
+            gameStats.driveResults.push('fumble');
+            playsRun++; playsThisQuarter++;
+            gameState = 'turnover'; resultMsg = 'FUMBLE LOST!'; resultSubMsg = '';
+            resultTimer = 0;
+            styleCombo = 0;
+            drivePlays = 0; driveYards = 0;
+            return;
+          }
+        }
       } else {
         sfxHit();
         hitStop = 0.12;
@@ -1295,8 +1524,10 @@ function moveBallCarrier(dt, isPassRush) {
   if (!ballCarrier || tackled) return;
 
   const fireBoost = onFire ? 1.15 : 1.0;
+  const stamina = getStaminaFactor();
+  const weatherPenalty = (gameWeather === 'rain' || gameWeather === 'snow') ? 0.95 : 1.0;
   const turboActive = input.turbo && turboMeter > 0;
-  const speed = ballCarrier.speed * (turboActive ? TURBO_SPEED_MULT : 1.0) * fireBoost;
+  const speed = ballCarrier.speed * (turboActive ? TURBO_SPEED_MULT : 1.0) * fireBoost * stamina * weatherPenalty;
 
   let dx = 0, dy = 0;
   if (input.up) dy = -speed * dt;
@@ -1326,22 +1557,46 @@ function moveBallCarrier(dt, isPassRush) {
     spawnFireAura(fieldToScreenX(ballCarrier.x), fieldToScreenY(ballCarrier.y));
   }
 
-  // Spin/Juke move
+  // Spin/Juke move OR Stiff Arm (turbo + spin = stiff arm)
   if (input.spin && spinCooldown <= 0) {
-    spinCooldown = 1.0;
-    gameStats.spinsUsed++;
-    sfxSpin(); showCommentary(COMMENTARY_JUKE);
-    ballCarrier.spinAnim = 1.0;
-    addStylePoints(10, 'juke');
-    defensePlayers.forEach(function(d) {
-      if (Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y) < 6) d.juked = 26;
-    });
-    if (input.left) ballCarrier.x -= 3.5;
-    else if (input.right) ballCarrier.x += 3.5;
-    else ballCarrier.x += (Math.random() > 0.5 ? 3.0 : -3.0);
-    ballCarrier.x = Math.max(1, Math.min(FIELD_WIDTH - 1, ballCarrier.x));
+    if (turboActive && stiffArmCooldown <= 0) {
+      // STIFF ARM — pushes defenders away harder, no spin animation
+      stiffArmCooldown = 1.5;
+      sfxStiffArm(); showCommentary(COMMENTARY_STIFFARM);
+      vibrate(40);
+      addStylePoints(15, 'stiff_arm');
+      gameStats.spinsUsed++;
+      defensePlayers.forEach(function(d) {
+        const dist = Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y);
+        if (dist < 7) {
+          d.juked = 32;
+          d.knockdown = 0.4;
+          // Push defender away
+          const angle = Math.atan2(d.y - ballCarrier.y, d.x - ballCarrier.x);
+          d.x += Math.cos(angle) * 4;
+          d.y += Math.sin(angle) * 4;
+          spawnSparks(fieldToScreenX(d.x), fieldToScreenY(d.y), 6, WHITE, ORANGE);
+        }
+      });
+      triggerShake(3);
+    } else {
+      // Regular juke/spin
+      spinCooldown = 1.0;
+      gameStats.spinsUsed++;
+      sfxSpin(); showCommentary(COMMENTARY_JUKE);
+      ballCarrier.spinAnim = 1.0;
+      addStylePoints(10, 'juke');
+      defensePlayers.forEach(function(d) {
+        if (Math.hypot(d.x - ballCarrier.x, d.y - ballCarrier.y) < 6) d.juked = 26;
+      });
+      if (input.left) ballCarrier.x -= 3.5;
+      else if (input.right) ballCarrier.x += 3.5;
+      else ballCarrier.x += (Math.random() > 0.5 ? 3.0 : -3.0);
+      ballCarrier.x = Math.max(1, Math.min(FIELD_WIDTH - 1, ballCarrier.x));
+    }
   }
   if (spinCooldown > 0) spinCooldown -= dt;
+  if (stiffArmCooldown > 0) stiffArmCooldown -= dt;
 }
 
 // --- Update: Run Play ---
@@ -1349,12 +1604,13 @@ function updateRunPlay(dt) {
   if (!ballCarrier || tackled) return;
   playTimer += dt;
 
-  // Auto-advance direction if no input
-  if (!input.up && !input.down && !input.left && !input.right && playTimer < 0.65) {
-    const speed = ballCarrier.speed * 0.4;
-    if (playType === 'run-left') { ballCarrier.x -= speed * dt * 0.5; ballCarrier.y -= speed * dt * 0.3; }
-    else if (playType === 'run-right') { ballCarrier.x += speed * dt * 0.5; ballCarrier.y -= speed * dt * 0.3; }
-    else { ballCarrier.y -= speed * dt * 0.4; }
+  // Auto-advance direction if no input — faster and lasts longer so RB feels responsive
+  if (!input.up && !input.down && !input.left && !input.right && playTimer < 1.2) {
+    const autoSpeed = ballCarrier.speed * (playTimer < 0.4 ? 0.65 : 0.45);
+    if (playType === 'run-left') { ballCarrier.x -= autoSpeed * dt * 0.7; ballCarrier.y -= autoSpeed * dt * 0.5; }
+    else if (playType === 'run-right') { ballCarrier.x += autoSpeed * dt * 0.7; ballCarrier.y -= autoSpeed * dt * 0.5; }
+    else if (playType === 'run-qb') { ballCarrier.y -= autoSpeed * dt * 0.6; }
+    else { ballCarrier.y -= autoSpeed * dt * 0.55; }
   }
 
   if (playTimer > 0.5 && playTimer < 0.55) showCommentary(COMMENTARY_RUN);
@@ -1589,6 +1845,8 @@ function newGame() {
   driveStartYard = 25; drivePlays = 0; driveYards = 0;
   turboMeter = 100; stylePoints = 0; styleCombo = 0; styleComboTimer = 0;
   onFire = false; onFireTimer = 0;
+  stiffArmCooldown = 0;
+  pickWeather();
   gameStats = {
     totalYards: 0, rushYards: 0, passYards: 0,
     completions: 0, attempts: 0, rushAttempts: 0,
@@ -1671,6 +1929,44 @@ function drawField() {
       const sy = ((i * 89 + Date.now() / 22) % H);
       ctx.beginPath(); ctx.arc(sx, sy, 1.2, 0, Math.PI * 2); ctx.fill();
     }
+  }
+
+  // Weather visual effects (game weather, independent of equipped field)
+  if (gameWeather === 'rain') {
+    ctx.strokeStyle = 'rgba(150,180,255,0.25)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < weatherParticles.length; i++) {
+      const wp = weatherParticles[i];
+      wp.x += wp.drift + windDirection * 2;
+      wp.y += wp.speed;
+      if (wp.y > H) { wp.y = -5; wp.x = Math.random() * W; }
+      if (wp.x > W) wp.x = 0;
+      if (wp.x < 0) wp.x = W;
+      ctx.beginPath();
+      ctx.moveTo(wp.x, wp.y);
+      ctx.lineTo(wp.x + windDirection * 2, wp.y + wp.speed * 3);
+      ctx.stroke();
+    }
+  } else if (gameWeather === 'snow') {
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    for (let i = 0; i < weatherParticles.length; i++) {
+      const wp = weatherParticles[i];
+      wp.x += wp.drift + Math.sin(Date.now() / 1000 + i) * 0.3;
+      wp.y += wp.speed;
+      if (wp.y > H) { wp.y = -5; wp.x = Math.random() * W; }
+      if (wp.x > W) wp.x = 0;
+      if (wp.x < 0) wp.x = W;
+      ctx.beginPath();
+      ctx.arc(wp.x, wp.y, wp.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else if (gameWeather === 'fog') {
+    const fogGrad = ctx.createLinearGradient(0, 0, 0, H);
+    fogGrad.addColorStop(0, 'rgba(180,180,180,0.15)');
+    fogGrad.addColorStop(0.5, 'rgba(180,180,180,0.08)');
+    fogGrad.addColorStop(1, 'rgba(180,180,180,0.12)');
+    ctx.fillStyle = fogGrad;
+    ctx.fillRect(0, 0, W, H);
   }
 
   if (store.equippedField === 'prime_field') {
@@ -1939,6 +2235,25 @@ function drawHUD() {
   ctx.fillStyle = DIFF_COLORS[getDiff()];
   ctx.fillText(DIFF_NAMES[getDiff()], W - 10, hudH / 2 + 9);
 
+  // Weather indicator
+  if (gameWeather !== 'clear') {
+    const weatherIcons = { rain: 'RAIN', snow: 'SNOW', wind: 'WIND', fog: 'FOG' };
+    const weatherColors = { rain: '#6699CC', snow: '#CCDDEE', wind: '#88AACC', fog: '#999999' };
+    ctx.font = '500 8px ' + FONT_UI;
+    ctx.textAlign = 'right';
+    ctx.fillStyle = weatherColors[gameWeather] || METALLIC;
+    ctx.fillText(weatherIcons[gameWeather] || '', W - 10, hudH / 2 + 20);
+  }
+
+  // Blitz warning
+  if (defenseBlitzing && (gameState === 'playing' || gameState === 'snap') && playTimer < 1.5) {
+    const blitzFlash = Math.sin(Date.now() / 100) * 0.3 + 0.7;
+    ctx.font = '700 10px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(224,48,48,' + blitzFlash + ')';
+    ctx.fillText('BLITZ!', W / 2, hudH + 20);
+  }
+
   // Turbo meter bar (below HUD)
   const tmW = Math.min(120, W * 0.28);
   const tmX = W / 2 - tmW / 2;
@@ -2032,7 +2347,8 @@ function drawControls() {
   ctx.font = '700 ' + Math.max(9, abtnR * 0.35) + 'px ' + FONT_UI;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   const isPassMode = playType && (playType.indexOf('pass') === 0 || (playType === 'trick-flea' && trickPhase >= 2)) && !passThrown;
-  ctx.fillText(isPassMode ? 'PASS' : 'JUKE', btnSpinX, btnSpinY);
+  const spinLabel = isPassMode ? 'PASS' : (input.turbo && turboMeter > 0 && stiffArmCooldown <= 0 ? 'STIFF' : 'JUKE');
+  ctx.fillText(spinLabel, btnSpinX, btnSpinY);
 
   btnTurboX = W - rightMargin - abtnR;
   btnTurboY = H - 28 - abtnR;
@@ -2102,7 +2418,7 @@ function drawSplash() {
 
   ctx.font = '500 ' + Math.min(10, W * 0.024) + 'px ' + FONT_UI;
   ctx.fillStyle = METALLIC;
-  ctx.fillText('BEST-IN-CLASS EDITION', W / 2, H * 0.15 + titleSize * 0.65);
+  ctx.fillText('BEST-IN-CLASS EDITION v4', W / 2, H * 0.15 + titleSize * 0.65);
 
   const lineGrad = ctx.createLinearGradient(W / 2 - 90, 0, W / 2 + 90, 0);
   lineGrad.addColorStop(0, 'rgba(251,79,20,0)');
@@ -2446,7 +2762,16 @@ function drawPlaySelect() {
   ctx.fillStyle = down >= 3 ? FIRST_DOWN_YELLOW : METALLIC;
   ctx.fillText(ordinals[Math.min(down - 1, 3)] + ' & ' + yardsToGo + '  |  ' + (ballOn > 50 ? 'OPP ' + (100 - ballOn) : 'OWN ' + ballOn), W / 2, H * 0.09 + titleSize * 0.65);
 
-  // Play buttons — 2 columns layout for 9 plays
+  // Weather callout at top of play select
+  if (gameWeather !== 'clear') {
+    ctx.font = '500 ' + Math.min(9, W * 0.022) + 'px ' + FONT_UI;
+    const weatherColors = { rain: '#6699CC', snow: '#CCDDEE', wind: '#88AACC', fog: '#999999' };
+    ctx.fillStyle = weatherColors[gameWeather] || METALLIC;
+    const weatherLabels = { rain: 'RAINY', snow: 'SNOWY', wind: 'WINDY', fog: 'FOGGY' };
+    ctx.fillText(weatherLabels[gameWeather] + ' CONDITIONS', W / 2, H * 0.09 + titleSize * 1.1);
+  }
+
+  // Play buttons — 2 columns layout for 9 plays + special teams on 4th down
   playButtons = [];
   const colW = (W - 30) / 2;
   const btnH = Math.min(40, H * 0.055);
@@ -2478,6 +2803,36 @@ function drawPlaySelect() {
     ctx.fillStyle = 'rgba(255,255,255,0.35)';
     ctx.fillText(p.desc, bx + colW / 2 + 6, by + btnH / 2 + 9);
   });
+
+  // Special teams on 4th down
+  if (down === 4) {
+    const stY = startY + 5 * (btnH + gap) + 8;
+    ctx.font = '600 ' + Math.min(10, W * 0.024) + 'px ' + FONT_UI;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = DANGER_RED;
+    ctx.fillText('4TH DOWN — SPECIAL TEAMS', W / 2, stY - 4);
+
+    SPECIAL_TEAMS.forEach(function(p, i) {
+      const bx = 10 + i * (colW + 10);
+      const by = stY + 6;
+      playButtons.push({ x: bx, y: by, w: colW, h: btnH, play: p.id });
+
+      ctx.fillStyle = 'rgba(200,50,50,0.12)';
+      ctx.strokeStyle = 'rgba(200,80,80,0.5)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, bx, by, colW, btnH, 6); ctx.fill(); ctx.stroke();
+
+      ctx.font = '600 ' + Math.min(11, W * 0.026) + 'px ' + FONT_UI;
+      ctx.fillStyle = DANGER_RED;
+      ctx.textAlign = 'left';
+      ctx.fillText(p.icon, bx + 8, by + btnH / 2);
+      ctx.fillStyle = WHITE; ctx.textAlign = 'center';
+      ctx.fillText(p.label, bx + colW / 2 + 6, by + btnH / 2 - 3);
+      ctx.font = '400 ' + Math.min(8, W * 0.019) + 'px ' + FONT_UI;
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.fillText(p.desc, bx + colW / 2 + 6, by + btnH / 2 + 9);
+    });
+  }
 
   // Score
   const scoreY = H * 0.71;
@@ -2568,6 +2923,24 @@ function drawCelebration(dt) {
     ctx.fillStyle = WHITE;
     ctx.fillText('WHO DEY', W / 2, H * 0.43);
     ctx.globalAlpha = 1;
+
+    // TD celebration dance — player bounces
+    if (ballCarrier) {
+      const bouncePhase = Math.sin(celebTimer * 12) * 4;
+      const danceSx = fieldToScreenX(ballCarrier.x) + Math.sin(celebTimer * 8) * 6;
+      const danceSy = fieldToScreenY(ballCarrier.y) + bouncePhase;
+      const danceR = Math.max(12, pixelsPerYard * 1.8);
+      ctx.globalAlpha = wdAlpha;
+      ctx.fillStyle = ORANGE;
+      ctx.beginPath(); ctx.arc(danceSx, danceSy, danceR, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = WHITE; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(danceSx, danceSy, danceR + 4, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = WHITE;
+      ctx.font = '700 ' + Math.max(8, danceR * 0.6) + 'px ' + FONT_UI;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(ballCarrier.num, danceSx, danceSy + 1);
+      ctx.globalAlpha = 1;
+    }
   }
   if (celebTimer > 1.0) {
     ctx.font = '700 ' + Math.min(18, W * 0.042) + 'px ' + FONT_UI;
@@ -2697,8 +3070,9 @@ function drawGameOver(dt) {
     ['Sacks', '' + gameStats.sacks],
     ['3rd Down', gameStats.thirdDownConv + '/' + gameStats.thirdDownAtt + ' (' + thirdPct + '%)'],
     ['Longest', gameStats.longestPlay + ' yds'],
-    ['Jukes', '' + gameStats.spinsUsed],
-    ['Style Pts', '' + stylePoints + (onFire ? ' (ON FIRE!)' : '')]
+    ['Jukes/Stiffs', '' + gameStats.spinsUsed],
+    ['Style Pts', '' + stylePoints + (onFire ? ' (ON FIRE!)' : '')],
+    ['Weather', gameWeather.charAt(0).toUpperCase() + gameWeather.slice(1)]
   ];
 
   ctx.font = '500 10px ' + FONT_UI;
@@ -2978,12 +3352,12 @@ canvas.addEventListener('mouseup', function(e) {
 
 // Keyboard
 window.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowUp') input.up = true;
-  if (e.key === 'ArrowDown') input.down = true;
-  if (e.key === 'ArrowLeft') input.left = true;
-  if (e.key === 'ArrowRight') input.right = true;
-  if (e.key === 'z' || e.key === 'Z') input.spin = true;
-  if (e.key === 'x' || e.key === 'X') input.turbo = true;
+  if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') input.up = true;
+  if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') input.down = true;
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') input.left = true;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') input.right = true;
+  if (e.key === 'z' || e.key === 'Z' || e.key === 'j' || e.key === 'J') input.spin = true;
+  if (e.key === 'x' || e.key === 'X' || e.key === 'k' || e.key === 'K') input.turbo = true;
   if (e.key === ' ') {
     if (gameState === 'splash') {
       initAudio();
@@ -2996,7 +3370,9 @@ window.addEventListener('keydown', function(e) {
   if (gameState === 'playSelect') {
     const playMap = { '1':'run-left','2':'run-middle','3':'run-right','4':'pass-short','5':'pass-deep',
                       '6':'pass-screen','7':'trick-flea','8':'trick-reverse','9':'run-qb' };
-    if (playMap[e.key]) { initAudio(); sfxMenuSelect(); startPlay(playMap[e.key]); }
+    if (down === 4 && e.key === '0') { initAudio(); sfxMenuSelect(); startPlay('punt'); }
+    else if (down === 4 && e.key === '-') { initAudio(); sfxMenuSelect(); startPlay('field-goal'); }
+    else if (playMap[e.key]) { initAudio(); sfxMenuSelect(); startPlay(playMap[e.key]); }
   }
   // Late hit on spacebar during result
   if (gameState === 'result' && e.key === ' ' && lateHitWindow > 0 && lateHitTarget) {
@@ -3009,12 +3385,12 @@ window.addEventListener('keydown', function(e) {
   }
 });
 window.addEventListener('keyup', function(e) {
-  if (e.key === 'ArrowUp') input.up = false;
-  if (e.key === 'ArrowDown') input.down = false;
-  if (e.key === 'ArrowLeft') input.left = false;
-  if (e.key === 'ArrowRight') input.right = false;
-  if (e.key === 'z' || e.key === 'Z') input.spin = false;
-  if (e.key === 'x' || e.key === 'X') input.turbo = false;
+  if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') input.up = false;
+  if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') input.down = false;
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') input.left = false;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') input.right = false;
+  if (e.key === 'z' || e.key === 'Z' || e.key === 'j' || e.key === 'J') input.spin = false;
+  if (e.key === 'x' || e.key === 'X' || e.key === 'k' || e.key === 'K') input.turbo = false;
 });
 
 
@@ -3084,6 +3460,14 @@ function gameLoop(timestamp) {
       ctx.fillStyle = GOLD_BRIGHT;
       ctx.fillText('HIKE', W / 2, H * 0.38);
       ctx.shadowBlur = 0;
+      // Show weather on first snap of game
+      if (playsRun === 0 && gameWeather !== 'clear') {
+        ctx.font = '500 10px ' + FONT_UI;
+        const weatherColors = { rain: '#6699CC', snow: '#CCDDEE', wind: '#88AACC', fog: '#999999' };
+        ctx.fillStyle = weatherColors[gameWeather] || METALLIC;
+        const weatherLabels = { rain: 'RAINY CONDITIONS', snow: 'SNOW GAME!', wind: 'WINDY CONDITIONS', fog: 'FOGGY CONDITIONS' };
+        ctx.fillText(weatherLabels[gameWeather], W / 2, H * 0.48);
+      }
       drawCommentary(dt);
       if (stateTimer > 0.35) transitionToPlaying();
       break;
@@ -3165,7 +3549,7 @@ window.JUDEBOWL_ADMIN = {
   setTurbo: function(n) { turboMeter = Math.max(0, Math.min(100, n)); console.log('Turbo: ' + turboMeter); },
   help: function() {
     console.log([
-      'JUDE BOWL v3.0 Admin Panel',
+      'JUDE BOWL v4.0 Admin Panel',
       '---------------------------',
       'JUDEBOWL_ADMIN.setCoins(n)        - Set coins',
       'JUDEBOWL_ADMIN.addCoins(n)        - Add coins',
@@ -3187,7 +3571,7 @@ window.JUDEBOWL_ADMIN = {
   }
 };
 
-console.log('[JUDE BOWL v3.0 Best-in-Class] Admin: JUDEBOWL_ADMIN.help()');
+console.log('[JUDE BOWL v4.0 Best-in-Class] Admin: JUDEBOWL_ADMIN.help()');
 
 analyticsEvent('session_start', {
   coins: store.coins, proPas: hasProPass(),
