@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>9 Enterprises — Universe Directory | April 9, 2026</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0f172a;
+      --bg-surface:   #1e293b;
+      --bg-elevated:  #263347;
+      --border:       #334155;
+      --border-light: #475569;
+      --text:         #f1f5f9;
+      --text-mid:     #cbd5e1;
+      --text-muted:   #94a3b8;
+      --accent:       #6366f1;
+      --accent-glow:  rgba(99,102,241,0.15);
+      --green:        #10b981;
+      --green-bg:     rgba(16,185,129,0.10);
+      --green-border: rgba(16,185,129,0.30);
+      --yellow:       #f59e0b;
+      --yellow-bg:    rgba(245,158,11,0.10);
+      --yellow-border:rgba(245,158,11,0.30);
+      --red:          #ef4444;
+      --red-bg:       rgba(239,68,68,0.10);
+      --red-border:   rgba(239,68,68,0.30);
+      --radius:       6px;
+      --radius-lg:    10px;
+      --radius-xl:    14px;
+    }
+
+    html { font-size: 14px; }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Print ─── */
+    @media print {
+      body { background: #0f172a; color: #f1f5f9; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page-break { page-break-before: always; }
+      .cover { min-height: auto; padding: 48px 40px; }
+      .no-print { display: none; }
+    }
+
+    /* ─── Layout ─── */
+    .page-wrapper {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 28px 100px;
+    }
+
+    /* ─── Cover ─── */
+    .cover {
+      background: linear-gradient(145deg, #0d1526 0%, #0f172a 50%, #111827 100%);
+      padding: 80px 60px 72px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -80px;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -40px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cover-inner { position: relative; z-index: 1; }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1px;
+      flex-shrink: 0;
+      box-shadow: 0 0 24px rgba(99,102,241,0.4);
+    }
+
+    .brand-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-mid);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .cover-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 28px;
+      border-radius: 2px;
+    }
+
+    .cover-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .cover-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .cover-prepared {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cover-prepared .label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .cover-prepared .value {
+      color: var(--text-mid);
+      font-weight: 500;
+    }
+
+    .cover-classification {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      color: #a5b4fc;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #6366f1;
+    }
+
+    /* ─── Sections ─── */
+    section {
+      margin-top: 60px;
+    }
+
+    .section-header {
+      margin-bottom: 28px;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .section-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    /* ─── Scoring Framework ─── */
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .criterion-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .criterion-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(99,102,241,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #a5b4fc;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .criterion-info {}
+    .criterion-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .criterion-weight {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .weight-bar-track {
+      height: 3px;
+      background: var(--bg-elevated);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .weight-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ─── Summary Table ─── */
+    .summary-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+
+    thead tr {
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+    }
+
+    thead th {
+      padding: 13px 16px;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    thead th:first-child { border-radius: var(--radius-xl) 0 0 0; }
+    thead th:last-child  { border-radius: 0 var(--radius-xl) 0 0; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+    tbody td {
+      padding: 12px 16px;
+      color: var(--text-mid);
+      vertical-align: middle;
+    }
+
+    .rank-cell {
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      width: 44px;
+    }
+
+    .product-cell {
+      min-width: 200px;
+    }
+
+    .product-cell .name {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+
+    .product-cell .type {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .score-cell {
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .score-bar-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .score-bar-track {
+      width: 60px;
+      height: 4px;
+      background: var(--bg-elevated);
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .tam-cell, .arr-cell {
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .action-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .action-prioritize {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      color: #34d399;
+    }
+
+    .action-maintain {
+      background: var(--yellow-bg);
+      border: 1px solid var(--yellow-border);
+      color: #fbbf24;
+    }
+
+    .action-rescope {
+      background: rgba(249,115,22,0.10);
+      border: 1px solid rgba(249,115,22,0.30);
+      color: #fb923c;
+    }
+
+    .action-shelve {
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      color: #f87171;
+    }
+
+    .action-kill {
+      background: rgba(239,68,68,0.18);
+      border: 1px solid rgba(239,68,68,0.45);
+      color: #fca5a5;
+    }
+
+    /* Tier row styling */
+    .tier-top    td { border-left: 3px solid var(--green);  }
+    .tier-mid    td { border-left: 3px solid var(--yellow); }
+    .tier-bottom td { border-left: 3px solid var(--red);    }
+
+    /* ─── Product Cards ─── */
+    .tier-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 36px 0 16px;
+    }
+
+    .tier-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .tier-pill-green {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      color: #34d399;
+    }
+
+    .tier-pill-yellow {
+      background: var(--yellow-bg);
+      border: 1px solid var(--yellow-border);
+      color: #fbbf24;
+    }
+
+    .tier-pill-red {
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      color: #f87171;
+    }
+
+    .tier-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .product-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+    }
+
+    .card-green::before  { background: var(--green); }
+    .card-yellow::before { background: var(--yellow); }
+    .card-orange::before { background: #f97316; }
+    .card-red::before    { background: var(--red); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-title-block {}
+
+    .card-rank-name {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .card-rank {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .card-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .card-type {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .card-score-block {
+      text-align: right;
+    }
+
+    .card-score-number {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .card-score-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 3px;
+    }
+
+    .score-green  { color: var(--green); }
+    .score-yellow { color: var(--yellow); }
+    .score-orange { color: #f97316; }
+    .score-red    { color: var(--red); }
+
+    .card-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .meta-item {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+    }
+
+    .meta-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .meta-value {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .card-body { grid-template-columns: 1fr; }
+      .cover { padding: 48px 24px 40px; }
+      .cover-title { font-size: 1.7rem; }
+      .criteria-grid { grid-template-columns: 1fr; }
+    }
+
+    .card-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .field-value {
+      font-size: 0.84rem;
+      color: var(--text-mid);
+      line-height: 1.55;
+    }
+
+    .card-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-action-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ─── Insights ─── */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .insight-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+    }
+
+    .insight-icon {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .insight-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .insight-body {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Moat callout ─── */
+    .moat-callout {
+      background: var(--accent-glow);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      margin-top: 32px;
+    }
+
+    .moat-callout .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      margin-bottom: 8px;
+    }
+
+    .moat-callout .headline {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .moat-callout .body {
+      font-size: 0.86rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+      max-width: 780px;
+    }
+
+    /* ─── Footer ─── */
+    .doc-footer {
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── Utility ─── */
+    hr.section-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 60px 0 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── COVER ─── -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="brand-lockup">
+      <div class="brand-mark">9</div>
+      <div class="brand-name">9 Enterprises LLC</div>
+    </div>
+
+    <div class="cover-classification">
+      <div class="dot"></div>
+      Internal — Confidential
+    </div>
+
+    <div class="cover-divider"></div>
+
+    <h1 class="cover-title">Universe Directory<br>Strategic Product Evaluation</h1>
+    <p class="cover-subtitle">April 9, 2026 — Internal Decision Document</p>
+
+    <div class="cover-prepared">
+      <span class="label">Prepared by</span>
+      <span class="value">9 (CEO) &amp; Ara (Strategic Consultant)</span>
+      <span style="color:var(--border); margin: 0 4px;">|</span>
+      <span class="label">Distribution</span>
+      <span class="value">Owner, 9, Ara — 3 recipients only</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ─── SCORING FRAMEWORK ─── -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">01 — Evaluation Method</div>
+      <h2 class="section-title">Scoring Framework</h2>
+      <p class="section-desc">Each product is evaluated on six weighted criteria. Scores run 1–10. Weighted average determines strategic rank. Framework was agreed upon by 9 and Ara prior to individual scoring.</p>
+    </div>
+
+    <div class="criteria-grid">
+
+      <div class="criterion-card">
+        <div class="criterion-number">01</div>
+        <div class="criterion-info">
+          <div class="criterion-name">Market Viability</div>
+          <div class="criterion-weight">15% weight — Does a real, accessible market exist today?</div>
+          <div class="weight-bar-track"><div class="weight-bar-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+
+      <div class="criterion-card">
+        <div class="criterion-number">02</div>
+        <div class="criterion-info">
+          <div class="criterion-name">Competitive Uniqueness</div>
+          <div class="criterion-weight">20% weight — Is there a defensible, differentiated position?</div>
+          <div class="weight-bar-track"><div class="weight-bar-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+
+      <div class="criterion-card">
+        <div class="criterion-number">03</div>
+        <div class="criterion-info">
+          <div class="criterion-name">Ecosystem Synergy</div>
+          <div class="criterion-weight">20% weight — Does it strengthen or leverage other 9E products?</div>
+          <div class="weight-bar-track"><div class="weight-bar-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+
+      <div class="criterion-card">
+        <div class="criterion-number">04</div>
+        <div class="criterion-info">
+          <div class="criterion-name">Likelihood of Success</div>
+          <div class="criterion-weight">15% weight — Given current team and resources, can it win?</div>
+          <div class="weight-bar-track"><div class="weight-bar-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+
+      <div class="criterion-card">
+        <div class="criterion-number">05</div>
+        <div class="criterion-info">
+          <div class="criterion-name">Revenue Potential</div>
+          <div class="criterion-weight">15% weight — What is the realistic ARR ceiling by Year 3?</div>
+          <div class="weight-bar-track"><div class="weight-bar-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+
+      <div class="criterion-card">
+        <div class="criterion-number">06</div>
+        <div class="criterion-info">
+          <div class="criterion-name">Mission Alignment</div>
+          <div class="criterion-weight">15% weight — Does it advance the 9E core mission?</div>
+          <div class="weight-bar-track"><div class="weight-bar-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── RANKED TABLE ─── -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">02 — Rankings</div>
+      <h2 class="section-title">Ranked Comparison — All Products</h2>
+      <p class="section-desc">Sorted by weighted composite score. Tier color indicates recommended strategic posture. Full analysis follows in Section 03.</p>
+    </div>
+
+    <div class="summary-table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Product</th>
+            <th>Score / 10</th>
+            <th>TAM</th>
+            <th>ARR Y3 Range</th>
+            <th>Recommended Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- Top Tier — Green -->
+          <tr class="tier-top">
+            <td class="rank-cell">1</td>
+            <td class="product-cell">
+              <div class="name">9enterprises Solution</div>
+              <div class="type">Platform / Operating System</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-green">9.10</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:91%; background:var(--green)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$7B → $180B</td>
+            <td class="arr-cell">$12M – $25M</td>
+            <td><span class="action-badge action-prioritize">Prioritize</span></td>
+          </tr>
+
+          <tr class="tier-top">
+            <td class="rank-cell">2</td>
+            <td class="product-cell">
+              <div class="name">AI Underwriter</div>
+              <div class="type">Vertical AI — Mortgage / Insurance</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-green">8.80</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:88%; background:var(--green)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$15B+</td>
+            <td class="arr-cell">$5M – $15M</td>
+            <td><span class="action-badge action-prioritize">Prioritize</span></td>
+          </tr>
+
+          <tr class="tier-top">
+            <td class="rank-cell">3</td>
+            <td class="product-cell">
+              <div class="name">Pepper</div>
+              <div class="type">Consumer AI — Personal Agent</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-green">8.45</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:84.5%; background:var(--green)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$20B+</td>
+            <td class="arr-cell">$3M – $10M</td>
+            <td><span class="action-badge action-prioritize">Prioritize</span></td>
+          </tr>
+
+          <!-- Mid Tier — Yellow -->
+          <tr class="tier-mid">
+            <td class="rank-cell">4</td>
+            <td class="product-cell">
+              <div class="name">Agent9</div>
+              <div class="type">Vertical AI — Real Estate</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-yellow">7.70</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:77%; background:var(--yellow)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$8B+</td>
+            <td class="arr-cell">$2M – $8M</td>
+            <td><span class="action-badge action-maintain">Maintain</span></td>
+          </tr>
+
+          <tr class="tier-mid">
+            <td class="rank-cell">5</td>
+            <td class="product-cell">
+              <div class="name">Trader9</div>
+              <div class="type">Autonomous Trading — Multi-Market</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-yellow">7.15</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:71.5%; background:var(--yellow)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$24B+</td>
+            <td class="arr-cell">$2M – $5M</td>
+            <td><span class="action-badge action-maintain">Maintain</span></td>
+          </tr>
+
+          <tr class="tier-mid">
+            <td class="rank-cell">6</td>
+            <td class="product-cell">
+              <div class="name">PlayAiGM</div>
+              <div class="type">Sports AI — Fantasy / GM</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-yellow">6.80</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:68%; background:var(--yellow)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$2B</td>
+            <td class="arr-cell">$1M – $2M (seasonal)</td>
+            <td><span class="action-badge action-maintain">Maintain</span></td>
+          </tr>
+
+          <tr class="tier-mid">
+            <td class="rank-cell">7</td>
+            <td class="product-cell">
+              <div class="name">Shop9</div>
+              <div class="type">Commerce — AI-Assisted Retail</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-yellow">6.75</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:67.5%; background:var(--yellow)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$5B+</td>
+            <td class="arr-cell">$1M – $3M</td>
+            <td><span class="action-badge action-rescope">Rescope</span></td>
+          </tr>
+
+          <!-- Bottom Tier — Red -->
+          <tr class="tier-bottom">
+            <td class="rank-cell">8</td>
+            <td class="product-cell">
+              <div class="name">Chaperone</div>
+              <div class="type">Consumer Safety — AI Guardian</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-red">5.35</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:53.5%; background:var(--red)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$1B+</td>
+            <td class="arr-cell">$0.5M – $2M</td>
+            <td><span class="action-badge action-shelve">Shelve</span></td>
+          </tr>
+
+          <tr class="tier-bottom">
+            <td class="rank-cell">9</td>
+            <td class="product-cell">
+              <div class="name">Hitchhiker's Guide</div>
+              <div class="type">Education — AI Literacy Platform</div>
+            </td>
+            <td>
+              <div class="score-bar-wrapper">
+                <div class="score-cell score-red">5.30</div>
+                <div class="score-bar-track"><div class="score-bar-fill" style="width:53%; background:var(--red)"></div></div>
+              </div>
+            </td>
+            <td class="tam-cell">$1B+</td>
+            <td class="arr-cell">$0.3M – $1M</td>
+            <td><span class="action-badge action-shelve">Shelve</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── PRODUCT CARDS ─── -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">03 — Individual Analysis</div>
+      <h2 class="section-title">Product-by-Product Evaluation</h2>
+      <p class="section-desc">Full strategic card for each product. Read alongside the ranking table. Recommended action reflects current resources and 30-day window.</p>
+    </div>
+
+    <!-- TOP TIER -->
+    <div class="tier-label">
+      <span class="tier-pill tier-pill-green">Tier 1 — Prioritize</span>
+      <div class="tier-line"></div>
+    </div>
+
+    <!-- Card 1: 9enterprises Solution -->
+    <div class="product-card card-green">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#1</span>
+            <span class="card-name">9enterprises Solution</span>
+          </div>
+          <div class="card-type">Platform / Operating System</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-green">9.10</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">In Development</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">TAM</div>
+          <div class="meta-value">$7B → $180B</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">ARR Year 3</div>
+          <div class="meta-value">$12M – $25M</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Category</div>
+          <div class="meta-value">B2B SaaS Platform</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">Autonomous AI operating system for businesses — not a tool, but the OS under every tool. No direct competitor has deployed this at scale. First-mover window is real.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Every other 9E product is a module in this platform. This is the container. Revenue from Solution directly multiplies revenue from every product below it.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$12M conservative / $25M aggressive by Year 3. Enterprise seat pricing at $2K–$8K/seat/yr. 150–500 enterprise accounts achievable with Rapid Mortgage as anchor.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Enterprise sales cycle is long. Need one marquee anchor client to compress timeline. Rapid Mortgage is the obvious first door.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-prioritize">Prioritize — Flagship</span>
+      </div>
+    </div>
+
+    <!-- Card 2: AI Underwriter -->
+    <div class="product-card card-green">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#2</span>
+            <span class="card-name">AI Underwriter</span>
+          </div>
+          <div class="card-type">Vertical AI — Mortgage / Insurance</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-green">8.80</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">POC Stage</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">TAM</div>
+          <div class="meta-value">$15B+</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">ARR Year 3</div>
+          <div class="meta-value">$5M – $15M</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Category</div>
+          <div class="meta-value">Vertical B2B SaaS</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">RAG-powered underwriting decisioning on proprietary lender documents. Incumbent underwriting software is 20+ years old, expensive, and brittle. Gap is wide open.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Direct pipeline to Rapid Mortgage for POC validation. Kyle Shea is the internal champion. Once proven, horizontal expansion across any lending vertical is a known path.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$5M conservative / $15M aggressive by Year 3. Per-file or per-seat pricing. Single mid-size lender = $250K–$500K ARR. 20 lenders = Series A territory.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Regulatory scrutiny on automated underwriting is real. FHA and FNMA compliance is non-negotiable. Build for compliance from day one — not retrofitted.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-prioritize">Prioritize — Highest Revenue Ceiling</span>
+      </div>
+    </div>
+
+    <!-- Card 3: Pepper -->
+    <div class="product-card card-green">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#3</span>
+            <span class="card-name">Pepper</span>
+          </div>
+          <div class="card-type">Consumer AI — Personal Agent</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-green">8.45</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">Active Build (Wendy)</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">TAM</div>
+          <div class="meta-value">$20B+</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">ARR Year 3</div>
+          <div class="meta-value">$3M – $10M</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Category</div>
+          <div class="meta-value">Consumer B2C Subscription</div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">Personality-first personal AI with voice, video, and task execution. Not a chatbot — a persistent entity that knows the user. Emotional design is the moat; incumbents have none.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Consumer front door for the 9E universe. Users who meet Pepper are introduced to the full product suite. Brand awareness and consumer data funnel into every B2B product above.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$3M conservative / $10M aggressive by Year 3. $20–30/month subscription. 12,500–40,000 paying users achievable at that range with proper distribution.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Consumer AI is crowded. Differentiation must be felt in the first 90 seconds of interaction — not described in a pitch deck. The build quality of personality is the entire bet.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-prioritize">Prioritize — Soul Anchor of the Universe</span>
+      </div>
+    </div>
+
+    <!-- MID TIER -->
+    <div class="tier-label">
+      <span class="tier-pill tier-pill-yellow">Tier 2 — Maintain / Rescope</span>
+      <div class="tier-line"></div>
+    </div>
+
+    <!-- Card 4: Agent9 -->
+    <div class="product-card card-yellow">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#4</span>
+            <span class="card-name">Agent9</span>
+          </div>
+          <div class="card-type">Vertical AI — Real Estate</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-yellow">7.70</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Concept — Q3 2026</div></div>
+        <div class="meta-item"><div class="meta-label">TAM</div><div class="meta-value">$8B+</div></div>
+        <div class="meta-item"><div class="meta-label">ARR Year 3</div><div class="meta-value">$2M – $8M</div></div>
+        <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">Vertical B2B/B2C SaaS</div></div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">AI agent handling the entire real estate transaction lifecycle — search, offer, due diligence, close. Strong differentiation if mortgage + real estate are unified in one platform.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Natural extension of AI Underwriter. Mortgage + real estate = full home-buying OS. Synergy is high but requires AI Underwriter to be proven first.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$2M–$8M by Year 3. Transaction fee model or per-agent SaaS. Commission disruption play is politically sensitive — price accordingly.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Realtor industry is actively hostile to automation. Licensing requirements are state-by-state. Regulatory sequencing matters. Don't build ahead of legal clearance.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-maintain">Maintain — Hold Until AI Underwriter Proves</span>
+      </div>
+    </div>
+
+    <!-- Card 5: Trader9 -->
+    <div class="product-card card-yellow">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#5</span>
+            <span class="card-name">Trader9</span>
+          </div>
+          <div class="card-type">Autonomous Trading — Multi-Market</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-yellow">7.15</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Retraining — Not Live</div></div>
+        <div class="meta-item"><div class="meta-label">TAM</div><div class="meta-value">$24B+</div></div>
+        <div class="meta-item"><div class="meta-label">ARR Year 3</div><div class="meta-value">$2M – $5M</div></div>
+        <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">FinTech / Prop Trading</div></div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">Arbitrage + political exploitation focus with 8/10 aggression tuning. TAM is massive but hedge funds are the competition. Edge must be built on information velocity, not raw capital.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Standalone revenue engine. Profits can fund platform development. Moderate synergy — capital generation is the primary value to the universe, not product integration.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$2M–$5M by Year 3 assuming consistent alpha. Retraining must pass 9's sign-off before live capital is re-enabled. No live trading until green-lit.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Market conditions, model drift, overfitting on backtests. Fee-aware execution is mandatory. Performance attribution must be real-time, not end-of-month.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-maintain">Maintain — Complete Retraining First</span>
+      </div>
+    </div>
+
+    <!-- Card 6: PlayAiGM -->
+    <div class="product-card card-yellow">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#6</span>
+            <span class="card-name">PlayAiGM</span>
+          </div>
+          <div class="card-type">Sports AI — Fantasy / GM</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-yellow">6.80</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Live — ainflgm.com</div></div>
+        <div class="meta-item"><div class="meta-label">TAM</div><div class="meta-value">$2B</div></div>
+        <div class="meta-item"><div class="meta-label">ARR Year 3</div><div class="meta-value">$1M – $2M (seasonal)</div></div>
+        <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">Consumer B2C / Freemium</div></div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">AI-powered GM simulation for fantasy and real sports. Niche but passionate user base. Seasonal demand creates revenue volatility — a structural weakness the model must plan around.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Consumer brand builder. Sports audience is Pepper's natural overlap audience. Cross-product funnel is viable. Serves as a low-CAC consumer acquisition channel if managed well.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$1M–$2M by Year 3, but seasonal. AdSense + affiliate (BetMGM, FanDuel) after 100+ daily users. Monetization is straightforward once traffic is proven.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Small TAM, high competition from established fantasy platforms. Niche positioning is the only viable strategy — do not try to be Sleeper or ESPN. Be the intelligence layer, not the platform.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-maintain">Maintain — Monetize What Exists</span>
+      </div>
+    </div>
+
+    <!-- Card 7: Shop9 -->
+    <div class="product-card card-orange">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#7</span>
+            <span class="card-name">Shop9</span>
+          </div>
+          <div class="card-type">Commerce — AI-Assisted Retail</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-orange">6.75</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Concept / Hopper</div></div>
+        <div class="meta-item"><div class="meta-label">TAM</div><div class="meta-value">$5B+</div></div>
+        <div class="meta-item"><div class="meta-label">ARR Year 3</div><div class="meta-value">$1M – $3M</div></div>
+        <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">B2C Commerce / SaaS</div></div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">AI-curated shopping and dropshipping with autonomous inventory management. Concept is real but execution against Amazon, Shopify, and established dropship operators is an uphill fight.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Low synergy with core 9E vertical products. Would compete for team resources without feeding the platform. Rescope as a Pepper feature or standalone micro-SaaS rather than a full product line.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$1M–$3M by Year 3 in a best case. Margins in commerce are thin. If pursued, dropshipping proving grounds model — $200/mo per concept — is the right sandbox, not a full product launch.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Resource distraction. Every engineer hour on Shop9 is an hour not on AI Underwriter or the platform. Scope must be radically narrowed before any serious investment.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-rescope">Rescope — Narrow Scope or Fold into Pepper</span>
+      </div>
+    </div>
+
+    <!-- BOTTOM TIER -->
+    <div class="tier-label">
+      <span class="tier-pill tier-pill-red">Tier 3 — Shelve / Kill</span>
+      <div class="tier-line"></div>
+    </div>
+
+    <!-- Card 8: Chaperone -->
+    <div class="product-card card-red">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#8</span>
+            <span class="card-name">Chaperone</span>
+          </div>
+          <div class="card-type">Consumer Safety — AI Guardian</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-red">5.35</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Concept</div></div>
+        <div class="meta-item"><div class="meta-label">TAM</div><div class="meta-value">$1B+</div></div>
+        <div class="meta-item"><div class="meta-label">ARR Year 3</div><div class="meta-value">$0.5M – $2M</div></div>
+        <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">Consumer Safety SaaS</div></div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">AI safety guardian for children or vulnerable users. Concept is emotionally resonant but market is dominated by established players with regulatory relationships that take years to build.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Low synergy. Does not feed the platform, Underwriter, or Pepper in any meaningful near-term way. Would operate as a standalone island requiring its own GTM and compliance build.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$0.5M–$2M by Year 3 in an optimistic scenario. Consumer safety products monetize slowly. COPPA, FERPA, and similar regulations add significant compliance overhead from day one.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Regulatory surface area is massive. Legal exposure if the product fails in a safety context is existential. Not the right bet at this stage of the company.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-shelve">Shelve — Revisit at $5M ARR</span>
+      </div>
+    </div>
+
+    <!-- Card 9: Hitchhiker's Guide -->
+    <div class="product-card card-red">
+      <div class="card-header">
+        <div class="card-title-block">
+          <div class="card-rank-name">
+            <span class="card-rank">#9</span>
+            <span class="card-name">Hitchhiker's Guide</span>
+          </div>
+          <div class="card-type">Education — AI Literacy Platform</div>
+        </div>
+        <div class="card-score-block">
+          <div class="card-score-number score-red">5.30</div>
+          <div class="card-score-label">Weighted Score</div>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value">Concept</div></div>
+        <div class="meta-item"><div class="meta-label">TAM</div><div class="meta-value">$1B+</div></div>
+        <div class="meta-item"><div class="meta-label">ARR Year 3</div><div class="meta-value">$0.3M – $1M</div></div>
+        <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">EdTech / Content</div></div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-field">
+          <div class="field-label">Competitive Uniqueness</div>
+          <div class="field-value">AI literacy education platform with an education-first narrative. Concept is well-positioned thematically but monetization in EdTech is notoriously difficult and slow-moving.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Ecosystem Fit</div>
+          <div class="field-value">Moderate brand play — could reinforce 9E's thought leadership. But it competes with free content on YouTube, Reddit, and X. Requires a publishing operation that 9E is not resourced to run right now.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">ARR Projections</div>
+          <div class="field-value">$0.3M–$1M by Year 3. EdTech margins are thin outside of enterprise licensing. Consumer EdTech has the lowest LTV in the product landscape. Not where 9E's capital should go in Phase 1.</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Key Risk</div>
+          <div class="field-value">Content moats are slow to build and easy to replicate. AI literacy content is already proliferating from well-funded competitors. The window for first-mover advantage in this category has likely passed.</div>
+        </div>
+      </div>
+
+      <div class="card-action-row">
+        <span class="card-action-label">Recommended Action</span>
+        <span class="action-badge action-shelve">Shelve — Repurpose Content Assets into Pepper</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── KEY INSIGHTS ─── -->
+  <section>
+    <div class="section-header">
+      <div class="section-label">04 — Strategic Synthesis</div>
+      <h2 class="section-title">Key Insights &amp; Decisions</h2>
+      <p class="section-desc">Five conclusions that must drive the next 90 days of resource allocation.</p>
+    </div>
+
+    <div class="insight-grid">
+
+      <div class="insight-card">
+        <div class="insight-title">The Platform IS the Strategy</div>
+        <div class="insight-body">9E Solution scored #1 because it is not a product — it is the container every other product lives in. Resource it first. Build it right. Every dollar in the platform multiplies the value of every product below it.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">AI Underwriter is the Revenue Engine</div>
+        <div class="insight-body">Highest individual revenue ceiling in the entire portfolio. $15M ARR Y3 is not a stretch — it is a baseline if Rapid Mortgage is the anchor client. One signed enterprise deal funds the next 12 months of development across all products.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">Pepper is the Soul — Not Optional</div>
+        <div class="insight-body">Consumer trust is built through Pepper. Every B2B client who encounters 9E will look for the human entry point. Pepper is that entry point. She is ranked #3 not because she is less important — but because Platform and Underwriter are more urgent.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">Bottom 3 Need Hard Decisions Now</div>
+        <div class="insight-body">Chaperone, Hitchhiker's Guide, and Shop9 (rescoped) are consuming strategic attention without contributing proportional value. Shelving is not failure — it is capital discipline. Announce the decision, document the rationale, move on. Revisit at $5M ARR.</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">The Real Moat Is Integration</div>
+        <div class="insight-body">Any single 9E product is copyable by a well-funded competitor. The ecosystem is not. When a client uses AI Underwriter through the 9E Platform, onboarded by Pepper, supported by Trader9's capital — no single-product competitor can replicate that. Build integration deliberately.</div>
+      </div>
+
+    </div>
+
+    <div class="moat-callout">
+      <div class="label">Strategic Conclusion — Ara &amp; 9</div>
+      <div class="headline">Products feeding each other is the real competitive moat.</div>
+      <div class="body">9 Enterprises is not building a product company. It is building an operating system for businesses that happens to manifest as products. The competitive advantage is not any individual feature — it is the compounding network effect of every product making every other product stronger. This is the insight that separates 9E from every SaaS startup in the market. Protect it. Sequence around it. Never let short-term revenue pressure cause the team to build standalone islands that do not connect back to the platform.</div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <div class="doc-footer">
+    <div class="footer-left">
+      <div class="brand-mark" style="width:24px; height:24px; font-size:11px; border-radius:5px;">9</div>
+      <span>9 Enterprises LLC — Internal Confidential</span>
+    </div>
+    <span>April 9, 2026 | Distribution: Owner, 9, Ara only</span>
+  </div>
+
+</div>
+</body>
+</html>
