@@ -856,10 +856,13 @@ export { executeResearch, saveReport, buildTelegramSummary, sendTelegramNotifica
 // Run
 // ---------------------------------------------------------------------------
 
-main().catch(err => {
-  console.error(`MIND FATAL: ${err.message}`);
-  if (logPath) {
-    try { appendFileSync(logPath, `[${new Date().toISOString()}] FATAL: ${err.message}\n${err.stack}\n`); } catch {}
-  }
-  process.exit(1);
-});
+// Only run standalone if this file is executed directly (not imported as a module)
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  main().catch(err => {
+    console.error(`MIND FATAL: ${err.message}`);
+    if (logPath) {
+      try { appendFileSync(logPath, `[${new Date().toISOString()}] FATAL: ${err.message}\n${err.stack}\n`); } catch {}
+    }
+    process.exit(1);
+  });
+}

@@ -38,6 +38,8 @@ import {
   isSocialTask,
   detectPlatforms,
 } from './your9-agent-social.mjs';
+import { handleEmailDelegation } from './your9-agent-voice-email.mjs';
+import { executeResearch, saveReport } from './your9-agent-mind-research.mjs';
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -344,6 +346,22 @@ function updateTaskFile(taskPath, updates) {
 }
 
 // ---------------------------------------------------------------------------
+// Email task detection — mirrors isSocialTask from the social agent
+// ---------------------------------------------------------------------------
+
+function isEmailTask(task) {
+  const lower = task.toLowerCase();
+  return (
+    lower.includes('send email') ||
+    lower.includes('draft email') ||
+    lower.includes('email to') ||
+    lower.includes('write an email') ||
+    lower.includes('send an email') ||
+    (lower.includes('email') && lower.includes('@'))
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Agent execution — process a CEO-delegated task with Sonnet
 // ---------------------------------------------------------------------------
 
@@ -368,13 +386,77 @@ async function executeAgentTask(anthropicKey, agentId, agentConfig, instanceDir,
         taskDir,
       });
       if (result.success) {
-        return `Social draft sent to founder for approval (Post ID: ${result.postId}). Platforms: ${result.platforms.join(', ')}. Awaiting PUBLISH or revision instructions.`;
+        const report = `Social draft sent to founder for approval (Post ID: ${result.postId}). Platforms: ${result.platforms.join(', ')}. Awaiting PUBLISH or revision instructions.`;
+        appendConversationEntry(hub.convDir, 'assistant', `[Social Agent] ${report}`);
+        return report;
       } else {
         return `Social drafting failed: ${result.error}`;
       }
     } catch (e) {
       log(`Social agent error: ${e.message}`);
       return `Social agent error: ${e.message}`;
+    }
+  }
+
+  // Email tasks delegated to the voice agent — route to the email approval workflow.
+  // Triggered when the task text contains email-intent keywords.
+  if (agentId === 'voice' && isEmailTask(task)) {
+    log(`Voice agent received email task — routing to email agent`);
+    try {
+      const report = await handleEmailDelegation(hub, task);
+      appendConversationEntry(hub.convDir, 'assistant', `[Email Agent] ${report}`);
+      return report;
+    } catch (e) {
+      log(`Email agent error: ${e.message}`);
+      return `Email agent error: ${e.message}`;
+    }
+  }
+
+  // Research tasks delegated to the mind agent — route to the research pipeline.
+  if (agentId === 'mind') {
+    log(`Mind agent received research task — routing to research pipeline`);
+    const taskEntry = {
+      agentId: 'mind',
+      task,
+      status: 'researching',
+      startedAt: new Date().toISOString(),
+    };
+    const taskPath = logTask(taskDir, taskEntry);
+
+    try {
+      const result = await executeResearch({
+        anthropicKey,
+        query: task,
+        followUpQuestions: [],
+        instanceConfig: hub.instanceConfig,
+      });
+
+      const reportPath = saveReport(instanceDir, task, result.report);
+      updateTaskFile(taskPath, {
+        status: 'report-delivered',
+        reportPath,
+        summary: result.summary,
+        citationCount: result.citationCount,
+        completedAt: new Date().toISOString(),
+      });
+
+      // Notify founder via Telegram with the summary
+      if (hub.botToken && hub.ownerChatId) {
+        try {
+          await sendTelegramMessage(hub.botToken, hub.ownerChatId, result.summary);
+        } catch (e) {
+          log(`Research Telegram notification failed (non-fatal): ${e.message}`);
+        }
+      }
+
+      const report = `Research complete. Topic: "${task.slice(0, 80)}". Sources: ${result.citationCount}. Report saved to instance data/reports/. Summary sent to founder.`;
+      appendConversationEntry(hub.convDir, 'assistant', `[Research Agent] ${result.summary}`);
+      return report;
+    } catch (e) {
+      const errMsg = `Research agent error: ${e.message}`;
+      log(errMsg);
+      updateTaskFile(taskPath, { status: 'failed', error: e.message, failedAt: new Date().toISOString() });
+      return errMsg;
     }
   }
 
@@ -415,6 +497,8 @@ async function executeAgentTask(anthropicKey, agentId, agentConfig, instanceDir,
     });
 
     log(`Agent ${agentId} completed. Result: "${result.slice(0, 100)}..."`);
+    // Persist agent result to conversation history so the dashboard pipeline view reflects it
+    appendConversationEntry(hub.convDir, 'assistant', `[${agentId} agent] ${result.slice(0, 2000)}`);
     return result;
   } catch (e) {
     const errMsg = `Agent ${agentId} error: ${e.message}`;
