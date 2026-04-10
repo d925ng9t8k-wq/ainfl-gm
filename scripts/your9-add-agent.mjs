@@ -816,7 +816,10 @@ async function main() {
   console.log('');
 }
 
-main().catch(err => {
-  console.error(`ADD-AGENT FATAL: ${err.message}`);
-  process.exit(1);
-});
+// Only run CLI main when invoked directly (not when imported as a module)
+if (import.meta.url === new URL(process.argv[1], 'file://').href) {
+  main().catch(err => {
+    console.error(`ADD-AGENT FATAL: ${err.message}`);
+    process.exit(1);
+  });
+}

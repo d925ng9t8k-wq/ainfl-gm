@@ -23,6 +23,7 @@ import {
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { createServer, request as httpRequest } from 'http';
+import { addAgent } from './your9-add-agent.mjs';
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -196,6 +197,134 @@ function readAuditLog(instanceDir, limit = 100) {
   } catch {
     return [];
   }
+}
+
+// ---------------------------------------------------------------------------
+// Founder control writers — write control files that the hub picks up
+// ---------------------------------------------------------------------------
+
+/**
+ * Read agent state file — instances/{id}/data/agent-states.json
+ * Returns { [agentId]: 'paused' | 'running' | 'idle' }
+ */
+function readAgentStates(instanceDir) {
+  const p = join(instanceDir, 'data', 'agent-states.json');
+  if (!existsSync(p)) return {};
+  try { return JSON.parse(readFileSync(p, 'utf-8')); } catch { return {}; }
+}
+
+/**
+ * Write a control directive for an agent.
+ * action: 'pause' | 'resume' | 'override'
+ * Writes to instances/{id}/data/controls/{ts}-{agentId}-{action}.json
+ * Also updates agent-states.json so the dashboard reflects immediately.
+ */
+function writeAgentControl(instanceDir, agentId, action, note) {
+  const controlsDir = join(instanceDir, 'data', 'controls');
+  mkdirSync(controlsDir, { recursive: true });
+
+  const ts = Date.now();
+  const filename = `${ts}-${agentId}-${action}.json`;
+  const record = {
+    type: 'agent_control',
+    agentId,
+    action,
+    note: (note || '').slice(0, 500),
+    submittedAt: new Date().toISOString(),
+    status: 'pending',
+  };
+  writeFileSync(join(controlsDir, filename), JSON.stringify(record, null, 2));
+
+  // Update agent-states so dashboard reflects immediately
+  const statesPath = join(instanceDir, 'data', 'agent-states.json');
+  let states = readAgentStates(instanceDir);
+  if (action === 'pause') states[agentId] = 'paused';
+  if (action === 'resume') states[agentId] = 'running';
+  writeFileSync(statesPath, JSON.stringify(states, null, 2));
+}
+
+/**
+ * Write a direct instruction to an agent or the CEO.
+ * Writes to instances/{id}/data/tasks/{ts}-instruct-task.json
+ * Also writes to shared context so all agents see it.
+ */
+function writeInstruction(instanceDir, targetId, instruction) {
+  const tasksDir = join(instanceDir, 'data', 'tasks');
+  mkdirSync(tasksDir, { recursive: true });
+
+  const ts = Date.now();
+  const taskId = `${ts}-instruct`;
+  const task = {
+    id: taskId,
+    type: 'founder_instruction',
+    agentId: targetId,
+    task: instruction.slice(0, 4000),
+    source: 'founder_dashboard',
+    status: 'queued',
+    loggedAt: new Date().toISOString(),
+  };
+  writeFileSync(join(tasksDir, `${taskId}-task.json`), JSON.stringify(task, null, 2));
+
+  // Also write to shared context so hub picks it up via context scan
+  const ctxPath = join(instanceDir, 'data', 'shared-context.json');
+  let ctx = { lastUpdated: null, entries: {} };
+  if (existsSync(ctxPath)) {
+    try { ctx = JSON.parse(readFileSync(ctxPath, 'utf-8')); } catch {}
+  }
+  if (!ctx.entries) ctx.entries = {};
+  ctx.entries[`founder_instruction_${ts}`] = {
+    value: `Founder instruction to ${targetId}: ${instruction.slice(0, 300)}`,
+    writtenBy: 'founder',
+    writtenAt: new Date().toISOString(),
+  };
+  ctx.lastUpdated = new Date().toISOString();
+  writeFileSync(ctxPath, JSON.stringify(ctx, null, 2));
+}
+
+/**
+ * Edit a queued task — replace its task text.
+ * Only works on tasks with status 'queued' (cannot edit running/completed).
+ */
+function editTask(instanceDir, taskId, newTaskText) {
+  const tasksDir = join(instanceDir, 'data', 'tasks');
+  const taskFile = join(tasksDir, `${taskId}-task.json`);
+
+  if (!existsSync(taskFile)) {
+    throw new Error(`Task not found: ${taskId}`);
+  }
+
+  const task = JSON.parse(readFileSync(taskFile, 'utf-8'));
+  if (task.status !== 'queued') {
+    throw new Error(`Cannot edit task with status "${task.status}" — only queued tasks can be edited`);
+  }
+
+  task.task = newTaskText.slice(0, 4000);
+  task.editedAt = new Date().toISOString();
+  task.editedBy = 'founder';
+  writeFileSync(taskFile, JSON.stringify(task, null, 2));
+}
+
+/**
+ * Cancel a queued task — sets status to 'cancelled'.
+ * Only works on tasks with status 'queued'.
+ */
+function cancelTask(instanceDir, taskId) {
+  const tasksDir = join(instanceDir, 'data', 'tasks');
+  const taskFile = join(tasksDir, `${taskId}-task.json`);
+
+  if (!existsSync(taskFile)) {
+    throw new Error(`Task not found: ${taskId}`);
+  }
+
+  const task = JSON.parse(readFileSync(taskFile, 'utf-8'));
+  if (task.status !== 'queued') {
+    throw new Error(`Cannot cancel task with status "${task.status}" — only queued tasks can be cancelled`);
+  }
+
+  task.status = 'cancelled';
+  task.cancelledAt = new Date().toISOString();
+  task.cancelledBy = 'founder';
+  writeFileSync(taskFile, JSON.stringify(task, null, 2));
 }
 
 /**
@@ -456,6 +585,152 @@ function computeRoiData(tasks, conversations, customerConfig) {
 }
 
 // ---------------------------------------------------------------------------
+// Billing data readers — read-only, never write
+// ---------------------------------------------------------------------------
+
+/**
+ * Read billing state from instances/{id}/data/billing.json (written by your9-billing.mjs)
+ */
+function readBillingData(instanceDir) {
+  const p = join(instanceDir, 'data', 'billing.json');
+  if (!existsSync(p)) return null;
+  try { return JSON.parse(readFileSync(p, 'utf-8')); } catch { return null; }
+}
+
+/**
+ * Read usage analytics from instances/{id}/data/analytics/usage.json (written by your9-beta-feedback.mjs)
+ */
+function readUsageData(instanceDir) {
+  const p = join(instanceDir, 'data', 'analytics', 'usage.json');
+  if (!existsSync(p)) return null;
+  try { return JSON.parse(readFileSync(p, 'utf-8')); } catch { return null; }
+}
+
+// Tier definitions mirrored from your9-billing.mjs — used for limit enforcement and comparison.
+// Keep in sync with TIERS in your9-billing.mjs.
+const BILLING_TIERS = {
+  starter: {
+    label: 'Starter',
+    priceMonthly: 499,
+    maxAgents: 3,
+    monthlyCallLimit: 100,
+    storageGB: 5,
+    features: ['3 AI agents', '100 API calls/mo', '5GB storage', 'Telegram channel'],
+  },
+  growth: {
+    label: 'Growth',
+    priceMonthly: 999,
+    maxAgents: 6,
+    monthlyCallLimit: 500,
+    storageGB: 25,
+    features: ['6 AI agents', '500 API calls/mo', '25GB storage', 'Telegram + Email + Voice'],
+  },
+  enterprise: {
+    label: 'Enterprise',
+    priceMonthly: 2499,
+    maxAgents: 12,
+    monthlyCallLimit: -1, // unlimited
+    storageGB: 100,
+    features: ['12 AI agents', 'Unlimited API calls', '100GB storage', 'All channels + SMS'],
+  },
+};
+
+// Action cost table — what each common action type costs in approximate API calls.
+// Used to explain to founders what their spend is actually buying.
+const ACTION_COSTS = [
+  { label: 'Telegram message replied',  calls: 1,  description: 'CEO reads and responds to a single message' },
+  { label: 'Research query completed',  calls: 4,  description: 'CEO researches a topic and delivers a brief' },
+  { label: 'Email drafted + sent',      calls: 3,  description: 'CEO drafts, reviews, and sends an outbound email' },
+  { label: 'Social post drafted',       calls: 2,  description: 'CEO writes a platform-ready social post' },
+  { label: 'Task delegated to agent',   calls: 2,  description: 'CEO breaks down a task and assigns it to a specialist' },
+  { label: 'Audit log entry recorded',  calls: 1,  description: 'CEO logs a decision with reasoning chain' },
+];
+
+/**
+ * Compute billing panel data from billing.json + usage.json + tier config.
+ * Returns a structured object for the HTML renderer.
+ */
+function computeBillingPanel(instanceDir, customerConfig) {
+  const billing = readBillingData(instanceDir);
+  const usage   = readUsageData(instanceDir);
+
+  const tierKey = billing?.tier || customerConfig?.tier || 'starter';
+  const tier    = BILLING_TIERS[tierKey] || BILLING_TIERS.starter;
+
+  // Usage this period — prefer billing.json (authoritative), fall back to usage.json
+  const apiCallsUsed     = billing?.usage?.apiCalls     ?? usage?.messagesSent        ?? 0;
+  const tasksCompleted   = billing?.usage?.tasksCompleted ?? usage?.tasksCompleted     ?? 0;
+  const periodStart      = billing?.usage?.periodStart   ?? billing?.currentPeriodStart ?? null;
+  const periodEnd        = billing?.usage?.periodEnd     ?? billing?.currentPeriodEnd   ?? null;
+
+  // Monthly call limit (-1 = unlimited)
+  const callLimit        = tier.monthlyCallLimit;
+  const isUnlimited      = callLimit === -1;
+  const callsUsedPct     = isUnlimited ? 0 : Math.min(100, (apiCallsUsed / Math.max(1, callLimit)) * 100);
+
+  // Alert level: 0=ok, 70=warn, 90=critical, 100=at-cap
+  const alertLevel = isUnlimited ? 0
+    : callsUsedPct >= 100 ? 100
+    : callsUsedPct >= 90  ? 90
+    : callsUsedPct >= 70  ? 70
+    : 0;
+
+  // Projected monthly spend based on daily burn rate
+  let projectedMonthlyApiCalls = null;
+  if (periodStart && apiCallsUsed > 0) {
+    const startTs   = new Date(periodStart).getTime();
+    const nowTs     = Date.now();
+    const daysIn    = Math.max(1, (nowTs - startTs) / (1000 * 60 * 60 * 24));
+    const dailyRate = apiCallsUsed / daysIn;
+    projectedMonthlyApiCalls = Math.round(dailyRate * 30);
+  }
+
+  // Cost context — projected bill is flat subscription; show what % of their sub is being utilized
+  const monthlyPrice = tier.priceMonthly;
+  const costPerCall  = isUnlimited ? null : (monthlyPrice / Math.max(1, callLimit));
+  const estimatedCallCost = costPerCall !== null
+    ? (costPerCall * apiCallsUsed).toFixed(2)
+    : null;
+
+  // Daily active breakdown from usage.json
+  const dailyActive = usage?.dailyActive || {};
+  const dailyEntries = Object.entries(dailyActive)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .slice(-14); // last 14 days
+
+  // Tier upgrade suggestion
+  const tierKeys    = Object.keys(BILLING_TIERS);
+  const currentIdx  = tierKeys.indexOf(tierKey);
+  const nextTierKey = currentIdx < tierKeys.length - 1 ? tierKeys[currentIdx + 1] : null;
+  const nextTier    = nextTierKey ? BILLING_TIERS[nextTierKey] : null;
+
+  // Feature usage from usage.json
+  const featureUsage = usage?.featureUsage || {};
+
+  return {
+    tier,
+    tierKey,
+    billing,
+    apiCallsUsed,
+    tasksCompleted,
+    callLimit,
+    isUnlimited,
+    callsUsedPct,
+    alertLevel,
+    periodStart,
+    periodEnd,
+    projectedMonthlyApiCalls,
+    monthlyPrice,
+    estimatedCallCost,
+    dailyEntries,
+    nextTier,
+    nextTierKey,
+    featureUsage,
+    actionCosts: ACTION_COSTS,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Daily briefing builder — synthesizes today's activity into human text
 // ---------------------------------------------------------------------------
 
@@ -591,6 +866,7 @@ function renderDashboard(data) {
     customerConfig,
     ceoConfig,
     agentConfigs,
+    agentStates,
     conversations,
     tasks,
     auditLog,
@@ -598,6 +874,7 @@ function renderDashboard(data) {
     velocityScore,
     dailyBriefing,
     roiData,
+    billingData,
     dashboardPort,
     hubPort,
     generatedAt,
@@ -635,6 +912,21 @@ function renderDashboard(data) {
       agentStatuses[aid] = 'idle';
     }
   }
+
+  // Agent cap from tier config
+  const maxAgents = customerConfig?.tierConfig?.maxAgents ?? 3;
+  const currentAgentCount = agentIds.length;
+  const atAgentCap = currentAgentCount >= maxAgents;
+
+  // Pre-built agent library definitions
+  const AGENT_LIBRARY = [
+    { role: 'Sales Agent',     icon: '&#128200;', description: 'Outbound prospecting, lead follow-up, pipeline tracking, and deal velocity monitoring.' },
+    { role: 'Finance Agent',   icon: '&#128181;', description: 'Invoice tracking, expense categorization, budget variance alerts, and cash flow forecasting.' },
+    { role: 'Product Agent',   icon: '&#128736;', description: 'Feature backlog management, roadmap coordination, bug triage, and release tracking.' },
+    { role: 'Legal Agent',     icon: '&#9878;',   description: 'Regulatory deadline monitoring, policy gap identification, and compliance audit documentation.' },
+    { role: 'HR Agent',        icon: '&#128101;', description: 'Hiring pipeline, candidate summaries, onboarding checklists, and team capacity tracking.' },
+    { role: 'Marketing Agent', icon: '&#128227;', description: 'Campaign planning, content briefs, performance monitoring, and competitor tracking.' },
+  ];
 
   // Task pipeline — group into active, completed, failed
   const activeTasks = tasks.filter(t => t.status === 'running');
@@ -1208,6 +1500,260 @@ function renderDashboard(data) {
       line-height: 1.7;
     }
 
+    /* ── Billing Transparency Panel ── */
+    .billing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .billing-stat {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .billing-stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .billing-stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+    }
+
+    .billing-stat-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Usage meter bar */
+    .usage-meter-wrap {
+      margin-bottom: 16px;
+    }
+
+    .usage-meter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .usage-meter-label {
+      color: var(--text-muted);
+    }
+
+    .usage-meter-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .usage-meter-bg {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .usage-meter-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .usage-meter-sub {
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    /* Alert banner */
+    .billing-alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .billing-alert.warn {
+      background: #f59e0b18;
+      border: 1px solid #f59e0b50;
+      color: #f59e0b;
+    }
+
+    .billing-alert.critical {
+      background: #ef444418;
+      border: 1px solid #ef444450;
+      color: #ef4444;
+    }
+
+    .billing-alert.cap {
+      background: #ef444428;
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+
+    .billing-alert-icon {
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Action cost table */
+    .action-cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .action-cost-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-dim);
+      padding: 0 10px 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .action-cost-table td {
+      padding: 8px 10px 8px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    .action-cost-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .action-cost-calls {
+      white-space: nowrap;
+      font-weight: 600;
+      color: var(--accent);
+      font-family: 'SF Mono', 'Fira Mono', monospace;
+    }
+
+    /* Daily activity sparkline area */
+    .billing-daily {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 48px;
+      margin-bottom: 4px;
+    }
+
+    .billing-daily-bar {
+      flex: 1;
+      min-width: 4px;
+      border-radius: 2px 2px 0 0;
+      background: var(--accent);
+      opacity: 0.7;
+      transition: opacity 0.12s;
+      position: relative;
+    }
+
+    .billing-daily-bar:hover {
+      opacity: 1;
+    }
+
+    .billing-daily-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    /* Tier comparison table */
+    .tier-compare-wrap {
+      overflow-x: auto;
+      margin-top: 4px;
+    }
+
+    .tier-compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      min-width: 400px;
+    }
+
+    .tier-compare-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-dim);
+      padding: 0 12px 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tier-compare-table th.current-tier {
+      color: var(--accent);
+    }
+
+    .tier-compare-table td {
+      padding: 9px 12px 9px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    .tier-compare-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tier-compare-table td.current-tier {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .tier-current-badge {
+      display: inline-block;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent)50;
+      color: var(--accent);
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .tier-upgrade-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .billing-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--border);
@@ -1560,6 +2106,527 @@ function renderDashboard(data) {
       font-size: 13px;
     }
 
+    /* ── Add Agent Panel ── */
+    .add-agent-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .add-agent-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    /* Library cards */
+    .agent-library {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .library-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.15s;
+    }
+
+    .library-card:hover {
+      border-color: var(--accent);
+    }
+
+    .library-card-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .library-card-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .library-card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .library-add-btn {
+      margin-top: 6px;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent)60;
+      border-radius: 5px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      text-align: center;
+    }
+
+    .library-add-btn:hover {
+      background: var(--accent)30;
+      border-color: var(--accent);
+    }
+
+    .library-add-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* Divider */
+    .add-agent-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Custom role form */
+    .add-agent-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .add-agent-form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .add-agent-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .add-agent-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+    }
+
+    .add-agent-input,
+    .add-agent-select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.12s;
+    }
+
+    .add-agent-input:focus,
+    .add-agent-select:focus {
+      border-color: var(--accent);
+    }
+
+    .add-agent-input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .add-agent-textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 72px;
+      line-height: 1.5;
+      transition: border-color 0.12s;
+    }
+
+    .add-agent-textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .add-agent-textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    .add-agent-submit-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .add-agent-submit-btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 9px 20px;
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+
+    .add-agent-submit-btn:hover {
+      opacity: 0.88;
+    }
+
+    .add-agent-submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .add-agent-status {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .add-agent-status.success {
+      color: var(--green);
+    }
+
+    .add-agent-status.error {
+      color: var(--red);
+    }
+
+    /* Cap warning */
+    .tier-cap-notice {
+      background: #f59e0b20;
+      border: 1px solid #f59e0b50;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #f59e0b;
+    }
+
+    /* ── Founder Control Center ── */
+    .control-center {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .control-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    /* Agent control rows */
+    .ctrl-agent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ctrl-agent-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .ctrl-agent-icon {
+      font-size: 18px;
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .ctrl-agent-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 0;
+    }
+
+    .ctrl-agent-state {
+      font-size: 11px;
+      color: var(--text-dim);
+      min-width: 50px;
+      text-align: right;
+    }
+
+    .ctrl-agent-state.paused { color: #f59e0b; }
+    .ctrl-agent-state.running { color: var(--green); }
+
+    .ctrl-btn-group {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .ctrl-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+      white-space: nowrap;
+    }
+
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .ctrl-btn.pause:hover { border-color: #f59e0b; color: #f59e0b; }
+    .ctrl-btn.resume:hover { border-color: var(--green); color: var(--green); }
+    .ctrl-btn.override:hover { border-color: var(--red); color: var(--red); }
+
+    /* Direct instruction panel */
+    .instruct-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .instruct-target-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .instruct-select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      font-family: inherit;
+      flex: 1;
+      min-width: 140px;
+      transition: border-color 0.12s;
+    }
+
+    .instruct-select:focus { border-color: var(--accent); }
+
+    .instruct-textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+      transition: border-color 0.12s;
+    }
+
+    .instruct-textarea:focus { border-color: var(--accent); }
+    .instruct-textarea::placeholder { color: var(--text-dim); }
+
+    .instruct-submit-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .instruct-submit-btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+
+    .instruct-submit-btn:hover { opacity: 0.88; }
+    .instruct-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .instruct-status {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .instruct-status.success { color: var(--green); }
+    .instruct-status.error { color: var(--red); }
+
+    /* CEO reconsider */
+    .ceo-reconsider-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ceo-reconsider-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .ceo-reconsider-btn {
+      display: inline-block;
+      background: #f59e0b20;
+      border: 1px solid #f59e0b60;
+      border-radius: 6px;
+      color: #f59e0b;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      align-self: flex-start;
+    }
+
+    .ceo-reconsider-btn:hover { background: #f59e0b30; border-color: #f59e0b; }
+    .ceo-reconsider-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .ceo-reconsider-status {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .ceo-reconsider-status.success { color: var(--green); }
+    .ceo-reconsider-status.error { color: var(--red); }
+
+    /* Task queue editor */
+    .task-queue-editor {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tqe-empty {
+      font-size: 12px;
+      color: var(--text-dim);
+      padding: 8px 0;
+    }
+
+    .tqe-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .tqe-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .tqe-agent {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-glow);
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .tqe-id {
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: monospace;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tqe-edit-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 8px;
+      outline: none;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 48px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+      transition: border-color 0.12s;
+    }
+
+    .tqe-edit-input:focus { border-color: var(--accent); }
+
+    .tqe-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tqe-save-btn {
+      background: var(--accent-glow);
+      border: 1px solid var(--accent)60;
+      border-radius: 5px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .tqe-save-btn:hover { background: var(--accent)30; }
+    .tqe-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .tqe-cancel-btn {
+      background: #ef444420;
+      border: 1px solid #ef444440;
+      border-radius: 5px;
+      color: #ef4444;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .tqe-cancel-btn:hover { background: #ef444430; }
+    .tqe-cancel-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .tqe-msg {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-left: 6px;
+    }
+
+    .tqe-msg.success { color: var(--green); }
+    .tqe-msg.error { color: var(--red); }
+
     /* ── Spinner for refresh countdown ── */
     .countdown {
       display: inline-flex;
@@ -1728,6 +2795,207 @@ function renderDashboard(data) {
               </div>`;
             }).join('')
         }
+      </div>
+    </div>
+
+    <!-- Founder Control Center -->
+    <div class="card" style="margin-bottom:16px" id="control-center-card">
+      <div class="card-header">
+        <span class="card-title">Founder Controls</span>
+        <span style="font-size:11px;color:var(--text-dim)">Pause · Direct · Override</span>
+      </div>
+      <div class="card-body">
+        <div class="control-center">
+
+          <!-- 1. Agent Controls -->
+          <div>
+            <div class="control-section-label">Agent Controls</div>
+            <div class="ctrl-agent-list" id="ctrl-agent-list">
+              ${agentIds.length === 0
+                ? `<div style="color:var(--text-dim);font-size:12px">No agents provisioned.</div>`
+                : agentIds.map(aid => {
+                    const a = agentConfigs[aid];
+                    const state = agentStates[aid] || 'idle';
+                    return `
+                    <div class="ctrl-agent-row" id="ctrl-row-${escHtml(aid)}">
+                      <div class="ctrl-agent-icon">${agentIcon(aid)}</div>
+                      <div class="ctrl-agent-name">${escHtml(a.name || aid)}</div>
+                      <div class="ctrl-agent-state ${escHtml(state)}" id="ctrl-state-${escHtml(aid)}">${escHtml(state)}</div>
+                      <div class="ctrl-btn-group">
+                        <button class="ctrl-btn pause" onclick="sendAgentControl('${escHtml(aid)}', 'pause', this)">Pause</button>
+                        <button class="ctrl-btn resume" onclick="sendAgentControl('${escHtml(aid)}', 'resume', this)">Resume</button>
+                        <button class="ctrl-btn override" onclick="sendAgentControl('${escHtml(aid)}', 'override', this)">Override</button>
+                      </div>
+                    </div>`;
+                  }).join('')
+              }
+            </div>
+          </div>
+
+          <!-- 2. Direct Instruction Panel -->
+          <div>
+            <div class="control-section-label">Direct Instruction</div>
+            <div class="instruct-panel">
+              <div class="instruct-target-row">
+                <select id="instruct-target" class="instruct-select" aria-label="Instruction target">
+                  <option value="ceo">CEO</option>
+                  ${agentIds.map(aid => `<option value="${escHtml(aid)}">${escHtml(agentConfigs[aid]?.name || aid)}</option>`).join('')}
+                </select>
+              </div>
+              <textarea
+                id="instruct-text"
+                class="instruct-textarea"
+                placeholder="Type your instruction here. The selected agent or CEO will act on it immediately..."
+                maxlength="4000"
+              ></textarea>
+              <div class="instruct-submit-row">
+                <button class="instruct-submit-btn" id="instruct-submit-btn" onclick="submitInstruction()">Send Instruction</button>
+                <span class="instruct-status" id="instruct-status"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. CEO Reconsider -->
+          <div>
+            <div class="control-section-label">CEO Reconsider</div>
+            <div class="ceo-reconsider-panel">
+              <div class="ceo-reconsider-desc">
+                Force the AI CEO to reconsider its last decision. The CEO will re-evaluate its most recent action in the audit log and provide a revised assessment. Use this when you disagree with a strategic call.
+              </div>
+              <textarea
+                id="ceo-reconsider-text"
+                class="challenge-textarea"
+                placeholder="Optional: Explain what you'd like the CEO to reconsider and why..."
+                maxlength="2000"
+                style="min-height:60px;margin-bottom:8px"
+              ></textarea>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <button class="ceo-reconsider-btn" id="ceo-reconsider-btn" onclick="submitCeoReconsider()">Force Reconsideration</button>
+                <span class="ceo-reconsider-status" id="ceo-reconsider-status"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Task Queue Editor -->
+          <div>
+            <div class="control-section-label">Task Queue Editor — Queued Tasks</div>
+            <div class="task-queue-editor" id="task-queue-editor">
+              ${(() => {
+                const queued = tasks.filter(t => t.status === 'queued');
+                if (queued.length === 0) {
+                  return `<div class="tqe-empty">No tasks queued. Queued tasks appear here and can be edited or cancelled before they execute.</div>`;
+                }
+                return queued.map((t, qi) => {
+                  const safeId = escHtml(t.id || '');
+                  return `
+                  <div class="tqe-row" id="tqe-${qi}">
+                    <div class="tqe-top">
+                      <div class="tqe-agent">${escHtml(t.agentId || 'ceo')}</div>
+                      <div class="tqe-id">${safeId}</div>
+                      ${statusBadge('queued')}
+                    </div>
+                    <textarea
+                      class="tqe-edit-input"
+                      id="tqe-text-${qi}"
+                      data-taskid="${safeId}"
+                    >${escHtml(t.task || '')}</textarea>
+                    <div class="tqe-actions">
+                      <button class="tqe-save-btn" onclick="saveTaskEdit('${safeId}', ${qi})">Save Edit</button>
+                      <button class="tqe-cancel-btn" onclick="cancelQueuedTask('${safeId}', ${qi})">Cancel Task</button>
+                      <span class="tqe-msg" id="tqe-msg-${qi}"></span>
+                    </div>
+                  </div>`;
+                }).join('');
+              })()}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Agent Panel -->
+    <div class="card" style="margin-bottom:16px" id="add-agent-card">
+      <div class="card-header">
+        <span class="card-title">Add Agent</span>
+        <span style="font-size:11px;color:var(--text-dim)">${currentAgentCount} / ${maxAgents} agents${atAgentCap ? ' — tier cap reached' : ''}</span>
+      </div>
+      <div class="card-body">
+        <div class="add-agent-panel">
+
+          ${atAgentCap ? `
+          <div class="tier-cap-notice">
+            Your ${escHtml(tier)} tier allows up to ${maxAgents} agent${maxAgents !== 1 ? 's' : ''}. You have ${currentAgentCount} active.
+            Upgrade your tier to add more agents.
+          </div>
+          ` : `
+
+          <!-- Pre-built library -->
+          <div>
+            <div class="add-agent-section-label">Quick Add — Common Roles</div>
+            <div class="agent-library" id="agent-library">
+              ${AGENT_LIBRARY.map(lib => `
+              <div class="library-card">
+                <div class="library-card-icon">${lib.icon}</div>
+                <div class="library-card-name">${escHtml(lib.role)}</div>
+                <div class="library-card-desc">${escHtml(lib.description)}</div>
+                <button
+                  class="library-add-btn"
+                  onclick="addLibraryAgent(${JSON.stringify(escHtml(lib.role))}, ${JSON.stringify(escHtml(lib.description))}, this)"
+                >+ Add</button>
+              </div>`).join('')}
+            </div>
+          </div>
+
+          <hr class="add-agent-divider">
+
+          <!-- Custom role form -->
+          <div>
+            <div class="add-agent-section-label">Custom Role</div>
+            <div class="add-agent-form" id="add-agent-form">
+              <div class="add-agent-form-row">
+                <div class="add-agent-field" style="flex:2">
+                  <label class="add-agent-label" for="aa-role">Role Name</label>
+                  <input
+                    type="text"
+                    id="aa-role"
+                    class="add-agent-input"
+                    placeholder="e.g. Operations Manager"
+                    maxlength="60"
+                    autocomplete="off"
+                  >
+                </div>
+                <div class="add-agent-field">
+                  <label class="add-agent-label" for="aa-personality">Personality</label>
+                  <select id="aa-personality" class="add-agent-select">
+                    <option value="direct">Direct</option>
+                    <option value="analytical">Analytical</option>
+                    <option value="collaborative">Collaborative</option>
+                    <option value="visionary">Visionary</option>
+                    <option value="supportive">Supportive</option>
+                  </select>
+                </div>
+              </div>
+              <div class="add-agent-field">
+                <label class="add-agent-label" for="aa-description">Description</label>
+                <textarea
+                  id="aa-description"
+                  class="add-agent-textarea"
+                  placeholder="What does this agent do? Be specific — this shapes its behavior."
+                  maxlength="500"
+                ></textarea>
+              </div>
+              <div class="add-agent-submit-row">
+                <button class="add-agent-submit-btn" id="aa-submit-btn" onclick="submitCustomAgent()">
+                  Add Agent
+                </button>
+                <span class="add-agent-status" id="aa-status"></span>
+              </div>
+            </div>
+          </div>
+          `}
+
+        </div>
       </div>
     </div>
 
@@ -2132,6 +3400,145 @@ function renderDashboard(data) {
     applyFilters();
   })();
 
+  // ── Add Agent JS ──────────────────────────────────────────────────────────
+
+  // Shared POST helper for /add-agent endpoint
+  function postAddAgent(role, description, personality, onSuccess, onError, onFinally) {
+    fetch('/add-agent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role: role, description: description, personality: personality }),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          onSuccess(data);
+        } else {
+          onError(data.error || 'Failed to add agent.');
+        }
+      })
+      .catch(function(e) {
+        onError('Network error. Check connection and try again.');
+      })
+      .finally(function() {
+        if (onFinally) onFinally();
+      });
+  }
+
+  // Inject a new agent card into the agent team panel without a full page reload
+  function injectAgentCard(agentName, role, model) {
+    var list = document.querySelector('#add-agent-card').closest('main').querySelector('.card .card-body[style*="grid"]');
+    if (!list) return;
+    var card = document.createElement('div');
+    card.className = 'agent-item';
+    card.innerHTML =
+      '<div class="agent-icon">&#129302;</div>' +
+      '<div class="agent-info">' +
+        '<div class="agent-name">' + agentName + '</div>' +
+        '<div class="agent-role">' + role + '</div>' +
+        '<div class="agent-model">' + (model || '') + '</div>' +
+      '</div>' +
+      '<span class="badge" style="background:#22c55e20;color:#22c55e;border:1px solid #22c55e40">Idle</span>';
+    list.appendChild(card);
+
+    // Update agent count label in agent team card header
+    var teamCountEl = list.closest('.card').querySelector('.card-header span:last-child');
+    if (teamCountEl) {
+      var current = list.querySelectorAll('.agent-item').length;
+      teamCountEl.textContent = current + ' agent' + (current !== 1 ? 's' : '');
+    }
+  }
+
+  // Library quick-add button handler
+  function addLibraryAgent(role, description, btnEl) {
+    if (btnEl.disabled) return;
+    btnEl.disabled = true;
+    btnEl.textContent = 'Adding...';
+
+    postAddAgent(role, description, 'direct',
+      function(data) {
+        btnEl.textContent = 'Added';
+        btnEl.style.background = '#22c55e20';
+        btnEl.style.borderColor = '#22c55e60';
+        btnEl.style.color = '#22c55e';
+        injectAgentCard(data.agentName, role, data.model);
+        updateAddAgentCounter(1);
+      },
+      function(errMsg) {
+        btnEl.textContent = '+ Add';
+        btnEl.disabled = false;
+        // Surface error in custom form status if present, else alert
+        var statusEl = document.getElementById('aa-status');
+        if (statusEl) {
+          statusEl.className = 'add-agent-status error';
+          statusEl.textContent = errMsg;
+        } else {
+          alert(errMsg);
+        }
+      }
+    );
+  }
+
+  // Update the agent count display in the add-agent card header
+  function updateAddAgentCounter(delta) {
+    var headerSpan = document.querySelector('#add-agent-card .card-header span:last-child');
+    if (!headerSpan) return;
+    var match = headerSpan.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+    if (!match) return;
+    var current = parseInt(match[1]) + delta;
+    var max = parseInt(match[2]);
+    headerSpan.textContent = current + ' / ' + max + ' agents' + (current >= max ? ' \u2014 tier cap reached' : '');
+  }
+
+  // Custom form submit
+  function submitCustomAgent() {
+    var roleEl = document.getElementById('aa-role');
+    var descEl = document.getElementById('aa-description');
+    var personalityEl = document.getElementById('aa-personality');
+    var submitBtn = document.getElementById('aa-submit-btn');
+    var statusEl = document.getElementById('aa-status');
+
+    if (!roleEl || !descEl || !submitBtn) return;
+
+    var role = roleEl.value.trim();
+    var description = descEl.value.trim();
+    var personality = personalityEl ? personalityEl.value : 'direct';
+
+    if (!role) {
+      statusEl.className = 'add-agent-status error';
+      statusEl.textContent = 'Role name is required.';
+      roleEl.focus();
+      return;
+    }
+    if (!description) {
+      statusEl.className = 'add-agent-status error';
+      statusEl.textContent = 'Description is required.';
+      descEl.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    statusEl.className = 'add-agent-status';
+    statusEl.textContent = 'Adding agent...';
+
+    postAddAgent(role, description, personality,
+      function(data) {
+        statusEl.className = 'add-agent-status success';
+        statusEl.textContent = data.agentName + ' added. Delegation key: [DELEGATE:' + data.slug + ']';
+        roleEl.value = '';
+        descEl.value = '';
+        injectAgentCard(data.agentName, role, data.model);
+        updateAddAgentCounter(1);
+        submitBtn.disabled = false;
+      },
+      function(errMsg) {
+        statusEl.className = 'add-agent-status error';
+        statusEl.textContent = errMsg;
+        submitBtn.disabled = false;
+      }
+    );
+  }
+
   // Submit a founder challenge for an audit entry
   function submitChallenge(entryId, idx) {
     var textarea = document.getElementById('challenge-text-' + idx);
@@ -2183,6 +3590,7 @@ async function gatherData(instanceDir, customerId, hubPort, dashboardPort) {
   const customerConfig = readCustomerConfig(instanceDir);
   const ceoConfig = readCeoConfig(instanceDir);
   const agentConfigs = readAgentConfigs(instanceDir);
+  const agentStates = readAgentStates(instanceDir);
   const conversations = readConversationHistory(instanceDir, 50);
   const tasks = readTasks(instanceDir);
   const auditLog = readAuditLog(instanceDir, 100);
@@ -2191,6 +3599,7 @@ async function gatherData(instanceDir, customerId, hubPort, dashboardPort) {
   const velocityScore = computeVelocityScore(tasks, conversations);
   const dailyBriefing = buildDailyBriefing(tasks, conversations, customerConfig);
   const roiData = computeRoiData(tasks, conversations, customerConfig);
+  const billingData = computeBillingPanel(instanceDir, customerConfig);
 
   const generatedAt = new Date().toLocaleTimeString('en-US', {
     hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
@@ -2200,6 +3609,7 @@ async function gatherData(instanceDir, customerId, hubPort, dashboardPort) {
     customerConfig,
     ceoConfig,
     agentConfigs,
+    agentStates,
     conversations,
     tasks,
     auditLog,
@@ -2207,6 +3617,7 @@ async function gatherData(instanceDir, customerId, hubPort, dashboardPort) {
     velocityScore,
     dailyBriefing,
     roiData,
+    billingData,
     dashboardPort,
     hubPort,
     generatedAt,
@@ -2246,6 +3657,61 @@ function startDashboardServer(instanceDir, customerId, hubPort, dashboardPort) {
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: true, entryId }));
         } catch (e) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: e.message }));
+        }
+      });
+      req.on('error', () => {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'request error' }));
+      });
+      return;
+    }
+
+    // POST /add-agent — founder provisions a new agent role
+    if (req.method === 'POST' && url.pathname === '/add-agent') {
+      let body = '';
+      req.on('data', chunk => (body += chunk));
+      req.on('end', async () => {
+        try {
+          const { role, description, personality } = JSON.parse(body);
+          if (!role || typeof role !== 'string' || !role.trim()) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ok: false, error: 'role is required' }));
+            return;
+          }
+          if (!description || typeof description !== 'string' || !description.trim()) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ok: false, error: 'description is required' }));
+            return;
+          }
+
+          console.log(`[your9-dashboard] Add agent request: role="${role.trim()}" personality="${personality || 'direct'}"`);
+
+          const result = await addAgent({
+            instanceId: customerId,
+            role: role.trim().slice(0, 80),
+            description: description.trim().slice(0, 500),
+          });
+
+          if (!result.success) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ ok: false, error: result.message }));
+            return;
+          }
+
+          console.log(`[your9-dashboard] Agent added: ${result.agentName} (${result.slug})`);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            ok: true,
+            slug: result.slug,
+            agentName: result.agentName,
+            role: result.role,
+            model: result.model,
+            message: result.message,
+          }));
+        } catch (e) {
+          console.error(`[your9-dashboard] Add agent error: ${e.message}`);
           res.writeHead(400, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: false, error: e.message }));
         }
