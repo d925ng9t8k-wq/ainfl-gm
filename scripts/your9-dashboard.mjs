@@ -3067,6 +3067,114 @@ function renderDashboard(data) {
       </div>
     </div>
 
+    <!-- Billing Transparency Panel -->
+    ${(() => {
+      const bd = billingData;
+      if (!bd) return '';
+
+      // Alert banner
+      const alertBanner = (bd.alertLevel >= 70 && !bd.isUnlimited) ? (() => {
+        const lvl = bd.alertLevel;
+        const cls = lvl >= 100 ? 'cap' : lvl >= 90 ? 'critical' : 'warn';
+        const icon = lvl >= 100 ? '&#9940;' : lvl >= 90 ? '&#9888;' : '&#8505;';
+        const remaining = Math.max(0, bd.callLimit - bd.apiCallsUsed).toLocaleString();
+        const msg = lvl >= 100
+          ? 'You have reached your ' + bd.tier.label + ' tier API call limit (' + bd.callLimit.toLocaleString() + ' calls/mo). New calls may be blocked. Upgrade to continue without interruption.'
+          : lvl >= 90
+          ? 'You are at ' + Math.round(bd.callsUsedPct) + '% of your ' + bd.tier.label + ' tier limit (' + bd.apiCallsUsed.toLocaleString() + ' / ' + bd.callLimit.toLocaleString() + ' calls). Consider upgrading before the period ends.'
+          : 'You are at ' + Math.round(bd.callsUsedPct) + '% of your ' + bd.tier.label + ' tier API call limit. You have ' + remaining + ' calls remaining this period.';
+        return '<div class="billing-alert ' + cls + '"><span class="billing-alert-icon">' + icon + '</span><span>' + msg + '</span></div>';
+      })() : '';
+
+      // Usage meter color
+      const meterColor = bd.alertLevel >= 90 ? '#ef4444' : bd.alertLevel >= 70 ? '#f59e0b' : '#6366f1';
+
+      // Daily sparkline
+      const maxDailyVal = Math.max(1, ...bd.dailyEntries.map(function(e) { return e[1]; }));
+      const sparklineHtml = bd.dailyEntries.length > 0 ? (
+        '<div class="billing-section-label" style="margin-top:16px">Daily Activity \u2014 Last ' + bd.dailyEntries.length + ' Days</div>' +
+        '<div class="billing-daily">' +
+          bd.dailyEntries.map(function(e) {
+            const h = Math.max(4, Math.round((e[1] / maxDailyVal) * 100));
+            return '<div class="billing-daily-bar" style="height:' + h + '%" title="' + escHtml(e[0]) + ': ' + e[1] + ' msgs"></div>';
+          }).join('') +
+        '</div>' +
+        '<div class="billing-daily-label"><span>' + escHtml(bd.dailyEntries[0][0]) + '</span><span>' + escHtml(bd.dailyEntries[bd.dailyEntries.length - 1][0]) + '</span></div>'
+      ) : '';
+
+      // Action costs rows
+      const actionCostRows = bd.actionCosts.map(function(a) {
+        return '<tr><td>' + escHtml(a.label) + '</td><td class="action-cost-calls">' + a.calls + ' call' + (a.calls !== 1 ? 's' : '') + '</td><td style="color:var(--text-dim)">' + escHtml(a.description) + '</td></tr>';
+      }).join('');
+
+      // Tier comparison
+      const tierKeys = Object.keys(BILLING_TIERS);
+      const tierHeaderCells = tierKeys.map(function(k) {
+        const isCurrent = k === bd.tierKey;
+        return '<th class="' + (isCurrent ? 'current-tier' : '') + '">' + escHtml(BILLING_TIERS[k].label) + (isCurrent ? '<span class="tier-current-badge">Current</span>' : '') + '</th>';
+      }).join('');
+
+      const compareRows = [
+        { label: 'Price / mo',   fmt: function(t) { return '$' + t.priceMonthly.toLocaleString(); } },
+        { label: 'AI agents',    fmt: function(t) { return String(t.maxAgents); } },
+        { label: 'API calls/mo', fmt: function(t) { return t.monthlyCallLimit === -1 ? 'Unlimited' : t.monthlyCallLimit.toLocaleString(); } },
+        { label: 'Storage',      fmt: function(t) { return t.storageGB + 'GB'; } },
+        { label: 'Channels',     fmt: function(t) { return t.features[t.features.length - 1]; } },
+      ];
+      const tierDataRows = compareRows.map(function(row) {
+        return '<tr><td style="color:var(--text-dim);font-weight:600">' + escHtml(row.label) + '</td>' +
+          tierKeys.map(function(k) {
+            const isCurrent = k === bd.tierKey;
+            return '<td class="' + (isCurrent ? 'current-tier' : '') + '">' + escHtml(row.fmt(BILLING_TIERS[k])) + '</td>';
+          }).join('') + '</tr>';
+      }).join('');
+
+      // Build HTML
+      const periodEndStr = bd.periodEnd
+        ? ' \xb7 Period ends ' + new Date(bd.periodEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        : '';
+      const projectedStat = (bd.projectedMonthlyApiCalls !== null && !bd.isUnlimited)
+        ? '<div class="billing-stat"><div class="billing-stat-value" style="color:' + meterColor + '">' + bd.projectedMonthlyApiCalls.toLocaleString() + '</div><div class="billing-stat-label">Projected API Calls</div><div class="billing-stat-sub">at current daily rate</div></div>'
+        : '';
+      const upgradeLine = bd.nextTier
+        ? '<div class="tier-upgrade-note">Upgrading to <strong style="color:var(--text)">' + escHtml(bd.nextTier.label) + '</strong> adds ' + (bd.nextTier.maxAgents - bd.tier.maxAgents) + ' more AI agents, ' + (bd.nextTier.monthlyCallLimit === -1 ? 'unlimited API calls' : (bd.nextTier.monthlyCallLimit - bd.tier.monthlyCallLimit).toLocaleString() + ' more API calls/mo') + ', and ' + (bd.nextTier.storageGB - bd.tier.storageGB) + 'GB additional storage for $' + (bd.nextTier.priceMonthly - bd.tier.priceMonthly).toLocaleString() + '/mo more. Contact your account manager to upgrade.</div>'
+        : '<div class="tier-upgrade-note" style="color:var(--accent)">You are on the Enterprise plan \u2014 the highest tier. All features are included.</div>';
+
+      return '<div class="card" style="margin-bottom:16px" id="billing-panel">' +
+        '<div class="card-header">' +
+          '<span class="card-title">Billing &amp; Usage Transparency</span>' +
+          '<span style="font-size:11px;color:var(--text-dim)">' + escHtml(bd.tier.label) + ' Plan \u2014 $' + bd.monthlyPrice.toLocaleString() + '/mo</span>' +
+        '</div>' +
+        '<div class="card-body">' +
+          alertBanner +
+          '<div class="billing-grid">' +
+            '<div class="billing-stat"><div class="billing-stat-value">' + bd.apiCallsUsed.toLocaleString() + '</div><div class="billing-stat-label">API Calls Used</div><div class="billing-stat-sub">' + (bd.isUnlimited ? 'Unlimited plan' : 'of ' + bd.callLimit.toLocaleString() + ' this period') + '</div></div>' +
+            '<div class="billing-stat"><div class="billing-stat-value">' + bd.tasksCompleted.toLocaleString() + '</div><div class="billing-stat-label">Tasks Completed</div><div class="billing-stat-sub">this billing period</div></div>' +
+            '<div class="billing-stat"><div class="billing-stat-value">$' + bd.monthlyPrice.toLocaleString() + '</div><div class="billing-stat-label">Monthly Subscription</div><div class="billing-stat-sub">flat rate \u2014 no overages</div></div>' +
+            projectedStat +
+          '</div>' +
+          (!bd.isUnlimited
+            ? '<div class="usage-meter-wrap">' +
+                '<div class="usage-meter-header"><span class="usage-meter-label">API Call Usage \u2014 This Period</span><span class="usage-meter-value">' + Math.round(bd.callsUsedPct) + '%</span></div>' +
+                '<div class="usage-meter-bg"><div class="usage-meter-fill" style="width:' + Math.min(100, bd.callsUsedPct).toFixed(1) + '%;background:' + meterColor + '"></div></div>' +
+                '<div class="usage-meter-sub">' + bd.apiCallsUsed.toLocaleString() + ' used \xb7 ' + Math.max(0, bd.callLimit - bd.apiCallsUsed).toLocaleString() + ' remaining' + periodEndStr + '</div>' +
+              '</div>' +
+              '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;font-size:11px;color:var(--text-dim)">' +
+                '<span><span style="color:#6366f1;font-weight:600">0\u201369%</span> Normal</span>' +
+                '<span><span style="color:#f59e0b;font-weight:600">70\u201389%</span> Warning</span>' +
+                '<span><span style="color:#ef4444;font-weight:600">90\u201399%</span> Critical</span>' +
+                '<span><span style="color:#ef4444;font-weight:600">100%</span> At cap</span>' +
+              '</div>'
+            : '<div style="margin-bottom:16px;padding:10px 14px;background:var(--accent-glow);border:1px solid var(--accent)30;border-radius:8px;font-size:12px;color:var(--accent)">Enterprise plan \u2014 unlimited API calls. No usage limits apply.</div>') +
+          sparklineHtml +
+          '<div class="billing-section-label" style="margin-top:' + (bd.dailyEntries.length > 0 ? '16px' : '0') + '">What Each Action Costs</div>' +
+          '<div style="overflow-x:auto"><table class="action-cost-table"><thead><tr><th>Action</th><th>API Calls</th><th>What Happens</th></tr></thead><tbody>' + actionCostRows + '</tbody></table></div>' +
+          '<div class="billing-section-label" style="margin-top:20px">Tier Comparison</div>' +
+          '<div class="tier-compare-wrap"><table class="tier-compare-table"><thead><tr><th>Feature</th>' + tierHeaderCells + '</tr></thead><tbody>' + tierDataRows + '</tbody></table></div>' +
+          upgradeLine +
+        '</div></div>';
+    })()}
+
     <!-- Transparency & Audit Layer -->
     <div class="card" style="margin-bottom:16px" id="audit-card">
       <div class="card-header">
@@ -3577,6 +3685,189 @@ function renderDashboard(data) {
         btn.disabled = false;
       });
   }
+
+  // ── Founder Control Center JS ──────────────────────────────────────────────
+
+  // Generic POST helper
+  function postControl(endpoint, payload, onSuccess, onError) {
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) { onSuccess(data); } else { onError(data.error || 'Unknown error'); }
+      })
+      .catch(function() { onError('Network error. Check connection.'); });
+  }
+
+  // Agent pause / resume / override
+  function sendAgentControl(agentId, action, btnEl) {
+    if (btnEl && btnEl.disabled) return;
+    if (btnEl) btnEl.disabled = true;
+
+    var note = '';
+    if (action === 'override') {
+      note = window.prompt('Optional override note (what should this agent do instead?):') || '';
+      if (note === null) { if (btnEl) btnEl.disabled = false; return; } // cancelled
+    }
+
+    postControl('/agent/' + action, { agentId: agentId, note: note },
+      function(data) {
+        var stateEl = document.getElementById('ctrl-state-' + agentId);
+        if (stateEl) {
+          var newState = action === 'pause' ? 'paused' : action === 'resume' ? 'running' : 'overridden';
+          stateEl.textContent = newState;
+          stateEl.className = 'ctrl-agent-state ' + (action === 'pause' ? 'paused' : 'running');
+        }
+        if (btnEl) btnEl.disabled = false;
+      },
+      function(errMsg) {
+        alert('Agent control error: ' + errMsg);
+        if (btnEl) btnEl.disabled = false;
+      }
+    );
+  }
+
+  // Direct instruction
+  function submitInstruction() {
+    var targetEl = document.getElementById('instruct-target');
+    var textEl = document.getElementById('instruct-text');
+    var btnEl = document.getElementById('instruct-submit-btn');
+    var statusEl = document.getElementById('instruct-status');
+
+    if (!targetEl || !textEl || !btnEl) return;
+
+    var targetId = targetEl.value.trim();
+    var instruction = textEl.value.trim();
+
+    if (!instruction) {
+      statusEl.className = 'instruct-status error';
+      statusEl.textContent = 'Enter an instruction first.';
+      textEl.focus();
+      return;
+    }
+
+    btnEl.disabled = true;
+    statusEl.className = 'instruct-status';
+    statusEl.textContent = 'Sending...';
+
+    postControl('/instruct', { targetId: targetId, instruction: instruction },
+      function() {
+        statusEl.className = 'instruct-status success';
+        statusEl.textContent = 'Instruction queued for ' + targetId + '.';
+        textEl.value = '';
+        btnEl.disabled = false;
+      },
+      function(errMsg) {
+        statusEl.className = 'instruct-status error';
+        statusEl.textContent = 'Error: ' + errMsg;
+        btnEl.disabled = false;
+      }
+    );
+  }
+
+  // CEO force reconsider
+  function submitCeoReconsider() {
+    var textEl = document.getElementById('ceo-reconsider-text');
+    var btnEl = document.getElementById('ceo-reconsider-btn');
+    var statusEl = document.getElementById('ceo-reconsider-status');
+
+    if (!btnEl) return;
+    var note = textEl ? textEl.value.trim() : '';
+
+    btnEl.disabled = true;
+    if (statusEl) { statusEl.className = 'ceo-reconsider-status'; statusEl.textContent = 'Submitting...'; }
+
+    // Finds the most recent audit entry and challenges it with the provided note
+    // Falls back to a synthetic entry ID if no audit entries exist
+    var entries = document.querySelectorAll('.audit-entry');
+    var entryId = entries.length > 0 ? (entries[0].querySelector('[id^="challenge-text-"]') || {}).id : null;
+    // Extract the numeric idx from challenge-text-{idx}
+    var idx = entryId ? parseInt(entryId.replace('challenge-text-', '')) : null;
+    var challengeEntryId = 'ceo-reconsider-' + Date.now();
+
+    // If we have a real audit entry, piggyback on /challenge; otherwise create synthetic
+    if (idx !== null && !isNaN(idx)) {
+      var realTextArea = document.getElementById('challenge-text-' + idx);
+      if (realTextArea && note) realTextArea.value = note;
+      // Re-use submitChallenge with the first entry
+      var challengeBtn = document.getElementById('challenge-btn-' + idx);
+      if (challengeBtn) {
+        if (note && realTextArea) realTextArea.value = note;
+        submitChallenge(challengeEntryId, -1);
+      }
+      // For simplicity, also post directly
+    }
+
+    // Always post directly to /challenge with the synthetic ID
+    postControl('/challenge', { entryId: challengeEntryId, reason: note || 'Founder requested CEO reconsideration of most recent decision.' },
+      function() {
+        if (statusEl) { statusEl.className = 'ceo-reconsider-status success'; statusEl.textContent = 'Reconsideration queued. CEO will re-evaluate.'; }
+        if (textEl) textEl.value = '';
+        if (btnEl) btnEl.disabled = false;
+      },
+      function(errMsg) {
+        if (statusEl) { statusEl.className = 'ceo-reconsider-status error'; statusEl.textContent = 'Error: ' + errMsg; }
+        if (btnEl) btnEl.disabled = false;
+      }
+    );
+  }
+
+  // Task queue editor — save edit
+  function saveTaskEdit(taskId, qi) {
+    var textEl = document.getElementById('tqe-text-' + qi);
+    var msgEl = document.getElementById('tqe-msg-' + qi);
+    if (!textEl) return;
+
+    var newText = textEl.value.trim();
+    if (!newText) {
+      if (msgEl) { msgEl.className = 'tqe-msg error'; msgEl.textContent = 'Task text cannot be empty.'; }
+      return;
+    }
+
+    var saveBtn = textEl.closest('.tqe-row').querySelector('.tqe-save-btn');
+    if (saveBtn) saveBtn.disabled = true;
+    if (msgEl) { msgEl.className = 'tqe-msg'; msgEl.textContent = 'Saving...'; }
+
+    postControl('/task/edit', { taskId: taskId, task: newText },
+      function() {
+        if (msgEl) { msgEl.className = 'tqe-msg success'; msgEl.textContent = 'Saved.'; }
+        if (saveBtn) saveBtn.disabled = false;
+      },
+      function(errMsg) {
+        if (msgEl) { msgEl.className = 'tqe-msg error'; msgEl.textContent = 'Error: ' + errMsg; }
+        if (saveBtn) saveBtn.disabled = false;
+      }
+    );
+  }
+
+  // Task queue editor — cancel task
+  function cancelQueuedTask(taskId, qi) {
+    var msgEl = document.getElementById('tqe-msg-' + qi);
+    var row = document.getElementById('tqe-' + qi);
+    var cancelBtn = row ? row.querySelector('.tqe-cancel-btn') : null;
+
+    if (!confirm('Cancel this task? It will not execute.')) return;
+
+    if (cancelBtn) cancelBtn.disabled = true;
+    if (msgEl) { msgEl.className = 'tqe-msg'; msgEl.textContent = 'Cancelling...'; }
+
+    postControl('/task/cancel', { taskId: taskId },
+      function() {
+        if (row) {
+          row.style.opacity = '0.4';
+          row.style.pointerEvents = 'none';
+        }
+        if (msgEl) { msgEl.className = 'tqe-msg success'; msgEl.textContent = 'Cancelled.'; }
+      },
+      function(errMsg) {
+        if (msgEl) { msgEl.className = 'tqe-msg error'; msgEl.textContent = 'Error: ' + errMsg; }
+        if (cancelBtn) cancelBtn.disabled = false;
+      }
+    );
+  }
 </script>
 </body>
 </html>`;
@@ -3640,30 +3931,82 @@ function startDashboardServer(instanceDir, customerId, hubPort, dashboardPort) {
 
     const url = new URL(req.url || '/', `http://127.0.0.1:${dashboardPort}`);
 
+    // Shared helpers for POST handlers
+    function readBody(cb) {
+      let raw = '';
+      req.on('data', chunk => (raw += chunk));
+      req.on('end', () => { try { cb(raw); } catch (e) { sendErr(e.message); } });
+      req.on('error', () => sendErr('request error', 500));
+    }
+    function sendErr(msg, code) {
+      res.writeHead(code || 400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: msg }));
+    }
+
     // POST /challenge — founder pushes back on an audit entry
     if (req.method === 'POST' && url.pathname === '/challenge') {
-      let body = '';
-      req.on('data', chunk => (body += chunk));
-      req.on('end', () => {
-        try {
-          const { entryId, reason } = JSON.parse(body);
-          if (!entryId || !reason || typeof reason !== 'string') {
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ ok: false, error: 'entryId and reason required' }));
-            return;
-          }
-          writeChallenge(instanceDir, String(entryId), reason);
-          console.log(`[your9-dashboard] Founder challenge submitted for entry: ${entryId}`);
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ ok: true, entryId }));
-        } catch (e) {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ ok: false, error: e.message }));
-        }
+      readBody(raw => {
+        const { entryId, reason } = JSON.parse(raw);
+        if (!entryId || !reason || typeof reason !== 'string') return sendErr('entryId and reason required');
+        writeChallenge(instanceDir, String(entryId), reason);
+        console.log(`[your9-dashboard] Founder challenge submitted for entry: ${entryId}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, entryId }));
       });
-      req.on('error', () => {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: 'request error' }));
+      return;
+    }
+
+    // POST /agent/pause|resume|override — founder agent controls
+    if (req.method === 'POST' && ['pause','resume','override'].some(a => url.pathname === '/agent/' + a)) {
+      const action = url.pathname.split('/').pop();
+      readBody(raw => {
+        const { agentId, note } = JSON.parse(raw);
+        if (!agentId || typeof agentId !== 'string') return sendErr('agentId required');
+        writeAgentControl(instanceDir, agentId.trim(), action, note || '');
+        console.log(`[your9-dashboard] Agent control: ${action} → ${agentId}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, agentId, action }));
+      });
+      return;
+    }
+
+    // POST /instruct — founder sends direct instruction to agent or CEO
+    if (req.method === 'POST' && url.pathname === '/instruct') {
+      readBody(raw => {
+        const { targetId, instruction } = JSON.parse(raw);
+        if (!targetId || typeof targetId !== 'string') return sendErr('targetId required');
+        if (!instruction || typeof instruction !== 'string' || !instruction.trim()) return sendErr('instruction required');
+        writeInstruction(instanceDir, targetId.trim(), instruction.trim());
+        console.log(`[your9-dashboard] Instruction → ${targetId}: "${instruction.slice(0, 60)}"`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, targetId }));
+      });
+      return;
+    }
+
+    // POST /task/edit — founder edits a queued task
+    if (req.method === 'POST' && url.pathname === '/task/edit') {
+      readBody(raw => {
+        const { taskId, task: newText } = JSON.parse(raw);
+        if (!taskId || typeof taskId !== 'string') return sendErr('taskId required');
+        if (!newText || typeof newText !== 'string' || !newText.trim()) return sendErr('task text required');
+        editTask(instanceDir, taskId.trim(), newText.trim());
+        console.log(`[your9-dashboard] Task edited: ${taskId}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, taskId }));
+      });
+      return;
+    }
+
+    // POST /task/cancel — founder cancels a queued task
+    if (req.method === 'POST' && url.pathname === '/task/cancel') {
+      readBody(raw => {
+        const { taskId } = JSON.parse(raw);
+        if (!taskId || typeof taskId !== 'string') return sendErr('taskId required');
+        cancelTask(instanceDir, taskId.trim());
+        console.log(`[your9-dashboard] Task cancelled: ${taskId}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, taskId }));
       });
       return;
     }
