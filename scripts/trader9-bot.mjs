@@ -314,7 +314,8 @@ function riskManagerUpdate(equity) {
     riskState.globalHalt = true;
     const msg = `TRADER9 GLOBAL HALT: account drawdown ${(drawdown * 100).toFixed(1)}% from high-water mark ($${riskState.highWaterMark.toFixed(2)} → $${equity.toFixed(2)}). ALL strategies halted. 9 sign-off required to resume.`;
     log(`RISK: ${msg}`);
-    sendTelegramAlert(`[PAPER] ${msg}`).catch(() => {});
+    // Alert routing disabled — log only, not sent to Owner's Telegram (Apr 9 directive)
+    log(`[alert-suppressed] ${msg}`);
   }
 }
 
@@ -327,7 +328,8 @@ function recordStrategyPnl(strategyName, dollarPnl, accountEquity) {
     riskState.strategyPaused[strategyName] = true;
     const msg = `TRADER9 STRATEGY PAUSE: ${strategyName} lost ${(lossPct * 100).toFixed(1)}% of account this session ($${sessionLoss.toFixed(2)}). Pausing ${strategyName} only.`;
     log(`RISK: ${msg}`);
-    sendTelegramAlert(`[PAPER] ${msg}`).catch(() => {});
+    // Alert routing disabled — log only, not sent to Owner's Telegram (Apr 9 directive)
+    log(`[alert-suppressed] ${msg}`);
   }
 }
 
@@ -403,7 +405,8 @@ function checkDailyDrawdownBreaker() {
     log(`CIRCUIT BREAKER: ${msg}`);
     haltedUntilMidnight = true;
     persistHalt();
-    sendTelegramAlert(`[PAPER] ${msg}`).catch(() => {});
+    // Alert suppressed (Apr 9)
+    // sendTelegramAlert(`[PAPER] ${msg}`).catch(() => {});
     return true;
   }
   return false;
@@ -812,7 +815,8 @@ async function runFundingRateCarry(equity) {
     // Paper-track hypothetical position
     if (!fundingCarryState.inPosition && fundingRateApr >= CFG.FUNDING_ENTRY_APR) {
       log(`[FundingCarry] PAPER SIGNAL: funding rate ${(fundingRateApr * 100).toFixed(2)}% APR >= ${(CFG.FUNDING_ENTRY_APR * 100)}% entry threshold. Would ENTER carry trade. (Blocked: Hyperliquid not configured.)`);
-      sendTelegramAlert(`[PAPER] FundingCarry: BTC funding ${(fundingRateApr * 100).toFixed(1)}% APR — carry trade opportunity. Hyperliquid account needed to execute.`).catch(() => {});
+      // Alert suppressed (Apr 9)
+    // sendTelegramAlert(`[PAPER] FundingCarry: BTC funding ${(fundingRateApr * 100).toFixed(1)}% APR — carry trade opportunity. Hyperliquid account needed to execute.`).catch(() => {});
     } else if (fundingCarryState.inPosition && (fundingRateApr <= CFG.FUNDING_EXIT_APR || fundingRateApr <= CFG.FUNDING_STOP_APR)) {
       log(`[FundingCarry] PAPER SIGNAL: funding rate ${(fundingRateApr * 100).toFixed(2)}% APR — would EXIT carry trade.`);
     }
@@ -951,7 +955,8 @@ async function runPredictionMarketArb() {
             log(`[PredMarket] PAPER TRADE: ${market.ticker} | net EV $${feeCheckK.netEV.toFixed(2)} | running paper P&L $${predMarketState.paperPnl.toFixed(2)}`);
 
             if (predMarketState.paperTrades.length % 10 === 0) {
-              sendTelegramAlert(`[PAPER] PredMarketArb: ${predMarketState.paperTrades.length} paper trades | P&L $${predMarketState.paperPnl.toFixed(2)}`).catch(() => {});
+              // Alert suppressed (Apr 9)
+    // sendTelegramAlert(`[PAPER] PredMarketArb: ${predMarketState.paperTrades.length} paper trades | P&L $${predMarketState.paperPnl.toFixed(2)}`).catch(() => {});
             }
           }
         }
