@@ -27719,7 +27719,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 342.74, "capUsed": 254.35, "deadCap": 25.18, "capSpace": 63.2}
+    "capSummary": {"totalCap": 342.74, "capUsed": 254.37, "deadCap": 25.18, "capSpace": 63.19}
   },
   "WSH": {
     "players": [
