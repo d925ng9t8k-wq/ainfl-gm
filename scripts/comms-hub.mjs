@@ -24,7 +24,7 @@ if (process.env.SENTRY_DSN_COMMS_HUB) {
 
 import 'dotenv/config';
 import { execSync } from 'child_process';
-import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync, renameSync, openSync, closeSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync, renameSync, openSync, closeSync, statSync, readSync } from 'fs';
 import { randomUUID } from 'crypto';
 import https from 'https';
 import path from 'path';
@@ -2529,6 +2529,70 @@ const healthServer = createServer(async (req, res) => {
       res.end(JSON.stringify({ status: 'error', error: e.message, checked_at: new Date().toISOString() }));
     }
 
+  } else if (req.method === 'GET' && req.url === '/fda-health') {
+    // Returns the most recent FDA heartbeat line + a computed last_ok_age_seconds.
+    // Used by the ground-truth self-test to prove FDA has been continuously healthy
+    // between the alert-on-loss events (silent success vs silent death).
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const heartbeatPath = `${PROJECT}/logs/fda-heartbeat.jsonl`;
+      if (!existsSync(heartbeatPath)) {
+        res.end(JSON.stringify({
+          status: 'unknown',
+          reason: 'no heartbeat log yet — watchdog has not ticked since hub restart',
+          checked_at: new Date().toISOString(),
+        }));
+        return;
+      }
+      // Read last ~8KB and grab the final non-empty line. Cheap + avoids loading 10MB.
+      const size = statSync(heartbeatPath).size;
+      const readLen = Math.min(size, 8192);
+      const fd = openSync(heartbeatPath, 'r');
+      const buf = Buffer.alloc(readLen);
+      try {
+        readSync(fd, buf, 0, readLen, size - readLen);
+      } finally {
+        closeSync(fd);
+      }
+      const lines = buf.toString('utf-8').split('\n').filter(Boolean);
+      const lastLine = lines[lines.length - 1];
+      let last = null;
+      try { last = JSON.parse(lastLine); } catch {}
+      if (!last) {
+        res.end(JSON.stringify({
+          status: 'unknown',
+          reason: 'could not parse last heartbeat line',
+          checked_at: new Date().toISOString(),
+        }));
+        return;
+      }
+      // Compute age. "last_ok" = last line with status === 'ok'. If the latest
+      // line is 'ok', it is also the last_ok. Otherwise scan backwards in-buffer
+      // for the most recent ok (best-effort — for deep history the log file remains).
+      let lastOkTs = null;
+      if (last.status === 'ok') {
+        lastOkTs = last.ts;
+      } else {
+        for (let i = lines.length - 1; i >= 0; i--) {
+          try {
+            const row = JSON.parse(lines[i]);
+            if (row.status === 'ok') { lastOkTs = row.ts; break; }
+          } catch {}
+        }
+      }
+      const now = Date.now();
+      const lastOkAgeSeconds = lastOkTs ? Math.round((now - new Date(lastOkTs).getTime()) / 1000) : null;
+      const lastTickAgeSeconds = last.ts ? Math.round((now - new Date(last.ts).getTime()) / 1000) : null;
+      res.end(JSON.stringify({
+        last,
+        last_ok_age_seconds: lastOkAgeSeconds,
+        last_tick_age_seconds: lastTickAgeSeconds,
+        checked_at: new Date().toISOString(),
+      }, null, 2));
+    } catch (e) {
+      res.end(JSON.stringify({ status: 'error', error: e.message, checked_at: new Date().toISOString() }));
+    }
+
   } else if (req.method === 'POST' && req.url === '/summarize-long-message') {
     // POST /summarize-long-message — caps long messages before they bloat context
     // Body: { text: string, maxLength?: number }
@@ -4216,8 +4280,52 @@ function checkFdaAccess() {
 // This fixes the cold-start bug where fdaWasWorking=false meant the alert could never fire.
 let fdaWasWorking = true;
 
+// ─── FDA Heartbeat Log (observability layer, log-only, no Telegram) ─────────
+// Born Apr 11 — silent success was indistinguishable from silent death. Every
+// fdaWatchdog tick now appends one JSON line to logs/fda-heartbeat.jsonl proving
+// FDA was probed and what the result was. This is observability only — the
+// watchdog's alert-on-loss behavior is unchanged.
+const FDA_HEARTBEAT_PATH = `${PROJECT}/logs/fda-heartbeat.jsonl`;
+const FDA_HEARTBEAT_PATH_ROTATED = `${PROJECT}/logs/fda-heartbeat.jsonl.1`;
+const FDA_HEARTBEAT_MAX_BYTES = 10 * 1024 * 1024; // 10 MB
+
+function rotateFdaHeartbeatIfNeeded() {
+  try {
+    if (!existsSync(FDA_HEARTBEAT_PATH)) return;
+    const size = statSync(FDA_HEARTBEAT_PATH).size;
+    if (size > FDA_HEARTBEAT_MAX_BYTES) {
+      // Overwrite the rotated file, then start fresh — same pattern as other rotated logs.
+      try { if (existsSync(FDA_HEARTBEAT_PATH_ROTATED)) unlinkSync(FDA_HEARTBEAT_PATH_ROTATED); } catch {}
+      renameSync(FDA_HEARTBEAT_PATH, FDA_HEARTBEAT_PATH_ROTATED);
+      log(`FDA heartbeat log rotated — ${Math.round(size / 1024 / 1024)}MB → .1`);
+    }
+  } catch (e) {
+    // Never let heartbeat rotation kill the watchdog.
+    try { log(`[fda-heartbeat] rotate failed: ${e.message}`); } catch {}
+  }
+}
+
+function writeFdaHeartbeat({ status, checkMs, imessageOk, mailOk, failureReason }) {
+  try {
+    rotateFdaHeartbeatIfNeeded();
+    const line = JSON.stringify({
+      ts: new Date().toISOString(),
+      status,                        // 'ok' | 'degraded' | 'lost'
+      check_ms: checkMs,
+      imessage_ok: imessageOk,
+      mail_ok: mailOk,
+      failure_reason: failureReason, // string or null
+    }) + '\n';
+    appendFileSync(FDA_HEARTBEAT_PATH, line);
+  } catch (e) {
+    try { log(`[fda-heartbeat] write failed: ${e.message}`); } catch {}
+  }
+}
+
 function fdaWatchdog() {
+  const t0 = Date.now();
   const hasAccess = checkFdaAccess();
+  const checkMs = Date.now() - t0;
 
   if (fdaWasWorking && !hasAccess) {
     // Lost FDA — probably macOS update, LaunchAgent restart, or permission revoke
@@ -4236,6 +4344,23 @@ function fdaWatchdog() {
     }
   }
   saveState(state);
+
+  // Heartbeat write — log-only, never gates behavior.
+  // VPS_MODE has no iMessage DB; record status accordingly so consumers can tell
+  // the difference between "FDA healthy" and "not applicable".
+  const mailOk = !!gmailTransporter;
+  let status, failureReason;
+  if (VPS_MODE) {
+    status = 'degraded';
+    failureReason = 'vps_mode_no_imessage';
+  } else if (hasAccess) {
+    status = 'ok';
+    failureReason = null;
+  } else {
+    status = 'lost';
+    failureReason = 'imessage_db_read_denied';
+  }
+  writeFdaHeartbeat({ status, checkMs, imessageOk: hasAccess, mailOk, failureReason });
 }
 
 setInterval(fdaWatchdog, 5 * 60 * 1000); // Every 5 minutes (tight cadence to catch FDA loss fast)
