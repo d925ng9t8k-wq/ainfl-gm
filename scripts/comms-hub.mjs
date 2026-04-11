@@ -24,7 +24,8 @@ if (process.env.SENTRY_DSN_COMMS_HUB) {
 
 import 'dotenv/config';
 import { execSync } from 'child_process';
-import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, readdirSync, unlinkSync, renameSync, openSync, closeSync } from 'fs';
+import { randomUUID } from 'crypto';
 import https from 'https';
 import path from 'path';
 import { createServer } from 'http';
@@ -136,8 +137,19 @@ function walMarkSent(walId) {
   walAppend({ walId, status: 'sent', at: new Date().toISOString() });
 }
 
-// On startup: read WAL and warn about any pending messages that were never confirmed sent.
-// This gives operators visibility into potential lost messages after a crash.
+// Apr 10 hunt — kill: wal-replay-missing.
+// Track 4 crash survival test (scripts/test-crash-survival.mjs) proved: the hub
+// WAL was capturing pending outbound entries correctly but the startup code only
+// LOGGED pending entries without resending them. Messages that walAppend'd just
+// before a crash were silently lost forever. This is the actual root cause of
+// every "where did my Telegram go" incident.
+//
+// New behavior: collect pending entries at startup into PENDING_WAL_REPLAY.
+// After the HTTP server starts listening (channels warm, send fns available),
+// iterate the queue, replay each via the matching channel, then walMarkSent the
+// OLD pending entry so it isn't replayed again next startup.
+// Skip replay for entries older than 1 hour (stale messages are noise).
+const PENDING_WAL_REPLAY = [];
 try {
   if (existsSync(OUTBOUND_WAL_PATH)) {
     const walLines = readFileSync(OUTBOUND_WAL_PATH, 'utf-8').trim().split('\n').filter(l => l);
@@ -153,9 +165,23 @@ try {
     // Remove confirmed entries
     for (const id of sent) pending.delete(id);
     if (pending.size > 0) {
-      console.log(`[wal] WARNING: ${pending.size} outbound message(s) were pending at last shutdown — may not have been delivered:`);
+      const ONE_HOUR = 60 * 60 * 1000;
+      const now = Date.now();
+      let fresh = 0, stale = 0;
       for (const [id, entry] of pending) {
-        console.log(`  [wal] ${id}: ${entry.channel} — "${(entry.text || '').slice(0, 80)}..."`);
+        const ts = entry.timestamp ? Date.parse(entry.timestamp) : NaN;
+        if (!Number.isNaN(ts) && (now - ts) > ONE_HOUR) {
+          stale++;
+          // Mark stale entries as sent so they don't hang around forever
+          try { appendFileSync(OUTBOUND_WAL_PATH, JSON.stringify({ walId: id, status: 'sent', stale: true, at: new Date().toISOString() }) + '\n'); } catch {}
+          continue;
+        }
+        PENDING_WAL_REPLAY.push(entry);
+        fresh++;
+      }
+      console.log(`[wal] WARNING: ${pending.size} outbound message(s) were pending at last shutdown — ${fresh} will replay, ${stale} stale (>1h) skipped:`);
+      for (const entry of PENDING_WAL_REPLAY) {
+        console.log(`  [wal] ${entry.id}: ${entry.channel} — "${(entry.text || '').slice(0, 80)}..."`);
       }
     } else {
       console.log('[wal] Clean startup — no pending outbound messages from prior session');
@@ -348,12 +374,104 @@ function addMessage(state, channel, direction, text) {
     channel, direction, text: text.slice(0, TELEGRAM_MAX),
     timestamp: new Date().toISOString(),
   };
-  if (direction === 'in') msg.read = false;  // Explicit false — inbox filter depends on this
+  // Apr 10 kill item B: every inbound message gets a UUID. Both /inbox and the
+  // signal file surface this id, and both consumers check /tmp/9-consumed-msg-ids.json
+  // before delivering. Single canonical drain — no more double-delivery.
+  if (direction === 'in') {
+    msg.read = false;  // Explicit false — inbox filter depends on this
+    msg.id = randomUUID();
+  }
   state.recentMessages.push(msg);
   // Keep last 50
   if (state.recentMessages.length > 50) state.recentMessages = state.recentMessages.slice(-50);
   // Sync to Neon cloud DB (non-blocking, fire-and-forget)
   syncToNeon(channel, direction, text, msg.timestamp).catch(() => {});
+  return msg;
+}
+
+// ─── Consumed Message ID Tracking (Apr 10 kill item B: dup drains) ─────────────
+// Both /inbox and check-messages.sh consume inbound messages. Without dedup they
+// can double-deliver (/inbox drains recentMessages; hook drains signal file; same
+// message surfaces twice). Every inbound message now carries a UUID. This helper
+// tracks which UUIDs have already been delivered. Both consumers check before
+// surfacing and mark after. Entries older than 1 hour are pruned on every write.
+const CONSUMED_IDS_FILE = '/tmp/9-consumed-msg-ids.json';
+const CONSUMED_IDS_LOCK = '/tmp/9-consumed-msg-ids.lock';
+const CONSUMED_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+function acquireConsumedLock(maxWaitMs = 2000) {
+  const start = Date.now();
+  while (Date.now() - start < maxWaitMs) {
+    try {
+      const fd = openSync(CONSUMED_IDS_LOCK, 'wx');
+      closeSync(fd);
+      return true;
+    } catch (e) {
+      if (e.code !== 'EEXIST') return false;
+      // Stale lock (older than 5s)? Force-remove.
+      try {
+        const st = execSync(`stat -f %m ${CONSUMED_IDS_LOCK} 2>/dev/null || echo 0`, { encoding: 'utf-8' }).trim();
+        if (st && (Date.now() / 1000 - parseInt(st, 10)) > 5) {
+          try { unlinkSync(CONSUMED_IDS_LOCK); } catch {}
+        }
+      } catch {}
+      // Small busy-wait (Node sync context — no setTimeout available here)
+      const waitStart = Date.now();
+      while (Date.now() - waitStart < 25) { /* spin */ }
+    }
+  }
+  return false;
+}
+
+function releaseConsumedLock() {
+  try { unlinkSync(CONSUMED_IDS_LOCK); } catch {}
+}
+
+function loadConsumedIds() {
+  try {
+    if (!existsSync(CONSUMED_IDS_FILE)) return {};
+    const raw = readFileSync(CONSUMED_IDS_FILE, 'utf-8');
+    const obj = JSON.parse(raw);
+    return (obj && typeof obj === 'object') ? obj : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveConsumedIds(map) {
+  // Prune expired entries
+  const cutoff = (Date.now() - CONSUMED_TTL_MS) / 1000;
+  for (const k of Object.keys(map)) {
+    if (typeof map[k] !== 'number' || map[k] < cutoff) delete map[k];
+  }
+  try {
+    const tmp = `${CONSUMED_IDS_FILE}.tmp.${process.pid}`;
+    writeFileSync(tmp, JSON.stringify(map));
+    renameSync(tmp, CONSUMED_IDS_FILE);
+  } catch (e) {
+    log(`consumed-ids save failed: ${e.message}`);
+  }
+}
+
+function markConsumed(ids) {
+  if (!Array.isArray(ids) || ids.length === 0) return;
+  const locked = acquireConsumedLock();
+  try {
+    const map = loadConsumedIds();
+    const now = Math.floor(Date.now() / 1000);
+    for (const id of ids) {
+      if (id && typeof id === 'string') map[id] = now;
+    }
+    saveConsumedIds(map);
+  } finally {
+    if (locked) releaseConsumedLock();
+  }
+}
+
+function isConsumed(id, map) {
+  if (!id) return false;
+  const m = map || loadConsumedIds();
+  return Object.prototype.hasOwnProperty.call(m, id);
 }
 
 function updateChannelStatus(state, channel, status) {
@@ -1635,6 +1753,37 @@ const healthServer = createServer(async (req, res) => {
     // requestTerminal only fires on crashes, not graceful shutdown
     res.writeHead(200);
     res.end('ok');
+  } else if (req.method === 'POST' && req.url === '/test/inbound') {
+    // Apr 10 Phase 1 Track 3 load test endpoint — simulates inbound Telegram
+    // without calling the Bot API. Runs the same core code path as the real
+    // telegramPoll() text handler: log + addMessage + signal file append + saveState.
+    // Text MUST start with "LOADTEST:" to prevent pollution and so cleanup can filter.
+    let body = '';
+    req.on('data', c => body += c);
+    req.on('end', () => {
+      try {
+        const { text } = JSON.parse(body);
+        if (typeof text !== 'string' || !text.startsWith('LOADTEST:')) {
+          res.writeHead(400);
+          res.end('text must be a string starting with "LOADTEST:"');
+          return;
+        }
+        log(`Telegram IN: "${text}"`);
+        const addedMsg = addMessage(state, 'telegram', 'in', text);
+        updateChannelStatus(state, 'telegram', 'active');
+        state.channels.telegram.messagesHandled++;
+        try {
+          const alert = JSON.stringify({ id: addedMsg.id, channel: 'telegram', text, timestamp: addedMsg.timestamp });
+          appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
+        } catch (e) { log(`test/inbound signal write failed: ${e.message}`); }
+        saveState(state);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, text, id: addedMsg.id }));
+      } catch (e) {
+        res.writeHead(500);
+        res.end(e.message);
+      }
+    });
   } else if (req.method === 'GET' && req.url === '/inbox') {
     // Terminal reads unprocessed inbound messages
     // FIX: Inbox poll doubles as heartbeat — keeps relay mode alive without depending on separate ping loop
@@ -1642,10 +1791,21 @@ const healthServer = createServer(async (req, res) => {
       terminalLastPing = Date.now();
       // NOTE: Do NOT reset freezeAlertSent here — same reason as ping handler.
     }
-    const unread = state.recentMessages.filter(m => m.direction === 'in' && m.read === false);
+    // Apr 10 kill item B: filter out messages already consumed by check-messages.sh
+    // (or any prior /inbox call). Single canonical drain across both consumers.
+    const consumedMap = loadConsumedIds();
+    const unread = state.recentMessages.filter(m =>
+      m.direction === 'in' &&
+      m.read === false &&
+      !(m.id && isConsumed(m.id, consumedMap))
+    );
+    // Mark the surfaced IDs as consumed BEFORE responding so a racing
+    // check-messages.sh invocation sees them as already drained.
+    const surfacedIds = unread.map(m => m.id).filter(Boolean);
+    if (surfacedIds.length > 0) markConsumed(surfacedIds);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(unread));
-    // Mark as read
+    // Mark as read in state
     for (const m of state.recentMessages) {
       if (m.direction === 'in' && m.read === false) m.read = true;
     }
@@ -1953,6 +2113,41 @@ healthServer.on('error', (e) => {
 });
 healthServer.listen(HEALTH_PORT, () => {
   log(`Health API listening on port ${HEALTH_PORT}`);
+  // Apr 10 hunt — kill wal-replay-missing: now that the HTTP server is up and
+  // channels are warm, replay any pending WAL entries from the prior session.
+  // Delay by 2s to let Telegram/iMessage/email subsystems finish warm-up.
+  setTimeout(async () => {
+    if (PENDING_WAL_REPLAY.length === 0) return;
+    log(`[wal-replay] Replaying ${PENDING_WAL_REPLAY.length} pending outbound message(s) from prior session`);
+    let replayed = 0, failed = 0;
+    for (const entry of PENDING_WAL_REPLAY) {
+      try {
+        if (entry.channel === 'telegram') {
+          await sendTelegram(entry.text);
+        } else if (entry.channel === 'imessage') {
+          sendIMessage(entry.text);
+        } else if (entry.channel === 'email') {
+          // Email replay needs more metadata than the WAL stores today — skip with warning
+          log(`[wal-replay] SKIPPED email ${entry.id} — email replay requires subject/recipient not in WAL`);
+          continue;
+        } else {
+          log(`[wal-replay] SKIPPED ${entry.id} — unknown channel: ${entry.channel}`);
+          continue;
+        }
+        // Mark the ORIGINAL pending entry as sent so it isn't replayed again
+        try { appendFileSync(OUTBOUND_WAL_PATH, JSON.stringify({ walId: entry.id, status: 'sent', replayed: true, at: new Date().toISOString() }) + '\n'); } catch {}
+        replayed++;
+        log(`[wal-replay] Replayed ${entry.id} ${entry.channel}: "${(entry.text || '').slice(0, 80)}..."`);
+      } catch (e) {
+        failed++;
+        log(`[wal-replay] FAILED ${entry.id}: ${e.message}`);
+      }
+    }
+    log(`[wal-replay] Complete — ${replayed} replayed, ${failed} failed out of ${PENDING_WAL_REPLAY.length}`);
+    if (replayed > 0) {
+      try { sendTelegram(`9: WAL replay — redelivered ${replayed} message(s) that were pending at the last crash. If any looked out of order or duplicated, that is why.`); } catch {}
+    }
+  }, 2000);
 });
 
 // ─── Supabase Watchdog ──────────────────────────────────────────────────────
@@ -2040,12 +2235,13 @@ async function telegramPoll() {
                   photoPath = `/tmp/telegram_photo_${Date.now()}.jpg`;
                   writeFileSync(photoPath, Buffer.from(photoData));
                   log(`Photo saved: ${photoPath}`);
-                  addMessage(state, 'telegram', 'in', `[PHOTO saved to ${photoPath}]${caption ? ' Caption: ' + caption : ''}`);
+                  const photoMsg = addMessage(state, 'telegram', 'in', `[PHOTO saved to ${photoPath}]${caption ? ' Caption: ' + caption : ''}`);
                   // Signal the terminal so 9 can read it
                   const signal = JSON.stringify({
+                    id: photoMsg.id,
                     channel: 'telegram',
                     text: `[PHOTO received: ${photoPath}]${caption ? ' Caption: ' + caption : ''}`,
-                    timestamp: new Date().toISOString()
+                    timestamp: photoMsg.timestamp
                   });
                   try { appendFileSync('/tmp/9-incoming-message.jsonl', signal + '\n'); } catch {}
                 }
@@ -2076,11 +2272,12 @@ async function telegramPoll() {
                   docPath = `/tmp/telegram_doc_${Date.now()}_${safeName}`;
                   writeFileSync(docPath, Buffer.from(docData));
                   log(`Document saved: ${docPath} (${Buffer.from(docData).length} bytes)`);
-                  addMessage(state, 'telegram', 'in', `[DOCUMENT saved to ${docPath}]${caption ? ' Caption: ' + caption : ''}`);
+                  const docMsg = addMessage(state, 'telegram', 'in', `[DOCUMENT saved to ${docPath}]${caption ? ' Caption: ' + caption : ''}`);
                   const signal = JSON.stringify({
+                    id: docMsg.id,
                     channel: 'telegram',
                     text: `[DOCUMENT received: ${docPath}]${caption ? ' Caption: ' + caption : ''}`,
-                    timestamp: new Date().toISOString()
+                    timestamp: docMsg.timestamp
                   });
                   try { appendFileSync('/tmp/9-incoming-message.jsonl', signal + '\n'); } catch {}
                 }
@@ -2098,7 +2295,7 @@ async function telegramPoll() {
             if (msg.text) {
               const userText = msg.text.trim();
               log(`Telegram IN: "${userText}"`);
-              addMessage(state, 'telegram', 'in', userText);
+              const inboundMsg = addMessage(state, 'telegram', 'in', userText);
               try { if (db) db.logMessage('telegram', 'in', userText); } catch (e) { console.error('DB log failed:', e.message); }
               updateChannelStatus(state, 'telegram', 'active');
               state.channels.telegram.messagesHandled++;
@@ -2127,7 +2324,7 @@ async function telegramPoll() {
                   // Critical fix: if file write fails, don't tell Jasson "Got it" when message is lost
                   let signalWritten = false;
                   try {
-                    const alert = JSON.stringify({ channel: 'telegram', text: userText, timestamp: new Date().toISOString() });
+                    const alert = JSON.stringify({ id: inboundMsg.id, channel: 'telegram', text: userText, timestamp: inboundMsg.timestamp });
                     appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
                     log('Signal file written: /tmp/9-incoming-message.jsonl');
                     signalWritten = true;
@@ -2233,14 +2430,14 @@ async function telegramPoll() {
                 // Queue message for terminal which should re-claim momentarily
                 log('Telegram: suppressed OC response during startup grace period — queuing for terminal');
                 try {
-                  const alert = JSON.stringify({ channel: 'telegram', text: userText, timestamp: new Date().toISOString() });
+                  const alert = JSON.stringify({ id: inboundMsg.id, channel: 'telegram', text: userText, timestamp: inboundMsg.timestamp });
                   appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
                 } catch {}
               } else if (isRelayLockdownActive('no-terminal branch — check post-active grace window')) {
                 // Terminal flipped inactive very recently — treat as still relay-mode.
                 // Queue for terminal (which should re-claim momentarily) and send deferral only.
                 try {
-                  const alert = JSON.stringify({ channel: 'telegram', text: userText, timestamp: new Date().toISOString() });
+                  const alert = JSON.stringify({ id: inboundMsg.id, channel: 'telegram', text: userText, timestamp: inboundMsg.timestamp });
                   appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
                 } catch {}
                 await sendTelegram(ocRelayDeferralMessage());
@@ -2406,7 +2603,7 @@ async function imessageMonitor() {
         }
 
         log(`iMessage IN: "${msg.text}"`);
-        addMessage(state, 'imessage', 'in', msg.text);
+        const imsgInbound = addMessage(state, 'imessage', 'in', msg.text);
         try { if (db) db.logMessage('imessage', 'in', msg.text); } catch (e) { console.error('DB log failed:', e.message); }
         state.channels.imessage.messagesHandled++;
         updateChannelStatus(state, 'imessage', 'active');
@@ -2429,7 +2626,7 @@ async function imessageMonitor() {
             sendIMessage('Got it — passing to terminal now.');
             log(`iMessage: message acknowledged and queued for terminal (relay mode)`);
             try {
-              const alert = JSON.stringify({ channel: 'imessage', text: msg.text, timestamp: new Date().toISOString() });
+              const alert = JSON.stringify({ id: imsgInbound.id, channel: 'imessage', text: msg.text, timestamp: imsgInbound.timestamp });
               appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
             } catch {}
           } else {
@@ -2445,7 +2642,7 @@ async function imessageMonitor() {
             }
             // Always queue the message so terminal can pick it up when it resumes
             try {
-              const alert = JSON.stringify({ channel: 'imessage', text: msg.text, timestamp: new Date().toISOString() });
+              const alert = JSON.stringify({ id: imsgInbound.id, channel: 'imessage', text: msg.text, timestamp: imsgInbound.timestamp });
               appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
             } catch {}
           }
@@ -2508,7 +2705,7 @@ async function emailMonitor() {
 
           const userText = body || subject;
           log(`Email IN: "${subject}" — "${userText.slice(0, 200)}"`);
-          addMessage(state, 'email', 'in', `[${subject}] ${userText.slice(0, 500)}`);
+          const emailInbound = addMessage(state, 'email', 'in', `[${subject}] ${userText.slice(0, 500)}`);
           try { if (db) db.logMessage('email', 'in', `[${subject}] ${userText.slice(0, 500)}`); } catch (e) { console.error('DB log failed:', e.message); }
           updateChannelStatus(state, 'email', 'active');
           state.channels.email.messagesHandled++;
@@ -2518,7 +2715,7 @@ async function emailMonitor() {
             sendEmail(`Re: ${subject}`, 'Got it — passing to terminal now.');
             log('Email: message acknowledged and queued for terminal (relay mode)');
             try {
-              const alert = JSON.stringify({ channel: 'email', text: `[${subject}] ${userText.slice(0, 300)}`, timestamp: new Date().toISOString() });
+              const alert = JSON.stringify({ id: emailInbound.id, channel: 'email', text: `[${subject}] ${userText.slice(0, 300)}`, timestamp: emailInbound.timestamp });
               appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
             } catch {}
           } else {

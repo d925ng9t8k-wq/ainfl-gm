@@ -6,11 +6,46 @@
 
 HUB_URL="http://localhost:3457"
 SIGNAL_FILE="/tmp/9-incoming-message.jsonl"
+DETECTOR="$(dirname "$0")/detect-lost-session.sh"
+
+# 0. Lost-session detector — runs BEFORE health check so even if hub is down
+# we still surface the gap timeline. Bounded to 5s via background+kill so it
+# never blocks the hook (macOS has no 'timeout' binary by default).
+LOST_SESSION_REPORT=""
+if [ -x "$DETECTOR" ]; then
+  TMPOUT="/tmp/9-lost-session-detect-$$.out"
+  "$DETECTOR" > "$TMPOUT" 2>/dev/null &
+  DETECT_PID=$!
+  # Wait up to 5 seconds (50 * 0.1s)
+  for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50; do
+    if ! kill -0 "$DETECT_PID" 2>/dev/null; then break; fi
+    sleep 0.1
+  done
+  if kill -0 "$DETECT_PID" 2>/dev/null; then
+    kill "$DETECT_PID" 2>/dev/null
+    wait "$DETECT_PID" 2>/dev/null
+    LOST_SESSION_REPORT="LOST-SESSION DETECTOR: detector timed out (>5s)"
+  else
+    wait "$DETECT_PID" 2>/dev/null
+    LOST_SESSION_REPORT=$(cat "$TMPOUT" 2>/dev/null)
+  fi
+  rm -f "$TMPOUT"
+fi
 
 # 1. Check hub health
 HUB_STATUS=$(curl -s --max-time 3 "$HUB_URL/health" 2>/dev/null)
 if [ -z "$HUB_STATUS" ]; then
-  echo '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"WARNING: Comms hub is DOWN. Run: nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown"}}'
+  DOWN_MSG="WARNING: Comms hub is DOWN. Run: nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown"
+  if [ -n "$LOST_SESSION_REPORT" ]; then
+    DOWN_MSG="$DOWN_MSG
+
+$LOST_SESSION_REPORT"
+  fi
+  context=$(python3 -c "
+import json, sys
+print(json.dumps(sys.stdin.read().strip()))
+" <<< "$DOWN_MSG" 2>/dev/null)
+  echo "{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":${context}}}"
   exit 0
 fi
 
@@ -46,17 +81,31 @@ $INBOX"
   fi
 fi
 
+# 5. Prepend lost-session report if we have one
+PAYLOAD=""
 if [ -n "$COMBINED" ]; then
+  PAYLOAD="SESSION START — PENDING MESSAGES FROM GAP: $COMBINED"
+fi
+if [ -n "$LOST_SESSION_REPORT" ]; then
+  if [ -n "$PAYLOAD" ]; then
+    PAYLOAD="$LOST_SESSION_REPORT
+
+$PAYLOAD"
+  else
+    PAYLOAD="$LOST_SESSION_REPORT"
+  fi
+fi
+
+if [ -n "$PAYLOAD" ]; then
   context=$(python3 -c "
 import json, sys
-raw = sys.stdin.read().strip()
-print(json.dumps('SESSION START — PENDING MESSAGES FROM GAP: ' + raw))
-" <<< "$COMBINED" 2>/dev/null)
+print(json.dumps(sys.stdin.read().strip()))
+" <<< "$PAYLOAD" 2>/dev/null)
   if [ -n "$context" ]; then
     echo "{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":${context}}}"
     exit 0
   fi
 fi
 
-# 5. All clear
+# 6. All clear
 echo '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"Hub healthy. Inbox clear. Signal file drained. Ready."}}'
