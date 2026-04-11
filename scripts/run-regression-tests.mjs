@@ -40,6 +40,7 @@ const DESTRUCTIVE = new Set([
 const REQUIRES_HUB = new Set([
   'test-telegram-load.mjs',
   'test-crash-survival.mjs',
+  'test-ara-poke.mjs',
 ]);
 
 // Per-test timeouts (ms). Default to 120s.
