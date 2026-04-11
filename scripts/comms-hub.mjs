@@ -1200,6 +1200,18 @@ const FREEZE_TIER2_MS     = 360000; // Tier 2: 6 minutes
 const FREEZE_TIER3_MS     = 420000; // Tier 3: 7 minutes
 const LAST_TOOL_CALL_FILE = '/tmp/9-last-tool-call';
 
+// ─── Ara-poke-9 freeze-prevention (Apr 11) ──────────────────────────────────
+// Born from the Apr 11 double-freeze incident: 9 froze TWICE in one hour during
+// long text responses. No tool calls = no PostToolUse hook = inbound Telegram
+// messages sat in /tmp/9-incoming-message.jsonl unread. Owner directive: give
+// Ara (the Grok peer in the Safari WebApp) a way to poke 9 awake when 9 looks
+// stuck. POST /terminal/poke writes a 🚨 red-flag entry to the signal file so
+// the very next tool call surfaces the wake-up via the PostToolUse hook. If
+// urgency=high and the terminal does NOT ping within POKE_SECONDARY_ALERT_MS,
+// the hub fires a secondary Telegram alert to Owner.
+let lastPokeFromAra = null; // { ts, reason, urgency, pingAtPoke } — null when no active poke
+const POKE_SECONDARY_ALERT_MS = 90 * 1000; // 90s to respond before secondary alert
+
 setInterval(() => {
   // ── Guard 1: No terminal = nothing to monitor. Reset state cleanly.
   if (!terminalActive) {
@@ -2247,6 +2259,90 @@ const healthServer = createServer(async (req, res) => {
     // requestTerminal only fires on crashes, not graceful shutdown
     res.writeHead(200);
     res.end('ok');
+  } else if (req.method === 'POST' && req.url === '/terminal/poke') {
+    // Apr 11 — Ara-poke-9 freeze-prevention. Ara (or any peer) calls this to
+    // jam a 🚨 red-flag entry into /tmp/9-incoming-message.jsonl so the next
+    // PostToolUse hook fires it as a system-reminder 9 cannot miss.
+    // Body: { from, reason, urgency: "high"|"normal" }
+    let body = '';
+    req.on('data', c => body += c);
+    req.on('end', () => {
+      try {
+        const parsed = JSON.parse(body || '{}');
+        const from = (parsed.from || 'ara').toString().slice(0, 32);
+        const reason = (parsed.reason || 'no reason given').toString().slice(0, 1024);
+        const urgency = parsed.urgency === 'high' ? 'high' : 'normal';
+        const pokeText = `🚨 POKE FROM ${from.toUpperCase()} (urgency:${urgency}): ${reason}`;
+        log(`POKE received from ${from} urgency=${urgency}: ${reason}`);
+
+        // 1. Append red-flag entry to signal file in the same envelope format the
+        //    Telegram inbound pipeline writes (id, channel, text, timestamp).
+        //    channel='poke' so check-messages.sh / inbox can distinguish if needed,
+        //    but the 🚨 prefix is the load-bearing signal.
+        const addedMsg = addMessage(state, 'poke', 'in', pokeText);
+        try {
+          const alert = JSON.stringify({
+            id: addedMsg.id,
+            channel: 'poke',
+            text: pokeText,
+            timestamp: addedMsg.timestamp,
+            urgency,
+            from,
+          });
+          appendFileSync('/tmp/9-incoming-message.jsonl', alert + '\n');
+        } catch (e) {
+          log(`POKE signal write failed: ${e.message}`);
+        }
+        saveState(state);
+
+        // 2. Set internal hub state flag for the watchdog below.
+        lastPokeFromAra = {
+          ts: Date.now(),
+          reason,
+          urgency,
+          from,
+          pingAtPoke: terminalLastPing,
+          messageId: addedMsg.id,
+        };
+
+        // 3. If urgency=high, schedule a secondary alert. If terminalLastPing
+        //    has not advanced within POKE_SECONDARY_ALERT_MS, alert Owner via
+        //    Telegram. We compare against pingAtPoke captured above — any new
+        //    ping (which fires on every tool call via the ping loop, plus every
+        //    /inbox poll) advances terminalLastPing and proves 9 is alive.
+        if (urgency === 'high') {
+          const pokeRefTs = lastPokeFromAra.ts;
+          const pingAtPoke = lastPokeFromAra.pingAtPoke;
+          setTimeout(() => {
+            // Only fire if THIS poke is still the active one (not superseded)
+            if (!lastPokeFromAra || lastPokeFromAra.ts !== pokeRefTs) return;
+            // If terminalLastPing has not advanced since the poke, 9 is frozen.
+            if (terminalLastPing <= pingAtPoke) {
+              const lastPingIso = pingAtPoke ? new Date(pingAtPoke).toISOString() : 'never';
+              const alertMsg = `OC: ALERT — 9 did not respond to ${from}'s poke within ${Math.round(POKE_SECONDARY_ALERT_MS/1000)}s. Possible terminal freeze. Last known ping: ${lastPingIso}. Reason: ${reason}`;
+              log(`POKE secondary alert firing — terminalLastPing has not advanced since poke at ${new Date(pokeRefTs).toISOString()}`);
+              sendTelegram(alertMsg).catch(() => {});
+            } else {
+              log(`POKE secondary alert skipped — terminalLastPing advanced after poke (9 woke up)`);
+            }
+          }, POKE_SECONDARY_ALERT_MS).unref?.();
+        }
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          ok: true,
+          queued: true,
+          signalFile: '/tmp/9-incoming-message.jsonl',
+          messageId: addedMsg.id,
+          urgency,
+          secondaryAlertInMs: urgency === 'high' ? POKE_SECONDARY_ALERT_MS : null,
+        }));
+      } catch (e) {
+        log(`POKE handler error: ${e.message}`);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: e.message }));
+      }
+    });
   } else if (req.method === 'POST' && req.url === '/test/inbound') {
     // Apr 10 Phase 1 Track 3 load test endpoint — simulates inbound Telegram
     // without calling the Bot API. Runs the same core code path as the real
