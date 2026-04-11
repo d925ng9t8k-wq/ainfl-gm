@@ -13,6 +13,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="AiNFLGM" />
+
+    <!-- LCP optimization: preload hero banner image so the browser discovers it during HTML parse
+         instead of waiting for React mount + inline style resolution. Targets the /nfl-hero.webp
+         background-image on div.hero-banner which Lighthouse identified as the LCP element (9.8s). -->
+    <link rel="preload" as="image" href="/nfl-hero.webp" type="image/webp" fetchpriority="high" />
+
+    <!-- Preconnect/dns-prefetch third-party origins used on initial render so TCP+TLS happens
+         in parallel with HTML parse rather than serializing after first paint. -->
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cloud.umami.is" />
+
     <meta name="description" content="Free AI NFL Draft Simulator — run a full 7-round mock draft, get instant grades, and share results. Be the GM of any of the 32 NFL teams: manage the salary cap, sign free agents, make trades, and play real 2026 draft scenarios. 100% free, no signup." />
     <meta name="keywords" content="NFL mock draft simulator, NFL trade simulator, NFL offseason simulator, NFL salary cap calculator, NFL GM simulator, 2026 NFL draft, free NFL simulator, AI NFL predictions, NFL free agency simulator, NFL roster builder, NFL cap space tracker, NFL prediction markets, NFL season simulator" />
     <title>AiNFL GM — Free AI-Powered NFL Offseason Simulator</title>
@@ -142,14 +154,14 @@
 
     <!-- Umami Analytics (privacy-first, no cookies) -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="26d489a4-c6c5-44c9-9d97-58db2d563104"></script>
-    <script type="module" crossorigin src="/assets/index-qQHLVeHi.js"></script>
+    <script type="module" crossorigin src="/assets/index-BnywhGX9.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-Dw2cE7zH.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-CAiC-03O.js">
-    <link rel="modulepreload" crossorigin href="/assets/vendor-react-cJXEGS5P.js">
-    <link rel="modulepreload" crossorigin href="/assets/data-rosters-Ce-QfRfe.js">
-    <link rel="modulepreload" crossorigin href="/assets/data-static-CfUt5VLl.js">
-    <link rel="modulepreload" crossorigin href="/assets/data-nba-static-NfIQiFAH.js">
-    <link rel="modulepreload" crossorigin href="/assets/data-nba-rosters-B-3MMQ4V.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-react-Czo73opA.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-router-EKRtJ4KF.js">
+    <link rel="modulepreload" crossorigin href="/assets/data-rosters-UvIWKBU4.js">
+    <link rel="modulepreload" crossorigin href="/assets/data-static-c3r4WfI4.js">
+    <link rel="modulepreload" crossorigin href="/assets/predictionMarkets-Q8EX3Nu-.js">
     <link rel="stylesheet" crossorigin href="/assets/index-Bfk4SPz7.css">
   <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
   <body>
