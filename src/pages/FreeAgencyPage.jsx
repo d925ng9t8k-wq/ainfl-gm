@@ -405,9 +405,10 @@ function PlayerCard({ player, roster, onNegotiate, isJustSigned }) {
             <div style={{ color: '#94A3B8', fontSize: 12 }}>{player.previousTeam}</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+            {/* a11y: position pill matches RosterPage — #FF8C5A on #2a2a2a ~5.5:1 (was 4.25:1) */}
             <span style={{
               background: '#2a2a2a',
-              color: 'var(--bengals-orange)',
+              color: '#FF8C5A',
               padding: '2px 6px',
               borderRadius: 4,
               fontSize: 11,

@@ -229,7 +229,8 @@ export default function RosterPage() {
             { label: 'Players', value: roster.length, color: '#CBD5E1' },
             { label: 'Cap Used', value: `$${capUsed.toFixed(1)}M`, color: capUsed / totalCap > 0.92 ? '#facc15' : '#4ade80' },
             { label: 'Cap Available', value: `$${(capAvailable != null ? capAvailable : totalCap - capUsed).toFixed(1)}M`, color: (capAvailable != null ? capAvailable : totalCap - capUsed) < 0 ? '#ff4444' : '#4ade80' },
-            { label: 'Dead Cap', value: `$${deadCapTotal.toFixed(1)}M`, color: deadCapTotal > 0 ? '#facc15' : '#64748b' },
+            // a11y: zero-state color bumped from #64748b (3.85:1) to #94a3b8 (~7:1)
+            { label: 'Dead Cap', value: `$${deadCapTotal.toFixed(1)}M`, color: deadCapTotal > 0 ? '#facc15' : '#94a3b8' },
           ].map(stat => (
             <div key={stat.label} style={{
               background: 'rgba(15,23,42,0.8)',
@@ -238,7 +239,8 @@ export default function RosterPage() {
               padding: '10px 14px',
               textAlign: 'center',
             }}>
-              <div style={{ color: '#64748b', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+              {/* a11y: label bumped from #64748b (3.85:1) to #94a3b8 (~7:1) */}
+              <div style={{ color: '#94a3b8', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
                 {stat.label}
               </div>
               <div style={{ color: stat.color, fontSize: 18, fontWeight: 800 }}>
@@ -362,9 +364,11 @@ export default function RosterPage() {
                       background: POS_GROUP_COLORS[posGroup(player.position)] || '#64748b',
                       flexShrink: 0,
                     }} />
+                    {/* a11y: position pill — #FB4F14 on #2a2a2a was 4.25:1 (fail).
+                        #FF8C5A (the lighter brand-orange already used in headers) hits ~5.5:1. */}
                     <span style={{
                       background: '#2a2a2a',
-                      color: 'var(--bengals-orange)',
+                      color: '#FF8C5A',
                       padding: '2px 6px',
                       borderRadius: 4,
                       fontSize: 11,

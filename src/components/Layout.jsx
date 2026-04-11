@@ -113,7 +113,7 @@ export default function Layout({ children }) {
           { label: 'NBA', to: '/nba', active: false },
           { label: 'MLB', to: '/mlb', active: false },
         ].map(s => (
-          <Link key={s.label} to={s.to} style={{
+          <Link key={s.label} to={s.to} aria-label={`${s.label} simulator`} style={{
             padding: '4px 16px',
             borderRadius: 4,
             fontSize: 11,
@@ -122,9 +122,11 @@ export default function Layout({ children }) {
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
             textDecoration: 'none',
+            // a11y: black on bengals-orange = 6.22:1 (was white = 3.37:1, fail)
+            // a11y: full-opacity orange on #0a0a0a = 5.4:1 (was rgba .5 = 2.21:1, fail)
             background: s.active ? '#FB4F14' : 'transparent',
-            color: s.active ? '#fff' : 'rgba(251,79,20,0.5)',
-            border: s.active ? '1px solid #FB4F14' : '1px solid rgba(251,79,20,0.2)',
+            color: s.active ? '#000' : '#FB4F14',
+            border: s.active ? '1px solid #FB4F14' : '1px solid rgba(251,79,20,0.35)',
             transition: 'all 0.15s ease',
           }}>{s.label}</Link>
         ))}
@@ -234,6 +236,7 @@ export default function Layout({ children }) {
                 <select
                   value={currentTeamAbbr}
                   onChange={e => selectTeam(e.target.value)}
+                  aria-label="Select NFL team to manage"
                   style={{
                     background: 'rgba(26,26,26,0.9)',
                     color: accentColor,
@@ -497,23 +500,25 @@ export default function Layout({ children }) {
           padding: '12px 16px 4px', position: 'relative', zIndex: 1,
         }}>
           <ShareButtons title="AiNFL GM - Free AI-powered NFL offseason simulator. Be the GM of any team!" />
+          {/* a11y: footer links bumped from #475569 (2.61:1) to #94a3b8 (~7:1) */}
           <div style={{
             display: 'flex', justifyContent: 'center', gap: 16,
-            fontSize: 11, color: '#475569',
+            fontSize: 11, color: '#94a3b8',
           }}>
-            <a href="/about" style={{ color: '#475569', textDecoration: 'none' }}>About</a>
+            <a href="/about" style={{ color: '#94a3b8', textDecoration: 'none' }}>About</a>
             <span>|</span>
-            <a href="/privacy" style={{ color: '#475569', textDecoration: 'none' }}>Privacy Policy</a>
+            <a href="/privacy" style={{ color: '#94a3b8', textDecoration: 'none' }}>Privacy Policy</a>
             <span>|</span>
-            <a href="https://buymeacoffee.com/ainflgm" target="_blank" rel="noopener noreferrer" style={{ color: '#475569', textDecoration: 'none' }}>Support Us</a>
+            <a href="https://buymeacoffee.com/ainflgm" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none' }}>Support Us</a>
             <span>|</span>
             <span>ainflgm.com</span>
           </div>
+          {/* a11y: legal disclaimer bumped from #334155 (1.91:1) to #94a3b8 (~7:1) — legal text MUST be readable */}
           <div style={{
             maxWidth: 600,
             textAlign: 'center',
             fontSize: 10,
-            color: '#334155',
+            color: '#94a3b8',
             lineHeight: 1.5,
             marginTop: 8,
             padding: '0 8px',
@@ -523,9 +528,9 @@ export default function Layout({ children }) {
             </p>
             <p style={{ margin: 0 }}>
               If you or someone you know has a gambling problem, call{' '}
-              <a href="tel:18004262537" style={{ color: '#334155', textDecoration: 'underline' }}>1-800-GAMBLER</a>
+              <a href="tel:18004262537" style={{ color: '#94a3b8', textDecoration: 'underline' }}>1-800-GAMBLER</a>
               {' '}or visit{' '}
-              <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer" style={{ color: '#334155', textDecoration: 'underline' }}>ncpgambling.org</a>.
+              <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'underline' }}>ncpgambling.org</a>.
             </p>
           </div>
         </div>
