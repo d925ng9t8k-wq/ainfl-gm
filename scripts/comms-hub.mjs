@@ -86,16 +86,28 @@ try {
 // Sync uses SQLite id as the authoritative Supabase id via upsert. This keeps
 // SQLite as source of truth, mirrors the exact row structure to Supabase, and
 // sidesteps Postgres BIGSERIAL sequence drift after bulk backfills.
+// Apr 10 hunt — kill: supabase sync silent-failure.
+// Previous code wrote sync errors to console.error, which goes to /dev/null
+// because the hub runs under `nohup ... > /dev/null 2>&1`. The comment "Cloud
+// sync failure can never be silent again" was false. Every dropped row was
+// silently lost. Now uses log() (scripts/comms-hub.mjs line 317) which writes
+// to logs/comms-hub.log — giving operators a real paper trail and also feeding
+// the drift detector so dropped writes become visible drift instead of invisible
+// loss. On error we also append the failed row to logs/supabase-dlq.jsonl for
+// a future auto-backfill pass (Fix 8 from phase2-supabase-diagnosis.md).
 async function syncMessageToSupabase(id, channel, direction, text, timestamp, metadata = {}) {
   if (!supabase) return;
   try {
     const row = { channel, direction, text: text.slice(0, 4096), timestamp, read: direction === 'in' ? false : true, metadata };
     if (id) row.id = id;
     const { error } = await supabase.from('messages').upsert(row, { onConflict: 'id' });
-    if (error) console.error('[supabase] Message sync failed (non-fatal):', error.message);
-    else console.log(`[supabase] Message synced: ${channel}/${direction} id=${id}`);
+    if (error) {
+      log(`[supabase] Message sync FAILED id=${id}: ${error.message} — writing to DLQ`);
+      try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'messages', row, error: error.message, at: new Date().toISOString() }) + '\n'); } catch {}
+    }
   } catch (e) {
-    console.error('[supabase] Message sync error (non-fatal):', e.message);
+    log(`[supabase] Message sync ERROR id=${id}: ${e.message} — writing to DLQ`);
+    try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'messages', id, channel, direction, text: text.slice(0, 500), error: e.message, at: new Date().toISOString() }) + '\n'); } catch {}
   }
 }
 
@@ -105,9 +117,13 @@ async function syncActionToSupabase(id, action_type, description, status, timest
     const row = { action_type, description: description.slice(0, 2000), status, timestamp, metadata };
     if (id) row.id = id;
     const { error } = await supabase.from('actions').upsert(row, { onConflict: 'id' });
-    if (error) console.error('[supabase] Action sync failed (non-fatal):', error.message);
+    if (error) {
+      log(`[supabase] Action sync FAILED id=${id}: ${error.message} — writing to DLQ`);
+      try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'actions', row, error: error.message, at: new Date().toISOString() }) + '\n'); } catch {}
+    }
   } catch (e) {
-    console.error('[supabase] Action sync error (non-fatal):', e.message);
+    log(`[supabase] Action sync ERROR id=${id}: ${e.message} — writing to DLQ`);
+    try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'actions', id, action_type, description: description.slice(0, 500), error: e.message, at: new Date().toISOString() }) + '\n'); } catch {}
   }
 }
 
@@ -2011,10 +2027,25 @@ const healthServer = createServer(async (req, res) => {
           error: error?.message || null,
         };
       }
-      const drifts = Object.values(report.tables).map(x => x.drift ?? 0);
-      const maxDrift = Math.max(...drifts);
-      report.max_drift = maxDrift;
-      report.status = maxDrift > 10 ? 'drifting' : (maxDrift > 0 ? 'minor_drift' : 'healthy');
+      // Apr 10 hunt — kill: /supabase-health false-green.
+      // Old code did `x.drift ?? 0` which coerced every unreachable-table null to 0,
+      // then Math.max = 0, status = "healthy" — reporting a clean bill of health during
+      // a total Supabase outage. The startup ground-truth self-test has been silently
+      // lying every session because of this. Fixed: if ANY table has an error, status
+      // is "unreachable" and max_drift is null. Only count real drift values.
+      const tableErrors = Object.values(report.tables).filter(x => x.error).length;
+      const drifts = Object.values(report.tables)
+        .map(x => x.drift)
+        .filter(d => d !== null && d !== undefined && !Number.isNaN(d));
+      if (tableErrors > 0) {
+        report.status = tableErrors === Object.keys(report.tables).length ? 'unreachable' : 'partial_unreachable';
+        report.max_drift = drifts.length ? Math.max(...drifts) : null;
+        report.error_count = tableErrors;
+      } else {
+        const maxDrift = drifts.length ? Math.max(...drifts) : 0;
+        report.max_drift = maxDrift;
+        report.status = maxDrift > 10 ? 'drifting' : (maxDrift > 0 ? 'minor_drift' : 'healthy');
+      }
       res.end(JSON.stringify(report, null, 2));
     } catch (e) {
       res.end(JSON.stringify({ status: 'error', error: e.message, checked_at: new Date().toISOString() }));
