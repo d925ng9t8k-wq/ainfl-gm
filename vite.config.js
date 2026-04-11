@@ -24,8 +24,22 @@ export default defineConfig({
           if (id.includes('src/data/nba/')) {
             return 'data-nba-static';
           }
+          // Keep MLB static data isolated from the NFL-focused data-static
+          // chunk. Otherwise MLB data (only needed under /mlb) would get
+          // pulled into the initial-paint bundle for every NFL visitor.
+          if (id.includes('src/data/mlb/mlbRosters')) {
+            return 'data-mlb-rosters';
+          }
+          if (id.includes('src/data/mlb/')) {
+            return 'data-mlb-static';
+          }
           if (id.includes('src/data/')) {
             return 'data-static';
+          }
+          // react-router ships ~20KB and is reused across every route —
+          // give it its own chunk so it stays cached across deploys.
+          if (id.includes('node_modules/react-router')) {
+            return 'vendor-router';
           }
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
             return 'vendor-react';
@@ -65,12 +79,77 @@ export default defineConfig({
         clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
+          // Google Fonts stylesheet — rarely changes
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'google-fonts-cache',
               expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // Google Fonts files (woff2 etc.)
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-files-cache',
+              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // Hashed JS/CSS build assets — content-hashed, safe to cache for a year
+          {
+            urlPattern: ({ url, sameOrigin }) =>
+              sameOrigin && /\/assets\/.+-[A-Za-z0-9_-]{6,}\.(?:js|css)$/.test(url.pathname),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'hashed-assets-cache',
+              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // Same-origin images (root-level like nfl-hero.webp, robot-small.jpg, plus /assets)
+          {
+            urlPattern: ({ url, sameOrigin }) =>
+              sameOrigin && /\.(?:png|jpe?g|svg|webp|avif|gif|ico)$/i.test(url.pathname),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'images-cache',
+              expiration: { maxEntries: 80, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // Cross-origin images (CDNs, avatars)
+          {
+            urlPattern: /\.(?:png|jpe?g|svg|webp|avif|gif|ico)$/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'cross-origin-images-cache',
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 7 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // AdSense / Google Analytics scripts — served short-TTL by Google
+          {
+            urlPattern: /^https:\/\/(?:pagead2\.googlesyndication\.com|www\.google-analytics\.com|www\.googletagmanager\.com)\/.*/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'google-ads-analytics-cache',
+              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // HeyGen embed / third-party CSS
+          {
+            urlPattern: /^https:\/\/.*\.heygen\.com\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'heygen-cache',
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 7 },
+              cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],
