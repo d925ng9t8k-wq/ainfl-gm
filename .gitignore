@@ -45,3 +45,35 @@ data/*.tmp
 # Never commit snapshotted .env files
 backups/**/.env*
 backups/**/telegram-env*
+
+# Local backups directory (session backups, .bak files, pre-change snapshots)
+backups/
+
+# SQLite databases and WAL/SHM sidecars (runtime state, contains PII/conversation data)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/9-memory-cold.db
+
+# Build output — Cloudflare Pages (9enterprises site)
+9enterprises-dist/
+
+# Build output — Next.js command hub
+command-hub/.next/
+
+# Runtime instance data — conversations, tasks, analytics, audit logs
+# (keep tracked configs under instances/y9-*/agents/ and instances/y9-*/config/ceo.json etc.)
+instances/*/comms/history.jsonl
+instances/*/config/api-keys.json
+instances/*/config/channels.json
+instances/*/config/integrations.json
+instances/*/data/
+instances/_integration-check/
+
+# Session handoff JSON (daemon-updated every 60s, pairs with memory/SESSION_HANDOFF.md)
+memory/session-handoff.json
+
+# Killed/deprecated script snapshots
+scripts/*.killed-*
+scripts/*.bak-*
+scripts/*.deprecated
