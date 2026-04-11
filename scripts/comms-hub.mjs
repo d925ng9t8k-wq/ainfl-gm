@@ -2136,20 +2136,49 @@ async function telegramPoll() {
                   if (signalWritten) {
                     log(`Telegram: message queued for terminal (relay mode — no OC ack while terminal active)`);
 
-                    // NUDGE: Send keystrokes to Terminal to force tool calls and trigger the hook.
-                    // Two nudges (10s and 30s) before the 60s autonomous fallback.
-                    // VPS_MODE: no Terminal/osascript — skip nudges entirely.
+                    // NUDGE: Apr 10 hunt — kill A: nudge teeth.
+                    // Old nudge sent `keystroke return` to Terminal which was toothless —
+                    // Claude Code ignored stray returns and the signal file would sit unread
+                    // until the next voluntary tool call. New teeth: three-tier escalation.
+                    //   Tier 1 (10s): macOS notification popup — visible to Owner even if 9 is heads-down.
+                    //   Tier 2 (25s): cliclick-type a harmless `/cost` slash command into the focused
+                    //                 Claude Code input + return. /cost is a read-only built-in that
+                    //                 fires a tool call and therefore the PostToolUse hook, which drains
+                    //                 the signal file. This is the actual teeth.
+                    //   Tier 3 (45s): dispatch a Notification Center alert with the message preview so
+                    //                 Owner can see what's pending even during a 9 freeze.
+                    // VPS_MODE: no osascript/cliclick — skip nudges entirely.
                     if (!VPS_MODE) {
-                      for (const delay of [10000, 30000]) {
-                        setTimeout(() => {
-                          try {
-                            if (existsSync('/tmp/9-incoming-message.jsonl')) {
-                              log(`NUDGE: Signal file still unread after ${delay/1000}s — sending keystroke to Terminal`);
-                              execSync(`osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to keystroke return'`, { timeout: 5000 });
-                            }
-                          } catch (e) { log(`NUDGE failed: ${e.message}`); }
-                        }, delay);
-                      }
+                      const preview = userText.slice(0, 120).replace(/[\\"`]/g, '');
+                      // Tier 1 — 10s: macOS notification popup (always fires, harmless)
+                      setTimeout(() => {
+                        try {
+                          if (!existsSync('/tmp/9-incoming-message.jsonl')) return;
+                          log(`NUDGE T1: Signal file still unread after 10s — displaying macOS notification`);
+                          execSync(`osascript -e 'display notification "${preview}" with title "9: incoming message" sound name "Tink"'`, { timeout: 3000 });
+                        } catch (e) { log(`NUDGE T1 failed: ${e.message}`); }
+                      }, 10000);
+                      // Tier 2 — 25s: type `/cost` into the focused Claude Code input to force a tool call
+                      setTimeout(() => {
+                        try {
+                          if (!existsSync('/tmp/9-incoming-message.jsonl')) return;
+                          log(`NUDGE T2: Signal file still unread after 25s — cliclick-typing /cost to force tool call`);
+                          // Focus Terminal first so the keystrokes land in the Claude CLI prompt
+                          execSync(`osascript -e 'tell application "Terminal" to activate'`, { timeout: 3000 });
+                          // Small settle delay, then type /cost + return via cliclick
+                          execSync(`/opt/homebrew/bin/cliclick w:300 t:/cost kp:return`, { timeout: 5000 });
+                        } catch (e) { log(`NUDGE T2 failed: ${e.message}`); }
+                      }, 25000);
+                      // Tier 3 — 45s: loud notification + iMessage fallback so Owner knows 9 is truly stuck
+                      setTimeout(() => {
+                        try {
+                          if (!existsSync('/tmp/9-incoming-message.jsonl')) return;
+                          log(`NUDGE T3: Signal file still unread after 45s — loud alert + iMessage fallback`);
+                          execSync(`osascript -e 'display notification "STILL UNREAD after 45s: ${preview}" with title "9: nudge tier 3" sound name "Sosumi"'`, { timeout: 3000 });
+                          // iMessage fallback so Owner knows via his phone even if terminal is dead
+                          try { sendIMessage(`9 nudge T3: terminal still not responding after 45s. Pending: ${preview}`); } catch {}
+                        } catch (e) { log(`NUDGE T3 failed: ${e.message}`); }
+                      }, 45000);
                     }
 
                     // RELAY TIMEOUT: If terminal doesn't pick up within 180s,
