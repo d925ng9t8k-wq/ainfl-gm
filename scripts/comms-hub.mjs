@@ -254,6 +254,164 @@ if (db) {
   console.log('[supabase] Post-write hooks attached to db.logMessage and db.logAction');
 }
 
+// ─── Phase 3 #2: Reverse-drift back-fill (cloud → local SQLite) ──────────────
+// Born from the Apr 10 04:09:13 supabase-watchdog heartbeat showing NEGATIVE drift:
+//   tables={messages:-784,actions:-21,decisions:-9,memory:-139,tasks:-19}
+// Root cause: prior to SQLCipher encryption migration, supabase-migrate.mjs seeded
+// cloud with local rows using plain better-sqlite3. After the encryption migration
+// the local DB was effectively reset for actions/decisions/memory/tasks (0 rows
+// each) while cloud retained those historical rows. session-handoff.mjs also
+// writes `ironclad_session_checkpoint` rows DIRECTLY to Supabase memory table,
+// bypassing SQLite entirely — making the gap slowly widen over time.
+//
+// Fix: One-shot pull at hub startup. For each watched table, pull rows from cloud
+// that don't exist locally and upsert them into SQLite using the in-process
+// SQLCipher-aware handle. Safe on re-run (idempotent via id or name conflict).
+// Only runs if local row count is STRICTLY LESS than cloud row count for that
+// table — protects against accidentally destroying a local-majority state.
+async function pullFromSupabaseOnce() {
+  if (!supabase || !db) {
+    log('[supabase-backfill] skipped — supabase=' + !!supabase + ' db=' + !!db);
+    return;
+  }
+  const TABLES = [
+    { name: 'messages',  key: 'id',   cols: ['id', 'timestamp', 'channel', 'direction', 'text', 'read', 'metadata'] },
+    { name: 'actions',   key: 'id',   cols: ['id', 'timestamp', 'action_type', 'description', 'status', 'metadata'] },
+    { name: 'decisions', key: 'id',   cols: ['id', 'timestamp', 'decision', 'context', 'outcome', 'session_id'] },
+    { name: 'memory',    key: 'name', cols: ['name', 'type', 'description', 'content', 'created_at', 'updated_at'] },
+    { name: 'tasks',     key: 'id',   cols: ['id', 'title', 'description', 'status', 'assigned_to', 'priority', 'project', 'created_at', 'started_at', 'completed_at', 'result'] },
+  ];
+  const summary = {};
+  for (const t of TABLES) {
+    try {
+      const localCount = db._db.prepare(`SELECT count(*) as c FROM ${t.name}`).get()?.c ?? 0;
+      const { count: cloudCount, error: countErr } = await supabase.from(t.name).select('*', { count: 'exact', head: true });
+      if (countErr) { summary[t.name] = `count-err:${countErr.message}`; continue; }
+      if (cloudCount <= localCount) { summary[t.name] = `skip(local=${localCount},cloud=${cloudCount})`; continue; }
+
+      // Paginate cloud pull to avoid 1000-row default limit.
+      let inserted = 0;
+      let from = 0;
+      const PAGE = 500;
+      while (true) {
+        const { data, error } = await supabase
+          .from(t.name)
+          .select(t.cols.join(','))
+          .order(t.key, { ascending: true })
+          .range(from, from + PAGE - 1);
+        if (error) { summary[t.name] = `page-err:${error.message}`; break; }
+        if (!data || data.length === 0) break;
+
+        for (const row of data) {
+          try {
+            if (t.name === 'messages') {
+              const existing = db._db.prepare('SELECT 1 FROM messages WHERE id = ?').get(row.id);
+              if (existing) continue;
+              db._db.prepare(
+                `INSERT INTO messages (id, timestamp, channel, direction, text, read, metadata)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`
+              ).run(
+                row.id,
+                row.timestamp,
+                row.channel,
+                row.direction,
+                row.text || '',
+                row.read ? 1 : 0,
+                typeof row.metadata === 'string' ? row.metadata : JSON.stringify(row.metadata || {})
+              );
+              inserted++;
+            } else if (t.name === 'actions') {
+              const existing = db._db.prepare('SELECT 1 FROM actions WHERE id = ?').get(row.id);
+              if (existing) continue;
+              db._db.prepare(
+                `INSERT INTO actions (id, timestamp, action_type, description, status, metadata)
+                 VALUES (?, ?, ?, ?, ?, ?)`
+              ).run(
+                row.id,
+                row.timestamp,
+                row.action_type,
+                row.description || '',
+                row.status || 'completed',
+                typeof row.metadata === 'string' ? row.metadata : JSON.stringify(row.metadata || {})
+              );
+              inserted++;
+            } else if (t.name === 'decisions') {
+              const existing = db._db.prepare('SELECT 1 FROM decisions WHERE id = ?').get(row.id);
+              if (existing) continue;
+              db._db.prepare(
+                `INSERT INTO decisions (id, timestamp, decision, context, outcome, session_id)
+                 VALUES (?, ?, ?, ?, ?, ?)`
+              ).run(
+                row.id,
+                row.timestamp,
+                row.decision,
+                row.context || '',
+                row.outcome || '',
+                row.session_id || ''
+              );
+              inserted++;
+            } else if (t.name === 'memory') {
+              // Memory uses `name` as natural key — upsert via ON CONFLICT.
+              db._db.prepare(
+                `INSERT INTO memory (name, type, description, content, created_at, updated_at)
+                 VALUES (?, ?, ?, ?, ?, ?)
+                 ON CONFLICT(name) DO UPDATE SET
+                   type        = excluded.type,
+                   description = excluded.description,
+                   content     = excluded.content,
+                   updated_at  = excluded.updated_at`
+              ).run(
+                row.name,
+                row.type || 'reference',
+                row.description || '',
+                row.content || '',
+                row.created_at || new Date().toISOString(),
+                row.updated_at || new Date().toISOString()
+              );
+              inserted++;
+            } else if (t.name === 'tasks') {
+              const existing = db._db.prepare('SELECT 1 FROM tasks WHERE id = ?').get(row.id);
+              if (existing) continue;
+              db._db.prepare(
+                `INSERT INTO tasks (id, title, description, status, assigned_to, priority, project, created_at, started_at, completed_at, result)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+              ).run(
+                row.id,
+                row.title || '',
+                row.description || '',
+                row.status || 'queued',
+                row.assigned_to || 'unassigned',
+                row.priority || 'medium',
+                row.project || '',
+                row.created_at || new Date().toISOString(),
+                row.started_at || null,
+                row.completed_at || null,
+                row.result || null
+              );
+              inserted++;
+            }
+          } catch (rowErr) {
+            // Per-row failures never abort the pass.
+            log(`[supabase-backfill] ${t.name} row ${row[t.key]} insert failed: ${rowErr.message}`);
+          }
+        }
+        if (data.length < PAGE) break;
+        from += PAGE;
+      }
+      summary[t.name] = `backfilled=${inserted} (local:${localCount}->${localCount + inserted}, cloud:${cloudCount})`;
+    } catch (e) {
+      summary[t.name] = `exception:${e.message}`;
+    }
+  }
+  log(`[supabase-backfill] one-shot pull complete: ${JSON.stringify(summary)}`);
+}
+
+// Kick off the one-shot pull 10s after boot — lets .env load, supabase client
+// settle, and avoids racing the first watchdog cycle.
+setTimeout(() => {
+  pullFromSupabaseOnce().catch(e => log(`[supabase-backfill] fatal: ${e.message}`));
+}, 10000);
+
 // ─── Port Guard (check FIRST, before loading anything) ──────────────────────
 // Prevents LaunchAgent restart spam from burning Cloudflare quota
 try {
@@ -2292,10 +2450,143 @@ healthServer.listen(HEALTH_PORT, () => {
 //    client-null alert and vice-versa.
 // 4. Every cycle emits a structured heartbeat line to logs/comms-hub.log so
 //    there is a permanent paper trail even on clean ticks.
-const _supabaseLastAlert = { clientNull: 0, drift: 0, unreachable: 0 };
+const _supabaseLastAlert = { clientNull: 0, drift: 0, unreachable: 0, dlq: 0 };
 const SUPABASE_ALERT_COOLDOWN_MS = 60 * 60 * 1000; // 1h
 const SUPABASE_HARD_FAIL_DRIFT = 50; // bypass cooldown — page immediately
 const SUPABASE_WATCHED_TABLES = ['messages', 'actions', 'decisions', 'memory', 'tasks'];
+const SUPABASE_DLQ_PATH = 'logs/supabase-dlq.jsonl';
+const SUPABASE_DLQ_REPLAYED_PATH = 'logs/supabase-dlq-replayed.jsonl';
+const SUPABASE_DLQ_MAX_PER_CYCLE = 200;       // cap work per 5-min cycle
+const SUPABASE_DLQ_EXPIRY_MS = 72 * 60 * 60 * 1000; // 72h
+const SUPABASE_DLQ_MAX_ATTEMPTS = 5;          // escalate after 5 failed replays
+// In-memory attempt counter keyed by a stable fingerprint of the DLQ entry.
+// Not persisted — a hub restart resets attempts, which is fine: the retry loop
+// still converges and we'd rather re-try than permanently quarantine on reboot.
+const _supabaseDlqAttempts = new Map();
+function _dlqFingerprint(entry) {
+  const rowId = entry.row?.id ?? entry.id ?? '';
+  return `${entry.table || 'unknown'}|${rowId}|${entry.at || ''}`;
+}
+// Reconstruct a row object for entries written by the catch-block legacy shape
+// (which stored fields flat instead of inside `row`). Returns null if the entry
+// has no row at all.
+function _dlqEntryToRow(entry) {
+  if (entry.row && typeof entry.row === 'object') return entry.row;
+  if (entry.table === 'messages' && entry.id) {
+    return {
+      id: entry.id,
+      channel: entry.channel,
+      direction: entry.direction,
+      text: entry.text || '',
+      timestamp: entry.at || new Date().toISOString(),
+      read: entry.direction === 'in' ? false : true,
+      metadata: {},
+    };
+  }
+  if (entry.table === 'actions' && entry.id) {
+    return {
+      id: entry.id,
+      action_type: entry.action_type,
+      description: entry.description || '',
+      status: 'pending',
+      timestamp: entry.at || new Date().toISOString(),
+      metadata: {},
+    };
+  }
+  return null;
+}
+async function drainSupabaseDlq() {
+  const result = { drained: 0, replayed: 0, stillPending: 0, expired: 0, skipped: 0 };
+  if (!existsSync(SUPABASE_DLQ_PATH)) return result;
+  let rawLines;
+  try {
+    rawLines = readFileSync(SUPABASE_DLQ_PATH, 'utf-8').split('\n').filter(l => l.trim());
+  } catch (e) {
+    log(`[supabase-dlq] read_error=${e.message}`);
+    return result;
+  }
+  if (!rawLines.length) return result;
+  const now = Date.now();
+  const pendingAfter = [];    // entries that remain in the DLQ for next cycle
+  const processable = [];     // parsed entries we will attempt this cycle
+  for (const line of rawLines) {
+    let entry;
+    try { entry = JSON.parse(line); } catch {
+      // Corrupt line — append as expired so we do not crash-loop on it.
+      try {
+        appendFileSync(SUPABASE_DLQ_REPLAYED_PATH, JSON.stringify({ status: 'corrupt', raw: line.slice(0, 500), at: new Date().toISOString() }) + '\n');
+      } catch {}
+      result.expired++;
+      continue;
+    }
+    processable.push(entry);
+  }
+  result.drained = processable.length;
+  // Cap work per cycle — leftover entries are preserved as pending.
+  const toProcess = processable.slice(0, SUPABASE_DLQ_MAX_PER_CYCLE);
+  const deferred = processable.slice(SUPABASE_DLQ_MAX_PER_CYCLE);
+  for (const entry of toProcess) {
+    const at = Date.parse(entry.at || '') || 0;
+    if (at && now - at > SUPABASE_DLQ_EXPIRY_MS) {
+      try {
+        appendFileSync(SUPABASE_DLQ_REPLAYED_PATH, JSON.stringify({ status: 'expired', dlqRef: _dlqFingerprint(entry), table: entry.table, originalAt: entry.at, at: new Date().toISOString() }) + '\n');
+      } catch {}
+      _supabaseDlqAttempts.delete(_dlqFingerprint(entry));
+      result.expired++;
+      continue;
+    }
+    const row = _dlqEntryToRow(entry);
+    if (!row || !entry.table) {
+      // Unreplayable (no row data, no id) — quarantine to replayed log as skipped.
+      try {
+        appendFileSync(SUPABASE_DLQ_REPLAYED_PATH, JSON.stringify({ status: 'skipped_unreplayable', entry, at: new Date().toISOString() }) + '\n');
+      } catch {}
+      result.skipped++;
+      continue;
+    }
+    if (!SUPABASE_WATCHED_TABLES.includes(entry.table)) {
+      try {
+        appendFileSync(SUPABASE_DLQ_REPLAYED_PATH, JSON.stringify({ status: 'skipped_unknown_table', table: entry.table, at: new Date().toISOString() }) + '\n');
+      } catch {}
+      result.skipped++;
+      continue;
+    }
+    const fp = _dlqFingerprint(entry);
+    try {
+      const { error } = await supabase.from(entry.table).upsert(row, { onConflict: 'id' });
+      if (error) throw new Error(error.message);
+      try {
+        appendFileSync(SUPABASE_DLQ_REPLAYED_PATH, JSON.stringify({ status: 'replayed', dlqRef: fp, table: entry.table, at: new Date().toISOString() }) + '\n');
+      } catch {}
+      _supabaseDlqAttempts.delete(fp);
+      result.replayed++;
+    } catch (e) {
+      const attempts = (_supabaseDlqAttempts.get(fp) || 0) + 1;
+      _supabaseDlqAttempts.set(fp, attempts);
+      entry._attempts = attempts;
+      entry._lastError = e.message;
+      pendingAfter.push(entry);
+      if (attempts >= SUPABASE_DLQ_MAX_ATTEMPTS && now - _supabaseLastAlert.dlq > SUPABASE_ALERT_COOLDOWN_MS) {
+        sendTelegram(`[9 watchdog] Supabase DLQ replay failing: entry ${fp} has failed ${attempts} times. Last error: ${e.message}. Manual intervention may be required.`).catch(() => {});
+        _supabaseLastAlert.dlq = now;
+      }
+    }
+  }
+  // Deferred entries (beyond the per-cycle cap) are always preserved as pending.
+  for (const entry of deferred) pendingAfter.push(entry);
+  result.stillPending = pendingAfter.length;
+  // Rotate the DLQ file — only still-pending entries survive.
+  try {
+    if (pendingAfter.length) {
+      writeFileSync(SUPABASE_DLQ_PATH, pendingAfter.map(e => JSON.stringify(e)).join('\n') + '\n');
+    } else {
+      writeFileSync(SUPABASE_DLQ_PATH, '');
+    }
+  } catch (e) {
+    log(`[supabase-dlq] rotate_error=${e.message}`);
+  }
+  return result;
+}
 setTimeout(() => {
   if (!supabase) {
     sendTelegram('[9 watchdog] CRITICAL: Supabase client failed to initialize at hub startup. Cloud sync is DISABLED. Check .env and stdout log. Local SQLite is still authoritative — but Mac crash = data loss risk until fixed.').catch(() => {});
@@ -2311,6 +2602,13 @@ setInterval(async () => {
     }
     log(`[supabase-watchdog] checked_at=${checkedAt} max_drift=null tables={} status=client_null`);
     return;
+  }
+  // DLQ auto-backfill — drain BEFORE measuring drift so drift reflects post-drain state.
+  try {
+    const dlqResult = await drainSupabaseDlq();
+    log(`[supabase-dlq] drained=${dlqResult.drained} replayed=${dlqResult.replayed} still_pending=${dlqResult.stillPending} expired=${dlqResult.expired}${dlqResult.skipped ? ` skipped=${dlqResult.skipped}` : ''}`);
+  } catch (e) {
+    log(`[supabase-dlq] drain_exception error=${e.message}`);
   }
   try {
     // Use in-process db handle (SQLCipher-aware) instead of /usr/bin/sqlite3
@@ -3317,6 +3615,22 @@ async function verifyTwilioUrl() {
         });
         log(`Twilio SMS URL auto-corrected on ${pn.phone_number} to ${currentTunnel}/sms`);
         sendTelegram(`9: Auto-fixed Twilio SMS URL on ${pn.phone_number}. Was pointing to dead tunnel, now corrected.`).catch(() => {});
+      }
+
+      // VOICE FALLBACK URL sync — must point at cloud worker /voice-fallback so tunnel drops
+      // don't blackhole inbound calls. Born from Phase 3 audit Apr 10: prior hub claimed
+      // "Twilio fallback routes to cloud worker" but never verified the per-number setting.
+      const expectedFallback = (process.env.CLOUD_WORKER_URL || 'https://9-cloud-standin.789k6rym8v.workers.dev') + '/voice-fallback';
+      const twilioFallbackUrl = pn.voice_fallback_url || '';
+      if (twilioFallbackUrl !== expectedFallback) {
+        log(`TWILIO VOICE FALLBACK MISMATCH on ${pn.phone_number}: Twilio has "${twilioFallbackUrl}", expected "${expectedFallback}"`);
+        await fetch(`https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/IncomingPhoneNumbers/${pn.sid}.json`, {
+          method: 'POST',
+          headers: { 'Authorization': authHeader, 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `VoiceFallbackUrl=${encodeURIComponent(expectedFallback)}&VoiceFallbackMethod=POST`,
+        });
+        log(`Twilio VoiceFallbackUrl auto-corrected on ${pn.phone_number} to ${expectedFallback}`);
+        sendTelegram(`9: Auto-fixed Twilio VoiceFallbackUrl on ${pn.phone_number}. Cloud worker failover was pointing at "${twilioFallbackUrl || 'UNSET'}", now corrected. Tunnel drops will route to Backup QB.`).catch(() => {});
       }
     }
   } catch (e) {

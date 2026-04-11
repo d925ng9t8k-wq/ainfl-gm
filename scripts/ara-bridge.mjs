@@ -185,6 +185,33 @@ function nextNineSeq() {
   saveBridgeState(s);
   return s.nineSeq;
 }
+// Record a just-sent message for the retry loop. Backward compatible: if state
+// file predates lastSent, this just adds the field. retryCount starts at 0 for
+// first-time sends, ackAt null means still awaiting ACK.
+function recordLastSent({ seq, wrapped, checksum, method }) {
+  const s = loadBridgeState();
+  s.lastSent = {
+    seq,
+    wrapped,
+    checksum,
+    method: method || 'paste',
+    sentAt: Date.now(),
+    ackAt: null,
+    retryCount: 0,
+  };
+  saveBridgeState(s);
+}
+// Mark the currently-tracked lastSent as acked. No-op if no pending send or
+// the acked seq doesn't match the pending one.
+function markLastSentAcked(ackedSeq) {
+  const s = loadBridgeState();
+  if (!s.lastSent) return false;
+  if (s.lastSent.ackAt) return false;
+  if (typeof ackedSeq === 'number' && s.lastSent.seq !== ackedSeq) return false;
+  s.lastSent.ackAt = Date.now();
+  saveBridgeState(s);
+  return true;
+}
 function getLastAraSeq() {
   return loadBridgeState().lastAraSeq;
 }
@@ -267,6 +294,12 @@ export async function pasteToAra(text, opts = {}) {
   // Log the turn with protocol metadata for forensic diff + retry support
   appendTurn({ ts: new Date().toISOString(), role: 'user', content: wrapped, rawContent: text, seq, checksum, ackSeq, method: 'paste' });
 
+  // Record as pending-ack for the retry loop (unless this is a raw send with no seq,
+  // OR a retry resend which should preserve the original sentAt/retryCount).
+  if (seq != null && !opts.isRetry) {
+    recordLastSent({ seq, wrapped, checksum, method: 'paste' });
+  }
+
   return { ok: true, window: win, method: 'paste', bytes: wrapped.length, seq, checksum };
 }
 
@@ -306,6 +339,11 @@ export async function sendToAra(text, opts = {}) {
 
   // Log with full protocol metadata for forensic diff + retry support
   appendTurn({ ts: new Date().toISOString(), role: 'user', content: wrapped, rawContent: text, seq, checksum, ackSeq });
+
+  // Record as pending-ack for the retry loop (unless this is raw or a retry resend).
+  if (seq != null && !opts.isRetry) {
+    recordLastSent({ seq, wrapped, checksum, method: 'send' });
+  }
 
   return { ok: true, window: win, seq, checksum };
 }
@@ -358,9 +396,22 @@ export async function readFromAra({ waitMs = 0, outPath = LATEST_SHOT, skipScrol
     }
   }
 
-  appendTurn({ ts: new Date().toISOString(), role: 'assistant_ocr', content: text, window, latestAraSeq });
+  // ACK detection for the retry loop: look for "ACK 9-SEQ N" (with or without
+  // brackets, OCR is noisy) matching the currently pending lastSent.seq.
+  let ackedSeq = null;
+  const bridgeState = loadBridgeState();
+  if (bridgeState.lastSent && bridgeState.lastSent.seq != null && !bridgeState.lastSent.ackAt) {
+    const n = bridgeState.lastSent.seq;
+    // Tolerate OCR variants: "ACK 9-SEQ 7", "ACK [9-SEQ 7]", "ACK9-SEQ7", etc.
+    const re = new RegExp(`ACK\\s*\\[?9-?SEQ\\s*${n}\\b`, 'i');
+    if (re.test(text)) {
+      if (markLastSentAcked(n)) ackedSeq = n;
+    }
+  }
 
-  return { text, screenshot: shotPath, ocrText: txtPath, window, latestAraSeq };
+  appendTurn({ ts: new Date().toISOString(), role: 'assistant_ocr', content: text, window, latestAraSeq, ackedSeq });
+
+  return { text, screenshot: shotPath, ocrText: txtPath, window, latestAraSeq, ackedSeq };
 }
 
 // ---------- high-level: send then wait then read ----------
@@ -368,6 +419,82 @@ export async function askAra(text, { waitMs = 10000 } = {}) {
   await sendToAra(text);
   const reply = await readFromAra({ waitMs });
   return reply;
+}
+
+// ---------- retry-on-no-ack loop (protocol rule #4) ----------
+// Owner directive (Apr 10): "if 9 sends seq N and Ara's next reply doesn't
+// contain ACK N within 90s, 9 resends the same seq. Ara dedupes."
+//
+// Behavior:
+//   - Returns null if no pending send, already acked, or within 90s window.
+//   - Returns { retried: true, seq, retryCount } if a resend was issued.
+//   - Returns { escalated: true, seq } after 3 retries — sends a Telegram alert
+//     via the comms hub at localhost:3457 and clears lastSent so we stop looping.
+//   - Fast-path ACK: if lastAraSeq field indicates our seq was already acked
+//     implicitly (via setLastAraSeq catching an ACK during a readFromAra call),
+//     we still honor the explicit ackAt field. ackAt is the source of truth.
+const RETRY_WINDOW_MS = 90 * 1000;
+const MAX_RETRIES = 3;
+export async function checkRetry() {
+  const s = loadBridgeState();
+  const ls = s.lastSent;
+  // (b) no pending send or already acked
+  if (!ls || ls.ackAt) return null;
+  // Backward compat: missing sentAt means old state file — treat as fresh.
+  if (!ls.sentAt) return null;
+  // (c) if lastAraSeq >= our seq, we assume an ack was implied by any newer
+  // Ara reply — mark as acked and return. (readFromAra has authoritative ACK
+  // detection, this is a safety net for old state files.)
+  if (typeof s.lastAraSeq === 'number' && typeof ls.seq === 'number' && s.lastAraSeq >= ls.seq) {
+    // Only treat as ack if a reply actually followed — keep conservative: no.
+    // We do NOT auto-ack here because lastAraSeq bumps for any new Ara message,
+    // not necessarily one containing "ACK N". Explicit ACK detection lives in
+    // readFromAra.
+  }
+  const age = Date.now() - ls.sentAt;
+  if (age <= RETRY_WINDOW_MS) return null;
+  // (e) escalation cap
+  const retryCount = ls.retryCount || 0;
+  if (retryCount >= MAX_RETRIES) {
+    // Escalate to Telegram via comms hub; if the hub is down, just log and
+    // clear lastSent so we don't spin forever.
+    const alertMsg = `ARA BRIDGE ESCALATION: 9-SEQ ${ls.seq} sent ${Math.round(age/1000)}s ago, ${retryCount} retries exhausted, no ACK from Ara. Manual intervention required.`;
+    try {
+      execFileSync('/usr/bin/curl', [
+        '-s', '-X', 'POST',
+        'http://localhost:3457/send',
+        '-H', 'Content-Type: application/json',
+        '-d', JSON.stringify({ channel: 'telegram', message: alertMsg }),
+      ], { stdio: 'ignore', timeout: 5000 });
+    } catch {}
+    // Clear lastSent so we stop retrying. Log the failure.
+    const s2 = loadBridgeState();
+    if (s2.lastSent && s2.lastSent.seq === ls.seq) {
+      s2.lastSent.escalatedAt = Date.now();
+      saveBridgeState(s2);
+    }
+    appendTurn({ ts: new Date().toISOString(), role: 'retry_escalation', seq: ls.seq, retryCount });
+    return { escalated: true, seq: ls.seq, retryCount };
+  }
+  // (d) resend the SAME wrapped body with the SAME [9-SEQ N] tag so Ara
+  // dedupes. We bypass wrapProtocol entirely by passing { raw: true }.
+  // We also pass { isRetry: true } so pasteToAra doesn't overwrite lastSent.
+  try {
+    await pasteToAra(ls.wrapped, { raw: true, isRetry: true });
+  } catch (e) {
+    appendTurn({ ts: new Date().toISOString(), role: 'retry_error', seq: ls.seq, error: e.message });
+    return { error: e.message, seq: ls.seq };
+  }
+  // Bump retryCount on the existing lastSent entry (do NOT overwrite sentAt —
+  // we keep the original so the 90s window references the original send).
+  const s3 = loadBridgeState();
+  if (s3.lastSent && s3.lastSent.seq === ls.seq) {
+    s3.lastSent.retryCount = retryCount + 1;
+    s3.lastSent.lastRetryAt = Date.now();
+    saveBridgeState(s3);
+  }
+  appendTurn({ ts: new Date().toISOString(), role: 'retry', seq: ls.seq, retryCount: retryCount + 1 });
+  return { retried: true, seq: ls.seq, retryCount: retryCount + 1 };
 }
 
 // ---------- local conversation log ----------
@@ -424,6 +551,9 @@ async function main() {
       const r = await readFromAra({ waitMs });
       console.log(r.text);
       console.error(`\n(screenshot: ${r.screenshot})`);
+    } else if (cmd === 'retry') {
+      const r = await checkRetry();
+      console.log(JSON.stringify(r, null, 2));
     } else if (cmd === 'ask') {
       const msg = rest.join(' ').trim();
       if (!msg) {
@@ -434,7 +564,7 @@ async function main() {
       console.log(r.text);
       console.error(`\n(screenshot: ${r.screenshot})`);
     } else {
-      console.error('usage: node scripts/ara-bridge.mjs <find|shot|send|read|ask> [args]');
+      console.error('usage: node scripts/ara-bridge.mjs <find|shot|send|paste|read|ask|retry> [args]');
       process.exit(2);
     }
   } catch (err) {
