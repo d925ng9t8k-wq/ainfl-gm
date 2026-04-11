@@ -28,8 +28,15 @@ import { writeFileSync, readFileSync, existsSync, mkdirSync, appendFileSync, rea
 import { randomUUID } from 'crypto';
 import https from 'https';
 import path from 'path';
+import os from 'os';
 import { createServer } from 'http';
 import net from 'net';
+
+// Non-blocking sleep helper — used by async flows that previously blocked the
+// event loop with execSync('sleep N'). Blocking sleeps stalled Telegram polling,
+// tunnel health checks, and terminal pings for 7+ seconds during voice restarts,
+// which cascaded into spurious terminal-watchdog restart races (Phase 2 gap 7).
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 import nodemailer from 'nodemailer';
 import { ImapFlow } from 'imapflow';
 import pg from 'pg';
@@ -1338,6 +1345,21 @@ function sendIMessage(message) {
 // ─── iMessage Read (Full Disk Access required) ───────────────────────────────
 let lastImsgRowId = 0;
 
+// Gap 8: iMessage read failures used to be plain log lines only. Now we escalate
+// to Telegram so Owner finds out immediately, with a 1-hour cooldown (matching
+// the Supabase watchdog pattern) so a sustained outage doesn't spam the channel.
+let _imsgReadAlertLastSent = 0;
+const IMSG_READ_ALERT_COOLDOWN = 3600000; // 1 hour
+function alertImsgReadDenied(reason) {
+  if (VPS_MODE) return;
+  const now = Date.now();
+  if (now - _imsgReadAlertLastSent < IMSG_READ_ALERT_COOLDOWN) return;
+  _imsgReadAlertLastSent = now;
+  const msg = `[9 watchdog] iMessage READ denied (${reason}) — outbound still works. Restart hub from Terminal to restore two-way: \`pkill -f comms-hub && nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown\``;
+  sendTelegram(msg).catch(() => {});
+  log(`[fda alert] ${msg}`);
+}
+
 function initImsgRowId() {
   if (VPS_MODE) { log('[vps-mode] iMessage DB read skipped (no iMessage on Linux)'); return false; }
   try {
@@ -1347,6 +1369,7 @@ function initImsgRowId() {
     return true;
   } catch (e) {
     log(`iMessage DB read unavailable (running outside Terminal FDA context) — iMessage is SEND-ONLY mode`);
+    alertImsgReadDenied(`startup: ${e.message.slice(0, 80)}`);
     return false;
   }
 }
@@ -1386,6 +1409,12 @@ function checkNewIMessages() {
   } catch (e) {
     if (!e.message.includes('no such table')) {
       log(`iMessage read error: ${e.message}`);
+    }
+    // Gap 8: escalate FDA denial / auth errors to Telegram (1h cooldown).
+    // These messages are the fingerprint of FDA loss mid-run — sandbox errors
+    // won't include "no such table" but will say "unable to open" or "authorization denied".
+    if (/unable to open|authorization denied|operation not permitted|permission denied/i.test(e.message)) {
+      alertImsgReadDenied(`runtime: ${e.message.slice(0, 80)}`);
     }
     return [];
   }
@@ -1446,6 +1475,70 @@ async function sendEmail(subject, body, { to, replyTo, contentType, from } = {})
 // Inbound messages come via Telegram (primary) and iMessage.
 let lastEmailCheck = Date.now();
 
+// Apr 10 hunt — kill C (Ara's item): hub IMAP replay bug.
+// Old code marked messages SEEN on Gmail's IMAP server inside checkNewEmails()
+// BEFORE the caller durably persisted them to local state. A crash between
+// the server-side mark and the caller's saveState() meant the email was:
+//   - Marked seen on IMAP: won't be refetched
+//   - Missing from local state: no record in state.json or SQLite
+//   - Gone from processedEmailKeys: in-memory set, reset on restart
+// Net: silently lost. This is the exact class of bug Ara flagged.
+//
+// Fix: persistent UID-based dedup. Track processed UIDs in a local JSON file.
+// checkNewEmails now returns UIDs alongside payloads and does NOT mark the
+// server-side \\Seen flag. The caller (emailMonitor) must call ackEmailUidProcessed(uid)
+// AFTER saveState succeeds. If the hub crashes between fetch and caller-persist,
+// the next poll refetches the same UIDs and the persistent set filters duplicates.
+const IMAP_PROCESSED_UIDS_FILE = '/tmp/9-imap-processed-uids.json';
+function loadProcessedEmailUids() {
+  try {
+    if (!existsSync(IMAP_PROCESSED_UIDS_FILE)) return new Set();
+    const raw = JSON.parse(readFileSync(IMAP_PROCESSED_UIDS_FILE, 'utf-8') || '{}');
+    // Prune entries older than 7 days so the file doesn't grow forever
+    const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const fresh = new Set();
+    for (const [uid, ts] of Object.entries(raw)) {
+      if (ts > cutoff) fresh.add(uid);
+    }
+    return fresh;
+  } catch (e) {
+    log(`[imap-replay] UID file load failed: ${e.message} — treating as empty`);
+    return new Set();
+  }
+}
+function markEmailUidProcessed(uid) {
+  try {
+    const raw = existsSync(IMAP_PROCESSED_UIDS_FILE)
+      ? JSON.parse(readFileSync(IMAP_PROCESSED_UIDS_FILE, 'utf-8') || '{}')
+      : {};
+    raw[String(uid)] = Date.now();
+    writeFileSync(IMAP_PROCESSED_UIDS_FILE, JSON.stringify(raw));
+  } catch (e) {
+    log(`[imap-replay] UID file write failed: ${e.message}`);
+  }
+}
+// Called by the email monitor loop AFTER saveState succeeds for a message.
+// Also marks the UID seen on the server (best-effort) so the server-side
+// `seen: false` filter is efficient on subsequent polls.
+async function ackEmailUidProcessed(uid) {
+  markEmailUidProcessed(uid);
+  const gmailUser = process.env.ALPACA_EMAIL || process.env.GMAIL_ADDRESS || process.env.JASSON_EMAIL;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  if (!gmailUser || !gmailPass) return;
+  const client = new ImapFlow({ host: 'imap.gmail.com', port: 993, secure: true, auth: { user: gmailUser, pass: gmailPass }, logger: false });
+  try {
+    await client.connect();
+    const lock = await client.getMailboxLock('INBOX');
+    try { await client.messageFlagsAdd(uid, ['\\Seen'], { uid: true }); }
+    catch (e) { log(`[imap-replay] server mark-seen failed for UID ${uid}: ${e.message?.slice(0, 80)}`); }
+    finally { lock.release(); }
+    await client.logout();
+  } catch (e) {
+    log(`[imap-replay] ack connect failed: ${e.message?.slice(0, 80)}`);
+    try { await client.logout(); } catch {}
+  }
+}
+
 async function checkNewEmails() {
   const gmailUser = process.env.ALPACA_EMAIL || process.env.GMAIL_ADDRESS || process.env.JASSON_EMAIL;
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
@@ -1463,37 +1556,46 @@ async function checkNewEmails() {
     await client.connect();
     const lock = await client.getMailboxLock('INBOX');
     const lines = [];
+    const processedUids = loadProcessedEmailUids();
     try {
-      // Fetch up to 10 most recent unseen messages
+      // Fetch up to 10 most recent unseen messages. We request UID explicitly
+      // and do NOT mark messages seen here — that happens only after the
+      // caller persists via ackEmailUidProcessed().
       const msgs = [];
-      for await (const msg of client.fetch({ seen: false }, { envelope: true, bodyStructure: true, source: true })) {
+      for await (const msg of client.fetch({ seen: false }, { uid: true, envelope: true, bodyStructure: true, source: true })) {
         msgs.push(msg);
         if (msgs.length >= 10) break;
       }
 
       for (const msg of msgs) {
+        const uid = String(msg.uid);
+        // Skip if already persistently processed in a prior run
+        if (processedUids.has(uid)) continue;
+
         const subject = msg.envelope?.subject || '(no subject)';
         const fromAddr = msg.envelope?.from?.[0]?.address || '';
 
-        // Skip our own outgoing emails
-        if (fromAddr.toLowerCase() === gmailUser.toLowerCase()) continue;
-        if (subject.startsWith('[From 9]') || subject.startsWith('9 —')) continue;
+        // Skip our own outgoing emails — mark processed immediately since
+        // downstream has nothing to do with them.
+        if (fromAddr.toLowerCase() === gmailUser.toLowerCase() ||
+            subject.startsWith('[From 9]') || subject.startsWith('9 —')) {
+          markEmailUidProcessed(uid);
+          try { await client.messageFlagsAdd(msg.uid, ['\\Seen'], { uid: true }); } catch {}
+          continue;
+        }
 
-        // Parse plain text body from raw source — strip headers, grab first 500 chars of body
+        // Parse plain text body from raw source — strip headers, grab first 500 chars
         let body = '';
         try {
           const raw = msg.source?.toString('utf8') || '';
-          // Find double CRLF that separates headers from body
           const headerEnd = raw.search(/\r?\n\r?\n/);
           if (headerEnd !== -1) {
             body = raw.slice(headerEnd).replace(/\r?\n/g, ' ').trim().slice(0, 500);
           }
         } catch (_) { body = ''; }
 
-        // Mark as seen so it doesn't re-fire
-        await client.messageFlagsAdd(msg.seq, ['\\Seen']);
-
-        lines.push(`SUBJECT:${subject.slice(0, 200)}|BODY:${body}`);
+        // Return UID alongside the payload so the caller can ack after saveState
+        lines.push(`UID:${uid}|SUBJECT:${subject.slice(0, 200)}|BODY:${body}`);
       }
     } finally {
       lock.release();
@@ -2184,39 +2286,97 @@ healthServer.listen(HEALTH_PORT, () => {
 // ─── Supabase Watchdog ──────────────────────────────────────────────────────
 // Hard guarantee that cloud sync failure can never be silent again.
 // 1. Startup alert if client failed to initialize (fires once, 30s after boot).
-// 2. Every 5 min: check drift on messages table. Alert if drift > 10 or client null.
-// 3. 1-hour cooldown between alerts so a sustained outage doesn't spam Telegram.
-let _supabaseLastAlert = 0;
+// 2. Every 5 min: check drift across ALL 5 sync tables. Alert if any drift > 10
+//    or client null, with a HARD-FAIL bypass when max drift > 50 (no cooldown).
+// 3. Per-reason 1-hour cooldowns so a drifting table doesn't silence a
+//    client-null alert and vice-versa.
+// 4. Every cycle emits a structured heartbeat line to logs/comms-hub.log so
+//    there is a permanent paper trail even on clean ticks.
+const _supabaseLastAlert = { clientNull: 0, drift: 0, unreachable: 0 };
+const SUPABASE_ALERT_COOLDOWN_MS = 60 * 60 * 1000; // 1h
+const SUPABASE_HARD_FAIL_DRIFT = 50; // bypass cooldown — page immediately
+const SUPABASE_WATCHED_TABLES = ['messages', 'actions', 'decisions', 'memory', 'tasks'];
 setTimeout(() => {
   if (!supabase) {
     sendTelegram('[9 watchdog] CRITICAL: Supabase client failed to initialize at hub startup. Cloud sync is DISABLED. Check .env and stdout log. Local SQLite is still authoritative — but Mac crash = data loss risk until fixed.').catch(() => {});
-    _supabaseLastAlert = Date.now();
+    _supabaseLastAlert.clientNull = Date.now();
   }
 }, 30000);
 setInterval(async () => {
-  const cooldown = 3600000; // 1 hour
+  const checkedAt = new Date().toISOString();
   if (!supabase) {
-    if (Date.now() - _supabaseLastAlert > cooldown) {
+    if (Date.now() - _supabaseLastAlert.clientNull > SUPABASE_ALERT_COOLDOWN_MS) {
       sendTelegram('[9 watchdog] Supabase client still null. Cloud sync remains DISABLED. This alert repeats hourly until resolved.').catch(() => {});
-      _supabaseLastAlert = Date.now();
+      _supabaseLastAlert.clientNull = Date.now();
     }
+    log(`[supabase-watchdog] checked_at=${checkedAt} max_drift=null tables={} status=client_null`);
     return;
   }
   try {
     // Use in-process db handle (SQLCipher-aware) instead of /usr/bin/sqlite3
-    const local = db ? (db._db.prepare('SELECT count(*) as c FROM messages').get()?.c ?? 0) : 0;
-    const { count: cloud, error } = await supabase.from('messages').select('*', { count: 'exact', head: true });
-    if (error) {
-      console.error('[supabase watchdog] query failed:', error.message);
-      return;
+    const perTable = {};
+    const errorTables = [];
+    for (const t of SUPABASE_WATCHED_TABLES) {
+      let local = -1;
+      try {
+        if (db) local = db._db.prepare(`SELECT count(*) as c FROM ${t}`).get()?.c ?? 0;
+      } catch (e) {
+        perTable[t] = { sqlite: null, supabase: null, drift: null, error: `sqlite: ${e.message}` };
+        errorTables.push(t);
+        continue;
+      }
+      const { count: cloud, error } = await supabase.from(t).select('*', { count: 'exact', head: true });
+      if (error) {
+        perTable[t] = { sqlite: local, supabase: null, drift: null, error: error.message };
+        errorTables.push(t);
+        continue;
+      }
+      perTable[t] = { sqlite: local, supabase: cloud, drift: local - cloud, error: null };
     }
-    const drift = local - cloud;
-    if (drift > 10 && Date.now() - _supabaseLastAlert > cooldown) {
-      sendTelegram(`[9 watchdog] Supabase drift: messages SQLite=${local} Supabase=${cloud} (behind by ${drift}). Live sync may be failing. Check /supabase-health.`).catch(() => {});
-      _supabaseLastAlert = Date.now();
+    const drifts = Object.values(perTable)
+      .map(x => x.drift)
+      .filter(d => d !== null && d !== undefined && !Number.isNaN(d));
+    const maxDrift = drifts.length ? Math.max(...drifts) : null;
+    const tableSummary = Object.entries(perTable)
+      .map(([t, v]) => `${t}:${v.error ? 'ERR' : v.drift}`)
+      .join(',');
+
+    // Determine status for the heartbeat line
+    let status;
+    if (errorTables.length === SUPABASE_WATCHED_TABLES.length) status = 'unreachable';
+    else if (errorTables.length > 0) status = 'partial_unreachable';
+    else if (maxDrift !== null && maxDrift > SUPABASE_HARD_FAIL_DRIFT) status = 'critical_drift';
+    else if (maxDrift !== null && maxDrift > 10) status = 'drifting';
+    else if (maxDrift !== null && maxDrift > 0) status = 'minor_drift';
+    else status = 'healthy';
+
+    // Heartbeat — EVERY cycle, clean or not. Paper trail.
+    log(`[supabase-watchdog] checked_at=${checkedAt} max_drift=${maxDrift} tables={${tableSummary}} status=${status}`);
+
+    // Alerting
+    const now = Date.now();
+    const perTableDetail = Object.entries(perTable)
+      .map(([t, v]) => v.error ? `${t}=ERR(${v.error})` : `${t}=${v.drift}`)
+      .join(' ');
+
+    // Unreachable (any table returned error from Supabase)
+    if (errorTables.length > 0) {
+      if (now - _supabaseLastAlert.unreachable > SUPABASE_ALERT_COOLDOWN_MS) {
+        sendTelegram(`[9 watchdog] Supabase query errors on ${errorTables.length}/${SUPABASE_WATCHED_TABLES.length} tables: ${errorTables.join(', ')}. Per-table: ${perTableDetail}. Check network + Supabase status.`).catch(() => {});
+        _supabaseLastAlert.unreachable = now;
+      }
+    }
+
+    // Drift alerts — HARD FAIL bypass when max drift > 50 (no cooldown)
+    if (maxDrift !== null && maxDrift > SUPABASE_HARD_FAIL_DRIFT) {
+      sendTelegram(`[9 watchdog] CRITICAL Supabase drift=${maxDrift} (>50). Per-table: ${perTableDetail}. Live sync is broken. /supabase-health for detail.`).catch(() => {});
+      _supabaseLastAlert.drift = now;
+    } else if (maxDrift !== null && maxDrift > 10 && now - _supabaseLastAlert.drift > SUPABASE_ALERT_COOLDOWN_MS) {
+      sendTelegram(`[9 watchdog] Supabase drift=${maxDrift}. Per-table: ${perTableDetail}. Live sync may be failing. Check /supabase-health.`).catch(() => {});
+      _supabaseLastAlert.drift = now;
     }
   } catch (e) {
-    console.error('[supabase watchdog] check failed:', e.message);
+    log(`[supabase-watchdog] checked_at=${checkedAt} status=exception error=${e.message}`);
   }
 }, 300000); // 5 min
 
@@ -2719,16 +2879,26 @@ async function emailMonitor() {
       await new Promise(r => setTimeout(r, 60000)); // Check every 60 seconds
       const result = await checkNewEmails();
       if (result) {
-        // Parse individual emails from the AppleScript output
+        // Parse individual emails. New format (Apr 10 kill C) includes a UID field
+        // so the caller can ackEmailUidProcessed(uid) AFTER saveState succeeds,
+        // not before. This is the fix for the IMAP replay bug.
         const emails = result.split('\n').filter(l => l.includes('SUBJECT:'));
         for (const emailLine of emails) {
-          const subjectMatch = emailLine.match(/SUBJECT:(.+?)\|BODY:(.*)/);
-          if (!subjectMatch) continue;
+          // New format: UID:N|SUBJECT:...|BODY:...  Old format: SUBJECT:...|BODY:...
+          const uidMatch = emailLine.match(/^UID:([^|]+)\|SUBJECT:(.+?)\|BODY:(.*)/);
+          const legacyMatch = emailLine.match(/^SUBJECT:(.+?)\|BODY:(.*)/);
+          let uid = null, subject, body;
+          if (uidMatch) {
+            uid = uidMatch[1].trim();
+            subject = uidMatch[2].trim();
+            body = uidMatch[3].trim();
+          } else if (legacyMatch) {
+            subject = legacyMatch[1].trim();
+            body = legacyMatch[2].trim();
+          } else continue;
 
-          const subject = subjectMatch[1].trim();
-          const body = subjectMatch[2].trim();
-
-          // Skip emails we've already processed (dedup by subject + body prefix)
+          // Skip emails we've already processed in-memory (dedup by subject + body prefix)
+          // Persistent UID dedup happens in checkNewEmails() via loadProcessedEmailUids().
           const dedupKey = `${subject}|${body.slice(0, 100)}`;
           if (processedEmailKeys.has(dedupKey)) continue;
           processedEmailKeys.add(dedupKey);
@@ -2740,7 +2910,10 @@ async function emailMonitor() {
           }
 
           // Skip our own outgoing emails (from 9/captain)
-          if (subject.startsWith('[From 9]') || subject.startsWith('9 —')) continue;
+          if (subject.startsWith('[From 9]') || subject.startsWith('9 —')) {
+            if (uid) ackEmailUidProcessed(uid).catch(() => {});
+            continue;
+          }
 
           const userText = body || subject;
           log(`Email IN: "${subject}" — "${userText.slice(0, 200)}"`);
@@ -2749,6 +2922,10 @@ async function emailMonitor() {
           updateChannelStatus(state, 'email', 'active');
           state.channels.email.messagesHandled++;
           saveState(state);
+          // Kill C: ack the UID ONLY after saveState succeeds. If the hub crashes
+          // between checkNewEmails fetch and this line, the next poll refetches
+          // the same UID and the persistent set filters duplicates.
+          if (uid) ackEmailUidProcessed(uid).catch((e) => log(`[imap-replay] ack failed for UID ${uid}: ${e.message?.slice(0, 80)}`));
 
           if (isTerminalActive()) {
             sendEmail(`Re: ${subject}`, 'Got it — passing to terminal now.');
@@ -2778,12 +2955,16 @@ async function emailMonitor() {
 
 // ─── CHANNEL 4: Voice Server Health Check ────────────────────────────────────
 // ─── Voice + Tunnel Restart ───────────────────────────────────────────────────
-function restartVoiceWithTunnel() {
+// ASYNC — previously used execSync('sleep N') totaling 7+ seconds of blocked
+// event loop per restart, which starved Telegram polling and raced the terminal
+// watchdog. Now uses await sleep() so the hub stays responsive during recovery.
+async function restartVoiceWithTunnel() {
   if (VPS_MODE) { log('[vps-mode] Voice/tunnel restart skipped (voice runs on Mac only)'); return; }
   log('Restarting voice server and tunnel...');
   try {
-    // Kill old processes
-    execSync('pkill -f voice-server 2>/dev/null; pkill -f cloudflared 2>/dev/null; sleep 2');
+    // Kill old processes (non-blocking wait after)
+    execSync('pkill -f voice-server 2>/dev/null; pkill -f cloudflared 2>/dev/null', { encoding: 'utf-8' });
+    await sleep(2000);
 
     // If using a named tunnel, use `cloudflared tunnel run` instead of quick-tunnel
     const tunnelType = (() => {
@@ -2804,7 +2985,7 @@ function restartVoiceWithTunnel() {
       })();
       log(`Named tunnel mode — using 'cloudflared tunnel run ${tunnelName}'`);
       execSync(`nohup cloudflared tunnel --config ~/.cloudflared/9-voice-config.yml run "${tunnelName}" > /tmp/cloudflared.log 2>&1 &`);
-      execSync('sleep 5');
+      await sleep(5000);
       // Named tunnel URL is stable — read from .env, no update needed
       execSync(`nohup /opt/homebrew/bin/node ${PROJECT}/scripts/voice-server.mjs > /tmp/voice-server.log 2>&1 &`);
       log('Voice server restarted with named tunnel (stable URL — no Twilio update needed)');
@@ -2813,7 +2994,7 @@ function restartVoiceWithTunnel() {
 
     // Start new quick tunnel, capture URL
     execSync('nohup cloudflared tunnel --url http://localhost:3456 --no-autoupdate > /tmp/cloudflared.log 2>&1 &');
-    execSync('sleep 5'); // Wait for tunnel to establish
+    await sleep(5000); // Wait for tunnel to establish (non-blocking)
 
     // Get new tunnel URL
     const tunnelLog = readFileSync('/tmp/cloudflared.log', 'utf-8');
@@ -2887,7 +3068,7 @@ async function voiceHealthCheck() {
         updateChannelStatus(state, 'voice', 'error');
         log('Voice server health check failed — attempting restart');
         try {
-          restartVoiceWithTunnel();
+          await restartVoiceWithTunnel();
         } catch (e) {
           log(`Voice restart failed: ${e.message}`);
           addChannelError(state, 'voice', e.message);
@@ -2899,7 +3080,7 @@ async function voiceHealthCheck() {
         voiceWasDown = true;
       }
       updateChannelStatus(state, 'voice', 'down');
-      try { restartVoiceWithTunnel(); } catch {}
+      await restartVoiceWithTunnel().catch(e => log(`Voice restart failed: ${e.message}`));
     }
     saveState(state);
     await new Promise(r => setTimeout(r, 60000)); // Check every minute
@@ -3518,6 +3699,79 @@ function checkIfRecentReboot() {
   return false;
 }
 
+// ─── Periodic Reboot Re-Check (Phase 2 gap 6) ───────────────────────────────
+// The startup-only reboot check misses several real-world cases:
+//   1. Hub launched >10 min after boot (slow LaunchAgent) — uptime already past window
+//   2. Mac wakes from deep sleep (which breaks tunnels similarly to reboot)
+//   3. Owner kicks off a restart out-of-band and we miss the boot window
+// Fix: every 60 seconds, compare the current boot timestamp against the last one
+// we saw. If the boot timestamp changed — OR if we're seeing a new boot for the
+// first time — fire the recovery flow exactly once per boot-id. A tiny boot-id
+// file persists across hub restarts so we don't re-run recovery needlessly.
+const BOOT_ID_FILE = '/tmp/comms-hub-last-boot-id';
+let _lastSeenBootId = null;
+try {
+  if (existsSync(BOOT_ID_FILE)) _lastSeenBootId = readFileSync(BOOT_ID_FILE, 'utf-8').trim() || null;
+} catch {}
+
+function getCurrentBootId() {
+  // Returns a stable string identifying the current Mac/VPS boot (unix seconds).
+  if (VPS_MODE) {
+    try {
+      const upSec = parseFloat(readFileSync('/proc/uptime', 'utf-8').split(' ')[0]);
+      return String(Math.floor(Date.now() / 1000 - upSec));
+    } catch { return null; }
+  }
+  try {
+    const uptime = execSync('sysctl -n kern.boottime', { encoding: 'utf-8', timeout: 2000 });
+    const match = uptime.match(/sec = (\d+)/);
+    if (match) return match[1];
+  } catch {}
+  // Fallback: os.uptime() (cross-platform) — derive boot time from current time
+  try {
+    return String(Math.floor(Date.now() / 1000 - os.uptime()));
+  } catch { return null; }
+}
+
+async function rebootPeriodicRecheck() {
+  try {
+    const bootId = getCurrentBootId();
+    if (!bootId) return;
+    const sysUpSec = os.uptime();
+    const freshBoot = sysUpSec < 600; // within 10 min of boot
+    const bootChanged = _lastSeenBootId !== null && bootId !== _lastSeenBootId;
+
+    // Log heartbeat every check so operators can grep for confirmation that the
+    // interval is actually registered and running. Phase 2 gap 6 verification.
+    log(`[reboot-check] uptime=${Math.round(sysUpSec)}s boot_id=${bootId} last_seen=${_lastSeenBootId || 'none'} fresh=${freshBoot} changed=${bootChanged}`);
+
+    // Fire recovery if:
+    //   - system uptime < 10 min AND this is a new boot-id (we haven't handled it)
+    //   - OR boot-id changed between checks (sleep/wake or survived reboot)
+    if ((freshBoot && bootId !== _lastSeenBootId) || bootChanged) {
+      log(`[reboot-check] New boot detected (id=${bootId}, prev=${_lastSeenBootId}) — firing voice+tunnel recovery`);
+      try {
+        await restartVoiceWithTunnel();
+        log('[reboot-check] Voice+tunnel recovery completed');
+      } catch (e) {
+        log(`[reboot-check] Voice+tunnel recovery failed: ${e.message}`);
+      }
+      _lastSeenBootId = bootId;
+      try { writeFileSync(BOOT_ID_FILE, bootId); } catch {}
+    } else if (_lastSeenBootId === null) {
+      // First ever check in this process — seed the cache without firing recovery
+      // (startupSelfCheck already ran once; its reboot flow handled initial case)
+      _lastSeenBootId = bootId;
+      try { writeFileSync(BOOT_ID_FILE, bootId); } catch {}
+    }
+  } catch (e) {
+    log(`[reboot-check] error: ${e.message}`);
+  }
+}
+
+setInterval(rebootPeriodicRecheck, 60 * 1000); // Every 60 seconds
+setTimeout(rebootPeriodicRecheck, 10000); // First check 10s after boot
+
 // ─── Log Rotation (keep logs under 1MB) ──────────────────────────────────────
 function rotateLog() {
   try {
@@ -3542,9 +3796,9 @@ async function startupSelfCheck() {
   const recentReboot = checkIfRecentReboot();
   if (recentReboot) {
     issues.push('Mac recently rebooted — tunnel URL will be stale, voice server may need restart');
-    // Auto-fix: restart voice with fresh tunnel
+    // Auto-fix: restart voice with fresh tunnel (await — restartVoiceWithTunnel is async)
     try {
-      restartVoiceWithTunnel();
+      await restartVoiceWithTunnel();
       status.push('Voice + tunnel: restarted with fresh URL');
     } catch (e) {
       issues.push(`Voice restart failed: ${e.message}`);
@@ -3617,7 +3871,7 @@ async function startupSelfCheck() {
       status.push('Voice: down');
       issues.push('Voice server not running');
       if (!recentReboot) {
-        try { restartVoiceWithTunnel(); status.push('Voice: restart attempted'); } catch {}
+        try { await restartVoiceWithTunnel(); status.push('Voice: restart attempted'); } catch {}
       }
     }
   } else {
