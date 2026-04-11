@@ -3578,20 +3578,24 @@ async function telegramPoll() {
                           execSync(`osascript -e 'display notification "${preview}" with title "9: incoming message" sound name "Tink"'`, { timeout: 3000 });
                         } catch (e) { log(`NUDGE T1 failed: ${e.message}`); }
                       }, 10000);
-                      // Tier 2 — DISABLED Apr 11. The /cost auto-type was the ROOT CAUSE of
-                      // every "you froze" Owner has reported in this session. Owner explicitly
-                      // confirmed 07:41 ET: "I was not at terminal. The /cost is not a keyboard
-                      // issue." Source confirmed: this exact line was firing /cost via cliclick
-                      // every time the signal file sat unread for 25s, which then opened the
-                      // Claude Code slash-command modal and BLOCKED Owner's terminal display.
-                      // The mechanism designed to UNFREEZE 9 was the cause of the perceived
-                      // freeze. Replaced with a cleaner Tier 2 that does nothing visible to the
-                      // user — just bumps an internal counter. Tier 1 (notification) and Tier 3
-                      // (iMessage) still fire and cover the actual escalation need.
+                      // Tier 2 — REVISED Apr 11 (07:08 ET round 2). The /cost auto-type was
+                      // the original root cause of perceived freezes (slash command modal blocked
+                      // display). The Apr 11 first fix DISABLED Tier 2 entirely, which left no
+                      // wake mechanism at all and Owner reported "you still aren't responding to
+                      // grams without terminal prompt." Reinstating with a NON-SLASH wake
+                      // character: a single period `.` followed by return. The period is real
+                      // input (Claude Code wakes the REPL on real characters, not on bare returns
+                      // — that's why the older `keystroke return` was toothless). 9 is primed via
+                      // memory/feedback_telegram_wake_signal_apr11.md to recognize `.` as a triage
+                      // wake signal and immediately drain inbox. Period is minimally visible
+                      // (single dot in terminal, no modal, no scroll disruption) and survives
+                      // the slash-command-modal failure mode.
                       setTimeout(() => {
                         try {
                           if (!existsSync('/tmp/9-incoming-message.jsonl')) return;
-                          log(`NUDGE T2: Signal file still unread after 25s — DISABLED /cost auto-type per Apr 11 root cause fix. Tier 1 notification already fired at 10s; Tier 3 iMessage will fire at 45s. No keyboard injection.`);
+                          log(`NUDGE T2: Signal file still unread after 25s — typing wake character (.) via cliclick`);
+                          execSync(`osascript -e 'tell application "Terminal" to activate'`, { timeout: 3000 });
+                          execSync(`/opt/homebrew/bin/cliclick w:300 t:. kp:return`, { timeout: 5000 });
                         } catch (e) { log(`NUDGE T2 failed: ${e.message}`); }
                       }, 25000);
                       // Tier 3 — 45s: loud notification + iMessage fallback so Owner knows 9 is truly stuck
