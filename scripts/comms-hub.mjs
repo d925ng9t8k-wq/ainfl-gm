@@ -726,6 +726,32 @@ function loadState() {
     const loaded = JSON.parse(readFileSync(STATE_FILE, 'utf-8'));
     // ALWAYS clear conversation history on startup — prevents stale replay (March 25 2026 fix)
     loaded.conversationHistory = [];
+    // Apr 11 kill — wal-replay-state-duplicate (test-crash-survival C6).
+    // Collapse outbound duplicates carried in from disk: prior crash + WAL replay
+    // (or any other path) could have written the same channel+text twice.
+    // Keep the MOST RECENT occurrence of each (channel, text) outbound, preserve
+    // inbound untouched (inbound has UUIDs and is governed by Kill B). Order is
+    // preserved otherwise. This runs once per hub start, so the cost is trivial.
+    if (Array.isArray(loaded.recentMessages)) {
+      const seenOut = new Set();
+      const cleaned = [];
+      // Walk in reverse so we keep the LAST occurrence of each duplicate.
+      for (let i = loaded.recentMessages.length - 1; i >= 0; i--) {
+        const m = loaded.recentMessages[i];
+        if (m && m.direction === 'out') {
+          const key = `${m.channel}\x00${m.text}`;
+          if (seenOut.has(key)) continue;
+          seenOut.add(key);
+        }
+        cleaned.push(m);
+      }
+      cleaned.reverse();
+      const dropped = loaded.recentMessages.length - cleaned.length;
+      if (dropped > 0) {
+        console.log(`[loadState] Collapsed ${dropped} outbound duplicate(s) from prior session(s)`);
+      }
+      loaded.recentMessages = cleaned;
+    }
     return loaded;
   } catch {
     return {
@@ -769,8 +795,9 @@ function addMessage(state, channel, direction, text) {
       log(`TRUNCATION WARNING: Inbound message from ${channel} ends without sentence terminator — may be cut off. Length: ${text.length}`);
     }
   }
+  const truncated = text.slice(0, TELEGRAM_MAX);
   const msg = {
-    channel, direction, text: text.slice(0, TELEGRAM_MAX),
+    channel, direction, text: truncated,
     timestamp: new Date().toISOString(),
   };
   // Apr 10 kill item B: every inbound message gets a UUID. Both /inbox and the
@@ -779,6 +806,36 @@ function addMessage(state, channel, direction, text) {
   if (direction === 'in') {
     msg.read = false;  // Explicit false — inbox filter depends on this
     msg.id = randomUUID();
+  }
+  // Apr 11 kill — wal-replay-state-duplicate (test-crash-survival C6).
+  // Bug: WAL replay re-sends a pending outbound message after crash recovery.
+  // The replay path goes through sendTelegram → addMessage, which used to
+  // unconditionally push the message into state.recentMessages even if the
+  // ORIGINAL pre-crash addMessage already landed in state. Net effect: same
+  // outbound text appeared twice in shared-state.json after every WAL replay.
+  // Fix: content-based dedup for OUTBOUND only, 60s window. If the same
+  // channel+text was just appended within the last 60s, refresh its timestamp
+  // in place instead of pushing a new entry. Inbound messages keep their
+  // unique-UUID semantics (Kill B) and are not affected. This composes with
+  // walMarkSent — if the original send succeeded fully, the replay never
+  // fires; if the original was killed mid-flight, this dedup catches the
+  // case where addMessage ran but walMarkSent did not get flushed before SIGKILL.
+  if (direction === 'out') {
+    const DEDUP_WINDOW_MS = 60_000;
+    const nowMs = Date.parse(msg.timestamp);
+    // Walk from the end (most recent) — early-exit when out of window.
+    for (let i = state.recentMessages.length - 1; i >= 0; i--) {
+      const prev = state.recentMessages[i];
+      if (prev.direction !== 'out' || prev.channel !== channel) continue;
+      const prevMs = Date.parse(prev.timestamp);
+      if (Number.isNaN(prevMs)) continue;
+      if ((nowMs - prevMs) > DEDUP_WINDOW_MS) break;
+      if (prev.text === truncated) {
+        // Duplicate within window — refresh timestamp in place, no new push.
+        prev.timestamp = msg.timestamp;
+        return prev;
+      }
+    }
   }
   state.recentMessages.push(msg);
   // Keep last 50
