@@ -144,7 +144,12 @@ async function dumpDatabase(outputPath) {
 
   let totalRows = 0;
   for (const table of tables) {
-    const rows = db.prepare(`SELECT * FROM ${table}`).all();
+    // FIX (Apr 11): wrap table name in double quotes — tables that start with a
+    // digit (e.g. 9ops_push_notifications, 9ops_task_queue from the 9-ops-daemon
+    // schema) are valid SQLite identifiers but require quoting in queries.
+    // Without the quotes, "SELECT * FROM 9ops_push_notifications" returns
+    // "unrecognized token: 9ops_push_notifications" and the entire backup fails.
+    const rows = db.prepare(`SELECT * FROM "${table}"`).all();
     if (rows.length === 0) continue;
     const cols = Object.keys(rows[0]).map(c => `"${c}"`).join(', ');
     for (const row of rows) {
