@@ -37,7 +37,10 @@
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Autonomous OC responses when terminal is absent. Also API health probing.",
-          "models_used": ["claude-sonnet-4-5", "claude-haiku-4-5-20251001"]
+          "models_used": [
+            "claude-sonnet-4-5",
+            "claude-haiku-4-5-20251001"
+          ]
         },
         {
           "service": "Telegram Bot API",
@@ -79,7 +82,16 @@
         {
           "path": "data/9-memory.db",
           "type": "SQLite (better-sqlite3 / SQLCipher)",
-          "tables": ["messages", "actions", "authority", "memory", "tasks", "decisions", "health_events", "audit_log"],
+          "tables": [
+            "messages",
+            "actions",
+            "authority",
+            "memory",
+            "tasks",
+            "decisions",
+            "health_events",
+            "audit_log"
+          ],
           "access": "read/write"
         },
         {
@@ -91,7 +103,7 @@
         {
           "path": "~/Library/Messages/chat.db",
           "type": "SQLite (system, Apple Messages)",
-          "purpose": "iMessage read — requires Full Disk Access",
+          "purpose": "iMessage read \u2014 requires Full Disk Access",
           "access": "read-only"
         },
         {
@@ -141,11 +153,11 @@
         "open-terminal (listens for /tmp/9-open-terminal written by hub)",
         "cloud-worker (receives state pushes from hub)"
       ],
-      "spof_risk": "CRITICAL — single process, single Mac. All 4 comms channels die when this dies.",
+      "spof_risk": "CRITICAL \u2014 single process, single Mac. All 4 comms channels die when this dies.",
       "security_notes": [
         "HUB_API_SECRET protects /context endpoint when set; optional so missing key = open endpoint",
-        "iMessage read requires Full Disk Access (FDA) — breaks in LaunchAgent degraded mode",
-        "Telegram offset tracked via /tmp file — replay risk on file loss",
+        "iMessage read requires Full Disk Access (FDA) \u2014 breaks in LaunchAgent degraded mode",
+        "Telegram offset tracked via /tmp file \u2014 replay risk on file loss",
         "OC impersonation regex filter present but not tested under adversarial conditions"
       ]
     },
@@ -160,13 +172,22 @@
       "description": "Twilio voice webhook handler. Streams Claude responses converted by ElevenLabs TTS. Exposed to public internet via cloudflared tunnel. Context-aware voice persona with per-contact sentence thresholds.",
       "launchagent": "com.9.voice-server",
       "runtime_imports": [],
-      "node_builtins": ["http", "https", "fs", "path", "crypto", "url"],
+      "node_builtins": [
+        "http",
+        "https",
+        "fs",
+        "path",
+        "crypto",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Conversational response generation for voice calls",
-          "models_used": ["claude-sonnet-4-5"]
+          "models_used": [
+            "claude-sonnet-4-5"
+          ]
         },
         {
           "service": "ElevenLabs TTS",
@@ -214,16 +235,16 @@
         "Twilio (routes inbound voice calls to this service)",
         "comms-hub (watchdogs this service, restarts if port unreachable)"
       ],
-      "spof_risk": "HIGH — tunnel URL is ephemeral (changes on restart). Twilio must be manually updated with new URL after each restart. Single instance, no redundancy.",
+      "spof_risk": "HIGH \u2014 tunnel URL is ephemeral (changes on restart). Twilio must be manually updated with new URL after each restart. Single instance, no redundancy.",
       "security_notes": [
-        "TWILIO_AUTH_TOKEN used for signature validation of inbound webhooks — correctly implemented",
-        "Audio files in /tmp are not cleaned up on a schedule — disk exhaustion risk over time",
+        "TWILIO_AUTH_TOKEN used for signature validation of inbound webhooks \u2014 correctly implemented",
+        "Audio files in /tmp are not cleaned up on a schedule \u2014 disk exhaustion risk over time",
         "Tunnel URL is logged in TUNNEL_URL env var but may drift after auto-restart"
       ]
     },
     {
       "id": "jules-telegram",
-      "name": "Jules (Telegram — Jasson personal assistant)",
+      "name": "Jules (Telegram \u2014 Jasson personal assistant)",
       "type": "service",
       "script": "scripts/jules-telegram.mjs",
       "port": null,
@@ -232,13 +253,21 @@
       "description": "Personal AI assistant for Jasson Fishback via Telegram bot. Polling-based. Haiku for cost, Sonnet for complex. Maintains persistent profile in JSON.",
       "launchagent": null,
       "runtime_imports": [],
-      "node_builtins": ["https", "fs", "url"],
+      "node_builtins": [
+        "https",
+        "fs",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Conversational responses to Jasson",
-          "models_used": ["claude-haiku-4-5-20251001", "claude-sonnet-4-20250514", "claude-opus-4-20250514"]
+          "models_used": [
+            "claude-haiku-4-5-20251001",
+            "claude-sonnet-4-20250514",
+            "claude-opus-4-20250514"
+          ]
         },
         {
           "service": "Telegram Bot API",
@@ -249,7 +278,7 @@
       "data_stores": [
         {
           "path": "data/jules-profile-jasson.json",
-          "type": "JSON — persistent user profile",
+          "type": "JSON \u2014 persistent user profile",
           "access": "read/write"
         },
         {
@@ -263,9 +292,9 @@
         "ANTHROPIC_API_KEY"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "LOW — jules is a standalone assistant. Failure doesn't cascade to other components.",
+      "spof_risk": "LOW \u2014 jules is a standalone assistant. Failure doesn't cascade to other components.",
       "security_notes": [
-        "Bot token hardcoded as fallback in source code (line visible in audit) — should be env-only",
+        "Bot token hardcoded as fallback in source code (line visible in audit) \u2014 should be env-only",
         "No rate limiting on API calls"
       ]
     },
@@ -280,17 +309,25 @@
       "description": "AI mentor for Jude and Duke Fishback via iMessage group chat 'Dumbasses'. Reads Messages DB, builds web projects, deploys to dist/ and public/. Persona adapts to age.",
       "launchagent": null,
       "runtime_imports": [],
-      "node_builtins": ["https", "child_process", "fs", "path", "url"],
+      "node_builtins": [
+        "https",
+        "child_process",
+        "fs",
+        "path",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Kid-persona conversational AI and code generation",
-          "models_used": ["claude-sonnet-4-20250514"]
+          "models_used": [
+            "claude-sonnet-4-20250514"
+          ]
         },
         {
           "service": "Apple Messages (osascript)",
-          "endpoint": "local system — AppleScript",
+          "endpoint": "local system \u2014 AppleScript",
           "purpose": "Send iMessage replies to the group chat"
         }
       ],
@@ -299,7 +336,7 @@
           "path": "~/Library/Messages/chat.db",
           "type": "SQLite (system)",
           "purpose": "Read iMessages from 'Dumbasses' group",
-          "access": "read-only — requires FDA"
+          "access": "read-only \u2014 requires FDA"
         },
         {
           "path": "data/bengal-pro-memory.txt",
@@ -324,11 +361,11 @@
         "ANTHROPIC_API_KEY"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "LOW — standalone. Failure affects only kids' mentor service.",
+      "spof_risk": "LOW \u2014 standalone. Failure affects only kids' mentor service.",
       "security_notes": [
-        "Sandbox path enforcement present — writes locked to dist/duke/, dist/jude/, public/duke/, public/jude/",
-        "execSync used for AppleScript send — input sanitization present for double quotes and apostrophes",
-        "Full Disk Access required — breaks if FDA revoked"
+        "Sandbox path enforcement present \u2014 writes locked to dist/duke/, dist/jude/, public/duke/, public/jude/",
+        "execSync used for AppleScript send \u2014 input sanitization present for double quotes and apostrophes",
+        "Full Disk Access required \u2014 breaks if FDA revoked"
       ]
     },
     {
@@ -342,13 +379,23 @@
       "description": "Personal AI assistant for Kyle Cabezas (Rapid Mortgage Cincy branch manager). SMS via Twilio. OpenWeather briefings. Pilot instance of FreeAgent9 product. Twilio webhook signature validation implemented.",
       "launchagent": "com.9.pilot-server",
       "runtime_imports": [],
-      "node_builtins": ["http", "https", "net", "fs", "crypto", "url"],
+      "node_builtins": [
+        "http",
+        "https",
+        "net",
+        "fs",
+        "crypto",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Assistant responses to Kyle Cabezas",
-          "models_used": ["claude-haiku-4-5-20251001", "claude-sonnet-4-20250514"]
+          "models_used": [
+            "claude-haiku-4-5-20251001",
+            "claude-sonnet-4-20250514"
+          ]
         },
         {
           "service": "Twilio",
@@ -364,7 +411,7 @@
       "data_stores": [
         {
           "path": "data/jules-profile-kylec.json",
-          "type": "JSON — persistent user profile",
+          "type": "JSON \u2014 persistent user profile",
           "access": "read/write"
         },
         {
@@ -382,7 +429,7 @@
         "OPENWEATHER_API_KEY"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "LOW — single pilot user. Failure affects only Kyle Cabezas' assistant.",
+      "spof_risk": "LOW \u2014 single pilot user. Failure affects only Kyle Cabezas' assistant.",
       "security_notes": [
         "Twilio HMAC-SHA1 webhook signature validation correctly implemented using Node.js crypto",
         "64KB max request body enforced",
@@ -401,7 +448,10 @@
       "description": "Multi-asset algorithmic trading bot. Alpaca paper account ($333 live). 8-strategy ensemble on stocks, ETFs, crypto. 5-minute cycle. Sends trade notifications to comms-hub.",
       "launchagent": null,
       "runtime_imports": [],
-      "node_builtins": ["fs", "path"],
+      "node_builtins": [
+        "fs",
+        "path"
+      ],
       "external_apis": [
         {
           "service": "Alpaca Markets",
@@ -428,7 +478,7 @@
         {
           "path": "data/trader9-halt-until.txt",
           "type": "halt timestamp file",
-          "purpose": "Circuit breaker — halt trading until a specific time",
+          "purpose": "Circuit breaker \u2014 halt trading until a specific time",
           "access": "read/write"
         },
         {
@@ -441,17 +491,21 @@
       "credentials": [
         "ALPACA_API_KEY",
         "ALPACA_SECRET_KEY",
-        "ALPACA_LIVE_API_KEY (optional — enables live trading)",
-        "ALPACA_LIVE_SECRET_KEY (optional)"
+        "ALPACA_LIVE_API_KEY",
+        "ALPACA_LIVE_SECRET_KEY"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "MEDIUM — live trading account. Bot crash = missed trade signals. No automatic restart mechanism (not in LaunchAgent).",
+      "spof_risk": "MEDIUM \u2014 live trading account. Bot crash = missed trade signals. No automatic restart mechanism (not in LaunchAgent).",
       "security_notes": [
-        "Live trading keys (ALPACA_LIVE_API_KEY) present in .env — activated if set",
+        "Live trading keys (ALPACA_LIVE_API_KEY) present in .env \u2014 activated if set",
         "No position size sanity check beyond 20% portfolio cap",
         "No kill-switch endpoint accessible externally",
-        "Log path hard-coded to absolute path — will fail if project moves"
-      ]
+        "Log path hard-coded to absolute path \u2014 will fail if project moves"
+      ],
+      "credential_notes": {
+        "ALPACA_LIVE_API_KEY": "optional \u2014 enables live trading",
+        "ALPACA_LIVE_SECRET_KEY": "optional"
+      }
     },
     {
       "id": "trinity-agent",
@@ -464,13 +518,20 @@
       "description": "Autonomous discovery agent. Scans X, YouTube, Hacker News, Product Hunt every 15 minutes. Reports AI tool and opportunity findings to comms hub /context. Haiku for scan, Sonnet for deep eval.",
       "launchagent": null,
       "runtime_imports": [],
-      "node_builtins": ["fs", "path", "url"],
+      "node_builtins": [
+        "fs",
+        "path",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Discovery scan summaries and deep evaluations",
-          "models_used": ["claude-haiku-4-5-20251001", "claude-sonnet-4-5-20241022"]
+          "models_used": [
+            "claude-haiku-4-5-20251001",
+            "claude-sonnet-4-5-20241022"
+          ]
         },
         {
           "service": "Comms Hub",
@@ -496,10 +557,10 @@
       "reverse_dependencies": [
         "comms-hub (receives context updates from Trinity)"
       ],
-      "spof_risk": "LOW — informational only. Failure causes missed intelligence but no service degradation.",
+      "spof_risk": "LOW \u2014 informational only. Failure causes missed intelligence but no service degradation.",
       "security_notes": [
-        "Reads .env directly by parsing file — not via dotenv library",
-        "No authentication on hub /context POST call — relies on hub being localhost-only"
+        "Reads .env directly by parsing file \u2014 not via dotenv library",
+        "No authentication on hub /context POST call \u2014 relies on hub being localhost-only"
       ]
     },
     {
@@ -513,24 +574,33 @@
       "description": "Mortgage guideline assistant. Handles FHA, Conventional (Fannie/Freddie), VA, Jumbo queries. Reads markdown guideline files as RAG source. No authentication on endpoints.",
       "launchagent": null,
       "runtime_imports": [],
-      "node_builtins": ["http", "fs", "https", "path", "url"],
+      "node_builtins": [
+        "http",
+        "fs",
+        "https",
+        "path",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Anthropic Claude API",
           "endpoint": "https://api.anthropic.com/v1/messages",
           "purpose": "Answer mortgage guideline questions",
-          "models_used": ["claude-haiku-4-5-20251001", "claude-sonnet-4-5"]
+          "models_used": [
+            "claude-haiku-4-5-20251001",
+            "claude-sonnet-4-5"
+          ]
         }
       ],
       "data_stores": [
         {
           "path": "mortgage-ai/fannie-mae-guidelines.md",
-          "type": "markdown — guideline reference",
+          "type": "markdown \u2014 guideline reference",
           "access": "read"
         },
         {
           "path": "mortgage-ai/fha-guidelines.md",
-          "type": "markdown — guideline reference",
+          "type": "markdown \u2014 guideline reference",
           "access": "read"
         },
         {
@@ -548,13 +618,13 @@
         "ANTHROPIC_API_KEY"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "LOW — local only, no external users. But no auth = if ever exposed, any caller can query.",
+      "spof_risk": "LOW \u2014 local only, no external users. But no auth = if ever exposed, any caller can query.",
       "security_notes": [
         "CRITICAL: No authentication on /query endpoint",
         "No rate limiting",
         "10KB max request body enforced",
         "45-second timeout enforced",
-        "Never exposed to internet currently — but no auth means one accidental tunnel = open access"
+        "Never exposed to internet currently \u2014 but no auth means one accidental tunnel = open access"
       ]
     },
     {
@@ -563,12 +633,19 @@
       "type": "service",
       "script": "scripts/health-monitor.mjs",
       "port": 3458,
-      "status": "NOT RUNNING (not in LaunchAgent list — managed ad hoc)",
+      "status": "NOT RUNNING (not in LaunchAgent list \u2014 managed ad hoc)",
       "pid_at_audit": null,
       "description": "Real-time health monitoring. Polls all components every 30s (fast) and 5m (slow). Logs to SQLite health_events table. Alerts via Telegram on severity >= warning. Deduplicates alerts within 5-min window.",
       "launchagent": "com.9.health-monitor (plist exists in LaunchAgents)",
       "runtime_imports": [],
-      "node_builtins": ["child_process", "fs", "crypto", "http", "path", "url"],
+      "node_builtins": [
+        "child_process",
+        "fs",
+        "crypto",
+        "http",
+        "path",
+        "url"
+      ],
       "external_apis": [
         {
           "service": "Comms Hub",
@@ -579,7 +656,7 @@
       "data_stores": [
         {
           "path": "data/9-memory.db",
-          "type": "SQLite — health_events table",
+          "type": "SQLite \u2014 health_events table",
           "access": "read/write"
         },
         {
@@ -592,7 +669,7 @@
       "reverse_dependencies": [
         "comms-hub (watchdogs this service on port 3458)"
       ],
-      "spof_risk": "MEDIUM — when not running, comms-hub logs 'health monitor down' alerts but continues. No health data collected.",
+      "spof_risk": "MEDIUM \u2014 when not running, comms-hub logs 'health monitor down' alerts but continues. No health data collected.",
       "security_notes": []
     },
     {
@@ -606,7 +683,11 @@
       "description": "LaunchAgent daemon that watches /tmp/9-open-terminal signal file. On signal: opens Terminal, runs 'claude' command to start a new Claude Code session. Includes API health check before launch and 3x retry.",
       "launchagent": "com.9.terminal-opener",
       "runtime_imports": [],
-      "node_builtins": ["fs", "child_process", "https"],
+      "node_builtins": [
+        "fs",
+        "child_process",
+        "https"
+      ],
       "external_apis": [
         {
           "service": "Anthropic API (health check only)",
@@ -617,7 +698,7 @@
       "data_stores": [
         {
           "path": "/tmp/9-open-terminal",
-          "type": "signal file — triggers terminal open",
+          "type": "signal file \u2014 triggers terminal open",
           "access": "read (deletes on trigger)"
         },
         {
@@ -635,9 +716,9 @@
       "reverse_dependencies": [
         "comms-hub (writes the signal file that triggers this service)"
       ],
-      "spof_risk": "MEDIUM — if this fails, terminal cannot be auto-opened remotely. Jasson must open terminal manually.",
+      "spof_risk": "MEDIUM \u2014 if this fails, terminal cannot be auto-opened remotely. Jasson must open terminal manually.",
       "security_notes": [
-        "Two instances running simultaneously (PIDs 12147, 12148) — potential conflict/race condition on signal file"
+        "Two instances running simultaneously (PIDs 12147, 12148) \u2014 potential conflict/race condition on signal file"
       ]
     },
     {
@@ -646,7 +727,7 @@
       "type": "service",
       "script": "cloud-worker/src/worker.js",
       "port": null,
-      "status": "BUILT — NOT DEPLOYED (code exists, deploy.sh not run)",
+      "status": "BUILT \u2014 NOT DEPLOYED (code exists, deploy.sh not run)",
       "pid_at_audit": null,
       "description": "Cloudflare Worker. Always-on cloud backup. Handles Telegram when Mac is down. KV stores heartbeat and shared state. Cron trigger every 2 minutes checks Mac heartbeat.",
       "launchagent": null,
@@ -677,18 +758,23 @@
         }
       ],
       "credentials": [
-        "ANTHROPIC_API_KEY (Cloudflare Worker secret)",
-        "TELEGRAM_BOT_TOKEN (Cloudflare Worker secret)",
-        "CLOUD_SECRET (mutual auth with Mac hub)"
+        "ANTHROPIC_API_KEY",
+        "TELEGRAM_BOT_TOKEN",
+        "CLOUD_SECRET"
       ],
       "reverse_dependencies": [
         "comms-hub (pushes state to cloud worker for sync)"
       ],
-      "spof_risk": "HIGH — currently not deployed. If Mac goes down, no cloud failover exists.",
+      "spof_risk": "HIGH \u2014 currently not deployed. If Mac goes down, no cloud failover exists.",
       "security_notes": [
         "CLOUD_SECRET used for mutual authentication between Mac hub and cloud worker",
         "KV namespace ID hardcoded in wrangler.toml"
-      ]
+      ],
+      "credential_notes": {
+        "ANTHROPIC_API_KEY": "Cloudflare Worker secret",
+        "TELEGRAM_BOT_TOKEN": "Cloudflare Worker secret",
+        "CLOUD_SECRET": "mutual auth with Mac hub"
+      }
     },
     {
       "id": "ainflgm",
@@ -698,7 +784,7 @@
       "port": null,
       "status": "LIVE",
       "url": "https://ainflgm.com",
-      "description": "Consumer NFL offseason simulator for Bengals fans. React SPA with PWA. Deployed to GitHub Pages. Data refreshed 2x/day via GitHub Actions. No backend — fully static.",
+      "description": "Consumer NFL offseason simulator for Bengals fans. React SPA with PWA. Deployed to GitHub Pages. Data refreshed 2x/day via GitHub Actions. No backend \u2014 fully static.",
       "launchagent": null,
       "runtime_imports": [
         "react",
@@ -711,7 +797,7 @@
         {
           "service": "Over The Cap (OTC)",
           "endpoint": "https://overthecap.com",
-          "purpose": "NFL cap space and roster data (scraped — no official API)"
+          "purpose": "NFL cap space and roster data (scraped \u2014 no official API)"
         },
         {
           "service": "Google Analytics",
@@ -744,18 +830,21 @@
         "trigger": "GitHub Actions on push to main",
         "workflow": ".github/workflows/deploy.yml",
         "target": "GitHub Pages",
-        "data_refresh": ".github/workflows/data-refresh.yml (2x daily cron — scrapes OTC + rebuilds)"
+        "data_refresh": ".github/workflows/data-refresh.yml (2x daily cron \u2014 scrapes OTC + rebuilds)"
       },
       "credentials": [
-        "GITHUB_TOKEN (implicit, GitHub Actions)"
+        "GITHUB_TOKEN"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "LOW — GitHub Pages managed hosting. Main risk is OTC scraping breaking on site structure changes.",
+      "spof_risk": "LOW \u2014 GitHub Pages managed hosting. Main risk is OTC scraping breaking on site structure changes.",
       "security_notes": [
-        "Static site — minimal attack surface",
+        "Static site \u2014 minimal attack surface",
         "AdSense pub key and Analytics tag ID exposed in HTML source (acceptable by design)",
         "Service worker caching conflict (documented unresolved) may serve stale content after deploys"
-      ]
+      ],
+      "credential_notes": {
+        "GITHUB_TOKEN": "implicit, GitHub Actions"
+      }
     },
     {
       "id": "memory-db",
@@ -771,29 +860,47 @@
         "better-sqlite3-multiple-ciphers (primary)",
         "better-sqlite3 (fallback)"
       ],
-      "node_builtins": ["module", "fs", "path", "url"],
+      "node_builtins": [
+        "module",
+        "fs",
+        "path",
+        "url"
+      ],
       "data_stores": [
         {
           "path": "data/9-memory.db",
           "type": "SQLite (WAL mode, foreign keys ON)",
-          "tables": ["messages", "actions", "authority", "memory", "tasks", "decisions", "health_events", "audit_log"],
+          "tables": [
+            "messages",
+            "actions",
+            "authority",
+            "memory",
+            "tasks",
+            "decisions",
+            "health_events",
+            "audit_log"
+          ],
           "access": "read/write"
         }
       ],
       "credentials": [
-        "SQLITE_ENCRYPTION_KEY (optional — enables SQLCipher encryption)"
+        "SQLITE_ENCRYPTION_KEY"
       ],
       "reverse_dependencies": [
-        "comms-hub (primary consumer — all message/action logging)",
+        "comms-hub (primary consumer \u2014 all message/action logging)",
         "health-monitor (health_events writes)"
       ],
-      "spof_risk": "CRITICAL — primary source of truth for all conversations, actions, decisions, tasks. No automated backup.",
+      "spof_risk": "CRITICAL \u2014 primary source of truth for all conversations, actions, decisions, tasks. No automated backup.",
       "security_notes": [
         "SQLITE_ENCRYPTION_KEY controls encryption. If not set, database is plaintext.",
         "WAL files (9-memory.db-shm, 9-memory.db-wal) are unencrypted even when main DB is encrypted",
-        "No automated backup schedule — data loss on disk failure or accidental deletion",
+        "No automated backup schedule \u2014 data loss on disk failure or accidental deletion",
         "Pre-sqlcipher backup file exists: data/9-memory.db.pre-sqlcipher-backup"
-      ]
+      ],
+      "external_apis": [],
+      "credential_notes": {
+        "SQLITE_ENCRYPTION_KEY": "optional \u2014 enables SQLCipher encryption"
+      }
     },
     {
       "id": "command-hub",
@@ -801,8 +908,8 @@
       "type": "product",
       "script": "command-hub/ (Next.js app)",
       "port": null,
-      "status": "BUILT — NOT SERVING (no running process)",
-      "description": "Next.js admin dashboard for the 9 system. Connects to Supabase for real-time data. Not currently running — built but never deployed to production.",
+      "status": "BUILT \u2014 NOT SERVING (no running process)",
+      "description": "Next.js admin dashboard for the 9 system. Connects to Supabase for real-time data. Not currently running \u2014 built but never deployed to production.",
       "launchagent": null,
       "runtime_imports": [
         "next",
@@ -819,16 +926,32 @@
         }
       ],
       "credentials": [
-        "SUPABASE_URL (env)",
-        "SUPABASE_ANON_KEY (env)"
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY"
       ],
       "reverse_dependencies": [],
-      "spof_risk": "N/A — not running. Dead product until deployed.",
+      "spof_risk": "N/A \u2014 not running. Dead product until deployed.",
       "security_notes": [
         "No auth layer defined in reviewed code",
-        "Uses @supabase/ssr — correct pattern for Next.js",
+        "Uses @supabase/ssr \u2014 correct pattern for Next.js",
         "No deployment target defined"
-      ]
+      ],
+      "data_stores": [
+        {
+          "type": "http",
+          "target": "comms-hub /state, /context",
+          "purpose": "Live state mirror from comms-hub"
+        },
+        {
+          "type": "supabase",
+          "target": "Supabase tables",
+          "purpose": "Cloud-backed dashboard data"
+        }
+      ],
+      "credential_notes": {
+        "SUPABASE_URL": "env",
+        "SUPABASE_ANON_KEY": "env"
+      }
     },
     {
       "id": "cloudflared",
@@ -847,10 +970,17 @@
         "voice-server (must have tunnel to receive Twilio callbacks)",
         "Twilio (Twilio voice webhook points to this tunnel URL)"
       ],
-      "spof_risk": "HIGH — URL is ephemeral. Twilio webhook config must be updated manually after each tunnel restart. If tunnel dies and restarts with new URL, voice calls fail until updated.",
+      "spof_risk": "HIGH \u2014 URL is ephemeral. Twilio webhook config must be updated manually after each tunnel restart. If tunnel dies and restarts with new URL, voice calls fail until updated.",
       "security_notes": [
-        "No authentication on tunnel itself — relies on Twilio webhook validation in voice-server",
+        "No authentication on tunnel itself \u2014 relies on Twilio webhook validation in voice-server",
         "trycloudflare.com URL is publicly guessable once known (though random subdomain)"
+      ],
+      "external_apis": [
+        {
+          "service": "Cloudflare Tunnel",
+          "endpoint": "https://api.trycloudflare.com",
+          "purpose": "Zero-trust tunnel to expose voice-server publicly"
+        }
       ]
     }
   ],
@@ -859,13 +989,25 @@
       "path": "/Users/jassonfishback/Projects/BengalOracle/data/9-memory.db",
       "type": "SQLite",
       "encryption": "Optional SQLCipher (SQLITE_ENCRYPTION_KEY)",
-      "tables": ["messages", "actions", "authority", "memory", "tasks", "decisions", "health_events", "audit_log"],
-      "backup": "NONE — no automated backup"
+      "tables": [
+        "messages",
+        "actions",
+        "authority",
+        "memory",
+        "tasks",
+        "decisions",
+        "health_events",
+        "audit_log"
+      ],
+      "backup": "NONE \u2014 no automated backup"
     },
     "cloud_mirrors": [
       {
         "service": "Supabase",
-        "tables": ["messages", "actions"],
+        "tables": [
+          "messages",
+          "actions"
+        ],
         "sync": "Real-time via post-write hooks in comms-hub",
         "status": "Active"
       },
@@ -887,75 +1029,143 @@
   "external_services_summary": [
     {
       "service": "Anthropic Claude API",
-      "used_by": ["comms-hub", "voice-server", "jules-telegram", "kids-mentor", "pilot-server", "trinity-agent", "underwriter-api", "cloud-worker"],
-      "criticality": "CRITICAL — single AI provider. All intelligence depends on this.",
+      "used_by": [
+        "comms-hub",
+        "voice-server",
+        "jules-telegram",
+        "kids-mentor",
+        "pilot-server",
+        "trinity-agent",
+        "underwriter-api",
+        "cloud-worker"
+      ],
+      "criticality": "CRITICAL \u2014 single AI provider. All intelligence depends on this.",
       "failover": "None"
     },
     {
       "service": "Telegram Bot API",
-      "used_by": ["comms-hub", "jules-telegram", "cloud-worker"],
-      "criticality": "CRITICAL — primary comms channel",
+      "used_by": [
+        "comms-hub",
+        "jules-telegram",
+        "cloud-worker"
+      ],
+      "criticality": "CRITICAL \u2014 primary comms channel",
       "failover": "cloud-worker handles if Mac down (when deployed)"
     },
     {
       "service": "Twilio",
-      "used_by": ["comms-hub (iMessage bridge)", "voice-server", "pilot-server"],
-      "criticality": "HIGH — SMS and voice calls",
+      "used_by": [
+        "comms-hub (iMessage bridge)",
+        "voice-server",
+        "pilot-server"
+      ],
+      "criticality": "HIGH \u2014 SMS and voice calls",
       "failover": "cloud-worker for some routing"
     },
     {
       "service": "ElevenLabs",
-      "used_by": ["voice-server"],
-      "criticality": "MEDIUM — voice calls degrade to text if this fails",
+      "used_by": [
+        "voice-server"
+      ],
+      "criticality": "MEDIUM \u2014 voice calls degrade to text if this fails",
       "failover": "None"
     },
     {
       "service": "Supabase",
-      "used_by": ["comms-hub", "command-hub"],
-      "criticality": "MEDIUM — cloud mirror only. Hub continues without it.",
+      "used_by": [
+        "comms-hub",
+        "command-hub"
+      ],
+      "criticality": "MEDIUM \u2014 cloud mirror only. Hub continues without it.",
       "failover": "Hub continues with SQLite-only mode"
     },
     {
       "service": "Neon",
-      "used_by": ["comms-hub"],
-      "criticality": "LOW — secondary backup only",
+      "used_by": [
+        "comms-hub"
+      ],
+      "criticality": "LOW \u2014 secondary backup only",
       "failover": "Hub continues without it"
     },
     {
       "service": "Alpaca Markets",
-      "used_by": ["trader9-bot"],
-      "criticality": "MEDIUM — trading halts if unreachable",
+      "used_by": [
+        "trader9-bot"
+      ],
+      "criticality": "MEDIUM \u2014 trading halts if unreachable",
       "failover": "None"
     },
     {
       "service": "OpenWeatherMap",
-      "used_by": ["pilot-server"],
-      "criticality": "LOW — weather briefings only",
+      "used_by": [
+        "pilot-server"
+      ],
+      "criticality": "LOW \u2014 weather briefings only",
       "failover": "Skipped gracefully"
     },
     {
       "service": "GitHub / GitHub Pages",
-      "used_by": ["ainflgm deploy pipeline"],
+      "used_by": [
+        "ainflgm deploy pipeline"
+      ],
       "criticality": "HIGH for ainflgm.com availability",
-      "failover": "None — GitHub Pages is the only host"
+      "failover": "None \u2014 GitHub Pages is the only host"
     },
     {
       "service": "Cloudflare Workers",
-      "used_by": ["cloud-worker (when deployed)"],
-      "criticality": "MEDIUM — backup only",
+      "used_by": [
+        "cloud-worker (when deployed)"
+      ],
+      "criticality": "MEDIUM \u2014 backup only",
       "failover": "N/A (is itself the backup)"
     }
   ],
   "launchagents": [
-    { "label": "com.9.comms-hub", "starts": "comms-hub.mjs", "keepalive": true },
-    { "label": "com.9.voice-server", "starts": "voice-server.mjs", "keepalive": true },
-    { "label": "com.9.pilot-server", "starts": "pilot-server.mjs", "keepalive": true },
-    { "label": "com.9.terminal-opener", "starts": "open-terminal.mjs", "keepalive": true },
-    { "label": "com.9.health-monitor", "starts": "health-monitor.mjs", "keepalive": true },
-    { "label": "com.9.memory-archive", "starts": "memory-archive.mjs", "keepalive": false },
-    { "label": "com.9.memory-autocommit", "starts": "memory-autocommit.sh", "keepalive": false },
-    { "label": "com.9.freeze-watchdog", "starts": "freeze-watchdog.sh", "keepalive": true },
-    { "label": "com.9.claude-watchdog", "starts": "claude-watchdog.sh", "keepalive": true }
+    {
+      "label": "com.9.comms-hub",
+      "starts": "comms-hub.mjs",
+      "keepalive": true
+    },
+    {
+      "label": "com.9.voice-server",
+      "starts": "voice-server.mjs",
+      "keepalive": true
+    },
+    {
+      "label": "com.9.pilot-server",
+      "starts": "pilot-server.mjs",
+      "keepalive": true
+    },
+    {
+      "label": "com.9.terminal-opener",
+      "starts": "open-terminal.mjs",
+      "keepalive": true
+    },
+    {
+      "label": "com.9.health-monitor",
+      "starts": "health-monitor.mjs",
+      "keepalive": true
+    },
+    {
+      "label": "com.9.memory-archive",
+      "starts": "memory-archive.mjs",
+      "keepalive": false
+    },
+    {
+      "label": "com.9.memory-autocommit",
+      "starts": "memory-autocommit.sh",
+      "keepalive": false
+    },
+    {
+      "label": "com.9.freeze-watchdog",
+      "starts": "freeze-watchdog.sh",
+      "keepalive": true
+    },
+    {
+      "label": "com.9.claude-watchdog",
+      "starts": "claude-watchdog.sh",
+      "keepalive": true
+    }
   ],
   "not_in_launchagent": [
     "jules-telegram.mjs (LIVE but manually started)",
