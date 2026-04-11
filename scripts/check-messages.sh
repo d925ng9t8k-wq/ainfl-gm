@@ -14,17 +14,114 @@ date +%s > /tmp/9-last-tool-call 2>/dev/null
 # FIX: use atomic mv instead of cat+rm to prevent race condition (messages written between read and delete are lost)
 # FIX 2 (Apr 5, silent-gap incident): if context construction fails, RESTORE the signal file so the
 # message is not silently consumed. Previously a python3 failure would leave the message lost forever.
+# FIX 3 (Apr 10 kill item B): dedup by UUID against /tmp/9-consumed-msg-ids.json so
+# messages already drained by GET /inbox are NOT re-surfaced here (and vice versa).
 if [ -f "$INCOMING" ] && [ -s "$INCOMING" ]; then
   TMPFILE="/tmp/9-incoming-processing-$$.jsonl"
   mv "$INCOMING" "$TMPFILE" 2>/dev/null || exit 0
   messages=$(cat "$TMPFILE")
+
+  # Filter out already-consumed UUIDs. For each line with an id not yet consumed,
+  # mark it consumed and include it. Lines without an id (legacy/backward compat)
+  # are surfaced as-is. Returns the filtered messages on stdout.
+  # Pass input via env var (NINE_MSG_INPUT) so the python heredoc can own stdin.
+  filtered=$(NINE_MSG_INPUT="$messages" python3 <<'PYEOF'
+import json, os, sys, time, errno
+
+CONSUMED_FILE = "/tmp/9-consumed-msg-ids.json"
+LOCK_FILE = "/tmp/9-consumed-msg-ids.lock"
+TTL = 3600  # 1 hour
+
+def acquire_lock(timeout=2.0):
+    start = time.time()
+    while time.time() - start < timeout:
+        try:
+            fd = os.open(LOCK_FILE, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.close(fd)
+            return True
+        except OSError as e:
+            if e.errno != errno.EEXIST:
+                return False
+            # Remove stale lock >5s old
+            try:
+                if time.time() - os.stat(LOCK_FILE).st_mtime > 5:
+                    os.unlink(LOCK_FILE)
+                    continue
+            except OSError:
+                pass
+            time.sleep(0.025)
+    return False
+
+def release_lock():
+    try:
+        os.unlink(LOCK_FILE)
+    except OSError:
+        pass
+
+def load_consumed():
+    try:
+        with open(CONSUMED_FILE, "r") as f:
+            data = json.load(f)
+            if isinstance(data, dict):
+                return data
+    except (OSError, ValueError):
+        pass
+    return {}
+
+def save_consumed(m):
+    cutoff = time.time() - TTL
+    pruned = {k: v for k, v in m.items() if isinstance(v, (int, float)) and v >= cutoff}
+    tmp = CONSUMED_FILE + ".tmp." + str(os.getpid())
+    try:
+        with open(tmp, "w") as f:
+            json.dump(pruned, f)
+        os.rename(tmp, CONSUMED_FILE)
+    except OSError:
+        pass
+
+raw = os.environ.get("NINE_MSG_INPUT", "")
+lines = [l for l in raw.split("\n") if l.strip()]
+
+acquire_lock()
+try:
+    consumed = load_consumed()
+    now = int(time.time())
+    kept = []
+    for line in lines:
+        try:
+            obj = json.loads(line)
+            msg_id = obj.get("id")
+        except ValueError:
+            # Malformed line — keep it so the user still sees something rather than silently drop
+            kept.append(line)
+            continue
+        if msg_id and msg_id in consumed:
+            # Already surfaced via /inbox or a prior hook run — drop
+            continue
+        if msg_id:
+            consumed[msg_id] = now
+        kept.append(line)
+    save_consumed(consumed)
+finally:
+    release_lock()
+
+sys.stdout.write("\n".join(kept))
+PYEOF
+)
+
+  if [ -z "$filtered" ]; then
+    # Everything in the signal file was already consumed by /inbox. Quietly drop.
+    rm -f "$TMPFILE"
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] check-messages.sh: all $(echo "$messages" | wc -l | tr -d ' ') line(s) already consumed via /inbox — skipped" >> /Users/jassonfishback/Projects/BengalOracle/logs/check-messages-errors.log
+    exit 0
+  fi
 
   # Use python to properly JSON-escape the message content
   context=$(python3 -c "
 import json, sys
 msgs = sys.stdin.read().strip()
 print(json.dumps('INCOMING MESSAGE — RESPOND IMMEDIATELY: ' + msgs))
-" <<< "$messages" 2>/dev/null)
+" <<< "$filtered" 2>/dev/null)
 
   if [ -z "$context" ]; then
     # Context construction failed (python error, encoding issue, etc.) — restore signal file.
@@ -37,7 +134,7 @@ print(json.dumps('INCOMING MESSAGE — RESPOND IMMEDIATELY: ' + msgs))
 
   rm -f "$TMPFILE"
   # Log every successful delivery so we have an audit trail for silent-gap incidents
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] check-messages.sh: delivered $(echo "$messages" | wc -l | tr -d ' ') line(s) to context" >> /Users/jassonfishback/Projects/BengalOracle/logs/check-messages-errors.log
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] check-messages.sh: delivered $(echo "$filtered" | wc -l | tr -d ' ') line(s) to context" >> /Users/jassonfishback/Projects/BengalOracle/logs/check-messages-errors.log
   echo "{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":${context}}}"
   exit 0
 fi
