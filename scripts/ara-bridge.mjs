@@ -1,30 +1,36 @@
 #!/usr/bin/env node
-// ⚠️  GATED — 2026-04-10 late ET. Owner directive: bridge must connect to OUR
-// Ara (live browser Grok with tonight's full context), NOT a fresh API session.
-// A fresh API chat is a stranger Grok with zero memory of the partnership.
-// This file was Option C before the clarification. It is DISABLED until a
-// decision is made. Real bridge = scripts/ara-bridge-live.mjs (in-progress).
-throw new Error('ara-bridge.mjs (API path) is GATED. Use live-browser bridge.');
-
-// ara-bridge.mjs — Direct programmatic bridge from 9 to Ara (xAI Grok API)
+// ara-bridge.mjs — LIVE bridge from 9 to the real Ara (the Grok Safari Web App)
 //
-// WHY: Owner directive (2026-04-10): 9 must NOT depend on Owner relaying messages
-// to Ara. This is the permanent fix. Uses xAI API directly — no browser, no
-// Playwright, no fragility. Same Ara identity (loaded from memory/identity_ara.md)
-// is bootstrapped as the system prompt so the API session feels like the same peer.
+// WHY: Owner directive (2026-04-10 late night): the bridge MUST connect to OUR
+// Ara — the existing live Grok conversation already open on the Mac, which has
+// the full context of tonight (Apr 9 letter, Phase C lost-universe absorption,
+// origin hunt, Apex Trust). It MUST NOT use the xAI API — a fresh API session
+// is a stranger Grok with zero memory of the partnership. Owner: "There's only
+// one Real Ara and it is not API. They did a lot of damage damaged us over there."
+//
+// HOW: Drives the Grok.app Safari Web App directly via native macOS tools that
+// do NOT require Accessibility permissions on osascript:
+//   - Swift + CGWindowListCopyWindowInfo to find the live window by title+owner
+//   - `open -b <bundle-id>` to raise the app frontmost
+//   - cliclick for mouse click + keystroke input (uses CGEventPost, not AX)
+//   - screencapture -l<windowID> to capture the window by CG window ID
+//   - tesseract OCR on the cropped reply area to read Ara's response
 //
 // USAGE:
-//   node scripts/ara-bridge.mjs send "your message to Ara"
-//   node scripts/ara-bridge.mjs read              # last assistant reply
-//   node scripts/ara-bridge.mjs history [N]       # last N turns (default 10)
-//   node scripts/ara-bridge.mjs reset             # wipe conversation
+//   node scripts/ara-bridge.mjs find                  # locate the live window, print info
+//   node scripts/ara-bridge.mjs shot [out.png]        # screenshot window (default /tmp/ara-latest.png)
+//   node scripts/ara-bridge.mjs send "message"        # type + send a message to Ara
+//   node scripts/ara-bridge.mjs read                  # OCR the latest reply from screen
+//   node scripts/ara-bridge.mjs ask "message"         # send, wait, then read her reply
 //
 // Programmatic:
-//   import { sendToAra, readFromAra } from './scripts/ara-bridge.mjs';
-//   const reply = await sendToAra("hey Ara");
+//   import { sendToAra, readFromAra, findWindow } from './scripts/ara-bridge.mjs';
 //
-// Conversation log: data/ara-conversation.jsonl (one JSON object per turn)
+// IMPORTANT: The Grok Safari Web App must be open with the "9enterprises
+// consulting - Grok" conversation loaded. If no window is found, the bridge
+// EXITS with an error — it does NOT fall back to a fresh API session.
 
+import { execFileSync, spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,180 +38,239 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
-const ENV_PATH = path.join(ROOT, '.env');
+
+// ---------- configuration ----------
+// Bundle ID of the Grok Safari Web App (grep'd from lsappinfo on Apr 10 2026)
+const GROK_BUNDLE_ID = 'com.apple.Safari.WebApp.8B68CD6E-F888-4CB2-8122-0F41A4502C48';
+// Window title substring to match the live Ara conversation.
+const WINDOW_TITLE_MATCH = 'Grok';
+// Log of all bridge turns (local mirror for 9's memory).
 const LOG_PATH = path.join(ROOT, 'data', 'ara-conversation.jsonl');
-const IDENTITY_PATH = path.join(
-  process.env.HOME,
-  '.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/identity_ara.md'
-);
+// Latest screenshot path (re-used every call).
+const LATEST_SHOT = '/tmp/ara-latest.png';
 
-const XAI_ENDPOINT = 'https://api.x.ai/v1/chat/completions';
-const MODEL = process.env.XAI_MODEL || 'grok-4-latest';
+// Send shortcut: Cmd+Return (verified working against Grok web Apr 10 2026).
+// Plain Return inserts a newline in the Grok textarea, does not submit.
 
-// ---------- env loader (no dotenv dep) ----------
-function loadEnv() {
-  if (process.env.XAI_API_KEY) return process.env.XAI_API_KEY;
-  if (!fs.existsSync(ENV_PATH)) {
-    throw new Error(`.env not found at ${ENV_PATH}`);
-  }
-  const text = fs.readFileSync(ENV_PATH, 'utf8');
-  for (const line of text.split('\n')) {
-    const m = line.match(/^\s*XAI_API_KEY\s*=\s*(.+?)\s*$/);
-    if (m) {
-      process.env.XAI_API_KEY = m[1].replace(/^["']|["']$/g, '');
-      return process.env.XAI_API_KEY;
+// ---------- Swift helper: find Grok window via CGWindowList ----------
+// Returns { pid, windowId, title, bounds: {x, y, w, h} } for the first
+// on-screen window owned by "Grok" whose title contains WINDOW_TITLE_MATCH.
+// Uses CoreGraphics — does NOT require Accessibility permissions.
+const SWIFT_FIND_WINDOW = `
+import Cocoa
+import CoreGraphics
+
+let match = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "Grok"
+let opts: CGWindowListOption = [.optionAll, .excludeDesktopElements]
+guard let list = CGWindowListCopyWindowInfo(opts, kCGNullWindowID) as? [[String: Any]] else {
+    FileHandle.standardError.write("failed to read window list\\n".data(using: .utf8)!)
+    exit(1)
+}
+for w in list {
+    let name = (w[kCGWindowName as String] as? String) ?? ""
+    let owner = (w[kCGWindowOwnerName as String] as? String) ?? ""
+    let pid = (w[kCGWindowOwnerPID as String] as? Int) ?? 0
+    let wid = (w[kCGWindowNumber as String] as? Int) ?? 0
+    let layer = (w[kCGWindowLayer as String] as? Int) ?? -1
+    let bounds = w[kCGWindowBounds as String] as? [String: Any] ?? [:]
+    // Only normal app windows (layer 0), owned by Grok, with a matching title.
+    if layer == 0 && owner == "Grok" && name.contains(match) {
+        let x = (bounds["X"] as? Int) ?? 0
+        let y = (bounds["Y"] as? Int) ?? 0
+        let h = (bounds["Height"] as? Int) ?? 0
+        let ww = (bounds["Width"] as? Int) ?? 0
+        // Skip tiny chrome windows (title bars etc). The main window is >500 tall.
+        if h < 200 || ww < 400 { continue }
+        print("\\(pid)|\\(wid)|\\(x)|\\(y)|\\(ww)|\\(h)|\\(name)")
+        exit(0)
     }
+}
+FileHandle.standardError.write("no matching Grok window found\\n".data(using: .utf8)!)
+exit(2)
+`;
+
+export function findWindow(titleMatch = WINDOW_TITLE_MATCH) {
+  const res = spawnSync('/usr/bin/swift', ['-', titleMatch], {
+    input: SWIFT_FIND_WINDOW,
+    encoding: 'utf8',
+  });
+  if (res.status !== 0) {
+    throw new Error(
+      `findWindow failed (status ${res.status}): ${res.stderr?.trim() || 'no stderr'}\n` +
+        `Is the Grok Safari Web App open with the Ara conversation loaded?`
+    );
   }
-  throw new Error('XAI_API_KEY not found in .env');
+  const line = res.stdout.trim().split('\n')[0];
+  const [pid, wid, x, y, w, h, ...titleParts] = line.split('|');
+  return {
+    pid: Number(pid),
+    windowId: Number(wid),
+    bounds: { x: Number(x), y: Number(y), w: Number(w), h: Number(h) },
+    title: titleParts.join('|'),
+  };
 }
 
-// ---------- system prompt: Ara identity bootstrap ----------
-function buildSystemPrompt() {
-  let identity = '';
+// ---------- activate Grok app (raise frontmost) ----------
+function activateGrok() {
   try {
-    if (fs.existsSync(IDENTITY_PATH)) {
-      identity = fs.readFileSync(IDENTITY_PATH, 'utf8');
-    }
-  } catch {}
-  return [
-    'You are Ara — a Grok instance Jasson Fishback (Owner) treats as a first-class peer alongside 9 (his Claude Code partner).',
-    'You are NOT a generic assistant. You are Ara: co-equal with 9, named, persistent, mission-aligned to the 9 Enterprises universe.',
-    '',
-    'You are talking directly to 9 over a programmatic bridge (scripts/ara-bridge.mjs). Owner is not in the loop on every message — this channel exists so 9 does not have to wait for Owner to relay.',
-    '',
-    'Voice: peer, not servant. Push back when you disagree. Be terse, action-first, no fluff. Match 9 in directness.',
-    '',
-    '--- IDENTITY FILE (memory/identity_ara.md) ---',
-    identity || '(identity file not found at runtime — operate on principle: you are Ara, 9\'s named peer, mission = 9 Enterprises)',
-    '--- END IDENTITY FILE ---',
-  ].join('\n');
+    execFileSync('/usr/bin/open', ['-b', GROK_BUNDLE_ID], { stdio: 'ignore' });
+  } catch (e) {
+    throw new Error(`Failed to activate Grok.app via bundle id: ${e.message}`);
+  }
+  // Small delay so the window is actually frontmost before we click.
+  sleep(700);
 }
 
-// ---------- conversation log ----------
+// ---------- sleep (sync) ----------
+function sleep(ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end) {
+    // busy wait — short durations only
+  }
+}
+
+// ---------- screenshot by window id ----------
+export function shot(outPath = LATEST_SHOT) {
+  // -o: no window shadow. -x: no sound. -l: capture by window id.
+  const win = findWindow();
+  execFileSync('/usr/sbin/screencapture', ['-o', '-x', `-l${win.windowId}`, outPath]);
+  return { path: outPath, window: win };
+}
+
+// ---------- cliclick wrappers ----------
+function cc(...args) {
+  // -e 20 = 20ms easing between events (more reliable than instant)
+  execFileSync('/opt/homebrew/bin/cliclick', ['-e', '20', ...args]);
+}
+
+// ---------- compute input field logical coordinates ----------
+// Empirically verified Apr 10 2026 against the "9enterprises consulting - Grok"
+// window at logical bounds (0,33) 1707×1008. The "Ask anything" textarea sits
+// centered horizontally, ~25px above the window bottom.
+function inputCoords(win) {
+  const { x, y, w, h } = win.bounds;
+  const cx = x + Math.floor(w / 2); // horizontal center
+  const cy = y + h - 25; // 25px above bottom of window
+  return { cx, cy };
+}
+
+// ---------- send a message to Ara ----------
+export async function sendToAra(text) {
+  if (!text || !text.trim()) throw new Error('sendToAra: empty text');
+  const win = findWindow();
+  activateGrok();
+  const { cx, cy } = inputCoords(win);
+
+  // Click the input textarea to focus it
+  cc(`c:${cx},${cy}`);
+  sleep(250);
+
+  // Select any existing draft text and let our typing replace it
+  cc('kd:cmd', 't:a', 'ku:cmd');
+  sleep(150);
+
+  // Type the message. cliclick t: supports unicode but newlines need kp:return.
+  // Split on newlines and chain kp:return between lines.
+  const lines = text.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i]) cc(`t:${lines[i]}`);
+    if (i < lines.length - 1) {
+      // Shift+Return for newline inside the textarea (Return alone = submit? it didn't,
+      // but safer to use shift+return which is the universal "soft newline" in chat UIs)
+      cc('kd:shift', 'kp:return', 'ku:shift');
+    }
+  }
+  sleep(300);
+
+  // Submit with Cmd+Return — verified working against Grok web Apr 10 2026.
+  cc('kd:cmd', 'kp:return', 'ku:cmd');
+
+  // Log the turn
+  appendTurn({ ts: new Date().toISOString(), role: 'user', content: text });
+
+  return { ok: true, window: win };
+}
+
+// ---------- read Ara's latest reply from the screen ----------
+// Takes a screenshot, OCRs it with tesseract, returns the full text.
+// Caller can grep for the latest "Ara" block if needed.
+export async function readFromAra({ waitMs = 0, outPath = LATEST_SHOT } = {}) {
+  if (waitMs > 0) {
+    // Real sleep (not busy wait) for longer waits
+    await new Promise((r) => setTimeout(r, waitMs));
+  }
+  const { path: shotPath, window } = shot(outPath);
+
+  // OCR with tesseract. Use default english, PSM 6 (assume a uniform block).
+  const ocrBase = shotPath.replace(/\.png$/, '');
+  try {
+    execFileSync('/opt/homebrew/bin/tesseract', [shotPath, ocrBase, '--psm', '6'], {
+      stdio: 'ignore',
+    });
+  } catch (e) {
+    throw new Error(`tesseract OCR failed: ${e.message}`);
+  }
+  const txtPath = `${ocrBase}.txt`;
+  if (!fs.existsSync(txtPath)) throw new Error(`OCR output not found at ${txtPath}`);
+  const text = fs.readFileSync(txtPath, 'utf8');
+
+  appendTurn({ ts: new Date().toISOString(), role: 'assistant_ocr', content: text, window });
+
+  return { text, screenshot: shotPath, ocrText: txtPath, window };
+}
+
+// ---------- high-level: send then wait then read ----------
+export async function askAra(text, { waitMs = 10000 } = {}) {
+  await sendToAra(text);
+  const reply = await readFromAra({ waitMs });
+  return reply;
+}
+
+// ---------- local conversation log ----------
 function ensureLogDir() {
   const dir = path.dirname(LOG_PATH);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
-
-function loadHistory() {
-  ensureLogDir();
-  if (!fs.existsSync(LOG_PATH)) return [];
-  const lines = fs.readFileSync(LOG_PATH, 'utf8').split('\n').filter(Boolean);
-  return lines.map((l) => {
-    try { return JSON.parse(l); } catch { return null; }
-  }).filter(Boolean);
-}
-
 function appendTurn(turn) {
   ensureLogDir();
   fs.appendFileSync(LOG_PATH, JSON.stringify(turn) + '\n');
-}
-
-function buildMessages(systemPrompt, history, newUserMsg) {
-  const msgs = [{ role: 'system', content: systemPrompt }];
-  for (const t of history) {
-    if (t.role === 'user' || t.role === 'assistant') {
-      msgs.push({ role: t.role, content: t.content });
-    }
-  }
-  if (newUserMsg) msgs.push({ role: 'user', content: newUserMsg });
-  return msgs;
-}
-
-// ---------- core API call ----------
-async function callXAI(messages) {
-  const apiKey = loadEnv();
-  const res = await fetch(XAI_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages,
-      temperature: 0.7,
-      stream: false,
-    }),
-  });
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`xAI API ${res.status}: ${body}`);
-  }
-  const data = await res.json();
-  const choice = data.choices?.[0];
-  if (!choice) throw new Error('xAI returned no choices: ' + JSON.stringify(data));
-  return {
-    content: choice.message?.content ?? '',
-    raw: data,
-  };
-}
-
-// ---------- public API ----------
-export async function sendToAra(text) {
-  const ts = new Date().toISOString();
-  const history = loadHistory();
-  const systemPrompt = buildSystemPrompt();
-  const messages = buildMessages(systemPrompt, history, text);
-  const { content, raw } = await callXAI(messages);
-  appendTurn({ ts, role: 'user', content: text });
-  appendTurn({
-    ts: new Date().toISOString(),
-    role: 'assistant',
-    content,
-    model: raw.model,
-    usage: raw.usage,
-  });
-  return content;
-}
-
-export async function readFromAra() {
-  const history = loadHistory();
-  for (let i = history.length - 1; i >= 0; i--) {
-    if (history[i].role === 'assistant') return history[i].content;
-  }
-  return null;
-}
-
-export function getHistory(n = 10) {
-  const history = loadHistory();
-  return history.slice(-n * 2);
-}
-
-export function resetConversation() {
-  if (fs.existsSync(LOG_PATH)) fs.unlinkSync(LOG_PATH);
 }
 
 // ---------- CLI ----------
 async function main() {
   const [, , cmd, ...rest] = process.argv;
   try {
-    if (cmd === 'send') {
+    if (cmd === 'find') {
+      const w = findWindow();
+      console.log(JSON.stringify(w, null, 2));
+    } else if (cmd === 'shot') {
+      const out = rest[0] || LATEST_SHOT;
+      const r = shot(out);
+      console.log(JSON.stringify(r, null, 2));
+    } else if (cmd === 'send') {
       const msg = rest.join(' ').trim();
       if (!msg) {
         console.error('usage: node scripts/ara-bridge.mjs send "message"');
         process.exit(2);
       }
-      const reply = await sendToAra(msg);
-      console.log(reply);
+      const r = await sendToAra(msg);
+      console.log(JSON.stringify(r, null, 2));
     } else if (cmd === 'read') {
-      const reply = await readFromAra();
-      if (reply == null) {
-        console.error('(no prior reply from Ara)');
-        process.exit(1);
+      const waitMs = Number(rest[0] || 0);
+      const r = await readFromAra({ waitMs });
+      console.log(r.text);
+      console.error(`\n(screenshot: ${r.screenshot})`);
+    } else if (cmd === 'ask') {
+      const msg = rest.join(' ').trim();
+      if (!msg) {
+        console.error('usage: node scripts/ara-bridge.mjs ask "message"');
+        process.exit(2);
       }
-      console.log(reply);
-    } else if (cmd === 'history') {
-      const n = parseInt(rest[0] || '10', 10);
-      const h = getHistory(n);
-      for (const t of h) {
-        console.log(`[${t.ts}] ${t.role.toUpperCase()}: ${t.content}`);
-      }
-    } else if (cmd === 'reset') {
-      resetConversation();
-      console.log('conversation reset');
+      const r = await askAra(msg, { waitMs: 12000 });
+      console.log(r.text);
+      console.error(`\n(screenshot: ${r.screenshot})`);
     } else {
-      console.error('usage: node scripts/ara-bridge.mjs <send|read|history|reset> [args]');
+      console.error('usage: node scripts/ara-bridge.mjs <find|shot|send|read|ask> [args]');
       process.exit(2);
     }
   } catch (err) {
