@@ -450,6 +450,26 @@ if (terminalSessionToken) {
 const TERMINAL_TIMEOUT = 45000; // 45 seconds without ping = terminal is gone (was 120s; with 15s pings, 2 missed = 30s + 15s watchdog cycle)
 
 function clearTerminalState() {
+  // Apr 10 hunt — kill: orphan claimant. If the terminal we're clearing is a
+  // Claude CLI process that is still alive (we thought it was dead because of
+  // ping timeout, but the OS process itself is fine), it will sit around as
+  // a zombie eating the tty, and the next "cleanup-terminals.sh" run will have
+  // to kill it manually. Instead, kill it here so the state is always clean.
+  // Guard: never SIGKILL the hub itself. Guard: PID 0/1/-1 are system PIDs, skip.
+  const doomedPid = terminalPid; // capture before the reset below
+  if (doomedPid && doomedPid > 1 && doomedPid !== process.pid) {
+    try {
+      process.kill(doomedPid, 0); // alive check
+      // Alive — this is the orphan case. Send SIGTERM first, SIGKILL as fallback.
+      try { process.kill(doomedPid, 'SIGTERM'); log(`clearTerminalState: SIGTERM sent to lingering PID ${doomedPid}`); } catch {}
+      const killTimer = setTimeout(() => {
+        try { process.kill(doomedPid, 0); process.kill(doomedPid, 'SIGKILL'); log(`clearTerminalState: SIGKILL fallback on PID ${doomedPid}`); } catch {}
+      }, 2000);
+      if (killTimer.unref) killTimer.unref();
+    } catch {
+      // Already dead — nothing to do.
+    }
+  }
   terminalActive = false;
   terminalPid = null;
   terminalSessionToken = null;
