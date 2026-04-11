@@ -10,6 +10,17 @@ const GAMMA_API = 'https://9-cloud-standin.789k6rym8v.workers.dev/api/polymarket
 const POLYMARKET_BASE = 'https://polymarket.com'; // TODO: Add referral code when available
 const CACHE_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
+// Feature flag: live Polymarket fetch via the cloud worker proxy.
+// Currently DISABLED because the worker does not return Access-Control-Allow-Origin
+// for the /api/polymarket route, which produces 4 CORS errors + 4 ERR_FAILED entries
+// in the console on every page load (Lighthouse audit "errors-in-console").
+// The component already gracefully falls back to MOCK_NFL_MARKETS so UX is unchanged.
+// TODO: Re-enable once the cloud worker route adds:
+//   Access-Control-Allow-Origin: https://ainflgm.com
+//   Access-Control-Allow-Methods: GET, OPTIONS
+// Tracked alongside browser-hygiene wave 2 (Apr 11 2026).
+const LIVE_MARKETS_ENABLED = false;
+
 // NFL search terms to find relevant markets
 const NFL_SEARCH_TERMS = [
   'NFL', 'Super Bowl', 'AFC', 'NFC',
@@ -311,7 +322,10 @@ export async function getNFLMarkets(limit = 8) {
     }
 
     // Try live data — fetch up to the requested limit
-    const liveMarkets = await fetchLiveMarkets(Math.max(limit, 8));
+    // Skipped entirely when LIVE_MARKETS_ENABLED=false to avoid CORS console noise.
+    const liveMarkets = LIVE_MARKETS_ENABLED
+      ? await fetchLiveMarkets(Math.max(limit, 8))
+      : [];
 
     if (liveMarkets.length > 0) {
       cache.data = { markets: liveMarkets, isLive: true };
