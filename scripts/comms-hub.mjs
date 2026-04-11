@@ -1154,6 +1154,8 @@ async function sendTelegram(text) {
   addMessage(state, 'telegram', 'out', text);
   try { if (db) db.logMessage('telegram', 'out', text); } catch (e) { console.error('DB log failed:', e.message); }
   saveState(state);
+  // Log outbound so live diagnosis can verify sends from hub log (Apr 10 hunt — kill: sendTelegram silent success)
+  log(`Telegram OUT: "${text.slice(0, 120).replace(/\n/g, ' ')}${text.length > 120 ? '...' : ''}"`);
 }
 
 // ─── iMessage Send ───────────────────────────────────────────────────────────
