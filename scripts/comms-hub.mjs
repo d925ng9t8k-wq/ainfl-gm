@@ -2226,6 +2226,18 @@ function clearBudgetTrippedFlag() {
 }
 
 async function enforceBudgetCircuitBreaker() {
+  // DISABLED Apr 11 — Owner clarified the breaker math is wrong because Max Plan
+  // is flat-rate and the spend computation counts Claude Code session usage as
+  // metered (it isn't). The breaker tripped on bad math and blocked sub-agent
+  // spawning while Owner was actively saying "no budget concerns whatsoever."
+  // Refactor to track ONLY metered API spend (logs/api-token-usage.jsonl,
+  // Twilio, Resend, ElevenLabs, HeyGen, Stripe transactions) is queued as a
+  // separate task. Until then: breaker is no-op, trip flag is force-cleared.
+  try { if (existsSync(BUDGET_TRIPPED_FILE)) unlinkSync(BUDGET_TRIPPED_FILE); } catch {}
+  budgetTripped = false;
+  return;
+
+  // eslint-disable-next-line no-unreachable
   let snap;
   try { snap = computeBudgetSnapshot(); }
   catch (e) { log(`[budget] compute failed: ${e.message}`); return; }
