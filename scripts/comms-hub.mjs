@@ -41,6 +41,7 @@ import nodemailer from 'nodemailer';
 import { ImapFlow } from 'imapflow';
 import pg from 'pg';
 import { createClient } from '@supabase/supabase-js';
+import { computeBudgetSnapshot, isTripped as isBudgetTripped, TRIPPED_FLAG_FILE as BUDGET_TRIPPED_FILE, DAILY_CAP_USD as BUDGET_DAILY_CAP_USD, todayET as budgetTodayET } from './budget-tracker.mjs';
 
 // ─── Cloud Database (Neon) ──────────────────────────────────────────────────
 // Real-time sync of all conversations to cloud. Non-blocking. Never crashes hub.
@@ -2070,6 +2071,14 @@ async function askClaude(userMessage, channel) {
   state.conversationHistory.push({ role: 'user', content: `[via ${channel}] ${userMessage}` });
   if (state.conversationHistory.length > 20) state.conversationHistory = state.conversationHistory.slice(-20);
 
+  // BUDGET CIRCUIT BREAKER — if today's spend has tripped the $500 cap, OC degrades
+  // to a deferral template instead of calling Sonnet. Owner is the only one who can
+  // reset (delete /tmp/9-budget-tripped or wait for midnight ET rollover).
+  if (budgetTripped || isBudgetTripped()) {
+    log(`[budget] OC autonomous Sonnet call BLOCKED — daily cap tripped at $${budgetSnapshot.spent_usd}/$${budgetSnapshot.cap_usd}`);
+    return "OC: I can't think right now — 9's daily AI budget cap is tripped. Your message is queued. 9 will respond when back, or at midnight ET when the cap resets.";
+  }
+
   // If API has been failing, use offline responses and request terminal
   if (apiConsecutiveFailures >= 2) {
     log(`API down — using offline response for: ${userMessage.slice(0, 100)}`);
@@ -2188,6 +2197,99 @@ if (!HUB_API_SECRET) {
   log('[FORT H-03] WARNING: HUB_API_SECRET is not set. POST /context is LOCKED DOWN (all requests rejected) until a secret is configured in .env. Set HUB_API_SECRET to enable context writes.');
 }
 
+// ─── Budget Circuit Breaker ─────────────────────────────────────────────────
+// $500/day soft cap from memory/feedback_budget_500_day.md, wired into code per
+// the SCOUT+MONEY audit at logs/scout-task-cost-audit-apr11.md. Sweep runs once
+// per minute. Critical (90%) fires once with a 1h cooldown; tripped (100%)
+// writes /tmp/9-budget-tripped, fires once, and gates askClaude() autonomous
+// calls in this hub. Resets at America/New_York midnight.
+let budgetSnapshot = {
+  date: budgetTodayET(),
+  spent_usd: 0,
+  cap_usd: BUDGET_DAILY_CAP_USD,
+  remaining_usd: BUDGET_DAILY_CAP_USD,
+  percent_used: 0,
+  status: 'ok',
+  last_updated: new Date().toISOString(),
+};
+let budgetTripped       = false;
+let budgetCriticalAlertedAt = 0;
+let budgetTrippedAlertedAt  = 0;
+let budgetLastDate          = budgetTodayET();
+const BUDGET_CRITICAL_COOLDOWN_MS = 60 * 60 * 1000; // 1h
+
+function setBudgetTrippedFlag() {
+  try { writeFileSync(BUDGET_TRIPPED_FILE, `${new Date().toISOString()} ${budgetSnapshot.spent_usd}/${budgetSnapshot.cap_usd}\n`); } catch (e) { log(`[budget] could not write trip flag: ${e.message}`); }
+}
+function clearBudgetTrippedFlag() {
+  try { if (existsSync(BUDGET_TRIPPED_FILE)) unlinkSync(BUDGET_TRIPPED_FILE); } catch (e) { log(`[budget] could not clear trip flag: ${e.message}`); }
+}
+
+async function enforceBudgetCircuitBreaker() {
+  let snap;
+  try { snap = computeBudgetSnapshot(); }
+  catch (e) { log(`[budget] compute failed: ${e.message}`); return; }
+
+  const prevDate    = budgetLastDate;
+  const prevTripped = budgetTripped;
+  const prevStatus  = budgetSnapshot.status;
+
+  // Day rollover: announce yesterday's total, reset trip state.
+  if (snap.date !== prevDate) {
+    const yesterdaySpend = budgetSnapshot.spent_usd;
+    log(`[budget] day rollover ${prevDate} -> ${snap.date} (yesterday: $${yesterdaySpend} / $${BUDGET_DAILY_CAP_USD})`);
+    budgetTripped              = false;
+    budgetCriticalAlertedAt    = 0;
+    budgetTrippedAlertedAt     = 0;
+    clearBudgetTrippedFlag();
+    sendTelegram(`9: budget reset for new day. Yesterday: $${yesterdaySpend} / $${BUDGET_DAILY_CAP_USD}.`).catch(() => {});
+  }
+
+  budgetSnapshot = snap;
+  budgetLastDate = snap.date;
+
+  // Tripped (>=100%) — flag file + Telegram alert (rate-limited).
+  if (snap.status === 'tripped') {
+    if (!budgetTripped) {
+      log(`[budget] CIRCUIT BREAKER TRIPPED at $${snap.spent_usd} / $${BUDGET_DAILY_CAP_USD} (${snap.percent_used}%)`);
+      budgetTripped = true;
+      setBudgetTrippedFlag();
+    }
+    const now = Date.now();
+    if (now - budgetTrippedAlertedAt > BUDGET_CRITICAL_COOLDOWN_MS) {
+      budgetTrippedAlertedAt = now;
+      sendTelegram(`9: BUDGET CIRCUIT BREAKER TRIPPED — daily cap exceeded ($${snap.spent_usd} / $${BUDGET_DAILY_CAP_USD}). Sub-agent spawning is blocked for the rest of the day. Reset at midnight ET.`).catch(() => {});
+    }
+    return;
+  }
+
+  // Critical (90-100%) — single Telegram alert with 1h cooldown.
+  if (snap.status === 'critical') {
+    const now = Date.now();
+    if (now - budgetCriticalAlertedAt > BUDGET_CRITICAL_COOLDOWN_MS) {
+      budgetCriticalAlertedAt = now;
+      log(`[budget] CRITICAL alert firing at $${snap.spent_usd} / $${BUDGET_DAILY_CAP_USD} (${snap.percent_used}%)`);
+      sendTelegram(`9: BUDGET ALERT — at ${snap.percent_used}% of daily cap ($${snap.spent_usd} of $${BUDGET_DAILY_CAP_USD}). Consider winding down sub-agent spawning for the day.`).catch(() => {});
+    }
+  }
+
+  // If we previously tripped but the snapshot dropped below 100% (manual reset
+  // or cache shrunk on next sweep), clear the in-memory flag too.
+  if (prevTripped && snap.status !== 'tripped') {
+    log(`[budget] tripped state cleared — status now ${snap.status} ($${snap.spent_usd}/$${BUDGET_DAILY_CAP_USD})`);
+    budgetTripped = false;
+    clearBudgetTrippedFlag();
+  }
+
+  if (prevStatus !== snap.status) {
+    log(`[budget] status ${prevStatus} -> ${snap.status} at $${snap.spent_usd} / $${BUDGET_DAILY_CAP_USD} (${snap.percent_used}%)`);
+  }
+}
+
+// Run once at startup, then every 60s.
+enforceBudgetCircuitBreaker().catch(e => log(`[budget] initial sweep failed: ${e.message}`));
+setInterval(() => { enforceBudgetCircuitBreaker().catch(() => {}); }, 60_000);
+
 const healthServer = createServer(async (req, res) => {
   // CORS — allow Command Center from any origin (GitHub Pages, office desktop, etc.)
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -2228,6 +2330,14 @@ const healthServer = createServer(async (req, res) => {
         restartCount: tunnelRestartCount,
         consecutiveFailures: tunnelConsecutiveFailures,
         totalDownEvents: tunnelDowntimeTotal,
+      },
+      // Budget circuit breaker (additive — never break existing /health shape)
+      budget_check: budgetSnapshot.status,
+      budgetTripped,
+      budget: {
+        spent_usd: budgetSnapshot.spent_usd,
+        cap_usd: budgetSnapshot.cap_usd,
+        percent_used: budgetSnapshot.percent_used,
       },
     }));
   } else if (req.url === '/state') {
@@ -2799,6 +2909,24 @@ const healthServer = createServer(async (req, res) => {
         }, null, 2));
       }
     } catch (e) {
+      res.end(JSON.stringify({ error: e.message }));
+    }
+
+  } else if (req.method === 'GET' && req.url === '/budget/today') {
+    // Daily budget circuit breaker snapshot. Status: ok | warning | critical | tripped.
+    // Updated by enforceBudgetCircuitBreaker every 60s, but recompute live here so
+    // callers always get fresh numbers (cheap — JSONL parse, ~150ms typical).
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    try {
+      const live = computeBudgetSnapshot();
+      res.end(JSON.stringify({
+        ...live,
+        budgetTripped: budgetTripped || live.status === 'tripped',
+        flag_file: BUDGET_TRIPPED_FILE,
+        flag_file_present: existsSync(BUDGET_TRIPPED_FILE),
+      }, null, 2));
+    } catch (e) {
+      res.writeHead(500);
       res.end(JSON.stringify({ error: e.message }));
     }
 
