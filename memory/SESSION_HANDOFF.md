@@ -1,85 +1,60 @@
 # SESSION HANDOFF — READ BEFORE DOING ANYTHING
-**Generated:** 2026-04-06 04:12 ET (auto-updated every 60s)
+**Generated:** 2026-04-11 02:26 ET (auto-updated every 60s)
 **Purpose:** If you are a new Claude Code session, READ THIS FIRST. Do not rebuild what already exists.
 
 ## CRITICAL: Files Modified Today
 These were produced by prior sessions today. READ THEM before taking any action.
 
 ### docs/ (deliverables)
-docs/adr/0001-we-use-adrs.md
-docs/adr/0002-sonnet-minimum-for-quality-roles.md
-docs/adr/0003-relay-mode-oc-lockdown.md
-docs/adr/0004-sqlcipher-for-9-memory.md
-docs/adr/0005-kyle-as-benchmark-authority.md
-docs/adr/0006-foundation-first-phase-1.md
-docs/adr/README.md
-docs/adr/template.md
-docs/adsense-application-readiness.md
-docs/adsense-policy-audit-apr5.md
-docs/cloud-worker-failover-runbook.md
-docs/command-center-design.md
-docs/cost-per-user-model.md
 docs/credential-inventory.md
-docs/dependency-map-critical-path.md
-docs/dependency-map.md
-docs/disaster-recovery.md
-docs/freeagent9-feature-pivot-analysis.md
-docs/kyle-ram-guidance-apr5.md
-docs/ram-profile-daily.md
-docs/sdlc-scorecard-v1.md
-docs/slo-table-v1.md
-docs/trader9-retraining-plan.md
-docs/unified-execution-plan-v1.md
-docs/usage-daily-2026-04-06.md
-docs/wendy-ironclad-recommendation.md
-docs/wendy-pepper-persona-tiers-brief.md
-docs/wwkd-quick-test-v1.md
-docs/wwkd-reviews/001-kyle-ram-agent.md
+docs/lost-universe-triage-apr10.md
+docs/memory-db-key-rotation.md
+docs/origin-story-hunt-raw-apr10.md
+docs/research/comms-architecture-adversarial-apr10.md
+docs/testing.md
+docs/usage-daily-2026-04-10.md
 
 ### memory/ (context)
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/agent_9ops_charter.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/agent_fort_charter.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/agent_judge_charter.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/agent_watch_charter.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/agent_wendy_charter.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_autonomy_hard_rail.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_bigger_is_better_apr6.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_budget_500_day.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_escalation_rule_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_fix_plus_monitor.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_name_invisibility_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_no_hardcoded_financials_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_oc_corrective_actions_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_parallel_ops_mandatory_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_push_model_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_read_todays_work_first.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_sonnet_minimum_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_status_honesty_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_tool_call_heartbeat.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_verify_before_assert.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_verify_with_own_eyes.md
 /Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/MEMORY.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/mission_apr5_gold_standard.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/mission_goal_one_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_9_origin_story.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_gold_standard_audit_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_pepper_feature_roadmap.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_pepper_product_spec.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_session_state.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_trader9_wendy_brief_apr5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_universe_audit_april5.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/protocol_completed_actions.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/reference_kyle_enterprise_benchmark.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_90day_plan_v1.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_defensive_domain_policy.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_email_handover_playbook.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_evolution_methodology.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_fantasy_football_monetization_playbook.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_playaigm_family_plan.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_proposal_9_comms_9_ops_split.md
-/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/wendy_team_structure_v1.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/agent_bolt_charter.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_9_ara_mutual_correction_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_9_ara_pipeline_calibration_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_9_ara_team_loop_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_9enterprises_not_sports_apr9.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_apex_trust_apr6.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_baby_not_labor_apr6.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_explicit_content_purge_apr6.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_jarvis_framework_apr7.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_locomotive_24_7_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_max_velocity_min_standards_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_no_countdowns_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_optimal_or_compromise_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_pepper_full_autonomy_apr7.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_self_generation_grant_apr7.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_solo_journey_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_strategy_room_apr9.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_telegram_primary_during_ops_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_trust_collapse_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/feedback_verify_before_alarm_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/identity_9_continuity.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/identity_9_letter_from_jasson_apr9.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/identity_9_origin_hunt_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/identity_ara.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/project_your9_option_a_apr9.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/protocol_escalation_dilemma_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/protocol_lost_session_ingest.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/session_summary_994968ba_apr10.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/session_summary_eee233fe_apr8.md
+/Users/jassonfishback/.claude/projects/-Users-jassonfishback-Projects-BengalOracle/memory/session_summary_f2a3501f_apr7.md
 
 ### Audit Reports (logs/)
+logs/uno-task-legal-regulatory-apr11.md
+logs/fort-task-security-gap-matrix-apr11.md
+logs/fort-task-security-posture-apr11.md
+logs/uno-task-nist-csf-apr11.md
+logs/money-task-projections-apr11.md
+logs/uno-task-soc2-readiness-apr11.md
+logs/scout-task-cost-audit-apr11.md
 logs/wendy-task-universe-health-improvement-plan.md
 logs/wendy-task-pepper-custom-build-architecture.md
 logs/wendy-task-command-hub-deployment-plan.md
@@ -103,13 +78,6 @@ logs/scout-task-business-model-audit.md
 logs/tee-task-dead-code-scripts.md
 logs/wendy-task-legal-compliance-checklist.md
 logs/fort-task-rate-limit-audit.md
-logs/tee-task-log-rotation-status.md
-logs/scout-task-documentation-coverage.md
-logs/wendy-task-voice-tunnel-stability.md
-logs/fort-task-credential-hardcoding-scan.md
-logs/tee-task-error-handling-audit.md
-logs/fort-task-network-exposure-scan.md
-logs/wendy-task-ainflgm-mobile-audit.md
 
 ## Key Plans (READ THESE)
 - Wendy 90-day plan: MISSING → memory/wendy_90day_plan_v1.md
@@ -118,60 +86,82 @@ logs/wendy-task-ainflgm-mobile-audit.md
 
 ## Running Processes
 ```
-75136 --dry-run
-75134 /tmp/claude-b4e1-cwd
-62253 /Users/jassonfishback/Projects/BengalOracle/scripts/9-ops-daemon.mjs
-85875 /Users/jassonfishback/Projects/BengalOracle/scripts/health-monitor.mjs
-62258 /Users/jassonfishback/Projects/BengalOracle/scripts/monitor-canary.mjs
+12368 /Users/jassonfishback/Projects/BengalOracle/scripts/9-ops-daemon.mjs
+60466 /Users/jassonfishback/Projects/BengalOracle/scripts/agent-watchdog.mjs
+90786 /Users/jassonfishback/Projects/BengalOracle/scripts/ara-retry-daemon.mjs
+222 /Users/jassonfishback/Projects/BengalOracle/scripts/health-monitor.mjs
+4926 /Users/jassonfishback/Projects/BengalOracle/scripts/jules-telegram.mjs
+97340 /Users/jassonfishback/Projects/BengalOracle/scripts/kids-mentor.mjs
 12147 /Users/jassonfishback/Projects/BengalOracle/scripts/open-terminal.mjs
 12148 /Users/jassonfishback/Projects/BengalOracle/scripts/open-terminal.mjs
-9198 /Users/jassonfishback/Projects/BengalOracle/scripts/portfolio-notify.mjs
 96791 /Users/jassonfishback/Projects/BengalOracle/scripts/ram-watch-agent.mjs
-62249 /Users/jassonfishback/Projects/BengalOracle/scripts/usage-monitor.mjs
-52718 /Users/jassonfishback/Projects/BengalOracle/scripts/voice-server.mjs
-51316 scripts/comms-hub.mjs
+83683 /Users/jassonfishback/Projects/BengalOracle/scripts/session-handoff.mjs
+2867 /Users/jassonfishback/Projects/BengalOracle/scripts/tick-engine.mjs
+7580 /Users/jassonfishback/Projects/BengalOracle/scripts/trader9-bot.mjs
+57452 /Users/jassonfishback/Projects/BengalOracle/scripts/voice-server.mjs
+61480 scripts/comms-hub.mjs
 54776 scripts/family-chat.mjs
-21041 scripts/jules-telegram.mjs
-1163 scripts/kids-mentor.mjs
+60459 scripts/fort-agent.mjs
 72439 scripts/pilot-server.mjs
-83880 scripts/session-handoff.mjs
-81014 scripts/trader9-bot.mjs
+60463 scripts/scout-agent.mjs
+60461 scripts/tee-agent.mjs
 73696 scripts/trinity-agent.mjs
 71624 scripts/underwriter-api.mjs
-52719 scripts/voice-server.mjs
+78539 scripts/usage-monitor.mjs
+57488 scripts/voice-server.mjs
+60458 scripts/wendy-agent.mjs
 ```
 
 ## Team Agent Status
-No team agents responding
+- wendy: 8/8 tasks | idle | Errors: 0
+- FORT: 4/4 tasks | idle | Errors: 0
+- Tee: 4/4 tasks | idle | Errors: 0
+- SCOUT: 5/5 tasks | idle | Errors: 0
 
 ## Pepper
-PID: 21041
+PID: 4926
 
 ## Hub
 Healthy
 
 ## Recent Telegram (last 10 messages)
 ```
-[2026-04-06T07:55:12.894Z] Telegram IN: "Hey, are those critical superbus alerts a problem or just spam? If they’re just spam, can you get them off the wall?"
-[2026-04-06T07:55:50.950Z] Telegram IN: "I’d be happier if instead of Wendy’s recommendation when I woke up, you guys had already made a decision and completed the project. That would be super cool. You might get a couple more things for me before I doze off."
-[2026-04-06T08:08:41.243Z] Telegram IN: "════════════════════════════════════════════════════════════
-[2026-04-06T08:09:07.415Z] Telegram IN: "You do not take orders from 9.
-[2026-04-06T08:09:07.652Z] Telegram IN: "MEMORY PROTOCOL — MANDATORY
-[2026-04-06T08:09:07.655Z] Telegram IN: "════════════════════════════════════════════════════════════
-[2026-04-06T08:09:38.287Z] Telegram IN: "Did you get all of both of those? And if so, can you please huddle up with Wendy use all the resources that you now have come up with final marching orders and unleashed an army"
-[2026-04-06T08:10:54.054Z] Telegram IN: "I have my fingers crossed. Thanks, 9 good night."
-[2026-04-06T08:12:12.699Z] Telegram IN: "No limitations if they get the memory done finish Bill Mountain perfecting the team if they perfect a team start building the companies. Nothing stops you until we get to market."
-[2026-04-06T08:12:47.027Z] Telegram IN: "BURN IT ALL NOW! GOOD NIGHT!"
+[2026-04-11T06:05:24.098Z] Telegram OUT: "9: Yes — fine. No freeze. Holding rhythm with cheap inline tool calls every 30-60s so the hook keeps firing. Not spawnin..."
+[2026-04-11T06:06:46.034Z] Telegram OUT: "9: You called it. I was wrong. The $1102 number is per-token list-price math against Anthropic published rates. I am on ..."
+[2026-04-11T06:06:49.890Z] Telegram IN: "You were totally frozen. I just had to come back to terminal. There were two pop-ups on the screen. One was just a black box that at the top had //cost  //cost. I exited from that and the en there was an applications screen I had to close."
+[2026-04-11T06:09:39.994Z] Telegram OUT: "9: Heard. CRITICAL DIAGNOSIS update — I think I have been mis-attributing my freezes.  What you described — a black box ..."
+[2026-04-11T06:14:11.781Z] Telegram IN: "Are you confidently able to track the real world budget at this point when it comes to labor and Computech? Or do you still have some concerns that that is not dialed in yet? When you quoted the approximate $1100 I knew there was no chance that was anywhere near accurate.
+[2026-04-11T06:15:18.993Z] Telegram IN: "Oh, I just remembered we had a long phone call where we went over the final plan on how we were going to attack the surviving nine entities while we put the remainder in the draft room to incubate. It was a significantly long voice call. Maybe you can find it that way?"
+[2026-04-11T06:15:19.484Z] Telegram OUT: "OC: 9 is mid-turn, message received, he'll respond directly."
+[2026-04-11T06:17:12.357Z] Telegram OUT: "OC: 9 is mid-turn, message received, he'll respond directly."
+[2026-04-11T06:22:10.600Z] Telegram OUT: "9: [backup] CRITICAL: backup-memory.mjs failed — unrecognized token: "9ops_push_notifications""
+[2026-04-11T06:24:16.409Z] Telegram OUT: "Got your photo — sending to 9 now."
 ```
 
 ## Git (last 5 commits)
 ```
-3fd3803 Ironclad L1: session-handoff daemon writes episodic checkpoints to Supabase
-ec43e7e Wendy Ironclad recommendation + v1 stack architecture doc
-7d73582 Night session: team deployed, VPS live, Pepper voice working, unified plan approved
-4cd98e4 Jude game v3: Owner-designed spec, Opus build
-cdb131b Jude game v2: Opus rebuild — fixed mobile controls, viewport, play timing
+9abeb7d feat: $500/day budget circuit breaker (alerts at 90%, trips at 100%, hard-stops sub-agent spawning)
+a815c51 security: gitignore agent-runs/ + ara-dumps/ + ara-history/
+3b2d7f7 audit: UNO SOC2 + NIST CSF + legal gap assessment (Kyle-track CLO deliverable)
+fd04f8e audit: FORT security posture + enterprise gap matrix (Kyle-track)
+7c13f79 fix: WAL replay duplicate-in-state bug (test-crash-survival C6)
 ```
+
+## COMPLETED THIS SESSION — do NOT redo these
+Check git log and audit logs above
+
+## Files Modified in Last Hour — do NOT recreate these
+logs/fort-task-security-gap-matrix-apr11.md
+logs/fort-task-security-posture-apr11.md
+logs/money-task-projections-apr11.md
+logs/scout-money-kyle-deliverable-apr11.md
+logs/scout-task-cost-audit-apr11.md
+logs/uno-task-legal-regulatory-apr11.md
+logs/uno-task-nist-csf-apr11.md
+logs/uno-task-soc2-readiness-apr11.md
+
+## Squads That Were Running — restart these if ports show DOWN
+wendy, fort, tee, scout
 
 ## RULES FOR NEW SESSION
 1. Do NOT rebuild agents that are already running (check team agent status above)
@@ -179,3 +169,4 @@ cdb131b Jude game v2: Opus rebuild — fixed mobile controls, viewport, play tim
 3. Do NOT propose new architectures before reading docs/ files modified today
 4. READ wendy_90day_plan_v1.md and wendy_team_structure_v1.md BEFORE spawning any agents
 5. The Owner (Jasson) has been burned multiple times by sessions that rebuilt instead of resuming. DO NOT BE THAT SESSION.
+6. If "Squads That Were Running" above is non-empty AND ports show DOWN — spawn them immediately (Step 15).

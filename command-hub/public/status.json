@@ -1,35 +1,35 @@
 {
-  "generatedAt": "2026-04-09T17:18:25.695Z",
+  "generatedAt": "2026-04-11T06:27:04.370Z",
   "hub": {
     "status": "running",
     "terminalState": "relay",
-    "uptime": 1616877,
-    "heartbeatCount": 854,
+    "uptime": 1750596,
+    "heartbeatCount": 922,
     "tunnelStatus": "healthy"
   },
   "agentStatus": [
     {
       "name": "telegram",
       "status": "active",
-      "lastActivity": "2026-04-09T17:17:19.692Z",
-      "messagesHandled": 4068
+      "lastActivity": "2026-04-11T06:15:18.995Z",
+      "messagesHandled": 4407
     },
     {
       "name": "imessage",
-      "status": "stale",
-      "lastActivity": "2026-04-09T02:49:00.737Z",
+      "status": "active",
+      "lastActivity": "2026-04-11T06:14:56.953Z",
       "messagesHandled": 7
     },
     {
       "name": "email",
-      "status": "stale",
-      "lastActivity": "2026-04-09T02:49:00.639Z",
-      "messagesHandled": 0
+      "status": "active",
+      "lastActivity": "2026-04-11T05:41:51.239Z",
+      "messagesHandled": 106
     },
     {
       "name": "voice",
       "status": "active",
-      "lastActivity": "2026-04-09T17:18:05.359Z",
+      "lastActivity": "2026-04-11T06:26:51.518Z",
       "messagesHandled": 0
     }
   ],
@@ -40,7 +40,6 @@
     "jules-telegram",
     "kids-mentor",
     "pilot-server",
-    "portfolio-notify",
     "ram-watch-agent",
     "session-handoff",
     "trader9-bot",
@@ -52,29 +51,29 @@
   "recentMessages": [
     {
       "direction": "out",
-      "text": "9: Armies deployed. Here is what is running right now:\n\nTrack 1 — Hardening:\n• Tee: Building containerization plan (CIO-grade, Docker/K8s)\n• Agent: Updating security audit (credential inventory, network exposure, recommendations)\n• FORT + SCOUT: Available for additional hardening",
-      "timestamp": "2026-04-09T17:15:22.977Z"
-    },
-    {
-      "direction": "in",
-      "text": "Hey you have some pretty scary looking emails and telegram spam stacking up too",
-      "timestamp": "2026-04-09T17:15:30.467Z"
+      "text": "OC: 9 is mid-turn, message received, he'll respond directly.",
+      "timestamp": "2026-04-11T06:17:12.356Z"
     },
     {
       "direction": "out",
-      "text": "9: ALERT: Kyle Cabezas is calling on FaceTime RIGHT NOW. Accept with video, accept with audio, or decline? The call notification is on screen.",
-      "timestamp": "2026-04-09T17:16:35.660Z"
+      "text": "9: [backup] CRITICAL: backup-memory.mjs failed — unrecognized token: \"9ops_push_notifications\"",
+      "timestamp": "2026-04-11T06:22:10.598Z"
     },
     {
       "direction": "in",
-      "text": "Nope all good",
-      "timestamp": "2026-04-09T17:17:19.691Z"
+      "text": "[PHOTO saved to /tmp/telegram_photo_1775888655938.jpg]",
+      "timestamp": "2026-04-11T06:24:15.939Z"
     },
     {
       "direction": "out",
-      "text": "9: Kyle C call went to voicemail/dismissed. FYI in case you want to call him back.\n\nMeanwhile Ara delivered initial research on the top 5 products with TAM, ARR projections, and priority rankings. 134 sources pulled. Her Council is now deep researching the remaining 5. Hardening ",
-      "timestamp": "2026-04-09T17:17:29.200Z"
+      "text": "Got your photo — sending to 9 now.",
+      "timestamp": "2026-04-11T06:24:16.406Z"
+    },
+    {
+      "direction": "out",
+      "text": "9: Caught up. Answering all 4 in order.\n\n1) BUDGET TRACKING CONFIDENCE — honest answer:\n- LABOR (you, me, Wendy/UNO/Tee/FORT/SCOUT, all sub-agents I spawn): Max Plan flat $200/mo. I cannot track this in dollars because it is not metered. What I CAN track confidently: cycle counts",
+      "timestamp": "2026-04-11T06:27:03.077Z"
     }
   ],
-  "handoffGenerated": "2026-04-07 02:59 ET"
+  "handoffGenerated": "2026-04-11 02:26 ET"
 }

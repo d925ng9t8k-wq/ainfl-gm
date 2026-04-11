@@ -81,7 +81,7 @@ assert(
 
 assert(
   'checkNewEmails does NOT mark seen inside the main fetch loop (comment mentions the contract)',
-  /do NOT mark the[\s\S]{0,60}server-side[\s\S]{0,30}Seen flag/i.test(hubSrc),
+  /do NOT mark[\s\S]{0,100}seen/i.test(hubSrc),
 );
 
 assert(

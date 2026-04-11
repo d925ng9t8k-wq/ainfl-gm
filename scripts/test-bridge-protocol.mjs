@@ -107,8 +107,8 @@ assert(
 );
 
 assert(
-  'OCR ACK detection regex tolerates variants',
-  /ACK\\s\*\\\[\?9-\?SEQ\\s\*\$\{n\}\\b/.test(bridgeSrc),
+  'OCR ACK detection regex present in source (ACK\\s*\\[?9-?SEQ\\s*${n}\\b)',
+  bridgeSrc.includes('ACK\\\\s*\\\\[?9-?SEQ\\\\s*${n}\\\\b'),
 );
 
 assert(

@@ -255,19 +255,22 @@ async function assess({ service, metricName, metricValue, metricUnit, limitValue
 
     if (pctUsed >= THRESHOLD_HARD_CAP) {
       if (now - state.hardcap >= ALERT_HARDCAP_COOLDOWN_MS) {
-        await alertTelegram(`[usage] HARD CAP HIT: ${service} — ${metricName} is at ${(pctUsed*100).toFixed(1)}% of limit. Service may be blocked. ${fullMsg}`);
+        // Alert routing disabled per Owner directive (Apr 10) — log only, do NOT spam Telegram
+        log(`[alert-suppressed] HARD CAP HIT: ${service} — ${metricName} at ${(pctUsed*100).toFixed(1)}% — ${fullMsg}`);
         state.hardcap = now;
         // Auto-throttle: tell comms-hub to note the issue (non-destructive)
         await throttleService(service, metricName);
       }
     } else if (pctUsed >= THRESHOLD_CRITICAL) {
       if (now - state.critical >= ALERT_CRITICAL_COOLDOWN_MS) {
-        await alertTelegram(`[usage] CRITICAL: ${service} — ${metricName} at ${(pctUsed*100).toFixed(1)}%. Approaching hard cap. ${fullMsg}`);
+        // Alert routing disabled per Owner directive (Apr 10) — log only
+        log(`[alert-suppressed] CRITICAL: ${service} — ${metricName} at ${(pctUsed*100).toFixed(1)}% — ${fullMsg}`);
         state.critical = now;
       }
     } else if (pctUsed >= THRESHOLD_ALERT) {
       if (now - state.daily >= ALERT_DAILY_COOLDOWN_MS) {
-        await alertTelegram(`[usage] WARNING: ${service} — ${metricName} at ${(pctUsed*100).toFixed(1)}% of quota. ${fullMsg}`);
+        // Alert routing disabled per Owner directive (Apr 10) — log only
+        log(`[alert-suppressed] WARNING: ${service} — ${metricName} at ${(pctUsed*100).toFixed(1)}% — ${fullMsg}`);
         state.daily = now;
       }
     }
