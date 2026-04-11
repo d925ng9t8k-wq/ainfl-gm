@@ -77,3 +77,9 @@ memory/session-handoff.json
 scripts/*.killed-*
 scripts/*.bak-*
 scripts/*.deprecated
+
+# Sub-agent transcripts — contain credentials in Bash output. NEVER commit.
+data/agent-runs/
+data/ara-dumps/
+data/ara-history/
+
