@@ -2947,18 +2947,177 @@ setInterval(async () => {
       }
     }
 
-    // Drift alerts — HARD FAIL bypass when max drift > 50 (no cooldown)
-    if (maxDrift !== null && maxDrift > SUPABASE_HARD_FAIL_DRIFT) {
-      sendTelegram(`[9 watchdog] CRITICAL Supabase drift=${maxDrift} (>50). Per-table: ${perTableDetail}. Live sync is broken. /supabase-health for detail.`).catch(() => {});
-      _supabaseLastAlert.drift = now;
-    } else if (maxDrift !== null && maxDrift > 10 && now - _supabaseLastAlert.drift > SUPABASE_ALERT_COOLDOWN_MS) {
-      sendTelegram(`[9 watchdog] Supabase drift=${maxDrift}. Per-table: ${perTableDetail}. Live sync may be failing. Check /supabase-health.`).catch(() => {});
-      _supabaseLastAlert.drift = now;
-    }
+    // Drift alerting is now owned by the 60s supabase-health-monitor loop below.
+    // It applies 2-strike blip suppression (Fix 2) + 3-tier escalation (Fix 4)
+    // so a single transient drift observation no longer triggers a Telegram alert.
+    // This loop keeps the heartbeat + DLQ drain + unreachable alerts.
   } catch (e) {
     log(`[supabase-watchdog] checked_at=${checkedAt} status=exception error=${e.message}`);
   }
 }, 300000); // 5 min
+
+// ─── Supabase Health Monitor (Fix 2 + Fix 4) ────────────────────────────────
+// Fix 2 — 2-strike blip suppression: transient drift (1 observation) is logged
+// as "transient" and never alerts. Drift must be observed on TWO consecutive
+// checks before it is considered real. Active-write drift is normal noise.
+//
+// Fix 4 — 3-tier escalation:
+//   Tier 1: minor_drift sustained >= 2 checks -> log to data/supabase-health-log.jsonl,
+//           NO Telegram alert. Paper trail only.
+//   Tier 2: minor_drift sustained >= 5 checks OR any drift > 20 rows -> single
+//           Telegram alert with 1-hour cooldown.
+//   Tier 3: major_drift (>10) sustained >= 2 checks OR drift > 100 rows -> immediate
+//           Telegram alert (no cooldown) + trigger DLQ backfill repair path.
+//
+// The raw /supabase-health endpoint is intentionally untouched — it still
+// returns instantaneous state so the Ara bridge and ground-truth self-test see
+// current reality, not filtered reality.
+const SUPABASE_HEALTH_LOG_PATH = 'data/supabase-health-log.jsonl';
+const SUPABASE_BLIP_STRIKES = 2;             // Fix 2: 2 consecutive observations
+const SUPABASE_TIER2_SUSTAINED = 5;          // 5 consecutive minor_drift checks -> Tier 2
+const SUPABASE_TIER2_DRIFT_THRESHOLD = 20;   // any drift >20 rows -> Tier 2 immediately
+const SUPABASE_TIER3_DRIFT_THRESHOLD = 100;  // any drift >100 rows -> Tier 3 immediately
+const SUPABASE_TIER3_MAJOR_STRIKES = 2;      // major_drift (>10) sustained 2 checks -> Tier 3
+const SUPABASE_MONITOR_INTERVAL_MS = 60000;  // 60s
+const _supabaseHealthState = {
+  consecutiveDrift: 0,      // strikes with any drift >0
+  consecutiveMajor: 0,      // strikes with drift >10 (major)
+  lastStatus: 'unknown',
+  lastTier2AlertAt: 0,
+  lastTier3AlertAt: 0,
+};
+async function _measureSupabaseDrift() {
+  // Read-only drift snapshot. Mirrors /supabase-health logic but isolated so
+  // the monitor is self-contained and cannot hit endpoint-level filters.
+  if (!supabase || !db) return { ok: false, reason: 'no_client' };
+  const perTable = {};
+  const errorTables = [];
+  for (const t of SUPABASE_WATCHED_TABLES) {
+    let local = -1;
+    try {
+      local = db._db.prepare(`SELECT count(*) as c FROM ${t}`).get()?.c ?? -1;
+    } catch (e) {
+      perTable[t] = { sqlite: null, supabase: null, drift: null, error: `sqlite: ${e.message}` };
+      errorTables.push(t);
+      continue;
+    }
+    const { count: cloud, error } = await supabase.from(t).select('*', { count: 'exact', head: true });
+    if (error) {
+      perTable[t] = { sqlite: local, supabase: null, drift: null, error: error.message };
+      errorTables.push(t);
+      continue;
+    }
+    perTable[t] = { sqlite: local, supabase: cloud, drift: local - cloud, error: null };
+  }
+  const drifts = Object.values(perTable)
+    .map(x => x.drift)
+    .filter(d => d !== null && d !== undefined && !Number.isNaN(d));
+  const maxDrift = drifts.length ? Math.max(...drifts) : null;
+  let status;
+  if (errorTables.length === SUPABASE_WATCHED_TABLES.length) status = 'unreachable';
+  else if (errorTables.length > 0) status = 'partial_unreachable';
+  else if (maxDrift !== null && maxDrift > 10) status = 'major_drift';
+  else if (maxDrift !== null && maxDrift > 0) status = 'minor_drift';
+  else status = 'healthy';
+  return { ok: true, status, maxDrift, perTable, errorTables };
+}
+function _logSupabaseHealthEvent(entry) {
+  try {
+    appendFileSync(SUPABASE_HEALTH_LOG_PATH, JSON.stringify(entry) + '\n');
+  } catch (e) {
+    log(`[supabase-health-monitor] log_error=${e.message}`);
+  }
+}
+async function runSupabaseHealthMonitor() {
+  const checkedAt = new Date().toISOString();
+  const snap = await _measureSupabaseDrift();
+  if (!snap.ok) {
+    // Client null or other hard failure — let the 5-min watchdog handle it.
+    return;
+  }
+  const { status, maxDrift, perTable } = snap;
+  const s = _supabaseHealthState;
+  const perTableDetail = Object.entries(perTable)
+    .map(([t, v]) => v.error ? `${t}=ERR` : `${t}=${v.drift}`)
+    .join(' ');
+
+  // Strike accounting — Fix 2 blip suppression.
+  const hasDrift = maxDrift !== null && maxDrift > 0;
+  const hasMajor = maxDrift !== null && maxDrift > 10;
+  if (hasDrift) s.consecutiveDrift += 1; else s.consecutiveDrift = 0;
+  if (hasMajor) s.consecutiveMajor += 1; else s.consecutiveMajor = 0;
+
+  const sustained = s.consecutiveDrift >= SUPABASE_BLIP_STRIKES;
+  const isTransient = hasDrift && !sustained;
+
+  // Determine tier — Fix 4 escalation ladder.
+  // Tier 3 first (most severe), then Tier 2, then Tier 1.
+  let tier = 0;
+  let tierReason = '';
+  if (
+    (maxDrift !== null && maxDrift > SUPABASE_TIER3_DRIFT_THRESHOLD) ||
+    (hasMajor && s.consecutiveMajor >= SUPABASE_TIER3_MAJOR_STRIKES)
+  ) {
+    tier = 3;
+    tierReason = maxDrift > SUPABASE_TIER3_DRIFT_THRESHOLD
+      ? `drift=${maxDrift} >${SUPABASE_TIER3_DRIFT_THRESHOLD}`
+      : `major_drift sustained ${s.consecutiveMajor} checks`;
+  } else if (
+    (maxDrift !== null && maxDrift > SUPABASE_TIER2_DRIFT_THRESHOLD) ||
+    (hasDrift && s.consecutiveDrift >= SUPABASE_TIER2_SUSTAINED)
+  ) {
+    tier = 2;
+    tierReason = maxDrift > SUPABASE_TIER2_DRIFT_THRESHOLD
+      ? `drift=${maxDrift} >${SUPABASE_TIER2_DRIFT_THRESHOLD}`
+      : `minor_drift sustained ${s.consecutiveDrift} checks`;
+  } else if (sustained) {
+    tier = 1;
+    tierReason = `drift sustained ${s.consecutiveDrift} checks`;
+  }
+
+  // Persistent JSONL paper trail — every non-healthy tick + every tier transition.
+  const statusChanged = s.lastStatus !== status;
+  if (hasDrift || statusChanged || tier > 0) {
+    _logSupabaseHealthEvent({
+      checked_at: checkedAt,
+      status,
+      max_drift: maxDrift,
+      per_table: perTable,
+      consecutive_drift: s.consecutiveDrift,
+      consecutive_major: s.consecutiveMajor,
+      tier,
+      tier_reason: tierReason,
+      transient: isTransient,
+    });
+  }
+
+  // Heartbeat line (every cycle, cheap string to logs/comms-hub.log).
+  log(`[supabase-health-monitor] checked_at=${checkedAt} status=${status} max_drift=${maxDrift} strikes=${s.consecutiveDrift}/${s.consecutiveMajor} tier=${tier}${isTransient ? ' transient=1' : ''}`);
+
+  // Alerting per tier.
+  const now = Date.now();
+  if (tier === 3) {
+    // Immediate alert — no cooldown on Tier 3. Also trigger DLQ repair.
+    sendTelegram(`[9 watchdog] CRITICAL Supabase drift=${maxDrift} (tier 3 — ${tierReason}). Per-table: ${perTableDetail}. Triggering DLQ backfill repair.`).catch(() => {});
+    s.lastTier3AlertAt = now;
+    // Fire-and-forget repair path — DLQ drain is idempotent and cheap.
+    drainSupabaseDlq()
+      .then(r => log(`[supabase-health-monitor] tier3_repair drained=${r.drained} replayed=${r.replayed} stillPending=${r.stillPending}`))
+      .catch(e => log(`[supabase-health-monitor] tier3_repair_error=${e.message}`));
+  } else if (tier === 2) {
+    // Single alert with 1-hour cooldown.
+    if (now - s.lastTier2AlertAt > SUPABASE_ALERT_COOLDOWN_MS) {
+      sendTelegram(`[9 watchdog] Supabase drift=${maxDrift} (tier 2 — ${tierReason}). Per-table: ${perTableDetail}. Check /supabase-health.`).catch(() => {});
+      s.lastTier2AlertAt = now;
+    }
+  }
+  // Tier 1: log only, no Telegram (already written to JSONL above).
+
+  s.lastStatus = status;
+}
+setInterval(() => {
+  runSupabaseHealthMonitor().catch(e => log(`[supabase-health-monitor] loop_error=${e.message}`));
+}, SUPABASE_MONITOR_INTERVAL_MS);
 
 // ─── CHANNEL 1: Telegram Polling ─────────────────────────────────────────────
 let telegramOffset = 0;
