@@ -1,20 +1,47 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { GameProvider, useGame } from './context/GameContext';
 import Layout from './components/Layout';
+// RosterPage is the landing route — keep it eager so initial paint has zero lazy-chunk wait.
 import RosterPage from './pages/RosterPage';
-import CapTrackerPage from './pages/CapTrackerPage';
-import FreeAgencyPage from './pages/FreeAgencyPage';
-import TradePage from './pages/TradePage';
-import DraftPage from './pages/DraftPage';
-import SummaryPage from './pages/SummaryPage';
-import SeasonSimPage from './pages/SeasonSimPage';
-import MarketsPage from './pages/MarketsPage';
-import PrivacyPage from './pages/PrivacyPage';
-import AboutPage from './pages/AboutPage';
 
-import MLBApp from './MLBApp';
-import NBAApp from './NBAApp';
+// Everything below is code-split. These pages only render after user navigation,
+// so there is no reason to ship them in the initial JS payload. Each becomes its
+// own chunk and is fetched on demand.
+const CapTrackerPage = lazy(() => import('./pages/CapTrackerPage'));
+const FreeAgencyPage = lazy(() => import('./pages/FreeAgencyPage'));
+const TradePage = lazy(() => import('./pages/TradePage'));
+const DraftPage = lazy(() => import('./pages/DraftPage'));
+const SummaryPage = lazy(() => import('./pages/SummaryPage'));
+const SeasonSimPage = lazy(() => import('./pages/SeasonSimPage'));
+const MarketsPage = lazy(() => import('./pages/MarketsPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+
+// MLB and NBA apps are entirely separate sports. Most users never touch them,
+// so we ship them as their own chunks — this pulls their pages, context,
+// layout, and static data out of the initial bundle.
+const MLBApp = lazy(() => import('./MLBApp'));
+const NBAApp = lazy(() => import('./NBAApp'));
+
+// Minimal Suspense fallback — matches page background so there is no flash.
+function RouteFallback() {
+  return (
+    <div
+      style={{
+        minHeight: '40vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#888',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: 14,
+      }}
+    >
+      Loading…
+    </div>
+  );
+}
 
 // Team slug to abbreviation mapping
 const TEAM_SLUGS = {
@@ -87,38 +114,43 @@ function NFLApp() {
     <GameProvider>
       <ErrorBoundary>
         <Layout>
-          <Routes>
-            <Route path="/" element={<RosterPage />} />
-            <Route path="/cap" element={<CapTrackerPage />} />
-            <Route path="/fa" element={<FreeAgencyPage />} />
-            <Route path="/trades" element={<TradePage />} />
-            <Route path="/draft" element={<DraftPage />} />
-            <Route path="/summary" element={<SummaryPage />} />
-            <Route path="/season" element={<SeasonSimPage />} />
-            <Route path="/markets" element={<MarketsPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/owner" element={<Navigate to="/" replace />} />
-            <Route path="/team/:teamSlug" element={<TeamRedirect />} />
-            <Route path="/:teamSlug" element={<TeamRedirect />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route path="/" element={<RosterPage />} />
+              <Route path="/cap" element={<CapTrackerPage />} />
+              <Route path="/fa" element={<FreeAgencyPage />} />
+              <Route path="/trades" element={<TradePage />} />
+              <Route path="/draft" element={<DraftPage />} />
+              <Route path="/summary" element={<SummaryPage />} />
+              <Route path="/season" element={<SeasonSimPage />} />
+              <Route path="/markets" element={<MarketsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/owner" element={<Navigate to="/" replace />} />
+              <Route path="/team/:teamSlug" element={<TeamRedirect />} />
+              <Route path="/:teamSlug" element={<TeamRedirect />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </Layout>
       </ErrorBoundary>
     </GameProvider>
   );
 }
 
-// Root router — splits NFL vs NBA vs MLB at the top level
+// Root router — splits NFL vs NBA vs MLB at the top level.
+// NBA/MLB are wrapped in their own Suspense so the NFL bundle stays lean.
 export default function App() {
   return (
-    <Routes>
-      {/* NBA routes — completely isolated from NFL state/layout */}
-      <Route path="/nba/*" element={<NBAApp />} />
-      {/* MLB routes — completely isolated from NFL state/layout */}
-      <Route path="/mlb/*" element={<MLBApp />} />
-      {/* NFL routes — everything else */}
-      <Route path="/*" element={<NFLApp />} />
-    </Routes>
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        {/* NBA routes — completely isolated from NFL state/layout */}
+        <Route path="/nba/*" element={<NBAApp />} />
+        {/* MLB routes — completely isolated from NFL state/layout */}
+        <Route path="/mlb/*" element={<MLBApp />} />
+        {/* NFL routes — everything else */}
+        <Route path="/*" element={<NFLApp />} />
+      </Routes>
+    </Suspense>
   );
 }
