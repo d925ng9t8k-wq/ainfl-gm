@@ -2599,13 +2599,21 @@ async function relayToPilot(text, handle) {
 
 // ─── CHANNEL 2: iMessage Monitor ─────────────────────────────────────────────
 async function imessageMonitor() {
-  const canRead = initImsgRowId();
-  if (!canRead || lastImsgRowId === 0) {
-    log('iMessage monitor: Read unavailable — running in SEND-ONLY mode (can still send alerts)');
-    updateChannelStatus(state, 'imessage', 'send-only');
-    saveState(state);
+  // Guard against double-spawn if watchdog re-invokes while a monitor is already looping
+  if (global._imsgMonitorRunning) {
+    log('iMessage monitor: already running — skipping duplicate spawn');
     return;
   }
+  const canRead = initImsgRowId();
+  if (!canRead || lastImsgRowId === 0) {
+    log('iMessage monitor: Read unavailable — running in SEND-ONLY mode. Will retry FDA in 5 min.');
+    updateChannelStatus(state, 'imessage', 'send-only');
+    saveState(state);
+    // Do NOT return permanently. Retry in 5 min so FDA can be restored without a hub restart.
+    setTimeout(() => { imessageMonitor().catch(e => log(`iMessage monitor retry failed: ${e.message}`)); }, 5 * 60 * 1000);
+    return;
+  }
+  global._imsgMonitorRunning = true;
 
   updateChannelStatus(state, 'imessage', 'active');
   saveState(state);
@@ -3444,40 +3452,44 @@ setTimeout(efficiencySweep, 60000); // Run 1 minute after startup
 function checkFdaAccess() {
   if (VPS_MODE) return false;
   try {
-    execSync(`sqlite3 "${IMSG_DB}" "SELECT 1;" 2>&1`, { encoding: 'utf-8' });
+    // Real FDA probe: must read the protected `message` table, not a constant.
+    // SELECT 1 passes even when FDA is denied in some sandboxes — COUNT(*) FROM message
+    // forces sqlite to open the protected table, which is the exact access iMessage read needs.
+    execSync(`sqlite3 "${IMSG_DB}" "SELECT COUNT(*) FROM message LIMIT 1;" 2>&1`, { encoding: 'utf-8', timeout: 5000 });
     return true;
   } catch {
     return false;
   }
 }
 
-let fdaWasWorking = null;
+// Optimistic default: assume FDA was working. If it's DENIED on the first check,
+// the watchdog fires a "FDA LOST" alert on cycle #1 instead of silently masking it.
+// This fixes the cold-start bug where fdaWasWorking=false meant the alert could never fire.
+let fdaWasWorking = true;
 
 function fdaWatchdog() {
   const hasAccess = checkFdaAccess();
 
-  if (fdaWasWorking === null) {
-    fdaWasWorking = hasAccess;
-    log(`FDA check: iMessage DB access ${hasAccess ? 'AVAILABLE' : 'DENIED'}`);
-    return;
-  }
-
   if (fdaWasWorking && !hasAccess) {
-    // Lost FDA — probably macOS update or permission revoke
+    // Lost FDA — probably macOS update, LaunchAgent restart, or permission revoke
     log('FDA LOST — iMessage read no longer available');
-    sendTelegram('OC: Covering for 9. iMessage read access was lost — possibly from a macOS update. iMessage is now send-only. I need you to re-grant Full Disk Access to Terminal: System Settings > Privacy & Security > Full Disk Access > toggle Terminal off and back on. Then restart terminal.').catch(() => {});
+    sendTelegram('OC: Covering for 9. iMessage read access denied — possibly after reboot or macOS update. iMessage is now send-only. Fix: kill the hub and relaunch from Terminal to restore FDA: `pkill -f comms-hub && nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown`').catch(() => {});
     updateChannelStatus(state, 'imessage', 'send-only');
     fdaWasWorking = false;
   } else if (!fdaWasWorking && hasAccess) {
-    log('FDA restored — iMessage read available again');
+    log('FDA restored — iMessage read available again, re-spawning monitor');
     sendTelegram('OC: Covering for 9. iMessage read access restored. Two-way iMessage is back.').catch(() => {});
     updateChannelStatus(state, 'imessage', 'active');
     fdaWasWorking = true;
+    // Re-spawn the monitor if it had exited into retry-mode during FDA denial
+    if (!global._imsgMonitorRunning) {
+      imessageMonitor().catch(e => log(`iMessage monitor relaunch failed: ${e.message}`));
+    }
   }
   saveState(state);
 }
 
-setInterval(fdaWatchdog, 30 * 60 * 1000); // Every 30 minutes
+setInterval(fdaWatchdog, 5 * 60 * 1000); // Every 5 minutes (tight cadence to catch FDA loss fast)
 
 // ─── Reboot Detection ────────────────────────────────────────────────────────
 function checkIfRecentReboot() {
@@ -3571,12 +3583,22 @@ async function startupSelfCheck() {
   // Check FDA (macOS only)
   if (!VPS_MODE) {
     const hasFda = checkFdaAccess();
-    fdaWasWorking = hasFda;
+    // IMPORTANT: only update fdaWasWorking on GRANTED startup. On DENIED startup we
+    // leave it as the optimistic `true` so the next fdaWatchdog cycle (≤5 min)
+    // detects the transition and fires the FDA LOST alert. Previously this line
+    // set fdaWasWorking=false on cold start, which silently killed all future alerts.
     if (hasFda) {
+      fdaWasWorking = true;
       status.push('iMessage: two-way (FDA granted)');
     } else {
       status.push('iMessage: send-only (no FDA)');
-      if (!recentReboot) issues.push('iMessage read access denied — may need FDA re-grant');
+      // Always surface the issue, even post-reboot. Post-reboot is when Owner MOST
+      // needs to know — LaunchAgent mode never has FDA and requires manual Terminal relaunch.
+      if (recentReboot) {
+        issues.push('FDA denied after reboot — LaunchAgent hub has no Full Disk Access. Kill and relaunch from Terminal to restore iMessage read: `pkill -f comms-hub && nohup /opt/homebrew/bin/node scripts/comms-hub.mjs > /dev/null 2>&1 & disown`');
+      } else {
+        issues.push('iMessage read access denied — may need FDA re-grant (Terminal > System Settings > Privacy & Security > Full Disk Access)');
+      }
     }
   } else {
     status.push('iMessage: disabled (VPS mode)');
