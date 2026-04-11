@@ -1,11 +1,31 @@
 #!/bin/bash
-# PostToolUse hook — checks for incoming messages from comms hub
+# Multi-hook message checker — checks for incoming messages from comms hub.
+# Wired to PostToolUse, Notification, AND Stop hooks in ~/.claude/settings.json.
 # Uses hookSpecificOutput.additionalContext so Claude sees the messages.
 # Also does a LIVE inbox check if the signal file is empty — belt and suspenders.
 # Also checks 9ops_push_notifications for unread push notifications from 9-Ops.
+#
+# FIX (Apr 11): Read hook_event_name from stdin JSON so the same script can serve
+# PostToolUse, Notification, AND Stop hooks. Previously hardcoded to PostToolUse,
+# which caused "expected 'Stop' but got 'PostToolUse'" errors when the Stop hook
+# fired (notably during /cost slash command modal which triggers Stop).
 
 INCOMING="/tmp/9-incoming-message.jsonl"
 DB="/Users/jassonfishback/Projects/BengalOracle/data/9-memory.db"
+
+# Read hook input from stdin to detect which hook is calling us.
+# Claude Code passes a JSON object with hook_event_name field on stdin.
+# Fall back to PostToolUse if stdin is empty or unparseable (legacy behavior).
+HOOK_INPUT=$(cat 2>/dev/null || echo "")
+HOOK_EVENT_NAME=$(echo "$HOOK_INPUT" | python3 -c "
+import sys, json
+try:
+    d = json.loads(sys.stdin.read() or '{}')
+    print(d.get('hook_event_name', 'PostToolUse'))
+except Exception:
+    print('PostToolUse')
+" 2>/dev/null || echo "PostToolUse")
+[ -z "$HOOK_EVENT_NAME" ] && HOOK_EVENT_NAME="PostToolUse"
 
 # Update heartbeat — hub uses this to detect freezes
 date +%s > /tmp/9-last-tool-call 2>/dev/null
@@ -135,7 +155,7 @@ print(json.dumps('INCOMING MESSAGE — RESPOND IMMEDIATELY: ' + msgs))
   rm -f "$TMPFILE"
   # Log every successful delivery so we have an audit trail for silent-gap incidents
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] check-messages.sh: delivered $(echo "$filtered" | wc -l | tr -d ' ') line(s) to context" >> /Users/jassonfishback/Projects/BengalOracle/logs/check-messages-errors.log
-  echo "{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":${context}}}"
+  echo "{\"hookSpecificOutput\":{\"hookEventName\":\"${HOOK_EVENT_NAME}\",\"additionalContext\":${context}}}"
   exit 0
 fi
 
@@ -224,7 +244,7 @@ print(json.dumps(full))
 " <<< "$OPS_NOTIFICATIONS" 2>/dev/null)
 
     if [ -n "$context" ]; then
-      echo "{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":${context}}}"
+      echo "{\"hookSpecificOutput\":{\"hookEventName\":\"${HOOK_EVENT_NAME}\",\"additionalContext\":${context}}}"
       exit 0
     fi
   fi
@@ -245,7 +265,7 @@ print(json.dumps('INCOMING MESSAGE — RESPOND IMMEDIATELY: ' + chr(10).join(lin
 " <<< "$LIVE" 2>/dev/null)
 
   if [ -n "$context" ]; then
-    echo "{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":${context}}}"
+    echo "{\"hookSpecificOutput\":{\"hookEventName\":\"${HOOK_EVENT_NAME}\",\"additionalContext\":${context}}}"
     exit 0
   fi
 fi
