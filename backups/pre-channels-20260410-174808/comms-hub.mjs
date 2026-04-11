@@ -1980,15 +1980,6 @@ try {
 } catch {}
 
 async function telegramPoll() {
-  // Channels takeover: when CHANNELS_INBOUND_TAKEOVER=1 in .env, the Claude Code
-  // Channels plugin owns Telegram inbound instead of this hub. Outbound /send
-  // still works from this hub (different code path). Toggle via .env; restart required.
-  if (process.env.CHANNELS_INBOUND_TAKEOVER === '1') {
-    log('Telegram inbound DISABLED (CHANNELS_INBOUND_TAKEOVER=1) — Channels plugin owns inbound. Outbound /send remains active.');
-    updateChannelStatus(state, 'telegram', 'handoff-to-channels');
-    saveState(state);
-    return;
-  }
   log(`Telegram polling started from offset ${telegramOffset}`);
   updateChannelStatus(state, 'telegram', 'active');
   saveState(state);

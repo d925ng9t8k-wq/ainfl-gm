@@ -1,0 +1,14 @@
+{
+  "dmPolicy": "pairing",
+  "allowFrom": [],
+  "groups": {},
+  "pending": {
+    "b64aac": {
+      "senderId": "8784022142",
+      "chatId": "8784022142",
+      "createdAt": 1775849971474,
+      "expiresAt": 1775853571474,
+      "replies": 1
+    }
+  }
+}

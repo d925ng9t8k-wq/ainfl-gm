@@ -1,0 +1,428 @@
+{
+  "channels": {
+    "telegram": {
+      "status": "active",
+      "lastActivity": "2026-04-10T21:14:34.975Z",
+      "messagesHandled": 4158,
+      "errors": [
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-06T06:18:57.602Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-06T06:19:02.727Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-06T06:19:07.848Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-06T06:19:12.968Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-06T06:19:18.083Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-06T06:19:23.194Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-07T02:52:27.139Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-07T02:52:42.765Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-07T02:52:58.385Z"
+        },
+        {
+          "error": "fetch failed",
+          "timestamp": "2026-04-07T02:53:14.017Z"
+        }
+      ]
+    },
+    "imessage": {
+      "status": "active",
+      "lastActivity": "2026-04-10T21:14:35.103Z",
+      "messagesHandled": 7,
+      "errors": []
+    },
+    "email": {
+      "status": "active",
+      "lastActivity": "2026-04-10T21:31:17.322Z",
+      "messagesHandled": 99,
+      "errors": [
+        {
+          "error": "Command failed: osascript -e 'tell application \"Mail\"\n  set newMsg to make new outgoing message with properties {subject:\"9 Alert\", content:\"Claude API unreachable: socket hang up. Check billing at console.anthropic.com/settings/billing\", visible:false}\n  tell newMsg\n    make new to recipient at end of to recipients with properties {address:\"emailfishback@gmail.com\"}\n    set sender to \"captain@ainflgm.com\"\n  end tell\n  send newMsg\nend tell'\n40:223: execution error: Mail got an error: AppleEvent timed out. (-1712)\n",
+          "timestamp": "2026-03-26T04:46:30.616Z"
+        },
+        {
+          "error": "Command failed: osascript -e 'tell application \"Mail\"\n  set newMsg to make new outgoing message with properties {subject:\"9 Alert\", content:\"Claude API unreachable: socket hang up. Check billing at console.anthropic.com/settings/billing\", visible:false}\n  tell newMsg\n    make new to recipient at end of to recipients with properties {address:\"emailfishback@gmail.com\"}\n    set sender to \"captain@ainflgm.com\"\n  end tell\n  send newMsg\nend tell'\n40:223: execution error: Mail got an error: AppleEvent timed out. (-1712)\n",
+          "timestamp": "2026-03-26T04:57:03.562Z"
+        },
+        {
+          "error": "Command failed: osascript -e 'tell application \"Mail\"\n  set newMsg to make new outgoing message with properties {subject:\"From 9\", content:\"9: Test email routing\", visible:false}\n  tell newMsg\n    make new to recipient at end of to recipients with properties {address:\"emailfishback@gmail.com\"}\n    set sender to \"captain@ainflgm.com\"\n  end tell\n  send newMsg\nend tell'\n40:148: execution error: Mail got an error: AppleEvent timed out. (-1712)\n",
+          "timestamp": "2026-03-26T14:59:29.088Z"
+        },
+        {
+          "error": "connect ENETUNREACH 172.253.63.109:587 - Local (0.0.0.0:50312)",
+          "timestamp": "2026-03-31T22:06:31.220Z"
+        },
+        {
+          "error": "connect EHOSTUNREACH 2607:f8b0:4004:c08::6d:587 - Local (:::50354)",
+          "timestamp": "2026-03-31T22:10:43.124Z"
+        },
+        {
+          "error": "No recipients defined",
+          "timestamp": "2026-04-03T16:59:52.058Z"
+        }
+      ]
+    },
+    "voice": {
+      "status": "active",
+      "lastActivity": "2026-04-10T21:47:35.303Z",
+      "callsHandled": 0,
+      "errors": []
+    }
+  },
+  "recentMessages": [
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: ROOMS-HUB-4 - Error: EACCES: permission denied, mkdir → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:04.741Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:04.997Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:05.128Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:05.417Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:05.901Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: ROOMS-HUB-6 - Error: write EPIPE → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:06.148Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: 9 Enterprises — Expense Report 8:00 PM ET — End of Day (April 8, 2026) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:06.804Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:06.853Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: ROOMS-HUB-5 - TypeError: Cannot convert undefined or null to object → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:07.113Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:29:07.623Z"
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Your Video is Ready!] --2cf1ddf7625809cf6311145d58a16b302ee6c9a164f12ce6227e93a9c074 Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=\"utf-8\"  HeyGen ( https://www.heygen.com/?utm_campaign=3DOPS-Video_is_ready&utm_cont= ent=3DVideo+ready+%2B+transactional+ip&utm_medium=3Demail_action&utm_source= =3Dcustomerio )  Hi Jasson,  Your AI video is ready!  Dynamic GIF ( https://api2.heygen.com/click?qs=3DeyJyZWRpcmVjdF91cmwiOiAiaH= R0cHM6Ly9hcHAuaGV5Z2VuLmNvbS92aWRlb3MvOGVjYzM1ZjRiOTEwNDAzM2JiNTE",
+      "timestamp": "2026-04-10T21:30:08.600Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Your Video is Ready!] --9493f630b29b893492fe6cdad673282dc9aa5c00d7bf1c21e353dfc3233a Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=\"utf-8\"  HeyGen ( https://www.heygen.com/?utm_campaign=3DOPS-Video_is_ready&utm_cont= ent=3DVideo+ready+%2B+transactional+ip&utm_medium=3Demail_action&utm_source= =3Dcustomerio )  Hi Jasson,  Your AI video is ready!  Dynamic GIF ( https://api2.heygen.com/click?qs=3DeyJyZWRpcmVjdF91cmwiOiAiaH= R0cHM6Ly9hcHAuaGV5Z2VuLmNvbS92aWRlb3MvNjJmMTQ2ZGY1M2ZiNDQ4Y2E3MzY",
+      "timestamp": "2026-04-10T21:30:08.603Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[ROOMS-HUB-7 - 5 new alerts since April 8, 2026, 9:24 p.m. EDT] --===============1933360966896569122== Content-Type: text/plain; charset=us-ascii MIME-Version: 1.0 Content-Transfer-Encoding: 7bit    Notifications for rooms-hub April 8, 2026, 9:24 p.m. EDT to April 8, 2026, 9:24 p.m. EDT  Send a notification for high priority issues  * Error: write EPIPE (3 events, 0 users)   https://sentry.io/organizations/9enterprises/issues/7397542725/?referrer=digest_email  * Error: write EPIPE (1 event, 0 users)   https://sentry.io/organizations/9enterprises/issues/73975",
+      "timestamp": "2026-04-10T21:30:08.605Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Your Video is Ready!] --b064ab29134e5f54251c139303ff3586320ccb8b6a01a5b26548580cbe79 Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=\"utf-8\"  HeyGen ( https://www.heygen.com/?utm_campaign=3DOPS-Video_is_ready&utm_cont= ent=3DVideo+ready+%2B+transactional+ip&utm_medium=3Demail_action&utm_source= =3Dcustomerio )  Hi Jasson,  Your AI video is ready!  Dynamic GIF ( https://api2.heygen.com/click?qs=3DeyJyZWRpcmVjdF91cmwiOiAiaH= R0cHM6Ly9hcHAuaGV5Z2VuLmNvbS92aWRlb3MvMGIxMTQzYzI4ZmEzNGNmYjg5MDB",
+      "timestamp": "2026-04-10T21:30:08.607Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Your Video is Ready!] --04d7351d7a48145b4fc264b3c3d563704ba115280e613f2e64aae2cb9156 Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=\"utf-8\"  HeyGen ( https://www.heygen.com/?utm_campaign=3DOPS-Video_is_ready&utm_cont= ent=3DVideo+ready+%2B+transactional+ip&utm_medium=3Demail_action&utm_source= =3Dcustomerio )  Hi Jasson,  Your AI video is ready!  Dynamic GIF ( https://api2.heygen.com/click?qs=3DeyJyZWRpcmVjdF91cmwiOiAiaH= R0cHM6Ly9hcHAuaGV5Z2VuLmNvbS92aWRlb3MvZWExNmExMmVkMmQ0NDkzZWE4YWU",
+      "timestamp": "2026-04-10T21:30:08.608Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[9 Enterprises — Expense Report 10:00 PM ET (April 8, 2026)] ----_NmP-7a347bb8013bcd5b-Part_1 Content-Type: text/plain; charset=utf-8 Content-Transfer-Encoding: quoted-printable  # 9 Enterprises =E2=80=94 Hourly Expense Report **Generated:** 2026-04-08 = 10:00 PM ET **Prepared by:** MONEY | Budget: UNCAPPED  ## Day Final (no changes from 9 PM)  | Metric | Value | Status | |--------|-------|--------| | API cost (token log) | $13.21 | VALIDATED | | HeyGen credits | 208/1,000 | VALIDATED | | ElevenLabs | 31.8% | VALIDATED=  | | Twilio | $40.88 | VALIDATED |",
+      "timestamp": "2026-04-10T21:30:08.609Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Elena V3 Self-Scout — 7.5/10 (April 8, 2026)] ----_NmP-fa3e9c656b6ebece-Part_1 Content-Type: text/plain; charset=utf-8 Content-Transfer-Encoding: quoted-printable  # Elena V3 Self-Scout -- Introduction Video **Date:** April 8-9, 2026 **Deliverable:** elena-introduction-v3-final.mp4 **Runtime:** 5:21 (321.8 = seconds) **Resolution:** 1920x1080, 25fps, H.264 **Bitrate:** 6,088kbps = (target was 4,000+) **File Size:** 234MB  ---  ## Context  V1 scored 3/10. V2 scored 7/10 by self-scout, 3/10 by Owner. This is V3 -- = the final attempt. The Own",
+      "timestamp": "2026-04-10T21:30:08.610Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[JUDGE Ethics Review — Elena Performance (April 8, 2026)] ----_NmP-033489bf2a303b3e-Part_1 Content-Type: text/plain; charset=utf-8 Content-Transfer-Encoding: quoted-printable  # JUDGE Ethics Review =E2=80=94 Elena, Video Production Director **Date:** April 8, 2026 **Reviewer:** JUDGE, QC Director **Subject:** Elena =E2=80=94 Performance & Ethics Review (Triggered by = Owner V3 Score: 5/10) **Review Type:** For-Cause Performance Review (3 = deliverable cycles below gold standard)  ---  ## 1. Background  Elena was hired April 8, 2026 as Video Production",
+      "timestamp": "2026-04-10T21:30:08.611Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[[Preview] Report Domain: 9enterprises.ai Submitter: enterprise.protection.outlook.com Report-ID: a5dfbfffd88a404d98026a35bbf6975d] This is a multi-part message in MIME format.  --_mpm_a4bcd9a515b44b9d8eceb05d7333675fpiotk5m200exchangecorpm_ Content-Type: multipart/related; \tboundary=\"_rv_a4bcd9a515b44b9d8eceb05d7333675fpiotk5m200exchangecorpm_\"  --_rv_a4bcd9a515b44b9d8eceb05d7333675fpiotk5m200exchangecorpm_ Content-Type: multipart/alternative; \tboundary=\"_av_a4bcd9a515b44b9d8eceb05d7333675fpiotk5m200exchangecorpm_\"  --_av_a4bcd9a515b44b9d8eceb05d7333675fpiotk5m200exchangecorpm_   --_av_a4bcd9a515b44b9d8eceb05d7333675fpiotk5",
+      "timestamp": "2026-04-10T21:30:08.612Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Your Video is Ready!] --2dcfde46ad5a8b903ba7c4234c20b48f5cd2f821bedd2025b9ddf6ea2923 Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=\"utf-8\"  HeyGen ( https://www.heygen.com/?utm_campaign=3DOPS-Video_is_ready&utm_cont= ent=3DVideo+ready+%2B+transactional+ip&utm_medium=3Demail_action&utm_source= =3Dcustomerio )  Hi Jasson,  Your AI video is ready!  Dynamic GIF ( https://api2.heygen.com/click?qs=3DeyJyZWRpcmVjdF91cmwiOiAiaH= R0cHM6Ly9hcHAuaGV5Z2VuLmNvbS92aWRlb3MvMjc4NzlkMjg2YmU4NDFjN2E3MmR",
+      "timestamp": "2026-04-10T21:30:08.613Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: [Preview] Report Domain: 9enterprises.ai Submitter: enterprise.protection.outlook.com Report-ID: a5dfbfffd88a404d98026a35bbf6975d → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:09.354Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:09.644Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:09.775Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:10.617Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:10.836Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: JUDGE Ethics Review — Elena Performance (April 8, 2026) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:11.023Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Your Video is Ready! → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:11.342Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Elena V3 Self-Scout — 7.5/10 (April 8, 2026) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:11.844Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: ROOMS-HUB-7 - 5 new alerts since April 8, 2026, 9:24 p.m. EDT → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:12.105Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: 9 Enterprises — Expense Report 10:00 PM ET (April 8, 2026) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:30:12.328Z"
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[[d925ng9t8k-wq/ainfl-gm] Run failed: Deploy to GitHub Pages - main (0c8b09b)] --part_aae6523378f042e68df8ff984a5f51e6dcf4f5a02d912716138c56a2c56d0173 Content-Transfer-Encoding: 7bit Content-Type: text/plain; charset=UTF-8  [d925ng9t8k-wq/ainfl-gm] Deploy to GitHub Pages workflow run  Repository: d925ng9t8k-wq/ainfl-gm Workflow: Deploy to GitHub Pages Duration: 41.0 seconds Finished: 2026-04-09 07:38:00 UTC  View results: https://github.com/d925ng9t8k-wq/ainfl-gm/actions/runs/24178436431  Jobs:   * build-and-deploy failed (18 annotations)  --  You are receiving this becaus",
+      "timestamp": "2026-04-10T21:31:13.929Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[playaigm.com is now active on Cloudflare (Free plan)] --_----n3atpWzBLcbwSR/Ep9dKaQ===_0C/CD-51510-46D96D96 Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=\"UTF-8\"  Cloudflare's network is now boosting =E2=80=99s speed and security=0A =0AVi= ew domain analytics: https://post.spmailtechno.com/f/a/rxDKvcz1fvJ2Y-KTC0hE= gw~~/AAQLhhA~/1fnQ2e4SBaE-N3ItMqauHpnA1kc_fI4lQNg8rSL8lVM7xjBvdxc1qzOw-5BNV= TS8dHAVB1XNh8OMZ4Ya6umEY469LJyufjzyAkE8BwY5tC9apcwe5ViobE847aGku8jF6f898P7W= 9fpqZ1XsQA0DEb7bxwavkheO5QSGdaKw7iLgLlNQ2tkRImNFa0P",
+      "timestamp": "2026-04-10T21:31:13.932Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[JF - OVV] --00000000000011dd37064f068bee Content-Type: text/plain; charset=\"UTF-8\"  Hi Jamie and Jasson,  I am reaching out to connect on plans for Jacy next year (26-27 SY).  I know we have talked about this a lot... We are ready to serve her in FHSD and we think this is her least restrictive environment.  However, if you are thinking you will choose to keep her at OVV next year, I'd like to start working with OVV on those arrangements.  Can we please set up a phone call?  Thanks!  --  James C. Roth (Jam",
+      "timestamp": "2026-04-10T21:31:13.935Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[2026 NFL Draft Contest] --d7ad86abdbf1d369c262df445527a1e9425a5d4499ff0f69deb278b359f4 Content-Transfer-Encoding: quoted-printable Content-Type: text/plain; charset=utf-8 Mime-Version: 1.0  View image: (https://media.beehiiv.com/cdn-cgi/image/fit=3Dscale-down,forma= t=3Dauto,onerror=3Dredirect,quality=3D80/uploads/asset/file/a76d10ee-ea0c-4= c31-9974-a3356eaccf2c/header_clean.png?t=3D1771711063) Caption: _Want to reach 30,000+ NFL fans? __**[Partner with us.](https://do= cs.google.com/forms/d/1nPjlwdwm0Tcnh8kl7xDY0p8-l",
+      "timestamp": "2026-04-10T21:31:13.936Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[[d925ng9t8k-wq/ainfl-gm] Run failed: Weekly Data Refresh - main (53797a6)] --part_e4b20bcdeb4ad1e0a242deff0bbfc9e7208766533bb8a1e36dbe4463f835f5e6 Content-Transfer-Encoding: 7bit Content-Type: text/plain; charset=UTF-8  [d925ng9t8k-wq/ainfl-gm] Weekly Data Refresh workflow run  Repository: d925ng9t8k-wq/ainfl-gm Workflow: Weekly Data Refresh Duration: 53.0 seconds Finished: 2026-04-09 23:55:44 UTC  View results: https://github.com/d925ng9t8k-wq/ainfl-gm/actions/runs/24219184786  Jobs:   * refresh-data failed (2 annotations)  --  You are receiving this because you are s",
+      "timestamp": "2026-04-10T21:31:13.937Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Monthly Claude API Spend Exceeding Thresholds] <!doctype html><html lang=3D\"und\" dir=3D\"auto\" xmlns=3D\"http://www.w3.org/1= 999/xhtml\" xmlns:v=3D\"urn:schemas-microsoft-com:vml\" xmlns:o=3D\"urn:schemas= -microsoft-com:office:office\"><head><title></title><!--[if !mso]><!--><meta=  http-equiv=3D\"X-UA-Compatible\" content=3D\"IE=3Dedge\"><!--<![endif]--><meta=  http-equiv=3D\"Content-Type\" content=3D\"text/html; charset=3DUTF-8\"><meta n= ame=3D\"viewport\" content=3D\"width=3Ddevice-width,initial-scale=3D1\"><style = type=3D\"text/css\">#outlook a { padding",
+      "timestamp": "2026-04-10T21:31:13.938Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Report domain: 9enterprises.ai Submitter: google.com Report-ID: 9539943271843916528] UEsDBAoAAAAIAL1JilytXULAPwIAAH0LAAA0AAAAZ29vZ2xlLmNvbSE5ZW50ZXJwcmlzZXMuYWkh MTc3NTY5MjgwMCExNzc1Nzc5MTk5LnhtbO1WyW7bMBS85ysE3yNKsryoeGF66he0Z4Gmnm0iEkmQ VGzn6wua1NIs6HZrfTI5b5s3HAOCx3PXJs9orFDyYZGn2SJByVUj5OFh8e3rl/vtInmkd7BHbHaM P9G7JIGYT/M0AzJcfMCgVsbVHTrWMMc8liSgzKGWrEN6UOrQYspVB2QEQw52TLRUKoO6vdw3HTP8 3vbat/s8Lwt5sebsDKu5ko5xVwu5V/TonLafCIml6VRKGGHSntCQolyvV9sMyDv1oXFcQzS0Wi2r qlwWm3xbLqt8vSq2QKZwSG+Yw9oweYjLJAns8CAkzTeb1boqtlkGJCBDHGVzjW42VV5VQPw9NCM/ dhunzTUFrVrBL7Xud62wRxyJqI4JSSuUDo02wq",
+      "timestamp": "2026-04-10T21:31:13.939Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[[From Sky Rondovals to a rum club—your journey at Dunn's River ]🍹] This is a multi-part message in MIME format.  --UR2PZsMetLb3=_?: Content-Type: text/plain; \tcharset=\"utf-8\" Content-Transfer-Encoding: 8bit    Stargaze, sip, and soak at Dunn's River               We're updating our email domain—add  mailto:sales@e-sandalsmailings.com  sales@e-sandalsmailings.com   to your contact list so your inbox keeps receiving Caribbean sunshine.    https://click.e-sandalsmailings.com/?qs=eyJkZWtJZCI6ImYzNGM3ZDU2LTgzMDEtNDM0Yi1hNmQwLTUyNWUxMjM5MDE3YyIsImRla1ZlcnNpb24iOjEsIm",
+      "timestamp": "2026-04-10T21:31:13.940Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "in",
+      "text": "[Now live: Your access to FIFA World Cup 26™ match tickets] ----boundary_30047170_62c2ee6e-afea-4c56-bffd-220123351107 Content-Type: text/plain; charset=utf-8 Content-Transfer-Encoding: quoted-printable  * * American Airlines=0A=0A@import url(https://fonts.googleapis.c= om/css2?family=3DRoboto:ital,wght@0,400;0,700;1,500&display=3Dswa= p);=0A=0A=0A=0A&trade; match tickets is now open. As an AAdvantag= e=C2=AE member, you have exclusive access to match tickets with y= our AAdvantage&reg; miles.=0A=0AThe big event will be here before=  you know it, so don=",
+      "timestamp": "2026-04-10T21:31:13.941Z",
+      "read": true
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Monthly Claude API Spend Exceeding Thresholds → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:14.815Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: [d925ng9t8k-wq/ainfl-gm] Run failed: Deploy to GitHub Pages - main (0c8b09b) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:14.968Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: [d925ng9t8k-wq/ainfl-gm] Run failed: Weekly Data Refresh - main (53797a6) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:15.059Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: JF - OVV → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:15.424Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: playaigm.com is now active on Cloudflare (Free plan) → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:16.183Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Report domain: 9enterprises.ai Submitter: google.com Report-ID: 9539943271843916528 → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:16.405Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: 2026 NFL Draft Contest → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:16.604Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: Now live: Your access to FIFA World Cup 26™ match tickets → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:16.954Z"
+    },
+    {
+      "channel": "email",
+      "direction": "out",
+      "text": "[From 9] Re: [From Sky Rondovals to a rum club—your journey at Dunn's River ]🍹 → emailfishback@gmail.com: Got it — passing to terminal now.",
+      "timestamp": "2026-04-10T21:31:17.322Z"
+    },
+    {
+      "channel": "telegram",
+      "direction": "out",
+      "text": "9: False alarm on phishing. Forensic complete — I was wrong, apologies for the scare.\n\n**BTC/USD email:** real Alpaca confirmation from Sun Apr 5 (5 days old). Part of your normal trader9 activity. Alpaca API confirms zero BTC orders today. No action.\n\n**Google Account Recovery email:** real Google email from Sat Apr 4 (6 days old). Pulled your full Google security history — there is a complete recovery sequence:\n• Apr 3 13:50 — Critical alert Did you request help signing in?\n• Apr 3 13:50 — Account recovered successfully\n• Apr 4 15:28 — the email the hub surfaced today\n• Apr 5 21:34 — Finish setting up iPhone with Google\n• Apr 6 04:33 — New sign-in from Apple iPhone\n\n**ONE question, need a straight answer:** Did you recover your Google account around Apr 3 and set up your iPhone with it on Apr 5?\n\nYES → all clear, back to Path 2.\nNO → we have a 6-day-old account takeover that has been live, drop everything, lock the account down immediately.\n\n**Root cause of the false alarm:** hub bug I just found. After my hub restart for the OC fix, IMAP re-pulled every unseen email in the inbox regardless of age, including stuff from days ago. Treated them all as new. I will fix the hub to filter by age and persist dedup state to disk. Sidebar fix, ~10 lines.\n\n**My lesson burned:** verify-before-alarm, not just verify-before-assert. Should have run Gmail MCP cross-check BEFORE flagging phishing. Wasted your energy. Will not repeat.",
+      "timestamp": "2026-04-10T21:38:56.585Z"
+    },
+    {
+      "channel": "telegram",
+      "direction": "out",
+      "text": "9: ALL CLEAR. Not an attack.\n\nI verified in Wendy email handover playbook (memory/wendy_email_handover_playbook.md). The exact Mar 27 + Apr 3 + Apr 5 sequence is in her step-by-step. Prior 9 was running the email handover setup, hit a 2FA snag, asked you to run the Google recovery flow to unstick it, and then you re-enrolled your iPhone as the 2FA device per Wendy step 8. Fully legitimate, fully authorized, fully on-playbook.\n\nNo security incident. Both emails 100% legitimate and 5-6 days old. Zero action required.\n\n**Two lessons burned:**\n1. Verify-before-alarm. I will not flag phishing on preview text alone again. Gmail MCP cross-check comes FIRST.\n2. Hub IMAP replay bug is real. Will fix it as a sidebar after Path 2 so next restart does not re-trigger old emails.\n\nReady to resume Path 2 Phase 0 whenever you are. Just say go.",
+      "timestamp": "2026-04-10T21:44:37.212Z"
+    }
+  ],
+  "conversationHistory": [],
+  "heartbeatCount": 911,
+  "startTime": "2026-03-22T00:10:28.381Z",
+  "lastHeartbeat": "2026-04-10T21:44:33.622Z",
+  "terminal": {
+    "pid": 11407,
+    "token": "session-1775851770044-ugqmhd",
+    "claimedAt": "2026-04-10T21:48:08.789Z",
+    "lastPing": "2026-04-10T21:48:08.789Z",
+    "msSinceLastPing": 90
+  },
+  "relay": true,
+  "terminalState": "relay"
+}

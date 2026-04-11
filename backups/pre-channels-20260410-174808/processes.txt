@@ -1,0 +1,10 @@
+jassonfishback   32591   1.1  0.3 444864816 168832   ??  S     5:14PM   0:13.80 /opt/homebrew/bin/node /Users/jassonfishback/Projects/BengalOracle/scripts/comms-hub.mjs
+jassonfishback    7580   0.0  0.3 444849664 141872   ??  Ss   10:46PM   0:13.52 /opt/homebrew/bin/node /Users/jassonfishback/Projects/BengalOracle/scripts/trader9-bot.mjs
+jassonfishback    4926   0.0  0.1 436171744  63968   ??  SN   Wed08PM   0:14.56 /opt/homebrew/bin/node /Users/jassonfishback/Projects/BengalOracle/scripts/jules-telegram.mjs
+jassonfishback   57488   0.0  0.1 436448192  56496   ??  SN   Tue01AM   0:04.13 node scripts/voice-server.mjs
+jassonfishback   57452   0.0  0.2 436459440 101760   ??  S    Tue01AM   2:06.22 /opt/homebrew/bin/node /Users/jassonfishback/Projects/BengalOracle/scripts/voice-server.mjs
+jassonfishback   96791   0.0  0.2 436138288  85296   ??  S    Sun01PM  26:45.47 /opt/homebrew/bin/node /Users/jassonfishback/Projects/BengalOracle/scripts/ram-watch-agent.mjs
+jassonfishback   73696   0.0  0.2 444572736  89680   ??  SN   Sun12PM   0:40.79 /opt/homebrew/bin/node scripts/trinity-agent.mjs
+jassonfishback   72439   0.0  0.1 436171216  62816   ??  SN   Sun12PM   0:15.56 /opt/homebrew/bin/node scripts/pilot-server.mjs
+jassonfishback   71624   0.0  0.1 436133728  43760   ??  SN   27Mar26   0:14.46 node scripts/underwriter-api.mjs
+jassonfishback   11481   0.0  0.0 436374224   6080 s001  S+    3:39PM   0:00.01 bun run --cwd /Users/jassonfishback/.claude/plugins/cache/claude-plugins-official/telegram/0.0.4 --shell=bun --silent start

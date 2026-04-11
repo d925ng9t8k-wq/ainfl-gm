@@ -1,0 +1,12 @@
+-rw-r--r--  1 jassonfishback  wheel   53124 Apr  9 04:00 /tmp/9-bh-test.mp3
+-rw-r--r--  1 jassonfishback  wheel  624234 Apr  9 04:01 /tmp/9-bh-test.wav
+-rw-r--r--  1 jassonfishback  wheel  153435 Apr  9 03:56 /tmp/9-blackhole-test.mp3
+-rw-r--r--  1 jassonfishback  wheel       6 Apr 10 16:10 /tmp/9-claude-pid
+-rw-r--r--@ 1 jassonfishback  wheel      11 Apr 10 17:48 /tmp/9-last-tool-call
+-rw-r--r--  1 jassonfishback  wheel      29 Apr 10 16:10 /tmp/9-session-token
+-rw-r--r--  1 jassonfishback  wheel      29 Apr  8 22:49 /tmp/9-session-token.txt
+-rw-r--r--  1 jassonfishback  wheel   36606 Apr 10 15:39 /tmp/9-terminal-opener.log
+-rw-r--r--  1 jassonfishback  wheel       5 Apr 10 16:09 /tmp/9-terminal-pid
+-rw-r--r--  1 jassonfishback  wheel  219472 Apr  9 02:59 /tmp/9-voice-live.mp3
+-rw-r--r--  1 jassonfishback  wheel   47273 Apr  9 03:00 /tmp/9-voice-short.mp3
+-rw-r--r--  1 jassonfishback  wheel  199410 Apr  9 02:58 /tmp/9-voice-test.mp3
