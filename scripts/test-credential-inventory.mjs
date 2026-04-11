@@ -47,6 +47,7 @@ const SYSTEM_ALLOWLIST = new Set([
   'CHANNELS_INBOUND_TAKEOVER', // runtime feature flag, not a credential
   'OC_RELAY_LOCKDOWN',         // runtime feature flag
   'BRIEFING_MODEL',            // model name override, not a credential
+  'GITHUB_TOKEN',              // implicit: injected by GitHub Actions runtime, not read from our code. Kept listed in doc for CIO completeness.
 ]);
 
 let passed = 0;

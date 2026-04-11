@@ -62,6 +62,49 @@ Each credential categorized by: which component uses it, whether it was found in
 | `HOME` | kids-mentor, comms-hub | System | OK | macOS system variable. Not set in .env — read from shell environment. |
 | **Dominos credentials** | food-order-poc.mjs | Payment + PII | FLAG | `DOMINOS_CARD_NUMBER`, `DOMINOS_CARD_CVV`, `DOMINOS_CARD_EXPIRY`, `DOMINOS_CARD_ZIP`, `DOMINOS_EMAIL`, `DOMINOS_FIRST_NAME`, `DOMINOS_LAST_NAME`, `DOMINOS_PHONE`, `DOMINOS_ADDRESS`, `DOMINOS_TIP` — full payment card data in .env. POC script only. If this is still in .env, it is a PCI DSS violation if the system were ever audited. |
 | `TUNNEL_URL` | voice-server, comms-hub | Config | REVIEW | Public tunnel URL. Changes on every tunnel restart. Keeping in .env creates staleness risk. |
+| `STRIPE_SECRET_KEY` | your9-billing | Payment | CRITICAL FLAG | Live Stripe secret key. Full access to charge customers, issue refunds, and read payment data. If leaked, attacker can create charges or exfiltrate customer PII. Rotate via Stripe dashboard if exposed. |
+| `STRIPE_PUBLISHABLE_KEY` | your9-billing | Payment | OK | Client-side publishable Stripe key. Safe to expose but still documented for completeness. |
+| `STRIPE_WEBHOOK_SECRET` | your9-billing | Payment | CRITICAL FLAG | Webhook signature secret. Without this, webhook signature verification is SKIPPED (hub logs a warning). If leaked, attacker can forge subscription events (activate without paying, trigger refunds). |
+| `STRIPE_PRICE_STARTER` | your9-billing | Payment Config | OK | Stripe price ID for Starter plan. Not secret but required for checkout. Falls back to a placeholder string if unset. |
+| `STRIPE_PRICE_GROWTH` | your9-billing | Payment Config | OK | Stripe price ID for Growth plan. Not secret. |
+| `STRIPE_PRICE_ENTERPRISE` | your9-billing | Payment Config | OK | Stripe price ID for Enterprise plan. Not secret. |
+| `SENTRY_DSN_COMMS_HUB` | comms-hub | Monitoring | MEDIUM | Sentry DSN for comms-hub error reporting. Not a high-impact secret but allows error injection into the Sentry project if leaked. |
+| `SENTRY_DSN_VOICE_SERVER` | voice-server | Monitoring | MEDIUM | Sentry DSN for voice-server error reporting. |
+| `SENTRY_DSN_TRADER9_BOT` | trader9-bot | Monitoring | MEDIUM | Sentry DSN for trader9-bot error reporting. |
+| `SENTRY_DSN` | usage-monitor | Monitoring | MEDIUM | Generic Sentry DSN. Fallback reference in usage-monitor for basic health checks. |
+| `SENTRY_AUTH_TOKEN` | usage-monitor | Monitoring | HIGH | Sentry API auth token. Gives read access to all projects in the Sentry org — can exfiltrate error logs which may contain PII, stack traces, and credentials. |
+| `KALSHI_API_KEY` | trader9-bot | Financial | CRITICAL FLAG | Kalshi prediction market API key. Gives trading access to the Kalshi account. If present + `PREDICTION_MARKET_ENABLED=true`, real-money orders ship. Paired with KYC'd account. |
+| `HYPERLIQUID_ENABLED` | trader9-bot | Feature Flag | LOW | Enables Hyperliquid funding-rate carry strategy. Scaffold-only unless set to `true`. Not a secret but controls real-money execution gate. |
+| `ALPACA_LIVE_ENABLED` | trader9-bot | Feature Flag | LOW | Hard gate for live Alpaca trading. FORT C-04: even if `ALPACA_LIVE_API_KEY` is present, paper mode is forced unless this is `true`. Not a secret but controls real-money execution gate. |
+| `PREDICTION_MARKET_ENABLED` | trader9-bot | Feature Flag | LOW | Hard gate for live Kalshi prediction market execution. Scaffold-only unless `true`. |
+| `MAX_DAILY_LOSS_PCT` | trader9-bot | Risk Config | LOW | Daily drawdown circuit breaker (default 3%). Not a secret but controls risk limits — if set too high, circuit breaker becomes ineffective. |
+| `YOUR9_AUTH_JWT_SECRET` | your9-auth | Auth | HIGH | JWT signing secret for Your9 auth tokens. If unset, a random per-process secret is generated and all tokens are invalidated on restart. If leaked, attacker can forge auth tokens for any Your9 user. |
+| `YOUR9_ADMIN_TOKEN` | your9-admin, your9-beta-feedback | Auth | HIGH | Admin API token for Your9 management endpoints. If unset, ephemeral token is generated and logged. If leaked, attacker has full admin control of Your9 instance. |
+| `YOUR9_AUTH_EMAIL_FROM` | your9-auth, your9-team-access | Email Config | OK | From address for Your9 auth/team emails (default `auth@your9.ai` or `team@your9.ai`). Not secret. |
+| `YOUR9_AUTH_BASE_URL` | your9-auth, your9-team-access | Config | OK | Base URL for Your9 magic-link emails (default `https://your9.ai`). Not secret. |
+| `YOUR9_WEBHOOK_PORT` | your9-multichannel | Config | OK | Port override for Your9 multichannel webhook server. Hash-derived fallback if unset. Not secret. |
+| `RESEND_API_KEY_FULL` | usage-monitor, your9-auth, your9-team-access | Email | HIGH | Full-scope Resend API key used as fallback when `RESEND_API_KEY` is absent. Sends transactional email on behalf of 9enterprises/your9.ai domains. If leaked, attacker can phish any customer from your domains. Rotate at resend.com. |
+| `CLOUDFLARE_API_TOKEN` | usage-monitor | Infra | CRITICAL FLAG | Cloudflare API token. Scope depends on how it was minted — potentially full account access. If leaked, attacker can nuke DNS, tunnels, Workers, Pages, and R2 buckets across the account. |
+| `DO_API_TOKEN` | usage-monitor | Infra | CRITICAL FLAG | DigitalOcean API token. Full droplet/k8s/database control. If leaked, attacker can destroy or exfiltrate all DO resources. |
+| `DIGITALOCEAN_TOKEN` | usage-monitor | Infra | CRITICAL FLAG | Alias for `DO_API_TOKEN`. Same risk profile. One of the two must be set for DO monitoring. Having both is a doubled rotation surface. |
+| `DNSIMPLE_API_TOKEN` | usage-monitor | Infra | HIGH | DNSimple API token. Grants DNS management for 9enterprises domains. If leaked, attacker can hijack domains, MITM email (by changing MX), and bypass TLS (by changing A records + reissuing certs). |
+| `DNSIMPLE_ACCOUNT_ID` | usage-monitor | Infra Config | OK | DNSimple account identifier. Not secret but required for API calls. |
+| `OPENAI_API_KEY` | usage-monitor | AI Provider | CRITICAL FLAG | OpenAI API key. If leaked, attacker can run up unlimited bills against the account. Monitor closely and rotate at first sign of abuse. |
+| `XAI_API_KEY` | usage-monitor | AI Provider | CRITICAL FLAG | xAI (Grok) API key used by Ara and consulting stack. If leaked, attacker can run up unlimited bills and impersonate Ara's backend. |
+| `TELEGRAM_OWNER_CHAT_ID` | your9-beta-feedback, your9-daily-briefing, your9-planner, your9-strategy-session, your9-usage-limits | Messaging Config | FLAG | Owner (Jasson) Telegram chat ID for inbound notifications. Not a credential but PII — identifies the account that receives all owner-level alerts. |
+| `OWNER_CHAT_ID` | your9-customer-success, your9-daily-feedback, your9-feedback-loop | Messaging Config | FLAG | Alias for `TELEGRAM_OWNER_CHAT_ID` used in the your9 feedback stack. Same PII concern; consolidate on one name. |
+| `ALPACA_EMAIL` | comms-hub, pepper-tools | Email Config | OK | Gmail address used for sending via the Alpaca-monitoring inbox (defaults to `emailfishback@gmail.com`). Not a credential but PII-adjacent. |
+| `GMAIL_ADDRESS` | comms-hub | Email Config | OK | Fallback Gmail address for transactional email sends when `ALPACA_EMAIL` is not set. PII-adjacent. |
+| `GMAIL_USER` | doc-daemon | Email Config | OK | Gmail username for IMAP login used by doc-daemon (defaults to `emailfishback@gmail.com`). Paired with `GMAIL_APP_PASSWORD`. PII-adjacent. |
+| `JASSON_EMAIL` | comms-hub | Email Config | FLAG | Owner email address used as the transport account for all outbound mail. Hardcoded in comms-hub.mjs at line 674 — env var only honored in two helper paths. PII. |
+| `TWILIO_BACKUP_3` | family-chat | Telephony | REVIEW | Third Twilio backup from-number for family-chat fallback. Hardcoded fallback `+15137964979` if unset. Document why three Twilio numbers are in play (see M-02). |
+| `X_API_KEY_SECRET` | x9-poster | Social Media | REVIEW | X (Twitter) API key secret. Paired with `X_API_KEY`. Note the name diverges from `X_API_SECRET` elsewhere in this doc — both appear in code. Consolidate or document the split. |
+| `X_ACCESS_TOKEN_SECRET` | x9-poster | Social Media | REVIEW | X (Twitter) OAuth access token secret. Paired with `X_ACCESS_TOKEN`. Note the name diverges from `X_ACCESS_SECRET` elsewhere in this doc — both appear in code. |
+| `X9_PROTON_PASSWORD` | create-proton-account, create-reddit-account, create-x-account | Auth | CRITICAL FLAG | Password for the x9 Proton Mail account used as the identity anchor for all x9 social accounts (Reddit, X, future). If leaked, attacker can take over the entire x9 online identity stack. |
+| `X9_PROTON_EMAIL` | create-reddit-account, create-x-account | Auth Config | FLAG | Email address for the x9 Proton Mail account (default `x9agent@proton.me`). Not secret by itself but paired with `X9_PROTON_PASSWORD` is full account access. |
+| `CAPMONSTER_API_KEY` | create-reddit-account | Automation | HIGH | CapMonster Cloud API key for automated hCaptcha solving during x9 account creation. If leaked, attacker can burn through CapMonster credits. Rotate at capmonster.cloud if exposed. |
+| `STRATEGY_SESSION_DAY` | your9-strategy-session | Config | LOW | Day-of-week override for weekly strategy session trigger. Not secret. |
+| `STRATEGY_SESSION_HOUR` | your9-strategy-session | Config | LOW | Hour-of-day override for weekly strategy session trigger. Not secret. |
 
 ---
 
@@ -134,7 +177,7 @@ The following categories of credentials are likely in .env based on the services
 
 - `RESEND_API_KEY` — Resend email service mentioned in memory files but not found in any script
 - `HEYGEN_API_KEY` — HeyGen video API, API key visible in screenshots, but no script found importing it
-- `GITHUB_TOKEN` — Used by GitHub Actions implicitly but not referenced in any local script
+- `GITHUB_TOKEN` — **implicit — injected by GitHub Actions runtime, not read from our code.** Kept listed for completeness so CIO audits see that GitHub Actions workflows do have a token available to them (scoped per-workflow by the runner). Allowlisted in `scripts/test-credential-inventory.mjs` for this reason.
 
 ---
 
