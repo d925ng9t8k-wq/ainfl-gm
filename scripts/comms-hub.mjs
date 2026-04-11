@@ -134,6 +134,88 @@ async function syncActionToSupabase(id, action_type, description, status, timest
   }
 }
 
+// Phase 3 wave 2 — close the reverse-drift hole by mirroring every write to
+// decisions/memory/tasks into Supabase. Prior to this, only messages + actions
+// had post-write hooks, so decisions, memory entries, and tasks accumulated
+// LOCAL-ONLY rows. Each one widened the gap the drift detector could see.
+// All three sync writers below mirror the fire-and-forget + DLQ pattern of the
+// two sync writers above.
+async function syncDecisionToSupabase(id, decision, context, outcome, timestamp, sessionId = '') {
+  if (!supabase) return;
+  try {
+    const row = {
+      decision: (decision || '').slice(0, 4000),
+      context: (context || '').slice(0, 4000),
+      outcome: (outcome || '').slice(0, 2000),
+      timestamp,
+      session_id: sessionId || '',
+    };
+    if (id) row.id = id;
+    const { error } = await supabase.from('decisions').upsert(row, { onConflict: 'id' });
+    if (error) {
+      log(`[supabase] Decision sync FAILED id=${id}: ${error.message} — writing to DLQ`);
+      try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'decisions', row, error: error.message, at: new Date().toISOString() }) + '\n'); } catch {}
+    }
+  } catch (e) {
+    log(`[supabase] Decision sync ERROR id=${id}: ${e.message} — writing to DLQ`);
+    try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'decisions', id, decision: (decision || '').slice(0, 500), error: e.message, at: new Date().toISOString() }) + '\n'); } catch {}
+  }
+}
+
+// Memory uses `name` as the natural key — upsert on name, not id.
+async function syncMemoryToSupabase(name, type, description, content, created_at, updated_at) {
+  if (!supabase) return;
+  try {
+    const row = {
+      name,
+      type: type || 'general',
+      description: (description || '').slice(0, 2000),
+      content: (content || '').slice(0, 100000),
+      created_at,
+      updated_at,
+    };
+    const { error } = await supabase.from('memory').upsert(row, { onConflict: 'name' });
+    if (error) {
+      log(`[supabase] Memory sync FAILED name=${name}: ${error.message} — writing to DLQ`);
+      try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'memory', row, error: error.message, at: new Date().toISOString() }) + '\n'); } catch {}
+    }
+  } catch (e) {
+    log(`[supabase] Memory sync ERROR name=${name}: ${e.message} — writing to DLQ`);
+    try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'memory', name, type, error: e.message, at: new Date().toISOString() }) + '\n'); } catch {}
+  }
+}
+
+// Tasks — the full row shape mirrors the SQLite tasks table. Callers pass the
+// full row object (read back from SQLite after write) so create/update/complete
+// all share one sync path with the exact current state of the row.
+async function syncTaskToSupabase(row) {
+  if (!supabase) return;
+  if (!row || !row.id) return;
+  try {
+    const payload = {
+      id: row.id,
+      title: (row.title || '').slice(0, 1000),
+      description: (row.description || '').slice(0, 4000),
+      status: row.status || 'queued',
+      assigned_to: row.assigned_to || 'unassigned',
+      priority: row.priority || 'medium',
+      project: row.project || '',
+      created_at: row.created_at,
+      started_at: row.started_at || null,
+      completed_at: row.completed_at || null,
+      result: (row.result || '').slice(0, 4000),
+    };
+    const { error } = await supabase.from('tasks').upsert(payload, { onConflict: 'id' });
+    if (error) {
+      log(`[supabase] Task sync FAILED id=${row.id}: ${error.message} — writing to DLQ`);
+      try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'tasks', row: payload, error: error.message, at: new Date().toISOString() }) + '\n'); } catch {}
+    }
+  } catch (e) {
+    log(`[supabase] Task sync ERROR id=${row?.id}: ${e.message} — writing to DLQ`);
+    try { appendFileSync('logs/supabase-dlq.jsonl', JSON.stringify({ table: 'tasks', id: row?.id, error: e.message, at: new Date().toISOString() }) + '\n'); } catch {}
+  }
+}
+
 // ─── Outbound Message WAL (Write-Ahead Log) ─────────────────────────────────
 // Prevents duplicate sends on crash recovery. Every outbound message gets a
 // unique ID written to the WAL BEFORE send. On restart, the hub checks the WAL
@@ -251,7 +333,74 @@ if (db) {
     return id;
   };
 
-  console.log('[supabase] Post-write hooks attached to db.logMessage and db.logAction');
+  // Phase 3 wave 2 — decisions/memory/tasks hooks. Close the reverse-drift
+  // hole: these tables previously accumulated LOCAL-ONLY rows because no post-
+  // write hook existed. Same fire-and-forget wrapper pattern as above.
+  const _origLogDecision = db.logDecision.bind(db);
+  db.logDecision = function(decision, context = '', outcome = '', sessionId = '') {
+    const id = _origLogDecision(decision, context, outcome, sessionId);
+    const timestamp = new Date().toISOString();
+    syncDecisionToSupabase(id, decision, context, outcome, timestamp, sessionId).catch(() => {});
+    return id;
+  };
+
+  const _origSaveMemory = db.saveMemory.bind(db);
+  db.saveMemory = function(name, type, description, content) {
+    _origSaveMemory(name, type, description, content);
+    // Read back the canonical row so created_at / updated_at match what
+    // SQLite actually stored (saveMemory is upsert — we cannot assume now()).
+    let row = null;
+    try { row = db.getMemory(name); } catch {}
+    const ts = new Date().toISOString();
+    syncMemoryToSupabase(
+      name,
+      type,
+      description,
+      content,
+      row?.created_at || ts,
+      row?.updated_at || ts
+    ).catch(() => {});
+  };
+
+  // Tasks: create/update/complete — each re-fetches the full row from SQLite
+  // after write so Supabase always gets the canonical current state.
+  const _origCreateTask = db.createTask.bind(db);
+  db.createTask = function(title, description, assignedTo = 'unassigned', priority = 'medium', project = '') {
+    const id = _origCreateTask(title, description, assignedTo, priority, project);
+    if (id) {
+      try {
+        const row = db._db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+        if (row) syncTaskToSupabase(row).catch(() => {});
+      } catch (e) {
+        log(`[supabase] createTask readback failed id=${id}: ${e.message}`);
+      }
+    }
+    return id;
+  };
+
+  const _origUpdateTask = db.updateTask.bind(db);
+  db.updateTask = function(id, updates) {
+    _origUpdateTask(id, updates);
+    try {
+      const row = db._db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+      if (row) syncTaskToSupabase(row).catch(() => {});
+    } catch (e) {
+      log(`[supabase] updateTask readback failed id=${id}: ${e.message}`);
+    }
+  };
+
+  const _origCompleteTask = db.completeTask.bind(db);
+  db.completeTask = function(id, result = '') {
+    _origCompleteTask(id, result);
+    try {
+      const row = db._db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+      if (row) syncTaskToSupabase(row).catch(() => {});
+    } catch (e) {
+      log(`[supabase] completeTask readback failed id=${id}: ${e.message}`);
+    }
+  };
+
+  console.log('[supabase] Post-write hooks attached to db.logMessage, db.logAction, db.logDecision, db.saveMemory, db.createTask, db.updateTask, db.completeTask');
 }
 
 // ─── Phase 3 #2: Reverse-drift back-fill (cloud → local SQLite) ──────────────
@@ -411,6 +560,75 @@ async function pullFromSupabaseOnce() {
 setTimeout(() => {
   pullFromSupabaseOnce().catch(e => log(`[supabase-backfill] fatal: ${e.message}`));
 }, 10000);
+
+// Apr 10 hunt — Ara's Phase 3 #2 merge: enforceBidirectionalSync as permanent
+// runtime safety net. Runs at startup (15s — after the initial pull) and
+// every 5 min thereafter. Counts rows in local SQLite + Supabase, pulls again
+// only if they disagree. Safer than forcing pullFromSupabaseOnce unconditionally
+// because it's a no-op when already in sync.
+async function enforceBidirectionalSync() {
+  if (!supabase) return;
+  try {
+    const tables = ['messages', 'actions', 'decisions', 'memory', 'tasks'];
+    const localCounts = {};
+    const cloudCounts = {};
+    for (const t of tables) {
+      try {
+        if (db) {
+          const row = db._db.prepare(`SELECT count(*) as c FROM ${t}`).get();
+          localCounts[t] = row?.c ?? -1;
+        }
+      } catch { localCounts[t] = -1; }
+      try {
+        const { count, error } = await supabase.from(t).select('*', { count: 'exact', head: true });
+        cloudCounts[t] = error ? -1 : (count ?? -1);
+      } catch { cloudCounts[t] = -1; }
+    }
+    // Mismatch = any table where cloud > local (reverse drift — the real failure mode)
+    // OR any table where cloud < local by more than 5 rows (forward drift worth noting).
+    let mismatch = false;
+    for (const t of tables) {
+      if (cloudCounts[t] === -1 || localCounts[t] === -1) continue; // skip unreachable
+      if (cloudCounts[t] > localCounts[t]) { mismatch = true; break; }
+    }
+    if (mismatch) {
+      log(`[drift-fix] Reverse drift detected — calling pullFromSupabaseOnce. local=${JSON.stringify(localCounts)} cloud=${JSON.stringify(cloudCounts)}`);
+      await pullFromSupabaseOnce();
+      log(`[drift-fix] Reverse drift corrected`);
+    }
+  } catch (e) {
+    log(`[drift-fix] enforceBidirectionalSync error: ${e.message}`);
+  }
+}
+// Schedule: one at 15s (after the initial pullFromSupabaseOnce), then every 5 min
+setTimeout(() => { enforceBidirectionalSync().catch(() => {}); }, 15000);
+setInterval(() => { enforceBidirectionalSync().catch(() => {}); }, 300000);
+
+// Apr 10 hunt — Ara's Phase 3 #1 merge: drain the Supabase DLQ ONCE at boot
+// in addition to the per-cycle drain in the watchdog loop. Catches any
+// backlog that accumulated while the hub was down. Also fires a Telegram
+// alert if the DLQ has >5 entries at boot time (operator visibility).
+setTimeout(async () => {
+  try {
+    const DLQ_PATH = 'logs/supabase-dlq.jsonl';
+    let preLines = 0;
+    try {
+      if (existsSync(DLQ_PATH)) {
+        preLines = readFileSync(DLQ_PATH, 'utf-8').split('\n').filter(l => l.trim()).length;
+      }
+    } catch {}
+    if (preLines > 5) {
+      log(`[supabase-dlq] startup: DLQ has ${preLines} entries — alerting`);
+      try { sendTelegram(`[9 watchdog] Supabase DLQ has ${preLines} entries at boot. Backlog of failed cloud syncs. Draining now.`).catch(() => {}); } catch {}
+    }
+    if (preLines > 0 && typeof drainSupabaseDlq === 'function') {
+      log(`[supabase-dlq] startup: draining ${preLines} entries`);
+      await drainSupabaseDlq();
+    }
+  } catch (e) {
+    log(`[supabase-dlq] startup drain error: ${e.message}`);
+  }
+}, 20000);
 
 // ─── Port Guard (check FIRST, before loading anything) ──────────────────────
 // Prevents LaunchAgent restart spam from burning Cloudflare quota
@@ -3640,6 +3858,42 @@ async function verifyTwilioUrl() {
 
 setInterval(verifyTwilioUrl, 5 * 60 * 1000); // Every 5 minutes
 setTimeout(verifyTwilioUrl, 30000); // Also check 30s after startup
+
+// ─── Cloud Worker Watchdog (every 5 min) ────────────────────────────────────
+// Proactively probes the Cloudflare Worker (9-cloud-standin) so we detect
+// an outage BEFORE the Mac itself crashes and we need the failover. Without
+// this, the worker could rot silently and we would only find out during the
+// exact blackout the worker exists to prevent. Born from Phase 3 audit Apr 10:
+// "Cloud Worker never deployed" listed as #1 P0 gap — turned out it was live
+// but had zero monitoring, so the gap was invisibility, not non-deployment.
+let cloudWorkerFailStreak = 0;
+let cloudWorkerLastAlert = 0;
+async function verifyCloudWorker() {
+  const workerUrl = process.env.CLOUD_WORKER_URL || 'https://9-cloud-standin.789k6rym8v.workers.dev';
+  try {
+    const res = await fetch(`${workerUrl}/health`, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data?.status !== 'running') throw new Error(`status="${data?.status}"`);
+    if (cloudWorkerFailStreak > 0) {
+      log(`Cloud worker recovered after ${cloudWorkerFailStreak} failure(s): ${workerUrl}`);
+      if (cloudWorkerFailStreak >= 3) {
+        sendTelegram(`9: Cloud worker back up at ${workerUrl}. Failover is live again.`).catch(() => {});
+      }
+    }
+    cloudWorkerFailStreak = 0;
+  } catch (e) {
+    cloudWorkerFailStreak++;
+    log(`Cloud worker health check FAILED (${cloudWorkerFailStreak}/3): ${e.message}`);
+    // Alert only on exactly 3 consecutive failures, and re-alert at most hourly
+    if (cloudWorkerFailStreak === 3 && Date.now() - cloudWorkerLastAlert > 60 * 60 * 1000) {
+      cloudWorkerLastAlert = Date.now();
+      sendTelegram(`9: CLOUD WORKER DOWN — ${workerUrl} failed 3 consecutive health checks (last error: ${e.message}). Mac is now a SPOF until this is fixed. Voice failover and Telegram cloud standin are offline. Redeploy via cloud-worker/deploy.sh.`).catch(() => {});
+    }
+  }
+}
+setInterval(verifyCloudWorker, 5 * 60 * 1000); // Every 5 minutes
+setTimeout(verifyCloudWorker, 45000); // Also check 45s after startup (offset from Twilio check)
 
 // ─── Tunnel Health Monitor (every 60s) ──────────────────────────────────────
 // Detects silent tunnel death and auto-restarts before anyone notices.

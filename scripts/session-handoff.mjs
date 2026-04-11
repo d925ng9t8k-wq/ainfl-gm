@@ -19,6 +19,19 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 
+// Phase 3 wave 2 — route episodic checkpoints through local SQLite first
+// (authoritative) instead of raw-POST'ing directly to Supabase. The comms-hub
+// post-write hook on db.saveMemory will then push the row to Supabase. This
+// kills the bypass path that was widening the drift gap over time.
+// Import is wrapped in try/catch so a bad DB state never blocks handoff writes.
+let db = null;
+try {
+  const memoryDb = await import('./memory-db.mjs');
+  db = memoryDb.db;
+} catch (e) {
+  console.error('[session-handoff] memory-db import failed (non-fatal):', e.message);
+}
+
 // ─── Ironclad Layer 1+3: Write episodic checkpoints to Supabase ────────────
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -185,8 +198,38 @@ ${teamAgentsWereRunning.length > 0 ? teamAgentsWereRunning.join(', ') : 'none �
   writeFileSync(HANDOFF_FILE, markdown);
   writeFileSync(HANDOFF_JSON, JSON.stringify(handoffData, null, 2));
 
-  // ─── Ironclad: Write episodic checkpoint to Supabase ──────────────────────
+  // ─── Ironclad: Write episodic checkpoint ─────────────────────────────────
+  // Phase 3 wave 2 fix: local SQLite is authoritative. Previously this block
+  // raw-POST'd straight to Supabase, bypassing SQLite — which is why the
+  // memory table accumulated rows in Supabase that were never in local.
+  // Now: write to SQLite first via db.saveMemory (SQLCipher handle), THEN push
+  // to Supabase. Both writes are attempted; neither is allowed to crash the
+  // handoff daemon (local file writes above are the ultimate safety net).
   try {
+    const checkpointDescription = `Checkpoint ${nowET} — ${handoffData.runningProcesses.length} processes, ${handoffData.auditReportsGenerated.length} reports`;
+    const checkpointContent = JSON.stringify({
+      timestamp: now.toISOString(),
+      processes: handoffData.runningProcesses.length,
+      teamAgents: Object.keys(handoffData.teamAgents),
+      recentDocs: handoffData.recentDocsModifiedToday.length,
+      reports: handoffData.auditReportsGenerated.length,
+      pepperPID: handoffData.pepperPID,
+      hubHealthy: handoffData.hubHealthy
+    });
+
+    // Step 1: write to local SQLite (authoritative)
+    if (db) {
+      try {
+        db.saveMemory('ironclad_session_checkpoint', 'episodic', checkpointDescription, checkpointContent);
+      } catch (e) {
+        log(`SQLite checkpoint write failed (non-fatal): ${e.message}`);
+      }
+    }
+
+    // Step 2: push to Supabase. NB — session-handoff is a separate daemon from
+    // comms-hub, so the post-write hook installed by comms-hub is NOT attached
+    // to this process's db instance. We still have to push explicitly. This is
+    // additive, not a bypass: SQLite above remains the source of truth.
     const envFile = readFileSync(join(ROOT, '.env'), 'utf8');
     const envVars = Object.fromEntries(
       envFile.split('\n').filter(l => l && !l.startsWith('#'))
@@ -196,22 +239,7 @@ ${teamAgentsWereRunning.length > 0 ? teamAgentsWereRunning.join(', ') : 'none �
     const supabaseKey = envVars.SUPABASE_SERVICE_KEY;
 
     if (supabaseUrl && supabaseKey) {
-      const checkpoint = {
-        name: `session_checkpoint_${now.toISOString()}`,
-        type: 'episodic',
-        description: `Checkpoint ${nowET} — ${handoffData.runningProcesses.length} processes, ${handoffData.auditReportsGenerated.length} reports`,
-        content: JSON.stringify({
-          timestamp: now.toISOString(),
-          processes: handoffData.runningProcesses.length,
-          teamAgents: Object.keys(handoffData.teamAgents),
-          recentDocs: handoffData.recentDocsModifiedToday.length,
-          reports: handoffData.auditReportsGenerated.length,
-          pepperPID: handoffData.pepperPID,
-          hubHealthy: handoffData.hubHealthy
-        })
-      };
-
-      // Upsert — update existing checkpoint or create new (keep only latest)
+      // Upsert via PATCH-or-POST pattern: delete existing, insert new
       await fetch(`${supabaseUrl}/rest/v1/memory?name=eq.ironclad_session_checkpoint`, {
         method: 'DELETE',
         headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
@@ -227,15 +255,15 @@ ${teamAgentsWereRunning.length > 0 ? teamAgentsWereRunning.join(', ') : 'none �
         body: JSON.stringify({
           name: 'ironclad_session_checkpoint',
           type: 'episodic',
-          description: checkpoint.description,
-          content: checkpoint.content
+          description: checkpointDescription,
+          content: checkpointContent
         })
-      });
+      }).catch(() => {});
       // Log every 10th write to avoid spam
-      if (Math.random() < 0.1) log('Supabase episodic checkpoint written');
+      if (Math.random() < 0.1) log('Episodic checkpoint written to SQLite + Supabase');
     }
   } catch (e) {
-    // Silent fail — local files are the primary, Supabase is backup
+    // Silent fail — local files are the primary, SQLite + Supabase are backup
   }
 
   return handoffData;

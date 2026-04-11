@@ -313,11 +313,21 @@ async function checkWatchdogRestarts() {
       return { status: 'unknown', metricValue: 0, severity: 'info', message: 'claude-watchdog.log not found' };
     }
     const content = readFileSync(logFile, 'utf-8');
-    // Count restart lines in the last hour
-    const oneHourAgo = new Date(Date.now() - 3600_000).toISOString();
-    const restarts = content.split('\n').filter(l =>
-      l.includes('Starting claude') && l > oneHourAgo
-    ).length;
+    // Count restart lines in the last hour.
+    // Log format: "[2026-04-08T09:08:07] Starting claude --dangerously-skip-permissions --resume"
+    // Prior bug: compared full line against ISO timestamp — every line starts with '['
+    // (ASCII 91) which is lexicographically > '2' (ASCII 50), so every historical
+    // "Starting claude" line counted forever. Fix: extract the bracketed timestamp
+    // and compare as a Date.
+    const oneHourAgoMs = Date.now() - 3600_000;
+    const restarts = content.split('\n').filter(l => {
+      if (!l.includes('Starting claude')) return false;
+      const m = l.match(/^\[([0-9T:\-]+)\]/);
+      if (!m) return false;
+      const t = Date.parse(m[1]);
+      if (Number.isNaN(t)) return false;
+      return t >= oneHourAgoMs;
+    }).length;
     let severity = 'info';
     if (restarts >= 5) severity = 'critical';
     else if (restarts >= 2) severity = 'warning';
