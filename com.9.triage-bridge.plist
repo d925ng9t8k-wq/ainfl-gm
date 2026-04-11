@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  com.9.triage-bridge.plist — LaunchAgent for scripts/triage-bridge.mjs
+  Born from Owner directive Apr 11: "I want the two of you as close as possible
+  to living in the same world and being able to touch each other. This is a
+  priority!"  This plist is committed to the repo but NOT installed by the
+  daemon-build commit. Owner installs by hand when ready:
+
+    cp com.9.triage-bridge.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.9.triage-bridge.plist
+
+  To stop:
+    launchctl unload ~/Library/LaunchAgents/com.9.triage-bridge.plist
+
+  Logs:
+    /Users/jassonfishback/Projects/BengalOracle/logs/triage-bridge.log
+    /Users/jassonfishback/Projects/BengalOracle/logs/triage-bridge.stdout.log
+    /Users/jassonfishback/Projects/BengalOracle/logs/triage-bridge.stderr.log
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.9.triage-bridge</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/jassonfishback/Projects/BengalOracle/scripts/triage-bridge.mjs</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/jassonfishback/Projects/BengalOracle</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>POLL_MS</key>
+        <string>30000</string>
+        <key>HUB_URL</key>
+        <string>http://localhost:3457</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+        <key>Crashed</key>
+        <true/>
+    </dict>
+
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/jassonfishback/Projects/BengalOracle/logs/triage-bridge.stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/jassonfishback/Projects/BengalOracle/logs/triage-bridge.stderr.log</string>
+</dict>
+</plist>
