@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Syntax check — critical scripts
+        run: |
+          node --check scripts/comms-hub.mjs
+          node --check scripts/voice-server.mjs
+          node --check scripts/jules-telegram.mjs
+          node --check scripts/trader9-bot.mjs
+          node --check scripts/trinity-agent.mjs
+          node --check scripts/pilot-server.mjs
+          node --check scripts/session-handoff.mjs
+          node --check scripts/memory-db.mjs
+          node --check scripts/health-monitor.mjs
+          node --check scripts/agent-base.mjs
+
+      - name: Build
+        run: npm run build
