@@ -227,6 +227,71 @@ async function checkHttpEndpoint(name, url, timeoutMs = 8000) {
   }
 }
 
+// ─── 9-Ops Daemon: check + self-heal ─────────────────────────────────────────
+// The daemon is supervised by LaunchAgent com.9.9-ops-daemon (tracked at repo
+// root in com.9.9-ops-daemon.plist). Historical gap: the plist was authored
+// Apr 5 but never installed to ~/Library/LaunchAgents, so when the daemon
+// died Apr 9 it never came back and health-monitor flagged it "unreachable"
+// indefinitely. This wrapper closes that gap: if the daemon is down, attempt
+// a rate-limited self-heal (install plist + launchctl load). Returns the
+// post-heal health result so the alert/cooldown logic stays unchanged.
+const NINE_OPS_DAEMON_PLIST_LABEL = 'com.9.9-ops-daemon';
+const NINE_OPS_DAEMON_PLIST_SRC   = path.join(PROJECT, 'com.9.9-ops-daemon.plist');
+const NINE_OPS_DAEMON_PLIST_DEST  = path.join(
+  process.env.HOME || '/Users/jassonfishback',
+  'Library/LaunchAgents/com.9.9-ops-daemon.plist'
+);
+const NINE_OPS_HEAL_COOLDOWN_MS = 60 * 60 * 1000; // 1h — don't thrash launchctl
+let _nineOpsLastHealAt = 0;
+
+async function check9OpsDaemonWithSelfHeal() {
+  const result = await checkHttpEndpoint('9-ops-daemon', 'http://localhost:3461/health');
+  if (result.status === 'healthy') return result;
+
+  // Down — decide whether to attempt a self-heal
+  const now = Date.now();
+  if (now - _nineOpsLastHealAt < NINE_OPS_HEAL_COOLDOWN_MS) {
+    // Recently tried — let the alert fire normally without thrashing launchctl
+    return result;
+  }
+  _nineOpsLastHealAt = now;
+
+  try {
+    // Step 1: ensure plist is installed in ~/Library/LaunchAgents
+    if (!existsSync(NINE_OPS_DAEMON_PLIST_DEST) && existsSync(NINE_OPS_DAEMON_PLIST_SRC)) {
+      execSync(`cp "${NINE_OPS_DAEMON_PLIST_SRC}" "${NINE_OPS_DAEMON_PLIST_DEST}"`, { timeout: 5000 });
+      log(`[self-heal] 9-ops-daemon: installed plist to ${NINE_OPS_DAEMON_PLIST_DEST}`);
+    }
+
+    // Step 2: check if launchd already tracks it
+    let loaded = false;
+    try {
+      const out = execSync(`launchctl list 2>/dev/null | grep ${NINE_OPS_DAEMON_PLIST_LABEL} || true`, { encoding: 'utf-8', timeout: 5000 });
+      loaded = out.trim().length > 0;
+    } catch {}
+
+    // Step 3: load it if not already loaded
+    if (!loaded && existsSync(NINE_OPS_DAEMON_PLIST_DEST)) {
+      execSync(`launchctl load "${NINE_OPS_DAEMON_PLIST_DEST}" 2>&1`, { timeout: 5000 });
+      log(`[self-heal] 9-ops-daemon: launchctl load issued`);
+    } else if (loaded) {
+      // Already loaded but not responding — kickstart once
+      try {
+        execSync(`launchctl kickstart -k gui/$(id -u)/${NINE_OPS_DAEMON_PLIST_LABEL} 2>&1`, { timeout: 5000 });
+        log(`[self-heal] 9-ops-daemon: launchctl kickstart issued`);
+      } catch (e) {
+        log(`[self-heal] 9-ops-daemon: kickstart failed: ${e.message}`);
+      }
+    }
+  } catch (e) {
+    log(`[self-heal] 9-ops-daemon: error: ${e.message}`);
+  }
+
+  // Return the original down result — the next poll cycle will see it healthy
+  // if the heal worked, or re-attempt in 1h if it didn't.
+  return result;
+}
+
 async function checkProcess(name, grepPattern) {
   try {
     const out = execSync(`pgrep -f "${grepPattern}" 2>/dev/null || true`, { encoding: 'utf-8', timeout: 5000 }).trim();
@@ -733,7 +798,7 @@ async function runFastChecks() {
   await check({ component: 'claude-watchdog',metricName: 'restart_count', getValue: () => checkWatchdogRestarts() });
   await check({ component: 'ram-watch-agent',metricName: 'http_status',   getValue: () => checkHttpEndpoint('ram-watch-agent', 'http://localhost:3459/health') });
   await check({ component: 'usage-monitor',  metricName: 'http_status',   getValue: () => checkHttpEndpoint('usage-monitor',   'http://localhost:3460/health') });
-  await check({ component: '9-ops-daemon',   metricName: 'http_status',   getValue: () => checkHttpEndpoint('9-ops-daemon',    'http://localhost:3461/health') });
+  await check({ component: '9-ops-daemon',   metricName: 'http_status',   getValue: () => check9OpsDaemonWithSelfHeal() });
   await check({ component: 'sentry',         metricName: 'dsn_count',     getValue: () => checkSentry() });
 }
 
