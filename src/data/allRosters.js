@@ -10166,7 +10166,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 313.92, "capUsed": 248.71, "deadCap": 43.2, "capSpace": 22.02}
+    "capSummary": {"totalCap": 313.92, "capUsed": 246.04, "deadCap": 43.27, "capSpace": 24.61}
   },
   "HOU": {
     "players": [
@@ -21174,7 +21174,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 299.84, "capUsed": 280.73, "deadCap": 12.64, "capSpace": 6.47}
+    "capSummary": {"totalCap": 299.84, "capUsed": 254.84, "deadCap": 26.56, "capSpace": 18.44}
   },
   "NYJ": {
     "players": [
@@ -23004,7 +23004,7 @@ export const allRosters = {
         "baseSalary": 2.5
       }
     ],
-    "capSummary": {"totalCap": 315.64, "capUsed": 229.2, "deadCap": 51.62, "capSpace": 34.83}
+    "capSummary": {"totalCap": 315.64, "capUsed": 231.78, "deadCap": 51.62, "capSpace": 32.25}
   },
   "PIT": {
     "players": [
