@@ -468,7 +468,7 @@ export function GameProvider({ children }) {
   // Then adjust for any moves the user makes during simulation
   const teamData = allRosters[state.currentTeamAbbr];
   // Use OTC verified cap data for ALL teams including Bengals
-  const bengalsCapSpace = 1.42; // OTC verified: $22,169,376
+  const bengalsCapSpace = 6.08; // OTC verified: $22,169,376
   const bengalsCapTotal = 316.98; // OTC verified: $316,980,000
   const otcCapSpace = (state.currentTeamAbbr === 'CIN') ? bengalsCapSpace : teamData?.capSummary?.capSpace;
   const teamCapTotal = (state.currentTeamAbbr === 'CIN') ? bengalsCapTotal : (teamData?.capSummary?.totalCap || TOTAL_CAP);
