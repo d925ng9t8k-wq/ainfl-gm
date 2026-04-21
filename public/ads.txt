@@ -1,1 +1,3 @@
-google.com, pub-8928127451532131, DIRECT, f08c47fec0942fa0
+# ads.txt — placeholder for future ad network authorization
+# AdSense removed April 2026 (rejected — gambling-adjacent content policy)
+# Ezoic application pending
