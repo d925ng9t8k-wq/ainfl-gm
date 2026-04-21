@@ -30,6 +30,7 @@
   gtag('config', 'G-PLW4H1NNF6');
 </script>
 
+
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -496,6 +497,9 @@ a:hover { text-decoration: underline; }
 <!-- Main -->
 <main class="main">
 
+  <!-- Ad Slot Top -->
+  <div class="ad-slot">  </div>
+
   <!-- Controls -->
   <div class="controls">
     <div class="filter-group" id="filter-group">
@@ -525,6 +529,8 @@ a:hover { text-decoration: underline; }
   <!-- Rankings List -->
   <div class="rankings-list" id="rankings-list" aria-label="Power rankings list"></div>
 
+  <!-- Ad Slot Bottom -->
+  <div class="ad-slot" style="margin-top: 24px;">  </div>
 
 </main>
 
@@ -759,7 +765,6 @@ function init() {
   rankingsData = loadRankings();
   renderList();
   setupFilterButtons();
-  initAds();
 }
 
 function loadRankings() {
@@ -977,14 +982,6 @@ function showToast(msg) {
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
-}
-
-// ── AdSense ───────────────────────────────────────────────────────────────
-function initAds() {
-  try {
-    document.querySelectorAll('.adsbygoogle').forEach(() => {
-    });
-  } catch(e) { /* AdSense not loaded */ }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────
