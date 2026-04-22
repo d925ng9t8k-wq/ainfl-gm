@@ -10,6 +10,8 @@
   gtag('js', new Date());
   gtag('config', 'G-PLW4H1NNF6');
 </script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -345,6 +347,109 @@ tr:hover { background: rgba(251,79,20,0.04); }
   .pick-header { flex-direction: column; align-items: flex-start; }
   .pick-info { margin-left: 0; margin-top: 8px; }
 }
+
+/* ─── Newsletter Capture ──────────────────────────────────────── */
+.newsletter-block {
+  background: linear-gradient(135deg, rgba(251,79,20,0.12), rgba(251,79,20,0.04));
+  border: 1px solid rgba(251,79,20,0.3);
+  border-radius: 14px;
+  padding: 32px 28px;
+  margin: 48px 0 32px;
+  text-align: center;
+}
+.newsletter-block h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.newsletter-block p {
+  font-size: 0.9rem;
+  color: #888899;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  max-width: 420px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.newsletter-form input[type="email"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #e2e2e2;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.newsletter-form input[type="email"]:focus {
+  border-color: rgba(251,79,20,0.5);
+}
+.newsletter-form input[type="email"]::placeholder { color: #555566; }
+.newsletter-form button {
+  padding: 12px 22px;
+  background: #FB4F14;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.newsletter-form button:hover { background: #e04412; }
+.newsletter-success {
+  display: none;
+  color: #00c853;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 12px;
+}
+
+/* ─── Social Share ────────────────────────────────────────────── */
+.share-block {
+  margin: 0 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.share-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555566;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.2s;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  color: #e2e2e2;
+}
+.share-btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); }
+.share-btn.twitter { border-color: rgba(29,161,242,0.3); }
+.share-btn.twitter:hover { background: rgba(29,161,242,0.12); }
+.share-btn.copy:hover { background: rgba(0,200,83,0.1); border-color: rgba(0,200,83,0.3); }
+.share-copied { color: #00c853; font-size: 0.8rem; font-weight: 700; display: none; }
 </style>
 </head>
 <body>
@@ -354,8 +459,9 @@ tr:hover { background: rgba(251,79,20,0.04); }
   <a href="/" class="nav-brand">Play<span>AiGM</span></a>
   <div class="nav-links">
     <a href="/aigm.html">Simulator</a>
-    <a href="/articles/nfl-draft-trade-up-2026.html">Trade-Up Analysis</a>
     <a href="/articles/nfl-mock-draft-2026.html">Mock Draft</a>
+    <a href="/articles/nfl-draft-big-board-2026.html">Big Board</a>
+    <a href="/articles/nfl-draft-sleepers-2026.html">Sleepers</a>
     <a href="/about.html">About</a>
   </div>
 </nav>
@@ -375,6 +481,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
   Every pick. Every prospect. Every angle. This is not a gut-feel mock draft &mdash; it is a probabilistic model built on team needs, historical draft patterns, front office tendencies, and prospect evaluation data. Each selection includes an AI confidence score representing the likelihood that this specific player goes to this specific team at this specific pick.
 </p>
 
+<!-- Ad Slot 1 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>How the AI Confidence Scores Work</h2>
 
@@ -493,6 +609,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p><strong>Why 66%:</strong> Carolina could pivot to wide receiver if they believe their tackle situation can be addressed through free agency or a later pick. There is also a scenario where a trade-up offer from a quarterback-needy team pushes the Panthers' actual selection down the board with extra capital in hand.</p>
 </div>
 
+<!-- Ad Slot 2 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <!-- Pick 6 -->
 <div class="pick-card">
@@ -678,6 +804,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p><strong>Why 62%:</strong> Safety is a significant need as well. If a top safety prospect is still available, the Cardinals could address the back end of the defense instead. Carter also has a wider range of draft outcomes than most prospects at this pick &mdash; some teams view him as a top-10 talent, while others see him as a mid-first-rounder, creating board uncertainty.</p>
 </div>
 
+<!-- Ad Slot 3 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <!-- Pick 16 -->
 <div class="pick-card">
@@ -892,6 +1028,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p>Harris is a big-bodied receiver who wins contested catches and excels on the boundary. Baltimore has struggled to find a true WR1 to pair with Lamar Jackson, and Harris has the size, catch radius, and contested-catch ability to fill that role. His physicality at the catch point is reminiscent of the kind of receiver Jackson has thrived with throughout his career.</p>
 </div>
 
+<!-- Ad Slot 4 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <!-- Pick 28 -->
 <div class="pick-card">
@@ -1039,6 +1185,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p style="margin-top:12px;"><strong>Positional value matters:</strong> Edge rushers, offensive tackles, and cornerbacks dominate the board after the quarterback rush subsides. These are the positions where the value of a first-round pick is highest based on historical analysis of second-contract outcomes.</p>
 </div>
 
+<!-- Ad Slot 5 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>The Bottom Line</h2>
 
@@ -1049,6 +1205,76 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p>The teams that win draft night will be the ones that prepared for multiple scenarios, identified their target players at each possible pick, and had the discipline to stick to their board when the pressure intensified. <strong>The draft rewards preparation and punishes panic.</strong> Use the simulator, test your theories, and come prepared for the most consequential night of the NFL offseason.</p>
 
 <!-- Footer -->
+
+<!-- Newsletter + Share Block -->
+<div class="newsletter-block">
+  <h3>Stay Ahead of the Draft</h3>
+  <p>Get post-draft analysis, dynasty buy/sell signals, and rookie ADP updates — straight to your inbox. No spam. Unsubscribe anytime.</p>
+  <form class="newsletter-form" id="gm-newsletter-form" onsubmit="gmNewsletterSubmit(event)">
+    <input type="email" id="gm-email" placeholder="your@email.com" required autocomplete="email">
+    <button type="submit">Get Updates</button>
+  </form>
+  <div class="newsletter-success" id="gm-newsletter-success">You're in. Post-draft intel incoming.</div>
+</div>
+
+<div class="share-block">
+  <span class="share-label">Share</span>
+  <a class="share-btn twitter" id="gm-share-twitter" href="#" target="_blank" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.261 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    Post on X
+  </a>
+  <button class="share-btn copy" onclick="gmCopyLink()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    Copy Link
+  </button>
+  <span class="share-copied" id="gm-copied">Copied!</span>
+</div>
+
+<script>
+(function() {
+  // Set Twitter share URL dynamically
+  var twitterBtn = document.getElementById('gm-share-twitter');
+  var pageTitle = encodeURIComponent("2026 NFL Mock Draft: All 32 First-Round Picks With AI Scores | PlayAiGM");
+  var pageUrl = encodeURIComponent(window.location.href);
+  twitterBtn.href = 'https://x.com/intent/tweet?text=' + pageTitle + '%20' + pageUrl + '&via=AiNFLGM';
+
+  window.gmNewsletterSubmit = function(e) {
+    e.preventDefault();
+    var email = document.getElementById('gm-email').value;
+    // Store locally + fire GA event
+    try { localStorage.setItem('gm_email', email); } catch(err) {}
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
+    }
+    // POST to Formspree (no backend needed — free tier handles up to 50/mo)
+    fetch('https://formspree.io/f/xpwzjpqe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, source: window.location.pathname })
+    }).catch(function(){});
+    document.getElementById('gm-newsletter-form').style.display = 'none';
+    document.getElementById('gm-newsletter-success').style.display = 'block';
+  };
+
+  window.gmCopyLink = function() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      document.getElementById('gm-copied').style.display = 'inline';
+      setTimeout(function() { document.getElementById('gm-copied').style.display = 'none'; }, 2000);
+    }).catch(function() {
+      // fallback
+      var ta = document.createElement('textarea');
+      ta.value = window.location.href;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      document.getElementById('gm-copied').style.display = 'inline';
+      setTimeout(function() { document.getElementById('gm-copied').style.display = 'none'; }, 2000);
+    });
+  };
+})();
+</script>
+
 <footer class="article-footer">
   <p>Published by <a href="/">PlayAiGM</a> &mdash; the AI-powered NFL general manager simulator. All analysis is generated using proprietary models and publicly available data. Prospect rankings and team needs are based on historical draft patterns and current roster analysis.</p>
   <p style="margin-top: 12px;">Related: <a href="/aigm.html">Draft Simulator</a> &bull; <a href="/articles/nfl-draft-trade-up-2026.html">Trade-Up Analysis</a></p>

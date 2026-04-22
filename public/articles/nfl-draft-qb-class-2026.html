@@ -10,6 +10,8 @@
   gtag('js', new Date());
   gtag('config', 'G-PLW4H1NNF6');
 </script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -395,6 +397,109 @@ tr:hover { background: rgba(251,79,20,0.04); }
   .fantasy-stats { gap: 8px; }
   .fantasy-stat { min-width: 75px; padding: 8px 10px; }
 }
+
+/* ─── Newsletter Capture ──────────────────────────────────────── */
+.newsletter-block {
+  background: linear-gradient(135deg, rgba(251,79,20,0.12), rgba(251,79,20,0.04));
+  border: 1px solid rgba(251,79,20,0.3);
+  border-radius: 14px;
+  padding: 32px 28px;
+  margin: 48px 0 32px;
+  text-align: center;
+}
+.newsletter-block h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.newsletter-block p {
+  font-size: 0.9rem;
+  color: #888899;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  max-width: 420px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.newsletter-form input[type="email"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #e2e2e2;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.newsletter-form input[type="email"]:focus {
+  border-color: rgba(251,79,20,0.5);
+}
+.newsletter-form input[type="email"]::placeholder { color: #555566; }
+.newsletter-form button {
+  padding: 12px 22px;
+  background: #FB4F14;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.newsletter-form button:hover { background: #e04412; }
+.newsletter-success {
+  display: none;
+  color: #00c853;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 12px;
+}
+
+/* ─── Social Share ────────────────────────────────────────────── */
+.share-block {
+  margin: 0 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.share-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555566;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.2s;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  color: #e2e2e2;
+}
+.share-btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); }
+.share-btn.twitter { border-color: rgba(29,161,242,0.3); }
+.share-btn.twitter:hover { background: rgba(29,161,242,0.12); }
+.share-btn.copy:hover { background: rgba(0,200,83,0.1); border-color: rgba(0,200,83,0.3); }
+.share-copied { color: #00c853; font-size: 0.8rem; font-weight: 700; display: none; }
 </style>
 </head>
 <body>
@@ -405,7 +510,8 @@ tr:hover { background: rgba(251,79,20,0.04); }
   <div class="nav-links">
     <a href="/aigm.html">Simulator</a>
     <a href="/articles/nfl-mock-draft-2026.html">Mock Draft</a>
-    <a href="/articles/nfl-draft-team-needs-2026.html">Team Needs</a>
+    <a href="/articles/nfl-draft-big-board-2026.html">Big Board</a>
+    <a href="/articles/nfl-draft-sleepers-2026.html">Sleepers</a>
     <a href="/about.html">About</a>
   </div>
 </nav>
@@ -425,6 +531,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
   The 2026 NFL Draft is days away. The AI GM has processed every snap, every landing spot scenario, and every offensive environment to give you the fantasy football edge before the picks are made. Here is who to stream in redraft, who to stash in dynasty, and who to leave on the wire entirely.
 </p>
 
+<!-- Ad Slot 1 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>How to Read These Grades</h2>
 
@@ -550,6 +666,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p><strong>Landing spot watch:</strong> Ward to Las Vegas is the scenario that most fantasy managers are modeling, per our <a href="/articles/nfl-mock-draft-2026.html" style="color: var(--orange);">mock draft projections</a>. The Raiders have an existing wide receiver room that has been waiting for a quarterback who can actually push the ball downfield. That landing spot is a fantasy accelerant. Ward in a system that restricts his improvisational tendencies (think conservative coordinator with a run-first mandate) is a lower-floor outcome that changes his streaming viability significantly.</p>
 </div>
 
+<!-- Ad Slot 2 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>The Second Tier: Late First and Early Second Round</h2>
 
@@ -693,6 +819,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p><strong>Dynasty case:</strong> Beck's B grade in dynasty reflects a lower ceiling than Ward or Milroe in fantasy terms but a higher floor. He will be a starting NFL quarterback for a long time. The question dynasty managers have to answer is whether a highly efficient pocket passer who does not contribute rushing yards can return top-12 fantasy value in a quarterback-loaded league. Historically, the answer is yes in high-volume passing offenses and borderline in conservative run-first schemes. Monitor his offensive coordinator hire before making a dynasty commitment.</p>
 </div>
 
+<!-- Ad Slot 3 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>The Stash Tier: Late Round Dynasty Targets</h2>
 
@@ -830,6 +966,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p><strong>Dynasty stash case:</strong> Nussmeier's upside lives entirely in the development arc. If an NFL coaching staff can channel his aggressiveness into calculated aggression, the physical tools are there for him to become a meaningful fantasy contributor. The risk is that NFL defenses make his decision-making worse before the coaching environment makes it better. Stash in leagues with roster minimums of 20 or more. Do not sacrifice meaningful capital.</p>
 </div>
 
+<!-- Ad Slot 4 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>Quick Grades: Rest of the Class</h2>
 
@@ -924,6 +1070,16 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <a href="/aigm.html" class="cta-btn">Launch the Simulator</a>
 </div>
 
+<!-- Ad Slot 5 -->
+<div class="ad-slot">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-8928127451532131"
+       data-ad-slot="auto"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 <h2>The Bottom Line</h2>
 
@@ -936,6 +1092,76 @@ tr:hover { background: rgba(251,79,20,0.04); }
 <p><strong>Draft week is the easiest time to make a dynasty mistake.</strong> The hype is loudest, the incomplete information is most seductive, and the competitive pressure to act before prices rise tempts roster decisions that look different by week three of the NFL season. Use the analysis above as your anchor. The talent is real. The value is real. The landing spots are what you are actually betting on.</p>
 
 <!-- Footer -->
+
+<!-- Newsletter + Share Block -->
+<div class="newsletter-block">
+  <h3>Stay Ahead of the Draft</h3>
+  <p>Get post-draft analysis, dynasty buy/sell signals, and rookie ADP updates — straight to your inbox. No spam. Unsubscribe anytime.</p>
+  <form class="newsletter-form" id="gm-newsletter-form" onsubmit="gmNewsletterSubmit(event)">
+    <input type="email" id="gm-email" placeholder="your@email.com" required autocomplete="email">
+    <button type="submit">Get Updates</button>
+  </form>
+  <div class="newsletter-success" id="gm-newsletter-success">You're in. Post-draft intel incoming.</div>
+</div>
+
+<div class="share-block">
+  <span class="share-label">Share</span>
+  <a class="share-btn twitter" id="gm-share-twitter" href="#" target="_blank" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.261 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    Post on X
+  </a>
+  <button class="share-btn copy" onclick="gmCopyLink()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    Copy Link
+  </button>
+  <span class="share-copied" id="gm-copied">Copied!</span>
+</div>
+
+<script>
+(function() {
+  // Set Twitter share URL dynamically
+  var twitterBtn = document.getElementById('gm-share-twitter');
+  var pageTitle = encodeURIComponent("2026 NFL Draft QB Class: Full Breakdown of Every Signal Caller | PlayAiGM");
+  var pageUrl = encodeURIComponent(window.location.href);
+  twitterBtn.href = 'https://x.com/intent/tweet?text=' + pageTitle + '%20' + pageUrl + '&via=AiNFLGM';
+
+  window.gmNewsletterSubmit = function(e) {
+    e.preventDefault();
+    var email = document.getElementById('gm-email').value;
+    // Store locally + fire GA event
+    try { localStorage.setItem('gm_email', email); } catch(err) {}
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
+    }
+    // POST to Formspree (no backend needed — free tier handles up to 50/mo)
+    fetch('https://formspree.io/f/xpwzjpqe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, source: window.location.pathname })
+    }).catch(function(){});
+    document.getElementById('gm-newsletter-form').style.display = 'none';
+    document.getElementById('gm-newsletter-success').style.display = 'block';
+  };
+
+  window.gmCopyLink = function() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      document.getElementById('gm-copied').style.display = 'inline';
+      setTimeout(function() { document.getElementById('gm-copied').style.display = 'none'; }, 2000);
+    }).catch(function() {
+      // fallback
+      var ta = document.createElement('textarea');
+      ta.value = window.location.href;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      document.getElementById('gm-copied').style.display = 'inline';
+      setTimeout(function() { document.getElementById('gm-copied').style.display = 'none'; }, 2000);
+    });
+  };
+})();
+</script>
+
 <footer class="article-footer">
   <p>Published by <a href="/">PlayAiGM</a> &mdash; the AI-powered NFL general manager simulator. Fantasy grades are generated using proprietary models analyzing prospect tape, landing spot scenarios, and historical rookie quarterback production patterns. All analysis is for entertainment and informational purposes.</p>
   <p style="margin-top: 12px;">Related: <a href="/articles/nfl-mock-draft-2026.html">2026 Mock Draft</a> &bull; <a href="/articles/nfl-draft-team-needs-2026.html">Team Needs</a> &bull; <a href="/articles/nfl-draft-bold-predictions-2026.html">Bold Predictions</a> &bull; <a href="/aigm.html">Draft Simulator</a></p>
