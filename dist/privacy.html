@@ -25,6 +25,8 @@
   gtag('config', 'G-PLW4H1NNF6');
 </script>
 
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -51,11 +53,30 @@
   .back-link { display: inline-block; margin-bottom: 24px; font-size: 13px; color: #555; }
   .back-link:hover { color: #FB4F14; }
   .effective-date { font-size: 13px; color: #555; margin-bottom: 32px; }
+  /* Site Nav */
+  .site-nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1a1a; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .site-nav .nav-brand { font-size: 1.1rem; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -0.03em; }
+  .site-nav .nav-brand span { color: #FB4F14; }
+  .site-nav .nav-links { display: flex; gap: 20px; align-items: center; }
+  .site-nav .nav-links a { font-size: 13px; font-weight: 600; color: #888; text-decoration: none; transition: color 0.2s; }
+  .site-nav .nav-links a:hover { color: #fff; }
+  .site-nav .nav-cta { background: #FB4F14; color: #fff !important; padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 700; }
+  .site-nav .nav-cta:hover { background: #e04412 !important; color: #fff !important; }
+  @media (max-width: 600px) { .site-nav .nav-links { gap: 12px; } .site-nav .nav-links a { font-size: 12px; } }
 </style>
 </head>
 <body>
+<nav class="site-nav">
+  <a href="/aigm.html" class="nav-brand">Play<span>Ai</span>GM</a>
+  <div class="nav-links">
+    <a href="/articles/nfl-mock-draft-2026.html">Draft Hub</a>
+    <a href="/tools.html">Tools</a>
+    <a href="/about">About</a>
+    <a href="/aigm.html" class="nav-cta">Play GM</a>
+  </div>
+</nav>
 <div class="container">
-  <a href="/" class="back-link">&larr; Back to AiNFL GM</a>
+  <a href="/aigm.html" class="back-link">&larr; Back to AiNFL GM</a>
   <h1>Privacy Policy</h1>
   <p class="subtitle">AiNFL GM &mdash; A 9 Enterprises Product</p>
   <p class="effective-date">Effective Date: March 26, 2026 &bull; Last Updated: March 26, 2026</p>
@@ -156,7 +177,7 @@
 
 <div class="footer">
   AiNFL GM &bull; A 9 Enterprises Product &bull; 2026<br>
-  <a href="/">Home</a> &bull; <a href="/about.html">About</a> &bull; <a href="/contact.html">Contact</a> &bull; <a href="/privacy.html">Privacy Policy</a> &bull; <a href="/terms.html">Terms of Service</a><br><br>
+  <a href="/aigm.html">Home</a> &bull; <a href="/articles/nfl-mock-draft-2026.html">Draft Hub</a> &bull; <a href="/tools.html">Tools</a> &bull; <a href="/about">About</a> &bull; <a href="/contact">Contact</a> &bull; <a href="/privacy">Privacy Policy</a> &bull; <a href="/terms.html">Terms</a><br><br>
   Built with AI. Not by committee.
 </div>
 </body>
