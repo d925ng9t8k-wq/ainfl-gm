@@ -1,0 +1,7 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY scripts/ainflgm-draft-live.mjs ./scripts/
+RUN mkdir -p data
+ENV NODE_ENV=production
+EXPOSE 3485
+CMD ["node", "scripts/ainflgm-draft-live.mjs"]
