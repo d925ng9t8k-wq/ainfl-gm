@@ -31,12 +31,15 @@
 <meta property="og:description" content="AiNFLGM ran the numbers on every top 2026 draft prospect. Five Round 1 picks have measurables data that should terrify the teams selecting them.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/nfl-draft-analytics-red-flags-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-23T08:00:00Z">
 <meta property="article:section" content="NFL Draft">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="2026 NFL Draft Analytics Red Flags: 5 Round 1 Picks Teams Will Regret">
 <meta name="twitter:description" content="AiNFLGM ran the measurables on 2026's top prospects. Five Round 1 picks have data that should scare the teams drafting them. The hype is real. The numbers are not.">
 
@@ -910,7 +913,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })

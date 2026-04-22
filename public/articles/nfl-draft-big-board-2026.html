@@ -31,12 +31,15 @@
 <meta property="og:description" content="The AI GM's official pre-draft authority piece. Top 50 prospects ranked with scouting notes. Bookmark this before Thursday's first round.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/nfl-draft-big-board-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-21T09:00:00Z">
 <meta property="article:section" content="NFL Draft">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="2026 NFL Draft Big Board: AiNFLGM's Top 50 Prospects Ranked">
 <meta name="twitter:description" content="The AI GM drops the final big board before the 2026 draft. 50 prospects ranked with position grades and scouting notes. Don't go into Thursday blind.">
 
@@ -1497,7 +1500,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })

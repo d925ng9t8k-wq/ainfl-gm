@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core pages -->
-  <url><loc>https://ainflgm.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://ainflgm.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/about</loc><changefreq>monthly</changefreq><priority>0.5</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/contact</loc><changefreq>monthly</changefreq><priority>0.4</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority><lastmod>2026-04-22</lastmod></url>
   <url><loc>https://ainflgm.com/cap</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/fa</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/trades</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -9,66 +12,68 @@
   <url><loc>https://ainflgm.com/summary</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/season</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/markets</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://ainflgm.com/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
 
-  <!-- 9 Enterprises pages -->
-  <url><loc>https://ainflgm.com/9enterprises.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ainflgm.com/dashboard.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/architecture.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/pitch.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/freeagent-landing.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/agent9.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://ainflgm.com/underwriter.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <!-- Articles — Draft 2026 (high priority during draft week) -->
+  <url><loc>https://ainflgm.com/articles/nfl-mock-draft-2026.html</loc><changefreq>daily</changefreq><priority>0.95</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-bold-predictions-2026.html</loc><changefreq>daily</changefreq><priority>0.92</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-big-board-2026.html</loc><changefreq>daily</changefreq><priority>0.92</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-qb-class-2026.html</loc><changefreq>daily</changefreq><priority>0.90</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-team-needs-2026.html</loc><changefreq>daily</changefreq><priority>0.90</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-trade-up-2026.html</loc><changefreq>daily</changefreq><priority>0.90</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-sweet-spot-2026.html</loc><changefreq>daily</changefreq><priority>0.88</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-sleepers-2026.html</loc><changefreq>daily</changefreq><priority>0.88</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/nfl-draft-analytics-red-flags-2026.html</loc><changefreq>daily</changefreq><priority>0.88</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/bengals-draft-preview-2026.html</loc><changefreq>daily</changefreq><priority>0.85</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/2026-dynasty-rookie-rankings-post-draft.html</loc><changefreq>daily</changefreq><priority>0.90</priority><lastmod>2026-04-22</lastmod></url>
+  <url><loc>https://ainflgm.com/articles/2026-dynasty-rookie-wr-rankings.html</loc><changefreq>daily</changefreq><priority>0.88</priority><lastmod>2026-04-22</lastmod></url>
 
-  <!-- Micro-App Factory (Proving Grounds) -->
-  <url><loc>https://ainflgm.com/trade-analyzer.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <!-- Tools -->
+  <url><loc>https://ainflgm.com/tools.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ainflgm.com/war-room.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ainflgm.com/trade-machine.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ainflgm.com/prompt-scripts.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ainflgm.com/aigm.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/draft-trade-calc.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/cap-quiz.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/power-rankings.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/team-needs.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/nfl-countdown.html</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/cap-impact.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/draft-grade.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/combine-stats.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/fantasy-trade.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/roster-budget.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/who-said-it.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/predict-standings.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/qb-compare.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/nfl-trivia.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/tools.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ainflgm.com/prop-builder.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/award-predictions.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/emoji-nfl.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/stat-leaders.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/gameday-planner.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/schedule-strength.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/injury-impact.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/prompt-scripts.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ainflgm.com/coach-tracker.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/cap-space.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/matchup-predictor.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/playoff-bracket.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/highlights-builder.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/nfl-wordle.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/superbowl-history.html</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/fan-loyalty.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/stat-leaders.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/what-if.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/hof-tracker.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ainflgm.com/depth-charts.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/season-sim.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/futures-odds.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/trade-analyzer.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/cap-quiz.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/nfl-countdown.html</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/who-said-it.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/nfl-trivia.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/prop-builder.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/award-predictions.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/emoji-nfl.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/gameday-planner.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/schedule-strength.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/injury-impact.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/coach-tracker.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/highlights-builder.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/superbowl-history.html</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/fan-loyalty.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/debate-settler.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/jersey-quiz.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/nickname-gen.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ainflgm.com/stadium-guide.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ainflgm.com/war-room.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ainflgm.com/contract-negotiator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/season-sim.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/trade-machine.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ainflgm.com/futures-odds.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-
-  <!-- Sport simulators -->
-  <url><loc>https://ainflgm.com/aigm.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ainflgm.com/contract-negotiator.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ainflgm.com/bengals-cap.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
   <!-- All 32 NFL team pages -->
   <url><loc>https://ainflgm.com/cardinals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
@@ -103,7 +108,4 @@
   <url><loc>https://ainflgm.com/buccaneers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ainflgm.com/titans</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://ainflgm.com/commanders</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://ainflgm.com/tools.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ainflgm.com/command-center.html</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
-  <url><loc>https://ainflgm.com/bengals-cap.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

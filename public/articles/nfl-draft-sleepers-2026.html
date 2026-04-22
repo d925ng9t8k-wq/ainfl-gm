@@ -31,12 +31,15 @@
 <meta property="og:description" content="Published before picks are made. 9 Day 2 and Day 3 prospects who represent the best cap value in the 2026 NFL Draft — and why they fell further than they should have.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/nfl-draft-sleepers-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-26T08:00:00Z">
 <meta property="article:section" content="NFL Draft">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="2026 NFL Draft Sleepers: Day 2/3 Value Picks Before They're Gone">
 <meta name="twitter:description" content="We're publishing these before picks are made. 9 late-round prospects who will outperform their draft slot and deliver elite cap value.">
 
@@ -949,7 +952,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })

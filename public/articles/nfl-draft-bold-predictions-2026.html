@@ -31,12 +31,15 @@
 <meta property="og:description" content="10 bold takes on the 2026 NFL Draft — who falls, who gets traded up for, who busts, and the two sleepers no one is talking about. Data-backed and unapologetic.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/nfl-draft-bold-predictions-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-09T10:00:00Z">
 <meta property="article:section" content="NFL Draft">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="2026 NFL Draft: 10 Bold Predictions and the Players Most Likely to Bust">
 <meta name="twitter:description" content="Bold takes, bust probabilities, and sleepers for the 2026 NFL Draft. We're going on record before the pick is in.">
 
@@ -1128,7 +1131,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })

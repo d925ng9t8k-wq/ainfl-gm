@@ -34,6 +34,8 @@
   gtag('config', 'G-PLW4H1NNF6');
 </script>
 
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8928127451532131" crossorigin="anonymous"></script>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -60,11 +62,39 @@
   .stat-box .num { font-size: 28px; font-weight: 800; color: #FB4F14; letter-spacing: -1px; }
   .stat-box .label { font-size: 12px; color: #555; margin-top: 4px; font-weight: 500; }
   .tag { display: inline-block; background: rgba(251,79,20,0.1); border: 1px solid rgba(251,79,20,0.2); color: #FB4F14; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 16px; }
+  /* Site Nav */
+  .site-nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1a1a1a; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .site-nav .nav-brand { font-size: 1.1rem; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -0.03em; }
+  .site-nav .nav-brand span { color: #FB4F14; }
+  .site-nav .nav-links { display: flex; gap: 20px; align-items: center; }
+  .site-nav .nav-links a { font-size: 13px; font-weight: 600; color: #888; text-decoration: none; transition: color 0.2s; }
+  .site-nav .nav-links a:hover, .site-nav .nav-links a.active { color: #fff; }
+  .site-nav .nav-cta { background: #FB4F14; color: #fff !important; padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 700; }
+  .site-nav .nav-cta:hover { background: #e04412 !important; color: #fff !important; }
+  @media (max-width: 600px) { .site-nav .nav-links { gap: 12px; } .site-nav .nav-links a { font-size: 12px; } }
+  /* Newsletter inline */
+  .newsletter-inline { background: #111; border: 1px solid #222; border-radius: 12px; padding: 28px 24px; margin: 32px 0; text-align: center; }
+  .newsletter-inline h3 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .newsletter-inline p { font-size: 14px; color: #666; margin-bottom: 16px; }
+  .newsletter-inline form { display: flex; gap: 8px; max-width: 400px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  .newsletter-inline input[type=email] { flex: 1; min-width: 220px; background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; }
+  .newsletter-inline button { background: #FB4F14; color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .newsletter-inline button:hover { background: #e04412; }
+  .newsletter-success-msg { display: none; color: #00c853; font-weight: 600; font-size: 14px; margin-top: 12px; }
 </style>
 </head>
 <body>
+<nav class="site-nav">
+  <a href="/aigm.html" class="nav-brand">Play<span>Ai</span>GM</a>
+  <div class="nav-links">
+    <a href="/articles/nfl-mock-draft-2026.html">Draft Hub</a>
+    <a href="/tools.html">Tools</a>
+    <a href="/about" class="active">About</a>
+    <a href="/aigm.html" class="nav-cta">Play GM</a>
+  </div>
+</nav>
 <div class="container">
-  <a href="/" class="back-link">&larr; Back to AiNFL GM</a>
+  <a href="/aigm.html" class="back-link">&larr; Back to AiNFL GM</a>
   <span class="tag">Free &bull; No Signup</span>
   <h1>About AiNFL GM</h1>
   <p class="subtitle">Built by 9 Enterprises &bull; Cincinnati, OH &bull; 2026</p>
@@ -160,12 +190,33 @@
 
   <!-- ADSENSE: Place manual ad unit here once slot ID is created in AdSense dashboard -->
   <!-- Position: about page bottom, before footer -->
+
+  <div class="newsletter-inline">
+    <h3>NFL Draft Week Intel</h3>
+    <p>Post-draft analysis, rookie rankings, and dynasty buy/sell signals. No spam.</p>
+    <form id="about-newsletter-form" onsubmit="aboutNewsletterSubmit(event)">
+      <input type="email" id="about-email" placeholder="your@email.com" required autocomplete="email">
+      <button type="submit">Get Updates</button>
+    </form>
+    <div class="newsletter-success-msg" id="about-newsletter-success">You're in. Draft intel coming.</div>
+  </div>
 </div>
 
 <div class="footer">
   AiNFL GM &bull; A 9 Enterprises Product &bull; 2026<br>
-  <a href="/" style="color:#555;text-decoration:none;">Home</a> &bull; <a href="/about.html" style="color:#555;text-decoration:none;">About</a> &bull; <a href="/contact.html" style="color:#555;text-decoration:none;">Contact</a> &bull; <a href="/privacy.html" style="color:#555;text-decoration:none;">Privacy Policy</a> &bull; <a href="/terms.html" style="color:#555;text-decoration:none;">Terms of Service</a><br><br>
+  <a href="/aigm.html" style="color:#555;text-decoration:none;">Home</a> &bull; <a href="/articles/nfl-mock-draft-2026.html" style="color:#555;text-decoration:none;">Draft Hub</a> &bull; <a href="/tools.html" style="color:#555;text-decoration:none;">Tools</a> &bull; <a href="/about" style="color:#555;text-decoration:none;">About</a> &bull; <a href="/contact" style="color:#555;text-decoration:none;">Contact</a> &bull; <a href="/privacy" style="color:#555;text-decoration:none;">Privacy Policy</a> &bull; <a href="/terms.html" style="color:#555;text-decoration:none;">Terms</a><br><br>
   Built with AI. Not by committee.
 </div>
+<script>
+window.aboutNewsletterSubmit = function(e) {
+  e.preventDefault();
+  var email = document.getElementById('about-email').value;
+  try { localStorage.setItem('gm_email', email); } catch(err) {}
+  if (typeof gtag !== 'undefined') { gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: 'about_page' }); }
+  fetch('https://formspree.io/f/xpwzjpqe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email, source: '/about' }) }).catch(function(){});
+  document.getElementById('about-newsletter-form').style.display = 'none';
+  document.getElementById('about-newsletter-success').style.display = 'block';
+};
+</script>
 </body>
 </html>

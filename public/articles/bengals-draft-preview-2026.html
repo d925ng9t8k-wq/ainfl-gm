@@ -31,6 +31,7 @@
 <meta property="og:description" content="The Bengals have Joe Burrow. Now they need to build around him. Our full 2026 draft preview covers positional needs, 7 prospect fits, and the trade scenarios that could change Cincinnati's trajectory.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/bengals-draft-preview-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-09T10:00:00Z">
 <meta property="article:section" content="NFL Draft">
@@ -40,6 +41,8 @@
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="Cincinnati Bengals 2026 NFL Draft Preview: Best Picks, Sleepers, and What Joe Burrow Needs">
 <meta name="twitter:description" content="Positional needs, prospect fits, trade scenarios, and the sleeper pick Cincinnati can't afford to miss. Full Bengals 2026 draft breakdown.">
 
@@ -1142,7 +1145,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })

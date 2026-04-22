@@ -31,12 +31,15 @@
 <meta property="og:description" content="AI-powered mock draft with probability scores for every first-round pick. Team needs, prospect fits, and trade scenarios analyzed.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/nfl-mock-draft-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-08T12:00:00Z">
 <meta property="article:section" content="NFL Draft">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="2026 NFL Mock Draft: All 32 First-Round Picks With AI Probability Scores">
 <meta name="twitter:description" content="Full first-round mock draft with AI confidence scores for every selection. Which picks are locks and which are wildcards?">
 
@@ -1247,7 +1250,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })

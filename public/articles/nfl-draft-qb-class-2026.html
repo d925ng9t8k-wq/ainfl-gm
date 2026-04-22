@@ -31,12 +31,15 @@
 <meta property="og:description" content="The AI GM's fantasy-focused breakdown of every relevant quarterback in the 2026 draft class. Landing spot projections, year 1 streaming grades, and dynasty rankings for Shedeur Sanders, Cam Ward, and the full class.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ainflgm.com/articles/nfl-draft-qb-class-2026.html">
+<meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
 <meta property="og:site_name" content="PlayAiGM">
 <meta property="article:published_time" content="2026-04-21T12:00:00Z">
 <meta property="article:section" content="Fantasy Football">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ainflgm.com/og-preview.jpg">
+<meta name="twitter:site" content="@AiNFLGM">
 <meta name="twitter:title" content="2026 NFL Draft QB Class Fantasy Value: Streaming Targets &amp; Dynasty Stashes">
 <meta name="twitter:description" content="Fantasy grades on every 2026 draft QB — streaming upside, dynasty stash value, and the landing spots that change everything.">
 
@@ -1134,7 +1137,7 @@ tr:hover { background: rgba(251,79,20,0.04); }
       gtag('event', 'newsletter_signup', { event_category: 'engagement', event_label: email });
     }
     // POST to Formspree (no backend needed — free tier handles up to 50/mo)
-    fetch('https://formspree.io/f/xpwzjpqe', {
+    fetch('https://comms-hub-production.up.railway.app/newsletter-signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, source: window.location.pathname })
