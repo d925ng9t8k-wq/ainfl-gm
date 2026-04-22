@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLW4H1NNF6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLW4H1NNF6');
+  gtag('event', 'purchase', { event_category: 'premium', event_label: 'subscription_start', value: 9.99 });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#050508">
+<title>Welcome to PlayAiGM Premium | PlayAiGM</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #0a0a0a; color: #e2e2e2; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px; -webkit-font-smoothing: antialiased;
+}
+.card {
+  max-width: 520px; width: 100%; text-align: center;
+  background: #111; border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 20px; padding: 48px 36px;
+  box-shadow: 0 0 60px rgba(34,197,94,0.06);
+}
+.icon { font-size: 4rem; margin-bottom: 16px; }
+h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.03em; }
+.subtitle { font-size: 1rem; color: #888; line-height: 1.6; margin-bottom: 32px; }
+.perks { list-style: none; text-align: left; margin-bottom: 36px; }
+.perks li {
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.92rem; color: #ccc; display: flex; gap: 10px; align-items: flex-start;
+}
+.perks li:last-child { border-bottom: none; }
+.check { color: #22c55e; font-weight: 700; flex-shrink: 0; }
+.btn {
+  display: inline-block; padding: 14px 32px; background: #FB4F14; color: #fff;
+  border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; letter-spacing: -0.01em;
+  transition: background 0.2s;
+}
+.btn:hover { background: #e04412; }
+.note { font-size: 0.8rem; color: #555; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">&#127942;</div>
+  <h1>Welcome to Premium</h1>
+  <p class="subtitle">Your subscription is active. You now have full access to every PlayAiGM premium tool and content.</p>
+  <ul class="perks">
+    <li><span class="check">+</span> Post-draft dynasty rankings — all 32 teams, all positions</li>
+    <li><span class="check">+</span> Buy/Sell/Hold alerts after every major NFL move</li>
+    <li><span class="check">+</span> AI-powered trade analyzer with dynasty scoring</li>
+    <li><span class="check">+</span> Full cap space breakdowns — all 32 teams, updated weekly</li>
+    <li><span class="check">+</span> Rookie class deep dives — RB, WR, QB, TE landing spot analysis</li>
+  </ul>
+  <a href="/" class="btn">Go to Dashboard</a>
+  <p class="note">A receipt has been sent to your email. Questions? Contact us at gm@ainflgm.com</p>
+</div>
+
+<script>
+// Verify session and store premium status
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var sessionId = params.get('session_id');
+  var BACKEND = (window.AINFLGM_STRIPE_URL || 'https://ainflgm-stripe.railway.app').replace(/\/$/, '');
+
+  if (sessionId) {
+    fetch(BACKEND + '/premium-status?session_id=' + encodeURIComponent(sessionId))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.active) {
+          try {
+            sessionStorage.setItem('ainflgm_premium_verified', 'true');
+            localStorage.setItem('ainflgm_premium_verified', JSON.stringify({
+              ts: Date.now(),
+              exp: Date.now() + 30 * 24 * 60 * 60 * 1000,
+              session_id: sessionId
+            }));
+          } catch(e) { /* non-fatal */ }
+        }
+      })
+      .catch(function() { /* non-fatal */ });
+  }
+})();
+</script>
+</body>
+</html>

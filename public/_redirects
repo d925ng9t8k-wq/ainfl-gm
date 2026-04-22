@@ -6,6 +6,8 @@
 /contact /contact.html 200
 /privacy /privacy.html 200
 /terms /terms.html 200
+/premium /premium.html 200
+/upgrade /premium.html 302
 /articles /articles/nfl-mock-draft-2026.html 302
 
 # Static HTML files served directly
