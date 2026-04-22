@@ -24932,7 +24932,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 340.19, "capUsed": 273.08, "deadCap": 36.25, "capSpace": 30.86}
+    "capSummary": {"totalCap": 340.19, "capUsed": 273.22, "deadCap": 36.25, "capSpace": 30.72}
   },
   "SEA": {
     "players": [
