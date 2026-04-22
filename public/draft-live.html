@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 NFL Draft Live — Dynasty Analysis | PlayAiGM</title>
+  <meta name="description" content="Live 2026 NFL Draft pick-by-pick dynasty fantasy football analysis. Instant AI-powered dynasty takes as each pick drops. Round 1 coverage on ainflgm.com.">
+  <meta property="og:title" content="2026 NFL Draft Live — Dynasty Analysis | PlayAiGM">
+  <meta property="og:description" content="Instant dynasty takes on every pick. Powered by AI. Live Round 1 coverage.">
+  <meta property="og:image" content="https://ainflgm.com/og-preview.jpg">
+  <meta property="og:url" content="https://ainflgm.com/draft-live">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="2026 NFL Draft Live — Dynasty Analysis">
+  <meta name="twitter:description" content="AI dynasty takes on every pick as they happen. ainflgm.com/draft-live">
+  <link rel="canonical" href="https://ainflgm.com/draft-live">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: #1e293b;
+      --accent: #2563eb;
+      --accent2: #3b82f6;
+      --green: #10b981;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --text: #f1f5f9;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --live: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent2);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .divider {
+      color: var(--border);
+      font-size: 20px;
+    }
+
+    .page-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: var(--live);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--live);
+      border-radius: 50%;
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    .live-badge.pre { color: var(--yellow); border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1); }
+    .live-badge.pre .live-dot { background: var(--yellow); animation: none; }
+    .live-badge.post { color: var(--text2); border-color: var(--border); background: transparent; }
+    .live-badge.post .live-dot { background: var(--text2); animation: none; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* Hero / countdown */
+    .hero {
+      padding: 32px 16px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent2);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: clamp(22px, 5vw, 36px);
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text2);
+      margin-bottom: 20px;
+    }
+
+    .countdown-block {
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+    }
+
+    .countdown-unit {
+      text-align: center;
+    }
+
+    .countdown-num {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent2);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      min-width: 36px;
+    }
+
+    .countdown-label {
+      font-size: 10px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    .countdown-sep {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--text3);
+      line-height: 1;
+      padding-bottom: 14px;
+    }
+
+    /* Ticker bar */
+    .ticker-bar {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 16px;
+      font-size: 12px;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .ticker-label {
+      color: var(--accent2);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ticker-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Main layout */
+    .main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Waiting state */
+    .waiting-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .waiting-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .waiting-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .waiting-sub {
+      font-size: 14px;
+      color: var(--text2);
+      max-width: 360px;
+      margin: 0 auto 24px;
+    }
+
+    /* Pre-draft teaser content */
+    .teaser-section {
+      margin-top: 8px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text3);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Preview cards */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .preview-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .preview-pick-num {
+      font-size: 11px;
+      color: var(--text3);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .preview-player {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .preview-detail {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    .preview-team {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+
+    /* Pick cards */
+    .picks-section {}
+
+    .picks-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .picks-count {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .pick-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pick-card.newest {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+    }
+
+    .pick-card.newest::before {
+      content: 'NEW';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--accent2);
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    .pick-card.is-test::after {
+      content: 'TEST';
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text3);
+    }
+
+    .pick-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .pick-num-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      text-align: center;
+      min-width: 48px;
+      flex-shrink: 0;
+    }
+
+    .pick-num {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .pick-num-label {
+      font-size: 9px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pick-info { flex: 1; min-width: 0; }
+
+    .pick-player {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 3px;
+    }
+
+    .pick-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pick-pos {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(37, 99, 235, 0.2);
+      color: var(--accent2);
+    }
+
+    .pick-team {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pick-college {
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .pick-traded-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--yellow);
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .verdict-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .verdict-badge {
+      font-size: 13px;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .verdict-badge.green { background: rgba(16, 185, 129, 0.2); color: var(--green); border: 1px solid rgba(16, 185, 129, 0.4); }
+    .verdict-badge.red   { background: rgba(239, 68, 68, 0.2);  color: var(--red);   border: 1px solid rgba(239, 68, 68, 0.4); }
+    .verdict-badge.yellow{ background: rgba(245, 158, 11, 0.2); color: var(--yellow); border: 1px solid rgba(245, 158, 11, 0.4); }
+
+    .tier-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text2);
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+
+    .analysis-text {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6;
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      margin-top: 2px;
+    }
+
+    .pick-timestamp {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 10px;
+    }
+
+    /* Loading skeleton */
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: 200px 0; }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface2) 25%, var(--surface) 50%, var(--surface2) 75%);
+      background-size: 400px 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+
+    .skeleton-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .skeleton-line {
+      height: 14px;
+      margin-bottom: 8px;
+    }
+
+    /* Poll indicator */
+    .poll-bar {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 11px;
+      color: var(--text3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 50;
+    }
+
+    .poll-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+    }
+
+    .poll-dot.pulsing {
+      animation: pulse-dot 0.8s ease-in-out infinite;
+    }
+
+    /* Nav links */
+    .nav-footer {
+      text-align: center;
+      padding: 32px 16px;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .nav-links a {
+      color: var(--accent2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover { text-decoration: underline; }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .preview-grid { grid-template-columns: 1fr 1fr; }
+      .pick-player { font-size: 16px; }
+      .countdown-num { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <a href="/" class="logo-text">PlayAiGM</a>
+      <span class="divider">/</span>
+      <span class="page-title">Draft Live</span>
+    </div>
+    <div id="liveBadge" class="live-badge pre">
+      <div class="live-dot"></div>
+      <span id="liveBadgeText">PRE-DRAFT</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero" id="heroSection">
+    <div class="hero-label">2026 NFL Draft — Round 1</div>
+    <h1 class="hero-title">Dynasty Takes.<br>Live as Picks Drop.</h1>
+    <p class="hero-sub">AI analysis within 60 seconds of every pick. No other site does this.</p>
+
+    <div id="countdownBlock" class="countdown-block">
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdDays">--</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdHours">--</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdMins">--</div>
+        <div class="countdown-label">Min</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cdSecs">--</div>
+        <div class="countdown-label">Sec</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-bar" id="tickerBar">
+    <span class="ticker-label">DRAFT LIVE</span>
+    <span class="ticker-text" id="tickerText">Dynasty analysis ready. Picks begin April 24, 8 PM ET.</span>
+  </div>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Pre-draft teaser -->
+    <div id="preDraftSection">
+      <div class="teaser-section">
+        <div class="section-label">Expected Round 1 Order — Pre-Draft</div>
+        <div class="preview-grid" id="previewGrid">
+          <!-- Populated by JS -->
+        </div>
+        <div style="text-align:center; margin-top: 12px;">
+          <a href="/articles/nfl-mock-draft-2026.html" style="color: var(--accent2); font-size: 13px; font-weight: 600;">Full 2026 Mock Draft Analysis</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/articles/nfl-draft-team-needs-2026.html" style="color: var(--accent2); font-size: 13px; font-weight: 600;">All 32 Team Needs</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Waiting state (shown when draft is live but 0 picks yet) -->
+    <div id="waitingSection" style="display:none;">
+      <div class="waiting-state">
+        <div class="waiting-icon">&#8987;</div>
+        <div class="waiting-title">Draft is live. Waiting for first pick...</div>
+        <p class="waiting-sub">We check for new picks every 60 seconds. Analysis will appear here within 1 minute of each selection.</p>
+      </div>
+    </div>
+
+    <!-- Live picks -->
+    <div id="picksSection" style="display:none;">
+      <div class="picks-header">
+        <div class="section-label">Live Dynasty Analysis</div>
+        <div class="picks-count" id="picksCount">0 picks analyzed</div>
+      </div>
+      <div id="picksContainer"></div>
+    </div>
+
+    <!-- Post-draft -->
+    <div id="postDraftSection" style="display:none;">
+      <div style="text-align:center; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px;">
+        <div style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Round 1 Complete</div>
+        <div style="font-size: 13px; color: var(--text2);">Full analysis below. Round 2 begins tomorrow.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Nav footer -->
+  <div class="nav-footer">
+    <div class="nav-links">
+      <a href="/trade-analyzer.html">Trade Analyzer</a>
+      <a href="/cap-space.html">Cap Space</a>
+      <a href="/articles/nfl-draft-bold-predictions-2026.html">Bold Predictions</a>
+      <a href="/dashboard.html">GM Dashboard</a>
+    </div>
+    <div class="footer-copy">PlayAiGM &mdash; ainflgm.com &mdash; AI-powered NFL GM tools</div>
+  </div>
+
+  <!-- Poll indicator -->
+  <div class="poll-bar" id="pollBar">
+    <div class="poll-dot" id="pollDot"></div>
+    <span id="pollText">Connecting...</span>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    // ── Config ──
+    // Backend URL — update after Railway deploy
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3485'
+      : 'https://ainflgm-draft-live.up.railway.app';
+
+    const DRAFT_START = new Date('2026-04-24T20:00:00-05:00'); // April 24, 8 PM CT
+    const POLL_INTERVAL = 30_000; // 30s frontend poll
+
+    // ── Pre-draft top 10 preview (best guesses — will be replaced by real picks) ──
+    const PREVIEW_PICKS = [
+      { pick: 1, player: 'Travis Hunter', pos: 'CB/WR', team: 'Las Vegas Raiders' },
+      { pick: 2, player: 'Shedeur Sanders', pos: 'QB', team: 'New York Jets' },
+      { pick: 3, player: 'Cam Ward', pos: 'QB', team: 'Arizona Cardinals' },
+      { pick: 4, player: 'Abdul Carter', pos: 'EDGE', team: 'Tennessee Titans' },
+      { pick: 5, player: 'Will Johnson', pos: 'CB', team: 'New York Giants' },
+      { pick: 6, player: 'Mason Graham', pos: 'DT', team: 'Cleveland Browns' },
+      { pick: 7, player: 'Tyler Warren', pos: 'TE', team: 'Miami Dolphins' },
+      { pick: 8, player: 'Tetairoa McMillan', pos: 'WR', team: 'Chicago Bears' }
+    ];
+
+    // ── State ──
+    let knownPicks = new Set();
+    let lastDraftStatus = 'pre';
+    let isPolling = false;
+    let pollCount = 0;
+
+    // ── Countdown ──
+    function updateCountdown() {
+      const now = new Date();
+      const diff = DRAFT_START - now;
+      if (diff <= 0) {
+        document.getElementById('countdownBlock').style.display = 'none';
+        return;
+      }
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins  = Math.floor((diff % 3600000) / 60000);
+      const secs  = Math.floor((diff % 60000) / 1000);
+      document.getElementById('cdDays').textContent  = String(days).padStart(2, '0');
+      document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cdMins').textContent  = String(mins).padStart(2, '0');
+      document.getElementById('cdSecs').textContent  = String(secs).padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ── Render preview ──
+    function renderPreview() {
+      const grid = document.getElementById('previewGrid');
+      grid.innerHTML = PREVIEW_PICKS.map(p => `
+        <div class="preview-card">
+          <div class="preview-pick-num">Pick #${p.pick}</div>
+          <div class="preview-player">${escHtml(p.player)}</div>
+          <div class="preview-detail">${escHtml(p.pos)}</div>
+          <div class="preview-team">${escHtml(p.team)}</div>
+        </div>
+      `).join('');
+    }
+    renderPreview();
+
+    // ── Render pick card ──
+    function renderPickCard(pick, isNewest) {
+      const d = pick.dynasty || {};
+      const verdictColor = d.verdictColor || 'yellow';
+      const verdict = d.verdict || 'HOLD';
+      const tier = d.tier || 'Mid';
+      const analysis = d.analysis || '';
+      const ts = pick.timestamp ? new Date(pick.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+      return `
+        <div class="pick-card ${isNewest ? 'newest' : ''} ${pick.isTest ? 'is-test' : ''}" id="pick-${pick.overall}">
+          <div class="pick-top">
+            <div class="pick-num-badge">
+              <div class="pick-num">#${pick.overall}</div>
+              <div class="pick-num-label">Rd ${pick.round}</div>
+            </div>
+            <div class="pick-info">
+              <div class="pick-player">${escHtml(pick.playerName)}</div>
+              <div class="pick-meta">
+                <span class="pick-pos">${escHtml(pick.position)}</span>
+                <span class="pick-team">${escHtml(pick.teamName)}</span>
+                ${pick.college ? `<span class="pick-college">${escHtml(pick.college)}</span>` : ''}
+                ${pick.traded ? `<span class="pick-traded-badge">TRADED</span>` : ''}
+              </div>
+            </div>
+          </div>
+          ${d.analysis ? `
+          <div class="verdict-bar">
+            <span class="verdict-badge ${verdictColor}">${verdict}</span>
+            <span class="tier-badge">${tier} Value</span>
+          </div>
+          <div class="analysis-text">${escHtml(analysis)}</div>
+          ` : `<div class="analysis-text" style="color: var(--text3);">Analysis loading...</div>`}
+          ${ts ? `<div class="pick-timestamp">${ts}</div>` : ''}
+        </div>
+      `;
+    }
+
+    // ── Update badge / sections ──
+    function updateUIState(draftStatus, picks) {
+      const badge = document.getElementById('liveBadge');
+      const badgeText = document.getElementById('liveBadgeText');
+      const ticker = document.getElementById('tickerText');
+
+      if (draftStatus === 'in') {
+        badge.className = 'live-badge';
+        badgeText.textContent = 'LIVE';
+        document.getElementById('heroSection').style.display = 'none';
+        document.getElementById('preDraftSection').style.display = 'none';
+        document.getElementById('postDraftSection').style.display = 'none';
+
+        if (picks.length === 0) {
+          document.getElementById('waitingSection').style.display = 'block';
+          document.getElementById('picksSection').style.display = 'none';
+          ticker.textContent = 'Draft is live. Waiting for first pick...';
+        } else {
+          document.getElementById('waitingSection').style.display = 'none';
+          document.getElementById('picksSection').style.display = 'block';
+          ticker.textContent = `Pick #${picks[0]?.overall || '?'}: ${picks[0]?.playerName || '?'} — ${picks[0]?.teamName || '?'} — Dynasty: ${picks[0]?.dynasty?.verdict || '?'}`;
+        }
+      } else if (draftStatus === 'post') {
+        badge.className = 'live-badge post';
+        badgeText.textContent = 'FINAL';
+        document.getElementById('preDraftSection').style.display = 'none';
+        document.getElementById('waitingSection').style.display = 'none';
+        document.getElementById('postDraftSection').style.display = 'block';
+        document.getElementById('picksSection').style.display = picks.length > 0 ? 'block' : 'none';
+        ticker.textContent = `Round 1 complete. ${picks.length} picks analyzed.`;
+      } else {
+        // pre
+        badge.className = 'live-badge pre';
+        badgeText.textContent = 'PRE-DRAFT';
+        document.getElementById('preDraftSection').style.display = 'block';
+        document.getElementById('waitingSection').style.display = 'none';
+
+        if (picks.length > 0) {
+          // Test picks visible pre-draft
+          document.getElementById('picksSection').style.display = 'block';
+          ticker.textContent = `[TEST] Pick #${picks[0]?.overall}: ${picks[0]?.playerName} — ${picks[0]?.dynasty?.verdict || '?'}`;
+        }
+      }
+    }
+
+    // ── Render picks ──
+    function renderPicks(picks) {
+      const container = document.getElementById('picksContainer');
+      const countEl = document.getElementById('picksCount');
+
+      const realPicks = picks.filter(p => !p.isTest);
+      const testPicks = picks.filter(p => p.isTest);
+      const allPicks = [...realPicks, ...testPicks]; // real picks first
+
+      countEl.textContent = `${realPicks.length} pick${realPicks.length !== 1 ? 's' : ''} analyzed`;
+
+      const newOnes = allPicks.filter(p => !knownPicks.has(p.overall));
+      const existingOnes = allPicks.filter(p => knownPicks.has(p.overall));
+
+      // Prepend new picks with highlight
+      for (const pick of newOnes) {
+        const div = document.createElement('div');
+        div.innerHTML = renderPickCard(pick, true);
+        container.insertBefore(div.firstElementChild, container.firstChild);
+        knownPicks.add(pick.overall);
+
+        // Remove "newest" class after 10s
+        setTimeout(() => {
+          const el = document.getElementById(`pick-${pick.overall}`);
+          if (el) el.classList.remove('newest');
+        }, 10_000);
+      }
+
+      // Update existing (in case analysis just arrived)
+      for (const pick of existingOnes) {
+        const existing = document.getElementById(`pick-${pick.overall}`);
+        if (existing) {
+          const div = document.createElement('div');
+          div.innerHTML = renderPickCard(pick, false);
+          existing.replaceWith(div.firstElementChild);
+        }
+      }
+    }
+
+    // ── Poll ──
+    async function poll() {
+      if (isPolling) return;
+      isPolling = true;
+
+      const pollDot = document.getElementById('pollDot');
+      const pollText = document.getElementById('pollText');
+      pollDot.classList.add('pulsing');
+
+      try {
+        const res = await fetch(`${API_BASE}/draft-picks`, { signal: AbortSignal.timeout(8000) });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        pollCount++;
+        pollText.textContent = `Updated ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+        const draftStatus = data.draftStatus || 'pre';
+        const picks = data.picks || [];
+
+        updateUIState(draftStatus, picks);
+        if (picks.length > 0) renderPicks(picks);
+
+        lastDraftStatus = draftStatus;
+      } catch (e) {
+        console.warn('Poll error:', e.message);
+        pollText.textContent = 'Reconnecting...';
+      } finally {
+        isPolling = false;
+        pollDot.classList.remove('pulsing');
+      }
+    }
+
+    // ── Helpers ──
+    function escHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Init ──
+    poll();
+    setInterval(poll, POLL_INTERVAL);
+
+    // Visibility API — poll immediately on tab refocus
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) poll();
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

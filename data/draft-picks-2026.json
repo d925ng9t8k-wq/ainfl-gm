@@ -1,0 +1,27 @@
+{
+  "picks": [
+    {
+      "overall": 1,
+      "round": 1,
+      "pickInRound": 1,
+      "playerName": "Travis Hunter",
+      "position": "CB/WR",
+      "college": "Colorado",
+      "teamAbbr": "LV",
+      "teamName": "Las Vegas Raiders",
+      "traded": false,
+      "tradeNote": "",
+      "timestamp": "2026-04-22T16:55:48.019Z",
+      "analysisStatus": "complete",
+      "isTest": true,
+      "dynasty": {
+        "tier": "Elite",
+        "analysis": "**Travis Hunter — Las Vegas Raiders (CB/WR)**\n\n1. **Elite tier** — Hunter is a generational prospect with legitimate two-way ability, but in dynasty fantasy, his WR usage is what drives elite value; the athleticism, route refinement, and ball skills at Colorado were NFL-ready, and he profiles as a WR1 with top-12 upside within two years.\n\n2. **Damaging landing spot** — The Raiders have no established offensive identity, a shaky QB situation, and a coaching staff that hasn't proven it can develop young pass catchers, which delays his dynasty timeline and caps his early-career stat ceiling compared to landing with a contender.\n\n3. **Buy aggressively right now** — Landing spot concerns will suppress his rookie ADP in dynasty drafts, and that's exactly the window to acquire elite talent at a discount before the breakout reprices him permanently.",
+        "verdict": "BUY",
+        "verdictColor": "green"
+      }
+    }
+  ],
+  "lastPickOverall": 1,
+  "updatedAt": "2026-04-22T16:56:03.875Z"
+}
