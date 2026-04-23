@@ -6310,7 +6310,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 338.18, "capUsed": 225.09, "deadCap": 91.6, "capSpace": 21.48}
+    "capSummary": {"totalCap": 338.18, "capUsed": 225.29, "deadCap": 91.6, "capSpace": 21.28}
   },
   "DAL": {
     "players": [
