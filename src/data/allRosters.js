@@ -14713,7 +14713,7 @@ export const allRosters = {
         "baseSalary": 0
       }
     ],
-    "capSummary": {"totalCap": 314.22, "capUsed": 239.49, "deadCap": 52.01, "capSpace": 22.72}
+    "capSummary": {"totalCap": 314.22, "capUsed": 232.61, "deadCap": 55.81, "capSpace": 25.81}
   },
   "LAC": {
     "players": [
@@ -20147,7 +20147,7 @@ export const allRosters = {
         "baseSalary": 4
       }
     ],
-    "capSummary": {"totalCap": 316.79, "capUsed": 190.79, "deadCap": 112.11, "capSpace": 13.9}
+    "capSummary": {"totalCap": 316.79, "capUsed": 193.87, "deadCap": 112.11, "capSpace": 10.81}
   },
   "NYG": {
     "players": [
