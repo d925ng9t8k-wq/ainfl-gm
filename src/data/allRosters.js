@@ -23004,7 +23004,7 @@ export const allRosters = {
         "baseSalary": 2.5
       }
     ],
-    "capSummary": {"totalCap": 315.64, "capUsed": 248.68, "deadCap": 51.62, "capSpace": 15.35}
+    "capSummary": {"totalCap": 315.64, "capUsed": 236.1, "deadCap": 51.62, "capSpace": 27.92}
   },
   "PIT": {
     "players": [
@@ -23961,7 +23961,7 @@ export const allRosters = {
         "baseSalary": -2.5
       }
     ],
-    "capSummary": {"totalCap": 320.78, "capUsed": 282.98, "deadCap": 12.22, "capSpace": 25.58}
+    "capSummary": {"totalCap": 320.78, "capUsed": 296.92, "deadCap": 12.22, "capSpace": 11.64}
   },
   "SF": {
     "players": [
